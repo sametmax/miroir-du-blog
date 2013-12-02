@@ -1,0 +1,963 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="fr-FR" >
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>  plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires | Sam &amp; Max: Python, Django, Git et du cul</title>
+<meta http-equiv="Content-Language" content="fr" />
+
+<link rel="shortcut icon" href="../wp-content/uploads/2012/05/favicon.ico">
+
+<link rel="stylesheet" href="../wp-content/themes/Minimal/style.css%3F238.css" type="text/css" media="screen" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul RSS Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/atom+xml" title="Sam &amp; Max: Python, Django, Git et du cul Atom Feed" href="../feed/atom/index.html" />
+<link rel="pingback" href="../xmlrpc.php" />
+
+
+<!--[if lt IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie6style.css" />
+	<script type="text/javascript" src="http://sametmax.com/wp-content/themes/Minimal/js/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script type="text/javascript">DD_belatedPNG.fix('img#logo, #header #search-form, #slogan, a#left_arrow, a#right_arrow, div.slide img.thumb, div#controllers a, a.readmore, a.readmore span, #services .one-third, #services .one-third.first img.icon, #services img.icon, div.sidebar-block .widget ul li');</script>
+<![endif]-->
+<!--[if IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie7style.css" />
+<![endif]-->
+
+<script type="text/javascript">
+	document.documentElement.className = 'js';
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires Comments Feed" href="feed/index.html" />
+<meta content="Minimal v.3.3" name="generator"/><link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" />
+<link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/page_templates.css" rel="stylesheet" /><link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=3.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='et-shortcodes-css-css'  href='../wp-content/themes/Minimal/epanel/shortcodes/shortcodes.css%3Fver=1.8.css' type='text/css' media='all' />
+<link rel='stylesheet' id='sharedaddy-css'  href='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.css%3Fver=3.3.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cfq-css'  href='../wp-content/plugins/comment-form-quicktags/style.css%3Fver=20110712.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.7.1'></script>
+<script type='text/javascript' src='../wp-includes/js/comment-reply.js%3Fver=20090102'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/shortcodes/js/et_shortcodes_frontend.js%3Fver=1.8'></script>
+<script type='text/javascript' src='../wp-content/plugins/comment-form-quicktags/quicktags.php%3Fver=20121011'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Ca y est on est célèbres' href='../ca-y-est-on-est-celebres/index.html' />
+<link rel='next' title='Pouvez-vous séparer le cul de la programmation SVP ?' href='../pouvez-vous-separer-le-cul-de-la-programmation-svp/index.html' />
+<meta name="generator" content="WordPress 3.3.1" />
+<link rel='canonical' href='index.html' />
+<link rel='shortlink' href='http://wp.me/p2ckfk-1Jk' />
+<link rel="payment" type="text/html" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fplist-pickle-hdf5-protocol-buffer-les-formats-binaires%2F&amp;language=en_GB&amp;category=text&amp;title=plist%2C+pickle%2C+hdf5%2C+protocol+buffers%26%238230%3B+%3A+les+formats+binaires&amp;description=Dans+un+article+pr%C3%A9c%C3%A9dent%2C+on+avait+fait+un+petit+tour+des+formats+texte%2C+et+j%26%238217%3Bavais+promis+qu%26%238217%3Bon+verrait+les+formats+binaires.+Contrairement+%C3%A0+cette+fois+l%C3%A0%2C+je+vais+faire+un...&amp;tags=binaire%2Cbson%2Cformat%2Chdf5%2Cjson%2Cmsgpack%2Cpickle%2Cplist%2Cprotocol+buffer%2Cpython%2Cserialisation%2Cblog" />
+
+<link rel="stylesheet" href="../wp-content/plugins/wp-syntax/wp-syntax.css" type="text/css" media="screen" />
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.3.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.3.css");
+/* ]]> */
+</style>	<style type="text/css">
+		#et_pt_portfolio_gallery { margin-left: -11px; }
+		.et_pt_portfolio_item { margin-left: 23px; }
+		.et_portfolio_small { margin-left: -39px !important; }
+		.et_portfolio_small .et_pt_portfolio_item { margin-left: 35px !important; }
+		.et_portfolio_large { margin-left: -20px !important; }
+		.et_portfolio_large .et_pt_portfolio_item { margin-left: 14px !important; }
+	</style>
+
+</head>
+<body>
+	<div id="page-wrap">
+			
+		<div id="header">
+			<!-- Start Logo -->
+				<a href="../index.html">					<img src="../wp-content/uploads/2012/04/logo1.png" alt="Logo" id="logo"/></a>
+				
+				<p id="slogan">Deux développeurs en vadrouille qui se sortent les doigts du code</p>
+					
+			<!-- End Logo -->
+					
+			<!-- Start Searchbox -->
+				<div id="search-form">
+					<form method="get" id="searchform1" action="../index.html">
+						<input type="text" value="search this site..." name="s" id="searchinput" />
+					</form>
+				</div>
+								
+			<!-- End Searchbox -->
+				
+				<div class="clear"></div>
+				
+				<ul id="menu-top-menu" class="superfish nav clearfix"><li id="menu-item-1702" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Programmation</a></li>
+<li id="menu-item-1703" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin System</a></li>
+<li id="menu-item-1704" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo et culture</a></li>
+<li id="menu-item-1706" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li id="menu-item-3340" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours et tutos</a></li>
+<li id="menu-item-2610" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2610"><a href="../nos-tweets/index.html">Nos tweets SANS twitter :-)</a></li>
+<li id="menu-item-1707" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li id="menu-item-7439" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7439"><a href="https://github.com/sametmax/">Nos githuberies</a></li>
+</ul>									
+		</div> <!-- end #header -->
+
+		<div id="breadcrumbs">
+		
+					<a href="../index.html">Home</a> &raquo;
+				
+									<a href="../category/programmation/index.html">Programmation</a> &raquo; plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires					
+</div> <!-- end #breadcrumbs -->		
+	
+	<div id="content" class="clearfix">
+		<div id="content-area">
+					<div class="entry clearfix">
+				<h1 class="title">plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires</h1>
+					<p class="post-meta">
+		Posted  by <a href="../author/sam/index.html" title="Posts by Sam" rel="author">Sam</a> on 15 Jul 2013 in <a href="../category/programmation/index.html" title="View all posts in Programmation" rel="category tag">Programmation</a> | <a href="index.html#comments" title="Comment on plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires">7 comments</a>	</p>
+				
+							
+									
+						
+								
+				<p>Dans <a href="../yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/index.html">un article précédent</a>, on avait fait un petit tour des formats texte, et j&#8217;avais promis qu&#8217;on verrait les formats binaires.</p>
+<p>Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.</p>
+<p>Avant toute chose, il faut faire un peu de ménage. En effet, tous les formats de données sont des formats binaires, même les formats texte. Quand bien même on retire les formats texte par convention, tout le reste sont des formats binaires.</p>
+<p>tar.gz, zip, 7zip, rar, iso, dmg et compagnie sont des formats binaires. Il servent à l&#8217;archivage.</p>
+<p>doc, xls, ppt, pps, etc. sont des formats binaires. Ils servent à sauvegarder un document édité sous une suite Microsoft Office.</p>
+<p>jpg, tiff, png, gif ou webp sont des formats binaires. Ils servent à représenter des images.</p>
+<p>wav, mp3, ogg, acc, opus et monkey sont des formats binaires. Ils servent à stocker des données sonores.</p>
+<p>mkv, avi, mov, mp4, ogm, webm&#8230; sont des formats binaires. Ils servent à contenir des informations vidéos.</p>
+<p>Bref, tout fichier est un format binaire, toute donnée transmise d&#8217;un système informatique à un autre est un format binaire.</p>
+<p>Alors qu&#8217;est-ce qu&#8217;on entend ici par &#8220;format binaire&#8221; ?</p>
+<p>Principalement, format de <strong>sérialisation</strong> binaire.</p>
+<p>En effet JSON, XML ou CSV sont avant tout, bien que pas uniquement, des formats de sérialisation, et nous allons donc voir des équivalents dans le monde du binaire. Attention cependant, il existe de centaines de formats, et beaucoup sont très utilisés même si je n&#8217;en ai jamais entendu parler. Les formats de sérialisation binaires sont en effet moins universels, c&#8217;est à dire qu&#8217;on les retrouve plus souvent liés à un usage ou un corps de métier. Les scientifiques ont les leurs, les industriels les leurs, les concepteurs d&#8217;OS les leurs, les constructeur de matériel les leurs, etc. Le fait que je ne les connaisse pas ne veut pas du tout dire qu&#8217;ils ne sont pas massivement utilisés. Cela veut juste dire que je ne les ai jamais croisés dans mon activité.</p>
+<p>Par ailleurs je ne présenterai pas tous ceux que j&#8217;ai effectivement croisés. Voyez l&#8217;article comme une base de travail qui va vous permettre d&#8217;évaluer les autres formats binaires plutôt qu&#8217;un listing exhaustif.</p>
+<p>En théorie, on distingue des données binaires, et des données encodées en binaire. En pratique, on s&#8217;en branle.</p>
+<h2>Séria-quoi ?</h2>
+<p>A la conception d&#8217;un programme se pose la question de savoir comment stocker ses données dans un fichier ou les transmettre par le réseau. Vous avez vos données sous forme de code, par exemple en Python une collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes, etc. Ces objets, il va falloir les transformer en quelque chose qui puisse sauvegardé dans un fichier. Ou envoyé sur le réseau.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la sérialisation.</p>
+<p>Quand on lit le fichier ou que l&#8217;on récupère la donnée via un réseau, on doit la transformer pour obtenir des objets manipulables sous forme de code : les collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes qui étaient là à l&#8217;origine.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la dé-sérialisation.</p>
+<p>Prenons un exemple en Python. J&#8217;ai une classe <code>Personne()</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Personne<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>nom, age<span style="color: black;">&#41;</span>:
+...         <span style="color: #008000;">self</span>.<span style="color: black;">nom</span> = nom
+...         <span style="color: #008000;">self</span>.<span style="color: black;">age</span> = age</pre></div></div>
+
+<p>Et j&#8217;ai un calendrier qui liste les personnes présentes selon les jours de la semaine :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> gertrude = Personne<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> monique = Personne<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Monique&quot;</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> jenifer = Personne<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Jenifer&quot;</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> cal = <span style="color: black;">&#123;</span>
+<span style="color: #483d8b;">&quot;lundi&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mardi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mercredi&quot;</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;jeudi&quot;</span>: <span style="color: black;">&#91;</span>monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;vendredi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;samedi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;dimanche&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>
+<span style="color: black;">&#125;</span></pre></div></div>
+
+<p>On a donc un format riche ici, avec plusieurs types imbriqués : du dico, de la liste, de l&#8217;instance de classe perso, de l&#8217;entier et des strings. On a donc des primitives, des données associatives, des séquences ordonnées et un structure complexe.</p>
+<p>Pour sauvegarder ça dans un fichier ou le faire passer sur un réseau, il va falloir écrire un sacré bout de code. Par exemple si vous voulez le transformer en XML ou en JSON, il n&#8217;y a pas de type &#8220;Personne&#8221; dans ces formats. Il va donc falloir vous mettre d&#8217;accord sur une convention, écrire le code qui génère les données formatées selon cette convention, et également le code qui permet de lire ces données formatées et recréer les bons objets derrière. Sans parler du fait que la techno qui écrit ne va peut être pas être celle qui lit. C&#8217;est ça, la problématique de la sérialisation.</p>
+<p>Les formats binaires se prêtent bien au jeu de la sérialisation, bien qu&#8217;ils puissent, eux aussi, servir à bien d&#8217;autre chose. Il sont compacts, et non limités par un besoin de lisibilité, ils contiennent souvent des moyens de contenir des données au format complexe. Ils sont aussi en général rapides à traiter, et prennent peu de place.</p>
+<h2>Pickle</h2>
+<p><a href="http://docs.python.org/2/library/pickle.html?highlight=pickle#pickle">Pickle</a> est un format de sérialisation spécialisé pour Python. Seul un programme Python peut écrire et lire du Pickle, même si <a href="https://github.com/terryf/Phpickle">des projets existent</a> pour faire le pont avec d&#8217;autres langages.</p>
+<p>Voilà ce que ça donne à l&#8217;usage, en reprenant notre calendrier précédent :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">pickle</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">pickle</span>.<span style="color: black;">dumps</span><span style="color: black;">&#40;</span>cal<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">&quot;(dp0<span style="color: #000099; font-weight: bold;">\n</span>Vmardi<span style="color: #000099; font-weight: bold;">\n</span>p1<span style="color: #000099; font-weight: bold;">\n</span>(lp2<span style="color: #000099; font-weight: bold;">\n</span>ccopy_reg<span style="color: #000099; font-weight: bold;">\n</span>_reconstructor<span style="color: #000099; font-weight: bold;">\n</span>p3<span style="color: #000099; font-weight: bold;">\n</span>(c__main__<span style="color: #000099; font-weight: bold;">\n</span>Personne<span style="color: #000099; font-weight: bold;">\n</span>p4<span style="color: #000099; font-weight: bold;">\n</span>c__builtin__<span style="color: #000099; font-weight: bold;">\n</span>object<span style="color: #000099; font-weight: bold;">\n</span>p5<span style="color: #000099; font-weight: bold;">\n</span>Ntp6<span style="color: #000099; font-weight: bold;">\n</span>Rp7<span style="color: #000099; font-weight: bold;">\n</span>(dp8<span style="color: #000099; font-weight: bold;">\n</span>S'nom'<span style="color: #000099; font-weight: bold;">\n</span>p9<span style="color: #000099; font-weight: bold;">\n</span>VGertrude<span style="color: #000099; font-weight: bold;">\n</span>p10<span style="color: #000099; font-weight: bold;">\n</span>sS'age'<span style="color: #000099; font-weight: bold;">\n</span>p11<span style="color: #000099; font-weight: bold;">\n</span>I18<span style="color: #000099; font-weight: bold;">\n</span>sbag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp12<span style="color: #000099; font-weight: bold;">\n</span>Rp13<span style="color: #000099; font-weight: bold;">\n</span>(dp14<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VMonique<span style="color: #000099; font-weight: bold;">\n</span>p15<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I12<span style="color: #000099; font-weight: bold;">\n</span>sbasVsamedi<span style="color: #000099; font-weight: bold;">\n</span>p16<span style="color: #000099; font-weight: bold;">\n</span>(lp17<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag13<span style="color: #000099; font-weight: bold;">\n</span>ag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp18<span style="color: #000099; font-weight: bold;">\n</span>Rp19<span style="color: #000099; font-weight: bold;">\n</span>(dp20<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VJenifer<span style="color: #000099; font-weight: bold;">\n</span>p21<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I97<span style="color: #000099; font-weight: bold;">\n</span>sbasVvendredi<span style="color: #000099; font-weight: bold;">\n</span>p22<span style="color: #000099; font-weight: bold;">\n</span>(lp23<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag19<span style="color: #000099; font-weight: bold;">\n</span>asVjeudi<span style="color: #000099; font-weight: bold;">\n</span>p24<span style="color: #000099; font-weight: bold;">\n</span>(lp25<span style="color: #000099; font-weight: bold;">\n</span>g13<span style="color: #000099; font-weight: bold;">\n</span>asVlundi<span style="color: #000099; font-weight: bold;">\n</span>p26<span style="color: #000099; font-weight: bold;">\n</span>(lp27<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVdimanche<span style="color: #000099; font-weight: bold;">\n</span>p28<span style="color: #000099; font-weight: bold;">\n</span>(lp29<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVmercredi<span style="color: #000099; font-weight: bold;">\n</span>p30<span style="color: #000099; font-weight: bold;">\n</span>(lp31<span style="color: #000099; font-weight: bold;">\n</span>s.&quot;</span></pre></div></div>
+
+<p>Ce blougi blouga est une représentation sérialisée de notre calendrier. Si vous le sauvegardez dans un fichier ou que vous l&#8217;envoyez à un autre programme Python, il peut récupérer les objets initiaux :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> cal2 = <span style="color: #dc143c;">pickle</span>.<span style="color: black;">loads</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;(dp0<span style="color: #000099; font-weight: bold;">\n</span>Vmardi<span style="color: #000099; font-weight: bold;">\n</span>p1<span style="color: #000099; font-weight: bold;">\n</span>(lp2<span style="color: #000099; font-weight: bold;">\n</span>ccopy_reg<span style="color: #000099; font-weight: bold;">\n</span>_reconstructor<span style="color: #000099; font-weight: bold;">\n</span>p3<span style="color: #000099; font-weight: bold;">\n</span>(c__main__<span style="color: #000099; font-weight: bold;">\n</span>Personne<span style="color: #000099; font-weight: bold;">\n</span>p4<span style="color: #000099; font-weight: bold;">\n</span>c__builtin__<span style="color: #000099; font-weight: bold;">\n</span>object<span style="color: #000099; font-weight: bold;">\n</span>p5<span style="color: #000099; font-weight: bold;">\n</span>Ntp6<span style="color: #000099; font-weight: bold;">\n</span>Rp7<span style="color: #000099; font-weight: bold;">\n</span>(dp8<span style="color: #000099; font-weight: bold;">\n</span>S'nom'<span style="color: #000099; font-weight: bold;">\n</span>p9<span style="color: #000099; font-weight: bold;">\n</span>VGertrude<span style="color: #000099; font-weight: bold;">\n</span>p10<span style="color: #000099; font-weight: bold;">\n</span>sS'age'<span style="color: #000099; font-weight: bold;">\n</span>p11<span style="color: #000099; font-weight: bold;">\n</span>I18<span style="color: #000099; font-weight: bold;">\n</span>sbag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp12<span style="color: #000099; font-weight: bold;">\n</span>Rp13<span style="color: #000099; font-weight: bold;">\n</span>(dp14<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VMonique<span style="color: #000099; font-weight: bold;">\n</span>p15<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I12<span style="color: #000099; font-weight: bold;">\n</span>sbasVsamedi<span style="color: #000099; font-weight: bold;">\n</span>p16<span style="color: #000099; font-weight: bold;">\n</span>(lp17<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag13<span style="color: #000099; font-weight: bold;">\n</span>ag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp18<span style="color: #000099; font-weight: bold;">\n</span>Rp19<span style="color: #000099; font-weight: bold;">\n</span>(dp20<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VJenifer<span style="color: #000099; font-weight: bold;">\n</span>p21<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I97<span style="color: #000099; font-weight: bold;">\n</span>sbasVvendredi<span style="color: #000099; font-weight: bold;">\n</span>p22<span style="color: #000099; font-weight: bold;">\n</span>(lp23<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag19<span style="color: #000099; font-weight: bold;">\n</span>asVjeudi<span style="color: #000099; font-weight: bold;">\n</span>p24<span style="color: #000099; font-weight: bold;">\n</span>(lp25<span style="color: #000099; font-weight: bold;">\n</span>g13<span style="color: #000099; font-weight: bold;">\n</span>asVlundi<span style="color: #000099; font-weight: bold;">\n</span>p26<span style="color: #000099; font-weight: bold;">\n</span>(lp27<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVdimanche<span style="color: #000099; font-weight: bold;">\n</span>p28<span style="color: #000099; font-weight: bold;">\n</span>(lp29<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVmercredi<span style="color: #000099; font-weight: bold;">\n</span>p30<span style="color: #000099; font-weight: bold;">\n</span>(lp31<span style="color: #000099; font-weight: bold;">\n</span>s.&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>cal2<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'dict'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> jour, personnes <span style="color: #ff7700;font-weight:bold;">in</span> cal2.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>jour<span style="color: black;">&#41;</span>
+...     <span style="color: #ff7700;font-weight:bold;">for</span> personne <span style="color: #ff7700;font-weight:bold;">in</span> personnes:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\t</span>- {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>personne.<span style="color: black;">nom</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">mardi</span>
+    - Gertrude
+    - Monique
+samedi
+    - Gertrude
+    - Monique
+    - Jenifer
+vendredi
+    - Gertrude
+    - Jenifer
+jeudi
+    - Monique
+lundi
+    - Gertrude
+dimanche
+    - Gertrude
+mercredi</pre></div></div>
+
+<p>On utilisera Pickle essentiellement par fainéantise, quand on veut sauvegarder des objets Python et qu&#8217;on souhaite les récupérer plus tard, mais qu&#8217;on ne veut pas coder un code de sérialisation. Il existe des formes hybrides de cette approche, comme <a href="http://jsonpickle.github.io/">cette lib</a> qui essaye de mélanger JSON et une forme de sérialisation d&#8217;objets complexes.</p>
+<p>Quel que soit l&#8217;approche choisit, restaurer des objets complets, et non juste des primitives, comporte sont lot de risques de sécurité. En effet, un fichier Pickle malicieux sera exécuté comme code Python valide sans aucune vérification.</p>
+<p>A noter que Python vient avec un autre format de sérialisation : <a href="http://docs.python.org/2/library/marshal.html">marshall</a>. Il est utilisé par Python en interne pour les fichiers .pyc et n&#8217;est pas recommandé pour un usage de persistance de données car le format évolue avec les versions de Python.</p>
+<h2>plist</h2>
+<p>Il existe de nombreux formats binaires qu&#8217;utilisent les OS comme .DS_store ou Thumbs.db. plist est l&#8217;un deux, et on va le voir parce qu&#8217;il est relativement simple à comprendre par rapport aux autres. Le principe est le même pour tous : on a des données, on les stock dans le fichier.</p>
+<p>plist est un format qui existe aujourd&#8217;hui en XML, preuve que le même rôle peut très bien être rempli par deux formats différents. Il sert à stocker les réglages qu&#8217;on effectue dans le finder de Mac OS X, et ceux pour chaque dossier. Il sait représenter les types suivant : string, nombre, boolean, date, array, dictionnaire et des données arbitraires en base64 (un encodage binaire représentable sous forme de texte. Qu&#8217;est-ce qu&#8217;on se marre ^^).</p>
+<p>Ce qui signifie par exemple, qu&#8217;il n&#8217;est pas capable de représenter un objet <strong>Personne()</strong> tel quel. Par contre il a des équivalents des types list, int, str, etc, ce qui en fait un format facile à manipuler en Python, surtout étant donné que la lib standard contient <a href="http://docs.python.org/2/library/plistlib.html?highlight=plist#plistlib">un module pour ça</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">gertrude = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>
+monique = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Monique&quot;</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+jenifer = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Jenifer&quot;</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>
+cal = <span style="color: black;">&#123;</span>
+<span style="color: #483d8b;">&quot;lundi&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mardi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mercredi&quot;</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;jeudi&quot;</span>: <span style="color: black;">&#91;</span>monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;vendredi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;samedi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;dimanche&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>
+<span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gertrude = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> monique = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Monique&quot;</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> jenifer = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Jenifer&quot;</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> cal = <span style="color: black;">&#123;</span>
+... <span style="color: #483d8b;">&quot;lundi&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;mardi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;mercredi&quot;</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;jeudi&quot;</span>: <span style="color: black;">&#91;</span>monique<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;vendredi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, jenifer<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;samedi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique, jenifer<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;dimanche&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>
+... <span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> plistlib.<span style="color: black;">writePlistToString</span><span style="color: black;">&#40;</span>cal<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;plist version=&quot;1.0&quot;&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;dict&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;dimanche&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;jeudi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Monique&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;12&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;lundi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;mardi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Monique&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;12&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;mercredi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;samedi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Monique&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;12&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Jenifer&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;97&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;vendredi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Jenifer&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;97&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;/dict&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;/plist&gt;<span style="color: #000099; font-weight: bold;">\n</span>'</span></pre></div></div>
+
+<p>Bon, là j&#8217;ai un peu foiré mon exemple parce que la lib standard, elle pond la version XML (puisque la version binaire est obsolète), pas la version binaire de plist, et maintenant que j&#8217;ai écris tout ça, ça me fait chier de tout refaire. Heureusement j&#8217;ai trouvé <a href="https://github.com/wooster/biplist">une lib sur le net</a> qui va sauver mon honneur :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> biplist.<span style="color: black;">writePlistToString</span><span style="color: black;">&#40;</span>cal<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'bplist00bybiplist1.0<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>d7<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>02<span style="color: #000099; font-weight: bold;">\x</span>03<span style="color: #000099; font-weight: bold;">\x</span>04<span style="color: #000099; font-weight: bold;">\x</span>05<span style="color: #000099; font-weight: bold;">\x</span>06<span style="color: #000099; font-weight: bold;">\x</span>07<span style="color: #000099; font-weight: bold;">\x</span>08<span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\x</span>0b<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\x</span>0ee<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00if<span style="color: #000099; font-weight: bold;">\x</span>00s<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00v<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00j<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00l<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00h<span style="color: #000099; font-weight: bold;">\x</span>00eh<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>0f<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12h<span style="color: #000099; font-weight: bold;">\x</span>00G<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00t<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14g<span style="color: #000099; font-weight: bold;">\x</span>00M<span style="color: #000099; font-weight: bold;">\x</span>00o<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00q<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\x</span>a3<span style="color: #000099; font-weight: bold;">\x</span>15<span style="color: #000099; font-weight: bold;">\x</span>16<span style="color: #000099; font-weight: bold;">\x</span>17<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19g<span style="color: #000099; font-weight: bold;">\x</span>00J<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00f<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>10a<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>1a<span style="color: #000099; font-weight: bold;">\x</span>1b<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1c<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1d<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1e<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a0<span style="color: #000099; font-weight: bold;">\x</span>15$/&lt;MXct<span style="color: #000099; font-weight: bold;">\x</span>85<span style="color: #000099; font-weight: bold;">\x</span>b2<span style="color: #000099; font-weight: bold;">\x</span>d0<span style="color: #000099; font-weight: bold;">\x</span>d9<span style="color: #000099; font-weight: bold;">\x</span>de<span style="color: #000099; font-weight: bold;">\x</span>e3<span style="color: #000099; font-weight: bold;">\x</span>e8<span style="color: #000099; font-weight: bold;">\x</span>88<span style="color: #000099; font-weight: bold;">\x</span>9e<span style="color: #000099; font-weight: bold;">\x</span>8b<span style="color: #000099; font-weight: bold;">\x</span>9c<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>b0<span style="color: #000099; font-weight: bold;">\x</span>b6<span style="color: #000099; font-weight: bold;">\x</span>b9<span style="color: #000099; font-weight: bold;">\x</span>bc<span style="color: #000099; font-weight: bold;">\x</span>bf<span style="color: #000099; font-weight: bold;">\x</span>ce<span style="color: #000099; font-weight: bold;">\x</span>d3<span style="color: #000099; font-weight: bold;">\x</span>d6<span style="color: #000099; font-weight: bold;">\x</span>db<span style="color: #000099; font-weight: bold;">\x</span>e0<span style="color: #000099; font-weight: bold;">\x</span>e5<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>1f<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>e9'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> biplist.<span style="color: black;">readPlistFromString</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'bplist00bybiplist1.0<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>d7<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>02<span style="color: #000099; font-weight: bold;">\x</span>03<span style="color: #000099; font-weight: bold;">\x</span>04<span style="color: #000099; font-weight: bold;">\x</span>05<span style="color: #000099; font-weight: bold;">\x</span>06<span style="color: #000099; font-weight: bold;">\x</span>07<span style="color: #000099; font-weight: bold;">\x</span>08<span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\x</span>0b<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\x</span>0ee<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00if<span style="color: #000099; font-weight: bold;">\x</span>00s<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00v<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00j<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00l<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00h<span style="color: #000099; font-weight: bold;">\x</span>00eh<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>0f<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12h<span style="color: #000099; font-weight: bold;">\x</span>00G<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00t<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14g<span style="color: #000099; font-weight: bold;">\x</span>00M<span style="color: #000099; font-weight: bold;">\x</span>00o<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00q<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\x</span>a3<span style="color: #000099; font-weight: bold;">\x</span>15<span style="color: #000099; font-weight: bold;">\x</span>16<span style="color: #000099; font-weight: bold;">\x</span>17<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19g<span style="color: #000099; font-weight: bold;">\x</span>00J<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00f<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>10a<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>1a<span style="color: #000099; font-weight: bold;">\x</span>1b<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1c<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1d<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1e<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a0<span style="color: #000099; font-weight: bold;">\x</span>15$/&lt;MXct<span style="color: #000099; font-weight: bold;">\x</span>85<span style="color: #000099; font-weight: bold;">\x</span>b2<span style="color: #000099; font-weight: bold;">\x</span>d0<span style="color: #000099; font-weight: bold;">\x</span>d9<span style="color: #000099; font-weight: bold;">\x</span>de<span style="color: #000099; font-weight: bold;">\x</span>e3<span style="color: #000099; font-weight: bold;">\x</span>e8<span style="color: #000099; font-weight: bold;">\x</span>88<span style="color: #000099; font-weight: bold;">\x</span>9e<span style="color: #000099; font-weight: bold;">\x</span>8b<span style="color: #000099; font-weight: bold;">\x</span>9c<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>b0<span style="color: #000099; font-weight: bold;">\x</span>b6<span style="color: #000099; font-weight: bold;">\x</span>b9<span style="color: #000099; font-weight: bold;">\x</span>bc<span style="color: #000099; font-weight: bold;">\x</span>bf<span style="color: #000099; font-weight: bold;">\x</span>ce<span style="color: #000099; font-weight: bold;">\x</span>d3<span style="color: #000099; font-weight: bold;">\x</span>d6<span style="color: #000099; font-weight: bold;">\x</span>db<span style="color: #000099; font-weight: bold;">\x</span>e0<span style="color: #000099; font-weight: bold;">\x</span>e5<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>1f<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>e9'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'mardi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Monique'</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'samedi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Monique'</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Jenifer'</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'vendredi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Jenifer'</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'jeudi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Monique'</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'lundi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'dimanche'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'mercredi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Pourquoi utiliser plist ? A part quand on est en Objectif-C où c&#8217;est le format le plus simple à parser ou si on veut communiquer avec finder, il n&#8217;y a pas vraiment de raison. C&#8217;est le cas typique d&#8217;un format qui a été créé parce qu&#8217;à l&#8217;époque il n&#8217;y avait rien d&#8217;aussi bien, les parsers XML étaient alors trop lents pour scanner toutes les plist de tous les dossiers récursivement.</p>
+<h2>hdf5</h2>
+<p>hdf5 est très intéressant, c&#8217;est le cas typique d&#8217;un format qui existe pour un usage très très particulier, et que des formats ordinaires ne comblent pas, ne peuvent pas par nature combler. C&#8217;est un format cross-plateforme qui peut contenir de très grosses quantités de données numériques (un fichier peut avoir une taille virtuellement illimitée), et les manipuler pour faire des calculs complexes. Cela ressemble à un système de fichiers&#8230; qui tient dans un fichier. En effet, il peut contenir une arborescence de données, et gère la compression transparente, mais les données sont essentiellement des arrays à plusieurs dimensions, appelés ici datasets.</p>
+<p>On peut y mettre des arrays, des labels, des attributs, organiser tout ça par groupe et même avoir des références vers des données extérieures. L&#8217;avantage c&#8217;est qu&#8217;on peut bosser dessus presque de manière transparente, comme si c&#8217;était en RAM. Tout ce qui est array est stocké tel quel, et donc très rapide d&#8217;accès (bien plus qu&#8217;une colonne de base SQL), pour le reste, c&#8217;est indexé avec arbre binaire, donc facilement triable.</p>
+<p>Pour manipuler ce format avec Python, on va utiliser la lib <a href="http://www.h5py.org">h5py</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">sudo apt-get install libhdf5-serial-dev python-dev <span style="color: #808080; font-style: italic;"># sur ubuntu en tout cas</span>
+pip install numpy
+pip install h5py</pre></div></div>
+
+<p>La normalement, ça compile à mort pendant 10 minutes.</p>
+<p>Et pif paf pouf :</p>
+<p>>>> import numpy # hdf5 s&#8217;utilise beaucoup avec les libs scientifiques type numpy<br />
+>>> import h5py<br />
+>>> array = numpy.ones((1000000000, 1000000000)) # une grosse matrice<br />
+>>> f = h5py.File(&#8216;data.hdf5&#8242;)<br />
+>>> dset = f.create_dataset(&#8220;Nom du dataset&#8221;, data=array)<br />
+>>> dset<br />
+<HDF5 dataset "Nom du dataset": shape (100, 100), type "<i8"><br />
+>>> f.close()</p>
+<p>Et voilà, on vient de créer array contenant 1000000000 lignes de 1000000000 de 1000000000 de int ayant pour valeur &#8220;1&#8243;, et stocké tout ça dans un fichier au format hdf5. Ca prend quelques secondes, et le fichier fait quand même 800 Mo !</p>
+<p>On le voit ici, hdf5 est entre le format de sérialisation et la base de données, et il est très orienté chiffre. Il existe tout un tas de formats binaires spécialisés pour un usage en particulier comme hdf5, à votre charge, donc, de chercher si il en existe un pour le votre. Ou même si vous en avez besoin d&#8217;un.</p>
+<p>Des libs de haut niveau ont été construite en utilisant hdf5, telles que <a href="http://www.pytables.org/">pytables</a>, qui permettent de traiter très facilement d&#8217;énormes jeux de données tabulaires.</p>
+<h2>Protocol Buffers</h2>
+<p>Aussi appelé protobuf par ses amis, c&#8217;est un format de sérialisation <a href="https://developers.google.com/protocol-buffers/">inventé par Google</a> qu&#8217;il utilise pour communiquer entre ses machines. On a donc vu un format de sérialisation orienté persistance avec Pickle, un orienté configuration, un orienté &#8220;grosse quantité de données&#8221; et voilà un dernier orienté communication réseau.</p>
+<p>Protocol Buffers est un espèce d&#8217;hybride, puisqu&#8217;il utilise une description du schéma pour générer du code qui va sérialiser les donner en binaire. Vous suivez ? Non ?</p>
+<p>Attendez ça va devenir plus clair.</p>
+<p>Reprenons notre bonne vielle personne. Pour utiliser protobuf, vous allez décrire à quoi ressemble votre personne, dans un <strong>format texte</strong> spécialement conçu :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="java" style="font-family:monospace;">message Personne <span style="color: #009900;">&#123;</span>
+  required string nom <span style="color: #339933;">=</span> <span style="color: #cc66cc;">1</span><span style="color: #339933;">;</span>
+  required int32 age <span style="color: #339933;">=</span> <span style="color: #cc66cc;">2</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>Vous constatez qu&#8217;on décrit ici un message, qui va devoir contenir au minimum un nom et un age, de type string et entier. Les chiffres représentent des identifiants uniques de champs qui seront utilisés dans le message binaire.</p>
+<p>Ceci n&#8217;est pas du code d&#8217;un langage particulier, c&#8217;est la syntaxe de modèle de protobuf.</p>
+<p>On sauvegarde tout ça dans un fichier <em>personne.proto</em>, et on utilise la commande <code>protoc</code> pour transformer cette description en code dans le langage de son choix. C++ et Java sont supportés, nous on va utiliser Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">protoc personne.proto --python_out=.</pre></div></div>
+
+<p>Et il va nous pondre un fichier <em>personne_pb2.py</em>, qui est un module Python valide qui va contenir une classe <code>Personne</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> personne_pb2 <span style="color: #ff7700;font-weight:bold;">import</span> Personne
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> p = Personne<span style="color: black;">&#40;</span>nom=<span style="color: #483d8b;">&quot;Gertrude&quot;</span>, age=<span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> p.<span style="color: black;">SerializeToString</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\x</span>08Gertrude<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>0c'</span></pre></div></div>
+
+<p>Il vous suffit d&#8217;envoyer ça par un socket, et de l&#8217;autre côté, une machine qui possède le même fichier .proto peut le lire et récupérer la donnée sous forme d&#8217;un objet Python, Java ou C++. Il a donc l&#8217;avantage d&#8217;un pickle, multi langages.</p>
+<p>Parmi les bénéfices de protobuf, il y a que sa sortie est assez courte :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> json.<span style="color: black;">dumps</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;nom&quot;</span>:<span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #483d8b;">&quot;age&quot;</span>:<span style="color: #ff4500;">12</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'{&quot;nom&quot;: &quot;Gertrude&quot;, &quot;age&quot;: 12}'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">pickle</span>.<span style="color: black;">dumps</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;nom&quot;</span>:<span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #483d8b;">&quot;age&quot;</span>:<span style="color: #ff4500;">12</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'(dp0<span style="color: #000099; font-weight: bold;">\n</span>Vnom<span style="color: #000099; font-weight: bold;">\n</span>p1<span style="color: #000099; font-weight: bold;">\n</span>VGertrude<span style="color: #000099; font-weight: bold;">\n</span>p2<span style="color: #000099; font-weight: bold;">\n</span>sVage<span style="color: #000099; font-weight: bold;">\n</span>p3<span style="color: #000099; font-weight: bold;">\n</span>I12<span style="color: #000099; font-weight: bold;">\n</span>s.'</span></pre></div></div>
+
+<p>Ca fait moins de données à envoyer par le réseau.</p>
+<p>Et en prime on a la validation des données :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> p.<span style="color: black;">age</span> = <span style="color: #483d8b;">&quot;12&quot;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-4-d897accc3848&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    p.<span style="color: black;">age</span> = <span style="color: #483d8b;">&quot;12&quot;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python2.7/dist-packages/google/protobuf/internal/python_message.py&quot;</span>, line <span style="color: #ff4500;">435</span>, <span style="color: #ff7700;font-weight:bold;">in</span> setter
+    type_checker.<span style="color: black;">CheckValue</span><span style="color: black;">&#40;</span>new_value<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python2.7/dist-packages/google/protobuf/internal/type_checkers.py&quot;</span>, line <span style="color: #ff4500;">104</span>, <span style="color: #ff7700;font-weight:bold;">in</span> CheckValue
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">TypeError</span><span style="color: black;">&#40;</span>message<span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: u<span style="color: #483d8b;">'12'</span> has <span style="color: #008000;">type</span> <span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span>, but expected one of: <span style="color: black;">&#40;</span><span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'int'</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'long'</span><span style="color: #66cc66;">&gt;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Du coup on peut utiliser protobuf en lieu et place d&#8217;un XML + DTD, en tout cas pour les cas simples.</p>
+<p>Normalement, c&#8217;est aussi un format très rapide à parser.</p>
+<p>Bref, Google a voulu le format pour les utilisations industrielles : c&#8217;est un peu chiant à mettre en place, mais c&#8217;est performant, robuste et ça marche avec les 3 langages qu&#8217;ils utilisent en interne.</p>
+<p>Néanmoins ce n&#8217;est pas le seul à avoir pensé à ça : <a lang="http://msgpack.org/">msgpack</a> est une sorte de JSON binaire plus rapide à parser et qui prend moins de place. Il est assez utilisé avec les outils de file d&#8217;attente genre celery ou de communication type ZeroMq. Mais il perd un intérêt fort du JSON : sa transparence pour javascript, et n&#8217;a pas la vérification des données comme protobuf. <a href="http://bsonspec.org/">BSON</a> existe aussi dans le même genre, et sert de format de stockage pour mongodb, en supportant nativement des types avancées comme les dates.</p>
+<p>Comme je vous le disais, des formats binaire, il y en a <a href="http://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Pastiches/Pifom%C3%A8tre#Les_unit.C3.A9s_du_syst.C3.A8me_pifom.C3.A8trique">une bonne chiée</a>.</p>
+<p>La prochaine et dernière session, on se fera un petit tour des bases de données SQL et NoSQL.</p>
+<div class="snap_nopreview sharing robots-nocontent"><ul><li class="sharing_label">Partager:</li><li class="share-facebook share-regular"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsametmax.com%2Fplist-pickle-hdf5-protocol-buffer-les-formats-binaires%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;width=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:96px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-twitter share-regular"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsametmax.com%2Fplist-pickle-hdf5-protocol-buffer-les-formats-binaires%2F&amp;counturl=http%3A%2F%2Fsametmax.com%2Fplist-pickle-hdf5-protocol-buffer-les-formats-binaires%2F&amp;count=horizontal&amp;text=plist%2C%20pickle%2C%20hdf5%2C%20protocol%20buffers...%20%3A%20les%20formats%20binaires: " style="width:97px; height:20px;"></iframe></div></li><li class="share-reddit share-regular"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?width=120&amp;url=http%3A%2F%2Fsametmax.com%2Fplist-pickle-hdf5-protocol-buffer-les-formats-binaires%2F&amp;title=plist%2C%20pickle%2C%20hdf5%2C%20protocol%20buffers...%20%3A%20les%20formats%20binaires" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-google-plus-1 share-regular"><div class="googleplus1_button"><g:plusone size="small" callback="sharing_plusone" href="http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/"></g:plusone></div></li><li class="share-email share-regular"><a rel="nofollow" class="share-email share-icon no-text" href="index.html%3Fshare=email.html" target="_blank" title="Click to email this to a friend"></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div><p>No related posts.</p><p class="wp-flattr-button"><a href="../index.html%3Fflattrss_redirect&amp;id=6654&amp;md5=c22470fd5124424eb8594b10e6f5c655.html" title="Flattr" target="_blank"><img src="../wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>											</div> <!-- end .entry -->
+			
+					
+						
+			<!-- You can start editing here. -->
+
+	<div id="comment-section" class="clearfix">
+		<h3 id="comments">7 comments</h3>
+		
+		
+			<ol class="commentlist clearfix">
+			   <li class="comment even thread-even depth-1" id="li-comment-10905">
+		<div class="bottom_bg">
+		   <div id="comment-10905" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/055aebd1a3bcbb6ebfb91633d271e47d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.korezian.net' rel='external nofollow' class='url'>JEEK</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10905">15/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Fuck yeah, merci Sam &amp; Max&#8230;<br />
+:-)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10906">
+		<div class="bottom_bg">
+		   <div id="comment-10906" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/f70f80a3b119be2bdb296786e09fe60d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.esa.int' rel='external nofollow' class='url'>maxime-esa</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10906">15/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Excellent article&#8230; mais il ne faut pas oublier <a href="http://ttsiodras.github.io/asn1.html" title="ASN.1" rel="nofollow">ASN.1</a></p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10907">
+		<div class="bottom_bg">
+		   <div id="comment-10907" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10907">15/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>D&#8217;ailleurs ASN1 a été invoqué par les détracteurs de protobuf qui voyaient pas l&#8217;interêt de réinventer la roue. Il y a bien sur des libs python pour lire asn1 :</p>
+<p><a href="http://pyasn1.sourceforge.net/" rel="nofollow">http://pyasn1.sourceforge.net/</a></p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10908">
+		<div class="bottom_bg">
+		   <div id="comment-10908" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/442d4f5149c733e14064519b6decc0e9?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">godie</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10908">16/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Justin Merci !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10912">
+		<div class="bottom_bg">
+		   <div id="comment-10912" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10912">16/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Tiens, je viens de découvrir qu&#8217;on peut intégrer SQLALchemy avec ASN.1 :</p>
+<p><a href="http://taste.tuxfamily.org/wiki/index.php?title=Technical_topic:_ASN.1_and_SQL_mapping" rel="nofollow">http://taste.tuxfamily.org/wiki/index.php?title=Technical_topic:_ASN.1_and_SQL_mapping</a></p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10943">
+		<div class="bottom_bg">
+		   <div id="comment-10943" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/fc32c6686686ecc595f05ad1885c2fb3?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">roro</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10943">16/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Pfiou! Mais ton binaire&#8230;Il est pas binaire !§!§!<br />
+001101001101101001 ça c&#8217;est du binaire!!<br />
+Y&#8217;a abus de langage..WTF ??</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10950">
+		<div class="bottom_bg">
+		   <div id="comment-10950" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10950">16/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Que d&#8217;abus de langage dans ce tuto.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+		</ol>
+		
+			
+		
+<div>
+<p class="rss-comments">
+<a href="feed/index.html" title="Flux RSS des commentaires">Flux RSS des commentaires</a>
+</p>
+</div>
+									<div id="respond">
+				<h3 id="reply-title"><span>Leave a Reply</span> <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://sametmax.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><script type="text/javascript">var edInserted; if (!edInserted) {edToolbar(); edInserted = true;}</script>
+<textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
+<script type="text/javascript">var edCanvas = document.getElementById('comment');</script></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre lang=&quot;&quot; line=&quot;&quot; escaped=&quot;&quot; highlight=&quot;&quot;&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Submit Comment" />
+							<input type='hidden' name='comment_post_ID' value='6654' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="19a5679182" /></p><script src="../index.html%3Flive-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p>					</form>
+							</div><!-- #respond -->
+						</div> <!-- end comment-section -->
+
+<div>
+<p><a href="index.html#" id="playmario">Jouer à mario en attendant que les autres répondent</a></p>
+
+
+
+
+
+<script type="text/javascript">
+    if (typeof jQuery !== 'undefined'){
+        jQuery('#playmario').click(function(e){
+            jQuery(this).replaceWith('<iframe src="http://www.florian-rappl.de/html5/projects/SuperMario/" style="width:500px;height:450px;overflow:hidden"></iframe><p>En HTML5 canvas :-) http://www.codeproject.com/Articles/396959/Mario5</p>');
+            e.preventDefault()
+        });
+    }
+</script>
+</div>				</div> <!-- end #content-area -->	
+	
+<div id="sidebar" class="clearfix">
+	<div id="widget-readability-buttons-id-2" class="widget sidebar-block widget-readability-buttons"><!-- This file is used to markup the public facing widget. -->
+<h3 class="widgettitle">Une lecture plus fastoche ?</h3><p class="readability-wrapper"> 
+  <div
+    class="rdbWrapper"
+    data-show-read="1"
+    data-show-send-to-kindle="0"
+    data-show-print="1"
+    data-show-email="0"
+    data-orientation="0"
+    data-version="1"
+    data-text-color="#"
+    data-bg-color="#">
+  </div>
+  <script>(function() {var s = document.getElementsByTagName("script")[0],rdb = document.createElement("script"); rdb.type = "text/javascript"; rdb.async = true; rdb.src = document.location.protocol + "//www.readability.com/embed.js"; s.parentNode.insertBefore(rdb, s); })();</script>
+</p></div> <!-- end .widget --><div id="text-4" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</div> <!-- end .widget --><div id="text-3" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="http://twitter.com/#!/sam_et_max"><img src="../wp-content/uploads/2012/05/twitter_icon.png" width="70px" style="vertical-align: middle;margin-top:-40px;"></a>&nbsp;Follow us <a href="http://twitter.com/sam_et_max">@sam_et_max</a></div>
+		</div> <!-- end .widget --><div id="blog_subscription-3" class="widget sidebar-block jetpack_subscription_widget"><h3 class="widgettitle"><label for="subscribe-field">Souscrire à nos conneries</label></h3>
+		<a name="subscribe-blog"></a>
+		<form action="index.html" method="post" accept-charset="utf-8" id="subscribe-blog">
+			<p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p><p>Join 208 other subscribers</p>
+
+			<p><input type="text" name="email" style="width: 95%; padding: 1px 2px" value="Email Address" id="subscribe-field" onclick="if ( this.value == 'Email Address' ) { this.value = ''; }" onblur="if ( this.value == '' ) { this.value = 'Email Address'; }" /></p>
+
+			<p>
+				<input type="hidden" name="action" value="subscribe" />
+				<input type="hidden" name="source" value="http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/" />
+				<input type="hidden" name="sub-type" value="widget" />
+				<input type="hidden" name="redirect_fragment" value="blog_subscription-3" />
+				<input type="hidden" id="_wpnonce" name="_wpnonce" value="f6feefd33d" />				<input type="submit" value="J&#039;adhère bon dieu!" name="jetpack_subscriptions_widget" />
+			</p>
+		</form>
+
+		
+</div> <!-- end .widget --><div id="categories-2" class="widget sidebar-block widget_categories"><h3 class="widgettitle">Catégories</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="../category/administration-system/index.html" title="View all posts filed under Administration System">Administration System</a> (99)
+</li>
+	<li class="cat-item cat-item-11"><a href="../category/cul/index.html" title="View all posts filed under Cul">Cul</a> (52)
+</li>
+	<li class="cat-item cat-item-12"><a href="../category/gadget/index.html" title="View all posts filed under Gadget">Gadget</a> (5)
+</li>
+	<li class="cat-item cat-item-855"><a href="../category/gadgets/index.html" title="View all posts filed under Gadgets">Gadgets</a> (2)
+</li>
+	<li class="cat-item cat-item-38"><a href="../category/philo-et-culture/index.html" title="View all posts filed under Philo et culture">Philo et culture</a> (136)
+</li>
+	<li class="cat-item cat-item-3"><a href="../category/programmation/index.html" title="View all posts filed under Programmation">Programmation</a> (341)
+</li>
+	<li class="cat-item cat-item-1"><a href="../category/uncategorized/index.html" title="View all posts filed under Uncategorized">Uncategorized</a> (6)
+</li>
+	<li class="cat-item cat-item-15"><a href="../category/web/index.html" title="View all posts filed under Web">Web</a> (40)
+</li>
+		</ul>
+</div> <!-- end .widget -->		<div id="recent-posts-3" class="widget sidebar-block widget_recent_entries">		<h3 class="widgettitle">Posts récents</h3>		<ul>
+				<li><a href="../pour-vos-thumbnails-imagemagick-a-la-rescousse/index.html" title="Pour vos thumbnails, ImageMagick à la rescousse">Pour vos thumbnails, ImageMagick à la rescousse</a></li>
+				<li><a href="../changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/index.html" title="Changer le mot de passe du super utilisateur django en ligne de commande">Changer le mot de passe du super utilisateur django en ligne de commande</a></li>
+				<li><a href="../le-deuil-dune-idee/index.html" title="Le deuil d&#8217;une idée">Le deuil d&#8217;une idée</a></li>
+				<li><a href="../quest-ce-quun-namespace/index.html" title="Qu&#8217;est-ce qu&#8217;un namespace ?">Qu&#8217;est-ce qu&#8217;un namespace ?</a></li>
+				<li><a href="../astuces-de-recherche/index.html" title="Astuces de recherche">Astuces de recherche</a></li>
+				<li><a href="../cest-pour-des-trucs-comme-ca-que-jadore-python/index.html" title="C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;">C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;</a></li>
+				<li><a href="../pourquoi-il-faut-eviter-import-en-python/index.html" title="Pourquoi il faut éviter &lt;code&gt;import *&lt;/code&gt; en Python">Pourquoi il faut éviter <code>import *</code> en Python</a></li>
+				<li><a href="../quitter-son-pays/index.html" title="Quitter son pays">Quitter son pays</a></li>
+				</ul>
+		</div> <!-- end .widget --> 
+
+	<div id="popular-tabbed" class="widget"> 
+		<h3 class="widgettitle">Posts Populaires</h3>
+		<ul>
+																						<li><a href="../on-a-un-nouveau-projet-et-on-a-besoin-dune-info-sur-vous/index.html">On a un nouveau projet et on a besoin d&#8217;UNE info sur vous</a> (251)</li>																														<li><a href="../entreprendre-en-france-autopsie-dun-echec/index.html">Entreprendre en France, Autopsie d&#8217;un échec.</a> (111)</li>																														<li><a href="../fizzbuzz-en-python/index.html">FizzBuzz en Python</a> (94)</li>																														<li><a href="../fetons-le-depart-de-max/index.html">Fêtons le départ de Max</a> (87)</li>																														<li><a href="../une-journee-dans-un-fkk-maison-close-allemande/index.html">Une journée dans un FKK (maison close Allemande)</a> (84)</li>																														<li><a href="../on-est-en-2013-on-a-marche-sur-la-lune-mais-on-a-toujours-pas/index.html">On est en 2013, on a marché sur la lune, mais on a toujours pas&#8230;</a> (82)</li>																														<li><a href="../il-ne-faut-pas-prendre-des-gens-pour-des-cons-mais-ne-jamais-oublier-quils-en-sont/index.html">Il ne faut pas prendre les gens pour des cons mais ne jamais oublier qu&#8217;ils en sont</a> (82)</li>																														<li><a href="../lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/index.html">L&#8217;un de vous a un cadeau de Noël qui l&#8217;attend au pied du sapin&#8230;</a> (80)</li>													</ul>
+	</div> <!-- end #recent-tabbed -->
+	 
+<div id="tag_cloud-3" class="widget sidebar-block widget_tag_cloud"><h3 class="widgettitle">TagCloud</h3><div class="tagcloud"><a href='../tag/bash/index.html' class='tag-link-14' title='14 topics' style='font-size: 11.456790123457pt;'>bash</a>
+<a href='../tag/blog/index.html' class='tag-link-107' title='11 topics' style='font-size: 10.592592592593pt;'>blog</a>
+<a href='../tag/bottle/index.html' class='tag-link-307' title='6 topics' style='font-size: 8.6049382716049pt;'>bottle</a>
+<a href='../tag/cache/index.html' class='tag-link-333' title='8 topics' style='font-size: 9.4691358024691pt;'>cache</a>
+<a href='../tag/comprehension-lists/index.html' class='tag-link-20' title='6 topics' style='font-size: 8.6049382716049pt;'>comprehension-lists</a>
+<a href='../tag/css/index.html' class='tag-link-188' title='8 topics' style='font-size: 9.4691358024691pt;'>css</a>
+<a href='../tag/cul-2/index.html' class='tag-link-33' title='9 topics' style='font-size: 9.9012345679012pt;'>cul</a>
+<a href='../tag/decorator/index.html' class='tag-link-265' title='7 topics' style='font-size: 9.037037037037pt;'>decorator</a>
+<a href='../tag/django/index.html' class='tag-link-28' title='63 topics' style='font-size: 16.901234567901pt;'>django</a>
+<a href='../tag/email/index.html' class='tag-link-37' title='6 topics' style='font-size: 8.6049382716049pt;'>email</a>
+<a href='../tag/encoding/index.html' class='tag-link-54' title='5 topics' style='font-size: 8pt;'>encoding</a>
+<a href='../tag/error/index.html' class='tag-link-213' title='6 topics' style='font-size: 8.6049382716049pt;'>error</a>
+<a href='../tag/ffmpeg/index.html' class='tag-link-64' title='5 topics' style='font-size: 8pt;'>ffmpeg</a>
+<a href='../tag/fun/index.html' class='tag-link-44' title='6 topics' style='font-size: 8.6049382716049pt;'>fun</a>
+<a href='../tag/git/index.html' class='tag-link-18' title='28 topics' style='font-size: 13.876543209877pt;'>git</a>
+<a href='../tag/html/index.html' class='tag-link-486' title='6 topics' style='font-size: 8.6049382716049pt;'>html</a>
+<a href='../tag/humour/index.html' class='tag-link-266' title='5 topics' style='font-size: 8pt;'>humour</a>
+<a href='../tag/import/index.html' class='tag-link-215' title='7 topics' style='font-size: 9.037037037037pt;'>import</a>
+<a href='../tag/ipython/index.html' class='tag-link-164' title='8 topics' style='font-size: 9.4691358024691pt;'>ipython</a>
+<a href='../tag/iterable/index.html' class='tag-link-217' title='9 topics' style='font-size: 9.9012345679012pt;'>iterable</a>
+<a href='../tag/javascript/index.html' class='tag-link-96' title='25 topics' style='font-size: 13.444444444444pt;'>javascript</a>
+<a href='../tag/jquery/index.html' class='tag-link-112' title='6 topics' style='font-size: 8.6049382716049pt;'>jquery</a>
+<a href='../tag/lambda/index.html' class='tag-link-292' title='7 topics' style='font-size: 9.037037037037pt;'>lambda</a>
+<a href='../tag/linux/index.html' class='tag-link-238' title='5 topics' style='font-size: 8pt;'>linux</a>
+<a href='../tag/mail/index.html' class='tag-link-624' title='6 topics' style='font-size: 8.6049382716049pt;'>mail</a>
+<a href='../tag/meta/index.html' class='tag-link-102' title='78 topics' style='font-size: 17.679012345679pt;'>meta</a>
+<a href='../tag/mysql/index.html' class='tag-link-82' title='5 topics' style='font-size: 8pt;'>mysql</a>
+<a href='../tag/nginx/index.html' class='tag-link-183' title='12 topics' style='font-size: 10.851851851852pt;'>nginx</a>
+<a href='../tag/nsfw/index.html' class='tag-link-319' title='13 topics' style='font-size: 11.197530864198pt;'>nsfw</a>
+<a href='../tag/orm/index.html' class='tag-link-43' title='5 topics' style='font-size: 8pt;'>orm</a>
+<a href='../tag/php/index.html' class='tag-link-199' title='5 topics' style='font-size: 8pt;'>php</a>
+<a href='../tag/poo/index.html' class='tag-link-549' title='9 topics' style='font-size: 9.9012345679012pt;'>poo</a>
+<a href='../tag/process/index.html' class='tag-link-87' title='5 topics' style='font-size: 8pt;'>process</a>
+<a href='../tag/python/index.html' class='tag-link-4' title='251 topics' style='font-size: 22pt;'>python</a>
+<a href='../tag/redis/index.html' class='tag-link-196' title='6 topics' style='font-size: 8.6049382716049pt;'>redis</a>
+<a href='../tag/ruby/index.html' class='tag-link-325' title='6 topics' style='font-size: 8.6049382716049pt;'>ruby</a>
+<a href='../tag/server/index.html' class='tag-link-185' title='6 topics' style='font-size: 8.6049382716049pt;'>server</a>
+<a href='../tag/sexe/index.html' class='tag-link-175' title='5 topics' style='font-size: 8pt;'>sexe</a>
+<a href='../tag/shell/index.html' class='tag-link-202' title='7 topics' style='font-size: 9.037037037037pt;'>shell</a>
+<a href='../tag/ssh/index.html' class='tag-link-206' title='6 topics' style='font-size: 8.6049382716049pt;'>ssh</a>
+<a href='../tag/sublime-text/index.html' class='tag-link-76' title='6 topics' style='font-size: 8.6049382716049pt;'>sublime text</a>
+<a href='../tag/twitter/index.html' class='tag-link-371' title='6 topics' style='font-size: 8.6049382716049pt;'>twitter</a>
+<a href='../tag/ubuntu/index.html' class='tag-link-255' title='13 topics' style='font-size: 11.197530864198pt;'>ubuntu</a>
+<a href='../tag/virtualenv/index.html' class='tag-link-259' title='6 topics' style='font-size: 8.6049382716049pt;'>virtualenv</a>
+<a href='../tag/yield/index.html' class='tag-link-287' title='7 topics' style='font-size: 9.037037037037pt;'>yield</a></div>
+</div> <!-- end .widget --><div id="archives-2" class="widget sidebar-block widget_archive"><h3 class="widgettitle">Archives</h3>		<ul>
+			<li><a href='../2013/12/index.html' title='December 2013'>December 2013</a>&nbsp;(2)</li>
+	<li><a href='../2013/11/index.html' title='November 2013'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html' title='October 2013'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html' title='September 2013'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html' title='August 2013'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html' title='July 2013'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html' title='June 2013'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html' title='May 2013'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html' title='April 2013'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html' title='March 2013'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html' title='February 2013'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html' title='January 2013'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html' title='December 2012'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html' title='November 2012'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html' title='October 2012'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html' title='September 2012'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html' title='August 2012'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html' title='July 2012'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html' title='June 2012'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html' title='May 2012'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html' title='April 2012'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html' title='March 2012'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html' title='February 2012'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+</div> <!-- end .widget --><div id="rss_links-2" class="widget sidebar-block widget_rss_links"><h3 class="widgettitle">Flux RSS</h3><p><a href="../feed/index.html" title="Subscribe to Posts"><img src="../wp-content/plugins/jetpack/_inc/images/rss/green-small.png" alt="RSS Feed" /></a>&nbsp;<a href="../feed/index.html" title="Subscribe to Posts">RSS - Posts</a></p>
+</div> <!-- end .widget --><div id="text-5" class="widget sidebar-block widget_text"><h3 class="widgettitle"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</div> <!-- end .widget --></div> <!-- end sidebar -->	</div> <!-- end #content --> 
+	
+	 <div id="footer" >
+		<div id="footer-content">
+			
+								
+				<ul id="menu-bottom-menu" class="bottom-menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Contactez-nous</a></li>
+</ul>			
+			<p id="copyright">Designed by  <a href="http://www.elegantthemes.com" title="Elegant Themes">Elegant WordPress Themes</a></p>
+		</div> <!-- end #footer-content -->
+	</div> <!-- end #footer -->
+</div> <!-- end #page-wrap -->
+	 
+				
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.cycle.all.min.js"></script> 
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.easing.1.3.js"></script>	
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/superfish.js"></script>	
+	<script type="text/javascript">
+	//<![CDATA[
+		jQuery.noConflict();
+	
+		jQuery('ul.superfish').superfish({ 
+			delay:       200,                            // one second delay on mouseout 
+			animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation 
+			speed:       'fast',                          // faster animation speed 
+			autoArrows:  true,                           // disable generation of arrow mark-up 
+			dropShadows: false                            // disable drop shadows 
+		}).find("> li > ul > li:last-child, > li > ul > li > ul > li:last-child, > li > ul > li > ul > li > ul > li:last-child").addClass("last-nav-element");
+		
+		jQuery(".js #featured, .js div#tabbed").css("display","block");
+
+				
+		var $featured_content = jQuery('#featured_content'),
+			$tabbed_area = jQuery('div#tabbed'),
+			$controllers = jQuery('div#controllers'),
+			$comments = jQuery('ol.commentlist');
+		
+		et_search_bar();
+		
+		if ($featured_content.length) {
+			$featured_content.cycle({
+									timeout: 3000				,
+				speed: 300,
+				cleartypeNoBg: true,
+				prev:   'a#left_arrow', 
+				next:   'a#right_arrow',
+				pager:  'div#controllers',
+				fx: 'fade'
+			});
+			
+			var controllersWidth = $controllers.width(),
+				controllersLeft = Math.round((960 - controllersWidth) / 2);
+			if (controllersWidth < 960) $controllers.css('padding-left',controllersLeft);
+		};
+		
+		if ($tabbed_area.length) {
+			$tabbed_area.tabs({ fx: { opacity: 'toggle' } });
+		};
+		
+		if ($comments.length) {
+			$comments.find(">li").after('<span class="bottom_bg"></span>');
+		};
+		
+
+		<!---- Random tag line ---->		
+
+var tagLine = function(){
+    var tagLines =  [
+        'Deux programmeurs qui se sortent les doigts du code',
+        '10 ko de js rien que pour charger ce message',
+        'Des articles pour geeks qui mettent les points sur les G',
+        "Aucun hipster n'a été violenté à l'écriture de ce blog",
+        'La programmation avec un grand C',
+        'Ornithorynque fuchsia hydrophobe',
+        'Python, Django, Git, et du Cul',
+        'Nous croisons les effluves',
+        'CMB DTC IRL CQFD',
+        'Tuent des chatons depuis 1997',
+        'Reticulating splines',
+        'Error: unexpected end of stupid tag line',
+        'Les bikinis et les ordinateurs épargnent les spéculations',
+        'F5',
+        '<3 (oYo)',
+        'Rien que des obsédés du serpent !',
+        "Je sers la science et c'est ma joie",
+        'On peut tout génie génétiquer!',
+        "Réparateurs d'harmonicas, professeurs de plongée",
+        "Il faut mettre d'urgence un frein à l'immobilisme!",
+        'Ho mon dieu! Ils ont tué Sam, enfoirés!',
+        "L'étincelle qui fait déborder le vase",
+        'A poil les putes !',
+        'Bannis de Reddit !',
+        "Bannis de l'AFPY !",
+        'Bannis de Claire Chazal!',
+        'Bannis de Jean-Pierre Pernaud !',
+        'Bannis de Norton !',
+        'Et si on faisait des camps pour que les gens puissent se concentrer?',
+        'Article.objects.create(type=random.choice(("dev", "cul")))',
+        'Le choc des mots, le poids des algos',
+        'Kedzalcoilt, le serpent à poil'
+    ];
+    return tagLines[Math.ceil(Math.random() * 1000000000) % tagLines.length];
+};
+
+jQuery('#slogan').show().text(tagLine());
+
+// forcer la redirection faire l'image en full size au click
+jQuery('.wp-post-image').click(function(e){e.preventDefault(); window.location.href = jQuery(e.target).attr('src')});
+
+// mettre clippy sur les comments
+
+jQuery(function(){
+    var message = "";
+    var $comment = jQuery('#comment');
+    topagent = null;
+
+    $comment.keyup(function(){
+
+        var content = jQuery(this).val();
+
+        if (content.search(/(^|\s+)(php|vim|emacs|windows|pas?\s*libre)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos trollesques. Attention, nous avons des tampons, et nous n'hésiterons pas à nous en servir !"
+        }
+
+        if (content.search(/(^|\s+)(me (tuer|suicider|tirer une balle|pendre|flinguer))([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos suicidaires. Sam & Max défendent la liberté d'expression. Allez aux bouts de vos idées !"
+        }
+
+        if (content.search(/(^|\s+)(connards?|enculés?|enfoirés?|fils? de pute?)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos injurieux. Ne voulez-vous pas plutôt écrire une lettre d'insultes directement aux auteurs, via le formulaire de contact ?"
+        }
+
+        if (content.search(/(^|\s+)(culs?|nichons?|bite|chatte|sodomie|levrette|sexe)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos graveleux. Pourriez-vous donner plus de détails ?"
+        }
+
+        if (content.search(/\>\>\>/i) != -1){
+            message = "Le triple chevron ne passe pas dans les comments. Désolé :-( Utilisez »» à la place."
+        }
+
+        if (content.length > 2000){
+            message = "Il semble que vous écriviez un roman. Vous réalisez que ceux qui vont répondre ne l'auront pas lu jusqu'au bout ?"
+        }
+
+        if (message){
+            $comment.unbind();
+
+            jQuery("<link/>", {
+               rel: "stylesheet",
+               type: "text/css",
+               href: "http://sametmax.com/wp-content/uploads/2012/07/clippy.css"
+            }).appendTo("head").one('load ready', function(){
+                jQuery.getScript("http://sametmax.com/wp-content/uploads/2012/07/clippy.min_1.js", function(){
+                    clippy.load('Clippy', function(agent) {
+                        agent.show();
+                        var offset = $comment.offset();
+                        var left = offset.left + $comment.width() + 10;
+                        var top = offset.top;
+
+                        jQuery('.clippy').css({position:'absolute',
+                                               display:'block',
+                                               left: left, top: top})
+
+                        jQuery('.clippy-balloon').css({position:'absolute',
+                                                       display:'block',
+                                                       left: left,
+                                                       top: top - 50})
+
+                        agent.speak(message);
+                        setInterval(function(){agent.stop(); agent.animate()}, 20000);
+                    });
+
+                });
+
+            });
+
+        }
+
+    });
+});
+
+
+		<!---- Search Bar Improvements ---->
+		function et_search_bar(){
+			var $searchform = jQuery('#header div#search-form'),
+				$searchinput = $searchform.find("input#searchinput"),
+				searchvalue = $searchinput.val();
+				
+			$searchinput.focus(function(){
+				if (jQuery(this).val() === searchvalue) jQuery(this).val("");
+			}).blur(function(){
+				if (jQuery(this).val() === "") jQuery(this).val(searchvalue);
+			});
+		};
+		
+	//]]>	
+
+
+
+
+<!-- Piwik -->
+
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://88.191.153.127:7777/" : "http://88.191.153.127:7777/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+
+
+
+	</script>
+<noscript>
+<img src="http://88.191.153.127:7777/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="" />
+</noscript>
+	<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.3.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=3.3.1'></script>
+	<div style="display:none">
+	<div class="grofile-hash-map-055aebd1a3bcbb6ebfb91633d271e47d">
+	</div>
+	<div class="grofile-hash-map-f70f80a3b119be2bdb296786e09fe60d">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-442d4f5149c733e14064519b6decc0e9">
+	</div>
+	<div class="grofile-hash-map-fc32c6686686ecc595f05ad1885c2fb3">
+	</div>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.js%3Fver=0.1'></script>
+	<script type="text/javascript" charset="utf-8">
+	function sharing_plusone( obj ) { 
+		jQuery.ajax( {
+			url: 'http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/?share=google-plus-1',
+			type: 'POST',
+			data: obj
+		} );
+	}
+	</script>
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+	<div id="sharing_email" style="display: none;">
+		<form action="index.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="text" name="target_email" id="target_email" value="" />
+			
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+				
+				<label for="source_email">Your Email Address</label>
+				<input type="text" name="source_email" id="source_email" value="" />
+
+						
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a href="index.html#cancel" class="sharing_cancel">Cancel</a>
+			
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+			
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js%3Fver=3.15'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/sametmax.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=3.3'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.easing-1.3.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/et-ptemplates-frontend.js%3Fver=1.1'></script>
+
+	<script src="http://stats.wordpress.com/e-201349.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.2.2',blog:'32490438',post:'6654'});
+	var load_cmc = function(){linktracker_init(32490438,6654,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script>	
+</body>
+</html>

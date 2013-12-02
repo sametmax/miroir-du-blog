@@ -1,0 +1,2988 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="fr-FR" >
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>  FizzBuzz en Python | Sam &amp; Max: Python, Django, Git et du cul</title>
+<meta http-equiv="Content-Language" content="fr" />
+
+<link rel="shortcut icon" href="../wp-content/uploads/2012/05/favicon.ico">
+
+<link rel="stylesheet" href="../wp-content/themes/Minimal/style.css%3F238.css" type="text/css" media="screen" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul RSS Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/atom+xml" title="Sam &amp; Max: Python, Django, Git et du cul Atom Feed" href="../feed/atom/index.html" />
+<link rel="pingback" href="../xmlrpc.php" />
+
+
+<!--[if lt IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie6style.css" />
+	<script type="text/javascript" src="http://sametmax.com/wp-content/themes/Minimal/js/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script type="text/javascript">DD_belatedPNG.fix('img#logo, #header #search-form, #slogan, a#left_arrow, a#right_arrow, div.slide img.thumb, div#controllers a, a.readmore, a.readmore span, #services .one-third, #services .one-third.first img.icon, #services img.icon, div.sidebar-block .widget ul li');</script>
+<![endif]-->
+<!--[if IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie7style.css" />
+<![endif]-->
+
+<script type="text/javascript">
+	document.documentElement.className = 'js';
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; FizzBuzz en Python Comments Feed" href="feed/index.html" />
+<meta content="Minimal v.3.3" name="generator"/><link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" />
+<link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/page_templates.css" rel="stylesheet" /><link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=3.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='et-shortcodes-css-css'  href='../wp-content/themes/Minimal/epanel/shortcodes/shortcodes.css%3Fver=1.8.css' type='text/css' media='all' />
+<link rel='stylesheet' id='sharedaddy-css'  href='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.css%3Fver=3.3.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cfq-css'  href='../wp-content/plugins/comment-form-quicktags/style.css%3Fver=20110712.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.7.1'></script>
+<script type='text/javascript' src='../wp-includes/js/comment-reply.js%3Fver=20090102'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/shortcodes/js/et_shortcodes_frontend.js%3Fver=1.8'></script>
+<script type='text/javascript' src='../wp-content/plugins/comment-form-quicktags/quicktags.php%3Fver=20121011'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Être alerté par Git quand un fichier a été modifié durant le dernier merge' href='../etre-alerte-par-git-quand-un-fichier-a-ete-modifie-durant-le-dernier-merge/index.html' />
+<link rel='next' title='Quelle valeur retourner quand on ne trouve rien en Python ?' href='../quelle-valeur-retourner-quand-on-ne-trouve-rien/index.html' />
+<meta name="generator" content="WordPress 3.3.1" />
+<link rel='canonical' href='index.html' />
+<link rel='shortlink' href='http://wp.me/p2ckfk-17v' />
+<link rel="payment" type="text/html" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Ffizzbuzz-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=FizzBuzz+en+Python&amp;description=Le+FizzBuzz+est+un+type+de+test+qui+a+%C3%A9t%C3%A9+rendu+populaire+par+Imran+Ghory+et+ayant+pour+but+de+gagner+du+temps+dans+l%26%238217%3Bembauche+de+d%C3%A9veloppeurs.+Son+constat+est...&amp;tags=fizzbuzz%2Cpython%2Cblog" />
+
+<link rel="stylesheet" href="../wp-content/plugins/wp-syntax/wp-syntax.css" type="text/css" media="screen" />
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.3.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.3.css");
+/* ]]> */
+</style>	<style type="text/css">
+		#et_pt_portfolio_gallery { margin-left: -11px; }
+		.et_pt_portfolio_item { margin-left: 23px; }
+		.et_portfolio_small { margin-left: -39px !important; }
+		.et_portfolio_small .et_pt_portfolio_item { margin-left: 35px !important; }
+		.et_portfolio_large { margin-left: -20px !important; }
+		.et_portfolio_large .et_pt_portfolio_item { margin-left: 14px !important; }
+	</style>
+
+</head>
+<body>
+	<div id="page-wrap">
+			
+		<div id="header">
+			<!-- Start Logo -->
+				<a href="../index.html">					<img src="../wp-content/uploads/2012/04/logo1.png" alt="Logo" id="logo"/></a>
+				
+				<p id="slogan">Deux développeurs en vadrouille qui se sortent les doigts du code</p>
+					
+			<!-- End Logo -->
+					
+			<!-- Start Searchbox -->
+				<div id="search-form">
+					<form method="get" id="searchform1" action="../index.html">
+						<input type="text" value="search this site..." name="s" id="searchinput" />
+					</form>
+				</div>
+								
+			<!-- End Searchbox -->
+				
+				<div class="clear"></div>
+				
+				<ul id="menu-top-menu" class="superfish nav clearfix"><li id="menu-item-1702" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Programmation</a></li>
+<li id="menu-item-1703" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin System</a></li>
+<li id="menu-item-1704" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo et culture</a></li>
+<li id="menu-item-1706" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li id="menu-item-3340" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours et tutos</a></li>
+<li id="menu-item-2610" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2610"><a href="../nos-tweets/index.html">Nos tweets SANS twitter :-)</a></li>
+<li id="menu-item-1707" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li id="menu-item-7439" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7439"><a href="https://github.com/sametmax/">Nos githuberies</a></li>
+</ul>									
+		</div> <!-- end #header -->
+
+		<div id="breadcrumbs">
+		
+					<a href="../index.html">Home</a> &raquo;
+				
+									<a href="../category/programmation/index.html">Programmation</a> &raquo; FizzBuzz en Python					
+</div> <!-- end #breadcrumbs -->		
+	
+	<div id="content" class="clearfix">
+		<div id="content-area">
+					<div class="entry clearfix">
+				<h1 class="title">FizzBuzz en Python</h1>
+					<p class="post-meta">
+		Posted  by <a href="../author/sam/index.html" title="Posts by Sam" rel="author">Sam</a> on 29 Jan 2013 in <a href="../category/programmation/index.html" title="View all posts in Programmation" rel="category tag">Programmation</a> | <a href="index.html#comments" title="Comment on FizzBuzz en Python">94 comments</a>	</p>
+				
+							
+									
+						
+								
+				<p>Le FizzBuzz est un type de test qui a été <a href="http://imranontech.com/2007/01/24/using-fizzbuzz-to-find-developers-who-grok-coding/">rendu populaire par Imran Ghory</a>  et ayant pour but de gagner du temps dans l&#8217;embauche de développeurs.</p>
+<p>Son constat est alarmant : une grande majorité des gens qui venaient aux entretiens pour un poste de programmeur, diplôme / CV / beau discours à l&#8217;appui, ne savaient pas&#8230; programmer. Il faut dire que c&#8217;est tellement facile de <a href="../ou-trouver-un-job-ou-une-mission-python-django/index.html">trouver un job pour dev</a>.</p>
+<p>Ayant l&#8217;impression de perdre son temps, il a créé des exercices simples, qui sont facilement solvables sans stress par n&#8217;importe quel programmeur digne de ce ce nom en quelques minutes. À sa surprise, 90 % des candidats s&#8217;y cassent les dents, ce qui lui permet de ne passer du temps qu&#8217;avec le reste. </p>
+<h2>Fais tourner le FizzBuzz</h2>
+<p>Exemple d&#8217;un énoncé :</p>
+<blockquote><p>
+Écrire un programme qui affiche les nombres de 1 à 199. Mais pour les multiples de 3, afficher &#8220;Fizz&#8221; au lieu du nombre et pour les multiples de 5 afficher &#8220;Buzz&#8221;. Pour les nombres multiples de 3 et 5, afficher &#8220;FizzBuzz&#8221;.</p></blockquote>
+<p>Voici ce que ça donne si vous le faites en entretien pour du Python en quelques minutes histoire de pouvoir passer à la suite :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">200</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    fizz = <span style="color: #ff7700;font-weight:bold;">not</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">3</span>
+    buzz = <span style="color: #ff7700;font-weight:bold;">not</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> fizz <span style="color: #ff7700;font-weight:bold;">and</span> buzz :
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;FizzBuzz&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">elif</span> fizz:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">elif</span> buzz:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Buzz&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> x</pre></div></div>
+
+<h2>S&#8217;amuser un peu</h2>
+<p>Ce qui est marrant avec les fizzbuzz, c&#8217;est de sortir de la solution classique pour faire des trucs tordus. Je suis notamment tombé sur <a href="http://maxburstein.com/blog/python-shortcuts-for-the-python-beginner/">deux</a> <a href="http://stackoverflow.com/questions/6890037/python-fizzbuzz-in-one-line">one-liners</a> très choupi pour résoudre le problème en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">200</span><span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span><span style="color: black;">&#91;</span>x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">3</span> <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">4</span>:<span style="color: black;">&#93;</span> + <span style="color: #483d8b;">&quot;Buzz&quot;</span> <span style="color: black;">&#91;</span>x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span> <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">4</span>:<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">or</span> x</pre></div></div>
+
+<p>Et :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Fizz'</span> <span style="color: #66cc66;">*</span> <span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">not</span> i <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">'Buzz'</span> <span style="color: #66cc66;">*</span> <span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">not</span> i <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">200</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>C&#8217;est blindé d&#8217;astuces.</p>
+<p>Pour la première solution, on fait une boucle normale et on <code>print</code> la concaténation de la chaîne <code>"Fizz"</code> et la chaîne <code>"Buzz"</code>. MAIS on fait un slicing dessus en prenant en compte une particularité de <code>"Fizz"</code> et <code>"Buzz"</code> : les deux mots font 4 lettres. Or <code>x % 3</code> (ou <code>x % 5</code>) sera égal à 0 si <code>x</code> est multiple de 3 (ou de 5). Donc si <code>x</code> est un multiple, on aura <code>0 * 4</code>, soit un slicing de <code>[0:]</code> qui veut dire va du début à la fin. A l&#8217;inverse, si <code>x</code> n&#8217;est pas multiple, on aura un slicing de <code>[4:]</code>, ce qui sur un mot de 4 lettres veut dire va de la fin à la fin, résultant en une chaîne vide.</p>
+<p>Donc on peut avoir <code>"Fizz"</code> de vide ou <code>"Buzz"</code> de vide, ce qui va faire la chaîne &#8220;Fizz&#8221; ou &#8220;Buzz&#8221;, selon que <code>x</code> est le multiple de 3 ou 5. Si <code>x</code> est multiple des deux, on aura <code>"Fizz"</code> et <code>"Buzz"</code>, qui concaténés va donner <code>"FizzBuzz"</code>. Enfin, si <code>x</code> n&#8217;est multiple ni de 3, ni de 5, on concatène deux chaînes vides, ce qui donne une chaîne vide. </p>
+<p>Une caractéristique de l&#8217;opérateur <code>or</code> en Python est qu&#8217;il ne retourne PAS un booléen. Il retourne le premier élément vrai, ou le dernier élément faux :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">1</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">0</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">0</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #008000;">False</span>
+<span style="color: #008000;">False</span></pre></div></div>
+
+<p>Donc si il y a <code>"Fizz" or x</code>, <code>"Buzz" or x</code> ou <code>"FizzBuzz" or x</code>, il va retourner la chaîne. Par contre si il y a <code>'' or x</code>, il va retourner <code>x</code>.</p>
+<p>Pour la deuxième solution, on créé une <a href="../python-love-les-listes-en-intention-partie-2/index.html">expression génératrice</a> qui va être joinée sur <code>'\n'</code>, donc un saut de ligne. On aura donc le listing attendu. Les valeurs sont générées par concaténation également, comme dans le premier exemple. La différence est qu&#8217;au lieu de choisir le slicing pour afficher ou non la chaîne, il utilise <a href="../operateur-splat-ou-etoile-en-python/index.html">l&#8217;opérateur splat</a>, qui sur une chaîne la multiplie :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span> <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">2</span>
+<span style="color: #483d8b;">'FizzFizz'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span> <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">3</span>
+<span style="color: #483d8b;">'FizzFizzFizz'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span> <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">1</span>
+<span style="color: #483d8b;">'Fizz'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span> <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">0</span>
+<span style="color: #483d8b;">''</span></pre></div></div>
+
+<p>Or, <code>True</code> vaut 1 en Python, et <code>False</code> vaut zéro. Du coup :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span> <span style="color: #66cc66;">*</span> <span style="color: #008000;">True</span>
+<span style="color: #483d8b;">'Fizz'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span> <span style="color: #66cc66;">*</span> <span style="color: #008000;">False</span>
+<span style="color: #483d8b;">''</span></pre></div></div>
+
+<p><code>not i % 5</code> et <code>not i % 5</code> vont retourner <code>True</code> si <code>x</code> est multiple, sinon <code>False</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">15</span> <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff4500;">15</span> <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span>
+<span style="color: #008000;">True</span></pre></div></div>
+
+<p>Du coup <code>"Fizz"</code> et <code>"Buzz"</code> vont être multiplié par <code>True</code> ou <code>False</code> selon que <code>x</code> est un multiple de 3 ou 5, et la chaîne résultante sera la bonne. Après on utilise le <code>or</code> de la même façon que dans le code du premier one-liner.</p>
+<h2>Mais quand même</h2>
+<p>Je trouve ça un peu déprimant que l&#8217;on ait autant de personnes qui se vendent comme codeurs et qui ne savent pas coder. Ok, je veux bien que dans une situation de stress les bouts de codes sortent plus difficilement, mais là c&#8217;est volontairement hyper simple. Personne ne demande le one-liner, c&#8217;est juste pour le fun. Mais la majorité des candidats ne peuvent même pas produire le tout premier code.</p>
+<p>C&#8217;est aussi mon constat dans les boîtes dans lesquelles j&#8217;ai travaillé : énormément de flan.</p>
+<p>Se pose alors un autre problème : la rareté de la main d’œuvre. Je discutais avec un CTO dernièrement. Il me disait que quand il tombait sur un bon candidat, il lui déroulait le tapis rouge car il avait trop peur qu&#8217;il se barre. C&#8217;était très dur pour lui de trouver un dev potable. </p>
+<p>À côté de ça, on voit des annonces sur Popole emploi où il demande de maîtriser vingt-douze technos pour le SMIC.</p>
+<p>C&#8217;est là qu&#8217;on voit que la grande majorité des gens ne pigent toujours rien à l&#8217;informatique. Ils n&#8217;ont aucune idée des échelles de valeur et de qualité. </p>
+<p>On se retrouve avec une situation de loose-loose :</p>
+<ul>
+<li>Les boîtes non-tech se retrouvent avec le fond du panier car elles embauchent en aveugle et les utilisateurs se retrouvent en mode dégradé en permanence. Une personne qui travaille chez Colissimo m&#8217;a parlé dernièrement de l&#8217;enfer du développement de leur système de gestion de paie fait en interne par un mec qui visiblement ne pige rien.</li>
+<li>Les boîtes technos en chie un max pour trouver des bons dev. Ils sont souvent en sous-effectifs et se plaignent d&#8217;enchaîner les entretiens depuis un an sans rien trouver.</li>
+<li>Les devs se sentent insultés par la plupart des annonces de job et les bons trouvent rarement (en France) un salaire et des conditions de travail qui correspondent à leurs qualifications. Car un bon dev aujourd&#8217;hui est quelqu&#8217;un de TRES qualifié. Or il est souvent classé selon son diplôme plutôt que ses compétences.</li>
+</ul>
+<div class="snap_nopreview sharing robots-nocontent"><ul><li class="sharing_label">Partager:</li><li class="share-facebook share-regular"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsametmax.com%2Ffizzbuzz-en-python%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;width=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:96px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-twitter share-regular"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsametmax.com%2Ffizzbuzz-en-python%2F&amp;counturl=http%3A%2F%2Fsametmax.com%2Ffizzbuzz-en-python%2F&amp;count=horizontal&amp;text=FizzBuzz%20en%20Python: " style="width:97px; height:20px;"></iframe></div></li><li class="share-reddit share-regular"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?width=120&amp;url=http%3A%2F%2Fsametmax.com%2Ffizzbuzz-en-python%2F&amp;title=FizzBuzz%20en%20Python" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-google-plus-1 share-regular"><div class="googleplus1_button"><g:plusone size="small" callback="sharing_plusone" href="http://sametmax.com/fizzbuzz-en-python/"></g:plusone></div></li><li class="share-email share-regular"><a rel="nofollow" class="share-email share-icon no-text" href="index.html%3Fshare=email.html" target="_blank" title="Click to email this to a friend"></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div><p>No related posts.</p><p class="wp-flattr-button"><a href="../index.html%3Fflattrss_redirect&amp;id=4309&amp;md5=da76b07d02873c957df71776760252d6.html" title="Flattr" target="_blank"><img src="../wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>											</div> <!-- end .entry -->
+			
+					
+						
+			<!-- You can start editing here. -->
+
+	<div id="comment-section" class="clearfix">
+		<h3 id="comments">94 comments</h3>
+		
+		
+			<ol class="commentlist clearfix">
+			   <li class="comment even thread-even depth-1" id="li-comment-5640">
+		<div class="bottom_bg">
+		   <div id="comment-5640" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3a4f0e873a0fd405ffdbeced05f59bba?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">DSeed</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5640">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Petit détail le xrange c&#8217;est de 1 à 200 (vu qu&#8217;il vx les nombres jusqu&#8217;a 199 ) mais bon je chipote ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5641">
+		<div class="bottom_bg">
+		   <div id="comment-5641" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/437805955e9381e69429143c0fc40f6e?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">foxmask</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5641">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>J&#8217;avais fait un bete et con :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">200</span><span style="color: black;">&#41;</span>:
+	<span style="color: #ff7700;font-weight:bold;">if</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span> == <span style="color: #ff4500;">0</span> <span style="color: #ff7700;font-weight:bold;">and</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">3</span> == <span style="color: #ff4500;">0</span>:
+		<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;FizzBuzz&quot;</span>		
+	<span style="color: #ff7700;font-weight:bold;">elif</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">3</span> == <span style="color: #ff4500;">0</span>:
+		<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span>
+	<span style="color: #ff7700;font-weight:bold;">elif</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span> == <span style="color: #ff4500;">0</span>:
+		<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Buzz&quot;</span>	
+	<span style="color: #ff7700;font-weight:bold;">else</span>:
+		<span style="color: #ff7700;font-weight:bold;">print</span> x</pre></div></div>
+
+<p>c&#8217;est pas sexy mais ca fait l&#8217;affaire :) bon qui m&#8217;embauche ? :D</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-5643">
+		<div class="bottom_bg">
+		   <div id="comment-5643" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5643">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@DSeed : très juste. Je passe même pas l&#8217;entretien d&#8217;embauche putain.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5644">
+		<div class="bottom_bg">
+		   <div id="comment-5644" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5644">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Ouais bof&#8230; c&#8217;est comme à l&#8217;époque en cours où on demandait d&#8217;implémenter un triangle de Pascal ou ce genre de truc&#8230; on pourrait aussi demander au candidat de terminer un rubik&#8217;s cube mais je ne suis pas sur que ça soit bien représentatif de quoi que ce soit.</p>
+<p>En plus tu parles de codeur après avoir parlé de développeur&#8230; ok, la nuance est très mince, mais les seconds ont rarement des nouveaux algos à comprendre ou à implémenter (spécialement dans les boites &#8220;non-tech&#8221; comme tu dis).</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-5645">
+		<div class="bottom_bg">
+		   <div id="comment-5645" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5645">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Aujourd&#8217;hui une simple codeur d&#8217;existe plus. Le coup de &#8220;j&#8217;ai un cahier des charges donné ce matin, et je pisse du code&#8221;, ça ne marche plus vu la complexité des apps qui existent aujourd&#8217;hui. Y a tellement de technos, les usages sont tellements avancés. Un codeur est un dev. Et la plupart des devs font de l&#8217;archi. On a pas le choix.</p>
+<p>La seule exception est le sys admin. Il a un métier à part. Il script un peu, mais c&#8217;est pas sa spécialité. Ses difficultés sont différentes.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5646">
+		<div class="bottom_bg">
+		   <div id="comment-5646" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5646">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p><span class="relis"></span>On est d&#8217;accord&#8230; du coup la valeur de ce test là-dedans ? Surtout que ce genre de tricks ça s&#8217;apprend aussi par coeur au besoin&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-5647">
+		<div class="bottom_bg">
+		   <div id="comment-5647" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5647">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Un tampon pour toi.</p>
+<p>C&#8217;est pour virer les gars qui savent pas programmer.</p>
+<p>Un triangle de pascal c&#8217;est pas évident. Pour un stagiaire, j&#8217;utiliserais jamais ça.</p>
+<p>Un fizzbuzz (ça s&#8217;invente à la volée, c&#8217;est pas compliqué non plus, pas de risque de par coeur), c&#8217;est suffisament simple pour un rookie, et suffisament concret pour écarter les mecs qui pensent que faire des macros excel c&#8217;est être développeur.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5648">
+		<div class="bottom_bg">
+		   <div id="comment-5648" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/66a5b3eca570baf8fd7320dd58663140?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">truxs</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5648">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>La valeur c&#8217;est que ça permet de détecter les mythos à moindre coup.</p>
+<p>On ne te demande pas de faire une algo de fou et déterminer si c&#8217;est du O(n²), on vérifie simplement si tu sait faire une pauvre boucle avec des conditions.</p>
+<p>Évidemment ça peut paraitre stupide, mais durant ma recherche de stage (fin de DUT info) on m&#8217;a demandé si je savais faire des boucles parce que ce n&#8217;était pas le cas de tout le monde (ingé inclus) &#3232;_&#3232;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5649">
+		<div class="bottom_bg">
+		   <div id="comment-5649" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/170289b3aa7e65f722f54cd8807ca003?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Yannick</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5649">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>On peut même utiliser la compréhension de liste:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>
+    <span style="color: #483d8b;">&quot;FizzBuzz&quot;</span> <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">3</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #ff7700;font-weight:bold;">not</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span> <span style="color: #483d8b;">&quot;Fizz&quot;</span> <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">3</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span> <span style="color: #483d8b;">&quot;Buzz&quot;</span> <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> x <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">5</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">200</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max odd alt thread-odd thread-alt depth-1" id="li-comment-5650">
+		<div class="bottom_bg">
+		   <div id="comment-5650" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5650">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>C&#8217;est à faire sur papier ou on peut tester sur l&#8217;ordi? Car si c&#8217;est uniquement sur papier sans pouvoir tester je suis recâlé direct :)</p>
+<p>Je connais des supers programmeurs qui font tout au test, et corrigent souvent après coup, ce genre de test pourrait les évincer si le papier et le crayon sont les seuls outils.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5651">
+		<div class="bottom_bg">
+		   <div id="comment-5651" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/653b0bde06b656e70323944a77fe2872?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">FX</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5651">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Ingénieur ça veut pas forcément dire développeur, j&#8217;ai l&#8217;impression qu&#8217;on confond beaucoup les deux en France!</p>
+<p>Mais le simple fait d&#8217;avoir un profil sur un site de dev avec quelque chose de non trivial rendu public (GitHub, StackOverflow, Bitbucket,&#8230;) te donne à mon avis de grandes chances d&#8217;arriver directement en haut du panier quand tu postules en dev.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5652">
+		<div class="bottom_bg">
+		   <div id="comment-5652" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/ac37de58294f0c881f6198a0588c02ab?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://url.bidouille.info/' rel='external nofollow' class='url'>cyp</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5652">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Pour mes recrutement de sysadmin (poste ou stage) j&#8217;avais fait un petit questionnaire ou je demandais quelques commandes de base style:<br />
+ &#8211; comment créer le répertoire &#8220;/var/www/test&#8221; sous Linux<br />
+ &#8211; comment relancer le service &#8220;iisadmin&#8221; sous Windows<br />
+ &#8211; &#8230;</p>
+<p>Le tout sans pièges, pas regardant sur la syntaxe et en étant ouvert au dialogue, &#8220;makedir -P /var/www/test&#8221; ne m&#8217;aurait absolument pas dérangé pour la première réponse.<br />
+Je devais avoir 50% des candidats (affichant toutes les références requises sur leur CV) qui rendaient feuille blanche.<br />
+Guère plus de 10/15% qui avait une réponse acceptable sur toutes les questions, le reste allant de ceux n&#8217;ayant que de vague notion à ceux qui continuait à la jouer à l&#8217;embrouille avec des réponses complètements a coté de la plaque voir des &#8220;je fait tout à la souris&#8221; :-/</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-5653">
+		<div class="bottom_bg">
+		   <div id="comment-5653" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5653">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@FX surtout qu&#8217;ingénieur, c&#8217;est surtout un status de part soit le diplome, soit le contrat de travail. Mais c&#8217;est pas du tout le reflet d&#8217;un niveau, d&#8217;une productivité ou d&#8217;une intégration dans une équipe. Ingénieur ne veut absolument plus rien dire de nos jours.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5654">
+		<div class="bottom_bg">
+		   <div id="comment-5654" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b93cc4fb6413bbe5c837530662bee9b4?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Kontre</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5654">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>énormément de flan<strong>c</strong>. =&gt; énormément de flan.<br />
+un peu<strong>t</strong> déprimant =&gt; un peu déprimant<br />
+par concaténation<strong>s</strong> =&gt; par concaténation<br />
+Mmmh, on vous rappellera&#8230; ^^</p>
+<p>Ça me rappelle un entretien où on m&#8217;avait demandé la formule de la transformée de Fourier. J&#8217;ai réussi à la ressortir avec quelques tâtonnements, mais je ne vois toujours pas l&#8217;intérêt vu qu&#8217;en pratique on utilise la fonction FFT déjà codée et basta.</p>
+<p>Et je confirme qu&#8217;il y a un paquet d&#8217;ingénieurs qui n&#8217;y pigent rien à l&#8217;informatique (et je ne parle pas que des &#8220;vieux&#8221;). Alors en dev&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-5655">
+		<div class="bottom_bg">
+		   <div id="comment-5655" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5655">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>C&#8217;est ce que j&#8217;aime avec la solution fizzbuzz. Elle vire juste les charlatans. Certains tests mélangent trop de choses : math, algorythmie avancée, culture générale, gestion du stress&#8230; Si le poste en question a besoin d&#8217;un candidat calé dans ces domaines ça a du sens, mais ce n&#8217;est pas le cas la plupart du temps.</p>
+<p>Je connais de très bon dev nul en culture gé, Max fait des services complets avec le degré zéro en algo, moi je suis une grosse quille en math (putain la transformation de fourrier, j&#8217;ai du aller regarder sur wikipedia), et un de mes amis (un dev commen on en voit peuà code en permanence sous marijuana alors la gestion du stress&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5656">
+		<div class="bottom_bg">
+		   <div id="comment-5656" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5656">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Oui enfin le recrutement en informatique laissez-moi rire : y a que les gosses de riches qui ont eu un diplôme d&#8217;ingé dans une école privée financé par Papa et Maman qui trouvent de bons jobs&#8230;souvent ils parlent le Java, ne savent pas rédiger sans faute de français et adorent les costards, les Iphone et les Audi A3 ;) bref de purs merdeux et on s&#8217;étonne que le web se pourrit, que les applis sont pourris et que le hardware est pourri&#8230;Y a plus de codeurs, il n&#8217;y a que des intégrateurs de solutions.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5657">
+		<div class="bottom_bg">
+		   <div id="comment-5657" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5657">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>En entretien, j&#8217;ai déjà eu :</p>
+<p>- programmer une factorielle<br />
+- un enculé m&#8217;a même demandé l&#8217;algo &#8220;Persimmon Trees&#8221;<br />
+- un autre fils de pute m&#8217;a demandé : &#8220;pourquoi la pluie tombe ?&#8221;</p>
+<p>Bref des connards de recruteurs j&#8217;en déjà eu. Y a même une fois où j&#8217;ai claqué la sale gueule du recruteur prétentieux sur le bureau car il me saoulait ;), je vous garantis que sa superbe et son assurance se sont envolées. Bref vous l&#8217;aurez compris je hais les recruteurs et manageurs en carton de tout bord !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5658">
+		<div class="bottom_bg">
+		   <div id="comment-5658" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b93cc4fb6413bbe5c837530662bee9b4?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Kontre</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5658">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Le coup de la pluie qui tombe, on en parle pas mal sur <a href="http://thedailywtf.com" rel="nofollow">http://thedailywtf.com</a>, apparemment ça a été lancé par Microsoft, c&#8217;est sensé aider à juger la réaction des gens devant des problèmes nouveaux, et leur capacité à trouver des astuces originales. J&#8217;ai des gros doutes sur le résultat !</p>
+<p>Par contre, programmer une factorielle, pour moi c&#8217;est du même genre que fizzbuzz&#8230;</p>
+<p>Au fait, vous saviez que n&#8217;importe qui peut se déclarer &#8220;ingénieur&#8221; ? Le nom lui-même n&#8217;est pas réservé.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5659">
+		<div class="bottom_bg">
+		   <div id="comment-5659" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/653b0bde06b656e70323944a77fe2872?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">FX</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5659">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Sam: Au moins, ingénieur veut dire quasiment autant que &#8220;sorti de fac&#8221;, en tout cas pour le dev, à quelques exceptions près. De mon humble point de vue, j&#8217;ai l&#8217;impression que le gros problème dans tout ça, c&#8217;est que trop de recruteurs sont incapables de distinguer un bon candidat d&#8217;un mauvais. Même avec FizzBuzz.</p>
+<p>@Kontre: Tout dépend du besoin. Si c&#8217;est pour développer un système de traitement du signal alors oui, mais c&#8217;est vrai que pour l&#8217;intranet de Carrefour on s&#8217;en tamponne un peu de la TF&#8230;</p>
+<p>C&#8217;est vrai que tout le monde peut se dire ingénieur, mais tu peux aussi mettre &#8220;Dieu&#8221; sur ton CV. Pour moi (mais je suis plutôt du côté des candidats^^) c&#8217;est plutôt ce que tu as fait qui compte.</p>
+<p>@anucunnilinguiste: Factorielle c&#8217;est clairement du fizzbuzz pour moi aussi. Le coup de la pluie, en revanche, euh&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5660">
+		<div class="bottom_bg">
+		   <div id="comment-5660" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/fc32c6686686ecc595f05ad1885c2fb3?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">roro</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5660">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Et si c&#8217;était que dans la prog !!!<br />
+Ce phénomène est présent dans beaucoup domaines, beaucoup de métiers.<br />
+Il parait que l&#8217;humain est à son pic-brain. (dixit: science et vie), et qu&#8217;on n&#8217;ira pas plus loin en capacités cognitives.<br />
+ça fout les j&#8217;tons&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-5661">
+		<div class="bottom_bg">
+		   <div id="comment-5661" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5661">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Factoriel, çà dépend si on requiert la récursivité ou pas (putain, un bon article à écrire ça).</p>
+<p>Un mec peut ne pas se souvenir de ce que fait la fonction factorielle et être capable de la coder, ou l&#8217;inverse.</p>
+<p>Mais surtout, une version iterative est un fizzbuzz, un version recursive pas du tout. Dans un langage comme PHP ou RUBy, ne pas connaitre la récursivité n&#8217;est pas du tout handicapant (j&#8217;ai du m&#8217;en servir 4 fois dans ma carrière de programmeur). Si on embauche par contre un codeur javascript ou erlang, c&#8217;est clairement plus emmerdant.</p>
+<p>Et autant en erlang, on est presque sur de tomber sur des bons (rien que connaitre le langage&#8230;) mais autant en JS, ouaaaaaa, le niveau peu sacrément varier.</p>
+<p>Après je crois qu&#8217;il ne faut pas effrayer les débutants (je sais que vous osez pas commenter les gars !), tout le monde est pas tenu d&#8217;avoir le même niveau en prog (moi je sais pas planter un clou ni faire une addition de tête). C&#8217;est juste que quand on veut être payé pour le faire, ben il faut être capable de le faire :-)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5662">
+		<div class="bottom_bg">
+		   <div id="comment-5662" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/2ffc5f0f11cd0e8e4d015be543dd2c99?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://recher.wordpress.com' rel='external nofollow' class='url'>Recher</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5662">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>La Motion Twin (une boîte de jeu vidéo) avait trouvé une astuce de recrutement du même genre :</p>
+<p><em>envoyez votre CV à <a href="mailto:xxxxxxxxx@motion-twin.com">xxxxxxxxx@motion-twin.com</a>, en remplaçant les &#8216;x&#8217; par le plus grand nombre palindrome résultant de la multiplication de trois nombres à trois chiffres. Là, vous pouvez êtes surs qu&#8217;on vous lira !</em></p>
+<p>Les avantages, par rapport à un fizzbuzz en entretien :</p>
+<p> &#8211; Filtrage directement à la source. Tous le monde peut postuler, mais les recruteurs n&#8217;ont à gérer que ceux qui réussissent. </p>
+<p> &#8211; Suffisamment spécifique pour qu&#8217;on puisse espérer qu&#8217;elle ne soit pas déjà sur internet. Il y a toujours le risque que quelqu&#8217;un publie la réponse, mais c&#8217;est peu probable. Ceux qui sont au courant du recrutement sont, à priori, des candidats potentiels, donc ils garderont la réponse pour eux.</p>
+<p> &#8211; Suffisamment simple pour être résolvable dans n&#8217;importe quel langage, mais suffisamment compliquée pour être très difficilement résolvable à la main. </p>
+<p> &#8211; Les candidats résolvent l&#8217;énigme bien au chaud chez eux. Pas de stress. Pas de &#8220;je suis un gros nul en programmation sur le papier&#8221;.</p>
+<p>Le seul inconvénient, c&#8217;est que les recruteurs n&#8217;ont aucune preuve que les candidats qui leur répondent ont résolu l&#8217;énigme par eux-même (certains ont peut-être demandé à quelqu&#8217;un d&#8217;autre). Un dernier petit filtrage au fizzbuzz peut être nécessaire. Dans tous les cas, il y a déjà un gros écremage de fait, au prix de très peu d&#8217;effort.</p>
+<p>Ah et sinon, ça s&#8217;écrit &#8220;lose&#8221; et pas &#8220;loose&#8221;. Même si ça se prononce comme si c&#8217;était écrit &#8220;lose&#8221;. Andouille d&#8217;anglais.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5663">
+		<div class="bottom_bg">
+		   <div id="comment-5663" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/844f413dcdc0c5172f2c7a878b301464?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">nzo</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5663">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>ok et la paie on en parle ? car je veux bien des recruteurs exigeants mais au regard des paies proposées, j&#8217;ai pas envie de me soumettre telle une soubrette !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-5664">
+		<div class="bottom_bg">
+		   <div id="comment-5664" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5664">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Recher : C&#8217;est marrant cet esprit de programmeur. En lisant ton comment, j&#8217;ai pas pu m&#8217;empêcher de coder le truc, juste pour voir.</p>
+<p>@nzo : un fizzbuzz, c&#8217;est pas une tenue de soubrette. Si un mec s&#8217;offusque en face de moi car on lui demande de passer 2 minutes de son temps à faire un test simple, je sais d&#8217;avance que je veux pas l&#8217;engager. Il s&#8217;intégrera jamais dans l&#8217;équipe. Mais je suis d&#8217;accord, les recruteurs veulent souvent un mec avec des super pouvoirs pour pas cher.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5665">
+		<div class="bottom_bg">
+		   <div id="comment-5665" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5665">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>meh&#8230; j&#8217;avais bien lu&#8230; ma question était rhétorique, je conteste l&#8217;utilité de ce test.</p>
+<p>&#8220;C’est pour virer les gars qui savent pas programmer.&#8221;</p>
+<p>Je demande la réalisation d&#8217;une appli CRUD basique pour ça (à faire chez soi, sans stress). On en apprend beaucoup plus&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5666">
+		<div class="bottom_bg">
+		   <div id="comment-5666" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b93cc4fb6413bbe5c837530662bee9b4?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Kontre</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5666">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>À ce propos, les deux derniers points de l&#8217;article ne sont pas contradictoires ? Les boîtes qui cherchent de bons devs ne montent pas plus les prix ? Et si non, pourquoi elles se plaignent ?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-5667">
+		<div class="bottom_bg">
+		   <div id="comment-5667" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5667">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@desfrenes : Le problème de l&#8217;appli CRUD c&#8217;est que ça pré suppose beaucoup de choses.</p>
+<p>Combien de temps suis-je supposer passer dessus ? Sur quoi je vais être jugé (qualité du code, et quels critères ? interface ? technique ?) ? Dois-je la dépoloyer ? Puis-je utiliser des libs ? Des outils d&#8217;automatisation ? Pourquoi oui ou non alors que ma situation est x et que je vais travailler dans z conditions ?</p>
+<p>Mais je +1, si on cherche un mec sérieux, je suis 100% pour lui faire coder une petite app chez lui. Ca ne peut pas faire de mal.</p>
+<p>J&#8217;ai néanmoins un goût amère dans la bouche. Dans mes jeunes années, un mec m&#8217;a demandé en test de faire une todo list. Il m&#8217;a jugé trop lent. J&#8217;ai checké leur code après : il était tout pourri. Forcément on peut produire un code de merde rapidement.</p>
+<p>Bref, c&#8217;est jamais simple.</p>
+<p>@Kontre : je crois qu&#8217;il y a dichotomie entre les CTO qui sont attérés par le niveau et dégoûté de trouver personne, et les RH qui posent les annonces. Globalement le recrutement est fait avec la méthode rache en france. Personne n&#8217;a envie de s&#8217;en occuper, et bien le faire, ça demande beaucoup de temps et de compétence. Google met entre 8 et 12 entretiens avant de se décider. Ca prend des mois. Par contre ils paient bien.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5668">
+		<div class="bottom_bg">
+		   <div id="comment-5668" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/66a5b3eca570baf8fd7320dd58663140?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">truxs</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5668">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Pour les offres on en revient à <a href="../la-difference-entre-une-offre-demploi-francaise-et-americaine/index.html" rel="nofollow">cette article</a>.</p>
+<p>Sinon dans les trucs différents j&#8217;ai récemment vu passé sur hacker.news une offre ou les gens devaient utiliser l&#8217;api de l&#8217;entreprise pour envoyer leur cv (en JSon).</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5669">
+		<div class="bottom_bg">
+		   <div id="comment-5669" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5669">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@sam Évidemment il faut ajuster le sujet en fonction du poste et/ou de la personne mais voilà en gros ce qu&#8217;on pourrait avoir:</p>
+<blockquote><p>
+Bonjour,</p>
+<p>Comme convenu voici le test que je vous propose, ayant pour but d&#8217;évaluer la qualité de votre travail.</p>
+<p>Il s&#8217;agit de réaliser une application classique et extrêmement simple de l&#8217;internet de la fin des années 90: le livre d&#8217;or.</p>
+<p>L&#8217;application proposera au minimum 2 écrans: la visualisation des messages et la saisie d&#8217;un nouveau message. A chaque message sera associé au minimum l&#8217;email de la personne ainsi que son nom et une date de saisie. Tout autre champ est facultatif.</p>
+<p>Sera pris en compte dans la qualité de l&#8217;implémentation: l&#8217;utilisation des motifs de conception courants aux applications web, la sécurité, la cohérence des données, la lisibilité du code, etc.</p>
+<p>La conception graphique ne sera pas pris en compte, en revanche la sémantique et l&#8217;accessibilité le seront.
+</p></blockquote>
+<p>Il est aussi précisé que c&#8217;est à faire en temps libre. Je ne précise pas s&#8217;il faut / si on peut utiliser des libs et c&#8217;est fait exprès parce que c&#8217;est une info intéressante (en gros, je suis devant un type astucieux et débrouillard qui prend plaisir à réinventer la roue ou devant quelqu&#8217;un qui privilégie l&#8217;efficacité dans la résolution d&#8217;un problème en reposant son travail sur celui des autres). Le truc est à rendre dans une archive et peu importe que les dépendances soit incluses ou non car de toute façon je n&#8217;exécute pas le résultat, je lis le code produit.</p>
+<blockquote><p>
+Il m’a jugé trop lent. J’ai checké leur code après : il était tout pourri.
+</p></blockquote>
+<p>Ils avaient besoin de rapidité pas de qualité, ils ont bien fait de pas te prendre (ou tu as bien fait de ne pas les satisfaire), tu aurais été malheureux à ce taf.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-5670">
+		<div class="bottom_bg">
+		   <div id="comment-5670" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5670">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Oui c&#8217;est vrai qu&#8217;avec le recul, j&#8217;ai eu de la chance.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5671">
+		<div class="bottom_bg">
+		   <div id="comment-5671" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/bb0b031df8fabde0415d53c92bb445bd?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Flo</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5671">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Recher : interessant comme exercice !<br />
+Je suis en train de chercher, mais je ne vois pas comment le faire de maniere &#8220;optimisee&#8221;, c&#8217;est a dire en evitant les doublons : 100 * 100 * 999 / 100 * 999 * 100 / 999 * 100 * 100.<br />
+Une piste ? :)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5672">
+		<div class="bottom_bg">
+		   <div id="comment-5672" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/bb0b031df8fabde0415d53c92bb445bd?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Flo</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5672">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>EDIT : Je suis con -_-, c&#8217;est ca de parler avant d&#8217;avoir vraiment teste&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max even thread-even depth-1" id="li-comment-5673">
+		<div class="bottom_bg">
+		   <div id="comment-5673" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5673">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@flo</p>
+<p>Sanca Julien&#8230; Recâlé !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5674">
+		<div class="bottom_bg">
+		   <div id="comment-5674" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/bb0b031df8fabde0415d53c92bb445bd?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Flo</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5674">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Max : AHAHAHA YEAH !!!!<br />
+J&#8217;avais fais expres :-)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max even thread-even depth-1" id="li-comment-5675">
+		<div class="bottom_bg">
+		   <div id="comment-5675" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5675">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><blockquote><p>Ils avaient besoin de rapidité pas de qualité, ils ont bien fait de pas te prendre (ou tu as bien fait de ne pas les satisfaire), tu aurais été malheureux à ce taf.</p></blockquote>
+<p>Un paquet de bons devs ne comprennent pas ce besoin mais ce sujet a <a href="../developper-un-projet-a-la-va-vite-vs-developper-un-projet-en-mode-pro-dev/index.html" rel="nofollow">déjà été traité ici </a></p>
+<p>C&#8217;est pas simple ma bonne dame, d&#8217;un autre côté je connais un manager qui galère à trouver un dev même avec le minimum (PHP et un peu mysql/js etc). La plupart qui se présentent ne savent rien et veulent des salaires mirobolants parcequ&#8217;ils ont pris option multimédia à l&#8217;école.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5677">
+		<div class="bottom_bg">
+		   <div id="comment-5677" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/ff30db9cd01962644d74dbacbb6dcb74?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://khertan.net' rel='external nofollow' class='url'>khertan</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5677">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Commentaire.</p>
+<p>Dans le genre entretien inutile, certains cabinets de recrutement qui attende que le candidat prononce une liste de mot clefs &#8230; En général le nom de certain pattern java &#8230; Expliquer au recruteur ce qu est un pattern et que c est comme les positions du kamasutra &#8230; y a un nom different avec le petit orteil levé ou pas&#8230;<br />
+Les tests d algo,<br />
+Recruteur : comment inversé vous une chaine de caractères ?<br />
+Moi: &#8216;azerty&#8217;[::-1]<br />
+Recruteur: Mais il faut une boucle &#8230;<br />
+Moi: Un language haut niveau c est pas pour réinventer une roue carré</p>
+<p>Sinon je recherche un poste de dev/codeur/pisseur python avec télétravail partiel ou total sur l idf &#8230;<br />
+<a href="http://khertan.net" rel="nofollow">http://khertan.net</a><br />
+[/pub]</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5678">
+		<div class="bottom_bg">
+		   <div id="comment-5678" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5678">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Une factorielle&#8230; Ça peu paraître évident à plein de monde, mais moi qui ai fait la moitié de mes humanité, puis de la sociologie après examen d&#8217;entrée, vous pensez bien que ma culture mathématique est pas terrible (ce qui veut pas dire que je suis nul en math).</p>
+<p>J&#8217;ai su ce qu&#8217;est une factorielle (je sais aussi que j&#8217;ai jamais eu besoin d&#8217;en utiliser, c&#8217;est sans-doute pour ça que j&#8217;ai pas retenu), je sais que c&#8217;est pas compliqué, et je sais qu&#8217;en deux minutes sur google je retrouve ce que c&#8217;est, et je ne doute pas que je saurais coder ça avec récursion. Mais si on me demande à brûle-pourpoint de produire quelque chose qui est basé là-dessus sans m&#8217;expliquer ce qu&#8217;il en est, je suis cuit.</p>
+<p>Et pour le fizz buzz du haut, je l&#8217;ai fait en deux minutes, mais j&#8217;ai d&#8217;abord testé le fizz, puis le buzz, puis le fizzbuzz, comme un con, dans le sens de l&#8217;énoncé quoi. Le genre de trucs par lequel je me fais toujours avoir&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-5679">
+		<div class="bottom_bg">
+		   <div id="comment-5679" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5679">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@khertan: va sur notre twitter, on retweet souvent des offres. Sinon jobs.humancoders.com et le site de l&#8217;afpy.</p>
+<p>@Etienne : c&#8217;est clair que sur papier ça change la donne, c&#8217;est pas pareil que tester au fur et à mesure.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5680">
+		<div class="bottom_bg">
+		   <div id="comment-5680" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5680">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;passer 2 minutes de son temps à faire un test simple, je sais d’avance que je veux pas l’engager.&#8221; m&#8217;engage jamais je déteste l&#8217;ambiance start-up où tout le monde est cool ! ;), j&#8217;aime pas les gars cools, gentils et hypes&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5681">
+		<div class="bottom_bg">
+		   <div id="comment-5681" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5681">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Ouais bof, les offres d&#8217;emploi de l&#8217;AFPY ! C&#8217;est pas l&#8217;association avec un site de 98 en plone, avec un flux RSS long comme mon bras avec que de la news fraîche d&#8217;y a 2 ans ?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5682">
+		<div class="bottom_bg">
+		   <div id="comment-5682" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5682">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;de passer 2 minutes de son temps à faire un test simple, je sais d’avance que je veux pas l’engager&#8221;</p>
+<p>Sauf qu&#8217;avant tu as oublié de dire plein de choses :</p>
+<p>- tu fais 200 bornes car maintenant tout se passe chez ces gros cons de parisiens qui ont peur quand on leur dit bonjour dans la rue,</p>
+<p>- l&#8217;intitulé de l&#8217;offre est bidon sur toute la ligne, on te dit dev et tu finis à faire en plus du support et de l&#8217;admin,</p>
+<p>- à l&#8217;entrée on t&#8217;a demandé une nouvelle fois de remplir un formulaire type de CV alors que tu leur as déjà donné un CV détaillé (je sais pourquoi mais bon),</p>
+<p>- tu as poireauté 45 mn avant avec des merdeux sortis de l&#8217;école avec encore du lait au bout de leur nez qui révisent leurs cours pensant qu&#8217;on va leur demander un diagramme UML ;),</p>
+<p>- pour la partie personnalité comme ils disent, ils étaient 4 à te faire chier sur la taille de ton slip avec un bouquin de Sarkozy sur le bureau (véridique)&#8230;</p>
+<p>Alors oui, messieurs les recruteurs, allez vous faire enculer, prenez de l&#8217;indien en off-shore et demerdez-vous avez vos clients de merde de chez Orange, Axa et autres collabos assimilés. Restez avec vos projets pourris surfacturés et mal conçus ! Gardez vos frameworks Java et toutes vos usines à gaz, je m&#8217;en branle : &#8220;chez moi ça marche&#8221; ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5683">
+		<div class="bottom_bg">
+		   <div id="comment-5683" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5683">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;that escalated quickly&#8221; ^^</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5684">
+		<div class="bottom_bg">
+		   <div id="comment-5684" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5684">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Pour vraiment kiffer le recrutement dans son cynisme le plus prononçé je vous conseille les entités ou entreprises suivantes : GFI à Douai, des enculés de première, OVH Lille, une bande de gitans polonais, si t&#8217;es pas polonais, essaye même pas faudra sucer, l&#8217;ANSSI qui bombardent tous les magasines sur le libre avec leurs offres super cools, et bien non ce sont de gros enculés, qui ne paient pas et qui adorent jouer aux agents secrets en carton ;) avec votre pognon et aider les entreprises du CAC40 à fliquer leurs salariés.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5685">
+		<div class="bottom_bg">
+		   <div id="comment-5685" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5685">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;Il parait que l’humain est à son pic-brain. (dixit: science et vie), et qu’on n’ira pas plus loin en capacités cognitives.<br />
+ça fout les j’tons…&#8221;</p>
+<p>C&#8217;est en général ce que dit la propagande néo-libérale pour légitimer certains de leurs actes, c&#8217;est vieux comme le monde&#8230;c&#8217;est comme de dire d&#8217;un révolté qu&#8217;il est parano, c&#8217;est du même style&#8230;c&#8217;est du bullshit.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5686">
+		<div class="bottom_bg">
+		   <div id="comment-5686" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5686">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;À sa surprise, 90 % des candidats s’y cassent les dents, ce qui lui permet de ne passer du temps qu’avec le reste.&#8221; La suite du test : primitives, dérivées, intégrales&#8230;n&#8217;oubliez pas de réviser avant chaque entretien ;) et n&#8217;oubliez pas votre TI82, votre compas et votre gomme ! Pour votre intégration dans la boîte une dissertation et un mémoire à rendre avec la fin de la semaine : bref c&#8217;est ridicule ! A quand un Acadomia pour les dev demandeur d&#8217;emploi ;) : monde de merde !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5687">
+		<div class="bottom_bg">
+		   <div id="comment-5687" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5687">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Moi je suis pour la fizz mandale dans la tronche des recruteurs, tu sais le genre de mandale qui vient bien de haut et de loin et qui claque bien sur la joue et qui fait siffler les oreilles !<br />
+Mais c&#8217;est bien connu, les meilleures tête à claque sont dans les SSII : Atos, Unilog, GFI, Sopra et sous-merdes du même acabit.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5688">
+		<div class="bottom_bg">
+		   <div id="comment-5688" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/cf8c6f3e63e19f4712032485551c32eb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">calagan</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5688">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Et bien moi c&#8217;est différent, comme je n&#8217;ai rien à foutre de mes journées(vrai ingé BAC+5), j&#8217;envoie plein de supers C.V bidons à des SSII qui m&#8217;appellent. Je négocie longtemps au téléphone sur le salaire, je les fais chier bien longtemps avec des aller-retour et au final, je leur dis d&#8217;aller se faire foutre, je leur apprends tout doucement à savoir ce que c&#8217;est de se sentir comme une merde de chien et de perdre son temps avec des cons, je vous le conseille ça marche super bien ! On pioche facile avec les mots à la mode : java, seo, ceo, responsive design, design pattern, méthode agile, ios&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5689">
+		<div class="bottom_bg">
+		   <div id="comment-5689" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">désanuseur</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5689">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Etienne</p>
+<p>def factorielle(x):<br />
+    if x &lt; 2:<br />
+        return 1<br />
+    else:<br />
+	return x * factorielle(x-1)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5690">
+		<div class="bottom_bg">
+		   <div id="comment-5690" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">désanuseur</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5690">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Les jeunes, encore naifs et plein d&#8217;entrain : c&#8217;est attendrissant ! Réveillez-vous, si on vous embauche ce n&#8217;est pas parce-que vous êtes bons ou compétents, ça se saurait, c&#8217;est uniquement parce-que vous êtes moins chers et/ou plus malléables qu&#8217;un autre&#8230; Bientôt sinon vous allez me dire qu&#8217;un chef de projet c&#8217;est un super bon développeur qui finit sa carrière !! Et bien non, un chef de projet c&#8217;est un naze et on veut surtout pas qu&#8217;il touche au code ! Bisous tendres ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5692">
+		<div class="bottom_bg">
+		   <div id="comment-5692" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5692">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@anucunnilinguiste<br />
+Ça devrait te plaire: <a href="http://www.myspace.com/music/player?sid=20467252&amp;ac=now" rel="nofollow">Monsieur le DRH</a> (ce sont des petits gars de Lilles)</p>
+<p>@désanuseur<br />
+oui, je pensais bien que c&#8217;était ça</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5695">
+		<div class="bottom_bg">
+		   <div id="comment-5695" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/055aebd1a3bcbb6ebfb91633d271e47d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.korezian.net/' rel='external nofollow' class='url'>JEEK</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5695">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Retex et commentaires intéressants ; dites, ça ne donne que moyennement envie de pisser de la ligne dans une partie des boites françaises tout ça&#8230;<br />
+:-|</p>
+<p>J&#8217;espère que vous trouvez le moyen de vous éclater les gars (et les filles) ?</p>
+<p>&#8220;pic-brain&#8230;capacités cognitives au taquet&#8221; ? P&#8217;tain faut avoir fait polyclinique +5 pour sortir ce genre de truc&#8230;<br />
+&#8230;ils faut dans le &#8220;loto réunion&#8221; chez science et vie ?<br />
+Dans ce cas, je me lève et je dis &#8220;foutaises&#8221; !!! :-D</p>
+<p>Plus sérieusement, on s&#8217;adapte par l&#8217;expérience et le cerveau ne fait pas exception (on parle de neuroplasticité) ; ce dont on a plus besoin s&#8217;émousse et disparait et ce qu&#8217;on commence à rencontrer remodèle le bordel ; les connexions se réinitialisent et : &#8220;let&#8217;s go Diego&#8221;&#8230;</p>
+<p>L&#8217;humain doit rester humain ; il a déjà survécu à pas mal de conneries, il survivra encore et s&#8217;adaptera (enfin j&#8217;espère) !</p>
+<p>NB: ça se voit que j&#8217;adore lire ce blog ? Non mais parce que si ça ce voit pas, eh bah je le dis&#8230;<br />
+;-)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-5696">
+		<div class="bottom_bg">
+		   <div id="comment-5696" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5696">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>anucunnilinguiste il poste pas souvent, mais à chaque fois je suis mort de rire.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5698">
+		<div class="bottom_bg">
+		   <div id="comment-5698" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/1b0b2402487fb800b68f3fc82ea9a024?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.ecyseo.net' rel='external nofollow' class='url'>jerrywham</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5698">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Tout ça me fait penser au bon chasseur et au mauvais chasseur. Le bon chasseur, il voit une galinette (sandrée), il vise et il tire.<br />
+Le mauvais chasseur, il voit une galinette&#8230;, il vise et&#8230;. il tire !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5699">
+		<div class="bottom_bg">
+		   <div id="comment-5699" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5699">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Sam, on m&#8217;appelle le &#8220;modéré&#8221; !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5701">
+		<div class="bottom_bg">
+		   <div id="comment-5701" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5701">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;Retex et commentaires intéressants ; dites, ça ne donne que moyennement envie de pisser de la ligne dans une partie des boites françaises tout ça…&#8221;</p>
+<p>Et bien franchement si tu as le choix, fais autre chose, dans l&#8217;informatique c&#8217;est des cons, ils ont des blagues pourries, y a pas de meufs et on passe ses week-ends à réparer des PC de merde de sa connasse de cousine alors que toi t&#8217;es habitué à de la fibre inter continentale et à des disques en fiber channel ! </p>
+<p>Nous ce qu&#8217;on veut en informatique c&#8217;est rêver des bordels de Manaus et d&#8217;Indochine, sentir la petite culotte de la dernière stagiaire RH, mais ça Walou, tu auras rien, tu auras des cons de chefs, des cons de clients et du reporting à te faire dégueuler et à regretter sa dernière cuite au rhum, tu sais celle où t&#8217;as montré ton cul aux collègues de ta copine ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5702">
+		<div class="bottom_bg">
+		   <div id="comment-5702" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5702">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@JEEK</p>
+<p>Et puis tu sais un BAC +5 pour faire du php ou traiter des fichiers textes, tu vas adorer ;) et si tu veux vraiment t&#8217;éclater je te conseille le domaine noble de l&#8217;informatique : &#8220;le support&#8221; ou pire l&#8217;agence de com ou web agence je te préviens, tu vas adorer !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5703">
+		<div class="bottom_bg">
+		   <div id="comment-5703" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5703">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@JEEK</p>
+<p>&#8220;J’espère que vous trouvez le moyen de vous éclater les gars (et les filles) ?&#8221;</p>
+<p>On s&#8217;éclate chez soi, en milieu professionnel on subit et on s&#8217;adapte en fonction de nos capacités telle une sous-merde rampante ;)! Heureusement dans ma boîte, on nous fournit des poupées Real Dolce, ça évite les meurtres ou des exactions barbares à l&#8217;encontre de nos conjointes ;) ou pire de nos progénitures !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max odd alt thread-odd thread-alt depth-1" id="li-comment-5705">
+		<div class="bottom_bg">
+		   <div id="comment-5705" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5705">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Ben dites donc les gars&#8230; J&#8217;ai de la peine pour vous. Ne voyez pas dans ma réponse une quelconque vantardise mais plutôt un soulagement.</p>
+<p>En effet dans les années 2000 j&#8217;ai arrêté mes études après avoir obtenu le bac. Et j&#8217;ai toujours été inquiet de ne pas avoir continué en DUT ou école d&#8217;ingé, en fait si j&#8217;ai fais une école d&#8217;ingé son mais ça n&#8217;a rien à voir. Ingénieur ne voulant rien dire dans ce domaine, c&#8217;est plutôt technicien.</p>
+<p>Depuis j&#8217;ai bossé que 2 fois dans le secteur web pour 2 boîtes. Ca s&#8217;est bien passé comparé à vous. Depuis 2005 je suis à mon compte et franchement si ça devait s&#8217;arrêter je me vois mal passer un entretien d&#8217;embauche avec ce que vous dites&#8230;</p>
+<p>Je suis donc soulagé d&#8217;être à mon compte car :<br />
+- Je code comme une merde<br />
+- je fais pas de doc<br />
+- je sais pas résoudre la question du fizzbuzz sur papier<br />
+- je sais pas ce que c&#8217;est une factorielle, ni un uml, et plein d&#8217;autres trucs<br />
+Ceci dit:<br />
+- Je renifle les petites culottes des thailandaises 3 fois par an<br />
+- je peux dormir des journées entières devant la télé<br />
+- je peux passer une semaine sans bosser et personne me dit rien<br />
+- je vais tous les ans en allemagne me taper les soeurs de Karembeu<br />
+- aucun connard vient me rabâcher à longueur de journée que je suis un deumeuré<br />
+- j&#8217;ai visité plein de pays sans avoir à me dire qu&#8217;il fallait que je rentre pour rendre des comptes au CEO</p>
+<p>Bref, je suis soulagé quelque part de pas avoir pris la voie du dev sorti de l&#8217;école (de toutes façons j&#8217;aurais été un très mauvais dev).</p>
+<p>Si je peux me permettre un conseil, essayez de monter un projet avant de vous reveiller à 40 balais et à voir que vous êtes encore le larbin d&#8217;un chef. Même si vous vous plantez vous aurez le mérite d&#8217;avoir essayé et pas de regret !<br />
+Piquez des idées déjà vues, refaites des sites déjà existants, bref sortez du carcan dev même si vous pensez savoir que coder et rien faire d&#8217;autre.</p>
+<p>Bon je vais aller voir les billets pour l&#8217;allemagne, y a des promos&#8230;</p>
+<p>PS: à poil les putes</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5706">
+		<div class="bottom_bg">
+		   <div id="comment-5706" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Désanuseur</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5706">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Max es-tu sur Paris, car le lieu change énormément de choses&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5707">
+		<div class="bottom_bg">
+		   <div id="comment-5707" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5707">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Faut que je fasse comme vous, que je me lance dans le sexe ;)</p>
+<p>Y a que cela qui paie de nos jours : un petit partenariat avec Jacquie et Michel et c&#8217;est parti&#8230;un faux portail de rencontre avec plein de pop, des sites dérivés, je vais me gaver ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5708">
+		<div class="bottom_bg">
+		   <div id="comment-5708" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/cf8c6f3e63e19f4712032485551c32eb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">calagan</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5708">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;Si je peux me permettre un conseil, essayez de monter un projet avant de vous reveiller à 40 balais et à voir que vous êtes encore le larbin d’un chef.&#8221;</p>
+<p>Merci ça fait plaisir ;), mais heureusement pour me contentez, j&#8217;ai aussi mes propres larbins ;)</p>
+<p>Je n&#8217;ai jamais trop adhéré au concept de &#8220;projet&#8221;, c&#8217;est un truc sauce UMP ce concept pour moi, un truc de manager performer, un gars qui s&#8217;épile voire gay, faut avoir des projets pour tout pour être dans le move :</p>
+<p>- des projets professionnels,<br />
+- des projets personnels,<br />
+- des projets familiaux,<br />
+- des projets sportifs,<br />
+- des projets de voyages,<br />
+- des projets de couples &#8230;</p>
+<p>Bref en gros, ça m&#8217;emmerde les projets,je me demande même si je vais continuer à travailler et à me laver&#8230; ;) ou si je vais partir tout de suite me gratter la bite devant ma PS3 ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5709">
+		<div class="bottom_bg">
+		   <div id="comment-5709" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5709">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Cher auditeurs, vous remarquerez quand même la qualité des différentes interventions, des commentaires en HD.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5710">
+		<div class="bottom_bg">
+		   <div id="comment-5710" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5710">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Twitter est devenu futile voire has-been depuis le site sametmax.com ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5711">
+		<div class="bottom_bg">
+		   <div id="comment-5711" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5711">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p><strong>&#8220;Une langue pour les dominer toutes&#8221; </strong></p>
+<p>Telle est la devise de ma communauté de l&#8217;anneau, celle qui agrandit le cercle de ses connaissances ;) par le petit trou tout noir, tu sais celui où il fait sombre et qui sent pas bon !</p>
+<p><i>Anucunnilinguiste, ma langue au service de la France !</i></p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max even thread-even depth-1" id="li-comment-5714">
+		<div class="bottom_bg">
+		   <div id="comment-5714" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5714">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@désanuseur</p>
+<p>Non, j&#8217;ai fais mes études à Paris mais j&#8217;ai quitté cette région de suite après car je n&#8217;aime pas Paris sauf en tant que touriste.<br />
+Je me doute bien que ça ne doit pas être pareil qu&#8217;ailleurs mais bon le métier de dev ne se limite pas à Paris même si je sais que les Français sont sédentaires ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5717">
+		<div class="bottom_bg">
+		   <div id="comment-5717" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Désanuseur</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5717">29/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p><span class="mention"></span><a href="http://www.haterz.fr/degenerappeur/322769-stomy-bugsy-violemment-agresse-par-sam-et-max-pendant-les-elections-presidentielles.html" rel="nofollow">http://www.haterz.fr/degenerappeur/322769-stomy-bugsy-violemment-agresse-par-sam-et-max-pendant-les-elections-presidentielles.html</a></p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5725">
+		<div class="bottom_bg">
+		   <div id="comment-5725" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5725">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Pleinement d&#8217;accord avec Max. On n&#8217;a qu&#8217;une vie, faut au moins essayer d&#8217;en faire quelque chose de sympa.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5732">
+		<div class="bottom_bg">
+		   <div id="comment-5732" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/590ab8e31e515d6d8666c8b81f3a1317?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Bussiere</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5732">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Si vous voulez deprimer encore plus , quand j&#8217;etais jeune et que j&#8217;avais besoin de sous j&#8217;ai fait des projets infos d&#8217;etudiant de dauphine.</p>
+<p>Ensuite c&#8217;est sexiste mais j&#8217;ai vu pas mal de nanas valider des diplomes info dont dut sans savoir coder.</p>
+<p>Elles allaient juste de geek en geek pour les projets.</p>
+<p>Ce qui me deprime aussi c&#8217;est que ce sont des gens qui se retrouvent en tant que consultant a te dire quoi coder / faire.</p>
+<p>Et eux font des petits bonhomme niveau maternelle (uml / merise).</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5733">
+		<div class="bottom_bg">
+		   <div id="comment-5733" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5733">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Bussiere</p>
+<p>J&#8217;en ai connue aussi des connasses qui ont leur diplôme grâce à mon code C ;), mais je suis grand seigneur et je me dis que sans moi elles ne seraient rien ;) ! J&#8217;ai donc le droit de cuissage à vie désormais !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-5734">
+		<div class="bottom_bg">
+		   <div id="comment-5734" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5734">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>C&#8217;est dingue comme ce poste, parti d&#8217;un snippet amusant, a dégénéré en une diarrhée de commentaires qui mélange lutte des classes et sexisme. Internet a quelque chose de magique.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5735">
+		<div class="bottom_bg">
+		   <div id="comment-5735" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5735">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Le secteur informatique est bourré d&#8217;usurpateurs en tout genre ! </p>
+<p>Il faut chasser le marketing et le commercial de nos secteurs pour retrouver la vraie notion de &#8220;science informatique&#8221;.</p>
+<p>Et remettre de cursus &#8220;hard&#8221; de sciences techniques et arrêtez de se toucher le zizi avec le management, la gestion, le marketing et le commercial. On retrouvera de vrais ingénieurs et pas des sous-merdes rampantes à Ipad !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5736">
+		<div class="bottom_bg">
+		   <div id="comment-5736" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5736">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;lutte des classes&#8221;</p>
+<p>La vie entière est une lutte des classes : </p>
+<p>- on a des salaires inférieurs au chef,<br />
+- ton voisin a une plus grosse voiture que la tienne,<br />
+- ton pote part en voyage,<br />
+- tu as un super ordinateur et pas ton voisin,<br />
+- ton voisin a un meilleur job que toi alors qu&#8217;il a rien branlé à l&#8217;école&#8230;</p>
+<p>Chacun veut ce qu&#8217;il n&#8217;a pas et ce que l&#8217;autre possède. La vie est une lutte de classes permanente. La propagande mondialiste veut nous faire croire que la lutte des classes est un vieux concept marxiste, il n&#8217;en ai rien. La guerre entre développeurs et chefs de projets est une lutte de classe, peu importe de quelle manière en habille le concept par un vocabulaire politiquement correct. Pour rendre cette lutte des classes moins visible, l&#8217;élite a fractionné ces classes en sous-classes que l&#8217;on appelle minorités : juifs, femmes, handicapés, immigrés, salariés privés, salariés publics, riches, pauvres. La division est la meilleure arme pour diluer des concepts majeurs en communautés disparates que l&#8217;on monte les unes contre les autres afin de gouverner. Vous avez une des raisons pour laquelle les politiques de gauche laissent la classe ouvrière à l&#8217;abandon au profit des minorités (lobby juif, lobby homo, lobby écolo)&#8230;Le travail actuel de l&#8217;élite mondial est de casser la classe moyenne et elle réussit assez bien car seule la classe moyenne est apte à réfléchir et à potentiellement s&#8217;organiser et se rebeller. La classe moyenne est la garante d&#8217;une stabilité sociale et politique, sans elle le politique est soumis aux groupes de pression et c&#8217;est exactement ce qu&#8217;il se passe actuellement.</p>
+<p>Alors aux armes citoyens, formez vos bataillons, marchons, marchons !!</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5737">
+		<div class="bottom_bg">
+		   <div id="comment-5737" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5737">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Cela dit j&#8217;ai toujours trouvé les informaticiens assez mous de la bite politiquement. Le peu d&#8217;esprit critique est généralement exprimé discrètement, timidement, naïvement derrière un écran par des mots trop sucrés et consensuels. Cela dit, je comprends qu&#8217;il est difficile d&#8217;être des rebelles lorsque notre fonction est de finalement, par l&#8217;optimisation des processus de production, de constituer le bras armé du capitalisme et du néolibéralisme.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5738">
+		<div class="bottom_bg">
+		   <div id="comment-5738" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5738">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Faudrait une nouvelle sorte de tampon pour ce genre de post ^^</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5739">
+		<div class="bottom_bg">
+		   <div id="comment-5739" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5739">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Sam</p>
+<p>&#8220;lutte des classes et sexisme.&#8221;</p>
+<p>La guerre des sexes est une lutte de classes&#8230;N&#8217;avons-nous pas un ami sociologue dans l&#8217;assemblée ? C&#8217;est dans son programme pourtant tout cela ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5740">
+		<div class="bottom_bg">
+		   <div id="comment-5740" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5740">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>J&#8217;arrête pas de le dire: on trouve vraiment de tout sur ce blog, c&#8217;est ça qui est bien.</p>
+<p>Le capitalisme serait-il programmé objet, avec toutes ces classes? Un gros plat de raviolis?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5741">
+		<div class="bottom_bg">
+		   <div id="comment-5741" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5741">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Anucunnilinguiste<br />
+si tu veux mon avis: </p>
+<p>1. La &#8220;guerre des sexe&#8221; a été perdue par les femmes qui la faisaient, même si beaucoup ne s&#8217;en rendent pas encore compte.</p>
+<p>2. Un classe au sens marxiste se définit par la possession ou non des moyens de production dans un système de production capitaliste. Rien à voir avec le sexe.</p>
+<p>3. Les problèmes des devs et autres codeurs avec leur environnement de travail, leurs petits chefs, la nature de leurs tâches etc&#8230; ne relève pas techniquement de la lutte des classes. Les petits chefs font partie de la même classe que les travailleurs (ils sont tous salariés). </p>
+<p>4. Ce que tu racontes (&#8220;diviser pour régner&#8221;) est tout à fait intéressant.</p>
+<p>5. Le sociologue que je fus a parlé. Hug!</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5742">
+		<div class="bottom_bg">
+		   <div id="comment-5742" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5742">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;Le capitalisme serait-il programmé objet, avec toutes ces classes? Un gros plat de raviolis?&#8221;</p>
+<p>J&#8217;aime ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5743">
+		<div class="bottom_bg">
+		   <div id="comment-5743" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5743">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Etienne</p>
+<p>J&#8217;ai pris effectivement des raccourcis intellectuels, je m&#8217;en excuse, j&#8217;ai seulement la flemme d&#8217;écrire 4 pages pour expliquer davantage pour à la fin être traité de communiste ;) ou d&#8217;emmerdeur !</p>
+<p>Merci de me faire relire Proudhon ;) (&#8220;Qu&#8217;est-ce que la propriété&#8221;) ;), j&#8217;avais bien pris cet angle néanmoins ;) mais de manière touffue ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5744">
+		<div class="bottom_bg">
+		   <div id="comment-5744" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5744">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Anucunnilinguiste<br />
+Personnellement, dans ce genre de contexte je vois pas pourquoi on ferait chier le monde avec le sens exact des concepts (sens au sujet duquel il y a rarement consensus, d&#8217;ailleurs). Ce qui est important je crois c&#8217;est leur pouvoir évocateur, qu&#8217;ils fassent dire et penser des choses intéressantes.</p>
+<p>Pour le reste, on est plus à l&#8217;école!</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5747">
+		<div class="bottom_bg">
+		   <div id="comment-5747" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Anucunnilinguiste</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5747">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Bonne conclusion ;)</p>
+<p>Mais ici on reste quand même un peu à l&#8217;école ;) au regard de la qualité des enseignements pythonesques !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5749">
+		<div class="bottom_bg">
+		   <div id="comment-5749" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5749">30/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Un digne descendant de Socrate, ce Sam</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max even thread-even depth-1" id="li-comment-5761">
+		<div class="bottom_bg">
+		   <div id="comment-5761" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5761">31/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>je crois que le premier lien marche pas (imran glory &#8220;hole&#8221;) , t&#8217;es recâlé ou pas ? :)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5784">
+		<div class="bottom_bg">
+		   <div id="comment-5784" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/846da089e878a04ddde56c9f2f7f1a46?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">okso</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5784">31/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Etienne, @désanuseur</p>
+<p>Sinon pour la factorialle, j&#8217;ai ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">reduce</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> a, b: <span style="color: black;">&#40;</span>a <span style="color: #66cc66;">*</span> b<span style="color: black;">&#41;</span>, <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>,x+<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>* mais <em>reduce</em> a été viré en py3k -&gt; import pour ça ça chie</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5786">
+		<div class="bottom_bg">
+		   <div id="comment-5786" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/055aebd1a3bcbb6ebfb91633d271e47d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.korezian.net/' rel='external nofollow' class='url'>JEEK</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5786">31/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@ Anucunnilinguiste : ooh bah tu sais, je bosse dans le domaine depuis 1995, je suis passé par pas mal de stades (<em>y compris hotline, supports et tralala</em>), depuis un peu plus de 3 ans je fais de la formation et à la base&#8230;<br />
+&#8230;j&#8217;ai BAC -2 et je suis autodidacte à quasi 100% ! :-D</p>
+<p>Et le pire, c&#8217;est que bien souvent : je m&#8217;éclate à mon boulot !<br />
+J&#8217;suis pas un pisseur de ligne et je code comme un admin système du chaos&#8230;</p>
+<p>Sérieusement, j&#8217;espère que tu t&#8217;éclates quand même de temps en temps !<br />
+;-)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5823">
+		<div class="bottom_bg">
+		   <div id="comment-5823" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/de3d107ed1ccad362b44763106a78178?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.olissea.com/' rel='external nofollow' class='url'>JeromeJ</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5823">01/02/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Moi j&#8217;appelle ça des POC, j&#8217;adore les POC.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5825">
+		<div class="bottom_bg">
+		   <div id="comment-5825" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/337428a6e34734f07be5de0c8ae454cb?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Etienne</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5825">01/02/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Programmeurs Obsessionnels Compulsifs?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-5828">
+		<div class="bottom_bg">
+		   <div id="comment-5828" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/de3d107ed1ccad362b44763106a78178?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.olissea.com/' rel='external nofollow' class='url'>JeromeJ</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5828">01/02/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Ahaha, Proof Of Concept (au cas où tu n&#8217;étais pas dans le second degré).</p>
+<p>J&#8217;adore me lancer ce genre de ptit challenge, essayer de faire un purée de programme en le moins de lignes possibles, ça prouve aussi que tu gères le langages et les biblios :p</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5837">
+		<div class="bottom_bg">
+		   <div id="comment-5837" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/fc32c6686686ecc595f05ad1885c2fb3?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">roro</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5837">02/02/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@JeromeJ:<br />
+Et un challenge, un:<br />
+Cahier des charges:<br />
+Faire un exécutable Avec trois boutons.<br />
+Bouton 1: ouvre l&#8217;explorateur de fichiers.<br />
+Bouton 2: Réindente. Avec le script des &#8220;tools&#8221;.<br />
+Bouton 3: Save as.<br />
+compatible v2 et v3<br />
+à combien de lignes estime-tu la chose ?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10871">
+		<div class="bottom_bg">
+		   <div id="comment-10871" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b4940d1751e4d32e8e4357d63439c689?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">tarzan</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-10871">14/07/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>à l&#8217;arrache pour apprendre le python (oui je fais du java) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#on utilise des librairies toutes faites</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> convertascii<span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>:
+  <span style="color: #483d8b;">&quot;&quot;&quot;
+  retourne i sans les accents 
+  à l'œuil  -&amp;gt; a l luil (le œ n'est ni o ni e)
+  &quot;&quot;&quot;</span>
+  <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span>, <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;utf8&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span>, <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> charslower<span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>:
+  <span style="color: #483d8b;">&quot;&quot;&quot;retourne les lettres de s, en minsucule
+  &quot;&quot;&quot;</span>
+  <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">re</span>.<span style="color: black;">findall</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'[a-zA-Z0-9]'</span>,s.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> ispalyndrome<span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>:
+  <span style="color: #483d8b;">&quot;&quot;&quot;
+  palyndrome(i) ssi i est le même dans les deux sens
+  modulo accents, ponctuation, et casse
+  &quot;&quot;&quot;</span>
+  s=charslower<span style="color: black;">&#40;</span>convertascii<span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+  <span style="color: #ff7700;font-weight:bold;">return</span> s==s<span style="color: black;">&#91;</span>::-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> printpaly<span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>:
+  <span style="color: #483d8b;">&quot;&quot;&quot;
+  on affiche en français si quelque chose d'affichable est un palyndrome
+  &quot;&quot;&quot;</span>
+  <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;%s %s un palyndrome&quot;</span> <span style="color: #66cc66;">%</span><span style="color: black;">&#40;</span>i, <span style="color: #483d8b;">&quot;est&quot;</span> <span style="color: #ff7700;font-weight:bold;">if</span> ispalyndrome<span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">else</span> <span style="color: #483d8b;">&quot;n'est pas&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #483d8b;">''</span><span style="color: #483d8b;">' un peu de tests visuels. comment faire des tests unitaires en python ?'</span><span style="color: #483d8b;">''</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> mot <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">25</span>, <span style="color: #ff4500;">252</span>, <span style="color: #483d8b;">&quot;ta mere&quot;</span>, <span style="color: #483d8b;">&quot;radar&quot;</span>, <span style="color: #483d8b;">&quot;À la corde, Pedro cala&quot;</span>, <span style="color: #483d8b;">&quot;un œuil&quot;</span>, <span style="color: #483d8b;">&quot;Ce méga taré ! Même las, Lee, tu as sauté Elsa : le même ratage mec !&quot;</span><span style="color: black;">&#93;</span>:
+  printpaly<span style="color: black;">&#40;</span>mot<span style="color: black;">&#41;</span>
+&nbsp;
+maxpaly=<span style="color: #ff4500;">100</span><span style="color: #66cc66;">*</span><span style="color: #ff4500;">100</span><span style="color: #66cc66;">*</span><span style="color: #ff4500;">100</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">math</span> <span style="color: #ff7700;font-weight:bold;">import</span> sqrt
+<span style="color: #ff7700;font-weight:bold;">for</span> a <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">900</span>, <span style="color: #ff4500;">999</span><span style="color: black;">&#41;</span>:
+  minBval=<span style="color: #008000;">int</span><span style="color: black;">&#40;</span>sqrt<span style="color: black;">&#40;</span>maxpaly/a<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+  <span style="color: #ff7700;font-weight:bold;">for</span> b <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span>minBval, a<span style="color: black;">&#41;</span>:
+    minCval=maxpaly/a/b
+    <span style="color: #ff7700;font-weight:bold;">for</span> c <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span>minCval, b<span style="color: black;">&#41;</span>:
+      m=a<span style="color: #66cc66;">*</span>b<span style="color: #66cc66;">*</span>c
+      <span style="color: #ff7700;font-weight:bold;">if</span> ispalyndrome<span style="color: black;">&#40;</span>m<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> maxpaly<span style="color: #66cc66;">&amp;</span>lt<span style="color: #66cc66;">;</span>m:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #66cc66;">&amp;</span>quot<span style="color: #66cc66;">;%</span>i <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">%</span>i <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">%</span>i = <span style="color: #66cc66;">%</span>i<span style="color: #66cc66;">&amp;</span>quot<span style="color: #66cc66;">;%</span><span style="color: black;">&#40;</span>a, b, c, m<span style="color: black;">&#41;</span>
+        maxpaly=m</pre></div></div>
+
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-12491">
+		<div class="bottom_bg">
+		   <div id="comment-12491" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/6bf06f2872e602602b56c5670e424665?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">lilian</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-12491">06/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Moche, moche, moche&#8230; </p>
+<p>Bon je vais raconter ma vie, meme si tout le monde se centre sur son propre bonheur &#8230; J&#8217;ai lussur la plus part des posts que les diplômes ne voulaient plus rien dire du tout. Je suis autodidacte, j&#8217;ai commencé par Qbasic en 1995 ! j&#8217;avais 10 ans :), les macros excel, du VBA, du access, je passe mon BTS en Automatisme Industriel, je bosse en méthode et je deviens informaticien, avec des interventions admins, mon travail de fond aujourdhui c&#8217;est de mettre en place du OpenERP dans ma boite, je devloppe des modules en python et design en xml.</p>
+<p>J&#8217;ai prévu de reprendre les cours pour avoir plus de reconnaissance sur le marché du travail, je passe les tests équivalent a votre billet a 80% de reussite. Est ce que mon diplome m&#8217;apportera finalement quelque chose ormis un titre &#8216;Ingenieur&#8217;? ou je continus en mode Zorro en autodidacte?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-12498">
+		<div class="bottom_bg">
+		   <div id="comment-12498" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-12498">06/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Si tu veux travailler en tant qu&#8217;employé en France, ton diplôme d&#8217;ingénieur t&#8217;évitera d&#8217;être bloqué par les grilles d&#8217;embauches et de salaires. C&#8217;est tout. Mais c&#8217;est beaucoup.</p>
+<p>Si par contre tu veux travailler hors de France, ou en tant que Freelance, ton diplôme d&#8217;ingénieur ne te servira à rien.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-12519">
+		<div class="bottom_bg">
+		   <div id="comment-12519" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/6bf06f2872e602602b56c5670e424665?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">lilian76</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-12519">06/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Pour le moment, je reste en françe. Mais ça n&#8217;est pas exclus que je bouge pour la suite. merci du conseil;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-16208">
+		<div class="bottom_bg">
+		   <div id="comment-16208" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/c4825da112287158f6b0ac9ef3ac1f04?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">furankun</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-16208">26/11/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>J&#8217;arrive après la bataille et ne compte pas participer, vous êtes trop énervés! j&#8217;indiquerai juste une coquille, au dessus de la dernière boîte de code:<br />
+not <strong>i % 5</strong> et not i % 5 vont retourner True si x est multiple, sinon False :<br />
+devient<br />
+not <strong>i % 3</strong> et not i % 5 vont retourner True si x est multiple, sinon False :</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+		</ol>
+		
+			
+		
+<div>
+<p class="rss-comments">
+<a href="feed/index.html" title="Flux RSS des commentaires">Flux RSS des commentaires</a>
+</p>
+</div>
+									<div id="respond">
+				<h3 id="reply-title"><span>Leave a Reply</span> <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html%3Fshare=email.html#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://sametmax.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><script type="text/javascript">var edInserted; if (!edInserted) {edToolbar(); edInserted = true;}</script>
+<textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
+<script type="text/javascript">var edCanvas = document.getElementById('comment');</script></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre lang=&quot;&quot; line=&quot;&quot; escaped=&quot;&quot; highlight=&quot;&quot;&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Submit Comment" />
+							<input type='hidden' name='comment_post_ID' value='4309' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="8591f89c69" /></p><script src="../index.html%3Flive-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p>					</form>
+							</div><!-- #respond -->
+						</div> <!-- end comment-section -->
+
+<div>
+<p><a href="index.html%3Fshare=email.html#" id="playmario">Jouer à mario en attendant que les autres répondent</a></p>
+
+
+
+
+
+<script type="text/javascript">
+    if (typeof jQuery !== 'undefined'){
+        jQuery('#playmario').click(function(e){
+            jQuery(this).replaceWith('<iframe src="http://www.florian-rappl.de/html5/projects/SuperMario/" style="width:500px;height:450px;overflow:hidden"></iframe><p>En HTML5 canvas :-) http://www.codeproject.com/Articles/396959/Mario5</p>');
+            e.preventDefault()
+        });
+    }
+</script>
+</div>				</div> <!-- end #content-area -->	
+	
+<div id="sidebar" class="clearfix">
+	<div id="widget-readability-buttons-id-2" class="widget sidebar-block widget-readability-buttons"><!-- This file is used to markup the public facing widget. -->
+<h3 class="widgettitle">Une lecture plus fastoche ?</h3><p class="readability-wrapper"> 
+  <div
+    class="rdbWrapper"
+    data-show-read="1"
+    data-show-send-to-kindle="0"
+    data-show-print="1"
+    data-show-email="0"
+    data-orientation="0"
+    data-version="1"
+    data-text-color="#"
+    data-bg-color="#">
+  </div>
+  <script>(function() {var s = document.getElementsByTagName("script")[0],rdb = document.createElement("script"); rdb.type = "text/javascript"; rdb.async = true; rdb.src = document.location.protocol + "//www.readability.com/embed.js"; s.parentNode.insertBefore(rdb, s); })();</script>
+</p></div> <!-- end .widget --><div id="text-4" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</div> <!-- end .widget --><div id="text-3" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="http://twitter.com/#!/sam_et_max"><img src="../wp-content/uploads/2012/05/twitter_icon.png" width="70px" style="vertical-align: middle;margin-top:-40px;"></a>&nbsp;Follow us <a href="http://twitter.com/sam_et_max">@sam_et_max</a></div>
+		</div> <!-- end .widget --><div id="blog_subscription-3" class="widget sidebar-block jetpack_subscription_widget"><h3 class="widgettitle"><label for="subscribe-field">Souscrire à nos conneries</label></h3>
+		<a name="subscribe-blog"></a>
+		<form action="index.html%3Fshare=email.html" method="post" accept-charset="utf-8" id="subscribe-blog">
+			<p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p><p>Join 208 other subscribers</p>
+
+			<p><input type="text" name="email" style="width: 95%; padding: 1px 2px" value="Email Address" id="subscribe-field" onclick="if ( this.value == 'Email Address' ) { this.value = ''; }" onblur="if ( this.value == '' ) { this.value = 'Email Address'; }" /></p>
+
+			<p>
+				<input type="hidden" name="action" value="subscribe" />
+				<input type="hidden" name="source" value="http://sametmax.com/fizzbuzz-en-python/?share=email" />
+				<input type="hidden" name="sub-type" value="widget" />
+				<input type="hidden" name="redirect_fragment" value="blog_subscription-3" />
+				<input type="hidden" id="_wpnonce" name="_wpnonce" value="bbbfcad330" />				<input type="submit" value="J&#039;adhère bon dieu!" name="jetpack_subscriptions_widget" />
+			</p>
+		</form>
+
+		
+</div> <!-- end .widget --><div id="categories-2" class="widget sidebar-block widget_categories"><h3 class="widgettitle">Catégories</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="../category/administration-system/index.html" title="View all posts filed under Administration System">Administration System</a> (99)
+</li>
+	<li class="cat-item cat-item-11"><a href="../category/cul/index.html" title="View all posts filed under Cul">Cul</a> (52)
+</li>
+	<li class="cat-item cat-item-12"><a href="../category/gadget/index.html" title="View all posts filed under Gadget">Gadget</a> (5)
+</li>
+	<li class="cat-item cat-item-855"><a href="../category/gadgets/index.html" title="View all posts filed under Gadgets">Gadgets</a> (2)
+</li>
+	<li class="cat-item cat-item-38"><a href="../category/philo-et-culture/index.html" title="View all posts filed under Philo et culture">Philo et culture</a> (136)
+</li>
+	<li class="cat-item cat-item-3"><a href="../category/programmation/index.html" title="View all posts filed under Programmation">Programmation</a> (341)
+</li>
+	<li class="cat-item cat-item-1"><a href="../category/uncategorized/index.html" title="View all posts filed under Uncategorized">Uncategorized</a> (6)
+</li>
+	<li class="cat-item cat-item-15"><a href="../category/web/index.html" title="View all posts filed under Web">Web</a> (40)
+</li>
+		</ul>
+</div> <!-- end .widget -->		<div id="recent-posts-3" class="widget sidebar-block widget_recent_entries">		<h3 class="widgettitle">Posts récents</h3>		<ul>
+				<li><a href="../pour-vos-thumbnails-imagemagick-a-la-rescousse/index.html" title="Pour vos thumbnails, ImageMagick à la rescousse">Pour vos thumbnails, ImageMagick à la rescousse</a></li>
+				<li><a href="../changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/index.html" title="Changer le mot de passe du super utilisateur django en ligne de commande">Changer le mot de passe du super utilisateur django en ligne de commande</a></li>
+				<li><a href="../le-deuil-dune-idee/index.html" title="Le deuil d&#8217;une idée">Le deuil d&#8217;une idée</a></li>
+				<li><a href="../quest-ce-quun-namespace/index.html" title="Qu&#8217;est-ce qu&#8217;un namespace ?">Qu&#8217;est-ce qu&#8217;un namespace ?</a></li>
+				<li><a href="../astuces-de-recherche/index.html" title="Astuces de recherche">Astuces de recherche</a></li>
+				<li><a href="../cest-pour-des-trucs-comme-ca-que-jadore-python/index.html" title="C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;">C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;</a></li>
+				<li><a href="../pourquoi-il-faut-eviter-import-en-python/index.html" title="Pourquoi il faut éviter &lt;code&gt;import *&lt;/code&gt; en Python">Pourquoi il faut éviter <code>import *</code> en Python</a></li>
+				<li><a href="../quitter-son-pays/index.html" title="Quitter son pays">Quitter son pays</a></li>
+				</ul>
+		</div> <!-- end .widget --> 
+
+	<div id="popular-tabbed" class="widget"> 
+		<h3 class="widgettitle">Posts Populaires</h3>
+		<ul>
+																						<li><a href="../on-a-un-nouveau-projet-et-on-a-besoin-dune-info-sur-vous/index.html">On a un nouveau projet et on a besoin d&#8217;UNE info sur vous</a> (251)</li>																														<li><a href="../entreprendre-en-france-autopsie-dun-echec/index.html">Entreprendre en France, Autopsie d&#8217;un échec.</a> (111)</li>																														<li><a href="index.html">FizzBuzz en Python</a> (94)</li>																														<li><a href="../fetons-le-depart-de-max/index.html">Fêtons le départ de Max</a> (87)</li>																														<li><a href="../une-journee-dans-un-fkk-maison-close-allemande/index.html">Une journée dans un FKK (maison close Allemande)</a> (84)</li>																														<li><a href="../on-est-en-2013-on-a-marche-sur-la-lune-mais-on-a-toujours-pas/index.html">On est en 2013, on a marché sur la lune, mais on a toujours pas&#8230;</a> (82)</li>																														<li><a href="../il-ne-faut-pas-prendre-des-gens-pour-des-cons-mais-ne-jamais-oublier-quils-en-sont/index.html">Il ne faut pas prendre les gens pour des cons mais ne jamais oublier qu&#8217;ils en sont</a> (82)</li>																														<li><a href="../lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/index.html">L&#8217;un de vous a un cadeau de Noël qui l&#8217;attend au pied du sapin&#8230;</a> (80)</li>													</ul>
+	</div> <!-- end #recent-tabbed -->
+	 
+<div id="tag_cloud-3" class="widget sidebar-block widget_tag_cloud"><h3 class="widgettitle">TagCloud</h3><div class="tagcloud"><a href='../tag/bash/index.html' class='tag-link-14' title='14 topics' style='font-size: 11.456790123457pt;'>bash</a>
+<a href='../tag/blog/index.html' class='tag-link-107' title='11 topics' style='font-size: 10.592592592593pt;'>blog</a>
+<a href='../tag/bottle/index.html' class='tag-link-307' title='6 topics' style='font-size: 8.6049382716049pt;'>bottle</a>
+<a href='../tag/cache/index.html' class='tag-link-333' title='8 topics' style='font-size: 9.4691358024691pt;'>cache</a>
+<a href='../tag/comprehension-lists/index.html' class='tag-link-20' title='6 topics' style='font-size: 8.6049382716049pt;'>comprehension-lists</a>
+<a href='../tag/css/index.html' class='tag-link-188' title='8 topics' style='font-size: 9.4691358024691pt;'>css</a>
+<a href='../tag/cul-2/index.html' class='tag-link-33' title='9 topics' style='font-size: 9.9012345679012pt;'>cul</a>
+<a href='../tag/decorator/index.html' class='tag-link-265' title='7 topics' style='font-size: 9.037037037037pt;'>decorator</a>
+<a href='../tag/django/index.html' class='tag-link-28' title='63 topics' style='font-size: 16.901234567901pt;'>django</a>
+<a href='../tag/email/index.html' class='tag-link-37' title='6 topics' style='font-size: 8.6049382716049pt;'>email</a>
+<a href='../tag/encoding/index.html' class='tag-link-54' title='5 topics' style='font-size: 8pt;'>encoding</a>
+<a href='../tag/error/index.html' class='tag-link-213' title='6 topics' style='font-size: 8.6049382716049pt;'>error</a>
+<a href='../tag/ffmpeg/index.html' class='tag-link-64' title='5 topics' style='font-size: 8pt;'>ffmpeg</a>
+<a href='../tag/fun/index.html' class='tag-link-44' title='6 topics' style='font-size: 8.6049382716049pt;'>fun</a>
+<a href='../tag/git/index.html' class='tag-link-18' title='28 topics' style='font-size: 13.876543209877pt;'>git</a>
+<a href='../tag/html/index.html' class='tag-link-486' title='6 topics' style='font-size: 8.6049382716049pt;'>html</a>
+<a href='../tag/humour/index.html' class='tag-link-266' title='5 topics' style='font-size: 8pt;'>humour</a>
+<a href='../tag/import/index.html' class='tag-link-215' title='7 topics' style='font-size: 9.037037037037pt;'>import</a>
+<a href='../tag/ipython/index.html' class='tag-link-164' title='8 topics' style='font-size: 9.4691358024691pt;'>ipython</a>
+<a href='../tag/iterable/index.html' class='tag-link-217' title='9 topics' style='font-size: 9.9012345679012pt;'>iterable</a>
+<a href='../tag/javascript/index.html' class='tag-link-96' title='25 topics' style='font-size: 13.444444444444pt;'>javascript</a>
+<a href='../tag/jquery/index.html' class='tag-link-112' title='6 topics' style='font-size: 8.6049382716049pt;'>jquery</a>
+<a href='../tag/lambda/index.html' class='tag-link-292' title='7 topics' style='font-size: 9.037037037037pt;'>lambda</a>
+<a href='../tag/linux/index.html' class='tag-link-238' title='5 topics' style='font-size: 8pt;'>linux</a>
+<a href='../tag/mail/index.html' class='tag-link-624' title='6 topics' style='font-size: 8.6049382716049pt;'>mail</a>
+<a href='../tag/meta/index.html' class='tag-link-102' title='78 topics' style='font-size: 17.679012345679pt;'>meta</a>
+<a href='../tag/mysql/index.html' class='tag-link-82' title='5 topics' style='font-size: 8pt;'>mysql</a>
+<a href='../tag/nginx/index.html' class='tag-link-183' title='12 topics' style='font-size: 10.851851851852pt;'>nginx</a>
+<a href='../tag/nsfw/index.html' class='tag-link-319' title='13 topics' style='font-size: 11.197530864198pt;'>nsfw</a>
+<a href='../tag/orm/index.html' class='tag-link-43' title='5 topics' style='font-size: 8pt;'>orm</a>
+<a href='../tag/php/index.html' class='tag-link-199' title='5 topics' style='font-size: 8pt;'>php</a>
+<a href='../tag/poo/index.html' class='tag-link-549' title='9 topics' style='font-size: 9.9012345679012pt;'>poo</a>
+<a href='../tag/process/index.html' class='tag-link-87' title='5 topics' style='font-size: 8pt;'>process</a>
+<a href='../tag/python/index.html' class='tag-link-4' title='251 topics' style='font-size: 22pt;'>python</a>
+<a href='../tag/redis/index.html' class='tag-link-196' title='6 topics' style='font-size: 8.6049382716049pt;'>redis</a>
+<a href='../tag/ruby/index.html' class='tag-link-325' title='6 topics' style='font-size: 8.6049382716049pt;'>ruby</a>
+<a href='../tag/server/index.html' class='tag-link-185' title='6 topics' style='font-size: 8.6049382716049pt;'>server</a>
+<a href='../tag/sexe/index.html' class='tag-link-175' title='5 topics' style='font-size: 8pt;'>sexe</a>
+<a href='../tag/shell/index.html' class='tag-link-202' title='7 topics' style='font-size: 9.037037037037pt;'>shell</a>
+<a href='../tag/ssh/index.html' class='tag-link-206' title='6 topics' style='font-size: 8.6049382716049pt;'>ssh</a>
+<a href='../tag/sublime-text/index.html' class='tag-link-76' title='6 topics' style='font-size: 8.6049382716049pt;'>sublime text</a>
+<a href='../tag/twitter/index.html' class='tag-link-371' title='6 topics' style='font-size: 8.6049382716049pt;'>twitter</a>
+<a href='../tag/ubuntu/index.html' class='tag-link-255' title='13 topics' style='font-size: 11.197530864198pt;'>ubuntu</a>
+<a href='../tag/virtualenv/index.html' class='tag-link-259' title='6 topics' style='font-size: 8.6049382716049pt;'>virtualenv</a>
+<a href='../tag/yield/index.html' class='tag-link-287' title='7 topics' style='font-size: 9.037037037037pt;'>yield</a></div>
+</div> <!-- end .widget --><div id="archives-2" class="widget sidebar-block widget_archive"><h3 class="widgettitle">Archives</h3>		<ul>
+			<li><a href='../2013/12/index.html' title='December 2013'>December 2013</a>&nbsp;(2)</li>
+	<li><a href='../2013/11/index.html' title='November 2013'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html' title='October 2013'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html' title='September 2013'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html' title='August 2013'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html' title='July 2013'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html' title='June 2013'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html' title='May 2013'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html' title='April 2013'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html' title='March 2013'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html' title='February 2013'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html' title='January 2013'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html' title='December 2012'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html' title='November 2012'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html' title='October 2012'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html' title='September 2012'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html' title='August 2012'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html' title='July 2012'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html' title='June 2012'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html' title='May 2012'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html' title='April 2012'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html' title='March 2012'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html' title='February 2012'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+</div> <!-- end .widget --><div id="rss_links-2" class="widget sidebar-block widget_rss_links"><h3 class="widgettitle">Flux RSS</h3><p><a href="../feed/index.html" title="Subscribe to Posts"><img src="../wp-content/plugins/jetpack/_inc/images/rss/green-small.png" alt="RSS Feed" /></a>&nbsp;<a href="../feed/index.html" title="Subscribe to Posts">RSS - Posts</a></p>
+</div> <!-- end .widget --><div id="text-5" class="widget sidebar-block widget_text"><h3 class="widgettitle"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</div> <!-- end .widget --></div> <!-- end sidebar -->	</div> <!-- end #content --> 
+	
+	 <div id="footer" >
+		<div id="footer-content">
+			
+								
+				<ul id="menu-bottom-menu" class="bottom-menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Contactez-nous</a></li>
+</ul>			
+			<p id="copyright">Designed by  <a href="http://www.elegantthemes.com" title="Elegant Themes">Elegant WordPress Themes</a></p>
+		</div> <!-- end #footer-content -->
+	</div> <!-- end #footer -->
+</div> <!-- end #page-wrap -->
+	 
+				
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.cycle.all.min.js"></script> 
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.easing.1.3.js"></script>	
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/superfish.js"></script>	
+	<script type="text/javascript">
+	//<![CDATA[
+		jQuery.noConflict();
+	
+		jQuery('ul.superfish').superfish({ 
+			delay:       200,                            // one second delay on mouseout 
+			animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation 
+			speed:       'fast',                          // faster animation speed 
+			autoArrows:  true,                           // disable generation of arrow mark-up 
+			dropShadows: false                            // disable drop shadows 
+		}).find("> li > ul > li:last-child, > li > ul > li > ul > li:last-child, > li > ul > li > ul > li > ul > li:last-child").addClass("last-nav-element");
+		
+		jQuery(".js #featured, .js div#tabbed").css("display","block");
+
+				
+		var $featured_content = jQuery('#featured_content'),
+			$tabbed_area = jQuery('div#tabbed'),
+			$controllers = jQuery('div#controllers'),
+			$comments = jQuery('ol.commentlist');
+		
+		et_search_bar();
+		
+		if ($featured_content.length) {
+			$featured_content.cycle({
+									timeout: 3000				,
+				speed: 300,
+				cleartypeNoBg: true,
+				prev:   'a#left_arrow', 
+				next:   'a#right_arrow',
+				pager:  'div#controllers',
+				fx: 'fade'
+			});
+			
+			var controllersWidth = $controllers.width(),
+				controllersLeft = Math.round((960 - controllersWidth) / 2);
+			if (controllersWidth < 960) $controllers.css('padding-left',controllersLeft);
+		};
+		
+		if ($tabbed_area.length) {
+			$tabbed_area.tabs({ fx: { opacity: 'toggle' } });
+		};
+		
+		if ($comments.length) {
+			$comments.find(">li").after('<span class="bottom_bg"></span>');
+		};
+		
+
+		<!---- Random tag line ---->		
+
+var tagLine = function(){
+    var tagLines =  [
+        'Deux programmeurs qui se sortent les doigts du code',
+        '10 ko de js rien que pour charger ce message',
+        'Des articles pour geeks qui mettent les points sur les G',
+        "Aucun hipster n'a été violenté à l'écriture de ce blog",
+        'La programmation avec un grand C',
+        'Ornithorynque fuchsia hydrophobe',
+        'Python, Django, Git, et du Cul',
+        'Nous croisons les effluves',
+        'CMB DTC IRL CQFD',
+        'Tuent des chatons depuis 1997',
+        'Reticulating splines',
+        'Error: unexpected end of stupid tag line',
+        'Les bikinis et les ordinateurs épargnent les spéculations',
+        'F5',
+        '<3 (oYo)',
+        'Rien que des obsédés du serpent !',
+        "Je sers la science et c'est ma joie",
+        'On peut tout génie génétiquer!',
+        "Réparateurs d'harmonicas, professeurs de plongée",
+        "Il faut mettre d'urgence un frein à l'immobilisme!",
+        'Ho mon dieu! Ils ont tué Sam, enfoirés!',
+        "L'étincelle qui fait déborder le vase",
+        'A poil les putes !',
+        'Bannis de Reddit !',
+        "Bannis de l'AFPY !",
+        'Bannis de Claire Chazal!',
+        'Bannis de Jean-Pierre Pernaud !',
+        'Bannis de Norton !',
+        'Et si on faisait des camps pour que les gens puissent se concentrer?',
+        'Article.objects.create(type=random.choice(("dev", "cul")))',
+        'Le choc des mots, le poids des algos',
+        'Kedzalcoilt, le serpent à poil'
+    ];
+    return tagLines[Math.ceil(Math.random() * 1000000000) % tagLines.length];
+};
+
+jQuery('#slogan').show().text(tagLine());
+
+// forcer la redirection faire l'image en full size au click
+jQuery('.wp-post-image').click(function(e){e.preventDefault(); window.location.href = jQuery(e.target).attr('src')});
+
+// mettre clippy sur les comments
+
+jQuery(function(){
+    var message = "";
+    var $comment = jQuery('#comment');
+    topagent = null;
+
+    $comment.keyup(function(){
+
+        var content = jQuery(this).val();
+
+        if (content.search(/(^|\s+)(php|vim|emacs|windows|pas?\s*libre)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos trollesques. Attention, nous avons des tampons, et nous n'hésiterons pas à nous en servir !"
+        }
+
+        if (content.search(/(^|\s+)(me (tuer|suicider|tirer une balle|pendre|flinguer))([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos suicidaires. Sam & Max défendent la liberté d'expression. Allez aux bouts de vos idées !"
+        }
+
+        if (content.search(/(^|\s+)(connards?|enculés?|enfoirés?|fils? de pute?)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos injurieux. Ne voulez-vous pas plutôt écrire une lettre d'insultes directement aux auteurs, via le formulaire de contact ?"
+        }
+
+        if (content.search(/(^|\s+)(culs?|nichons?|bite|chatte|sodomie|levrette|sexe)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos graveleux. Pourriez-vous donner plus de détails ?"
+        }
+
+        if (content.search(/\>\>\>/i) != -1){
+            message = "Le triple chevron ne passe pas dans les comments. Désolé :-( Utilisez »» à la place."
+        }
+
+        if (content.length > 2000){
+            message = "Il semble que vous écriviez un roman. Vous réalisez que ceux qui vont répondre ne l'auront pas lu jusqu'au bout ?"
+        }
+
+        if (message){
+            $comment.unbind();
+
+            jQuery("<link/>", {
+               rel: "stylesheet",
+               type: "text/css",
+               href: "http://sametmax.com/wp-content/uploads/2012/07/clippy.css"
+            }).appendTo("head").one('load ready', function(){
+                jQuery.getScript("http://sametmax.com/wp-content/uploads/2012/07/clippy.min_1.js", function(){
+                    clippy.load('Clippy', function(agent) {
+                        agent.show();
+                        var offset = $comment.offset();
+                        var left = offset.left + $comment.width() + 10;
+                        var top = offset.top;
+
+                        jQuery('.clippy').css({position:'absolute',
+                                               display:'block',
+                                               left: left, top: top})
+
+                        jQuery('.clippy-balloon').css({position:'absolute',
+                                                       display:'block',
+                                                       left: left,
+                                                       top: top - 50})
+
+                        agent.speak(message);
+                        setInterval(function(){agent.stop(); agent.animate()}, 20000);
+                    });
+
+                });
+
+            });
+
+        }
+
+    });
+});
+
+
+		<!---- Search Bar Improvements ---->
+		function et_search_bar(){
+			var $searchform = jQuery('#header div#search-form'),
+				$searchinput = $searchform.find("input#searchinput"),
+				searchvalue = $searchinput.val();
+				
+			$searchinput.focus(function(){
+				if (jQuery(this).val() === searchvalue) jQuery(this).val("");
+			}).blur(function(){
+				if (jQuery(this).val() === "") jQuery(this).val(searchvalue);
+			});
+		};
+		
+	//]]>	
+
+
+
+
+<!-- Piwik -->
+
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://88.191.153.127:7777/" : "http://88.191.153.127:7777/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+
+
+
+	</script>
+<noscript>
+<img src="http://88.191.153.127:7777/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="" />
+</noscript>
+	<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.3.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=3.3.1'></script>
+	<div style="display:none">
+	<div class="grofile-hash-map-3a4f0e873a0fd405ffdbeced05f59bba">
+	</div>
+	<div class="grofile-hash-map-437805955e9381e69429143c0fc40f6e">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-83b27f6ff2301ca0f4ed1c7628620757">
+	</div>
+	<div class="grofile-hash-map-66a5b3eca570baf8fd7320dd58663140">
+	</div>
+	<div class="grofile-hash-map-170289b3aa7e65f722f54cd8807ca003">
+	</div>
+	<div class="grofile-hash-map-eb8e400eec222e2b09bd901aba2cb2dc">
+	</div>
+	<div class="grofile-hash-map-653b0bde06b656e70323944a77fe2872">
+	</div>
+	<div class="grofile-hash-map-ac37de58294f0c881f6198a0588c02ab">
+	</div>
+	<div class="grofile-hash-map-b93cc4fb6413bbe5c837530662bee9b4">
+	</div>
+	<div class="grofile-hash-map-3d961f728cc9bb37266d7f3b8aba3ba5">
+	</div>
+	<div class="grofile-hash-map-fc32c6686686ecc595f05ad1885c2fb3">
+	</div>
+	<div class="grofile-hash-map-2ffc5f0f11cd0e8e4d015be543dd2c99">
+	</div>
+	<div class="grofile-hash-map-844f413dcdc0c5172f2c7a878b301464">
+	</div>
+	<div class="grofile-hash-map-bb0b031df8fabde0415d53c92bb445bd">
+	</div>
+	<div class="grofile-hash-map-ff30db9cd01962644d74dbacbb6dcb74">
+	</div>
+	<div class="grofile-hash-map-337428a6e34734f07be5de0c8ae454cb">
+	</div>
+	<div class="grofile-hash-map-cf8c6f3e63e19f4712032485551c32eb">
+	</div>
+	<div class="grofile-hash-map-055aebd1a3bcbb6ebfb91633d271e47d">
+	</div>
+	<div class="grofile-hash-map-1b0b2402487fb800b68f3fc82ea9a024">
+	</div>
+	<div class="grofile-hash-map-92ef1f3244f86b36892cdf2841af63b4">
+	</div>
+	<div class="grofile-hash-map-846da089e878a04ddde56c9f2f7f1a46">
+	</div>
+	<div class="grofile-hash-map-de3d107ed1ccad362b44763106a78178">
+	</div>
+	<div class="grofile-hash-map-b4940d1751e4d32e8e4357d63439c689">
+	</div>
+	<div class="grofile-hash-map-6bf06f2872e602602b56c5670e424665">
+	</div>
+	<div class="grofile-hash-map-c4825da112287158f6b0ac9ef3ac1f04">
+	</div>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.js%3Fver=0.1'></script>
+	<script type="text/javascript" charset="utf-8">
+	function sharing_plusone( obj ) { 
+		jQuery.ajax( {
+			url: 'http://sametmax.com/fizzbuzz-en-python/?share=google-plus-1',
+			type: 'POST',
+			data: obj
+		} );
+	}
+	</script>
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+	<div id="sharing_email" style="display: none;">
+		<form action="index.html%3Fshare=email.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="text" name="target_email" id="target_email" value="" />
+			
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+				
+				<label for="source_email">Your Email Address</label>
+				<input type="text" name="source_email" id="source_email" value="" />
+
+						
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a href="index.html%3Fshare=email.html#cancel" class="sharing_cancel">Cancel</a>
+			
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+			
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js%3Fver=3.15'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/sametmax.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=3.3'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.easing-1.3.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/et-ptemplates-frontend.js%3Fver=1.1'></script>
+
+	<script src="http://stats.wordpress.com/e-201349.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.2.2',blog:'32490438',post:'4309'});
+	var load_cmc = function(){linktracker_init(32490438,4309,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script>	
+</body>
+</html>

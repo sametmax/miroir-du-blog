@@ -1,0 +1,1442 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="fr-FR" >
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>  L&#8217;opérateur splat (l&#8217;étoile: *) en Python | Sam &amp; Max: Python, Django, Git et du cul</title>
+<meta http-equiv="Content-Language" content="fr" />
+
+<link rel="shortcut icon" href="../wp-content/uploads/2012/05/favicon.ico">
+
+<link rel="stylesheet" href="../wp-content/themes/Minimal/style.css%3F238.css" type="text/css" media="screen" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul RSS Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/atom+xml" title="Sam &amp; Max: Python, Django, Git et du cul Atom Feed" href="../feed/atom/index.html" />
+<link rel="pingback" href="../xmlrpc.php" />
+
+
+<!--[if lt IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie6style.css" />
+	<script type="text/javascript" src="http://sametmax.com/wp-content/themes/Minimal/js/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script type="text/javascript">DD_belatedPNG.fix('img#logo, #header #search-form, #slogan, a#left_arrow, a#right_arrow, div.slide img.thumb, div#controllers a, a.readmore, a.readmore span, #services .one-third, #services .one-third.first img.icon, #services img.icon, div.sidebar-block .widget ul li');</script>
+<![endif]-->
+<!--[if IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie7style.css" />
+<![endif]-->
+
+<script type="text/javascript">
+	document.documentElement.className = 'js';
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; L&#8217;opérateur splat (l&#8217;étoile: &lt;code&gt;*&lt;/code&gt;) en Python Comments Feed" href="feed/index.html" />
+<meta content="Minimal v.3.3" name="generator"/><link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" />
+<link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/page_templates.css" rel="stylesheet" /><link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=3.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='et-shortcodes-css-css'  href='../wp-content/themes/Minimal/epanel/shortcodes/shortcodes.css%3Fver=1.8.css' type='text/css' media='all' />
+<link rel='stylesheet' id='sharedaddy-css'  href='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.css%3Fver=3.3.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cfq-css'  href='../wp-content/plugins/comment-form-quicktags/style.css%3Fver=20110712.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.7.1'></script>
+<script type='text/javascript' src='../wp-includes/js/comment-reply.js%3Fver=20090102'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/shortcodes/js/et_shortcodes_frontend.js%3Fver=1.8'></script>
+<script type='text/javascript' src='../wp-content/plugins/comment-form-quicktags/quicktags.php%3Fver=20121011'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Une journée à Paris' href='../une-journee-a-paris/index.html' />
+<link rel='next' title='A imprimer et à mettre en poster dans le bureau de votre boîte' href='../a-imprimer-et-a-mettre-en-poster-dans-le-bureau-de-votre-boite/index.html' />
+<meta name="generator" content="WordPress 3.3.1" />
+<link rel='canonical' href='index.html' />
+<link rel='shortlink' href='http://wp.me/p2ckfk-2N' />
+<link rel="payment" type="text/html" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Foperateur-splat-ou-etoile-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=L%26%238217%3Bop%C3%A9rateur+splat+%28l%26%238217%3B%C3%A9toile%3A+%2A%29+en+Python&amp;description=L%26%238217%3Butilisation+du+signe+%C3%A9toile+%28%2A%2C+dit+op%C3%A9rateur+%26%238220%3Bsplat%26%238221%3B%29+en+Python+est+tr%C3%A8s+simple%2C+mais+certains+cas+sont+peu+intuitifs.+Les+nouveaux+venus+ont+souvent+besoin+d%26%238217%3Bun+peu+plus+d%26%238217%3Bexplications+que...&amp;tags=etoile%2Cpython%2Csplat%2Cunpacking%2Cblog" />
+
+<link rel="stylesheet" href="../wp-content/plugins/wp-syntax/wp-syntax.css" type="text/css" media="screen" />
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.3.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.3.css");
+/* ]]> */
+</style>	<style type="text/css">
+		#et_pt_portfolio_gallery { margin-left: -11px; }
+		.et_pt_portfolio_item { margin-left: 23px; }
+		.et_portfolio_small { margin-left: -39px !important; }
+		.et_portfolio_small .et_pt_portfolio_item { margin-left: 35px !important; }
+		.et_portfolio_large { margin-left: -20px !important; }
+		.et_portfolio_large .et_pt_portfolio_item { margin-left: 14px !important; }
+	</style>
+
+</head>
+<body>
+	<div id="page-wrap">
+			
+		<div id="header">
+			<!-- Start Logo -->
+				<a href="../index.html">					<img src="../wp-content/uploads/2012/04/logo1.png" alt="Logo" id="logo"/></a>
+				
+				<p id="slogan">Deux développeurs en vadrouille qui se sortent les doigts du code</p>
+					
+			<!-- End Logo -->
+					
+			<!-- Start Searchbox -->
+				<div id="search-form">
+					<form method="get" id="searchform1" action="../index.html">
+						<input type="text" value="search this site..." name="s" id="searchinput" />
+					</form>
+				</div>
+								
+			<!-- End Searchbox -->
+				
+				<div class="clear"></div>
+				
+				<ul id="menu-top-menu" class="superfish nav clearfix"><li id="menu-item-1702" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Programmation</a></li>
+<li id="menu-item-1703" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin System</a></li>
+<li id="menu-item-1704" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo et culture</a></li>
+<li id="menu-item-1706" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li id="menu-item-3340" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours et tutos</a></li>
+<li id="menu-item-2610" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2610"><a href="../nos-tweets/index.html">Nos tweets SANS twitter :-)</a></li>
+<li id="menu-item-1707" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li id="menu-item-7439" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7439"><a href="https://github.com/sametmax/">Nos githuberies</a></li>
+</ul>									
+		</div> <!-- end #header -->
+
+		<div id="breadcrumbs">
+		
+					<a href="../index.html">Home</a> &raquo;
+				
+									<a href="../category/programmation/index.html">Programmation</a> &raquo; L&#8217;opérateur splat (l&#8217;étoile: <code>*</code>) en Python					
+</div> <!-- end #breadcrumbs -->		
+	
+	<div id="content" class="clearfix">
+		<div id="content-area">
+					<div class="entry clearfix">
+				<h1 class="title">L&#8217;opérateur splat (l&#8217;étoile: <code>*</code>) en Python</h1>
+					<p class="post-meta">
+		Posted  by <a href="../author/sam/index.html" title="Posts by Sam" rel="author">Sam</a> on 1 Jun 2012 in <a href="../category/programmation/index.html" title="View all posts in Programmation" rel="category tag">Programmation</a> | <a href="index.html#comments" title="Comment on L&#8217;opérateur splat (l&#8217;étoile: *) en Python">21 comments</a>	</p>
+				
+							
+									
+						
+								
+				<p>L&#8217;utilisation du signe étoile (<code>*</code>, dit opérateur &#8220;splat&#8221;) en Python est très simple, mais certains cas sont peu intuitifs. Les nouveaux venus ont souvent besoin d&#8217;un peu plus d&#8217;explications que ce que donne la doc. Les utilisateurs d&#8217;autres langages sont généralement déroutés car ils sont habitués certaines fonctionnalités qu&#8217;on ne retrouvent pas en Python. </p>
+<h2>Ce que <code>*</code> ne permet pas de faire</h2>
+<p>Il n&#8217;y a pas de pointeurs en Python, et les passages par référence sont automatiques. Du coup&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">mon_objet = MaClasse<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+mon_pointeur = <span style="color: #66cc66;">*</span>mon_objet
+ma_valeur = <span style="color: #66cc66;">**</span>mon_pointeur</pre></div></div>
+
+<p>N&#8217;existe pas en Python. On ne peut pas récupérer un pointeur. On ne peut pas choisir si l&#8217;on passe une variable par valeur ou par référence. Tout est automatique et transparent. </p>
+<h2>Les usages basiques de <code>*</code></h2>
+<p>La multiplication et la puissance fonctionnent comme on l&#8217;attend&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">*</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># multiplier 2 par 3 </span>
+<span style="color: #ff4500;">6</span>   
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">**</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># élever 2 à la puissance 3    </span>
+<span style="color: #ff4500;">8</span></pre></div></div>
+
+<p>Mais déjà, Python se démarque du lot car l&#8217;opérateur <code>*</code> est surchargé par défaut, et peut s&#8217;appliquer aux chaînes de caractères et aux listes. Pour les chaînes, c&#8217;est simple&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># on peut multiplier une chaîne par un nombre, et cela donne une chaîne  </span>
+aaa 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">**</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ça ne marche pas avec les puissances </span>
+<span style="color: #008000;">TypeError</span>: unsupported operand <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #66cc66;">**</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #008000;">pow</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #483d8b;">'str'</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">'int'</span></pre></div></div>
+
+<p>Pour les listes, c&#8217;est plus subtile. Une liste de nombres se multiplie sans y penser&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>   
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>l <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>   
+ <span style="color: #808080; font-style: italic;"># on peut multiplier une liste par un nombre, cela donne une liste </span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>  
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>l <span style="color: #66cc66;">**</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>  
+ <span style="color: #808080; font-style: italic;"># ça ne marche pas avec les puissances </span>
+<span style="color: #008000;">TypeError</span>: unsupported operand <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #66cc66;">**</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #008000;">pow</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #483d8b;">'list'</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">'int'</span></pre></div></div>
+
+<p>En revanche, <strong>multiplier une liste d&#8217;objets modifiables ne fait que répéter la référence vers cet objet</strong>&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#93;</span>    
+ <span style="color: #808080; font-style: italic;"># on fait une liste contenant un dictionnaire  </span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> dicos = l <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">3</span>  
+ <span style="color: #808080; font-style: italic;"># on peut multiplier une liste par un nombre, cela donne une liste </span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>dicos<span style="color: black;">&#41;</span>   
+<span style="color: black;">&#91;</span><span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>, <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>, <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>On a l&#8217;impression que le comportement est le même que précédemment, <strong">en fait pas du tout</strong>. Ici on a pas une liste de 3 dictionnaires, mais une liste de 3 références vers le même dictionnaire. Si on modifie le premier élément de la liste, tous sont modifiés&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> d = dicos<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># on récupère ce qu'on croit être le premier dictionnaire    </span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;Nouvelle cle&quot;</span><span style="color: black;">&#93;</span> = <span style="color: #483d8b;">&quot;Nouvelle valeur&quot;</span> <span style="color: #808080; font-style: italic;"># on le modifie  </span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>dicos<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># afficher la liste montre que les 3 dictionnaires sont en fait un seul et même objet </span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'Nouvelle cle'</span>: <span style="color: #483d8b;">'Nouvelle valeur'</span><span style="color: black;">&#125;</span>,   
+ <span style="color: black;">&#123;</span><span style="color: #483d8b;">'Nouvelle cle'</span>: <span style="color: #483d8b;">'Nouvelle valeur'</span><span style="color: black;">&#125;</span>,   
+ <span style="color: black;">&#123;</span><span style="color: #483d8b;">'Nouvelle cle'</span>: <span style="color: #483d8b;">'Nouvelle valeur'</span><span style="color: black;">&#125;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<h2>Unpacking</h2>
+<p>Python intègre une fonctionnalité, l&#8217;unpacking, qui permet de prendre chaque élément d&#8217;une séquence et de les attribuer à des variables distinctes, d&#8217;un seul coup. C&#8217;est un raccourcis très pratique&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> drapeau = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;bleu&quot;</span>, <span style="color: #483d8b;">&quot;blanc&quot;</span>, <span style="color: #483d8b;">&quot;rouge&quot;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ici on utilise un tuple, mais ça marche avec les listes   </span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> premiere_couleur = drapeau<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>  
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> deuxieme_couleur = drapeau<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>  
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> troisieme_couleur = drapeau<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>premiere_couleur<span style="color: black;">&#41;</span>    
+<span style="color: #483d8b;">'bleu'</span>  
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>deuxieme_couleur<span style="color: black;">&#41;</span>    
+<span style="color: #483d8b;">'blanc'</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>troisieme_couleur<span style="color: black;">&#41;</span>   
+<span style="color: #483d8b;">'rouge'</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> couleur1, couleur2, couleur3 =  drapeau <span style="color: #808080; font-style: italic;"># la même opération, en une ligne grace à l'unpacking  </span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>couleur1<span style="color: black;">&#41;</span>    
+<span style="color: #483d8b;">'bleu'</span>  
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>couleur2<span style="color: black;">&#41;</span>    
+<span style="color: #483d8b;">'blanc'</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>couleur3<span style="color: black;">&#41;</span>    
+<span style="color: #483d8b;">'rouge'</span></pre></div></div>
+
+<p><strong>Vous n&#8217;avez rien à faire, l&#8217;unpacking est automatique</strong>&nbsp;: il suffit de mettre à gauche du signe <code>=</code> le même nombre de variables qu&#8217;il y a d&#8217;éléments dans la séquence à droite du signe <code>=</code>. Dans le cas contraire, Python râle&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> un, deux = drapeau 
+<span style="color: #008000;">ValueError</span>: too many values to unpack   
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> un, deux, trois, quatre = drapeau  
+<span style="color: #008000;">ValueError</span>: need more than <span style="color: #ff4500;">3</span> values to unpack</pre></div></div>
+
+<p>Quel rapport avec <code>*</code> ? Et bien il permet de <strong>forcer l&#8217;unpacking </strong>dans le cas où c&#8217;est ambigüe. Faisons une petite fonction de test qui ne<br />
+fait qu&#8217;afficher chacun de ses paramètres&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> afficher_trois_elements<span style="color: black;">&#40;</span>elem1, elem2=<span style="color: #008000;">None</span>, elem3=<span style="color: #008000;">None</span><span style="color: black;">&#41;</span>: 
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>elem1<span style="color: black;">&#41;</span>    
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>elem2<span style="color: black;">&#41;</span>    
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>elem3<span style="color: black;">&#41;</span>    
+... 
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span>drapeau<span style="color: black;">&#41;</span>   
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">'bleu'</span>, <span style="color: #483d8b;">'blanc'</span>, <span style="color: #483d8b;">'rouge'</span><span style="color: black;">&#41;</span>  
+<span style="color: #008000;">None</span>    
+<span style="color: #008000;">None</span></pre></div></div>
+
+<p>Passer drapeau affiche logiquement le tuple comme premier paramètre, et ensuite les valeurs par défaut du premier et du second paramètre. </p>
+<p>En utilisant <code>*</code>, nous pouvons forcer l&#8217;unpacking de telle sorte que les valeurs du tuple soient passées individuellement comme autant de paramètres&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>drapeau<span style="color: black;">&#41;</span>  
+bleu    
+blanc   
+rouge</pre></div></div>
+
+<p>Très pratique quand vous utilisez une collection tout au long du programme pour vous éviter de sans cesse trainer des variables intermédiaires. D&#8217;autant que ça marche combiné aux slices&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #483d8b;">&quot;element que l'on ne veut pas&quot;</span><span style="color: black;">&#93;</span>   
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>l<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>   
+<span style="color: #ff4500;">1</span>   
+<span style="color: #ff4500;">2</span>   
+<span style="color: #ff4500;">3</span></pre></div></div>
+
+<p>Encore mieux, on peut utiliser <code>**</code> pour forcer l&#8217;unpacking des dictionnaires. Les valeurs du dictionnaires deviennent les valeurs des paramètres, mais cette association se fait par nom&nbsp;: <strong>chaque clé du dictionnaire doit correspondre à un nom de paramètre</strong>. Ainsi&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> elements = <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;elem1&quot;</span>: <span style="color: #483d8b;">&quot;eau&quot;</span>, <span style="color: #483d8b;">&quot;elem2&quot;</span>: <span style="color: #483d8b;">&quot;feu&quot;</span>, <span style="color: #483d8b;">&quot;elem3&quot;</span>: <span style="color: #483d8b;">&quot;air&quot;</span><span style="color: black;">&#125;</span>    
+ <span style="color: #808080; font-style: italic;"># les clés ont le bon nom  </span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">**</span>elements<span style="color: black;">&#41;</span>    
+eau 
+feu 
+air</pre></div></div>
+
+<p>Si une clé ne possède pas le nom adéquat, tout plante&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> elements = <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;elem1&quot;</span>: <span style="color: #483d8b;">&quot;eau&quot;</span>, <span style="color: #483d8b;">&quot;elem2&quot;</span>: <span style="color: #483d8b;">&quot;feu&quot;</span>, <span style="color: #483d8b;">&quot;rien_a_voir&quot;</span>: <span style="color: #483d8b;">&quot;air&quot;</span><span style="color: black;">&#125;</span>    
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">**</span>elements<span style="color: black;">&#41;</span>    
+<span style="color: #008000;">TypeError</span>: afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> got an unexpected <span style="color: #dc143c;">keyword</span> argument <span style="color: #483d8b;">'rien_a_voir'</span></pre></div></div>
+
+<p>Une autre erreur courante est d&#8217;utiliser <code>*</code> avec un dictionnaire. Dans ce cas l&#8217;unpacking fonctionne, mais comme itérer sur une dictionnaire donne une liste de clés, c&#8217;est comme si vous passiez une liste en paramètres contenant les clés&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> elements = <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;elem1&quot;</span>: <span style="color: #483d8b;">&quot;eau&quot;</span>, <span style="color: #483d8b;">&quot;elem2&quot;</span>: <span style="color: #483d8b;">&quot;feu&quot;</span>, <span style="color: #483d8b;">&quot;elem3&quot;</span><span style="color: #66cc66;">;</span>: <span style="color: #483d8b;">&quot;air&quot;</span><span style="color: black;">&#125;</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>elements<span style="color: black;">&#41;</span> 
+elem2   
+elem3   
+elem1</pre></div></div>
+
+<p>Si vous donnez moins de valeurs qu&#8217;il n&#8217;y a de paramètres, Python remplit tout ce qu&#8217;il peut&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>drapeau<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>  
+bleu    
+blanc   
+<span style="color: #008000;">None</span>    
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> elements = <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;elem1&quot;</span>: <span style="color: #483d8b;">&quot;eau&quot;</span><span style="color: black;">&#125;</span>   
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">**</span>elements<span style="color: black;">&#41;</span>    
+eau 
+<span style="color: #008000;">None</span>    
+<span style="color: #008000;">None</span></pre></div></div>
+
+<p>Dans le cas inverse – si i il y a plus d&#8217;élements que de paramètres – Python vous envoie vous brosser&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> forces = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;rouge&quot;</span>, <span style="color: #483d8b;">&quot;bleu&quot;</span>, <span style="color: #483d8b;">&quot;jaune&quot;</span>, <span style="color: #483d8b;">&quot;rose&quot;</span>, <span style="color: #483d8b;">&quot;vert&quot;</span><span style="color: black;">&#41;</span>   
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>forces<span style="color: black;">&#41;</span>   
+<span style="color: #008000;">TypeError</span>: afficher_trois_elements<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> takes at most <span style="color: #ff4500;">3</span> arguments <span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span> given<span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Paramétrage dynamique</h2>
+<p>Il est parfois pratique de définir une fonction qui accepte un nombre infini d&#8217;arguments. Exemple bidon, une fonction qui multiplie ses arguments entre eux&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> multiply<span style="color: black;">&#40;</span>a, b<span style="color: black;">&#41;</span>:    
+...     <span style="color: #ff7700;font-weight:bold;">return</span> a <span style="color: #66cc66;">*</span> b <span style="color: #808080; font-style: italic;"># attention, là on utilise &lt;code&gt;*&lt;/code&gt; pour multiplier, ne cherchez rien de compliqué ;-)    </span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>multiply<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>  
+<span style="color: #ff4500;">6</span></pre></div></div>
+
+<p>Bien sûr, si on veut rajouter un troisième paramètre, il faut la réécrire. Pareil pour un quatrième. Finalement, on finit par demander de passer une liste pour permettre un nombre arbitraire&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> multiply<span style="color: black;">&#40;</span>elements_a_multiplier<span style="color: black;">&#41;</span>:  
+...     <span style="color: black;">res</span> = <span style="color: #ff4500;">1</span> 
+...     <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> elements_a_multiplier: 
+...         <span style="color: black;">res</span> = res <span style="color: #66cc66;">*</span> i   
+...     <span style="color: #ff7700;font-weight:bold;">return</span> res  
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> multiply<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> 
+<span style="color: #ff4500;">24</span></pre></div></div>
+
+<p>Et bien sachez qu&#8217;il existe une autre possibilité, autoriser le passage d&#8217;une infinité de paramètres ! Cela se fait bien sur avec <code>*</code>.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> multiply<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>tous_les_elements<span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># on ne change pas grand chose, on rajoute juste &lt;code&gt;*&lt;/code&gt;   </span>
+...     <span style="color: black;">res</span> = <span style="color: #ff4500;">1</span> 
+...     <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> tous_les_elements<span style="color: black;">&#41;</span>:    
+...         <span style="color: black;">res</span> = res <span style="color: #66cc66;">*</span> i   
+...     <span style="color: #ff7700;font-weight:bold;">return</span> res  
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> multiply<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>  
+ <span style="color: #808080; font-style: italic;"># mais plus besoin d'une séquence !    </span>
+<span style="color: #ff4500;">26</span>  
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> multiply<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>    
+<span style="color: #ff4500;">120</span></pre></div></div>
+
+<p>Comment ça marche ? C&#8217;est simple, <strong>tous les arguments sont automatiquement stockés dans une liste</strong>, et cette liste est le paramètre que l&#8217;on a désigné par <code>*</code>. </p>
+<p>Ce système très puissant peut être utilisé conjointement avec des paramètres normaux&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span>def afficher<span style="color: black;">&#40;</span>elem1, elem2, <span style="color: #66cc66;">*</span>elemx<span style="color: black;">&#41;</span>:  
+...    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>elem1<span style="color: black;">&#41;</span> 
+...    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>elem2<span style="color: black;">&#41;</span> 
+...    <span style="color: #ff7700;font-weight:bold;">for</span> e <span style="color: #ff7700;font-weight:bold;">in</span> elemx: 
+...        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;(*) %s&quot;</span> <span style="color: #66cc66;">%</span> e<span style="color: black;">&#41;</span>  
+…   
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Toi&quot;</span>, <span style="color: #483d8b;">&quot;Moi&quot;</span>, <span style="color: #483d8b;">&quot;Luke&quot;</span>, <span style="color: #483d8b;">&quot;Anakin&quot;</span>, <span style="color: #483d8b;">&quot;Obi Wan&quot;</span>, <span style="color: #483d8b;">&quot;Robert&quot;</span><span style="color: black;">&#41;</span>  
+Toi 
+Moi 
+<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span><span style="color: black;">&#41;</span> Luke    
+<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span><span style="color: black;">&#41;</span> Anakin  
+<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span><span style="color: black;">&#41;</span> Obi Wan 
+<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span><span style="color: black;">&#41;</span> Robert</pre></div></div>
+
+<p>La seule condition est de mettre <code>*</code> sur un paramètre situé après tous les autres. <code>*</code> est toujours en dernier, et il n&#8217;apparait qu&#8217;une seule fois. Enfin, il existe une convention pour le nom de cet argument&nbsp;: <code>*args</code>. </p>
+<p>Bonne nouvelle, on peut utiliser aussi <code>**</code>. Comme on peut s&#8217;y attendre, il permet de récupérer aussi une infinité de paramètres, mais <strong>sous forme de dictionnaire</strong>. Cela signifie qu&#8217;il ne récupère que les paramètres nommés&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> afficher_recette<span style="color: black;">&#40;</span>recette, <span style="color: #66cc66;">**</span>ingredients<span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># ingrédients sera un dictionnaire    </span>
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>recette<span style="color: black;">&#41;</span>  
+...     <span style="color: #ff7700;font-weight:bold;">for</span> ingredient <span style="color: #ff7700;font-weight:bold;">in</span> ingredients.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:  
+...         <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot; - %s: %s&quot;</span> <span style="color: #66cc66;">%</span> ingredient 
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_recette<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;moukraines à la glaviouse&quot;</span>,  
+...                  <span style="color: black;">creme</span>=<span style="color: #483d8b;">&quot;trop&quot;</span>, <span style="color: #808080; font-style: italic;"># on doit donner le nom de ce paramètre   </span>
+...                  <span style="color: black;">moukraines</span>= <span style="color: #483d8b;">&quot;suffisamment&quot;</span>, 
+...                  <span style="color: black;">glaviouse</span>=<span style="color: #483d8b;">&quot;si disponible&quot;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># mais l'ordre des paramètres importe peu    </span>
+moukraines à la glaviouse   
+ - glaviouse : si disponible    
+ - creme : trop 
+ - moukraines : suffisamment</pre></div></div>
+
+<p>Il faut également mettre <code>**</code> après tous les autres arguments. La convention pour nommer ce paramètre est <code>**kwargs</code>, pour « keyword arguments ». Enfin, on peut mélanger tout ça d&#8217;un coup&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> affichage_hybride<span style="color: black;">&#40;</span>parametre_normal,    
+...                       <span style="color: black;">parametre_avec_default</span>=<span style="color: #483d8b;">&quot;valeur par défaut&quot;</span>,   
+...                       <span style="color: #66cc66;">*</span>args,    
+...                       <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:    
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>parametre_normal<span style="color: black;">&#41;</span> 
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>parametre_avec_default<span style="color: black;">&#41;</span>   
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>args<span style="color: black;">&#41;</span> 
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>kwargs<span style="color: black;">&#41;</span>   
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> affichage_hybride<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;param1&quot;</span>, <span style="color: #483d8b;">&quot;param2&quot;</span>, <span style="color: #483d8b;">&quot;infini1&quot;</span>, <span style="color: #483d8b;">&quot;infini2&quot;</span>, kwinfini1=<span style="color: #ff4500;">1</span>, kwinfini2=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>  
+param1  
+param2  
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">'infini1'</span>, <span style="color: #483d8b;">'infini2'</span><span style="color: black;">&#41;</span>  
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'kwinfini1'</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">'kwinfini2'</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p><strong>On doit absolument mettre les paramètres dans cet ordre</strong>&nbsp;:   </p>
+<ol>
+<li>paramètres normaux et obligatoires;
+  </li>
+<li>paramètres normaux facultatifs (valeur par défaut);
+  </li>
+<li>paramètres dynamiques;</li>
+<li>paramètres dynamiques nommés.
+</li>
+</ol>
+<p>En plus, cela permet en effet de faire jouer les valeurs par défaut de manière très souple&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="c" style="font-family:monospace;"><span style="color: #339933;">&gt;&gt;&gt;</span> affichage_hybride<span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;param tout seul&quot;</span><span style="color: #009900;">&#41;</span>    
+param tout seul 
+valeur par défaut   
+<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>  
+<span style="color: #009900;">&#123;</span><span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>Si vous vous sentez à l&#8217;aise avec tout ça, vous pouvez mélanger plusieurs usages de <code>*</code> d&#8217;un coup. Je vous laisse donc en guise de conclusion un petit combo qui utilise un code précédent&nbsp;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> multiply<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>args<span style="color: black;">&#41;</span>:   
+...     <span style="color: black;">res</span> = <span style="color: #ff4500;">1</span> 
+...     <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> elements_a_multiplier: 
+...         <span style="color: black;">res</span> = res <span style="color: #66cc66;">*</span> i   
+...     <span style="color: #ff7700;font-weight:bold;">return</span> res  
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>multiply<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">*</span><span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> == <span style="color: #ff4500;">2</span><span style="color: #66cc66;">**</span><span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span>  
+<span style="color: #008000;">True</span></pre></div></div>
+
+<div class="snap_nopreview sharing robots-nocontent"><ul><li class="sharing_label">Partager:</li><li class="share-facebook share-regular"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsametmax.com%2Foperateur-splat-ou-etoile-en-python%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;width=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:96px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-twitter share-regular"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsametmax.com%2Foperateur-splat-ou-etoile-en-python%2F&amp;counturl=http%3A%2F%2Fsametmax.com%2Foperateur-splat-ou-etoile-en-python%2F&amp;count=horizontal&amp;text=L%27op%C3%A9rateur%20splat%20%28l%27%C3%A9toile%3A%20%3Ccode%3E%2A%3C%2Fcode%3E%29%20en%20Python: " style="width:97px; height:20px;"></iframe></div></li><li class="share-reddit share-regular"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?width=120&amp;url=http%3A%2F%2Fsametmax.com%2Foperateur-splat-ou-etoile-en-python%2F&amp;title=L%27op%C3%A9rateur%20splat%20%28l%27%C3%A9toile%3A%20%3Ccode%3E%2A%3C%2Fcode%3E%29%20en%20Python" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-google-plus-1 share-regular"><div class="googleplus1_button"><g:plusone size="small" callback="sharing_plusone" href="http://sametmax.com/operateur-splat-ou-etoile-en-python/"></g:plusone></div></li><li class="share-email share-regular"><a rel="nofollow" class="share-email share-icon no-text" href="index.html%3Fshare=email.html" target="_blank" title="Click to email this to a friend"></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div><p>No related posts.</p><p class="wp-flattr-button"><a href="../index.html%3Fflattrss_redirect&amp;id=173&amp;md5=84b006ae43a7e1abd9982de15435aa84.html" title="Flattr" target="_blank"><img src="../wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>											</div> <!-- end .entry -->
+			
+					
+						
+			<!-- You can start editing here. -->
+
+	<div id="comment-section" class="clearfix">
+		<h3 id="comments">21 comments</h3>
+		
+		
+			<ol class="commentlist clearfix">
+			   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-337">
+		<div class="bottom_bg">
+		   <div id="comment-337" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-337">01/06/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><pre>(15:40:56) Max: tin je retiendrais jamais les **
+(15:41:55) Sam: t'as pas à tout retenir
+(15:41:59) Sam: juste 2 trucs
+(15:42:27) Max: faut pratiquer
+(15:42:29) Sam: "quand je veux que ma fonction accepte un nombre infini d'arguments, il faut que j'utilise des étoiles quelque part, je vais regarder dans l'article"
+(15:42:32) Sam: et
+(15:43:11) Sam: "quand je veux utiliser le contenu d'une liste ou d'un dico directement comme argument, il faut que j'utilise des étoiles quelques part, je vais regarder dans l'article"
+(15:43:23) Sam: seul le cas d'utilisation est à retenir
+(15:43:27) Sam: le reste, le pourquoi du comment
+(15:43:30) Sam: osef
+(15:44:07) Max: c mieux dit là comme ça :)
+(15:44:37) Sam: je vais coller ce chat en commentaire
+(15:44:41) Sam: ça en aidera d'autres</pre>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-339">
+		<div class="bottom_bg">
+		   <div id="comment-339" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/a8f1bb206e33a9a1abf67ebb9bf8e642?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">feth</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-339">02/06/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Joli inventaire :)<br />
+Mes 2 cents: on réécrira avantageusement</p>
+<p>res = res * i </p>
+<p>par </p>
+<p>res *= i</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-341">
+		<div class="bottom_bg">
+		   <div id="comment-341" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/f920b17cb192bee62f5b2637bb6e50ad?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">fero14041</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-341">02/06/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Peut-être une typo dans la dernière partie relative à l&#8217;unpacking? Le dernier élément du dictionnaire <code>elements</code> est attribué à une clef déjà présente, <code>elem3</code>; il serait peut-être préférable de le mapper à une <i>nouvelle</i> clef, par ex. <code>elem4</code>?</p>
+<pre lang="python" line="" escaped="" highlight="python">
+&gt;&gt;&gt; elements = {"elem1": "eau", "elem2": "feu", "elem3": "air", "elem4": "terre"}
+</pre>
+<p>Du coup, Python (2.7.3 et 3.2.3) râle aussi avec les éléments surnuméraires d&#8217;un dico:</p>
+<pre lang="python" line="" escaped="" highlight="python">
+&gt;&gt;&gt; afficher_trois_elements(**elements)
+TypeError: afficher_trois_elements() got an unexpected keyword argument 'elem4'
+</pre>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-342">
+		<div class="bottom_bg">
+		   <div id="comment-342" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-342">02/06/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Oui, c&#8217;est une typo et une erreur de logique de ma part. Merci de l&#8217;avoir signalé.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-356">
+		<div class="bottom_bg">
+		   <div id="comment-356" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/3412644f9501fa6cf9d87c2ef2865a8d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">GM</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-356">04/06/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Petite précision : si le dictionnaire passé en guise de **kw contient une clef qui correspond déjà à un paramètre passé en argument, Python va râler.</p>
+<p>Ca peut arriver quand on utilise des arguments nommés dans une fonction, et plus tard on remplit le dictionnaire dynamiquement.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> drapeau = <span style="color: black;">&#123;</span>“gauche”:”bleu”, “milieu”:”blanc”, “droite”:”rouge”<span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> affiche<span style="color: black;">&#40;</span>gauche=”vert”, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kw<span style="color: black;">&#41;</span>:
+… <span style="color: #ff7700;font-weight:bold;">print</span> gauche
+… <span style="color: #ff7700;font-weight:bold;">for</span> a <span style="color: #ff7700;font-weight:bold;">in</span> args:
+… <span style="color: #ff7700;font-weight:bold;">print</span> a
+… <span style="color: #ff7700;font-weight:bold;">for</span> key, value <span style="color: #ff7700;font-weight:bold;">in</span> kw.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+… <span style="color: #ff7700;font-weight:bold;">print</span> key, value
+…
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> affiche<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+vert
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> affiche<span style="color: black;">&#40;</span><span style="color: #66cc66;">**</span>drapeau<span style="color: black;">&#41;</span>
+bleu
+droite rouge
+milieu blanc
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> affiche<span style="color: black;">&#40;</span>“marron”, <span style="color: #66cc66;">**</span>drapeau<span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+File “”, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">?</span>
+<span style="color: #008000;">TypeError</span>: affiche<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> got multiple values <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #dc143c;">keyword</span> argument ‘gauche’</pre></div></div>
+
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-383">
+		<div class="bottom_bg">
+		   <div id="comment-383" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/2ffc5f0f11cd0e8e4d015be543dd2c99?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://recher.wordpress.com' rel='external nofollow' class='url'>Recher</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-383">07/06/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Bonjour,</p>
+<p>petit message d&#8217;introduction, car c&#8217;est le premier commentaire que je vous envoie : &#8220;j&#8217;aime bien votre blog&#8221;.</p>
+<p>Je sais que c&#8217;est pas le sujet de cet article, mais une petite fonction reduce, au lieu de la boucle qui multiplie, c&#8217;est plus classe, et plus &#8220;pythoniesque&#8221;.</p>
+<p>A la place de :<br />
+     res = 1<br />
+     for i in elements_a_multiplier:<br />
+         res = res * i<br />
+     return res</p>
+<p>On peut mettre juste une ligne :<br />
+return reduce(lambda x, y: x * y, elements_a_multiplier)</p>
+<p>Mais je suppose que vous connaissiez déjà. Et que vous ne l&#8217;avez pas mis pour pas tout embrouiller.</p>
+<p>Et sinon, le &#8220;*&#8221;, on peut aussi le mettre dans les import. Mais ça c&#8217;est le mal absolu, il paraît.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-384">
+		<div class="bottom_bg">
+		   <div id="comment-384" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-384">07/06/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>:-) Vous avez tout compris.</p>
+<p>Cela dit je n&#8217;irai pas jusqu&#8217;à dire que &#8220;import *&#8221; c&#8217;est le mal, mais il y a très peu de cas ou les bénéfices de son usage dépassent les inconvénients à long terme.</p>
+<p>Je suis formateur, et je ne l&#8217;enseigne pas, même à des professionels. Je l&#8217;explique uniquement si on me pose la question. En devenant plus chevroné, on apprend tout seul à les rares situations ou c&#8217;est pertinent.</p>
+<p>Dans le reste des cas, une petites astuce pour les imports longs: on peut aller à la ligne en utilisant des parenthèses. Ex:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> module <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: black;">&#40;</span>machin, bidule, truc, chose, thing, stuff,
+                    cosa, abstraction_conceptuelle_neo_generique<span style="color: black;">&#41;</span></pre></div></div>
+
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-1514">
+		<div class="bottom_bg">
+		   <div id="comment-1514" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-1514">22/08/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>y a des mecs qui arrives par:<br />
+<strong><br />
+c&#8217;est quoi **kwargs sous python</strong></p>
+<p>Sur d&#8217;autres articles du blog. C&#8217;est l&#8217;article de cette page qui répond à cette question. J&#8217;espère que ce petit com donneras un indice à ceux qui cherchent ça.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-1634">
+		<div class="bottom_bg">
+		   <div id="comment-1634" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">François</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-1634">29/08/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>J&#8217;ai l&#8217;impression que le paragraphe &#8220;On doit absolument mettre les paramètres dans cet ordre :&#8221; est incomplet.<br />
+Dès qu&#8217;on mets un ou des paramètres normaux facultatifs, on ne peut plus mettre *args après. Ca lève un SyntaxError: non-keyword arg after keyword arg<br />
+On est alors obligé de récupérer un dictionnaire (kwarg).<br />
+En résumé :<br />
+fun(a, b, c)<br />
+fun(a, b=1, c=2)<br />
+fun(a, *arg)<br />
+fun(a, b=1, **arg)<br />
+sont valides alors que<br />
+fun(a, b=1, *arg)<br />
+SyntaxError: non-keyword arg after keyword arg</p>
+<p>Dites moi si un truc m&#8217;a échappé.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-1637">
+		<div class="bottom_bg">
+		   <div id="comment-1637" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-1637">30/08/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>O_o</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> fun<span style="color: black;">&#40;</span>a, b=<span style="color: #ff4500;">1</span>, <span style="color: #66cc66;">*</span>arg<span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">pass</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span></pre></div></div>
+
+<p>Marche parfaitement pour moi.</p>
+<p>Quelle est votre version de Python ?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-1638">
+		<div class="bottom_bg">
+		   <div id="comment-1638" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">François</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-1638">30/08/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Voici un snippet : <a href="http://pastebin.com/JNp0mj3y" rel="nofollow">http://pastebin.com/JNp0mj3y</a><br />
+J&#8217;utilise python 3.2 (et 2.7 testé)<br />
+Merci.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-1639">
+		<div class="bottom_bg">
+		   <div id="comment-1639" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-1639">30/08/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Dans le snippet fournit, la seule erreur est à la dernière ligne:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">fun3<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, b=<span style="color: #ff4500;">42</span>, <span style="color: #ff4500;">4242</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Python n&#8217;autorise pas <code>4242</code> après <code>b=42</code>. Ca n&#8217;est pas lié à <code>*args</code> ou <code>**kwargs</code>, c&#8217;est comme ça pour toutes les fonctions.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-1641">
+		<div class="bottom_bg">
+		   <div id="comment-1641" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">François</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-1641">30/08/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Tout à fait. Donc, la signature suivante<br />
+<code>fun3(a, b=1, *arg)</code> n&#8217;a pas vraiment de sens puisque *arg ne pourra rien recevoir ou bien il faut laisser b à la valeur par défaut si on veut passer des choses à *arg.<br />
+Je ne vois pas comment on peut passer un b différent et des valeurs à *arg&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-1642">
+		<div class="bottom_bg">
+		   <div id="comment-1642" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-1642">30/08/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>La signature dit:</p>
+<p>- j&#8217;ai un seul argument obligatoire;<br />
+- j&#8217;ai un argument facultatif dont la valeur par défaut est 1;<br />
+- j&#8217;accepte un nombre infini d&#8217;arguments.</p>
+<p>On peut donc appeler fun3 ainsi:</p>
+<p>- fun3(1)<br />
+- fun3(1, 2)<br />
+- fun3(1, 2, 3, &#8230;)</p>
+<p>C&#8217;est un signature tout à fait sensée, et souple pour une fonction: elle assure un minimum de deux arguments, force l&#8217;utilisateur à décider le premier argument et autorise l&#8217;infini.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-3862">
+		<div class="bottom_bg">
+		   <div id="comment-3862" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b010183705f121ef96331f4c1e5d8d76?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Syl</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-3862">04/12/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merci les mecs, j&#8217;ai enfin compris l&#8217;utilité de *args et **kwargs!</p>
+<p>Jusqu&#8217;à maintenant, je n&#8217;étais tombé que sur des explications plus ou moins bidons, là au moins, c&#8217;est clair!</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-3864">
+		<div class="bottom_bg">
+		   <div id="comment-3864" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-3864">04/12/2012		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>De rien mon cher syl</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-5510">
+		<div class="bottom_bg">
+		   <div id="comment-5510" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/9515584aa9cf5986101c36e02b67509b?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Julien</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-5510">25/01/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>ENFIN une explication claire, le **kwargs et le *args à la portée du commun des mortels !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6687">
+		<div class="bottom_bg">
+		   <div id="comment-6687" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/8cba7868911fc3c681bcd1d552946c34?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Policier Moustachu</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-6687">06/03/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merci pour ce site, vous êtes en train de refaire mon éducation python.</p>
+<p>Une petite précision: l&#8217;unpacking ne marche que pour unpacker une liste dans les paramètres d&#8217;une fonction.<br />
+On ne peut pas l&#8217;utiliser pour unpacker une liste dans une assignation de variable.</p>
+<p>exemple :<br />
+couleurs = [jaune, blanc, bleu]<br />
+plus_de_couleurs = [rouge, *couleurs]</p>
+<p>Il est impossible d&#8217;exécuter ce code !<br />
+Tout du moins en Jython. Je n&#8217;ai pas vérifié en python.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6691">
+		<div class="bottom_bg">
+		   <div id="comment-6691" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-6691">06/03/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>On ne peut pas unpacker une liste dans une liste.</p>
+<p>Ce code peut néanmoins être réécrit ainsi:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">plus_de_couleurs = <span style="color: black;">&#91;</span>rouge<span style="color: black;">&#93;</span> + couleurs</pre></div></div>
+
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6698">
+		<div class="bottom_bg">
+		   <div id="comment-6698" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/8cba7868911fc3c681bcd1d552946c34?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Policier Moustachu</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-6698">06/03/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>ok, cool.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-16209">
+		<div class="bottom_bg">
+		   <div id="comment-16209" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/c4825da112287158f6b0ac9ef3ac1f04?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">furankun</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-16209">26/11/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>merci pour les explications, et merci pour le premier commentaire, ça décomplexe vachement! Je me sens très proche de Max pour le coup (mais c&#8217;est pas vraiment une surprise).</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+		</ol>
+		
+			
+		
+<div>
+<p class="rss-comments">
+<a href="feed/index.html" title="Flux RSS des commentaires">Flux RSS des commentaires</a>
+</p>
+</div>
+									<div id="respond">
+				<h3 id="reply-title"><span>Leave a Reply</span> <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://sametmax.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><script type="text/javascript">var edInserted; if (!edInserted) {edToolbar(); edInserted = true;}</script>
+<textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
+<script type="text/javascript">var edCanvas = document.getElementById('comment');</script></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre lang=&quot;&quot; line=&quot;&quot; escaped=&quot;&quot; highlight=&quot;&quot;&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Submit Comment" />
+							<input type='hidden' name='comment_post_ID' value='173' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="b571b4e1b3" /></p><script src="../index.html%3Flive-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p>					</form>
+							</div><!-- #respond -->
+						</div> <!-- end comment-section -->
+
+<div>
+<p><a href="index.html#" id="playmario">Jouer à mario en attendant que les autres répondent</a></p>
+
+
+
+
+
+<script type="text/javascript">
+    if (typeof jQuery !== 'undefined'){
+        jQuery('#playmario').click(function(e){
+            jQuery(this).replaceWith('<iframe src="http://www.florian-rappl.de/html5/projects/SuperMario/" style="width:500px;height:450px;overflow:hidden"></iframe><p>En HTML5 canvas :-) http://www.codeproject.com/Articles/396959/Mario5</p>');
+            e.preventDefault()
+        });
+    }
+</script>
+</div>				</div> <!-- end #content-area -->	
+	
+<div id="sidebar" class="clearfix">
+	<div id="widget-readability-buttons-id-2" class="widget sidebar-block widget-readability-buttons"><!-- This file is used to markup the public facing widget. -->
+<h3 class="widgettitle">Une lecture plus fastoche ?</h3><p class="readability-wrapper"> 
+  <div
+    class="rdbWrapper"
+    data-show-read="1"
+    data-show-send-to-kindle="0"
+    data-show-print="1"
+    data-show-email="0"
+    data-orientation="0"
+    data-version="1"
+    data-text-color="#"
+    data-bg-color="#">
+  </div>
+  <script>(function() {var s = document.getElementsByTagName("script")[0],rdb = document.createElement("script"); rdb.type = "text/javascript"; rdb.async = true; rdb.src = document.location.protocol + "//www.readability.com/embed.js"; s.parentNode.insertBefore(rdb, s); })();</script>
+</p></div> <!-- end .widget --><div id="text-4" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</div> <!-- end .widget --><div id="text-3" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="http://twitter.com/#!/sam_et_max"><img src="../wp-content/uploads/2012/05/twitter_icon.png" width="70px" style="vertical-align: middle;margin-top:-40px;"></a>&nbsp;Follow us <a href="http://twitter.com/sam_et_max">@sam_et_max</a></div>
+		</div> <!-- end .widget --><div id="blog_subscription-3" class="widget sidebar-block jetpack_subscription_widget"><h3 class="widgettitle"><label for="subscribe-field">Souscrire à nos conneries</label></h3>
+		<a name="subscribe-blog"></a>
+		<form action="index.html" method="post" accept-charset="utf-8" id="subscribe-blog">
+			<p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p><p>Join 208 other subscribers</p>
+
+			<p><input type="text" name="email" style="width: 95%; padding: 1px 2px" value="Email Address" id="subscribe-field" onclick="if ( this.value == 'Email Address' ) { this.value = ''; }" onblur="if ( this.value == '' ) { this.value = 'Email Address'; }" /></p>
+
+			<p>
+				<input type="hidden" name="action" value="subscribe" />
+				<input type="hidden" name="source" value="http://sametmax.com/operateur-splat-ou-etoile-en-python/" />
+				<input type="hidden" name="sub-type" value="widget" />
+				<input type="hidden" name="redirect_fragment" value="blog_subscription-3" />
+				<input type="hidden" id="_wpnonce" name="_wpnonce" value="bbbfcad330" />				<input type="submit" value="J&#039;adhère bon dieu!" name="jetpack_subscriptions_widget" />
+			</p>
+		</form>
+
+		
+</div> <!-- end .widget --><div id="categories-2" class="widget sidebar-block widget_categories"><h3 class="widgettitle">Catégories</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="../category/administration-system/index.html" title="View all posts filed under Administration System">Administration System</a> (99)
+</li>
+	<li class="cat-item cat-item-11"><a href="../category/cul/index.html" title="View all posts filed under Cul">Cul</a> (52)
+</li>
+	<li class="cat-item cat-item-12"><a href="../category/gadget/index.html" title="View all posts filed under Gadget">Gadget</a> (5)
+</li>
+	<li class="cat-item cat-item-855"><a href="../category/gadgets/index.html" title="View all posts filed under Gadgets">Gadgets</a> (2)
+</li>
+	<li class="cat-item cat-item-38"><a href="../category/philo-et-culture/index.html" title="View all posts filed under Philo et culture">Philo et culture</a> (136)
+</li>
+	<li class="cat-item cat-item-3"><a href="../category/programmation/index.html" title="View all posts filed under Programmation">Programmation</a> (341)
+</li>
+	<li class="cat-item cat-item-1"><a href="../category/uncategorized/index.html" title="View all posts filed under Uncategorized">Uncategorized</a> (6)
+</li>
+	<li class="cat-item cat-item-15"><a href="../category/web/index.html" title="View all posts filed under Web">Web</a> (40)
+</li>
+		</ul>
+</div> <!-- end .widget -->		<div id="recent-posts-3" class="widget sidebar-block widget_recent_entries">		<h3 class="widgettitle">Posts récents</h3>		<ul>
+				<li><a href="../pour-vos-thumbnails-imagemagick-a-la-rescousse/index.html" title="Pour vos thumbnails, ImageMagick à la rescousse">Pour vos thumbnails, ImageMagick à la rescousse</a></li>
+				<li><a href="../changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/index.html" title="Changer le mot de passe du super utilisateur django en ligne de commande">Changer le mot de passe du super utilisateur django en ligne de commande</a></li>
+				<li><a href="../le-deuil-dune-idee/index.html" title="Le deuil d&#8217;une idée">Le deuil d&#8217;une idée</a></li>
+				<li><a href="../quest-ce-quun-namespace/index.html" title="Qu&#8217;est-ce qu&#8217;un namespace ?">Qu&#8217;est-ce qu&#8217;un namespace ?</a></li>
+				<li><a href="../astuces-de-recherche/index.html" title="Astuces de recherche">Astuces de recherche</a></li>
+				<li><a href="../cest-pour-des-trucs-comme-ca-que-jadore-python/index.html" title="C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;">C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;</a></li>
+				<li><a href="../pourquoi-il-faut-eviter-import-en-python/index.html" title="Pourquoi il faut éviter &lt;code&gt;import *&lt;/code&gt; en Python">Pourquoi il faut éviter <code>import *</code> en Python</a></li>
+				<li><a href="../quitter-son-pays/index.html" title="Quitter son pays">Quitter son pays</a></li>
+				</ul>
+		</div> <!-- end .widget --> 
+
+	<div id="popular-tabbed" class="widget"> 
+		<h3 class="widgettitle">Posts Populaires</h3>
+		<ul>
+																						<li><a href="../on-a-un-nouveau-projet-et-on-a-besoin-dune-info-sur-vous/index.html">On a un nouveau projet et on a besoin d&#8217;UNE info sur vous</a> (251)</li>																														<li><a href="../entreprendre-en-france-autopsie-dun-echec/index.html">Entreprendre en France, Autopsie d&#8217;un échec.</a> (111)</li>																														<li><a href="../fizzbuzz-en-python/index.html">FizzBuzz en Python</a> (94)</li>																														<li><a href="../fetons-le-depart-de-max/index.html">Fêtons le départ de Max</a> (87)</li>																														<li><a href="../une-journee-dans-un-fkk-maison-close-allemande/index.html">Une journée dans un FKK (maison close Allemande)</a> (84)</li>																														<li><a href="../on-est-en-2013-on-a-marche-sur-la-lune-mais-on-a-toujours-pas/index.html">On est en 2013, on a marché sur la lune, mais on a toujours pas&#8230;</a> (82)</li>																														<li><a href="../il-ne-faut-pas-prendre-des-gens-pour-des-cons-mais-ne-jamais-oublier-quils-en-sont/index.html">Il ne faut pas prendre les gens pour des cons mais ne jamais oublier qu&#8217;ils en sont</a> (82)</li>																														<li><a href="../lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/index.html">L&#8217;un de vous a un cadeau de Noël qui l&#8217;attend au pied du sapin&#8230;</a> (80)</li>													</ul>
+	</div> <!-- end #recent-tabbed -->
+	 
+<div id="tag_cloud-3" class="widget sidebar-block widget_tag_cloud"><h3 class="widgettitle">TagCloud</h3><div class="tagcloud"><a href='../tag/bash/index.html' class='tag-link-14' title='14 topics' style='font-size: 11.456790123457pt;'>bash</a>
+<a href='../tag/blog/index.html' class='tag-link-107' title='11 topics' style='font-size: 10.592592592593pt;'>blog</a>
+<a href='../tag/bottle/index.html' class='tag-link-307' title='6 topics' style='font-size: 8.6049382716049pt;'>bottle</a>
+<a href='../tag/cache/index.html' class='tag-link-333' title='8 topics' style='font-size: 9.4691358024691pt;'>cache</a>
+<a href='../tag/comprehension-lists/index.html' class='tag-link-20' title='6 topics' style='font-size: 8.6049382716049pt;'>comprehension-lists</a>
+<a href='../tag/css/index.html' class='tag-link-188' title='8 topics' style='font-size: 9.4691358024691pt;'>css</a>
+<a href='../tag/cul-2/index.html' class='tag-link-33' title='9 topics' style='font-size: 9.9012345679012pt;'>cul</a>
+<a href='../tag/decorator/index.html' class='tag-link-265' title='7 topics' style='font-size: 9.037037037037pt;'>decorator</a>
+<a href='../tag/django/index.html' class='tag-link-28' title='63 topics' style='font-size: 16.901234567901pt;'>django</a>
+<a href='../tag/email/index.html' class='tag-link-37' title='6 topics' style='font-size: 8.6049382716049pt;'>email</a>
+<a href='../tag/encoding/index.html' class='tag-link-54' title='5 topics' style='font-size: 8pt;'>encoding</a>
+<a href='../tag/error/index.html' class='tag-link-213' title='6 topics' style='font-size: 8.6049382716049pt;'>error</a>
+<a href='../tag/ffmpeg/index.html' class='tag-link-64' title='5 topics' style='font-size: 8pt;'>ffmpeg</a>
+<a href='../tag/fun/index.html' class='tag-link-44' title='6 topics' style='font-size: 8.6049382716049pt;'>fun</a>
+<a href='../tag/git/index.html' class='tag-link-18' title='28 topics' style='font-size: 13.876543209877pt;'>git</a>
+<a href='../tag/html/index.html' class='tag-link-486' title='6 topics' style='font-size: 8.6049382716049pt;'>html</a>
+<a href='../tag/humour/index.html' class='tag-link-266' title='5 topics' style='font-size: 8pt;'>humour</a>
+<a href='../tag/import/index.html' class='tag-link-215' title='7 topics' style='font-size: 9.037037037037pt;'>import</a>
+<a href='../tag/ipython/index.html' class='tag-link-164' title='8 topics' style='font-size: 9.4691358024691pt;'>ipython</a>
+<a href='../tag/iterable/index.html' class='tag-link-217' title='9 topics' style='font-size: 9.9012345679012pt;'>iterable</a>
+<a href='../tag/javascript/index.html' class='tag-link-96' title='25 topics' style='font-size: 13.444444444444pt;'>javascript</a>
+<a href='../tag/jquery/index.html' class='tag-link-112' title='6 topics' style='font-size: 8.6049382716049pt;'>jquery</a>
+<a href='../tag/lambda/index.html' class='tag-link-292' title='7 topics' style='font-size: 9.037037037037pt;'>lambda</a>
+<a href='../tag/linux/index.html' class='tag-link-238' title='5 topics' style='font-size: 8pt;'>linux</a>
+<a href='../tag/mail/index.html' class='tag-link-624' title='6 topics' style='font-size: 8.6049382716049pt;'>mail</a>
+<a href='../tag/meta/index.html' class='tag-link-102' title='78 topics' style='font-size: 17.679012345679pt;'>meta</a>
+<a href='../tag/mysql/index.html' class='tag-link-82' title='5 topics' style='font-size: 8pt;'>mysql</a>
+<a href='../tag/nginx/index.html' class='tag-link-183' title='12 topics' style='font-size: 10.851851851852pt;'>nginx</a>
+<a href='../tag/nsfw/index.html' class='tag-link-319' title='13 topics' style='font-size: 11.197530864198pt;'>nsfw</a>
+<a href='../tag/orm/index.html' class='tag-link-43' title='5 topics' style='font-size: 8pt;'>orm</a>
+<a href='../tag/php/index.html' class='tag-link-199' title='5 topics' style='font-size: 8pt;'>php</a>
+<a href='../tag/poo/index.html' class='tag-link-549' title='9 topics' style='font-size: 9.9012345679012pt;'>poo</a>
+<a href='../tag/process/index.html' class='tag-link-87' title='5 topics' style='font-size: 8pt;'>process</a>
+<a href='../tag/python/index.html' class='tag-link-4' title='251 topics' style='font-size: 22pt;'>python</a>
+<a href='../tag/redis/index.html' class='tag-link-196' title='6 topics' style='font-size: 8.6049382716049pt;'>redis</a>
+<a href='../tag/ruby/index.html' class='tag-link-325' title='6 topics' style='font-size: 8.6049382716049pt;'>ruby</a>
+<a href='../tag/server/index.html' class='tag-link-185' title='6 topics' style='font-size: 8.6049382716049pt;'>server</a>
+<a href='../tag/sexe/index.html' class='tag-link-175' title='5 topics' style='font-size: 8pt;'>sexe</a>
+<a href='../tag/shell/index.html' class='tag-link-202' title='7 topics' style='font-size: 9.037037037037pt;'>shell</a>
+<a href='../tag/ssh/index.html' class='tag-link-206' title='6 topics' style='font-size: 8.6049382716049pt;'>ssh</a>
+<a href='../tag/sublime-text/index.html' class='tag-link-76' title='6 topics' style='font-size: 8.6049382716049pt;'>sublime text</a>
+<a href='../tag/twitter/index.html' class='tag-link-371' title='6 topics' style='font-size: 8.6049382716049pt;'>twitter</a>
+<a href='../tag/ubuntu/index.html' class='tag-link-255' title='13 topics' style='font-size: 11.197530864198pt;'>ubuntu</a>
+<a href='../tag/virtualenv/index.html' class='tag-link-259' title='6 topics' style='font-size: 8.6049382716049pt;'>virtualenv</a>
+<a href='../tag/yield/index.html' class='tag-link-287' title='7 topics' style='font-size: 9.037037037037pt;'>yield</a></div>
+</div> <!-- end .widget --><div id="archives-2" class="widget sidebar-block widget_archive"><h3 class="widgettitle">Archives</h3>		<ul>
+			<li><a href='../2013/12/index.html' title='December 2013'>December 2013</a>&nbsp;(2)</li>
+	<li><a href='../2013/11/index.html' title='November 2013'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html' title='October 2013'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html' title='September 2013'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html' title='August 2013'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html' title='July 2013'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html' title='June 2013'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html' title='May 2013'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html' title='April 2013'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html' title='March 2013'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html' title='February 2013'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html' title='January 2013'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html' title='December 2012'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html' title='November 2012'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html' title='October 2012'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html' title='September 2012'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html' title='August 2012'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html' title='July 2012'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html' title='June 2012'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html' title='May 2012'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html' title='April 2012'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html' title='March 2012'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html' title='February 2012'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+</div> <!-- end .widget --><div id="rss_links-2" class="widget sidebar-block widget_rss_links"><h3 class="widgettitle">Flux RSS</h3><p><a href="../feed/index.html" title="Subscribe to Posts"><img src="../wp-content/plugins/jetpack/_inc/images/rss/green-small.png" alt="RSS Feed" /></a>&nbsp;<a href="../feed/index.html" title="Subscribe to Posts">RSS - Posts</a></p>
+</div> <!-- end .widget --><div id="text-5" class="widget sidebar-block widget_text"><h3 class="widgettitle"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</div> <!-- end .widget --></div> <!-- end sidebar -->	</div> <!-- end #content --> 
+	
+	 <div id="footer" >
+		<div id="footer-content">
+			
+								
+				<ul id="menu-bottom-menu" class="bottom-menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Contactez-nous</a></li>
+</ul>			
+			<p id="copyright">Designed by  <a href="http://www.elegantthemes.com" title="Elegant Themes">Elegant WordPress Themes</a></p>
+		</div> <!-- end #footer-content -->
+	</div> <!-- end #footer -->
+</div> <!-- end #page-wrap -->
+	 
+				
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.cycle.all.min.js"></script> 
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.easing.1.3.js"></script>	
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/superfish.js"></script>	
+	<script type="text/javascript">
+	//<![CDATA[
+		jQuery.noConflict();
+	
+		jQuery('ul.superfish').superfish({ 
+			delay:       200,                            // one second delay on mouseout 
+			animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation 
+			speed:       'fast',                          // faster animation speed 
+			autoArrows:  true,                           // disable generation of arrow mark-up 
+			dropShadows: false                            // disable drop shadows 
+		}).find("> li > ul > li:last-child, > li > ul > li > ul > li:last-child, > li > ul > li > ul > li > ul > li:last-child").addClass("last-nav-element");
+		
+		jQuery(".js #featured, .js div#tabbed").css("display","block");
+
+				
+		var $featured_content = jQuery('#featured_content'),
+			$tabbed_area = jQuery('div#tabbed'),
+			$controllers = jQuery('div#controllers'),
+			$comments = jQuery('ol.commentlist');
+		
+		et_search_bar();
+		
+		if ($featured_content.length) {
+			$featured_content.cycle({
+									timeout: 3000				,
+				speed: 300,
+				cleartypeNoBg: true,
+				prev:   'a#left_arrow', 
+				next:   'a#right_arrow',
+				pager:  'div#controllers',
+				fx: 'fade'
+			});
+			
+			var controllersWidth = $controllers.width(),
+				controllersLeft = Math.round((960 - controllersWidth) / 2);
+			if (controllersWidth < 960) $controllers.css('padding-left',controllersLeft);
+		};
+		
+		if ($tabbed_area.length) {
+			$tabbed_area.tabs({ fx: { opacity: 'toggle' } });
+		};
+		
+		if ($comments.length) {
+			$comments.find(">li").after('<span class="bottom_bg"></span>');
+		};
+		
+
+		<!---- Random tag line ---->		
+
+var tagLine = function(){
+    var tagLines =  [
+        'Deux programmeurs qui se sortent les doigts du code',
+        '10 ko de js rien que pour charger ce message',
+        'Des articles pour geeks qui mettent les points sur les G',
+        "Aucun hipster n'a été violenté à l'écriture de ce blog",
+        'La programmation avec un grand C',
+        'Ornithorynque fuchsia hydrophobe',
+        'Python, Django, Git, et du Cul',
+        'Nous croisons les effluves',
+        'CMB DTC IRL CQFD',
+        'Tuent des chatons depuis 1997',
+        'Reticulating splines',
+        'Error: unexpected end of stupid tag line',
+        'Les bikinis et les ordinateurs épargnent les spéculations',
+        'F5',
+        '<3 (oYo)',
+        'Rien que des obsédés du serpent !',
+        "Je sers la science et c'est ma joie",
+        'On peut tout génie génétiquer!',
+        "Réparateurs d'harmonicas, professeurs de plongée",
+        "Il faut mettre d'urgence un frein à l'immobilisme!",
+        'Ho mon dieu! Ils ont tué Sam, enfoirés!',
+        "L'étincelle qui fait déborder le vase",
+        'A poil les putes !',
+        'Bannis de Reddit !',
+        "Bannis de l'AFPY !",
+        'Bannis de Claire Chazal!',
+        'Bannis de Jean-Pierre Pernaud !',
+        'Bannis de Norton !',
+        'Et si on faisait des camps pour que les gens puissent se concentrer?',
+        'Article.objects.create(type=random.choice(("dev", "cul")))',
+        'Le choc des mots, le poids des algos',
+        'Kedzalcoilt, le serpent à poil'
+    ];
+    return tagLines[Math.ceil(Math.random() * 1000000000) % tagLines.length];
+};
+
+jQuery('#slogan').show().text(tagLine());
+
+// forcer la redirection faire l'image en full size au click
+jQuery('.wp-post-image').click(function(e){e.preventDefault(); window.location.href = jQuery(e.target).attr('src')});
+
+// mettre clippy sur les comments
+
+jQuery(function(){
+    var message = "";
+    var $comment = jQuery('#comment');
+    topagent = null;
+
+    $comment.keyup(function(){
+
+        var content = jQuery(this).val();
+
+        if (content.search(/(^|\s+)(php|vim|emacs|windows|pas?\s*libre)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos trollesques. Attention, nous avons des tampons, et nous n'hésiterons pas à nous en servir !"
+        }
+
+        if (content.search(/(^|\s+)(me (tuer|suicider|tirer une balle|pendre|flinguer))([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos suicidaires. Sam & Max défendent la liberté d'expression. Allez aux bouts de vos idées !"
+        }
+
+        if (content.search(/(^|\s+)(connards?|enculés?|enfoirés?|fils? de pute?)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos injurieux. Ne voulez-vous pas plutôt écrire une lettre d'insultes directement aux auteurs, via le formulaire de contact ?"
+        }
+
+        if (content.search(/(^|\s+)(culs?|nichons?|bite|chatte|sodomie|levrette|sexe)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos graveleux. Pourriez-vous donner plus de détails ?"
+        }
+
+        if (content.search(/\>\>\>/i) != -1){
+            message = "Le triple chevron ne passe pas dans les comments. Désolé :-( Utilisez »» à la place."
+        }
+
+        if (content.length > 2000){
+            message = "Il semble que vous écriviez un roman. Vous réalisez que ceux qui vont répondre ne l'auront pas lu jusqu'au bout ?"
+        }
+
+        if (message){
+            $comment.unbind();
+
+            jQuery("<link/>", {
+               rel: "stylesheet",
+               type: "text/css",
+               href: "http://sametmax.com/wp-content/uploads/2012/07/clippy.css"
+            }).appendTo("head").one('load ready', function(){
+                jQuery.getScript("http://sametmax.com/wp-content/uploads/2012/07/clippy.min_1.js", function(){
+                    clippy.load('Clippy', function(agent) {
+                        agent.show();
+                        var offset = $comment.offset();
+                        var left = offset.left + $comment.width() + 10;
+                        var top = offset.top;
+
+                        jQuery('.clippy').css({position:'absolute',
+                                               display:'block',
+                                               left: left, top: top})
+
+                        jQuery('.clippy-balloon').css({position:'absolute',
+                                                       display:'block',
+                                                       left: left,
+                                                       top: top - 50})
+
+                        agent.speak(message);
+                        setInterval(function(){agent.stop(); agent.animate()}, 20000);
+                    });
+
+                });
+
+            });
+
+        }
+
+    });
+});
+
+
+		<!---- Search Bar Improvements ---->
+		function et_search_bar(){
+			var $searchform = jQuery('#header div#search-form'),
+				$searchinput = $searchform.find("input#searchinput"),
+				searchvalue = $searchinput.val();
+				
+			$searchinput.focus(function(){
+				if (jQuery(this).val() === searchvalue) jQuery(this).val("");
+			}).blur(function(){
+				if (jQuery(this).val() === "") jQuery(this).val(searchvalue);
+			});
+		};
+		
+	//]]>	
+
+
+
+
+<!-- Piwik -->
+
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://88.191.153.127:7777/" : "http://88.191.153.127:7777/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+
+
+
+	</script>
+<noscript>
+<img src="http://88.191.153.127:7777/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="" />
+</noscript>
+	<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.3.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=3.3.1'></script>
+	<div style="display:none">
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-a8f1bb206e33a9a1abf67ebb9bf8e642">
+	</div>
+	<div class="grofile-hash-map-f920b17cb192bee62f5b2637bb6e50ad">
+	</div>
+	<div class="grofile-hash-map-3412644f9501fa6cf9d87c2ef2865a8d">
+	</div>
+	<div class="grofile-hash-map-2ffc5f0f11cd0e8e4d015be543dd2c99">
+	</div>
+	<div class="grofile-hash-map-502f55b818f01ac589d5708616e6bfd8">
+	</div>
+	<div class="grofile-hash-map-b010183705f121ef96331f4c1e5d8d76">
+	</div>
+	<div class="grofile-hash-map-9515584aa9cf5986101c36e02b67509b">
+	</div>
+	<div class="grofile-hash-map-8cba7868911fc3c681bcd1d552946c34">
+	</div>
+	<div class="grofile-hash-map-c4825da112287158f6b0ac9ef3ac1f04">
+	</div>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.js%3Fver=0.1'></script>
+	<script type="text/javascript" charset="utf-8">
+	function sharing_plusone( obj ) { 
+		jQuery.ajax( {
+			url: 'http://sametmax.com/operateur-splat-ou-etoile-en-python/?share=google-plus-1',
+			type: 'POST',
+			data: obj
+		} );
+	}
+	</script>
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+	<div id="sharing_email" style="display: none;">
+		<form action="index.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="text" name="target_email" id="target_email" value="" />
+			
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+				
+				<label for="source_email">Your Email Address</label>
+				<input type="text" name="source_email" id="source_email" value="" />
+
+						
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a href="index.html#cancel" class="sharing_cancel">Cancel</a>
+			
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+			
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js%3Fver=3.15'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/sametmax.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=3.3'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.easing-1.3.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/et-ptemplates-frontend.js%3Fver=1.1'></script>
+
+	<script src="http://stats.wordpress.com/e-201349.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.2.2',blog:'32490438',post:'173'});
+	var load_cmc = function(){linktracker_init(32490438,173,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script>	
+</body>
+</html>

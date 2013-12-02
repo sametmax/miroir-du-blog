@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Qu&#8217;est-ce qu&#8217;une closure en Python et Javascript ?</title>
+	<atom:link href="http://sametmax.com/closure-en-python-et-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/closure-en-python-et-javascript/</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:54:05 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/closure-en-python-et-javascript/#comment-11741</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Sun, 28 Jul 2013 16:10:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=561#comment-11741</guid>
+		<description>Effectivement, j&#039;ai tort. Il va falloir que je mette à jour cet article.</description>
+		<content:encoded><![CDATA[<p>Effectivement, j&#8217;ai tort. Il va falloir que je mette à jour cet article.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: outsmirkable</title>
+		<link>http://sametmax.com/closure-en-python-et-javascript/#comment-11740</link>
+		<dc:creator>outsmirkable</dc:creator>
+		<pubDate>Sun, 28 Jul 2013 16:07:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=561#comment-11740</guid>
+		<description>Cher Sam,
+
+Dans l&#039;esprit « d&#039;apprendre à un homme à pêcher », voici quelques commandes que vous pouvez taper sur votre console Python, je pense que ça vous éclaircira.
+
+Commençons par déclarer une variable :
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» x = 5&lt;/pre&gt;&lt;/code&gt;
+Et maintenant une fonction l&#039;utilisant :
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» def f():
+.       print x&lt;/pre&gt;&lt;/code&gt;
+Quand nous faisons appel à f(), elle se « souvient » de x, même si x a été déclaré en-dehors de son scope.
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» f()
+5&lt;/pre&gt;&lt;/code&gt;
+Jusqu&#039;ici, tout va bien... Soyons fous, créons une deuxième fonction !
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» def g():
+.       print x + 1
+»»»
+»»» g()
+6&lt;/pre&gt;&lt;/code&gt;
+Youpi, g() se &quot;souvient&quot; aussi de x ! Essayons de changer x.
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» x = 10
+»»» f()
+10
+»»» g()
+11&lt;/pre&gt;&lt;/code&gt;
+f() et g() ont pris en compte la nouvelle valeur. Euh... on parlait pas de valeurs « piégées » ? C&#039;est vraiment ça une closure ? Hmm... il n&#039;y a pas d&#039;objet __closure__ dans f, ni dans g...
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» f().__closure__
+»»»
+»»» g().__closure__
+»»»&lt;/pre&gt;&lt;/code&gt;
+Que se passe-t-il si on efface la variable x ?
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» del x
+»»» x
+Traceback (most recent call last):
+  File &quot;&quot;, line 1, in 
+NameError: name &#039;x&#039; is not defined
+»»»&lt;/pre&gt;&lt;/code&gt;
+Ok, x n&#039;est plus disponible, mais est-ce que f s&#039;en souvient quand même ?
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» f()
+Traceback (most recent call last):
+  File &quot;&quot;, line 1, in 
+  File &quot;&quot;, line 2, in f
+NameError: global name &#039;x&#039; is not defined&lt;/pre&gt;&lt;/code&gt;
+Ah... bah non en fait. En plus Python nous parle d&#039;un « global name &#039;x&#039; » ? Il cherche une variable globale appelée x ? Je croyais que c&#039;était seulement si je la déclarais &quot;global x&quot; ?!??!
+
+Pouf, pouf... essayons donc comme ça :
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» def generateur(y):
+.       def cloture():
+.           print y
+.       return cloture&lt;/pre&gt;&lt;/code&gt;
+On va générer deux nouvelles fonctions, h et m, qui vont piéger des variables.
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» z = 5
+»»» h = generateur(z)
+»»» z = 10
+»»» m = generateur(z)
+»»» h()
+5
+»»» m()
+10&lt;/pre&gt;&lt;/code&gt;
+Cool, j&#039;ai deux fonctions très utiles (hem...) qui utilisent des valeurs que je n&#039;ai pas besoin de leur passer en paramètre. Et f() a bien gardé la valeur 5, alors que j&#039;ai changé la valeur de z entre-temps ! &lt;strong&gt;C&#039;est bien, ça m&#039;a l&#039;air plus sécurisé... je ne voudrais pas que le comportement de ma fonction f change au bon vouloir des variables extérieures&lt;/strong&gt; ! Il paraît que c&#039;est pas bien. Et d&#039;ailleurs même si je supprime la variable z, et mon générateur aussi :
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» del z
+»»» del generateur
+»»» h()
+5
+»»» m()
+10&lt;/pre&gt;&lt;/code&gt;
+Waou, mes deux fonctions marchent toujours, ce sont des vraies fermetures ! On le voit bien d&#039;ailleurs :
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»»» h.__closure__
+(,)&lt;/pre&gt;&lt;/code&gt;
+
+Pour finir : http://fr.wikipedia.org/wiki/Fermeture_%28informatique%29</description>
+		<content:encoded><![CDATA[<p>Cher Sam,</p>
+<p>Dans l&#8217;esprit « d&#8217;apprendre à un homme à pêcher », voici quelques commandes que vous pouvez taper sur votre console Python, je pense que ça vous éclaircira.</p>
+<p>Commençons par déclarer une variable :<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» x = <span style="color: #ff4500;">5</span></pre></div></div>
+
+<p></code><br />
+Et maintenant une fonction l&#8217;utilisant :<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» <span style="color: #ff7700;font-weight:bold;">def</span> f<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+.       <span style="color: #ff7700;font-weight:bold;">print</span> x</pre></div></div>
+
+<p></code><br />
+Quand nous faisons appel à f(), elle se « souvient » de x, même si x a été déclaré en-dehors de son scope.<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» f<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">5</span></pre></div></div>
+
+<p></code><br />
+Jusqu&#8217;ici, tout va bien&#8230; Soyons fous, créons une deuxième fonction !<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» <span style="color: #ff7700;font-weight:bold;">def</span> g<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+.       <span style="color: #ff7700;font-weight:bold;">print</span> x + <span style="color: #ff4500;">1</span>
+»»»
+»»» g<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">6</span></pre></div></div>
+
+<p></code><br />
+Youpi, g() se &#8220;souvient&#8221; aussi de x ! Essayons de changer x.<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» x = <span style="color: #ff4500;">10</span>
+»»» f<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">10</span>
+»»» g<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">11</span></pre></div></div>
+
+<p></code><br />
+f() et g() ont pris en compte la nouvelle valeur. Euh&#8230; on parlait pas de valeurs « piégées » ? C&#8217;est vraiment ça une closure ? Hmm&#8230; il n&#8217;y a pas d&#8217;objet __closure__ dans f, ni dans g&#8230;<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» f<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.__closure__
+»»»
+»»» g<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.__closure__
+»»»</pre></div></div>
+
+<p></code><br />
+Que se passe-t-il si on efface la variable x ?<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» <span style="color: #ff7700;font-weight:bold;">del</span> x
+»»» x
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> 
+<span style="color: #008000;">NameError</span>: name <span style="color: #483d8b;">'x'</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> defined
+»»»</pre></div></div>
+
+<p></code><br />
+Ok, x n&#8217;est plus disponible, mais est-ce que f s&#8217;en souvient quand même ?<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» f<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> 
+  File <span style="color: #483d8b;">&quot;&quot;</span>, line <span style="color: #ff4500;">2</span>, <span style="color: #ff7700;font-weight:bold;">in</span> f
+<span style="color: #008000;">NameError</span>: <span style="color: #ff7700;font-weight:bold;">global</span> name <span style="color: #483d8b;">'x'</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> defined</pre></div></div>
+
+<p></code><br />
+Ah&#8230; bah non en fait. En plus Python nous parle d&#8217;un « global name &#8216;x&#8217; » ? Il cherche une variable globale appelée x ? Je croyais que c&#8217;était seulement si je la déclarais &#8220;global x&#8221; ?!??!</p>
+<p>Pouf, pouf&#8230; essayons donc comme ça :<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» <span style="color: #ff7700;font-weight:bold;">def</span> generateur<span style="color: black;">&#40;</span>y<span style="color: black;">&#41;</span>:
+.       <span style="color: #ff7700;font-weight:bold;">def</span> cloture<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+.           <span style="color: #ff7700;font-weight:bold;">print</span> y
+.       <span style="color: #ff7700;font-weight:bold;">return</span> cloture</pre></div></div>
+
+<p></code><br />
+On va générer deux nouvelles fonctions, h et m, qui vont piéger des variables.<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» z = <span style="color: #ff4500;">5</span>
+»»» h = generateur<span style="color: black;">&#40;</span>z<span style="color: black;">&#41;</span>
+»»» z = <span style="color: #ff4500;">10</span>
+»»» m = generateur<span style="color: black;">&#40;</span>z<span style="color: black;">&#41;</span>
+»»» h<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">5</span>
+»»» m<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">10</span></pre></div></div>
+
+<p></code><br />
+Cool, j&#8217;ai deux fonctions très utiles (hem&#8230;) qui utilisent des valeurs que je n&#8217;ai pas besoin de leur passer en paramètre. Et f() a bien gardé la valeur 5, alors que j&#8217;ai changé la valeur de z entre-temps ! <strong>C&#8217;est bien, ça m&#8217;a l&#8217;air plus sécurisé&#8230; je ne voudrais pas que le comportement de ma fonction f change au bon vouloir des variables extérieures</strong> ! Il paraît que c&#8217;est pas bien. Et d&#8217;ailleurs même si je supprime la variable z, et mon générateur aussi :<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» <span style="color: #ff7700;font-weight:bold;">del</span> z
+»»» <span style="color: #ff7700;font-weight:bold;">del</span> generateur
+»»» h<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">5</span>
+»»» m<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">10</span></pre></div></div>
+
+<p></code><br />
+Waou, mes deux fonctions marchent toujours, ce sont des vraies fermetures ! On le voit bien d&#8217;ailleurs :<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»»» h.__closure__
+<span style="color: black;">&#40;</span>,<span style="color: black;">&#41;</span></pre></div></div>
+
+<p></code></p>
+<p>Pour finir : <a href="http://fr.wikipedia.org/wiki/Fermeture_%28informatique%29" rel="nofollow">http://fr.wikipedia.org/wiki/Fermeture_%28informatique%29</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/closure-en-python-et-javascript/#comment-11730</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Sun, 28 Jul 2013 09:00:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=561#comment-11730</guid>
+		<description>Cher ami, une variable ne peut être globale que si elle est déclarée avec le mot clé global en Python, ou si elle n&#039;est pas déclarée avec var en javascript. Ce n&#039;est pas le cas dans l&#039;article.
+
+La closure est un espace de mémoire reservé sous certaines conditions. Elle peut se faire dans le cadre de ton exemple - un retour de fonction - mais ce n&#039;est pas le seul cas. On retrouve des closures dans tout un tas de blocs, dans différentes langages.</description>
+		<content:encoded><![CDATA[<p>Cher ami, une variable ne peut être globale que si elle est déclarée avec le mot clé global en Python, ou si elle n&#8217;est pas déclarée avec var en javascript. Ce n&#8217;est pas le cas dans l&#8217;article.</p>
+<p>La closure est un espace de mémoire reservé sous certaines conditions. Elle peut se faire dans le cadre de ton exemple &#8211; un retour de fonction &#8211; mais ce n&#8217;est pas le seul cas. On retrouve des closures dans tout un tas de blocs, dans différentes langages.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: outsmirkable</title>
+		<link>http://sametmax.com/closure-en-python-et-javascript/#comment-11729</link>
+		<dc:creator>outsmirkable</dc:creator>
+		<pubDate>Sun, 28 Jul 2013 08:47:39 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=561#comment-11729</guid>
+		<description>Cet article est complètement faux. Il y a confusion entre variable globale et &lt;em&gt;closure&lt;/em&gt;. &lt;strong&gt;Une &lt;em&gt;closure&lt;/em&gt; n&#039;est pas une variable, c&#039;est une FONCTION&lt;/strong&gt;. En fait, créer une &lt;em&gt;closure&lt;/em&gt; implique d&#039;avoir une fonction qui retourne une fonction (la &lt;em&gt;closure&lt;/em&gt;). Voici un exemple simple à retenir :
+&lt;code&gt;&lt;pre lang=&quot;python&quot;&gt;
+»» def generer_closure(piegee):
+.       def closure(x):
+.            # Faire une opération avec la variable piégée
+.            return piegee ** x
+.       return closure
+
+»» # On génère une fonction qui &quot;piège&quot; la valeur 10
+»» f = generer_closure(10)
+»» f(3)
+1000
+»» # La fonction f se &quot;souvient&quot; de la valeur 10 !
+»» # On peut même supprimer le générateur
+»» del generer_closure
+»» f(2)
+100
+»» # Et ça marche toujours !
+»» # En fait notre fonction possède un attribut caché
+»» # Voilà où se cache la valeur piégée
+»» f.__closure__[0].cell_contents
+10
+&lt;/pre&gt;
+&lt;/code&gt;
+
+Il arrive qu&#039;on ait besoin d&#039;écrire une méthode pour laquelle une partie des arguments ne change jamais. On est alors souvent tenté d&#039;utiliser des variables globales pour ces valeurs &quot;fixes&quot;. &lt;strong&gt;Le but des &lt;em&gt;closures&lt;/em&gt; est justement d&#039;éviter de déclarer des variables globales&lt;/strong&gt;, tout en obtenant une méthode agréable à utiliser, qui &quot;connait&quot; les valeurs fixes qu&#039;elle doit utiliser.</description>
+		<content:encoded><![CDATA[<p>Cet article est complètement faux. Il y a confusion entre variable globale et <em>closure</em>. <strong>Une <em>closure</em> n&#8217;est pas une variable, c&#8217;est une FONCTION</strong>. En fait, créer une <em>closure</em> implique d&#8217;avoir une fonction qui retourne une fonction (la <em>closure</em>). Voici un exemple simple à retenir :<br />
+<code></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">»» <span style="color: #ff7700;font-weight:bold;">def</span> generer_closure<span style="color: black;">&#40;</span>piegee<span style="color: black;">&#41;</span>:
+.       <span style="color: #ff7700;font-weight:bold;">def</span> closure<span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>:
+.            <span style="color: #808080; font-style: italic;"># Faire une opération avec la variable piégée</span>
+.            <span style="color: #ff7700;font-weight:bold;">return</span> piegee <span style="color: #66cc66;">**</span> x
+.       <span style="color: #ff7700;font-weight:bold;">return</span> closure
+&nbsp;
+»» <span style="color: #808080; font-style: italic;"># On génère une fonction qui &quot;piège&quot; la valeur 10</span>
+»» f = generer_closure<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>
+»» f<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1000</span>
+»» <span style="color: #808080; font-style: italic;"># La fonction f se &quot;souvient&quot; de la valeur 10 !</span>
+»» <span style="color: #808080; font-style: italic;"># On peut même supprimer le générateur</span>
+»» <span style="color: #ff7700;font-weight:bold;">del</span> generer_closure
+»» f<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">100</span>
+»» <span style="color: #808080; font-style: italic;"># Et ça marche toujours !</span>
+»» <span style="color: #808080; font-style: italic;"># En fait notre fonction possède un attribut caché</span>
+»» <span style="color: #808080; font-style: italic;"># Voilà où se cache la valeur piégée</span>
+»» f.__closure__<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">cell_contents</span>
+<span style="color: #ff4500;">10</span></pre></div></div>
+
+<p></code></p>
+<p>Il arrive qu&#8217;on ait besoin d&#8217;écrire une méthode pour laquelle une partie des arguments ne change jamais. On est alors souvent tenté d&#8217;utiliser des variables globales pour ces valeurs &#8220;fixes&#8221;. <strong>Le but des <em>closures</em> est justement d&#8217;éviter de déclarer des variables globales</strong>, tout en obtenant une méthode agréable à utiliser, qui &#8220;connait&#8221; les valeurs fixes qu&#8217;elle doit utiliser.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/closure-en-python-et-javascript/#comment-604</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Tue, 10 Jul 2012 17:18:28 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=561#comment-604</guid>
+		<description>@JM: pas exactement.
+
+&lt;code&gt;global&lt;/code&gt; permet de modifier une variable comme si c&#039;était une variable globale. Il y a des effets de bords possibles (ce qui est un des gros défaut de Javascript) car une variable de tel nom peut exister à la racine du fichier.
+
+Une solution plus propre est d&#039;utiliser le mot clé &lt;code&gt;nonlocal&lt;/code&gt;, qui permet de considérer une variable comme étant celle du scope du dessus &lt;strong&gt;le plus proche&lt;/strong&gt;. On évite ainsi de modifier en cascade 
+
+Mais &lt;code&gt;nonlocal&lt;/code&gt; n&#039;existe qu&#039;à partir de Python 3 que personne n&#039;utilise en production.
+
+Merci pour les corrections :-) Plus un article est propre, plus il est agréable à lire. Surtout n&#039;hésitez pas à faire le grammar nazi en commentaire, ce sera toujours bien acceuilli.</description>
+		<content:encoded><![CDATA[<p>@JM: pas exactement.</p>
+<p><code>global</code> permet de modifier une variable comme si c&#8217;était une variable globale. Il y a des effets de bords possibles (ce qui est un des gros défaut de Javascript) car une variable de tel nom peut exister à la racine du fichier.</p>
+<p>Une solution plus propre est d&#8217;utiliser le mot clé <code>nonlocal</code>, qui permet de considérer une variable comme étant celle du scope du dessus <strong>le plus proche</strong>. On évite ainsi de modifier en cascade </p>
+<p>Mais <code>nonlocal</code> n&#8217;existe qu&#8217;à partir de Python 3 que personne n&#8217;utilise en production.</p>
+<p>Merci pour les corrections :-) Plus un article est propre, plus il est agréable à lire. Surtout n&#8217;hésitez pas à faire le grammar nazi en commentaire, ce sera toujours bien acceuilli.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: JM</title>
+		<link>http://sametmax.com/closure-en-python-et-javascript/#comment-585</link>
+		<dc:creator>JM</dc:creator>
+		<pubDate>Tue, 03 Jul 2012 13:39:22 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=561#comment-585</guid>
+		<description>À noter que pour modifier une variable à l&#039;extérieur du scope de la fonction, on peut utiliser le mot de clé &lt;strong&gt;global&lt;/strong&gt; qui permet d&#039;avoir le même comportement qu&#039;en Javascript.
+
+Encore moi pour la grammaire (supprime cette partie du commentaire, mais peut-être que c&#039;est cool de laisser la partie ci-dessus.)
+
+Les closure (+s)
+on définie (t)
+ai (+t) été changé.
+ne créé pas de closure. (crée)</description>
+		<content:encoded><![CDATA[<p>À noter que pour modifier une variable à l&#8217;extérieur du scope de la fonction, on peut utiliser le mot de clé <strong>global</strong> qui permet d&#8217;avoir le même comportement qu&#8217;en Javascript.</p>
+<p>Encore moi pour la grammaire (supprime cette partie du commentaire, mais peut-être que c&#8217;est cool de laisser la partie ci-dessus.)</p>
+<p>Les closure (+s)<br />
+on définie (t)<br />
+ai (+t) été changé.<br />
+ne créé pas de closure. (crée)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

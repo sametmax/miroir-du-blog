@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Les imports en Python</title>
+	<atom:link href="http://sametmax.com/les-imports-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/les-imports-en-python/</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:54:05 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-11480</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Mon, 22 Jul 2013 19:56:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-11480</guid>
+		<description>Il faut toujours lancer la commande nose depuis le repertoire racine du projet, pas à l&#039;interieur. Si tu veux lancer un test en particulier, tape le chemin vers ce fichier, relativement à la racine.</description>
+		<content:encoded><![CDATA[<p>Il faut toujours lancer la commande nose depuis le repertoire racine du projet, pas à l&#8217;interieur. Si tu veux lancer un test en particulier, tape le chemin vers ce fichier, relativement à la racine.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mat</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-11400</link>
+		<dc:creator>Mat</dc:creator>
+		<pubDate>Sat, 20 Jul 2013 19:51:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-11400</guid>
+		<description>Salut, 
+
+Merci pour le tutoriel :)
+
+Par contre à un moment, vous dîtes : 
+&lt;blockquote&gt;
+Pour ce genre de scénario, il faut donc avoir le dossier qui les contient à côté de votre package. Ainsi, si j’avais des tests unitaires, je devrais faire un dossier tests à côté du dossier test_imports. Par exemple, transformer mon arbo en un truc comme ça :
+
+src
+...&#124;_ test_imports
+...&#124;_ tests
+
+Afin que je lance les tests en faisant python tests depuis src. Et dans mes fichiers de tests, je pourrai faire des from test_imports import truc.
+&lt;/blockquote&gt;
+
+Cependant, j&#039;ai créé la même arborescence (pour faire des tests unitaires), avec:
+&lt;blockquote&gt;
+test_import
+...........&#124;_ __init__py
+...........&#124;_ src
+.................&#124;_ __init__
+.................&#124;_ code.py
+...........&#124;_ tests
+.................&#124;_ __init__py
+.................&#124;_ test_code.py
+&lt;/blockquote&gt;
+
+Tous les __init__.py sont vides.
+Dans test_code.py, j&#039;ai mis &quot;from src import code&quot;
+
+Puis, en me plaçant dans le répertoire test_import dans une console, je fais:
+&gt; python tests/test_code.py
+
+Et j&#039;obtiens un joli ImportError, alors que c&#039;est censé marcher d&#039;après le paragraphe cité ci-dessus...
+En fait, j&#039;ai testé en imprimant le sys.path, et il ajoute &quot;test_import/tests&quot; et non &quot;test_import&quot; comme indiqué...
+
+Qu&#039;est ce que j&#039;ai mal fait ? 
+
+Mon but final est de pouvoir utiliser nosetests depuis n&#039;importe où dans l&#039;arborescence, sans avoir à faire des &quot;sys.path.append()&quot; de partout. 
+
+Merci pour votre aide :) !</description>
+		<content:encoded><![CDATA[<p>Salut, </p>
+<p>Merci pour le tutoriel :)</p>
+<p>Par contre à un moment, vous dîtes : </p>
+<blockquote><p>
+Pour ce genre de scénario, il faut donc avoir le dossier qui les contient à côté de votre package. Ainsi, si j’avais des tests unitaires, je devrais faire un dossier tests à côté du dossier test_imports. Par exemple, transformer mon arbo en un truc comme ça :</p>
+<p>src<br />
+&#8230;|_ test_imports<br />
+&#8230;|_ tests</p>
+<p>Afin que je lance les tests en faisant python tests depuis src. Et dans mes fichiers de tests, je pourrai faire des from test_imports import truc.
+</p></blockquote>
+<p>Cependant, j&#8217;ai créé la même arborescence (pour faire des tests unitaires), avec:</p>
+<blockquote><p>
+test_import<br />
+&#8230;&#8230;&#8230;..|_ __init__py<br />
+&#8230;&#8230;&#8230;..|_ src<br />
+&#8230;&#8230;&#8230;&#8230;&#8230;..|_ __init__<br />
+&#8230;&#8230;&#8230;&#8230;&#8230;..|_ code.py<br />
+&#8230;&#8230;&#8230;..|_ tests<br />
+&#8230;&#8230;&#8230;&#8230;&#8230;..|_ __init__py<br />
+&#8230;&#8230;&#8230;&#8230;&#8230;..|_ test_code.py
+</p></blockquote>
+<p>Tous les __init__.py sont vides.<br />
+Dans test_code.py, j&#8217;ai mis &#8220;from src import code&#8221;</p>
+<p>Puis, en me plaçant dans le répertoire test_import dans une console, je fais:<br />
+&gt; python tests/test_code.py</p>
+<p>Et j&#8217;obtiens un joli ImportError, alors que c&#8217;est censé marcher d&#8217;après le paragraphe cité ci-dessus&#8230;<br />
+En fait, j&#8217;ai testé en imprimant le sys.path, et il ajoute &#8220;test_import/tests&#8221; et non &#8220;test_import&#8221; comme indiqué&#8230;</p>
+<p>Qu&#8217;est ce que j&#8217;ai mal fait ? </p>
+<p>Mon but final est de pouvoir utiliser nosetests depuis n&#8217;importe où dans l&#8217;arborescence, sans avoir à faire des &#8220;sys.path.append()&#8221; de partout. </p>
+<p>Merci pour votre aide :) !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-9440</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Tue, 28 May 2013 10:42:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-9440</guid>
+		<description>C&#039;est la même chose: tu as la synaxes des imports relatifs uniquement si tu as les imports absolus. Sinon les imports sont des imports absotifs :-) Ni absolus, ni relatifs, mais à l&#039;arrache ^^</description>
+		<content:encoded><![CDATA[<p>C&#8217;est la même chose: tu as la synaxes des imports relatifs uniquement si tu as les imports absolus. Sinon les imports sont des imports absotifs :-) Ni absolus, ni relatifs, mais à l&#8217;arrache ^^</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Yohann</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-9435</link>
+		<dc:creator>Yohann</dc:creator>
+		<pubDate>Tue, 28 May 2013 09:43:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-9435</guid>
+		<description>Je viens relire cet article depuis celui sur le nouveau snipet python 3 et je tombe sur ça:
+
+&lt;blockquote&gt;Ce n&#039;est pas forcément ce que vous voulez. Python 3 corrige cela en permettant des imports relatifs, et Python 2.7 peut en bénéficier en important tout en haut du module :
+
+from __future__ import absolute_import
+
+&lt;/blockquote&gt;
+
+c&#039;est pas plustôt les import absolus justement que permet python3 ?
+
+Encore merci pour vos articles, continuez les mecs!</description>
+		<content:encoded><![CDATA[<p>Je viens relire cet article depuis celui sur le nouveau snipet python 3 et je tombe sur ça:</p>
+<blockquote><p>Ce n&#8217;est pas forcément ce que vous voulez. Python 3 corrige cela en permettant des imports relatifs, et Python 2.7 peut en bénéficier en important tout en haut du module :</p>
+<p>from __future__ import absolute_import</p>
+</blockquote>
+<p>c&#8217;est pas plustôt les import absolus justement que permet python3 ?</p>
+<p>Encore merci pour vos articles, continuez les mecs!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-9006</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Mon, 20 May 2013 07:14:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-9006</guid>
+		<description>C&#039;est une bonne tag line pour le blog ça.</description>
+		<content:encoded><![CDATA[<p>C&#8217;est une bonne tag line pour le blog ça.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Etienne</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-8994</link>
+		<dc:creator>Etienne</dc:creator>
+		<pubDate>Sun, 19 May 2013 21:05:59 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-8994</guid>
+		<description>C&#039;est fou le nombre de fois où je me suis dit: &quot;Y&#039;a un truc à ce sujet sur S&amp;M&quot;, alors je google: &quot;décorateurs site:sametmax.com&quot;, par exemple.
+
+Pour dire, même si je google &#039;&quot;à poil les putes&quot; site:sametmax.com&#039; je tombe sur des trucs vachement intéressants:
+
+4 résultats:
+- Quel hébergement Web pour les projets Python ?
+- Monitorez vos serveurs avec munin et notifications par email
+- Concurrence sans threads en python
+- FizzBuzz en Python
+
+Comme quoi on peut voir sa bite en gros plan et avoir aussi un cerveau...</description>
+		<content:encoded><![CDATA[<p>C&#8217;est fou le nombre de fois où je me suis dit: &#8220;Y&#8217;a un truc à ce sujet sur S&amp;M&#8221;, alors je google: &#8220;décorateurs site:sametmax.com&#8221;, par exemple.</p>
+<p>Pour dire, même si je google &#8216;&#8221;à poil les putes&#8221; site:sametmax.com&#8217; je tombe sur des trucs vachement intéressants:</p>
+<p>4 résultats:<br />
+- Quel hébergement Web pour les projets Python ?<br />
+- Monitorez vos serveurs avec munin et notifications par email<br />
+- Concurrence sans threads en python<br />
+- FizzBuzz en Python</p>
+<p>Comme quoi on peut voir sa bite en gros plan et avoir aussi un cerveau&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: glickind</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-8970</link>
+		<dc:creator>glickind</dc:creator>
+		<pubDate>Sat, 18 May 2013 16:24:06 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-8970</guid>
+		<description>&lt;span class=&quot;merci&quot;&gt;&lt;/span&gt;On peut rappeler explicitement que faire un import exécute le code du fichier/module importé et faire un lien sur votre article: &lt;a href=&quot;http://sametmax.com/pourquoi-if-__name__-__main__-en-python/&quot; rel=&quot;nofollow&quot;&gt;
+Pourquoi if __name__ == &#039;__main__&#039; en Python ?&lt;/a&gt;
+
+Par ailleurs, comme tu as demandé une relecture:
+s/Mais si je me met ici/Mais si je me met&lt;strong&gt;s&lt;/strong&gt; ici/
+s/quand tout à échoué/quand tout &lt;strong&gt;a&lt;/strong&gt; échoué/</description>
+		<content:encoded><![CDATA[<p><span class="merci"></span>On peut rappeler explicitement que faire un import exécute le code du fichier/module importé et faire un lien sur votre article: <a href="http://sametmax.com/pourquoi-if-__name__-__main__-en-python/" rel="nofollow"><br />
+Pourquoi if __name__ == &#8216;__main__&#8217; en Python ?</a></p>
+<p>Par ailleurs, comme tu as demandé une relecture:<br />
+s/Mais si je me met ici/Mais si je me met<strong>s</strong> ici/<br />
+s/quand tout à échoué/quand tout <strong>a</strong> échoué/</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: martin</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-8963</link>
+		<dc:creator>martin</dc:creator>
+		<pubDate>Fri, 17 May 2013 16:49:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-8963</guid>
+		<description>Après avoir beaucoup chipoté en plaçant mes modules personnels dans le dossier site_package, ou en ajoutant le dossier contenant le module dans le PYTHONPATH avec un EXPORT dans mon fichier .bashrc ou bash_profile, je me suis finalement tourné vers les fichiers &lt;strong&gt;.pth&lt;/strong&gt; à placer dans site-package (voir un article ancien de Bob Ipolito &lt;a href=&quot;http://bob.ippoli.to/archives/2005/02/06/using-pth-files-for-python-development/&quot; rel=&quot;nofollow&quot;&gt;Using .pth files for Python development&lt;/a&gt;).
+
+Il y en a de plusieurs types dont le plus simple contient simplement le chemin du dossier à ajouter (messcrits.pth):
+
+&lt;code&gt;/Users/Shared/Dropbox/messcripts&lt;/code&gt;
+
+et qui me donne accès à toutes les classes et les fonctions qui sont dans les fichiers présents (comme il est dans Dropbox, je peux m&#039;en servir sur toutes les machines  que j&#039;utilise, Linux et Mac OS X, il suffit d&#039;utiliser sur chacune un fichier .pth pointant vers le dossier).
+
+Il y a moyen d&#039;ajouter plusieurs dossiers (un par ligne) comme dans (Django les supporte aussi, voir &lt;a href=&quot;http://djangotricks.blogspot.be/2008/09/note-on-python-paths.html&quot; rel=&quot;nofollow&quot;&gt;A Note on Python Paths &lt;/a&gt;).
+&lt;code&gt;/Library/test/django_src/trunk
+/Library/tes/myproject_src/trunk&lt;/code&gt;
+
+D&#039;autres compliquent un peu les choses en écrivant:
+&lt;code&gt;import sys; sys.path.insert(0,&#039;/Library/Frameworks/GDAL.framework/Versions/1.9/Python/2.7/site-packages&#039;)&lt;/code&gt; 
+pour être surs que leur module soit en première position dans la liste du PYTHONPATH.
+
+Et enfin, certains utilisent cette technique pour changer l&#039;appel du module comme le fichier Ngl.pth qui ne contient que PyNGL, ce qui permet d&#039;utiliser soit
+&lt;code&gt;import Ngl&lt;/code&gt; 
+soit 
+&lt;code&gt;import PyNGL&lt;/code&gt;</description>
+		<content:encoded><![CDATA[<p>Après avoir beaucoup chipoté en plaçant mes modules personnels dans le dossier site_package, ou en ajoutant le dossier contenant le module dans le PYTHONPATH avec un EXPORT dans mon fichier .bashrc ou bash_profile, je me suis finalement tourné vers les fichiers <strong>.pth</strong> à placer dans site-package (voir un article ancien de Bob Ipolito <a href="http://bob.ippoli.to/archives/2005/02/06/using-pth-files-for-python-development/" rel="nofollow">Using .pth files for Python development</a>).</p>
+<p>Il y en a de plusieurs types dont le plus simple contient simplement le chemin du dossier à ajouter (messcrits.pth):</p>
+<p><code>/Users/Shared/Dropbox/messcripts</code></p>
+<p>et qui me donne accès à toutes les classes et les fonctions qui sont dans les fichiers présents (comme il est dans Dropbox, je peux m&#8217;en servir sur toutes les machines  que j&#8217;utilise, Linux et Mac OS X, il suffit d&#8217;utiliser sur chacune un fichier .pth pointant vers le dossier).</p>
+<p>Il y a moyen d&#8217;ajouter plusieurs dossiers (un par ligne) comme dans (Django les supporte aussi, voir <a href="http://djangotricks.blogspot.be/2008/09/note-on-python-paths.html" rel="nofollow">A Note on Python Paths </a>).<br />
+<code>/Library/test/django_src/trunk<br />
+/Library/tes/myproject_src/trunk</code></p>
+<p>D&#8217;autres compliquent un peu les choses en écrivant:<br />
+<code>import sys; sys.path.insert(0,'/Library/Frameworks/GDAL.framework/Versions/1.9/Python/2.7/site-packages')</code><br />
+pour être surs que leur module soit en première position dans la liste du PYTHONPATH.</p>
+<p>Et enfin, certains utilisent cette technique pour changer l&#8217;appel du module comme le fichier Ngl.pth qui ne contient que PyNGL, ce qui permet d&#8217;utiliser soit<br />
+<code>import Ngl</code><br />
+soit<br />
+<code>import PyNGL</code></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-8959</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Fri, 17 May 2013 12:31:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-8959</guid>
+		<description>J&#039;ai updaté l&#039;article puor rendre les noms de fichiers plus lisibbles, fournir une arbo de test et mettre un peu de zik pour faire passer la pillule.
+
+Tu vois autre chose à faire kontre ?</description>
+		<content:encoded><![CDATA[<p>J&#8217;ai updaté l&#8217;article puor rendre les noms de fichiers plus lisibbles, fournir une arbo de test et mettre un peu de zik pour faire passer la pillule.</p>
+<p>Tu vois autre chose à faire kontre ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Etienne</title>
+		<link>http://sametmax.com/les-imports-en-python/#comment-8937</link>
+		<dc:creator>Etienne</dc:creator>
+		<pubDate>Thu, 16 May 2013 13:41:14 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=6127#comment-8937</guid>
+		<description>Limpide.</description>
+		<content:encoded><![CDATA[<p>Limpide.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

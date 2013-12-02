@@ -1,0 +1,1934 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="fr-FR" >
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>  L&#8217;encoding en Python, une bonne fois pour toute | Sam &amp; Max: Python, Django, Git et du cul</title>
+<meta http-equiv="Content-Language" content="fr" />
+
+<link rel="shortcut icon" href="../wp-content/uploads/2012/05/favicon.ico">
+
+<link rel="stylesheet" href="../wp-content/themes/Minimal/style.css%3F238.css" type="text/css" media="screen" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul RSS Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/atom+xml" title="Sam &amp; Max: Python, Django, Git et du cul Atom Feed" href="../feed/atom/index.html" />
+<link rel="pingback" href="../xmlrpc.php" />
+
+
+<!--[if lt IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie6style.css" />
+	<script type="text/javascript" src="http://sametmax.com/wp-content/themes/Minimal/js/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script type="text/javascript">DD_belatedPNG.fix('img#logo, #header #search-form, #slogan, a#left_arrow, a#right_arrow, div.slide img.thumb, div#controllers a, a.readmore, a.readmore span, #services .one-third, #services .one-third.first img.icon, #services img.icon, div.sidebar-block .widget ul li');</script>
+<![endif]-->
+<!--[if IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie7style.css" />
+<![endif]-->
+
+<script type="text/javascript">
+	document.documentElement.className = 'js';
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; L&#8217;encoding en Python, une bonne fois pour toute Comments Feed" href="feed/index.html" />
+<meta content="Minimal v.3.3" name="generator"/><link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" />
+<link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/page_templates.css" rel="stylesheet" /><link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=3.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='et-shortcodes-css-css'  href='../wp-content/themes/Minimal/epanel/shortcodes/shortcodes.css%3Fver=1.8.css' type='text/css' media='all' />
+<link rel='stylesheet' id='sharedaddy-css'  href='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.css%3Fver=3.3.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cfq-css'  href='../wp-content/plugins/comment-form-quicktags/style.css%3Fver=20110712.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.7.1'></script>
+<script type='text/javascript' src='../wp-includes/js/comment-reply.js%3Fver=20090102'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/shortcodes/js/et_shortcodes_frontend.js%3Fver=1.8'></script>
+<script type='text/javascript' src='../wp-content/plugins/comment-form-quicktags/quicktags.php%3Fver=20121011'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Deux conneries à la seconde' href='../deux-conneries-a-la-seconde/index.html' />
+<link rel='next' title='Créer un snippet pour Sublime Text' href='../creer-un-snippet-pour-sublime-text/index.html' />
+<meta name="generator" content="WordPress 3.3.1" />
+<link rel='canonical' href='index.html' />
+<link rel='shortlink' href='http://wp.me/p2ckfk-1vW' />
+<link rel="payment" type="text/html" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Flencoding-en-python-une-bonne-fois-pour-toute%2F&amp;language=en_GB&amp;category=text&amp;title=L%26%238217%3Bencoding+en+Python%2C+une+bonne+fois+pour+toute&amp;description=J%26%238217%3Bavais+oubli%C3%A9+la+zik%2C+je+rajoute%3A+Vous+avez+tous+un+jour+eu+l%26%238217%3Berreur+suivante+%3A+UnicodeDecodeError%3A+%27machine%27+codec+can%27t+decode+character+%27trucmuche%27+in+position+x%3A+ordinal+not+in+range%28z%29+Et...&amp;tags=ascii%2Cencoding%2Cpython%2Cunicode%2Cutf8%2Cblog" />
+
+<link rel="stylesheet" href="../wp-content/plugins/wp-syntax/wp-syntax.css" type="text/css" media="screen" />
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.3.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.3.css");
+/* ]]> */
+</style>	<style type="text/css">
+		#et_pt_portfolio_gallery { margin-left: -11px; }
+		.et_pt_portfolio_item { margin-left: 23px; }
+		.et_portfolio_small { margin-left: -39px !important; }
+		.et_portfolio_small .et_pt_portfolio_item { margin-left: 35px !important; }
+		.et_portfolio_large { margin-left: -20px !important; }
+		.et_portfolio_large .et_pt_portfolio_item { margin-left: 14px !important; }
+	</style>
+
+</head>
+<body>
+	<div id="page-wrap">
+			
+		<div id="header">
+			<!-- Start Logo -->
+				<a href="../index.html">					<img src="../wp-content/uploads/2012/04/logo1.png" alt="Logo" id="logo"/></a>
+				
+				<p id="slogan">Deux développeurs en vadrouille qui se sortent les doigts du code</p>
+					
+			<!-- End Logo -->
+					
+			<!-- Start Searchbox -->
+				<div id="search-form">
+					<form method="get" id="searchform1" action="../index.html">
+						<input type="text" value="search this site..." name="s" id="searchinput" />
+					</form>
+				</div>
+								
+			<!-- End Searchbox -->
+				
+				<div class="clear"></div>
+				
+				<ul id="menu-top-menu" class="superfish nav clearfix"><li id="menu-item-1702" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Programmation</a></li>
+<li id="menu-item-1703" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin System</a></li>
+<li id="menu-item-1704" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo et culture</a></li>
+<li id="menu-item-1706" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li id="menu-item-3340" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours et tutos</a></li>
+<li id="menu-item-2610" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2610"><a href="../nos-tweets/index.html">Nos tweets SANS twitter :-)</a></li>
+<li id="menu-item-1707" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li id="menu-item-7439" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7439"><a href="https://github.com/sametmax/">Nos githuberies</a></li>
+</ul>									
+		</div> <!-- end #header -->
+
+		<div id="breadcrumbs">
+		
+					<a href="../index.html">Home</a> &raquo;
+				
+									<a href="../category/programmation/index.html">Programmation</a> &raquo; L&#8217;encoding en Python, une bonne fois pour toute					
+</div> <!-- end #breadcrumbs -->		
+	
+	<div id="content" class="clearfix">
+		<div id="content-area">
+					<div class="entry clearfix">
+				<h1 class="title">L&#8217;encoding en Python, une bonne fois pour toute</h1>
+					<p class="post-meta">
+		Posted  by <a href="../author/sam/index.html" title="Posts by Sam" rel="author">Sam</a> on 21 Apr 2013 in <a href="../category/programmation/index.html" title="View all posts in Programmation" rel="category tag">Programmation</a> | <a href="index.html#comments" title="Comment on L&#8217;encoding en Python, une bonne fois pour toute">34 comments</a>	</p>
+				
+							
+									
+						
+								
+				<p>J&#8217;avais oublié la zik, je rajoute:</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/8XOV2L-eM38" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p>Vous avez tous un jour eu l&#8217;erreur suivante :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">UnicodeDecodeError</span>: <span style="color: #483d8b;">'machine'</span> codec can<span style="color: #483d8b;">'t decode character '</span>trucmuche<span style="color: #483d8b;">' in position x: ordinal not in range(z)</span></pre></div></div>
+
+<p>Et là, pour vous en sortir, vous en avez chié des ronds de paté.</p>
+<p>Le problème vient du fait que la plupart du temps, ignorer l&#8217;encoding marche : nous travaillons dans des environnements homogènes et toujours avec des données dans le même format, ou un format plus ou moins compatible.</p>
+<p>Mais le texte, c&#8217;est compliqué, terriblement compliqué, et le jour où ça se gâte, si vous ne savez pas ce que vous faites, vous ne vous en sortirez pas.</p>
+<p>C&#8217;est d&#8217;autant plus vrai en Python car :</p>
+<ul>
+<li>Par défaut, Python plante sur les erreurs d&#8217;encoding là où d&#8217;autres langage (comme le PHP) se débrouillent pour vous sortir un truc (qui ne veut rien dire, qui peut corrompre toute votre base de données, mais qui ne plante pas).</li>
+<li>Python est utilisé dans des environnements hétérogènes. Quand vous codez en JS sur le navigateur, vous n&#8217;avez presque jamais à vous soucier de l&#8217;encoding : le browser gère quasiment tout pour vous. En Python dès que vous allez lire un fichier et l&#8217;afficher dans un terminal, cela fait potentiellement 3 encoding différents.</li>
+<li>Python 2.7 a des réglages par défaut très stricts, et pas forcément adaptés à notre informatique moderne (fichier de code en ASCII par exemple).</li>
+</ul>
+<p>A la fin de cet article, vous saurez vous sortir de toutes les situations merdiques liées aux encodages.</p>
+<h2>Règle numéro 1 : Le texte brut n&#8217;existe pas.</h2>
+<p>Quand vous avez du texte quelque part (un terminal, un fichier, une base de données&#8230;), il est forcément représenté sous forme de 0 et de 1.</p>
+<p>La corrélation entre cette suite de 0 et de 1 et la lettre est faite dans un énorme tableau qui contient toutes les lettres d&#8217;un côté, et toutes les combinaisons de 0 et de 1 de l&#8217;autre. Il n&#8217;y a pas de magie. C&#8217;est un énorme tableau stocké quelque part dans votre ordinateur. <strong>Si vous n&#8217;avez pas ce tableau, vous ne pouvez pas lire du texte. Même le texte le plus simple.</strong></p>
+<p>Malheureusement, au début de l&#8217;informatique, <strong>presque chaque pays a créé son propre tableau, et ces tableaux sont incompatibles entre eux</strong> : pour la même combinaison de 0 et de 1, ils donnent un caractère différent voir rien du tout.</p>
+<p>La mauvaises nouvelle, c&#8217;est qu&#8217;ils sont encore utilisés aujourd&#8217;hui.</p>
+<p>Ces tableaux, c&#8217;est ce qu&#8217;on appelle les encodings, et il y en a beaucoup. Voici la liste de ceux que Python gère :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">encodings</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'- '</span> + e + <span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span> <span style="color: #ff7700;font-weight:bold;">for</span> e <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">encodings</span>.<span style="color: black;">aliases</span>.<span style="color: black;">aliases</span>.<span style="color: black;">values</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+- ascii
+- base64_codec
+- big5
+- big5hkscs
+- bz2_codec
+- cp037
+- cp1026
+- cp1140
+- cp1250
+- cp1251
+- cp1252
+- cp1253
+- cp1254
+- cp1255
+- cp1256
+- cp1257
+- cp1258
+- cp424
+- cp437
+- cp500
+- cp775
+- cp850
+- cp852
+- cp855
+- cp857
+- cp858
+- cp860
+- cp861
+- cp862
+- cp863
+- cp864
+- cp865
+- cp866
+- cp869
+- cp932
+- cp949
+- cp950
+- euc_jis_2004
+- euc_jisx0213
+- euc_jp
+- euc_kr
+- gb18030
+- gb2312
+- gbk
+- hex_codec
+- hp_roman8
+- hz
+- iso2022_jp
+- iso2022_jp_1
+- iso2022_jp_2
+- iso2022_jp_2004
+- iso2022_jp_3
+- iso2022_jp_ext
+- iso2022_kr
+- iso8859_10
+- iso8859_11
+- iso8859_13
+- iso8859_14
+- iso8859_15
+- iso8859_16
+- iso8859_2
+- iso8859_3
+- iso8859_4
+- iso8859_5
+- iso8859_6
+- iso8859_7
+- iso8859_8
+- iso8859_9
+- johab
+- koi8_r
+- latin_1
+- mac_cyrillic
+- mac_greek
+- mac_iceland
+- mac_latin2
+- mac_roman
+- mac_turkish
+- mbcs
+- ptcp154
+- quopri_codec
+- rot_13
+- shift_jis
+- shift_jis_2004
+- shift_jisx0213
+- tactis
+- tis_620
+- utf_16
+- utf_16_be
+- utf_16_le
+- utf_32
+- utf_32_be
+- utf_32_le
+- utf_7
+- utf_8
+- uu_codec
+- zlib_codec</pre></div></div>
+
+<p>Et certains ont plusieurs noms (des alias), donc on pourrait en compter plus:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">encodings</span>.<span style="color: black;">aliases</span>.<span style="color: black;">aliases</span>.<span style="color: black;">keys</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">307</span></pre></div></div>
+
+<p>Quand vous affichez du texte sur un terminal avec un simple <code>print</code>, votre ordinateur va implicitement chercher le tableau qu&#8217;il pense être le plus adapté, et fait la traduction. Même pour le texte le plus simple. Même pour un espace tout seul.</p>
+<p><strong>Mais surtout, ça veut dire que votre propre code EST dans un encoding. Et vous DEVEZ savoir lequel.</strong></p>
+<h2>Règle numéro 2 : utf8 est le langage universel, utilisez le</h2>
+<p>Il existe un encoding qui essaye des regrouper toutes les langues du monde, et il s&#8217;appelle unicode. Unicode est un tableau gigantesque qui contient des combinaisons de 1 et de 0 d&#8217;un côté, et les caractères de toutes la langues possibles de l&#8217;autre : chinois, arabe, français, espagnol, russe&#8230;</p>
+<p>Bon, il ne contient pas encore absolument tout, mais il couvre suffisamment de terrain pour éliminer 99.999999999 des problèmes de communications de texte entre machines dans le monde.</p>
+<p>Le défaut d&#8217;unicode est qu&#8217;il est plus lent et prend plus de place que d&#8217;autres représentations du même texte. Aujourd&#8217;hui le téléphone le plus pourri a 10 fois la puissance nécessaire, et ce n&#8217;est plus un souci : il peut être utilisé presque partout (sauf peut être dans l&#8217;embarqué drastique) sans même réfléchir à la question. Tous les langages les plus importants, tous les services les plus importants, tous les logiciels les plus importants gèrent unicode.</p>
+<p>Il y a plusieurs implémentations concrètes d&#8217;unicode, la plus célèbre est &#8220;UTF 8&#8243;.</p>
+<p><strong>Moralité, par défaut, utilisez utf-8.</strong></p>
+<p>Une fois, à l&#8217;entretien d&#8217;embauche, un mec m&#8217;avait reproché d&#8217;utiliser UTF8 parce que &#8220;ça posait des problèmes d&#8217;encoding&#8221;. Comprenez bien qu&#8217;utf-8 ne pose aucun problème d&#8217;encoding. Ce sont tous les autres codecs du monde qui posent des problèmes d&#8217;encoding. UTF-8 est certainement le seul à justement, ne poser aucun problème.</p>
+<p>UTF 8 est le seul encoding vers lequel, aujourd&#8217;hui, on puisse convertir vers et depuis (pratiquement) n&#8217;importe quel autre codec du monde. C&#8217;est un espéranto. C&#8217;est une pierre de rosette. C&#8217;est au texte ce que l&#8217;or est à l&#8217;économie.</p>
+<p>Si UTF8 vous pose &#8220;un problème d&#8217;encoding&#8221;, c&#8217;est que vous ne savez pas dans quel encoding votre texte est actuellement ou comment le convertir. C&#8217;est tout.</p>
+<p>Il n&#8217;y a presque aucune raison de ne pas utiliser UTF8 aujourd&#8217;hui (à part sur des vieux systèmes ou des systèmes où les ressources sont tellement limitées que vous n&#8217;utiliseriez pas Python de toute façon).</p>
+<p><strong>Utilisez utf8. Partout. Tout le temps.</strong></p>
+<p>Si vous communiquez avec un système qui ne comprend pas UTF8, convertissez.</p>
+<p>Mais gardez votre partie en UTF8.</p>
+<h2>Règle numéro 3 : il faut maîtriser l&#8217;encoding de son code</h2>
+<p>Le fichier dans lequel vous écrivez votre code est dans un encoding et ce n&#8217;est pas lié à votre OS. C&#8217;est votre éditeur qui s&#8217;en occupe. Apprenez à régler votre éditeur pour qu&#8217;il utilise l&#8217;encoding que vous voulez.</p>
+<p>Et l&#8217;encoding que vous voulez est UTF8.</p>
+<p><strong>Si vous ne savez pas dans quel encoding est votre code, vous ne pouvez pas manipuler du texte et garantir l&#8217;absence de bug.</strong></p>
+<p>Vous ne POUVEZ PAS.</p>
+<p>Donc réflexe : vous configurez votre éditeur de texte pour sauvegarder tous vos nouveaux fichiers par défaut en UTF8. Maintenant. Tout de suite.</p>
+<p>Regardez dans la doc de l&#8217;éditeur, dans l&#8217;aide ou tapez sur Google, mais faites le.</p>
+<p>Puis il faut déclarer cet encoding à la première ligne de chaque fichier de code avec l&#8217;expression suivante :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: encoding -*-</span></pre></div></div>
+
+<p>Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf8 -*-</span></pre></div></div>
+
+<p>C&#8217;est une spécificité de Python : si l&#8217;encoding du fichier est différent de l&#8217;encoding par défaut du langage, il faut le déclarer sinon le programme plantera à la première conversion. En Python 2.7, l&#8217;encoding par défaut est ASCII, donc il faut presque toujours le déclarer. En Python 3, l&#8217;encoding par défaut est UTF8 et on peut donc l&#8217;omettre si on l&#8217;utilise. Ce que vous allez faire après la lecture de cet article.</p>
+<p>Ensuite, il existe deux types de chaînes de caractères en Python :</p>
+<ul>
+<li>La chaîne de caractères encodée: type &#8216;str&#8217; en Python 2.7, &#8216;byte&#8217; en Python 3.</li>
+<li>La chaîne de caractères décodée: type &#8216;unicode&#8217; en Python 2.7, et &#8216;str&#8217; en python 3 (sic).</li>
+</ul>
+<p>Illustration :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">$ python2.7
+Python 2.7.3 <span style="color: black;">&#40;</span>default, Aug  <span style="color: #ff4500;">1</span> <span style="color: #ff4500;">2012</span>, 05:<span style="color: #ff4500;">14</span>:<span style="color: #ff4500;">39</span><span style="color: black;">&#41;</span> 
+<span style="color: black;">&#91;</span>GCC 4.6.3<span style="color: black;">&#93;</span> on linux2
+Type <span style="color: #483d8b;">&quot;help&quot;</span>, <span style="color: #483d8b;">&quot;copyright&quot;</span>, <span style="color: #483d8b;">&quot;credits&quot;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #483d8b;">&quot;license&quot;</span> <span style="color: #ff7700;font-weight:bold;">for</span> more information.
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chaine'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># bits =&gt; encodée</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'chaine'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># unicode =&gt; décodée</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">$ python3
+Python 3.2.3 <span style="color: black;">&#40;</span>default, Oct <span style="color: #ff4500;">19</span> <span style="color: #ff4500;">2012</span>, <span style="color: #ff4500;">20</span>:<span style="color: #ff4500;">10</span>:<span style="color: #ff4500;">41</span><span style="color: black;">&#41;</span> 
+<span style="color: black;">&#91;</span>GCC 4.6.3<span style="color: black;">&#93;</span> on linux2
+Type <span style="color: #483d8b;">&quot;help&quot;</span>, <span style="color: #483d8b;">&quot;copyright&quot;</span>, <span style="color: #483d8b;">&quot;credits&quot;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #483d8b;">&quot;license&quot;</span> <span style="color: #ff7700;font-weight:bold;">for</span> more information.
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;chaine&quot;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># unicode =&gt; decodée</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">&quot;chaine&quot;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># bits =&gt; encodée</span>
+&nbsp;
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'bytes'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Votre but, c&#8217;est de n&#8217;avoir dans votre code que des chaînes de type &#8216;unicode&#8217;.</p>
+<p>En Python 3, c&#8217;est automatique. Toutes les chaînes sont de type &#8216;unicode&#8217; (appelé &#8216;str&#8217; dans cette version, je sais, je sais, c&#8217;est confusionant à mort) par défaut.</p>
+<p>En Python 2.7 en revanche, il faut préfixer la chaîne par un <code>u</code>.</p>
+<p>Donc, dans votre code, TOUTES vos chaînes doivent être déclarées ainsi :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="pyhton" style="font-family:monospace;">u&quot;votre chaîne&quot;</pre></div></div>
+
+<p>Oui, c&#8217;est chiant. Mais c&#8217;est indispensable. Encore une fois, il n&#8217;y a pas d&#8217;alternative (dites le avec la voix de Thatcher si ça vous excite).</p>
+<p>Si vous voulez, vous pouvez activer le comportement de Python 3 dans Python 2.7 en mettant ceci au début de CHACUN de vos modules :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals</pre></div></div>
+
+<p>Ceci n&#8217;affecte que le fichier en cours, jamais les autres modules.</p>
+<p>On peut le mettre <a href="../personnalisez-le-demarrage-dipython/index.html">au démarrage d&#8217;iPython également</a>.</p>
+<p>Je résume :</p>
+<ul>
+<li>Réglez votre éditeur sur UTF8.</li>
+<li>Mettez <code># -*- coding: utf8 -*-</code> au début de vos modules.</li>
+<li>Préfixez toutes vos chaînes de <code>u</code> ou faites <code>from __future__ import unicode_literals</code> en début de chaque module.</li>
+</ul>
+<p>Si vous ne faites pas cela, votre code marchera. La plupart de temps. Et un jour, dans une situation particulière, il ne marchera plus. Plus du tout.</p>
+<p>Oh, et ce n&#8217;est pas grave si vous avez d&#8217;anciens modules dans d&#8217;autres encodings. Tant que vous utilisez des objets &#8216;unicode&#8217; partout, ils marcheront sans problème ensemble.</p>
+<h2>Règle numéro 4 : décodez toutes les entrées de votre programme</h2>
+<p>La partie difficile de ce conseil, c&#8217;est de savoir ce qu&#8217;est une entrée.</p>
+<p>Je vais vous donner une définition simple : <strong>tout ce qui ne fait pas partie du code de votre programme et qui est traité dans votre programme est une entrée.</strong></p>
+<p>Le texte des fichiers, le nom de ces fichiers, le retour des appels système, le retour d&#8217;une ligne de commande parsée, la saisie utilisateur sur un terminal, le retour d&#8217;une requête SQL, le téléchargement d&#8217;une donnée sur le Web, etc.</p>
+<p>Ce sont toutes des entrées.</p>
+<p><strong>Comme tous les textes du monde, les entrées sont dans un encoding. Et vous DEVEZ savoir lequel.</strong></p>
+<p>Comprenez bien, si vous ne connaissez pas l&#8217;encoding de vos entrées, ça marchera la plupart du temps, et un jour, ça va planter.</p>
+<p>Il n&#8217;y a pas d&#8217;alternative (bis).</p>
+<p>Or, <strong>il n&#8217;y a pas de moyen de détecter un encoding de façon fiable.</strong></p>
+<p>Donc, soit le fournisseur de la donnée vous donne cette information (settings dans la base de données, doc de votre logiciel, configuration de votre OS, spec du client, coup de fils au fournisseur&#8230;), soit vous êtes baisés.</p>
+<p>On ne peut pas lire un simple fichier si on ne connait pas son encoding. Point.</p>
+<p>Si cela a marché jusqu&#8217;ici pour vous, c&#8217;est que vous avez eu de la chance : la plupart de vos fichiers étaient dans l&#8217;encoding de votre éditeur et de votre système. Tant qu&#8217;on travaille sur sa machine, tout va bien.</p>
+<p>Si vous lisez une page HTML, l&#8217;encoding est souvent déclaré dans la balise META ou dans un header.</p>
+<p>Si vous écrivez dans un terminal, l&#8217;encoding du terminal est accessible avec <code>sys.(stdin|stdout).encoding</code>.</p>
+<p>Si vous manipulez des noms de fichier, on peut récupérer l&#8217;encoding du file system en cours avec <code>sys.getfilesystemencoding()</code>.</p>
+<p>Mais parfois il n&#8217;y a pas d&#8217;autres moyen d&#8217;obtenir cette information que de demander à la personne qui a produit la donnée. Parfois même, l&#8217;encoding déclaré est faux.</p>
+<p>Dans tous les cas, vous avez besoin de cette information.</p>
+<p>Et une fois que vous l&#8217;avez, il faut décoder le texte reçu.</p>
+<p>La manière la plus simple de faire cela est :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">votre_chaine = votre_chaine.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nom_du_codec'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Le texte sera de type &#8216;str&#8217;, et <code>decode()</code> retourne (si vous lui fournissez le bon codec ;-)), une version &#8216;unicode&#8217;.</p>
+<p>Exemple, obtenir une chaîne &#8216;unicode&#8217; depuis une chaîne &#8216;str&#8217; encodée en utf8 :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine = <span style="color: #483d8b;">'Chaîne'</span> <span style="color: #808080; font-style: italic;"># mon fichier est encodé en UTF8, donc la chaine est en UTF8</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine = une_chaine.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Donc dès que vous lisez un fichier, récupérez une réponse d&#8217;une base de données ou parsez des arguments d&#8217;un terminal, appelez <code>decode()</code> sur la chaîne reçue.</p>
+<h2>Règle numéro 5 : encodez toutes les sorties de votre programme</h2>
+<p>La partie difficile de ce conseil, c&#8217;est de savoir ce qu&#8217;est une sortie.</p>
+<p>Encore une fois, une définition simple : <strong>toute donnée que vous traitez et qui va être lue par autre chose que votre code est une sortie.</strong></p>
+<p>Un <code>print</code> dans un terminal est une sortie, un <code>write()</code> dans un fichier est une sortie, un <code>UPDATE</code> en SQL est une sortie, un envoie dans une socket est un sortie, etc.</p>
+<p>Le reste du monde ne peut pas lire les objets &#8216;unicode&#8217; de Python. Si vous écrivez ces objets dans un fichier, un terminal ou dans une base de données, Python va les convertir automatiquement en objet &#8216;str&#8217;, et l&#8217;encoding utilisé dépendra du contexte.</p>
+<p>Malheureusement, il y a une limite à la capacité de Python à décider du bon encoding.</p>
+<p>Donc, tout comme il vous faut connaitre l&#8217;encoding d&#8217;un texte en entrée, il vous faut connaitre l&#8217;encoding attendu par le système avec lequel vous communiquez en sortie : sachez quel est l&#8217;encoding du terminal, de votre base de données ou système de fichiers sur lequel vous écrivez.</p>
+<p>Si vous ne pouvez pas savoir (page Web, API, etc), utilisez UTF8.</p>
+<p>Pour ce faire, il suffit d&#8217;appelez <code>encode()</code> sur tout objet de type &#8216;unicode&#8217; :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">une_chaine = une_chaine.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nom_du_codec'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Par exemple, pour convertir un objet &#8216;unicode&#8217; en &#8216;str&#8217; utf8:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine = u<span style="color: #483d8b;">'Chaîne'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine = une_chaine.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<h2>Résumé des règles</h2>
+<ol>
+<li>Le texte brut n&#8217;existe pas.</li>
+<li>Utilisez UTF8. Maintenant. Partout.</li>
+<li>Dans votre code, spécifiez l&#8217;encoding du fichier et déclarez vos chaînes comme &#8216;unicode&#8217;.</li>
+<li>À l&#8217;entrée, connaissez l&#8217;encoding de vos données, et décodez avec <code>decode()</code>.</li>
+<li>A la sortie, encodez dans l&#8217;encoding attendu par le système qui va recevoir la données, ou si vous ne pouvez pas savoir, en UTF8, avec <code>encode()</code>.</li>
+</ol>
+<p>Je sais que ça vous démange de voir un cas concret, alors voici un pseudo programme (<a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/avril/encoding.py">téléchargeable ici</a>) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># toutes les chaines sont en unicode (même les docstrings)</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    Un script tout pourri qui télécharge plein de page et les sauvegarde
+    dans une base de données sqlites.
+&nbsp;
+    On écrit dans un fichier de log les opérations effectuées.
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">urllib2</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> sqlite3
+&nbsp;
+pages = <span style="color: black;">&#40;</span>
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Snippets de Sebsauvage'</span>, <span style="color: #483d8b;">'http://www.sebsauvage.net/python/snyppets/'</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Top 50 de bashfr'</span>, <span style="color: #483d8b;">'http://danstonchat.com/top50.html'</span><span style="color: black;">&#41;</span>,
+<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># création de la base de données</span>
+conn = sqlite3.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">&quot;backup.db&quot;</span><span style="color: black;">&#41;</span>
+c = conn.<span style="color: black;">cursor</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    c.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: #483d8b;">'
+        CREATE TABLE pages (
+            id INTEGER PRIMARY KEY,
+            nom TEXT,
+            html TEXT
+        )'</span><span style="color: #483d8b;">''</span>
+    <span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> sqlite3.<span style="color: black;">OperationalError</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+log = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'backup.log'</span>, <span style="color: #483d8b;">'wa'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> nom, page <span style="color: #ff7700;font-weight:bold;">in</span> pages:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ceci est une manière très fragile de télécharger et</span>
+    <span style="color: #808080; font-style: italic;"># parser du HTML. Utilisez plutôt scrapy et beautifulsoup</span>
+    <span style="color: #808080; font-style: italic;"># si vous faites un vrai crawler</span>
+    response = <span style="color: #dc143c;">urllib2</span>.<span style="color: black;">urlopen</span><span style="color: black;">&#40;</span>page<span style="color: black;">&#41;</span>
+    html = response.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100000</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># je récupère l'encoding à l'arrache</span>
+    encoding = <span style="color: #dc143c;">re</span>.<span style="color: black;">findall</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'&lt;meta.*?charset=[&quot;<span style="color: #000099; font-weight: bold;">\'</span>]*(.+?)[&quot;<span style="color: #000099; font-weight: bold;">\'</span>&gt;]'</span>, html, flags=<span style="color: #dc143c;">re</span>.<span style="color: black;">I</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># html devient de l'unicode</span>
+    html = html.<span style="color: black;">decode</span><span style="color: black;">&#40;</span>encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici je peux faire des traitements divers et varié avec ma chaîne</span>
+    <span style="color: #808080; font-style: italic;"># et en fin de programme...</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># la lib sqlite convertie par défaut tout objet unicode en UTF8</span>
+    <span style="color: #808080; font-style: italic;"># car c'est l'encoding de sqlite par défaut donc passer des chaînes</span>
+    <span style="color: #808080; font-style: italic;"># unicode marche, et toutes les chaînes de mon programme sont en unicode</span>
+    <span style="color: #808080; font-style: italic;"># grace à mon premier import</span>
+    c.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;&quot;&quot;INSERT INTO pages (nom, html) VALUES (?, ?)&quot;&quot;&quot;</span>, <span style="color: black;">&#40;</span>nom, html<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># j'écris dans mon fichier en UTF8 car c'est ce que je veux pouvoir lire</span>
+    <span style="color: #808080; font-style: italic;"># plus tard</span>
+    msg = u<span style="color: #483d8b;">&quot;Page '{}' sauvée<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>nom<span style="color: black;">&#41;</span>
+    log.<span style="color: black;">write</span><span style="color: black;">&#40;</span>msg.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># notez que si je ne fais pas encode(), soit:</span>
+    <span style="color: #808080; font-style: italic;"># - j'ai un objet 'unicode' et ça plante</span>
+    <span style="color: #808080; font-style: italic;"># - j'ai un objet 'str' et ça va marcher mais mon fichier contiendra</span>
+    <span style="color: #808080; font-style: italic;">#   l'encoding de la chaîne initiale (qui ici serait aussi UTF8, mais</span>
+    <span style="color: #808080; font-style: italic;">#   ce n'est pas toujours le cas)</span>
+&nbsp;
+conn.<span style="color: black;">commit</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+c.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+log.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Quelques astuces</h2>
+<p>Certaines bibliothèques acceptent indifféremment des objets &#8216;unicode&#8217; et &#8216;str&#8217; :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">logging</span> <span style="color: #ff7700;font-weight:bold;">import</span> basicConfig, getLogger
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> basicConfig<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> log = getLogger<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> log.<span style="color: black;">warn</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Détécé&quot;</span><span style="color: black;">&#41;</span>
+WARNING:root:Détécé
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> log.<span style="color: black;">warn</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Détécé&quot;</span><span style="color: black;">&#41;</span>
+WARNING:root:Détécé</pre></div></div>
+
+<p>Et ce n&#8217;est pas forcément une bonne chose car si il y a derrière écriture dans un fichier de log, cela peut poser problème.</p>
+<p>D&#8217;autres ont besoin qu&#8217;on leur précise:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">search</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span>, <span style="color: #483d8b;">'télé'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>_sre.<span style="color: black;">SRE_Match</span> <span style="color: #008000;">object</span> at 0x7fa4d3f77238<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">search</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span>, u<span style="color: #483d8b;">'télé'</span>, <span style="color: #dc143c;">re</span>.<span style="color: black;">UNICODE</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>_sre.<span style="color: black;">SRE_Match</span> <span style="color: #008000;">object</span> at 0x7fa4d3f772a0<span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Le module <code>re</code> par exemple aura des résultats biaisés sur une chaîne &#8216;unicode&#8217; si on ne précise pas le flag <code>re.UNICODE</code>.</p>
+<p>D&#8217;autres n&#8217;acceptent pas d&#8217;objet &#8216;str&#8217;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> io
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> io.<span style="color: #dc143c;">StringIO</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>_io.<span style="color: #dc143c;">StringIO</span> <span style="color: #008000;">object</span> at 0x14a96d0<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> io.<span style="color: #dc143c;">StringIO</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-5-16988a0d4ac4&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    io.<span style="color: #dc143c;">StringIO</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: initial_value must be <span style="color: #008000;">unicode</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #008000;">None</span>, <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">str</span></pre></div></div>
+
+<p>D&#8217;autres encore n&#8217;acceptent pas d&#8217;objet &#8216;unicode&#8217;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">base64</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">base64</span>.<span style="color: black;">encodestring</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'w6k=<span style="color: #000099; font-weight: bold;">\n</span>'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">base64</span>.<span style="color: black;">encodestring</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-3-1714982ca68e&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #dc143c;">base64</span>.<span style="color: black;">encodestring</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python2.7/base64.py&quot;</span>, line <span style="color: #ff4500;">315</span>, <span style="color: #ff7700;font-weight:bold;">in</span> encodestring
+    pieces.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">binascii</span>.<span style="color: black;">b2a_base64</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">chunk</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">UnicodeEncodeError</span>: <span style="color: #483d8b;">'ascii'</span> codec can<span style="color: #483d8b;">'t encode character u'</span>\xe9<span style="color: #483d8b;">' in position 0: ordinal not in range(128)</span></pre></div></div>
+
+<p>Cela peut être pour des raison de performances (certaines opérations sont plus rapides sur un objet &#8216;str&#8217;), ou pour des raisons historiques, d&#8217;ignorance ou de paresse.</p>
+<p>Vous ne pouvez pas le deviner à l&#8217;avance. Souvent c&#8217;est marqué dans la doc, sinon il faut tester dans le shell.</p>
+<p>Une bibliothèque bien faite demandera de l&#8217;unicode et vous retournera de l&#8217;unicode, vous libérant l&#8217;esprit. Par exemple, <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">requests</a> et l&#8217;ORM <a href="../quels-gros-sites-sont-faits-en-django/index.html">Django</a> le font, et communiquent avec le reste du monde (en l&#8217;occurence le Web et les bases de données) dans le meilleur encoding possible automatiquement de manière transparente. Quand c&#8217;est possible bien entendu, parfois il faudra forcer l&#8217;encoding car le fournisseur de votre donnée déclare le mauvais. Vous n&#8217;y pouvez rien, c&#8217;est pareil pour tous les langages du monde.</p>
+<p>Enfin il existe des raccourcis pour certaines opérations, utilisez les autant que possible. Par exemple, pour lire un fichier, au lieu de faire un simple <code>open()</code>, vous pouvez faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">codecs</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #008000;">open</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># open() de codec à exactement la même API, y compris avec &quot;with&quot;</span>
+f = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichier'</span>, encoding=<span style="color: #483d8b;">'encoding'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Les chaînes récupérées seront automatiquement sous forme d&#8217;objet &#8216;unicode&#8217; au lieu d&#8217;objet &#8216;str&#8217; qu&#8217;il vous aurait fallut convertir à la main.</p>
+<h2>Les outils de la dernières chance</h2>
+<p>Je vous ai menti, si vous ne connaissez pas l&#8217;encoding de vos entrées ou de vos sorties, il vous reste encore quelques options.</p>
+<p>Sachez cependant que ces options sont des hacks, des trucs à tenter quand tout ce qui a été décrit plus haut a foiré.</p>
+<p>Si vous faites bien votre boulot, ça ne doit pas arriver souvent. Une à deux fois max dans votre année, sauf environnement de travail très très merdique.</p>
+<p>D&#8217;abord, parlons de l&#8217;entrée.</p>
+<p>Si vous recevez un objet et qu&#8217;il vous est impossible de trouver l&#8217;encoding, vous pouvez forcer un décodage imparfait avec <code>decode()</code> en spécifiant le paramètre <code>error</code>.</p>
+<p>Il peut prendre les valeurs suivantes :</p>
+<ul>
+<li><code>'strict'</code> : lever une exception en cas d&#8217;erreur. C&#8217;est le comportement par défaut.</li>
+<li><code>'ignore'</code> : tout caractère qui provoque une erreur est ignoré.</li>
+<li><code>'replace'</code> : tout caractère qui provoque une erreur est remplacé par un point d&#8217;interrogation.</li>
+</ul>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Père Noël'</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">UnicodeDecodeError</span>: <span style="color: #483d8b;">'ascii'</span> codec can<span style="color: #483d8b;">'t decode byte 0xc3 in position 1: ordinal not in range(128)
+&gt;&gt;&gt; print '</span>Pè<span style="color: #dc143c;">re</span> Noël<span style="color: #483d8b;">'.decode('</span>ascii<span style="color: #483d8b;">', errors='</span>ignore<span style="color: #483d8b;">')
+Pre Nol
+&gt;&gt;&gt; print '</span>Pè<span style="color: #dc143c;">re</span> Noël<span style="color: #483d8b;">'.decode('</span>ascii<span style="color: #483d8b;">', errors='</span>replace<span style="color: #483d8b;">')
+P��re No��l</span></pre></div></div>
+
+<p>Mozilla vient également à la rescousse avec sa lib <a href="https://pypi.python.org/pypi/chardet">chardet</a> qu&#8217;il faut donc <a href="../votre-python-aime-les-pip/index.html">installer</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> chardet</pre></div></div>
+
+<p>Et qui TENTE (du verbe &#8216;tenter&#8217;, &#8220;qui essaye&#8221;, et qui donc peut échouer et se tromper) de détecter l&#8217;encoding utilisé.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> chardet.<span style="color: black;">detect</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'Le Père Noël est une ordure'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'confidence'</span>: <span style="color: #ff4500;">0.8063275188616134</span>, <span style="color: #483d8b;">'encoding'</span>: <span style="color: #483d8b;">'ISO-8859-2'</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> chardet.<span style="color: black;">detect</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Le Père Noël est une ordure j'ai dis enculé&quot;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'confidence'</span>: <span style="color: #ff4500;">0.87625</span>, <span style="color: #483d8b;">'encoding'</span>: <span style="color: #483d8b;">'utf-8'</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Cela marche pas trop mal, mais n&#8217;attendez pas de miracles. Plus il y a de texte, plus c&#8217;est précis, et plus le paramètre <code>confidence</code> est proche de 1.</p>
+<p>Parlons maintenant de la sortie, c&#8217;est à dire le cas où le système qui va recevoir vos données est une grosse quiche qui plante dès qu&#8217;on lui donne autre chose que de l&#8217;ASCII.</p>
+<p>Je ne veux balancer personne, mais mon regard se tourne vers l&#8217;administration américaine. Subtilement. De manière insistante.</p>
+<p>D&#8217;abord, <code>encode()</code> accepte les mêmes valeurs pour <code>errors</code> que <code>decode()</code>. Mais en prime, il accepte <code>'xmlcharrefreplace'</code>, très pratique pour les fichiers XML :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> u<span style="color: #483d8b;">&quot;Et là-bas, tu vois, c'est la coulée du grand bronze&quot;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span>, errors=<span style="color: #483d8b;">'xmlcharrefreplace'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">&quot;Et l&amp;#224;-bas, tu vois, c'est la coul&amp;#233;e du grand bronze&quot;</span></pre></div></div>
+
+<p>Enfin, on peut essayer d&#8217;obtenir un texte potable en remplaçant les caractères spéciaux par leur équivalent ASCII le plus proche.</p>
+<p>Avec l&#8217;alphabet latin, c&#8217;est très facile :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span>, u<span style="color: #483d8b;">&quot;éçûö&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span>, <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'ecuo'</span></pre></div></div>
+
+<p>Pour des trucs plus avancés comme le cyrilique ou le mandarin, il faut installer <a href="https://pypi.python.org/pypi/Unidecode">unidecode</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> unidecode</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> unidecode <span style="color: #ff7700;font-weight:bold;">import</span> unidecode
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> unidecode<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;En russe, Moscou s'écrit Москва&quot;</span><span style="color: black;">&#41;</span>
+En russe, Moscou s<span style="color: #483d8b;">'ecrit Moskva</span></pre></div></div>
+
+<div class="snap_nopreview sharing robots-nocontent"><ul><li class="sharing_label">Partager:</li><li class="share-facebook share-regular"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsametmax.com%2Flencoding-en-python-une-bonne-fois-pour-toute%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;width=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:96px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-twitter share-regular"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsametmax.com%2Flencoding-en-python-une-bonne-fois-pour-toute%2F&amp;counturl=http%3A%2F%2Fsametmax.com%2Flencoding-en-python-une-bonne-fois-pour-toute%2F&amp;count=horizontal&amp;text=L%27encoding%20en%20Python%2C%20une%20bonne%20fois%20pour%20toute: " style="width:97px; height:20px;"></iframe></div></li><li class="share-reddit share-regular"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?width=120&amp;url=http%3A%2F%2Fsametmax.com%2Flencoding-en-python-une-bonne-fois-pour-toute%2F&amp;title=L%27encoding%20en%20Python%2C%20une%20bonne%20fois%20pour%20toute" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-google-plus-1 share-regular"><div class="googleplus1_button"><g:plusone size="small" callback="sharing_plusone" href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/"></g:plusone></div></li><li class="share-email share-regular"><a rel="nofollow" class="share-email share-icon no-text" href="index.html%3Fshare=email.html" target="_blank" title="Click to email this to a friend"></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div><p>No related posts.</p><p class="wp-flattr-button"><a href="http://sametmax.com/?flattrss_redirect&amp;id=5824&amp;md5=05190c7a671c3edf8834c6f0cb8a00ba" title="Flattr" target="_blank"><img src="../wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>											</div> <!-- end .entry -->
+			
+					
+						
+			<!-- You can start editing here. -->
+
+	<div id="comment-section" class="clearfix">
+		<h3 id="comments">34 comments</h3>
+		
+		
+			<ol class="commentlist clearfix">
+			   <li class="comment even thread-even depth-1" id="li-comment-8246">
+		<div class="bottom_bg">
+		   <div id="comment-8246" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/fc32c6686686ecc595f05ad1885c2fb3?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">roro</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8246">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merci, merci, merci, et&#8230;MERCI.<br />
+Ta statue sera équestre. Pas moins.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8252">
+		<div class="bottom_bg">
+		   <div id="comment-8252" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8252">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Fait gaffe aux nombres de pieds en l&#8217;air pour le cheval. J&#8217;ai pas envie qu&#8217;on me prenne pour un macabé.</p>
+<p>Pour la matière, le bronze est mon meilleur profile.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8255">
+		<div class="bottom_bg">
+		   <div id="comment-8255" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/75be759a2751164a7cf44aeb38ef9b64?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">k3c</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8255">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>s/et le jour où ça se gatte/et le jour où ça se gâte<br />
+s/à ou d’autres langage/à où d’autres langages<br />
+s/Et certains on plusieurs noms/Et certains ont plusieurs noms<br />
+s/c’est ce qu’on appelles les encodings/c’est ce qu’on appelle les encodings<br />
+s/Certaines bibliothèque /Certaines bibliothèques</p>
+<p>Le sodomiseur de coléoptères :-)</p>
+<p>Merci pour l&#8217;article, je pensais pas trop mal connaître le sujet, mais visiblement non.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8256">
+		<div class="bottom_bg">
+		   <div id="comment-8256" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8256">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Bah tu sais moi je me dis après chaque article que j&#8217;ai bien tout relu et qu&#8217;il reste pas de faute. Mais visiblement non.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8259">
+		<div class="bottom_bg">
+		   <div id="comment-8259" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/2cb6a22c42476804f59d6506b9df7dac?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">fab</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8259">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Franchement merci.<br />
+Pour avoir lu plein de choses sur le sujet, mal compris, confondu le vocabulaire, oublié le lendemain, etc&#8230; c&#8217;est l&#8217;article qui explique le mieux et le plus concrètement l&#8217;encoding. C&#8217;est de la même veine que les articles sur la programmation orientée objet qui sont d&#8217;un niveau pédagogique inégalé parmis tout ce que j&#8217;ai pu lire. La théorie et les bases sont parfaitement expliquées avec toujours une application concrète. C&#8217;est limpide et efficace.<br />
+Cela fait un petit moment que je suis régulièrement votre blog, c&#8217;est une petite pépite, donc bravo et surtout un grand merci pour le partage car mine du rien c&#8217;est du boulot.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8261">
+		<div class="bottom_bg">
+		   <div id="comment-8261" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8261">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>\ o /</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8263">
+		<div class="bottom_bg">
+		   <div id="comment-8263" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b92feba617e050ea5163b9bb6057eb91?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://lyyn.fr.nf' rel='external nofollow' class='url'>Lyyn</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8263">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Yeah, ça part dans mes favoris ! Merci pour l&#8217;article !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-8264">
+		<div class="bottom_bg">
+		   <div id="comment-8264" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/de3d107ed1ccad362b44763106a78178?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.olissea.com/' rel='external nofollow' class='url'>JeromeJ</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8264">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Premier commentaire constructif de la journée :</p>
+<p>Vous avez déjà utilisé cette image d&#8217;entête d&#8217;article pour un autre article, c&#8217;est trop nul, vous perdez votre originalité.</p>
+<p>&lt;3</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-8266">
+		<div class="bottom_bg">
+		   <div id="comment-8266" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8266">21/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Meeeeeeeeeeeeerde, j&#8217;ai eu un doute en plus.</p>
+<p>EDIT: m&#8217;en fout, je l&#8217;ai changé.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-8273">
+		<div class="bottom_bg">
+		   <div id="comment-8273" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/de3d107ed1ccad362b44763106a78178?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.olissea.com/' rel='external nofollow' class='url'>JeromeJ</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8273">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Sinon plus sérieusement … c&#8217;est un peu perturbant, vous parlez un peu des différences avec Python3 mais la majorité des exemples sont en Python2 et vu que les différences entre python2 et 3 (à ce niveau là en tout cas) sont super chiantes et prêtent à confusion, bah du coup c&#8217;est un peu plus dur de bien vous suivre partout (moi qui suis 100% Python3), dommage … Article bien complet sinon :) Merci.</p>
+<p>Ah et si l&#8217;un de vous à une solution simple pour faire en sorte que les encodings de stdout et stdin se mettent en UTF-8 par défaut, ça serait pas mal. (Surtout que ce sont des propriétés en read only donc, à part des méthodes bizarroïde au lancement de Python (en console), je ne sais même pas si y a moyen de les modifier en live).</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8275">
+		<div class="bottom_bg">
+		   <div id="comment-8275" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/de3d107ed1ccad362b44763106a78178?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.olissea.com/' rel='external nofollow' class='url'>JeromeJ</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8275">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Au fait, <del>je veux</del> j&#8217;aurais bien voulu un tampon :( (tout ça pour ça bitch !)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max odd alt thread-odd thread-alt depth-1" id="li-comment-8287">
+		<div class="bottom_bg">
+		   <div id="comment-8287" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8287">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>le tampon ça se mérite jeune homme ! N&#8217;est pas tamponné qui veut.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-8288">
+		<div class="bottom_bg">
+		   <div id="comment-8288" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8288">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@JeromeJ: pour Python3, c&#8217;est pareil, exactement le même article sauf que:</p>
+<p>- le type &#8216;unicode&#8217; est appelé &#8216;str&#8217; et est celui créé par défaut quand on fabrique une chaîne<br />
+- le type décodé est appelé &#8216;byte&#8217;<br />
+- pas besoin de déclarer &#8220;# -*- coding: utf-8 -*-&#8221; si ton fichier est en UTF8 car c&#8217;est maintenant la valeur par defaut </p>
+<p>C&#8217;est tout. Tout le reste est pareil.</p>
+<p>Quand à s&#8217;assurer que toute écriture sur sdtout est en UTF8, c&#8217;est sans doute possible en faisant un truc du genre :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">codecs</span> <span style="color: #ff7700;font-weight:bold;">import</span> getwritter
+&nbsp;
+<span style="color: #dc143c;">sys</span>.__stdout__ =  getwriter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">buffer</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Mais je ne le recommanderais pas car :</p>
+<p>- ça remplace stout pour tout le code, y compris les libs tierces parties et qui sait ce que ça peut provoquer<br />
+- ça rend le code importable (stdout n&#8217;est pas en utf8 sous windows, et ça printera un truc illisible)<br />
+- ton script peut changer de context en cours d&#8217;éxécution, et sdtout ne sera alors plus le même, avec potentiellement un encoding différent</p>
+<p>D&#8217;une manière générale il vaut mieux spécifier l&#8217;encoding par défaut directement sur les fonctions qui font l&#8217;opération d&#8217;écriture. Par exemple:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">codecs</span> <span style="color: #ff7700;font-weight:bold;">import</span> getwriter
+<span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> partial
+&nbsp;
+p = partial<span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">print</span>, <span style="color: #008000;">file</span>=<span style="color: #dc143c;">codecs</span>.<span style="color: black;">getwriter</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">buffer</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+p<span style="color: black;">&#40;</span><span style="color: #483d8b;">'yéééééééé'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># cette fonction print toujours sur stdout en UTF8</span></pre></div></div>
+
+<p>Une alternative est de setter la bonne variable d&#8217;environnement pour que Python remplisse stdout avec l&#8217;encoding que l&#8217;on souhaite. Par exemple sous Ubuntu :</p>
+<p><a href="http://drj11.wordpress.com/2007/05/14/python-how-is-sysstdoutencoding-chosen/" rel="nofollow">http://drj11.wordpress.com/2007/05/14/python-how-is-sysstdoutencoding-chosen/</a></p>
+<p>(ou PYTHONIOENCODING=utf-8:surrogateescape python somescript.py selon les versions)</p>
+<p>Cela conditionne par ailleur le résultat de :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">locale</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">locale</span>.<span style="color: black;">getdefaultlocale</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span></pre></div></div>
+
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-8289">
+		<div class="bottom_bg">
+		   <div id="comment-8289" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/de3d107ed1ccad362b44763106a78178?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.olissea.com/' rel='external nofollow' class='url'>JeromeJ</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8289">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>@Max: J&#8217;aurais essayé !</p>
+<p>@Sam: Bien ce que je craignais … Pas mal l&#8217;idée de wrapper print avec functools.partial, j&#8217;aime !</p>
+<p>(C&#8217;est bien le prob c&#8217;est que je travaille à moitié sous Windows)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-8291">
+		<div class="bottom_bg">
+		   <div id="comment-8291" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8291">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Le terminal de windows n&#8217;est pas configuré pour afficher de l&#8217;UTF8, Python ne pourra rien y changer. Il faut soit y printer l&#8217;encoding qu&#8217;il utilise actuellement (et se limiter aux caractères qu&#8217;il accepte du coup). On peut le trouver en faisant (il me semble):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">locale</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">locale</span>.<span style="color: black;">getdefaultlocale</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">'fr_FR'</span>, <span style="color: #483d8b;">'UTF-8'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Mais print devrait se charger de le faire automatiquement en Python3 donc ça devrait pas poser de problème. Simplement tu oublis les caractères chinois.</p>
+<p>Soit setter l&#8217;encoding avant avec une commande : </p>
+<p><a href="http://stackoverflow.com/questions/388490/unicode-characters-in-windows-command-line-how" rel="nofollow">http://stackoverflow.com/questions/388490/unicode-characters-in-windows-command-line-how</a></p>
+<p>Ce n&#8217;est pas particulièrement lié à Python, c&#8217;est pareil dans tous les langages sous Windows car cet OS n&#8217;a pas adopté utf8 par default.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-8292">
+		<div class="bottom_bg">
+		   <div id="comment-8292" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/83b27f6ff2301ca0f4ed1c7628620757?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://www.desfrenes.com/' rel='external nofollow' class='url'>desfrenes</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8292">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>&#8220;Par défaut, Python plante sur les erreurs d&#8217;encoding là ou d&#8217;autres langage (comme le PHP) se débrouillent pour vous sortir un truc (qui ne veut rien dire, qui peut corrompre toute votre base de données, mais qui ne plante pas).&#8221;</p>
+<p>Ouais&#8230; bah vaut mieux que ça plante, au moins ça donne l&#8217;occasion de réparer proprement.</p>
+<p>Merci pour cet excellent résumé.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8294">
+		<div class="bottom_bg">
+		   <div id="comment-8294" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/e02b4f39f9fc66bea03fee2240a8d09e?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">AxelF</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8294">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Il y a encore des choses plus rigolotes à faire avec l&#8217;encoding. Par exemple ce fichier est tout à fait valide :</p>
+<p><code># -*- coding: rot13 -*-<br />
+cevag h'Obawbhe fnz'</code></p>
+<p>j&#8217;avais découvert ça il y a quelques temps <a href="http://linuxfr.org/users/guillaum/journaux/python-encodage-rot13-brainfuck" rel="nofollow">sur linuxfr</a>, avec même en prime l&#8217;encodage en brainfuck, mais on peut également imaginer encoder son fichier en whitespace ou tout autre encodage hyper pratique &#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8296">
+		<div class="bottom_bg">
+		   <div id="comment-8296" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8296">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Tristement, ça ne marche plus avec Python 3. On pouvait aussi utiliser base64, zlib, etc.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-kontre even thread-even depth-1" id="li-comment-8297">
+		<div class="bottom_bg">
+		   <div id="comment-8297" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b93cc4fb6413bbe5c837530662bee9b4?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">kontre</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8297">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Uhu : <a href="http://sebsauvage.net/links/?Q3zlyg" rel="nofollow">http://sebsauvage.net/links/?Q3zlyg</a><br />
+Coïncidence ?</p>
+<p>C&#8217;est la première fois que j&#8217;ai l&#8217;espoir de comprendre et d&#8217;utiliser correctement les fichues chaînes de caractère en python. Chapeau les mecs ! Mais je flippe quand même de modifier mon code sur ce sujet, qui fonctionne actuellement à peu près.</p>
+<p>Par rapport à codec.open, il y a ça dans la doc :</p>
+<blockquote><p><strong>Note</strong><br />
+Files are always opened in binary mode, even if no binary mode was specified. This is done to avoid data loss due to encodings using 8-bit values. This means that no automatic conversion of &#8216;\n&#8217; is done on reading and writing.</p></blockquote>
+<p>Ça peut être emmerdant ça ? Il y a un moyen simple de faire la conversion à la main ?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8306">
+		<div class="bottom_bg">
+		   <div id="comment-8306" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8306">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Je dirais qu&#8217;un bon strip() fera bien l&#8217;affaire :-)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-kontre even thread-even depth-1" id="li-comment-8312">
+		<div class="bottom_bg">
+		   <div id="comment-8312" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b93cc4fb6413bbe5c837530662bee9b4?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">kontre</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8312">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>En effet, ça marche bien à la lecture, mais du coup pas à l&#8217;écriture. Y&#8217;a plus qu&#8217;à utiliser la version standard sans oublier de convertir, j&#8217;ai l&#8217;impression.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-kontre odd alt thread-odd thread-alt depth-1" id="li-comment-8321">
+		<div class="bottom_bg">
+		   <div id="comment-8321" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/b93cc4fb6413bbe5c837530662bee9b4?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">kontre</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8321">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Autre différence python2/3 : les exceptions. En python3 on peut leur passer un message en unicode, alors qu&#8217;en python2 il faut le .encode(&#8220;utf-8). Et ça chie avec les docstrings, après&#8230;</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8329">
+		<div class="bottom_bg">
+		   <div id="comment-8329" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/71c8468ff89b252f8a01aa2ce4c53053?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">YvesD</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8329">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Bel article, bravo, j&#8217;aime bien la structuration en entrée (eh eh les entrées, règle #4, plat (le traitement python), dessert (les sorties, règle #5). </p>
+<p>Cependant je vois souvent comme directivepython, les 2 écritures pour UTF8:</p>
+<p><strong># -*- coding: utf8 -*-</strong><br />
+ou<br />
+<em># -*- coding: utf-8 -*-</em></p>
+<p>Est-ce la même chose ? Laquelle est à privilégiée ?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8330">
+		<div class="bottom_bg">
+		   <div id="comment-8330" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8330">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>C&#8217;est kif kif.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8333">
+		<div class="bottom_bg">
+		   <div id="comment-8333" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/e2ed1646f3954f52a8a9d8b1cb4e719b?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Orlanth</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8333">22/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Copié collé direct dans mes notes, à côté de  : <a href="http://sebsauvage.net/python/charsets_et_encoding.html" rel="nofollow">http://sebsauvage.net/python/charsets_et_encoding.html</a></p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-8367">
+		<div class="bottom_bg">
+		   <div id="comment-8367" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/f1e94121f75fd79a19595316bc3a7e2d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Gring</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8367">23/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merc＀ p〇ʋr cごt art%cle tr⁋s instrucⁱf !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8391">
+		<div class="bottom_bg">
+		   <div id="comment-8391" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/9369e3d134cec4a408d88aa31920bec4?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">mentat</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8391">23/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>stdin et pas stding dans :<br />
+sys.(stding|stdout).encoding.</p>
+<p>A part çà, rien à redire, c&#8217;est nickel comme d&#8217;hab !</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8397">
+		<div class="bottom_bg">
+		   <div id="comment-8397" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8397">23/04/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>C&#8217;est l&#8217;acceng, c&#8217;est pour ça.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-8678">
+		<div class="bottom_bg">
+		   <div id="comment-8678" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/e5176cded08b65b91099dc61f31d43c8?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://sebastien-dupire.info' rel='external nofollow' class='url'>Kyoku57</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-8678">05/05/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Alors là, très bon article !</p>
+<p>Quelque soit le langage, le problème le plus récurrent est toujours celui de la manipulation des différents types d&#8217;encoding.</p>
+<p>Je ne te parle pas de ceux qui développent sous Windows avec un CP-1252 par défaut dans tous les logiciels et qui même avec un réglage de l&#8217;IDE finit un jour où l&#8217;autre par te ressortir l&#8217;encoding par défaut genre .. à la réouverture.</p>
+<p>Bref, éternel problème que tu as très bien mis en évidence. Tout le problème est d&#8217;origine interface chaise-clavier. Il faut se sortir les doigts du boule pour faire du propre.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-12441">
+		<div class="bottom_bg">
+		   <div id="comment-12441" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/680b846ea80b0ef20759890ba41d387a?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">yuiio</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-12441">05/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Juste merci</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-14435">
+		<div class="bottom_bg">
+		   <div id="comment-14435" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/28233f8e47f1e832a10624a099b164d8?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">A_Vgyle</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-14435">27/09/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merci grandement!<br />
+2 jours que je plante sur ces %?!/%££!! d&#8217;encoding, et en 15 minutes&#8230; Réglé<br />
+Thanx<br />
+Continue!!!</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-max odd alt thread-odd thread-alt depth-1" id="li-comment-14444">
+		<div class="bottom_bg">
+		   <div id="comment-14444" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Max' src='../wp-content/uploads/2013/07/Max_avatar.gif' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Max</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-14444">01/10/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>C&#8217;est laborieux chez leaseweb :/<br />
+Ensuite ça a été un probleme de varnish qui s&#8217;est bien lancé quand leaseweb a reboot les VPS mais qui pour une raison mystérieuse ne voulait rien savoir :/</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-14882">
+		<div class="bottom_bg">
+		   <div id="comment-14882" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/e78fd560fdb27287f18a9c6d6adb7ac1?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn"><a href='http://geotribu.net/' rel='external nofollow' class='url'>Guts</a></span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-14882">16/10/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merci pour l&#8217;article qui m&#8217;a bien aidé sur certains points de blocage mais il y a toujours quelque chose que je ne parviens pas à résoudre : le parsing (avec os.walk) de fichiers qui contiennent des accents. Ce qui me déroute surtout c&#8217;est la différence entre Windows et Ubuntu.</p>
+<p>Dans mon <a href="https://github.com/Guts/Metadator" rel="nofollow">programme</a> j&#8217;ai une fonction (li_geofiles()) chargée de lister les fichiers compatibles (selon leur extension et l&#8217;existence de leurs dépendances) contenus dans une arborescence à partir d&#8217;un dossier indiqué par l&#8217;utilisateur (foldertarget retourné via tkMessageBox.askdirectory) et qui bloque sur les noms de fichiers qui contiennent un accent&#8230;mais seulement sur Ubuntu ! Ça fait 2 jours que je me flagelle là-dessus et j&#8217;ai essayé qqls solutions :<br />
+- un try/except sur le nom de fichier et réencodage à la volée (solution choisie) mais qui a le (gros) défaut de ne pas lister les fichiers avec accents (os.path.isfile ne les reconnaît pas&#8230;)<br />
+- passer foldertarget en unicode mais ça marche pô (idem avec path.normpath(foldertarget)</p>
+<p>Voici la fonction en question :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> root, dirs, files <span style="color: #ff7700;font-weight:bold;">in</span> walk<span style="color: black;">&#40;</span>foldertarget<span style="color: black;">&#41;</span>:
+    <span style="color: #008000;">self</span>.<span style="color: black;">num_folders</span> = <span style="color: #008000;">self</span>.<span style="color: black;">num_folders</span> + <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>dirs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> f <span style="color: #ff7700;font-weight:bold;">in</span> files:
+            <span style="color: #ff7700;font-weight:bold;">try</span>:
+                <span style="color: #008000;">unicode</span><span style="color: black;">&#40;</span>path.<span style="color: black;">join</span><span style="color: black;">&#40;</span>root, f<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+                full_path = path.<span style="color: black;">join</span><span style="color: black;">&#40;</span>root, f<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">UnicodeDecodeError</span>, e:
+                full_path = path.<span style="color: black;">join</span><span style="color: black;">&#40;</span>root, f.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'latin1'</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+                <span style="color: #008000;">self</span>.<span style="color: black;">logger</span>.<span style="color: black;">error</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;%s:%s&quot;</span> <span style="color: #66cc66;">%</span> <span style="color: black;">&#40;</span>e, f.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf-8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># Looping on files contained</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> path.<span style="color: black;">splitext</span><span style="color: black;">&#40;</span>full_path.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> == <span style="color: #483d8b;">'.shp'</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s.dbf'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s.shx'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s.prj'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+                    <span style="color: #808080; font-style: italic;"># add complete path of shapefile</span>
+                    <span style="color: #008000;">self</span>.<span style="color: black;">li_shp</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">elif</span> path.<span style="color: black;">splitext</span><span style="color: black;">&#40;</span>full_path.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> == <span style="color: #483d8b;">'.tab'</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>+ <span style="color: #483d8b;">'.dat'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>+ <span style="color: #483d8b;">'.map'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>+ <span style="color: #483d8b;">'.id'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+                    <span style="color: #808080; font-style: italic;"># add complete path of MapInfo file</span>
+                    <span style="color: #008000;">self</span>.<span style="color: black;">li_tab</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Si quelqu&#8217;un voit le problème&#8230;et surtout la solution !</p>
+<p>PS : je suis géographe à la base donc pas vraiment un développeur&#8230; #indulgence</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-15398">
+		<div class="bottom_bg">
+		   <div id="comment-15398" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/c055f36fe773e826e501205297f314e6?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Adrien</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-15398">04/11/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Un grand merci, enfin un tuto qui va à l&#8217;essentiel. J&#8217;ai enfin compris comment ça fonctionne.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+		</ol>
+		
+			
+		
+<div>
+<p class="rss-comments">
+<a href="feed/index.html" title="Flux RSS des commentaires">Flux RSS des commentaires</a>
+</p>
+</div>
+									<div id="respond">
+				<h3 id="reply-title"><span>Leave a Reply</span> <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://sametmax.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><script type="text/javascript">var edInserted; if (!edInserted) {edToolbar(); edInserted = true;}</script>
+<textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
+<script type="text/javascript">var edCanvas = document.getElementById('comment');</script></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre lang=&quot;&quot; line=&quot;&quot; escaped=&quot;&quot; highlight=&quot;&quot;&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Submit Comment" />
+							<input type='hidden' name='comment_post_ID' value='5824' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="e9ac3e6a73" /></p><script src="../index.html%3Flive-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p>					</form>
+							</div><!-- #respond -->
+						</div> <!-- end comment-section -->
+
+<div>
+<p><a href="index.html#" id="playmario">Jouer à mario en attendant que les autres répondent</a></p>
+
+
+
+
+
+<script type="text/javascript">
+    if (typeof jQuery !== 'undefined'){
+        jQuery('#playmario').click(function(e){
+            jQuery(this).replaceWith('<iframe src="http://www.florian-rappl.de/html5/projects/SuperMario/" style="width:500px;height:450px;overflow:hidden"></iframe><p>En HTML5 canvas :-) http://www.codeproject.com/Articles/396959/Mario5</p>');
+            e.preventDefault()
+        });
+    }
+</script>
+</div>				</div> <!-- end #content-area -->	
+	
+<div id="sidebar" class="clearfix">
+	<div id="widget-readability-buttons-id-2" class="widget sidebar-block widget-readability-buttons"><!-- This file is used to markup the public facing widget. -->
+<h3 class="widgettitle">Une lecture plus fastoche ?</h3><p class="readability-wrapper"> 
+  <div
+    class="rdbWrapper"
+    data-show-read="1"
+    data-show-send-to-kindle="0"
+    data-show-print="1"
+    data-show-email="0"
+    data-orientation="0"
+    data-version="1"
+    data-text-color="#"
+    data-bg-color="#">
+  </div>
+  <script>(function() {var s = document.getElementsByTagName("script")[0],rdb = document.createElement("script"); rdb.type = "text/javascript"; rdb.async = true; rdb.src = document.location.protocol + "//www.readability.com/embed.js"; s.parentNode.insertBefore(rdb, s); })();</script>
+</p></div> <!-- end .widget --><div id="text-4" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</div> <!-- end .widget --><div id="text-3" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="http://twitter.com/#!/sam_et_max"><img src="../wp-content/uploads/2012/05/twitter_icon.png" width="70px" style="vertical-align: middle;margin-top:-40px;"></a>&nbsp;Follow us <a href="http://twitter.com/sam_et_max">@sam_et_max</a></div>
+		</div> <!-- end .widget --><div id="blog_subscription-3" class="widget sidebar-block jetpack_subscription_widget"><h3 class="widgettitle"><label for="subscribe-field">Souscrire à nos conneries</label></h3>
+		<a name="subscribe-blog"></a>
+		<form action="index.html" method="post" accept-charset="utf-8" id="subscribe-blog">
+			<p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p><p>Join 208 other subscribers</p>
+
+			<p><input type="text" name="email" style="width: 95%; padding: 1px 2px" value="Email Address" id="subscribe-field" onclick="if ( this.value == 'Email Address' ) { this.value = ''; }" onblur="if ( this.value == '' ) { this.value = 'Email Address'; }" /></p>
+
+			<p>
+				<input type="hidden" name="action" value="subscribe" />
+				<input type="hidden" name="source" value="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/" />
+				<input type="hidden" name="sub-type" value="widget" />
+				<input type="hidden" name="redirect_fragment" value="blog_subscription-3" />
+				<input type="hidden" id="_wpnonce" name="_wpnonce" value="bbbfcad330" />				<input type="submit" value="J&#039;adhère bon dieu!" name="jetpack_subscriptions_widget" />
+			</p>
+		</form>
+
+		
+</div> <!-- end .widget --><div id="categories-2" class="widget sidebar-block widget_categories"><h3 class="widgettitle">Catégories</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="../category/administration-system/index.html" title="View all posts filed under Administration System">Administration System</a> (99)
+</li>
+	<li class="cat-item cat-item-11"><a href="../category/cul/index.html" title="View all posts filed under Cul">Cul</a> (52)
+</li>
+	<li class="cat-item cat-item-12"><a href="../category/gadget/index.html" title="View all posts filed under Gadget">Gadget</a> (5)
+</li>
+	<li class="cat-item cat-item-855"><a href="../category/gadgets/index.html" title="View all posts filed under Gadgets">Gadgets</a> (2)
+</li>
+	<li class="cat-item cat-item-38"><a href="../category/philo-et-culture/index.html" title="View all posts filed under Philo et culture">Philo et culture</a> (136)
+</li>
+	<li class="cat-item cat-item-3"><a href="../category/programmation/index.html" title="View all posts filed under Programmation">Programmation</a> (341)
+</li>
+	<li class="cat-item cat-item-1"><a href="../category/uncategorized/index.html" title="View all posts filed under Uncategorized">Uncategorized</a> (6)
+</li>
+	<li class="cat-item cat-item-15"><a href="../category/web/index.html" title="View all posts filed under Web">Web</a> (40)
+</li>
+		</ul>
+</div> <!-- end .widget -->		<div id="recent-posts-3" class="widget sidebar-block widget_recent_entries">		<h3 class="widgettitle">Posts récents</h3>		<ul>
+				<li><a href="../pour-vos-thumbnails-imagemagick-a-la-rescousse/index.html" title="Pour vos thumbnails, ImageMagick à la rescousse">Pour vos thumbnails, ImageMagick à la rescousse</a></li>
+				<li><a href="../changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/index.html" title="Changer le mot de passe du super utilisateur django en ligne de commande">Changer le mot de passe du super utilisateur django en ligne de commande</a></li>
+				<li><a href="../le-deuil-dune-idee/index.html" title="Le deuil d&#8217;une idée">Le deuil d&#8217;une idée</a></li>
+				<li><a href="../quest-ce-quun-namespace/index.html" title="Qu&#8217;est-ce qu&#8217;un namespace ?">Qu&#8217;est-ce qu&#8217;un namespace ?</a></li>
+				<li><a href="../astuces-de-recherche/index.html" title="Astuces de recherche">Astuces de recherche</a></li>
+				<li><a href="../cest-pour-des-trucs-comme-ca-que-jadore-python/index.html" title="C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;">C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;</a></li>
+				<li><a href="../pourquoi-il-faut-eviter-import-en-python/index.html" title="Pourquoi il faut éviter &lt;code&gt;import *&lt;/code&gt; en Python">Pourquoi il faut éviter <code>import *</code> en Python</a></li>
+				<li><a href="../quitter-son-pays/index.html" title="Quitter son pays">Quitter son pays</a></li>
+				</ul>
+		</div> <!-- end .widget --> 
+
+	<div id="popular-tabbed" class="widget"> 
+		<h3 class="widgettitle">Posts Populaires</h3>
+		<ul>
+																						<li><a href="../on-a-un-nouveau-projet-et-on-a-besoin-dune-info-sur-vous/index.html">On a un nouveau projet et on a besoin d&#8217;UNE info sur vous</a> (251)</li>																														<li><a href="../entreprendre-en-france-autopsie-dun-echec/index.html">Entreprendre en France, Autopsie d&#8217;un échec.</a> (111)</li>																														<li><a href="../fizzbuzz-en-python/index.html">FizzBuzz en Python</a> (94)</li>																														<li><a href="../fetons-le-depart-de-max/index.html">Fêtons le départ de Max</a> (87)</li>																														<li><a href="../une-journee-dans-un-fkk-maison-close-allemande/index.html">Une journée dans un FKK (maison close Allemande)</a> (84)</li>																														<li><a href="../on-est-en-2013-on-a-marche-sur-la-lune-mais-on-a-toujours-pas/index.html">On est en 2013, on a marché sur la lune, mais on a toujours pas&#8230;</a> (82)</li>																														<li><a href="../il-ne-faut-pas-prendre-des-gens-pour-des-cons-mais-ne-jamais-oublier-quils-en-sont/index.html">Il ne faut pas prendre les gens pour des cons mais ne jamais oublier qu&#8217;ils en sont</a> (82)</li>																														<li><a href="../lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/index.html">L&#8217;un de vous a un cadeau de Noël qui l&#8217;attend au pied du sapin&#8230;</a> (80)</li>													</ul>
+	</div> <!-- end #recent-tabbed -->
+	 
+<div id="tag_cloud-3" class="widget sidebar-block widget_tag_cloud"><h3 class="widgettitle">TagCloud</h3><div class="tagcloud"><a href='../tag/bash/index.html' class='tag-link-14' title='14 topics' style='font-size: 11.456790123457pt;'>bash</a>
+<a href='../tag/blog/index.html' class='tag-link-107' title='11 topics' style='font-size: 10.592592592593pt;'>blog</a>
+<a href='../tag/bottle/index.html' class='tag-link-307' title='6 topics' style='font-size: 8.6049382716049pt;'>bottle</a>
+<a href='../tag/cache/index.html' class='tag-link-333' title='8 topics' style='font-size: 9.4691358024691pt;'>cache</a>
+<a href='../tag/comprehension-lists/index.html' class='tag-link-20' title='6 topics' style='font-size: 8.6049382716049pt;'>comprehension-lists</a>
+<a href='../tag/css/index.html' class='tag-link-188' title='8 topics' style='font-size: 9.4691358024691pt;'>css</a>
+<a href='../tag/cul-2/index.html' class='tag-link-33' title='9 topics' style='font-size: 9.9012345679012pt;'>cul</a>
+<a href='../tag/decorator/index.html' class='tag-link-265' title='7 topics' style='font-size: 9.037037037037pt;'>decorator</a>
+<a href='../tag/django/index.html' class='tag-link-28' title='63 topics' style='font-size: 16.901234567901pt;'>django</a>
+<a href='../tag/email/index.html' class='tag-link-37' title='6 topics' style='font-size: 8.6049382716049pt;'>email</a>
+<a href='../tag/encoding/index.html' class='tag-link-54' title='5 topics' style='font-size: 8pt;'>encoding</a>
+<a href='../tag/error/index.html' class='tag-link-213' title='6 topics' style='font-size: 8.6049382716049pt;'>error</a>
+<a href='../tag/ffmpeg/index.html' class='tag-link-64' title='5 topics' style='font-size: 8pt;'>ffmpeg</a>
+<a href='../tag/fun/index.html' class='tag-link-44' title='6 topics' style='font-size: 8.6049382716049pt;'>fun</a>
+<a href='../tag/git/index.html' class='tag-link-18' title='28 topics' style='font-size: 13.876543209877pt;'>git</a>
+<a href='../tag/html/index.html' class='tag-link-486' title='6 topics' style='font-size: 8.6049382716049pt;'>html</a>
+<a href='../tag/humour/index.html' class='tag-link-266' title='5 topics' style='font-size: 8pt;'>humour</a>
+<a href='../tag/import/index.html' class='tag-link-215' title='7 topics' style='font-size: 9.037037037037pt;'>import</a>
+<a href='../tag/ipython/index.html' class='tag-link-164' title='8 topics' style='font-size: 9.4691358024691pt;'>ipython</a>
+<a href='../tag/iterable/index.html' class='tag-link-217' title='9 topics' style='font-size: 9.9012345679012pt;'>iterable</a>
+<a href='../tag/javascript/index.html' class='tag-link-96' title='25 topics' style='font-size: 13.444444444444pt;'>javascript</a>
+<a href='../tag/jquery/index.html' class='tag-link-112' title='6 topics' style='font-size: 8.6049382716049pt;'>jquery</a>
+<a href='../tag/lambda/index.html' class='tag-link-292' title='7 topics' style='font-size: 9.037037037037pt;'>lambda</a>
+<a href='../tag/linux/index.html' class='tag-link-238' title='5 topics' style='font-size: 8pt;'>linux</a>
+<a href='../tag/mail/index.html' class='tag-link-624' title='6 topics' style='font-size: 8.6049382716049pt;'>mail</a>
+<a href='../tag/meta/index.html' class='tag-link-102' title='78 topics' style='font-size: 17.679012345679pt;'>meta</a>
+<a href='../tag/mysql/index.html' class='tag-link-82' title='5 topics' style='font-size: 8pt;'>mysql</a>
+<a href='../tag/nginx/index.html' class='tag-link-183' title='12 topics' style='font-size: 10.851851851852pt;'>nginx</a>
+<a href='../tag/nsfw/index.html' class='tag-link-319' title='13 topics' style='font-size: 11.197530864198pt;'>nsfw</a>
+<a href='../tag/orm/index.html' class='tag-link-43' title='5 topics' style='font-size: 8pt;'>orm</a>
+<a href='../tag/php/index.html' class='tag-link-199' title='5 topics' style='font-size: 8pt;'>php</a>
+<a href='../tag/poo/index.html' class='tag-link-549' title='9 topics' style='font-size: 9.9012345679012pt;'>poo</a>
+<a href='../tag/process/index.html' class='tag-link-87' title='5 topics' style='font-size: 8pt;'>process</a>
+<a href='../tag/python/index.html' class='tag-link-4' title='251 topics' style='font-size: 22pt;'>python</a>
+<a href='../tag/redis/index.html' class='tag-link-196' title='6 topics' style='font-size: 8.6049382716049pt;'>redis</a>
+<a href='../tag/ruby/index.html' class='tag-link-325' title='6 topics' style='font-size: 8.6049382716049pt;'>ruby</a>
+<a href='../tag/server/index.html' class='tag-link-185' title='6 topics' style='font-size: 8.6049382716049pt;'>server</a>
+<a href='../tag/sexe/index.html' class='tag-link-175' title='5 topics' style='font-size: 8pt;'>sexe</a>
+<a href='../tag/shell/index.html' class='tag-link-202' title='7 topics' style='font-size: 9.037037037037pt;'>shell</a>
+<a href='../tag/ssh/index.html' class='tag-link-206' title='6 topics' style='font-size: 8.6049382716049pt;'>ssh</a>
+<a href='../tag/sublime-text/index.html' class='tag-link-76' title='6 topics' style='font-size: 8.6049382716049pt;'>sublime text</a>
+<a href='../tag/twitter/index.html' class='tag-link-371' title='6 topics' style='font-size: 8.6049382716049pt;'>twitter</a>
+<a href='../tag/ubuntu/index.html' class='tag-link-255' title='13 topics' style='font-size: 11.197530864198pt;'>ubuntu</a>
+<a href='../tag/virtualenv/index.html' class='tag-link-259' title='6 topics' style='font-size: 8.6049382716049pt;'>virtualenv</a>
+<a href='../tag/yield/index.html' class='tag-link-287' title='7 topics' style='font-size: 9.037037037037pt;'>yield</a></div>
+</div> <!-- end .widget --><div id="archives-2" class="widget sidebar-block widget_archive"><h3 class="widgettitle">Archives</h3>		<ul>
+			<li><a href='../2013/12/index.html' title='December 2013'>December 2013</a>&nbsp;(2)</li>
+	<li><a href='../2013/11/index.html' title='November 2013'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html' title='October 2013'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html' title='September 2013'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html' title='August 2013'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html' title='July 2013'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html' title='June 2013'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html' title='May 2013'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html' title='April 2013'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html' title='March 2013'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html' title='February 2013'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html' title='January 2013'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html' title='December 2012'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html' title='November 2012'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html' title='October 2012'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html' title='September 2012'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html' title='August 2012'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html' title='July 2012'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html' title='June 2012'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html' title='May 2012'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html' title='April 2012'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html' title='March 2012'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html' title='February 2012'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+</div> <!-- end .widget --><div id="rss_links-2" class="widget sidebar-block widget_rss_links"><h3 class="widgettitle">Flux RSS</h3><p><a href="../feed/index.html" title="Subscribe to Posts"><img src="../wp-content/plugins/jetpack/_inc/images/rss/green-small.png" alt="RSS Feed" /></a>&nbsp;<a href="../feed/index.html" title="Subscribe to Posts">RSS - Posts</a></p>
+</div> <!-- end .widget --><div id="text-5" class="widget sidebar-block widget_text"><h3 class="widgettitle"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</div> <!-- end .widget --></div> <!-- end sidebar -->	</div> <!-- end #content --> 
+	
+	 <div id="footer" >
+		<div id="footer-content">
+			
+								
+				<ul id="menu-bottom-menu" class="bottom-menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Contactez-nous</a></li>
+</ul>			
+			<p id="copyright">Designed by  <a href="http://www.elegantthemes.com" title="Elegant Themes">Elegant WordPress Themes</a></p>
+		</div> <!-- end #footer-content -->
+	</div> <!-- end #footer -->
+</div> <!-- end #page-wrap -->
+	 
+				
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.cycle.all.min.js"></script> 
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.easing.1.3.js"></script>	
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/superfish.js"></script>	
+	<script type="text/javascript">
+	//<![CDATA[
+		jQuery.noConflict();
+	
+		jQuery('ul.superfish').superfish({ 
+			delay:       200,                            // one second delay on mouseout 
+			animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation 
+			speed:       'fast',                          // faster animation speed 
+			autoArrows:  true,                           // disable generation of arrow mark-up 
+			dropShadows: false                            // disable drop shadows 
+		}).find("> li > ul > li:last-child, > li > ul > li > ul > li:last-child, > li > ul > li > ul > li > ul > li:last-child").addClass("last-nav-element");
+		
+		jQuery(".js #featured, .js div#tabbed").css("display","block");
+
+				
+		var $featured_content = jQuery('#featured_content'),
+			$tabbed_area = jQuery('div#tabbed'),
+			$controllers = jQuery('div#controllers'),
+			$comments = jQuery('ol.commentlist');
+		
+		et_search_bar();
+		
+		if ($featured_content.length) {
+			$featured_content.cycle({
+									timeout: 3000				,
+				speed: 300,
+				cleartypeNoBg: true,
+				prev:   'a#left_arrow', 
+				next:   'a#right_arrow',
+				pager:  'div#controllers',
+				fx: 'fade'
+			});
+			
+			var controllersWidth = $controllers.width(),
+				controllersLeft = Math.round((960 - controllersWidth) / 2);
+			if (controllersWidth < 960) $controllers.css('padding-left',controllersLeft);
+		};
+		
+		if ($tabbed_area.length) {
+			$tabbed_area.tabs({ fx: { opacity: 'toggle' } });
+		};
+		
+		if ($comments.length) {
+			$comments.find(">li").after('<span class="bottom_bg"></span>');
+		};
+		
+
+		<!---- Random tag line ---->		
+
+var tagLine = function(){
+    var tagLines =  [
+        'Deux programmeurs qui se sortent les doigts du code',
+        '10 ko de js rien que pour charger ce message',
+        'Des articles pour geeks qui mettent les points sur les G',
+        "Aucun hipster n'a été violenté à l'écriture de ce blog",
+        'La programmation avec un grand C',
+        'Ornithorynque fuchsia hydrophobe',
+        'Python, Django, Git, et du Cul',
+        'Nous croisons les effluves',
+        'CMB DTC IRL CQFD',
+        'Tuent des chatons depuis 1997',
+        'Reticulating splines',
+        'Error: unexpected end of stupid tag line',
+        'Les bikinis et les ordinateurs épargnent les spéculations',
+        'F5',
+        '<3 (oYo)',
+        'Rien que des obsédés du serpent !',
+        "Je sers la science et c'est ma joie",
+        'On peut tout génie génétiquer!',
+        "Réparateurs d'harmonicas, professeurs de plongée",
+        "Il faut mettre d'urgence un frein à l'immobilisme!",
+        'Ho mon dieu! Ils ont tué Sam, enfoirés!',
+        "L'étincelle qui fait déborder le vase",
+        'A poil les putes !',
+        'Bannis de Reddit !',
+        "Bannis de l'AFPY !",
+        'Bannis de Claire Chazal!',
+        'Bannis de Jean-Pierre Pernaud !',
+        'Bannis de Norton !',
+        'Et si on faisait des camps pour que les gens puissent se concentrer?',
+        'Article.objects.create(type=random.choice(("dev", "cul")))',
+        'Le choc des mots, le poids des algos',
+        'Kedzalcoilt, le serpent à poil'
+    ];
+    return tagLines[Math.ceil(Math.random() * 1000000000) % tagLines.length];
+};
+
+jQuery('#slogan').show().text(tagLine());
+
+// forcer la redirection faire l'image en full size au click
+jQuery('.wp-post-image').click(function(e){e.preventDefault(); window.location.href = jQuery(e.target).attr('src')});
+
+// mettre clippy sur les comments
+
+jQuery(function(){
+    var message = "";
+    var $comment = jQuery('#comment');
+    topagent = null;
+
+    $comment.keyup(function(){
+
+        var content = jQuery(this).val();
+
+        if (content.search(/(^|\s+)(php|vim|emacs|windows|pas?\s*libre)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos trollesques. Attention, nous avons des tampons, et nous n'hésiterons pas à nous en servir !"
+        }
+
+        if (content.search(/(^|\s+)(me (tuer|suicider|tirer une balle|pendre|flinguer))([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos suicidaires. Sam & Max défendent la liberté d'expression. Allez aux bouts de vos idées !"
+        }
+
+        if (content.search(/(^|\s+)(connards?|enculés?|enfoirés?|fils? de pute?)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos injurieux. Ne voulez-vous pas plutôt écrire une lettre d'insultes directement aux auteurs, via le formulaire de contact ?"
+        }
+
+        if (content.search(/(^|\s+)(culs?|nichons?|bite|chatte|sodomie|levrette|sexe)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos graveleux. Pourriez-vous donner plus de détails ?"
+        }
+
+        if (content.search(/\>\>\>/i) != -1){
+            message = "Le triple chevron ne passe pas dans les comments. Désolé :-( Utilisez »» à la place."
+        }
+
+        if (content.length > 2000){
+            message = "Il semble que vous écriviez un roman. Vous réalisez que ceux qui vont répondre ne l'auront pas lu jusqu'au bout ?"
+        }
+
+        if (message){
+            $comment.unbind();
+
+            jQuery("<link/>", {
+               rel: "stylesheet",
+               type: "text/css",
+               href: "http://sametmax.com/wp-content/uploads/2012/07/clippy.css"
+            }).appendTo("head").one('load ready', function(){
+                jQuery.getScript("http://sametmax.com/wp-content/uploads/2012/07/clippy.min_1.js", function(){
+                    clippy.load('Clippy', function(agent) {
+                        agent.show();
+                        var offset = $comment.offset();
+                        var left = offset.left + $comment.width() + 10;
+                        var top = offset.top;
+
+                        jQuery('.clippy').css({position:'absolute',
+                                               display:'block',
+                                               left: left, top: top})
+
+                        jQuery('.clippy-balloon').css({position:'absolute',
+                                                       display:'block',
+                                                       left: left,
+                                                       top: top - 50})
+
+                        agent.speak(message);
+                        setInterval(function(){agent.stop(); agent.animate()}, 20000);
+                    });
+
+                });
+
+            });
+
+        }
+
+    });
+});
+
+
+		<!---- Search Bar Improvements ---->
+		function et_search_bar(){
+			var $searchform = jQuery('#header div#search-form'),
+				$searchinput = $searchform.find("input#searchinput"),
+				searchvalue = $searchinput.val();
+				
+			$searchinput.focus(function(){
+				if (jQuery(this).val() === searchvalue) jQuery(this).val("");
+			}).blur(function(){
+				if (jQuery(this).val() === "") jQuery(this).val(searchvalue);
+			});
+		};
+		
+	//]]>	
+
+
+
+
+<!-- Piwik -->
+
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://88.191.153.127:7777/" : "http://88.191.153.127:7777/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+
+
+
+	</script>
+<noscript>
+<img src="http://88.191.153.127:7777/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="" />
+</noscript>
+	<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.3.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=3.3.1'></script>
+	<div style="display:none">
+	<div class="grofile-hash-map-fc32c6686686ecc595f05ad1885c2fb3">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-75be759a2751164a7cf44aeb38ef9b64">
+	</div>
+	<div class="grofile-hash-map-2cb6a22c42476804f59d6506b9df7dac">
+	</div>
+	<div class="grofile-hash-map-b92feba617e050ea5163b9bb6057eb91">
+	</div>
+	<div class="grofile-hash-map-de3d107ed1ccad362b44763106a78178">
+	</div>
+	<div class="grofile-hash-map-eb8e400eec222e2b09bd901aba2cb2dc">
+	</div>
+	<div class="grofile-hash-map-83b27f6ff2301ca0f4ed1c7628620757">
+	</div>
+	<div class="grofile-hash-map-e02b4f39f9fc66bea03fee2240a8d09e">
+	</div>
+	<div class="grofile-hash-map-b93cc4fb6413bbe5c837530662bee9b4">
+	</div>
+	<div class="grofile-hash-map-71c8468ff89b252f8a01aa2ce4c53053">
+	</div>
+	<div class="grofile-hash-map-e2ed1646f3954f52a8a9d8b1cb4e719b">
+	</div>
+	<div class="grofile-hash-map-f1e94121f75fd79a19595316bc3a7e2d">
+	</div>
+	<div class="grofile-hash-map-9369e3d134cec4a408d88aa31920bec4">
+	</div>
+	<div class="grofile-hash-map-e5176cded08b65b91099dc61f31d43c8">
+	</div>
+	<div class="grofile-hash-map-680b846ea80b0ef20759890ba41d387a">
+	</div>
+	<div class="grofile-hash-map-28233f8e47f1e832a10624a099b164d8">
+	</div>
+	<div class="grofile-hash-map-e78fd560fdb27287f18a9c6d6adb7ac1">
+	</div>
+	<div class="grofile-hash-map-c055f36fe773e826e501205297f314e6">
+	</div>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.js%3Fver=0.1'></script>
+	<script type="text/javascript" charset="utf-8">
+	function sharing_plusone( obj ) { 
+		jQuery.ajax( {
+			url: 'http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/?share=google-plus-1',
+			type: 'POST',
+			data: obj
+		} );
+	}
+	</script>
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+	<div id="sharing_email" style="display: none;">
+		<form action="index.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="text" name="target_email" id="target_email" value="" />
+			
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+				
+				<label for="source_email">Your Email Address</label>
+				<input type="text" name="source_email" id="source_email" value="" />
+
+						
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a href="index.html#cancel" class="sharing_cancel">Cancel</a>
+			
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+			
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js%3Fver=3.15'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/sametmax.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=3.3'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.easing-1.3.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/et-ptemplates-frontend.js%3Fver=1.1'></script>
+
+	<script src="http://stats.wordpress.com/e-201349.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.2.2',blog:'32490438',post:'5824'});
+	var load_cmc = function(){linktracker_init(32490438,5824,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script>	
+</body>
+</html>

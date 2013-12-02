@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Les context managers et le mot clé with en Python</title>
+	<atom:link href="http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:54:05 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<item>
+		<title>By: Lujeni</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-7528</link>
+		<dc:creator>Lujeni</dc:creator>
+		<pubDate>Sun, 31 Mar 2013 00:01:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-7528</guid>
+		<description>Hello, dans l&#039;exemple du code mixant Decorator&amp;Context il manque un &lt;strong&gt;t &lt;/strong&gt;sur la ligne &lt;code&gt;self.start = datetime.dateime.now()&lt;/code&gt;. L&#039;utilisation du decorator TimeIt semble lèver une exception TypeError: object.__new__() takes no parameters.</description>
+		<content:encoded><![CDATA[<p>Hello, dans l&#8217;exemple du code mixant Decorator&amp;Context il manque un <strong>t </strong>sur la ligne <code>self.start = datetime.dateime.now()</code>. L&#8217;utilisation du decorator TimeIt semble lèver une exception TypeError: object.__new__() takes no parameters.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Etienne</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-5805</link>
+		<dc:creator>Etienne</dc:creator>
+		<pubDate>Fri, 01 Feb 2013 10:55:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-5805</guid>
+		<description>Vraiment chouette tout ça. Ce qui est bien, c&#039;est que les contextmanager peuvent être utilisé sur des bouts de code de taille arbitraire.
+
+Je pense à ton TimeIt par exemple, qui pourrait logger le temps d&#039;exécution de portions de code critique (genre query dans db qui grossit rapidement), et/ou pourrait effectuer un action si ce temps dépasse un seuil donné.
+
+Sympa, sympa</description>
+		<content:encoded><![CDATA[<p>Vraiment chouette tout ça. Ce qui est bien, c&#8217;est que les contextmanager peuvent être utilisé sur des bouts de code de taille arbitraire.</p>
+<p>Je pense à ton TimeIt par exemple, qui pourrait logger le temps d&#8217;exécution de portions de code critique (genre query dans db qui grossit rapidement), et/ou pourrait effectuer un action si ce temps dépasse un seuil donné.</p>
+<p>Sympa, sympa</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-1830</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Thu, 13 Sep 2012 11:59:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-1830</guid>
+		<description>Au passage, j&#039;ai eu la question:
+
+&quot;Mais en quoi c&#039;est utile le context manager pour open ?&quot;
+
+&lt;pre lang=&quot;python&quot;&gt;try:
+    with open(&quot;fichier&quot;, &quot;r&quot;) as f:
+        ligne = f.readline()
+except IOError:
+    print &quot;Erreur&quot;&lt;/pre&gt;
+
+&quot;Est a peine plus court que:&quot;
+
+
+&lt;pre lang=&quot;python&quot;&gt;
+try:
+    f = open(&quot;fichier&quot;, &quot;r&quot;)
+    ligne = f.readline()
+except IOError:
+    print &quot;Erreur&quot;
+finally:
+    f.close()&lt;/pre&gt;
+
+Alors je note la réponse ici:
+
+Ces deux codes ci-dessus ne sont PAS équivalents.
+
+En effet, l&#039;équivalent sans le context manager est:
+
+&lt;pre lang=&quot;python&quot;&gt;
+try:
+    f = open(&quot;fichier&quot;, &quot;r&quot;)
+    try:
+        ligne = f.readline()
+    finally:
+        f.close()
+except IOError:
+    print &quot;Erreur&quot;
+&lt;/pre&gt;
+
+Avec un double &lt;code&gt;try&lt;/code&gt; imbriqué.
+
+En effet, il peut y avoir une erreur à l&#039;ouverture du fichier, et dans ce cas la clause &lt;code&gt;finally&lt;/code&gt; va planter, car &lt;code&gt;f&lt;/code&gt; n&#039;existera pas !
+
+Utiliser &lt;code&gt;with&lt;/code&gt; permet de s&#039;affranchir de ce genre de petits détails.</description>
+		<content:encoded><![CDATA[<p>Au passage, j&#8217;ai eu la question:</p>
+<p>&#8220;Mais en quoi c&#8217;est utile le context manager pour open ?&#8221;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;fichier&quot;</span>, <span style="color: #483d8b;">&quot;r&quot;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+        ligne = f.<span style="color: #dc143c;">readline</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IOError</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Erreur&quot;</span></pre></div></div>
+
+<p>&#8220;Est a peine plus court que:&#8221;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    f = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;fichier&quot;</span>, <span style="color: #483d8b;">&quot;r&quot;</span><span style="color: black;">&#41;</span>
+    ligne = f.<span style="color: #dc143c;">readline</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IOError</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Erreur&quot;</span>
+<span style="color: #ff7700;font-weight:bold;">finally</span>:
+    f.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Alors je note la réponse ici:</p>
+<p>Ces deux codes ci-dessus ne sont PAS équivalents.</p>
+<p>En effet, l&#8217;équivalent sans le context manager est:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    f = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;fichier&quot;</span>, <span style="color: #483d8b;">&quot;r&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        ligne = f.<span style="color: #dc143c;">readline</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        f.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IOError</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Erreur&quot;</span></pre></div></div>
+
+<p>Avec un double <code>try</code> imbriqué.</p>
+<p>En effet, il peut y avoir une erreur à l&#8217;ouverture du fichier, et dans ce cas la clause <code>finally</code> va planter, car <code>f</code> n&#8217;existera pas !</p>
+<p>Utiliser <code>with</code> permet de s&#8217;affranchir de ce genre de petits détails.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sébastien</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-1701</link>
+		<dc:creator>Sébastien</dc:creator>
+		<pubDate>Tue, 04 Sep 2012 17:18:07 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-1701</guid>
+		<description>Très bon article ! Merci les gars !</description>
+		<content:encoded><![CDATA[<p>Très bon article ! Merci les gars !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-1700</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Tue, 04 Sep 2012 14:07:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-1700</guid>
+		<description>Merci zariko. 
+
+Maintenant il faut que je trouve un moyen de placer &quot;la fin des zarikos&quot; dans un blog post.</description>
+		<content:encoded><![CDATA[<p>Merci zariko. </p>
+<p>Maintenant il faut que je trouve un moyen de placer &#8220;la fin des zarikos&#8221; dans un blog post.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Zariko</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-1698</link>
+		<dc:creator>Zariko</dc:creator>
+		<pubDate>Tue, 04 Sep 2012 11:54:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-1698</guid>
+		<description>Super article !
+
+Petite typo sur le ContextDecorator: @functools.wraps =&gt; @wraps</description>
+		<content:encoded><![CDATA[<p>Super article !</p>
+<p>Petite typo sur le ContextDecorator: @functools.wraps =&gt; @wraps</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Lujeni</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-1695</link>
+		<dc:creator>Lujeni</dc:creator>
+		<pubDate>Tue, 04 Sep 2012 02:44:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-1695</guid>
+		<description>Encore un très beau article sur des concepts de python peu souvent utilisé ( à mon sens ) ! Vivement les prochains articles :) ! Enjoy</description>
+		<content:encoded><![CDATA[<p>Encore un très beau article sur des concepts de python peu souvent utilisé ( à mon sens ) ! Vivement les prochains articles :) ! Enjoy</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-1694</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Tue, 04 Sep 2012 01:49:04 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-1694</guid>
+		<description>Yes, bien vu. Typo corrigée.</description>
+		<content:encoded><![CDATA[<p>Yes, bien vu. Typo corrigée.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: fero14041</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comment-1690</link>
+		<dc:creator>fero14041</dc:creator>
+		<pubDate>Mon, 03 Sep 2012 23:42:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1987#comment-1690</guid>
+		<description>C&#039;est beau, merci! Une remarque ou question à propos (mais (pré)&lt;i&gt;caution&lt;/i&gt;: yeux dans le cirage): dans la section &quot;&lt;em&gt;Un exemple utile de context manager&lt;/em&gt;&quot;, j&#039;aurais naïvement référencé la variable &lt;code&gt;curdir&lt;/code&gt; comme &lt;em&gt;attribut&lt;/em&gt; de l&#039;instance, non?
+
+
+class Cd(objet):
+    #... méthodes précédentes ...
+
+    def __exit__(self, type, value, traceback):
+        os.chdir(self.curdir)
+&lt;/pre&gt;</description>
+		<content:encoded><![CDATA[<p>C&#8217;est beau, merci! Une remarque ou question à propos (mais (pré)<i>caution</i>: yeux dans le cirage): dans la section &#8220;<em>Un exemple utile de context manager</em>&#8220;, j&#8217;aurais naïvement référencé la variable <code>curdir</code> comme <em>attribut</em> de l&#8217;instance, non?</p>
+<p>class Cd(objet):<br />
+    #&#8230; méthodes précédentes &#8230;</p>
+<p>    def __exit__(self, type, value, traceback):<br />
+        os.chdir(self.curdir)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

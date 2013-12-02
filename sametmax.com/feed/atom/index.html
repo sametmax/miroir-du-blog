@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?><feed
+  xmlns="http://www.w3.org/2005/Atom"
+  xmlns:thr="http://purl.org/syndication/thread/1.0"
+  xml:lang="en"
+  xml:base="http://sametmax.com/wp-atom.php"
+   >
+	<title type="text">Sam &#38; Max: Python, Django, Git et du cul</title>
+	<subtitle type="text">Deux développeurs en vadrouille qui se sortent les doigts du code</subtitle>
+
+	<updated>2013-12-02T10:02:45Z</updated>
+
+	<link rel="alternate" type="text/html" href="http://sametmax.com" />
+	<id>http://sametmax.com/feed/atom/</id>
+	<link rel="self" type="application/atom+xml" href="http://sametmax.com/feed/atom/" />
+
+	<generator uri="http://wordpress.org/" version="3.3.1">WordPress</generator>
+	<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[Pour vos thumbnails, ImageMagick à la rescousse]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/" />
+		<id>http://sametmax.com/?p=8141</id>
+		<updated>2013-12-01T15:49:24Z</updated>
+		<published>2013-12-01T08:11:42Z</published>
+		<category scheme="http://sametmax.com" term="Programmation" /><category scheme="http://sametmax.com" term="image" /><category scheme="http://sametmax.com" term="imagemagick" /><category scheme="http://sametmax.com" term="python" /><category scheme="http://sametmax.com" term="thumbnails" />		<summary type="html"><![CDATA[<a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d'images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu'appeler la lib avec un bon subprocess était simplement plus rapide et donnait des résultats de meilleure qualité que d'utiliser PIL en Python ou GD en PHP.]]></summary>
+		<content type="html" xml:base="http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/"><![CDATA[<p><a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d&#8217;images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu&#8217;appeler la lib avec un bon <a href="http://docs.python.org/2/library/subprocess.html">subprocess</a> était simplement plus rapide et donnait des résultats de meilleure qualité que d&#8217;utiliser PIL en Python ou GD en PHP.</p>
+<p>Et je peux vous dire qu&#8217;il en a fait des tests pour obtenir le thumbnail des nichons parfait. C&#8217;est un perfectionniste quand il s&#8217;agit des tétons.</p>
+<p>En général, on trouve ImageMagick dans les dépôts. Par exemple, sous debian :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> imagemagick</pre></div></div>
+
+<p>Mais il n&#8217;est pas rare que Max compile la bête histoire d&#8217;avoir la même version partout :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">wget</span> http:<span style="color: #000000; font-weight: bold;">//</span>mirror.checkdomain.de<span style="color: #000000; font-weight: bold;">/</span>imagemagick<span style="color: #000000; font-weight: bold;">/</span>ImageMagick-6.8.7-<span style="color: #000000;">4</span>.tar.gz ; <span style="color: #c20cb9; font-weight: bold;">tar</span> <span style="color: #660033;">-xvf</span> ImageMagick-6.8.7-<span style="color: #000000;">4</span>.tar.gz ; <span style="color: #7a0874; font-weight: bold;">cd</span> ImageMagick-6.8.7-<span style="color: #000000;">4</span>
+.<span style="color: #000000; font-weight: bold;">/</span>configure
+<span style="color: #c20cb9; font-weight: bold;">make</span> <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> <span style="color: #c20cb9; font-weight: bold;">make</span> <span style="color: #c20cb9; font-weight: bold;">install</span>
+<span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>convert <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>convert
+<span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>identify <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>identify</pre></div></div>
+
+<p>Après tout ça, vous aurez accès à plusieurs commandes, qui permettent des manipulations d&#8217;images diverses.</p>
+<p>Par exemple, <code>identify</code> permet de récupérer des informations sur l&#8217;image telles que le format, la profondeur des couleurs&#8230; Nous on l&#8217;utilise surtout pour récupérer la taille :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">identify <span style="color: #660033;">-format</span> <span style="color: #ff0000;">&quot;%[fx:w],%[fx:h]&quot;</span> <span style="color: #ff0000;">&quot;chemin/vers/image&quot;</span></pre></div></div>
+
+<p>On peut utiliser un wrapper tel que <a href="http://docs.wand-py.org">wand</a> pour utiliser ça depuis Python. Mais il est très facile de se faire un wrapper vite fait à la main :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> envoy
+<span style="color: #ff7700;font-weight:bold;">from</span> minibelt <span style="color: #ff7700;font-weight:bold;">import</span> normalize
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ImageMagicError<span style="color: black;">&#40;</span><span style="color: #008000;">Exception</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, result, encoding<span style="color: black;">&#41;</span>:
+        msg = normalize<span style="color: black;">&#40;</span>result.<span style="color: black;">std_err</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span>encoding<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>ImageMagicError, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>msg<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> size<span style="color: black;">&#40;</span>img, encoding=<span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">encoding</span><span style="color: black;">&#41;</span>:
+    r = envoy.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'identify -format &quot;%[fx:w],%[fx:h]&quot; &quot;{}&quot;'</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>img<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> r.<span style="color: black;">status_code</span> <span style="color: #66cc66;">!</span>= <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> ImageMagicError<span style="color: black;">&#40;</span>r, encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    w, h = r.<span style="color: black;">std_out</span>.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">','</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>w<span style="color: black;">&#41;</span>, <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>h<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Notez que j&#8217;utilise <a href="https://github.com/sametmax/minibelt">minibelt</a> et <a href="https://github.com/kennethreitz/envoy/">envoy</a> (un wrapper pour subprocess), car je suis une grosse feignasse.</p>
+<p>Pour faire un thumbnail, la recette est plus compliquée, car ImageMagick est à l&#8217;image, ce que Perl est à la programmation. There’s_more_than_one_way_to_do_it ©.</p>
+<p>Au final, celui qui nous a donné le meilleur résultat en qualité est cette suite d&#8217;arcanes secrètes transmise d&#8217;oreille de druide à oreille de druide :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">convert chemin<span style="color: #000000; font-weight: bold;">/</span>image<span style="color: #000000; font-weight: bold;">/</span>originale <span style="color: #660033;">-thumbnail</span> largeurxhauteur^ <span style="color: #660033;">-gravity</span> center <span style="color: #660033;">-extent</span> largeurxhauteur <span style="color: #660033;">-quality</span> <span style="color: #000000;">80</span> chemin<span style="color: #000000; font-weight: bold;">/</span>vers<span style="color: #000000; font-weight: bold;">/</span>resultat.jpg</pre></div></div>
+
+<p>Ceci va redimensionner l&#8217;image en conservant le ratio, et si le résultat n&#8217;est pas adaptée aux dimensions finales, va en découper une partie tout en préservant le centre de l&#8217;image. La sortie sera un jpg avec un taux de qualité de 80%.</p>
+<p>Là encore, un petit wrapper ne fait pas de mal :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> thumb<span style="color: black;">&#40;</span>img, width, heigth, output, crop=<span style="color: #008000;">False</span>, encoding=<span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">encoding</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> crop:
+        <span style="color: #ff7700;font-weight:bold;">if</span> crop <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">True</span>:
+            crop = <span style="color: #483d8b;">'center'</span>
+        crop = <span style="color: #483d8b;">&quot;-gravity {} -extent {}x{}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>crop, width, heigth<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        crop = <span style="color: #483d8b;">''</span>
+&nbsp;
+    <span style="color: #dc143c;">cmd</span> = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;convert {img} -thumbnail {width}x{heigth}^ {crop} -quality 80 {output}&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>
+          img=img, width=width, heigth=heigth, crop=crop, output=output,
+    <span style="color: black;">&#41;</span>
+&nbsp;
+    r =  envoy.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">cmd</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> r.<span style="color: black;">status_code</span> <span style="color: #66cc66;">!</span>= <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> ImageMagicError<span style="color: black;">&#40;</span>r, encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> r</pre></div></div>
+
+<p>Bref, ce genre de petit bricolage est loin d&#8217;être propre, mais il s&#8217;est montré fort robuste et efficace au fil des années. Quand on fait des dizaines de milliers de screenshots de films de cul tous les jours, c&#8217;est important :-)</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8141&amp;md5=3660806e0a423f254095faf72f0ed79c" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fpour-vos-thumbnails-imagemagick-a-la-rescousse%2F&amp;language=en_GB&amp;category=text&amp;title=Pour+vos+thumbnails%2C+ImageMagick+%C3%A0+la+rescousse&amp;description=ImageMagick+est+la+solution+de+manipulation+d%26%238217%3Bimages+la+plus+souple+et+versatile+%C3%A0+disposition.+Apr%C3%A8s+pas+mal+de+tests%2C+Max+en+avait+conclu+qu%26%238217%3Bappeler+la+lib+avec+un+bon+subprocess...&amp;tags=image%2Cimagemagick%2Cpython%2Cthumbnails%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/#comments" thr:count="14"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/feed/atom/" thr:count="14"/>
+		<thr:total>14</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[Changer le mot de passe du super utilisateur django en ligne de commande]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/" />
+		<id>http://sametmax.com/?p=8020</id>
+		<updated>2013-12-02T10:02:45Z</updated>
+		<published>2013-12-01T00:20:18Z</published>
+		<category scheme="http://sametmax.com" term="Programmation" /><category scheme="http://sametmax.com" term="django" /><category scheme="http://sametmax.com" term="manage.py" /><category scheme="http://sametmax.com" term="python" />		<summary type="html"><![CDATA[Vous avez oublié ce maudis mot de passe ? Impossible de se connecter à l'admin ?]]></summary>
+		<content type="html" xml:base="http://sametmax.com/changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/"><![CDATA[<p>Vous avez oublié ce maudit mot de passe ? Impossible de se connecter à l&#8217;admin ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py changepassword username</pre></div></div>
+
+<p>Pas besoin d&#8217;être root.</p>
+<p>Souvenez-vous aussi que vous pouvez quasiment tout faire depuis un shell en faisant :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py shell</pre></div></div>
+
+<p>Ce qui vous permet d&#8217;importer les modèles de vos apps et faire toutes les querys que vous voulez.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8020&amp;md5=30502664a6433d32c395442f20ec728d" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fchanger-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande%2F&amp;language=en_GB&amp;category=text&amp;title=Changer+le+mot+de+passe+du+super+utilisateur+django+en+ligne+de+commande&amp;description=Vous+avez+oubli%C3%A9+ce+maudit+mot+de+passe+%3F+Impossible+de+se+connecter+%C3%A0+l%26%238217%3Badmin+%3F+.%2Fmanage.py+changepassword+username+Pas+besoin+d%26%238217%3B%C3%AAtre+root.+Souvenez-vous+aussi+que+vous+pouvez+quasiment+tout...&amp;tags=django%2Cmanage.py%2Cpython%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/#comments" thr:count="0"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/feed/atom/" thr:count="0"/>
+		<thr:total>0</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Erik</name>
+						<uri>http://erikfromfrance.blogspot.com/</uri>
+					</author>
+		<title type="html"><![CDATA[Le deuil d&#8217;une idée]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/le-deuil-dune-idee/" />
+		<id>http://sametmax.com/?p=8084</id>
+		<updated>2013-11-29T20:07:51Z</updated>
+		<published>2013-11-29T20:07:51Z</published>
+		<category scheme="http://sametmax.com" term="Philo et culture" /><category scheme="http://sametmax.com" term="voyage" />		<summary type="html"><![CDATA[Ceci est un post invité de Erik posté sous licence creative common 3.0 unported. Dans mon précédent article sur le site de Sam et Max, je parlais d&#8217;expatriation. En parlant des discussions qu&#8217;on pouvait avoir avec des étrangers j&#8217;ai évoqué le sentiment particulier qui vous saisit lorsqu&#8217;un interlocuteur vous présente des arguments ou des idées [...]]]></summary>
+		<content type="html" xml:base="http://sametmax.com/le-deuil-dune-idee/"><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/Erik/">Erik</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Dans mon <a href="http://sametmax.com/quitter-son-pays/">précédent article</a> sur le site de Sam et Max, je parlais d&#8217;expatriation. En parlant des discussions qu&#8217;on pouvait avoir avec des étrangers j&#8217;ai évoqué le sentiment particulier qui vous saisit lorsqu&#8217;un interlocuteur vous présente des arguments ou des idées qui vont mener à la destruction de votre opinion passée et à l&#8217;intégration d&#8217;une nouvelle opinion opposée à la précédente. J&#8217;avais dit que ce sentiment à lui seul méritait un article complet et puisqu&#8217;un commentateur a voulu en savoir plus, voici la réponse à sa demande.</p>
+<p>Le sujet de cet article est un phénomène ressenti. Est-ce que ça m&#8217;est propre ou est-ce que d&#8217;autres personnes vivent la même situation de la même manière ? Je pense que c&#8217;est générique mais comme cela survient dans des conditions un peu particulières et qui, je le crains, ne seront pas vécues par beaucoup de gens, je n&#8217;ai jamais eu l&#8217;occasion d&#8217;en discuter avec quelqu&#8217;un partageant ce ressenti.</p>
+<p>Ce dont je parle, c&#8217;est la sensation physique et mentale qu&#8217;on a lorsqu&#8217;on découvre qu&#8217;on avait des opinions fausses et qu&#8217;au delà de la simple découverte on intègre cette découverte dans notre conscience et on admet publiquement avoir été dans l&#8217;erreur et on admet reconnaître la validité de l&#8217;opinion à laquelle on s&#8217;était préalablement opposé.</p>
+<p>Ca fait beaucoup de découvertes et d&#8217;admissions, mais ces précisions sont importantes parce qu&#8217;il est question d&#8217;une expérience très personnelle. Si notre erreur était sans importance sur un sujet sans importance, comme donner la mauvaise réponse en regardant &#8220;Questions pour un champion&#8221; à la télé, il est évident que ça ne nous touchera pas.</p>
+<p>Je vais en venir à des exemples précis, ne vous impatientez pas ! Mais il faut aussi expliquer dans quelles situations ce phénomène survient. Je suis un grand débatteur. Sur un site d&#8217;actualités informatiques, j&#8217;ai déjà contribué plus de 4500 messages dans plus de 1000 sujets et comme pour mon précédent article chez Sam et Max, j&#8217;ai pour habitude d&#8217;écrire des pavés. Sur un forum privé avec des amis, c&#8217;est plus de 10,000 messages que j&#8217;ai laissés tantôt pour de la conversation de comptoir et tantôt pour du débat, encore et toujours sous forme de pavé. C&#8217;est un de mes travers : ce qui se conçoit bien s&#8217;énonce clairement et pour cela je n&#8217;arrive pas à faire des phrases courtes et peu nombreuses. Si je veux éviter ou limiter la méprise chez les gens qui me lisent et me répondent, j&#8217;ai la compulsion d&#8217;être aussi précis et exhaustif que possible. Le débat sur des forums est une forme d&#8217;art, une discipline à part entière. Benjamin Bayart, l&#8217;ancien président de French Data Network, y fait allusion dans ce qui est désormais appelé &#8220;<a href="http://erikdefrance.blogspot.fr/2013/11/lechelle-bayart.html">l&#8217;échelle Bayart</a>&#8221; : une classification des internautes en fonction de leur maturité dans l&#8217;utilisation d&#8217;internet. Au stade de &#8220;commentateur&#8221;, on échange de réelles informations avec nos interlocuteurs et pour peu qu&#8217;on ait des gens de bonne volonté et de bonne foi de chaque côté d&#8217;une certaine thèse, on peut émettre et recevoir des arguments qui feront progresser nos connaissances et seront à même de nous faire progresser vers la vérité et de dépasser nos erreurs lorsque c&#8217;est le débatteur adverse qui a raison. Quand des arguments sont suffisamment étayés pour être convaincants et sont inattaquables, il se passe généralement l&#8217;une des 2 choses suivantes. La 1ère réaction possible est le <i>ragequit</i>, ce qui veut dire que blessé dans notre amour-propre on quitte la discussion qu&#8217;on laisse derrière nous pour ne plus la voir et ne pas l&#8217;affronter. La 2ème réaction possible est d&#8217;intégrer la validité des arguments qui nous ont été présentés et de le reconnaître publiquement. C&#8217;est plus difficile à faire qu&#8217;à dire et c&#8217;est l&#8217;objet de cet article. J&#8217;ai détaillé l&#8217;exemple du débat sur un forum internet, mais le même genre d&#8217;interaction est possible hors internet simplement en discutant avec un ami.</p>
+<p>Cette sensation dont je parle, c&#8217;est comme une boule de nerf à l&#8217;estomac ou au niveau du plexus. Ca vous prend aux tripes. La boule de nerf se traduit aussi par une gorge noueuse et une déglutition difficile ou douloureuse. Les muscles sont tendus. On transpire. Vous avez déjà eu un grand sentiment de colère dirigé contre vous-même ? Vous avez déjà fulminé ? Et bien c&#8217;est cela. C&#8217;est de la colère et du stress. On a envie de mettre un coup de poing dans le mur. C&#8217;est comme si les idées dans notre tête menaient une guerre les unes contre les autres. Une seule opinion sortira gagnante et l&#8217;autre devra mourir. Dans le cerveau, c&#8217;est un peu comme quand vous vous faites virer d&#8217;un boulot (ou autre situation stressante). Vous savez que ressasser ces choses douloureuses est inutile et puisque vous avez intégré l&#8217;information intellectuellement, vous aimeriez bien pouvoir en détourner votre attention pour arrêter d&#8217;en souffrir. Mais au lieu de cela, vous êtes pris d&#8217;obsession et votre attention revient vers ce sujet encore et encore. Quand vient la fin de journée, vous êtes épuisé physiquement et mentalement.</p>
+<p>La première fois où je me rappelle avoir vécu cette sensation, je n&#8217;ai pas reconnu publiquement mon erreur mais j&#8217;ai intégré consciemment l&#8217;argument présenté par mon interlocuteur. C&#8217;était à l&#8217;époque du PACS, pendant mes études. En arrivant au restaurant universitaire avec un copain d&#8217;études, on s&#8217;est fait distribuer des tracts au sujet des homosexuels. Je ne me rappelle plus si c&#8217;était en leur faveur ou leur défaveur, et ce n&#8217;est pas important. A l&#8217;époque, j&#8217;étais de l&#8217;avis que l&#8217;homosexualité n&#8217;était pas naturelle. Mon erreur résidait dans le fait de prendre mon hétérosexualité comme une norme universelle. Mais le pote présent avec moi de manière très nonchalante a su me présenter un argument simple et imparable sur le fait que l&#8217;homosexualité était tout à fait naturelle même si elle concerne une minorité de personnes. Je ne saurais pas retrouver ses mots et c&#8217;est peu important. De toutes façons, cet article n&#8217;a pas vocation à débattre sur l&#8217;homosexualité. Pratiquement 15 ans après cette discussion, mes émotions sont encore en désaccord avec mon cerveau. J&#8217;ai toujours une réaction émotionnelle négative si je vois 2 mecs en train de se rouler une pelle, mais intellectuellement (et donc politiquement) je suis à fond pour faire disparaître les différences légales qui existent entre hétéros et homos. Mais ce qui compte et qu&#8217;il faut retenir, c&#8217;est cette confrontation de l&#8217;intellect à une idée contraire mais justifiée et qui nécessite de changer d&#8217;opinion.</p>
+<p>La seconde fois, il me semble, fut lorsque ma compagne Thaï a discuté avec moi des prisons françaises. Pour faire simple, elle m&#8217;a fait valoir que nos prisons nationales étaient assez inhumaines comparées à ce qui se fait dans d&#8217;autres pays. Venant d&#8217;un petit bout de femme ayant grandi à 10000 km de la France, ça m&#8217;a sérieusement chauffé. Pendant ma pause diner, j&#8217;ai sorti Google et j&#8217;ai commencé à me renseigner sur ce que madame disait. Et il est vrai que le système carcéral français est vilain comparé à ce qui se fait dans les autres pays développés. A l&#8217;époque, je commençais à peine à m&#8217;intéresser à la politique et donc c&#8217;est un sujet que je ne connaissais pas. En tout cas, je ne le connaissais pas avant d&#8217;avoir dégainé mon Google. Et dans les années suivantes, ce que j&#8217;ai alors découvert a été confirmé par les multiples rapports alarmants du Contrôleur général des lieux de privation de liberté, de la Cour des Comptes, les multiples condamnations de la France par la Cour Européenne des Droits de l&#8217;Homme, et les diverses ordonnances par le Conseil d&#8217;Etat tantôt pour dératiser une prison, tantôt pour rénover une autre qui aurait fait honte à Midnight Express. Surpopulation, taux de suicide très supérieur à ce qui se passe à l&#8217;étranger, incarcération de gens qui relèvent plutôt de la psychiatrie&#8230; C&#8217;était donc début 2004, quelques mois après le début de mon expatriation. Je n&#8217;ai jamais eu la fibre nationaliste mais se faire dire par sa chérie thaïlandaise que la France est un pays inhumain en matière de prisons ça fait mal au coeur, et découvrir qu&#8217;elle a raison est encore plus douloureux. Comme dit plus haut, c&#8217;est vraiment un sentiment physique et mental et je pense que le terme de &#8220;douleur&#8221; est approprié. Il y a une réelle souffrance.</p>
+<p>Par la suite, j&#8217;ai eu plusieurs occasions sur les forums internet de développer mes connaissances de la manière décrite plus haut. J&#8217;ai ainsi pu découvrir des choses qui allaient contre mes opinions. Inutile de lister tous les sujets sur lesquels c&#8217;est arrivé. Il m&#8217;est arrivé de retomber dans le <i>ragequit</i>. C&#8217;est normal. C&#8217;est naturel. Ce n&#8217;est pas du jour au lendemain qu&#8217;on apprend à dire &#8220;<i>merci de m&#8217;avoir montré à quel point j&#8217;avais tort et pourquoi</i>&#8220;. Même aujourd&#8217;hui, alors que j&#8217;ai bien intégré la chose, ça reste quelque chose de douloureux mais on s&#8217;y soumet plus facilement. Comme les prises de sang ou les visites chez le dentiste (ou pas, pour le dentiste). Pratiquement tous les sujets qui prêtent à débat passionné ont une réponse et à moins d&#8217;avoir activement recherché l&#8217;information qui transforme votre opinion en connaissance, la validité de votre opinion c&#8217;est zéro. Votre opinion est à peu près aussi valide que le résultat d&#8217;un tirage à pile ou face.</p>
+<p>On a une tendance naturelle (c&#8217;est prouvé scientifiquement) à refuser l&#8217;exploration des arguments adverses. On a un penchant naturel pour les arguments qui nous confortent (le mot &#8220;confort&#8221; n&#8217;est pas fortuit) dans nos opinions. C&#8217;est confortable d&#8217;être dans un endroit sécurisant et qui renforce ce qu&#8217;on tient pour acquis tandis qu&#8217;un défi à nos opinions est une forme d&#8217;agression. C&#8217;est le genre de chose qui mène au <a href="http://fr.wikipedia.org/wiki/Biais_de_confirmation">biais de confirmation</a> et autres processus erronnés de raisonnement.</p>
+<p>Petit aparté : il est tout à fait envisageable à ce stade de mon article qu&#8217;un lecteur ait cette question à me poser : Qu&#8217;est-ce qu&#8217;un argument convaincant ? Comment peux-tu être sûr de la validité d&#8217;un argument ou du résultat d&#8217;une étude, etc. ? Ce genre de question est trop complexe pour faire un article dessus sur le site de Sam et Max. Dans ma démarche intellectuelle, je me suis tapé de la lecture, du podcast et du visionnage de conférences sur plusieurs sujets qui concourent à la compréhension de cette thématique. On parle de logique, de scepticisme scientifique, philosophie des sciences, théorie de la connaissance, épistémologie, et j&#8217;ai déjà consacré quelques centaines d&#8217;heures d&#8217;écoute ou de visionnage à des débats sur des thématiques religieuses, philosophiques et scientifiques. En fait, j&#8217;ai une série d&#8217;articles en cours de rédaction sur mon blog pour aborder ces thèmes et même selon mes standards de pavés, ces articles sont conséquents et je commence à envisager la rédaction d&#8217;un livre. Donc voilà : si vous comptiez poser une question comme ça, je vous ai pris de court. Nananèreeuuuuh&#8230; :-P</p>
+<p>Si vous n&#8217;avez jamais vécu ce phénomène dont je vous parle et si vous n&#8217;arrivez pas à vous représenter la chose, réfléchissez donc à une opinion ou une croyance qui vous est chère et ce que ça vous ferait si on vous mettait sous le nez la preuve irréfutable que vous vous êtes trompé ! Le meilleur exemple est probablement la religion : si vous avez une religion et que demain je vous démontre de manière irréfutable que votre religion est fausse, vous le vivrez comment ? Je ne vais pas mener ici le débat sur la religion parce que ce n&#8217;est pas le sujet. Et pour la raison exposée plus haut, je sais que mettre au défi ses croyances importantes est une forme d&#8217;agression. Donc je ne mènerai pas ce débat, mais j&#8217;espère que cet exemple peut être parlant pour les lecteurs pour essayer d&#8217;imaginer ce que ça peut faire quand leur opinion ou leur croyance est prise en défaut. Sérieusement, si vous êtes religieux, réfléchissez à cette situation hypothétique ! Et si vous ne l&#8217;êtes pas, essayez d&#8217;avoir la réflexion sur un autre sujet qui vous tient à coeur.</p>
+<p>Pour comprendre ce phénomène dont je parle, il y a une autre analogie qui me semble adéquate et c&#8217;est ce qui a inspiré le titre de cet article. C&#8217;est le <a href="http://fr.wikipedia.org/wiki/Elisabeth_K%C3%BCbler-Ross#Stades_de_la_mort_annonc.C3.A9e">modèle de Kübler-Ross</a> aussi appelé &#8220;les 5 étapes du deuil&#8221; : le déni, la colère, le marchandage, la dépression et l&#8217;acceptation. Reconnaître son erreur, c&#8217;est comme faire le deuil d&#8217;une opinion.</p>
+<p>J&#8217;espère que cet article répond à la question qui m&#8217;a été posée et que les lecteurs auront su mettre le contenu en relation avec leur propre vécu.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8084&amp;md5=f52394ace47cde38bf5609327b171230" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fle-deuil-dune-idee%2F&amp;language=en_GB&amp;category=text&amp;title=Le+deuil+d%26%238217%3Bune+id%C3%A9e&amp;description=Ceci+est+un+post+invit%C3%A9+de+Erik+post%C3%A9+sous+licence+creative+common+3.0+unported.+Dans+mon+pr%C3%A9c%C3%A9dent+article+sur+le+site+de+Sam+et+Max%2C+je+parlais+d%26%238217%3Bexpatriation.+En+parlant...&amp;tags=voyage%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/le-deuil-dune-idee/#comments" thr:count="30"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/le-deuil-dune-idee/feed/atom/" thr:count="30"/>
+		<thr:total>30</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[Qu&#8217;est-ce qu&#8217;un namespace ?]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/quest-ce-quun-namespace/" />
+		<id>http://sametmax.com/?p=8103</id>
+		<updated>2013-11-29T12:06:20Z</updated>
+		<published>2013-11-28T06:42:31Z</published>
+		<category scheme="http://sametmax.com" term="Programmation" /><category scheme="http://sametmax.com" term="namespace" /><category scheme="http://sametmax.com" term="python" /><category scheme="http://sametmax.com" term="xml" />		<summary type="html"><![CDATA[Un mot qui vient et qui revient comme on en a des tas en informatique, et qui est utilisé par tout le monde comme si chacun était supposé savoir.]]></summary>
+		<content type="html" xml:base="http://sametmax.com/quest-ce-quun-namespace/"><![CDATA[<p>Un mot qui vient et qui revient comme on en a des tas en informatique, et qui est utilisé par tout le monde comme si chacun était supposé savoir.</p>
+<p>Très énervant quand on ne sait pas ce que ça veut dire.</p>
+<p>Un namespace, ou espace de noms, est simplement un conteneur de noms, un groupe.</p>
+<p>On s&#8217;en sert pour pouvoir distinguer deux choses qui ont le même nom.</p>
+<p>Par exemple, un trou du cul peut être un anus ou un connard. Si quelqu&#8217;un fait la mention d&#8217;un &#8220;trou du cul&#8221;, j&#8217;ai besoin de contexte pour savoir si il parle d&#8217;un orifice ou d&#8217;un fils d&#8217;horreur. Ce contexte peut être donné par un namespace.</p>
+<p>Comment est représenté un namespace dépend de l&#8217;outil utilisé.</p>
+<p>Ainsi, en XML, c&#8217;est un préfixe puis deux points :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="xml" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;xsd:element<span style="color: #000000; font-weight: bold;">&gt;</span></span><span style="color: #000000; font-weight: bold;">&lt;/xsd:element<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;taoisme:element<span style="color: #000000; font-weight: bold;">&gt;</span></span><span style="color: #000000; font-weight: bold;">&lt;/taoisme:element<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></div></div>
+
+<p>Ici j&#8217;ai deux balises &#8220;element&#8221;, mais elles sont préfixées par deux namespaces : <code>xsd</code> et <code>taoisme</code>.</p>
+<p>C&#8217;est tout. Il n&#8217;y a rien d&#8217;autre caché derrière le namespace, c&#8217;est simplement un moyen de s&#8217;assurer qu&#8217;on sait bien de quoi on parle.</p>
+<p>Certains namespaces sont standardisés. Par exemple, <code>xsd</code> est un namespace réservé aux balises qu&#8217;on retrouve dans un fichier <em>.xsd</em>. D&#8217;autres sont créés par les utilisateurs pour des raisons d&#8217;organisation.</p>
+<p>En effet, un des avantages du namespace, c&#8217;est qu&#8217;il évite que deux références homonymes ne s&#8217;écrasent l&#8217;une l&#8217;autre.</p>
+<p>Par exemple en Python, le nom du module qui contient une fonction peut servir de namespace.</p>
+<p>Si je fais :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">shelve</span></pre></div></div>
+
+<p>Alors j&#8217;ai accès à trois fonctions open():</p>
+<ul>
+<li><strong>os.open()</strong>: la fonction du <code>open()</code> du module <code>os</code> dont le nom est préfixé par le namespace <em>os</em>.</li>
+<li><strong>shelve.open()</strong>: la fonction du <code>open()</code> du module <code>shelve</code> dont le nom est prefixé par le namespace <em>shelve</em>.</li>
+<li><strong>open()</strong>: la fonction du <code>open()</code> dont le nom n&#8217;est PAS préfixé est qui est donc dans le namespace <em>en cours</em>.</li>
+</ul>
+<p>Et aucune fonction ne s&#8217;écrase l&#8217;une l&#8217;autre. Le nom du module, étant utilisé comme namespace, permet la distinction pour l&#8217;humain ET la machine.</p>
+<p>Dans ce langage, cependant, on peut copier une référence d&#8217;un namespace à l&#8217;autre. Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> date</pre></div></div>
+
+<p>Ceci va importer <code>date</code> et le rendre disponible dans le namespace en cours. Du coup on aura pas besoin de préfixer <code>date</code> pour l&#8217;utiliser dans le namespace en cours, mais en contrepartie, on ne pourra pas créer de variable <code>date</code> car cela écraserait la référence précédente.</p>
+<p>Si vous prenez par exemple PHP 5 qui n&#8217;avait pas encore de mécanisme de namespace à l&#8217;époque, les dev étaient obligés de créer artificiellement un namespace en allongeant le nom de toutes leurs fonctions avec &#8216;sujet_&#8217;. Ce qui donnait <a href="http://php.net/manual/en/book.mysql.php">des noms à rallonge</a> du genre : <strong>mysql_real_escape_string()</strong>.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8103&amp;md5=7acfbe8e08424567f559e22640312edc" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fquest-ce-quun-namespace%2F&amp;language=en_GB&amp;category=text&amp;title=Qu%26%238217%3Best-ce+qu%26%238217%3Bun+namespace+%3F&amp;description=Un+mot+qui+vient+et+qui+revient+comme+on+en+a+des+tas+en+informatique%2C+et+qui+est+utilis%C3%A9+par+tout+le+monde+comme+si+chacun+%C3%A9tait+suppos%C3%A9+savoir.+Tr%C3%A8s...&amp;tags=namespace%2Cpython%2Cxml%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/quest-ce-quun-namespace/#comments" thr:count="9"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/quest-ce-quun-namespace/feed/atom/" thr:count="9"/>
+		<thr:total>9</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[Astuces de recherche]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/astuces-de-recherche/" />
+		<id>http://sametmax.com/?p=8115</id>
+		<updated>2013-11-27T08:46:13Z</updated>
+		<published>2013-11-27T08:46:13Z</published>
+		<category scheme="http://sametmax.com" term="Web" /><category scheme="http://sametmax.com" term="définition" /><category scheme="http://sametmax.com" term="films" /><category scheme="http://sametmax.com" term="recherche" /><category scheme="http://sametmax.com" term="traduction" /><category scheme="http://sametmax.com" term="web" />		<summary type="html"><![CDATA[Vrac d'astuces de recherche]]></summary>
+		<content type="html" xml:base="http://sametmax.com/astuces-de-recherche/"><![CDATA[<p>Quand vous voulez traduire un mot compliqué d&#8217;une langue à l&#8217;autre, les outils de traduction en ligne marchent pas super bien. Une bonne solution ? Chercher le terme sur wikipedia, puis demander l&#8217;article dans une autre langue. Non seulement on a la traduction voulue dans le titre de l&#8217;article, mais en plus tout le champ lexical lié dans le corps de l&#8217;article.</p>
+<p>Tips : la commande bang pour ddg est <code>!wfr</code> pour la version française de wikipédia.</p>
+<p>Quand vous cherchez un nouveau mot à la noix comme &#8220;lulz&#8221;, un truc cochon style &#8220;bukakke&#8221; ou une abréviation obscure du genre &#8220;GTFO&#8221;, vous n&#8217;allez pas la trouver dans le dico ou sur wikipedia. La meilleure source pour ce genre de terme : <a href="http://www.urbandictionary.com/">urbandictionry.com</a>. En plus, c&#8217;est drôle.</p>
+<p>Tips : la commande bang pour ddg est <code>!ud</code></p>
+<p>Vous voulez regarder un film ou une série en VO streaming mais elle n&#8217;est pas sortie en France ? Ou alors votre connexion bride ces fournisseurs ? Ou vous avez peur de vous faire choper ?</p>
+<p>Allez sur les sites de streaming en espangol ! Ils listent les mêmes séries, le plus souvent en VO sous-titré ES, sur des hébergeurs différents complètement hors radar de nos tristes sires français. Et en plus, il n&#8217;y a pas de limite de temps ou de débit. Exemple : <a href="http://seriesyonkis.com/pe">seriesyonkis</a> et <a href="http://pelis24.com/">peli24</a>.</p>
+<p>Tips : évitez les séries doublées en espagnol comme la peste. C&#8217;est HORRIBLE. Dans stargate O&#8217;Neil a la voix de Teal&#8217;c et inversement&#8230;</p>
+<p>Vous allez sur des sites de rencontre et vous voulez évitez les faux profiles ? Clic-droit sur la photo et enregistrez l&#8217;image sur votre bureau. Allez sur <a href="http://www.google.com/imghp">Google Image</a>, et dans le champ, cliquez sur l&#8217;appareil photo pour uploader l&#8217;image.</p>
+<p>Vous allez très vite voir si l&#8217;image a été réutilisée.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8115&amp;md5=c77c06b16c4fac2c87d5127963da52bb" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fastuces-de-recherche%2F&amp;language=en_GB&amp;category=text&amp;title=Astuces+de+recherche&amp;description=Quand+vous+voulez+traduire+un+mot+compliqu%C3%A9+d%26%238217%3Bune+langue+%C3%A0+l%26%238217%3Bautre%2C+les+outils+de+traduction+en+ligne+marchent+pas+super+bien.+Une+bonne+solution+%3F+Chercher+le+terme+sur+wikipedia%2C...&amp;tags=d%C3%A9finition%2Cfilms%2Crecherche%2Ctraduction%2Cweb%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/astuces-de-recherche/#comments" thr:count="14"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/astuces-de-recherche/feed/atom/" thr:count="14"/>
+		<thr:total>14</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/cest-pour-des-trucs-comme-ca-que-jadore-python/" />
+		<id>http://sametmax.com/?p=8098</id>
+		<updated>2013-11-26T11:18:44Z</updated>
+		<published>2013-11-26T06:43:31Z</published>
+		<category scheme="http://sametmax.com" term="Programmation" /><category scheme="http://sametmax.com" term="comprehension-lists" /><category scheme="http://sametmax.com" term="python" />		<summary type="html"><![CDATA[La manipulation de structures de données est fantastique dans ce langage.
+]]></summary>
+		<content type="html" xml:base="http://sametmax.com/cest-pour-des-trucs-comme-ca-que-jadore-python/"><![CDATA[<p>La manipulation de structures de données est fantastique dans ce langage.</p>
+<p>J&#8217;avais un problème du genre : </p>
+<p>&#8220;soit des personnes dans une file ayant un rang supposé&#8230;&#8221;"</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">persons = <span style="color: black;">&#91;</span>
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Nadine'</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Tom'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Christophe'</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cloclo'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Lily'</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Georges'</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Paul'</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Bérénice'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Ursula'</span>, <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Lea'</span>, <span style="color: #ff4500;">15</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#93;</span></pre></div></div>
+
+<p>&#8220;&#8230;trouver, parmi les 5 premières, celles qui sont effectivement à leur place&#8221;</p>
+<p>Vous connaissez mon amour immodéré pour les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intention</a> en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#91;</span>name <span style="color: #ff7700;font-weight:bold;">for</span> i, <span style="color: black;">&#40;</span>name, rank<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>persons<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: black;">&#40;</span>i + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> == rank<span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'Tom'</span>, u<span style="color: #483d8b;">'Lily'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Snif. j&#8217;en pleurerais presque.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8098&amp;md5=b068ab4f0e4baf6c3a5ae28b676c7f3f" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcest-pour-des-trucs-comme-ca-que-jadore-python%2F&amp;language=en_GB&amp;category=text&amp;title=C%26%238217%3Best+pour+des+trucs+comme+%C3%A7a+que+j%26%238217%3Badore+Python%26%238230%3B&amp;description=La+manipulation+de+structures+de+donn%C3%A9es+est+fantastique+dans+ce+langage.+J%26%238217%3Bavais+un+probl%C3%A8me+du+genre+%3A+%26%238220%3Bsoit+des+personnes+dans+une+file+ayant+un+rang+suppos%C3%A9%26%238230%3B%26%238221%3B%22+persons+%3D+%26%2391%3B...&amp;tags=comprehension-lists%2Cpython%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/cest-pour-des-trucs-comme-ca-que-jadore-python/#comments" thr:count="13"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/cest-pour-des-trucs-comme-ca-que-jadore-python/feed/atom/" thr:count="13"/>
+		<thr:total>13</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[Pourquoi il faut éviter import * en Python]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/" />
+		<id>http://sametmax.com/?p=8082</id>
+		<updated>2013-11-25T07:00:41Z</updated>
+		<published>2013-11-25T07:00:41Z</published>
+		<category scheme="http://sametmax.com" term="Programmation" /><category scheme="http://sametmax.com" term="import" /><category scheme="http://sametmax.com" term="python" /><category scheme="http://sametmax.com" term="splat" />		<summary type="html"><![CDATA[Vous l'avez sans doute lu 100 fois, mais savez-vous pourquoi ?]]></summary>
+		<content type="html" xml:base="http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/"><![CDATA[<p>Ne pas utiliser l&#8217;<a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">opérateur splat</a> dans un import, vous l&#8217;avez sans doute lu 100 fois, mais savez-vous pourquoi ?</p>
+<p>Regardez la fonction <code>open</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#41;</span>
+    <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>name<span style="color: black;">&#91;</span>, mode<span style="color: black;">&#91;</span>, buffering<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>
+&nbsp;
+    Open a <span style="color: #008000;">file</span> using the <span style="color: #008000;">file</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #008000;">type</span>, returns a <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>.  <span style="color: black;">This</span> <span style="color: #ff7700;font-weight:bold;">is</span> the
+    preferred way to <span style="color: #008000;">open</span> a <span style="color: #008000;">file</span>.  <span style="color: black;">See</span> <span style="color: #008000;">file</span>.__doc__ <span style="color: #ff7700;font-weight:bold;">for</span> further information.
+<span style="color: black;">&#40;</span>END<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Maintenant, si j&#8217;importe le module <code>os</code>, ça ne change rien :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#41;</span>
+    <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>name<span style="color: black;">&#91;</span>, mode<span style="color: black;">&#91;</span>, buffering<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>
+&nbsp;
+    Open a <span style="color: #008000;">file</span> using the <span style="color: #008000;">file</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #008000;">type</span>, returns a <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>.  <span style="color: black;">This</span> <span style="color: #ff7700;font-weight:bold;">is</span> the
+    preferred way to <span style="color: #008000;">open</span> a <span style="color: #008000;">file</span>.  <span style="color: black;">See</span> <span style="color: #008000;">file</span>.__doc__ <span style="color: #ff7700;font-weight:bold;">for</span> further information.
+<span style="color: black;">&#40;</span>END<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Si par contre j&#8217;importe tout le contenu du module <code>os</code>, sans namespace :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">os</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #66cc66;">*</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#41;</span>
+    <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>filename, flag <span style="color: black;">&#91;</span>, mode=0777<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> fd
+&nbsp;
+    Open a <span style="color: #008000;">file</span> <span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">for</span> low level IO<span style="color: black;">&#41;</span>.
+<span style="color: black;">&#40;</span>END<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>La différence ?</p>
+<p>Dans le premier cas, on a la fonction <code>open()</code> built-in de Python. Dans le second cas, la fonction <code>os.open()</code> a été importée et a remplacée la fonction <code>open()</code>.</p>
+<p>Ici le bug sera très difficile à trouver, car les deux fonctions ont presque la même signature :</p>
+<p><code>open(name[, mode[, buffering]]) -> file object</code></p>
+<p>VS </p>
+<p><code>open(filename, flag [, mode=0777]) -> fd</code></p>
+<p>Et en plus un usage très similaire.</p>
+<p>Bottom line, <code>import *</code>, c&#8217;est pour les sessions shell. Dans vos fichiers de code, ne l&#8217;utilisez pas, vous ne savez pas ce que vous importez.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8082&amp;md5=e41900ebed59acfdf42fcf7ebddfac09" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fpourquoi-il-faut-eviter-import-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Pourquoi+il+faut+%C3%A9viter+import+%2A+en+Python&amp;description=Ne+pas+utiliser+l%26%238217%3Bop%C3%A9rateur+splat+dans+un+import%2C+vous+l%26%238217%3Bavez+sans+doute+lu+100+fois%2C+mais+savez-vous+pourquoi+%3F+Regardez+la+fonction+open+%3A+%26gt%3B%26gt%3B%26gt%3B+help%26%2340%3Bopen%26%2341%3B+open%26%2340%3Bname%26%2391%3B%2C+mode%26%2391%3B%2C+buffering%26%2393%3B%26%2393%3B%26%2341%3B+-%26gt%3B...&amp;tags=import%2Cpython%2Csplat%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/#comments" thr:count="11"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/feed/atom/" thr:count="11"/>
+		<thr:total>11</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Erik</name>
+						<uri>http://erikfromfrance.blogspot.com/</uri>
+					</author>
+		<title type="html"><![CDATA[Quitter son pays]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/quitter-son-pays/" />
+		<id>http://sametmax.com/?p=8045</id>
+		<updated>2013-11-24T06:49:29Z</updated>
+		<published>2013-11-24T06:47:47Z</published>
+		<category scheme="http://sametmax.com" term="Philo et culture" />		<summary type="html"><![CDATA[Ceci est un post invité de Erik posté sous licence creative common 3.0 unported. A l&#8217;occasion d&#8217;un article récent où Sam &#038; Max nous invitaient à leur parler de nous, Max m&#8217;a proposé de me fendre d&#8217;un article sur mon départ de France. Voici donc une rétrospective sur un aspect de ma vie. Cet article [...]]]></summary>
+		<content type="html" xml:base="http://sametmax.com/quitter-son-pays/"><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/Erik/">Erik</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>A l&#8217;occasion d&#8217;un <a href="http://sametmax.com/parlez-nous-de-vous/">article récent</a> où Sam &#038; Max nous invitaient à leur parler de nous, Max m&#8217;a proposé de me fendre d&#8217;un article sur mon départ de France. Voici donc une rétrospective sur un aspect de ma vie. Cet article est long et je traite dans la 1ère moitié de mon parcours, puis de mes observations.</p>
+<h3>Mon parcours</h3>
+<p>En 2003, je termine mes études d&#8217;ingénieur en traitement du signal &#038; télécoms, mais en statut d&#8217;auditeur libre. Ce qui signifie que malgré mes 11,68/20 de moyenne, mon implication dans des cours du soir pour prouver ma bonne foi (modules de communication et de management au CNAM), et des lettres de soutient d&#8217;un prof du CNAM et de 2 anciens maitres de stage, on ne me donne pas de diplôme. A l&#8217;époque, le directeur de mon école d&#8217;ingénieurs nous annonce qu&#8217;il faut nous préparer à une durée moyenne de chomage de 7 mois. Sachant que certains sont embauchés immédiatement sur leur lieu de stage final, les statistiques ne semblent pas jouer en ma faveur. Ce qui me branche comme orientation professionnelle à l&#8217;époque, c&#8217;est l&#8217;armée, pour bosser dans le renseignement. J&#8217;aime la crypto et j&#8217;ai toujours eu un problème avec l&#8217;autorité quand celle-ci s&#8217;exerce abusivement, arbitrairement, injustement. Je pense que l&#8217;armée est une machine où l&#8217;autorité est plus impersonnelle donc plus juste. Et puis il y a la retraite de bonne heure, et puis y&#8217;a pas de chômage dans cette branche.</p>
+<p>C&#8217;est alors que mon maitre de stage d&#8217;1 an plus tôt chez un opérateur télécom des Pays-Bas me dit qu&#8217;il monte sa boite, qu&#8217;il veut vendre un logiciel pour les télécoms à un opérateur en Thailande. En réalité mon stage lui avait servi d&#8217;étude de faisabilité. Bref, il me propose de bosser pour lui en Thailande, avec la perspective d&#8217;un salaire 2 à 2,5 fois supérieur à ce que touchent les copains de promo. Tchao le projet de rentrer dans l&#8217;armée et bonjour la Thailande ! Le 1er souci auquel on est confronté quand on se lance, c&#8217;est l&#8217;argent. Je recommande de ne pas se lancer sans avoir 3000€ de réserve. Le rusé renard qui faisait appel à mes services ne me payait pas l&#8217;hotel (~800€ par mois) et je n&#8217;ai signé mon contrat et n&#8217;ai été payé qu&#8217;après 2 mois de travail et quelques emails paniqués où je disais que j&#8217;étais pas sûr de pouvoir manger jusqu&#8217;à la fin de la semaine.</p>
+<p>Niveau boulot, c&#8217;était extraordinaire. Je bossais 16 heures par jour (de mon plein gré et non forcé), de 9h à 3h du mat&#8217; mais je compte 2 heures de pause pour inclure le déjeuner et le diner. Ca laissait 4 heures de sommeil et 2 heures pour l&#8217;hygiène, les transports, et les loisirs. C&#8217;est énorme mais je le répète, c&#8217;était de mon plein gré. Ca me permettait d&#8217;abattre plus de boulot et de pouvoir être en phase avec le patron retourné en France, car le décalage horaire est de 5 ou 6 heures selon la saison. Je bossais aussi 6 ou 7 jours selon les semaines. Le logiciel réellement codé était beaucoup moins avancé que ce qui avait été vendu. J&#8217;étais donc obligé de mettre les bouchées doubles sur les tâches de conception et de développement, et je me prenais des insultes de la part du client sur les phases de livraison. C&#8217;est au cours de ce projet que j&#8217;ai rencontré une ingénieure thailandaise qui partagerait ma vie pendant 7 ans mais souvent à distance car elle est devenue consultante à son tour. Mais c&#8217;est tout ce que je dirai à son sujet car il ne m&#8217;appartient pas de raconter sa vie.</p>
+<p>Après 7 mois de Thailande et un peu de repos en France, mon ancien patron fait appel à mes services en tant qu&#8217;employé. Conditions salariales très moyennes, mais un boulot c&#8217;est un boulot et quand je vois des potes ingénieurs qui se font embaucher au SMIC ou qui bossent chez McDo, je ne vais pas cracher sur ce job. Direction Bruxelles. Je vous épargne les détails sur la relation conflictuelle avec mon employeur que je quitte en très mauvais termes après un peu plus d&#8217;un an. Je poursuis néanmoins ma mission belge mais en indépendant. Chez l&#8217;opérateur, ça sent mauvais. Un nouveau PDG arrive qui décrète que tout le monde prendra 0% d&#8217;augmentation sauf les managers (12%) et lui-même (16,5%) tandis que l&#8217;entreprise dégage 10% ou 11% de bénéfice net. Etant indépendant, ça ne me concerne pas mais on est humain et on vit avec des collègues qui sont employés et dont l&#8217;avenir s&#8217;assombrit. Nouvelle lubie du PDG: l&#8217;outsourcing. Bien qu&#8217;opérateur télécom, il prétend que la technique n&#8217;est pas son coeur de métier. On sait que c&#8217;est de la comm&#8217; pour tromper les gens qui verront les infos dans le journal ou au JT, mais ça fait mal. Il y a un grand projet d&#8217;identification de toutes les tâches pour transférer toutes les équipes techniques chez un sous-traitant qui lui-même sera chargé de licencier en masse et de délocaliser le travail vers la Roumanie et le Liban. Tout ça met 1 an à se mettre en place et pendant cette année, l&#8217;ambiance se dégrade. Tous les midis après le repas, les collègues s&#8217;organisent un concours de Sudoku à leur bureau et même le chef d&#8217;équipe participe. Plus personne n&#8217;y croit. Des gens démissionnent. D&#8217;autres sauvent leur peau en faisant une mobilité interne vers un service non-outsourcé. Mon avenir étant compromis à moyen terme, je profite d&#8217;une opportunité de contrat aux Pays-Bas où je rejoins madame.</p>
+<p>Je ne vais pas détailler tous les événements suivants, mais mes contrats suivants m&#8217;ont amené à travailler à nouveau en Belgique, puis en Afrique du Sud, et à vivre mes intercontrats en Thailande puis en Arménie quand madame y a travaillé et que j&#8217;étais sans boulot.</p>
+<p>Pour répondre à Max qui demandait pourquoi j&#8217;avais quitté mon pays, je dirais donc que je ne l&#8217;ai pas choisi. J&#8217;ai suivi des opportunités mais ça ne résulte pas d&#8217;une volonté de quitter mon pays ou de me rendre dans un autre pays. En revanche, il est certain qu&#8217;avec le temps on développe un vrai amour pour d&#8217;autres destinations. Le pays que j&#8217;aime le plus, c&#8217;est la Thailande. La corruption y est omniprésente, il y a plein de problèmes de santé, du racisme, il y fait plus chaud et humide que dans un hammam, les gens regardent ta copine de travers quand ils voient qu&#8217;elle est avec un blanc, en se demandant si c&#8217;est une pute, y&#8217;a plein de choses qui ne vont pas&#8230; et pourtant c&#8217;est un endroit où on se sent bien. Ceci dit, il faut garder la tête sur les épaules : si on se sent bien en Thailande, c&#8217;est indubitablement lié au fait qu&#8217;on a un paquet de pognon comparé au Thai moyen.</p>
+<h3>Mes observations</h3>
+<p>Il me faut remarquer quelques points supplémentaires sur l&#8217;expatriation &#8230;quoique je n&#8217;aime pas le mot &#8220;expatriation&#8221; qui fait tellement penser aux employés choyés par leurs entreprises et qui ne vont jamais se mêler à la population du pays qui les accueille.</p>
+<p><strong>1)</strong> Loin des yeux, loin du coeur : quand on vit à l&#8217;étranger, on perd ses amis de France. J&#8217;ai gardé un contact avec mon meilleur ami, sa femme, mon 2ème meilleur pote, et 2 autres copains. Pour le reste, je conserve une relation amicale avec la dizaine de copains d&#8217;études avec qui on partage un forum phpBB. Mais j&#8217;ai perdu de vue tous les autres.</p>
+<p><strong>2)</strong> On devient un extra-terrestre. Ca n&#8217;est vrai que pour ceux qui restent vraiment longtemps à l&#8217;étranger, mais on est confronté à des réalités différentes. Il y a une infinité de choses qu&#8217;on prend pour acquis en France, des choses vraies ou fausses, et sur lesquelles la vie à l&#8217;étranger va apporter un éclairage nouveau. Et quand on revient en France, qu&#8217;on interagit avec des gens qui ne sont jamais partis, il peut y avoir un décalage. Vous imaginez toutes les choses qu&#8217;on peut faire ou dire de travers quand on s&#8217;adresse à un étranger ? Et bien c&#8217;est la même chose. On intègre des habitudes, des mimiques, ou des façons de penser qui peuvent être décalées par rapport à la France. Quelquefois c&#8217;est rigolo, et quelquefois ça rappelle l&#8217;allégorie de la caverne de Platon (extrait de l&#8217;excellent bouquin &#8220;La république&#8221; vivement recommandé) : on a l&#8217;impression d&#8217;être le mec qui est sorti de la caverne et qui a perçu un niveau supplémentaire de réalité, et quand on retourne en parler aux mecs qui sont restés dans la caverne, les mecs te trouvent méprisant ou refusent de te croire. Bref, j&#8217;ai pas besoin de psy mais y&#8217;a quand même quelques trucs frustrants dans ma vie.</p>
+<p><strong>3)</strong> On découvre son propre pays. C&#8217;est un peu lié au point précédent. Quand on vit en France, on ne s&#8217;en rend pas compte. Mais les intellectuels pédants et vaniteux qui nous disent que nos journaux télévisés sont de la propagande&#8230; ont raison. Ca n&#8217;est pas nécessairement une propagande organisée sciemment. C&#8217;est probablement plus une question de prisme culturel. On a l&#8217;habitude de nous présenter un certain type d&#8217;information sous un certain angle. Mais quand on vit à l&#8217;étranger, il y a forcément des étrangers qui vont nous poser des questions sur la France, sur ce qu&#8217;ils ont vu dans leurs propres média, ou dans les média américains, et ils vont nous confronter&#8230; soit avec une sincère ingénuité, soit vicieusement. Et dans un cas comme dans l&#8217;autre, on va être confronté à un éclairage particulier sur le fonctionnement de la France, un éclairage qui est absent de nos média. Ceci génère un choc cognitif ou une dissonance cognitive. On est confronté à une réalité incompatible avec les idées qu&#8217;on s&#8217;était forgées et c&#8217;est douloureux. Instinctivement, émotionnellement, on va avoir pour réflexe de rejeter l&#8217;information présentée par l&#8217;interlocuteur. Mais si on arrive à mettre notre intellect au-dessus de nos émotions, on va aller vérifier les infos, et si c&#8217;est confirmé, on va avoir comme une boule de nerf au niveau de l&#8217;estomac, comme une rage qui monte, une colère sourde mais qui n&#8217;a pas d&#8217;autre objet que nous-même et l&#8217;erreur dans laquelle on a été. C&#8217;est douloureux, épuisant, frustrant, mais c&#8217;est précieux. C&#8217;est un sujet à part entière qui mériterait un article de blog, mais c&#8217;est le genre de chose qui permet à posteriori de se dire &#8220;je suis devenu meilleur grâce à cela&#8221;.</p>
+<p><strong>3bis)</strong> du coup, je n&#8217;ai pas développé l&#8217;idée de découvrir son pays. Quand on vit à l&#8217;étranger, notre pays nous manque. Donc ok, y&#8217;a des gens qui vont nous confronter à un truc lu dans la presse internationale. Mais comme la France nous manque, on va prendre le réflexe de s&#8217;informer. Et puis ça permet de rester en phase avec le quotidien que vivent la famille et les amis. On écoute ou on lit France-Info, les news Google ou Yahoo, choisissez votre poison ! En ce qui me concerne, la politique ne m&#8217;intéressait pas avant mon départ, sauf Karl Zero qui a du talent pour le story-telling, mais désormais je suis devenu un geek de l&#8217;information et de la politique.</p>
+<p><strong>4)</strong> Le temps ne s&#8217;arrête pas. Vivre à l&#8217;étranger c&#8217;est bien. Il y a certains conforts, certaines joies, etc. Mais notre vie française, nos relations avec les amis et la famille sont mises en pause. Pourtant, pour eux, le temps continue d&#8217;avancer. L&#8217;achat d&#8217;un bien immobilier, la construction d&#8217;une famille, l&#8217;adhésion à un club de sport, l&#8217;engagement dans une action associative, descendre des bières sur une terrasse avec les copains ou se retrouver tous les jeudis à la même pizzéria, c&#8217;est le genre de chose qui disparait à moins de savoir qu&#8217;on est installé pour la vie dans un endroit donné à l&#8217;étranger. A l&#8217;étranger, on peut prendre du bon temps, aller faire quelques visites touristiques, de la plongée sous-marine, et on peut gagner pas mal de pognon. Mais après quelques années, on se dit qu&#8217;on échangerait bien tout ce pognon contre la situation de potes qui ont des fins de mois difficiles mais ont une baraque, un jardin, des enfants, une routine, une vie.</p>
+<p><strong>5)</strong> On découvre les peuples : on découvre des sociétés et des coutumes qui sont parfois très différentes et parfois étrangement similaires aux nôtres. Ca fait partie de l&#8217;enrichissement personnel. Comme ça, ça semble inutile, sauf que ça participe à notre dimension intellectuelle et politique. Quand tu es blanc et que tu marches dans les rues de Bangkok, y&#8217;a tous les taxis libres qui ralentissent en arrivant à ta hauteur, et y&#8217;a tous les rabatteurs qui te proposent soit des putes, soit des bars/spectacles à caractère sexuel, soit des films porno. Ca te fait réfléchir sur le racisme et sur l&#8217;hypersexualisation de la Thailande. Quand tu entends des hommes Thaï dire qu&#8217;il est &#8220;normal&#8221; de tromper sa femme et que tout le monde le fait, ça te fait réfléchir sur l&#8217;égalité des sexes et ça relativise l&#8217;hypersexualisation de la Thailande. Quand tu apprends qu&#8217;une femme Thaï divorcée n&#8217;a aucune chance de refonder un couple, ça te fait encore plus réfléchir sur l&#8217;égalité des sexes. Quand tu es aux Pays-Bas et qu&#8217;en réunion un collègue dit à la figure d&#8217;un autre que son idée est complètement débile, tu vois l&#8217;autre acquiescer et reconnaitre son erreur et ça te fait réfléchir sur l&#8217;éthique du travail&#8230; parce qu&#8217;en France, un truc comme ça finirait en engueulade voire en baston.</p>
+<p>Voilà, voilà ! J&#8217;aime les pavés et encore je me suis retenu de développer certains thèmes abordés. S&#8217;il fallait conclure, je dirais que l&#8217;expatriation est très formatrice mais qu&#8217;on est faits pour vivre sédentairement tôt ou tard. Donc que vous choisissiez de vous installer définitivement à l&#8217;étranger ou que vous projetiez de revenir en France, il faut garder cet objectif de sédentarité en tête pour choisir au mieux votre mode de vie. Et aussi, profitez des opportunités pour partager le mode de vie des gens du pays d&#8217;accueil. Dernier conseil : même si je n&#8217;aime pas les Français de l&#8217;étranger, enregistrez-vous tout de même auprès de l&#8217;ambassade. Vous recevrez des invitations à des événements où on peut se gaver de petits fours et pourquoi pas rencontrer quelques personnes sympa malgré tout pour tisser des relations amicales ou créer des opportunités professionnelles.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8045&amp;md5=61a4e2c02264bd4b036c17a8c50662b7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fquitter-son-pays%2F&amp;language=en_GB&amp;category=text&amp;title=Quitter+son+pays&amp;description=Ceci+est+un+post+invit%C3%A9+de+Erik+post%C3%A9+sous+licence+creative+common+3.0+unported.+A+l%26%238217%3Boccasion+d%26%238217%3Bun+article+r%C3%A9cent+o%C3%B9+Sam+%26%23038%3B+Max+nous+invitaient+%C3%A0+leur+parler+de+nous%2C...&amp;tags=blog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/quitter-son-pays/#comments" thr:count="22"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/quitter-son-pays/feed/atom/" thr:count="22"/>
+		<thr:total>22</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[Paramètres imbriqués dans une fonction Python]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/parametres-imbriques-dans-une-fonction-python/" />
+		<id>http://sametmax.com/?p=7613</id>
+		<updated>2013-11-23T07:24:35Z</updated>
+		<published>2013-11-23T07:24:35Z</published>
+		<category scheme="http://sametmax.com" term="Programmation" /><category scheme="http://sametmax.com" term="python" /><category scheme="http://sametmax.com" term="unpacking" />		<summary type="html"><![CDATA[Une fonction très peu connue de Python est la possibilité de définir un paramètre en indiquant qu'il s'agit d'une séquence.]]></summary>
+		<content type="html" xml:base="http://sametmax.com/parametres-imbriques-dans-une-fonction-python/"><![CDATA[<p>Une fonction très peu connue de Python est la possibilité de définir un paramètre en indiquant qu&#8217;il s&#8217;agit d&#8217;une séquence. Python va automatiquement appliquer l&#8217;<a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">unpacking</a> dessus :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> message_geolocalise<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #008000;">long</span>, lat<span style="color: black;">&#41;</span>, message<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'%s'</span> <span style="color: #66cc66;">%</span> message
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Longitude : %s'</span> <span style="color: #66cc66;">%</span> <span style="color: #008000;">long</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Latitude : %s'</span> <span style="color: #66cc66;">%</span> lat
+...     
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> point = <span style="color: black;">&#40;</span><span style="color: #ff4500;">4.344</span>, <span style="color: #ff4500;">2.44</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> message = <span style="color: #483d8b;">&quot;glittering prizes&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> message_geolocalise<span style="color: black;">&#40;</span>point, message<span style="color: black;">&#41;</span>
+glittering prizes
+Longitude : <span style="color: #ff4500;">4.344</span>
+Latitude : <span style="color: #ff4500;">2.44</span></pre></div></div>
+
+<p>Cette fonctionnalité a été <a href="http://www.python.org/dev/peps/pep-3113/">retirée</a> en Python 3, jugée rarement utilisée, et surtout facilement remplaçable par un unpacking explicite :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> message_geolocalise<span style="color: black;">&#40;</span>coord, message<span style="color: black;">&#41;</span>:
+    <span style="color: #008000;">long</span>, lat = coord
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'%s'</span> <span style="color: #66cc66;">%</span> message
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Longitude : %s'</span> <span style="color: #66cc66;">%</span> <span style="color: #008000;">long</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Latitude : %s'</span> <span style="color: #66cc66;">%</span> lat</pre></div></div>
+
+<p>En effet, en Python on peut utiliser de l&#8217;unpacking imbriqué :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">a, <span style="color: black;">&#40;</span>b, c<span style="color: black;">&#41;</span> = <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Et cela a été abusé en le mélangeant la syntaxe des paramètres imbriqués, qui rend le truc franchement illisible.</p>
+<p>Voilà, c&#8217;était le post &#8220;vous aviez un poney que vous ne saviez pas et maintenant que vous le savez vous l&#8217;avez plus&#8221;.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7613&amp;md5=e5d0ed3069ebdb46f5eadb0499c77224" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fparametres-imbriques-dans-une-fonction-python%2F&amp;language=en_GB&amp;category=text&amp;title=Param%C3%A8tres+imbriqu%C3%A9s+dans+une+fonction+Python&amp;description=Une+fonction+tr%C3%A8s+peu+connue+de+Python+est+la+possibilit%C3%A9+de+d%C3%A9finir+un+param%C3%A8tre+en+indiquant+qu%26%238217%3Bil+s%26%238217%3Bagit+d%26%238217%3Bune+s%C3%A9quence.+Python+va+automatiquement+appliquer+l%26%238217%3Bunpacking+dessus+%3A+%26gt%3B%26gt%3B%26gt%3B+def+message_geolocalise%26%2340%3B%26%2340%3Blong%2C...&amp;tags=python%2Cunpacking%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/parametres-imbriques-dans-une-fonction-python/#comments" thr:count="3"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/parametres-imbriques-dans-une-fonction-python/feed/atom/" thr:count="3"/>
+		<thr:total>3</thr:total>
+	</entry>
+		<entry>
+		<author>
+			<name>Sam</name>
+					</author>
+		<title type="html"><![CDATA[Compter les doublons avec l&#8217;ORM Django]]></title>
+		<link rel="alternate" type="text/html" href="http://sametmax.com/compter-les-doublons-avec-lorm-django/" />
+		<id>http://sametmax.com/?p=7761</id>
+		<updated>2013-11-22T08:28:48Z</updated>
+		<published>2013-11-22T08:28:48Z</published>
+		<category scheme="http://sametmax.com" term="Programmation" /><category scheme="http://sametmax.com" term="django" /><category scheme="http://sametmax.com" term="group by" /><category scheme="http://sametmax.com" term="orm" /><category scheme="http://sametmax.com" term="python" />		<summary type="html"><![CDATA[<code>GROUP BY </code>et <code>HAVING</code> sont assez peu intuitifs en SQL, et encore moins avec l'ORM Django.]]></summary>
+		<content type="html" xml:base="http://sametmax.com/compter-les-doublons-avec-lorm-django/"><![CDATA[<p><code>GROUP BY </code>et <code>HAVING</code> sont assez peu intuitifs en SQL, et encore moins avec l&#8217;ORM Django.</p>
+<p>Voici donc la recette pour compter le nombre d’occurrences des valeurs d&#8217;un champ, pour par exemple trouver les doublons.</p>
+<p>En supposant une table <code>Massage</code> avec une valeur <code>finish</code> :</p>
+<pre>
+ID         FINISH
+1          manuel
+2          oral
+3          oral
+4          oral
+</pre>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> Massage.<span style="color: black;">objects</span>.<span style="color: black;">values</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'finish'</span><span style="color: black;">&#41;</span>.<span style="color: black;">annotate</span><span style="color: black;">&#40;</span>count=Count<span style="color: black;">&#40;</span><span style="color: #483d8b;">'id'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'manuel'</span>: <span style="color: #ff4500;">2</span>, <span style="color: #483d8b;">'oral'</span>: <span style="color: #483d8b;">'9'</span>: <span style="color: #483d8b;">'rectal'</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">'paradoxal'</span>: -<span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Pour obtenir uniquement les doublons, il suffit de filtrer pour avoir les valeurs qui ont un <code>count</code> plus grand que 1 :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">Massage.<span style="color: black;">objects</span>.<span style="color: black;">values</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'finish'</span><span style="color: black;">&#41;</span>.<span style="color: black;">annotate</span><span style="color: black;">&#40;</span>count=Count<span style="color: black;">&#40;</span><span style="color: #483d8b;">'id'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>count__gt=<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7761&amp;md5=70ebd178c4abc22f9fe60ba0f38b5e38" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content>
+		<link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcompter-les-doublons-avec-lorm-django%2F&amp;language=en_GB&amp;category=text&amp;title=Compter+les+doublons+avec+l%26%238217%3BORM+Django&amp;description=GROUP+BY+et+HAVING+sont+assez+peu+intuitifs+en+SQL%2C+et+encore+moins+avec+l%26%238217%3BORM+Django.+Voici+donc+la+recette+pour+compter+le+nombre+d%E2%80%99occurrences+des+valeurs+d%26%238217%3Bun+champ%2C+pour...&amp;tags=django%2Cgroup+by%2Corm%2Cpython%2Cblog" type="text/html" />
+		<link rel="replies" type="text/html" href="http://sametmax.com/compter-les-doublons-avec-lorm-django/#comments" thr:count="11"/>
+		<link rel="replies" type="application/atom+xml" href="http://sametmax.com/compter-les-doublons-avec-lorm-django/feed/atom/" thr:count="11"/>
+		<thr:total>11</thr:total>
+	</entry>
+	</feed>

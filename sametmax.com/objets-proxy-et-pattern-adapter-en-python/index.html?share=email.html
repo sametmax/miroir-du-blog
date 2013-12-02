@@ -1,0 +1,1281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="fr-FR" >
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>  Objets proxy et pattern adapter en Python | Sam &amp; Max: Python, Django, Git et du cul</title>
+<meta http-equiv="Content-Language" content="fr" />
+
+<link rel="shortcut icon" href="../wp-content/uploads/2012/05/favicon.ico">
+
+<link rel="stylesheet" href="../wp-content/themes/Minimal/style.css%3F238.css" type="text/css" media="screen" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul RSS Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/atom+xml" title="Sam &amp; Max: Python, Django, Git et du cul Atom Feed" href="../feed/atom/index.html" />
+<link rel="pingback" href="../xmlrpc.php" />
+
+
+<!--[if lt IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie6style.css" />
+	<script type="text/javascript" src="http://sametmax.com/wp-content/themes/Minimal/js/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script type="text/javascript">DD_belatedPNG.fix('img#logo, #header #search-form, #slogan, a#left_arrow, a#right_arrow, div.slide img.thumb, div#controllers a, a.readmore, a.readmore span, #services .one-third, #services .one-third.first img.icon, #services img.icon, div.sidebar-block .widget ul li');</script>
+<![endif]-->
+<!--[if IE 7]>
+	<link rel="stylesheet" type="text/css" href="http://sametmax.com/wp-content/themes/Minimal/css/ie7style.css" />
+<![endif]-->
+
+<script type="text/javascript">
+	document.documentElement.className = 'js';
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max: Python, Django, Git et du cul &raquo; Objets proxy et pattern adapter en Python Comments Feed" href="feed/index.html" />
+<meta content="Minimal v.3.3" name="generator"/><link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.css" rel="stylesheet" />
+<link media="screen" type="text/css" href="../wp-content/themes/Minimal/epanel/page_templates/page_templates.css" rel="stylesheet" /><link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=3.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='et-shortcodes-css-css'  href='../wp-content/themes/Minimal/epanel/shortcodes/shortcodes.css%3Fver=1.8.css' type='text/css' media='all' />
+<link rel='stylesheet' id='sharedaddy-css'  href='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.css%3Fver=3.3.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cfq-css'  href='../wp-content/plugins/comment-form-quicktags/style.css%3Fver=20110712.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.7.1'></script>
+<script type='text/javascript' src='../wp-includes/js/comment-reply.js%3Fver=20090102'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/shortcodes/js/et_shortcodes_frontend.js%3Fver=1.8'></script>
+<script type='text/javascript' src='../wp-content/plugins/comment-form-quicktags/quicktags.php%3Fver=20121011'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Le colonel moutarde dans la cuisine avec le chandelier' href='http://sametmax.com/le-colonel-moutarde-dans-la-cuisine-avec-le-chandelier/' />
+<link rel='next' title='Ecrire un code pour les autres en Python' href='../ecrire-un-code-pour-les-autres-en-python/index.html' />
+<meta name="generator" content="WordPress 3.3.1" />
+<link rel='canonical' href='index.html' />
+<link rel='shortlink' href='http://wp.me/p2ckfk-1QI' />
+<link rel="payment" type="text/html" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fobjets-proxy-et-pattern-adapter-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Objets+proxy+et+pattern+adapter+en+Python&amp;description=En+informatique%2C+le+vocabulaire+c%26%238217%3Best+une+bonne+partie+du+travail.+On+a+des+tas+de+termes+comme+polymorphisme%2C+r%C3%A9cursivit%C3%A9%2C+idempotent+ou+closure.+Certains+sont+des+termes+math%C3%A9matiques%2C+d%26%238217%3Bautres+sont+des...&amp;tags=adapter%2Cpoo%2Cproxy%2Cpython%2Cblog" />
+
+<link rel="stylesheet" href="../wp-content/plugins/wp-syntax/wp-syntax.css" type="text/css" media="screen" />
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.3.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.3.css");
+/* ]]> */
+</style>	<style type="text/css">
+		#et_pt_portfolio_gallery { margin-left: -11px; }
+		.et_pt_portfolio_item { margin-left: 23px; }
+		.et_portfolio_small { margin-left: -39px !important; }
+		.et_portfolio_small .et_pt_portfolio_item { margin-left: 35px !important; }
+		.et_portfolio_large { margin-left: -20px !important; }
+		.et_portfolio_large .et_pt_portfolio_item { margin-left: 14px !important; }
+	</style>
+
+</head>
+<body>
+	<div id="page-wrap">
+			
+		<div id="header">
+			<!-- Start Logo -->
+				<a href="../index.html">					<img src="../wp-content/uploads/2012/04/logo1.png" alt="Logo" id="logo"/></a>
+				
+				<p id="slogan">Deux développeurs en vadrouille qui se sortent les doigts du code</p>
+					
+			<!-- End Logo -->
+					
+			<!-- Start Searchbox -->
+				<div id="search-form">
+					<form method="get" id="searchform1" action="../index.html">
+						<input type="text" value="search this site..." name="s" id="searchinput" />
+					</form>
+				</div>
+								
+			<!-- End Searchbox -->
+				
+				<div class="clear"></div>
+				
+				<ul id="menu-top-menu" class="superfish nav clearfix"><li id="menu-item-1702" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Programmation</a></li>
+<li id="menu-item-1703" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin System</a></li>
+<li id="menu-item-1704" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo et culture</a></li>
+<li id="menu-item-1706" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li id="menu-item-3340" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours et tutos</a></li>
+<li id="menu-item-2610" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2610"><a href="../nos-tweets/index.html">Nos tweets SANS twitter :-)</a></li>
+<li id="menu-item-1707" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li id="menu-item-7439" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7439"><a href="https://github.com/sametmax/">Nos githuberies</a></li>
+</ul>									
+		</div> <!-- end #header -->
+
+		<div id="breadcrumbs">
+		
+					<a href="../index.html">Home</a> &raquo;
+				
+									<a href="../category/programmation/index.html">Programmation</a> &raquo; Objets proxy et pattern adapter en Python					
+</div> <!-- end #breadcrumbs -->		
+	
+	<div id="content" class="clearfix">
+		<div id="content-area">
+					<div class="entry clearfix">
+				<h1 class="title">Objets proxy et pattern adapter en Python</h1>
+					<p class="post-meta">
+		Posted  by <a href="../author/sam/index.html" title="Posts by Sam" rel="author">Sam</a> on 16 Aug 2013 in <a href="../category/programmation/index.html" title="View all posts in Programmation" rel="category tag">Programmation</a> | <a href="index.html#comments" title="Comment on Objets proxy et pattern adapter en Python">11 comments</a>	</p>
+				
+							
+									
+						
+								
+				<p>En informatique, le vocabulaire c&#8217;est une bonne partie du travail. On a des tas de termes comme polymorphisme, récursivité, idempotent ou closure. Certains sont des termes mathématiques, d&#8217;autres sont des anglicismes, mais la majorité sont juste des mots compliqués pour décrire des choses simples.</p>
+<p>Vous connaissez mon manque d&#8217;attrait pour ça, on va donc clarifier.</p>
+<p>Pour comprendre cet article, il vous faut les pré-requis suivants :</p>
+<ul>
+<li>Être à l&#8217;aise avec avec la programmation orientée objet : héritage, property&#8230;</li>
+<li>Bien comprendre la notion de référence.</li>
+<li>Avoir un peu de temps devant soi.</li>
+</ul>
+<p>Et pour une fois, on va mettre un morceau qui colle bien au blog :</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/lqXRk-cmXwM" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<h2>S&#8217;il vous plait, dessine moi un objet proxy</h2>
+<p>Un proxy, en anglais, c&#8217;est un mandataire, c&#8217;est à dire grosso merdo un intermédiaire. Un objet proxy est donc tout simplement un objet qui fait l&#8217;intermédiaire, généralement entre un objet et un autre.</p>
+<p>Exemple, on a des enseignants qui vont avoir besoin d&#8217;une autorisation de sortie pour des enfants dans leur classe. Un enfant ne peut pas décider de cela, ses parents décident de ce genre de chose :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Enseignant<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># la demande d'autorisation attend un objet enfant en paramètre</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> demande_autorisation_de_sortie<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, enfant<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> enfant.<span style="color: black;">peut_sortir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Enfant<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, age<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">age</span> = age
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># mais un enfant ne peut pas donner cette information</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> peut_sortir<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Un enfant ne peut decider de cela'</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Parent<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># le parent va faire proxy sur l'objet enfant</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, enfant<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">enfant</span> = enfant
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># et propose la même méthode que l'objet enfant afin de pouvoir</span>
+    <span style="color: #808080; font-style: italic;"># être passé en paramètre à sa place à la méthode</span>
+    <span style="color: #808080; font-style: italic;"># demande_autorisation_de_sortie()</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> peut_sortir<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">enfant</span>.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">10</span></pre></div></div>
+
+<p>Ici, si la classe <code>Enseignant</code> appelle directement la méthode <code>peut_sortir()</code> de la classe <code>Enfant</code>, on obtient une erreur. :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> prof = Enseignant<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> enfant = Enfant<span style="color: black;">&#40;</span><span style="color: #ff4500;">11</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> prof.<span style="color: black;">demande_autorisation_de_sortie</span><span style="color: black;">&#40;</span>enfant<span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-23-6d509f016e40&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    prof.<span style="color: black;">demande_autorisation_de_sortie</span><span style="color: black;">&#40;</span>enfant<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-18-e8d34178df4c&gt;&quot;</span>, line <span style="color: #ff4500;">4</span>, <span style="color: #ff7700;font-weight:bold;">in</span> demande_autorisation_de_sortie
+    <span style="color: #ff7700;font-weight:bold;">return</span> enfant.<span style="color: black;">peut_sortir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-18-e8d34178df4c&gt;&quot;</span>, line <span style="color: #ff4500;">13</span>, <span style="color: #ff7700;font-weight:bold;">in</span> peut_sortir
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Un enfant ne peut decider de cela'</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">NotImplementedError</span>: Un enfant ne peut decider de cela</pre></div></div>
+
+<p>Nous avons créé un système où on est obligé de créer une instance de <code>Parent</code>, qui va se placer entre la classe <code>Enseignant</code> et la classe <code>Enfant</code>, et qui va retourner la valeur pour cette méthode :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> parent = Parent<span style="color: black;">&#40;</span>enfant<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># on passe l'enfant en paramètre au parent</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> prof.<span style="color: black;">demande_autorisation_de_sortie</span><span style="color: black;">&#40;</span>parent<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># et le parent remplace l'enfant</span>
+<span style="color: #008000;">True</span></pre></div></div>
+
+<p>Ceci est un objet proxy, c&#8217;est à dire un objet qui se place entre deux objets, et fait l&#8217;intermédiaire. <strong>Pour que cela marche, il faut que l&#8217;objet proxy, ici l&#8217;instance de <code>Parent</code>, ait la même interface (les mêmes méthodes, avec les mêmes paramètres et noms) que l&#8217;objet derrière le proxy, ici l&#8217;instance de <code>Enfant</code>.</strong></p>
+<p>Dans notre cas, c&#8217;est académique, ça ne sert pas à grand chose. Mais il y a des tas de cas utiles pour les objets proxy.</p>
+<p>Ainsi, on veut parfois créer des objets dit &#8220;lazy&#8221;, littéralement &#8220;paresseux&#8221;, c&#8217;est à dire pas évalués tout de suite. C&#8217;est ce que fait Django dans le cadre de certaines chaînes de caractères traduites. En effet, en Django, il existe une fonction <code>lazy_gettex()</code> que l&#8217;on peut appliquer sur les chaînes à traduire. Mais elle ne retourne pas une string, car on ne connait pas encore la langue dans laquelle il faut traduire la chaîne : la langue dépend de l&#8217;utilisateur qui viendra demander la page Web en question. <code>lazy_gettex()</code> retourne un objet proxy, et quand, à l&#8217;appel de la page Web, on tente de manipuler cet objet comme une string pour l&#8217;afficher, le proxy va chercher la traduction, et retourne la bonne chaîne. Pour que ça marche, <strong>il faut que l&#8217;interface de l&#8217;objet lazy ressemble trait pour trait à celui d&#8217;une chaîne</strong>.</p>
+<p>Dans d&#8217;autres cas on veut mettre un proxy pour gérer des permissions, et selon le niveau de permission, l&#8217;objet proxy donne accès ou non à l&#8217;objet derrière lui.</p>
+<p>Le design pattern décorateur, le fameux <code>@truc</code> en Python, n&#8217;est jamais qu&#8217;un objet fonction qui fait proxy vers une autre fonction qu&#8217;on a enrobé.</p>
+<p>Mais la raison majeur pour laquelle on va utiliser un objet proxy est le design pattern &#8220;adapter&#8221;.</p>
+<h2>Ce n&#8217;est pas un chapeau, c&#8217;est un boa qui a avalé un éléphant</h2>
+<p>En informatique, on aime bien les traitements généralistes.</p>
+<p>Par exemple, imaginez cet objet qui dit si on a le droit de se bourrer la gueule :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Cette fonction n'est pas réaliste, puisque bien entendu une mineure
+            à gros nichons rentrerait, et un arabe en short lacoste non,
+            mais heureusement l'informatique est plus simple que notre société.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span>= <span style="color: #ff4500;">18</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Personne<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, age<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">age</span> = age</pre></div></div>
+
+<p>Et tant que vous avez la main sur le système, tout va bien dans le meilleur des mondes :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> clients = <span style="color: black;">&#91;</span>Personne<span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">12</span>, <span style="color: #ff4500;">65</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> videur = Videur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> client <span style="color: #ff7700;font-weight:bold;">in</span> clients:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> videur.<span style="color: black;">tu_peux_rentrer</span><span style="color: black;">&#40;</span>client<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Glouglou&quot;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Glouglou</span>
+Glouglou
+Glouglou
+Glouglou
+Glouglou
+...</pre></div></div>
+
+<p>Mais malheureusement la vie n&#8217;est pas toujours pleine de licornes et de bisounours, et votre collègue, lui, il a codé une lib en C qui a extrait les clients d&#8217;un XML, et quand vous vous mappez directement dessus avec ctype, vous obtenez des clients comme ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Client<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, majeur<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">majeur</span> = majeur</pre></div></div>
+
+<p>Bon, vous vous dites que c&#8217;est pas grave. Après tout, c&#8217;est juste une condition à rajouter :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span>= <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></div></div>
+
+<p>Ouai mais votre commercial arrive avec un super contrat avec pillierdebar.com, et il faut s&#8217;interfacer avec leur API SOAP de 1997, dont la deserialisation vous retourne :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Prospect<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #dc143c;">datetime</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">date_de_naissance</span> = <span style="color: #dc143c;">datetime</span></pre></div></div>
+
+<p>Les connards. Ah les connards.</p>
+<p>Mais bon, c&#8217;est pas grave, c&#8217;est juste une petite condition à rajouter.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span>= <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></div></div>
+
+<p>Bon, vous allez enfin pouvoir soufll&#8230;. Ahhhh ! Votre boss appelle, il a oublié de vous dire, le stagiaire travaille aussi sur une feature, et a fait son propre objet <code>Prospect</code>, c&#8217;est comme l&#8217;objet <code>Client</code> mais pas pareil. Non on ne peut pas changer. Oui il a fait de la merde mais si on change tout son code pête. Il se barre demain. Il n&#8217;a pas fait de test. Démerde toi.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> LeClient<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, majeur_de_combien<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.__majeur_de_combien = majeur_de_combien
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> get_majeur_de_combien<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.__majeur_de_combien</pre></div></div>
+
+<p>A ce stade là, le code est tellement moche de toute façon, vous vous en branlez complètement. Vous allez rentrer jouer Left4Dead avec un mod qui transforme les zombies pour qu&#8217;ils aient la tête de votre patron. Le reste n&#8217;est que détail d&#8217;implémentation.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span>= <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'get_majeur_de_combien'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></div></div>
+
+<p>Quelque moi(s) plus tard, les specs changent. Il faut maintenant pouvoir vérifier la carte d&#8217;identité des clients. Ou la carte de membre. Et garder l&#8217;ancien système compatible bien entendu. Ah, et il y a aussi des controleurs, c&#8217;est comme des videurs, mais qui doivent vérifier si les personnes dans le bar sont majeurs, sauf qu&#8217;il n&#8217;acceptent pas la carte de membre ou la date de naissance donnée à l&#8217;oral.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> CarteDeMembre<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> CarteIdentité<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, date_de_naissance<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">date_de_naissance</span> = date_de_naissance
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Client<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, majeur=<span style="color: #008000;">None</span>, carte_identite=<span style="color: #008000;">None</span>, carte_membre=<span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">majeur</span> = majeur
+        <span style="color: #008000;">self</span>.<span style="color: black;">carte_identite</span> = carte_identite
+        <span style="color: #008000;">self</span>.<span style="color: black;">carte_membre</span> = <span style="color: #008000;">None</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">age</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span>= <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'carte_membre'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'carte_identite'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">carte_identite</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            now = <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>now - personne.<span style="color: black;">carte_identite</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'get_majeur_de_combien'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Controleur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> est_autorise<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">age</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span>= <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'carte_identite'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">carte_identite</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            now = <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>now - personne.<span style="color: black;">carte_identite</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne, <span style="color: #483d8b;">'get_majeur_de_combien'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></div></div>
+
+<p>Bon, là c&#8217;est la merde. Vous le sentez, demain il va y avoir un portail électronique qui check uniquement les cartes de membres. Quand il va falloir faire une modif quelque part, ça va être galère. La maintenance va être un enfer. Le debuggage, bien relou. Il faut trouver un moyen de faire plus propre.</p>
+<p>C&#8217;est ici qu&#8217;entre en jeu le pattern &#8220;adapter&#8221;. Un adapter, c&#8217;est comme les adaptateurs pour prises, mais pour les objets. C&#8217;est un proxy qu&#8217;on met devant pour que la prise ressemble à une autre.</p>
+<p>Dans le domaine du code, ça veut dire qu&#8217;on va enrober chaque objet dans un autre pour qu&#8217;ils aient tous la même interface. Le traitement du coup sera de nouveau très simple, et la complexité sera répartie dans les adapters.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #808080; font-style: italic;"># on met le code commun dans un parent abstrait, notamment le check pour</span>
+<span style="color: #808080; font-style: italic;"># savoir si un adapter convient a un objet donné</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Adapteur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    cls = <span style="color: #008000;">None</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, objet<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">objet</span> = objet
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> peut_adapter<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, objet<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">cls</span> == <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>objet<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># un adapter, c'est juste un objet proxy qui arrondit les angles</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> PersonneAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls = Personne
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on va réduire la complexité en faisant en sorte que tous les checks</span>
+    <span style="color: #808080; font-style: italic;"># soient cachés derrière une simple property</span>
+    @<span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span> <span style="color: #66cc66;">&gt;</span>= <span style="color: #ff4500;">18</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ProspectAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls = Prospect
+&nbsp;
+    @<span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> LeClientAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls = LeClient
+&nbsp;
+    @<span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ClientAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls = Client
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, objet<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">objet</span> = objet
+&nbsp;
+    @<span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">accepte_carte_membre</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">carte_membre</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">majeur</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: #008000;">object</span>.<span style="color: black;">carte_identite</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            now = <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>now - personne.<span style="color: black;">carte_identite</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">False</span></pre></div></div>
+
+<p>Le contrôleur et le videur deviennent du coup beaucoup plus simples, maintenant que la logique est normalisée :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> VerificateurDeMajorite<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> check_majorite<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> adapteur <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">adapteurs</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> adapteur.<span style="color: black;">peut_adapter</span><span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span>:
+                <span style="color: #ff7700;font-weight:bold;">return</span> adapteur<span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span>.<span style="color: black;">majeur</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># du coup un vérificateur, c'est très déclaratif</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span>VerificateurDeMajorite<span style="color: black;">&#41;</span>:
+&nbsp;
+    adapteurs = <span style="color: black;">&#40;</span>
+        PersonneAdapteur,
+        ClientAdapteur,
+        ProspectAdapteur,
+        LeClientAdapteur,
+    <span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">check_majorite</span><span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Controleur<span style="color: black;">&#40;</span>VerificateurDeMajorite<span style="color: black;">&#41;</span>:
+&nbsp;
+    adapteurs = <span style="color: black;">&#40;</span>
+        PersonneAdapteur,
+        <span style="color: #808080; font-style: italic;"># ProspectAdapteur()</span>
+        LeClientAdapteur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> est_autorise<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">check_majorite</span><span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Si il faut ajouter un autre format de client, il suffit de coder un adapteur. Si il faut ajouter une autre classe de vérification, il suffit de lui donner les bons adapteurs.</p>
+<p>Et le traitement est aussi simple, car si vous avez une liste qui contient plein de clients différents :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> clients = <span style="color: black;">&#91;</span>Client<span style="color: black;">&#40;</span>majeur=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span>, Client<span style="color: black;">&#40;</span>carte_de_membre=CarteDeMembre<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>, Client<span style="color: black;">&#40;</span>carte_identite=CarteIdentité<span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>, LeClient<span style="color: black;">&#40;</span>-<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>, Personne<span style="color: black;">&#40;</span>age=<span style="color: #ff4500;">16</span><span style="color: black;">&#41;</span>...<span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Vous pouvez quand même vérifier tout ça sans y réfléchir:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> videur = Videur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> client <span style="color: #ff7700;font-weight:bold;">in</span> clients:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> videur.<span style="color: black;">tu_peux_rentrer</span><span style="color: black;">&#40;</span>client<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Glouglou&quot;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Glouglou</span>
+Glouglou
+...
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> controlleur = Controleur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> client <span style="color: #ff7700;font-weight:bold;">in</span> clients:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> controlleur.<span style="color: black;">est_autorise</span><span style="color: black;">&#40;</span>client<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Ahhhh !&quot;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Ahhhh</span> <span style="color: #66cc66;">!</span>
+Ahhhh <span style="color: #66cc66;">!</span>
+...</pre></div></div>
+
+<p>Dans un cas comme celui de notre exemple, l&#8217;adapter est un peu overkill, on s&#8217;en tirerait aussi bien avec une liste de fonctions, et le code serait plus léger et lisible.</p>
+<p> Mais quand les objets et la logique deviennent très complexes, tout ramener à une interface commune permet de simplifier énormément le code.</p>
+<div class="snap_nopreview sharing robots-nocontent"><ul><li class="sharing_label">Partager:</li><li class="share-facebook share-regular"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsametmax.com%2Fobjets-proxy-et-pattern-adapter-en-python%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;width=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:96px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-twitter share-regular"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsametmax.com%2Fobjets-proxy-et-pattern-adapter-en-python%2F&amp;counturl=http%3A%2F%2Fsametmax.com%2Fobjets-proxy-et-pattern-adapter-en-python%2F&amp;count=horizontal&amp;text=Objets%20proxy%20et%20pattern%20adapter%20en%20Python: " style="width:97px; height:20px;"></iframe></div></li><li class="share-reddit share-regular"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?width=120&amp;url=http%3A%2F%2Fsametmax.com%2Fobjets-proxy-et-pattern-adapter-en-python%2F&amp;title=Objets%20proxy%20et%20pattern%20adapter%20en%20Python" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-google-plus-1 share-regular"><div class="googleplus1_button"><g:plusone size="small" callback="sharing_plusone" href="http://sametmax.com/objets-proxy-et-pattern-adapter-en-python/"></g:plusone></div></li><li class="share-email share-regular"><a rel="nofollow" class="share-email share-icon no-text" href="index.html%3Fshare=email.html" target="_blank" title="Click to email this to a friend"></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div><p>No related posts.</p><p class="wp-flattr-button"><a href="../index.html%3Fflattrss_redirect&amp;id=7112&amp;md5=dd69aed35d7a04dab21ab6d6601e104e.html" title="Flattr" target="_blank"><img src="../wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>											</div> <!-- end .entry -->
+			
+					
+						
+			<!-- You can start editing here. -->
+
+	<div id="comment-section" class="clearfix">
+		<h3 id="comments">11 comments</h3>
+		
+		
+			<ol class="commentlist clearfix">
+			   <li class="comment even thread-even depth-1" id="li-comment-13384">
+		<div class="bottom_bg">
+		   <div id="comment-13384" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/04bd0efbd0bbfea1436b998566d5044c?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">CactusLibidineux</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13384">16/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>paraisseux -&gt; paresseux ;)</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-13392">
+		<div class="bottom_bg">
+		   <div id="comment-13392" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/02f214f5eb4a3a950e12c8ca724e173d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">freakazoid</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13392">17/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>pré-requis suivant -&gt; pré-requis suivants<br />
+les traitemenst généralistes. -&gt;  les traitements généralistes.<br />
+Il faut trouver une moyen -&gt; Il faut trouver un moyen<br />
+Le controleur et le videur deviennt -&gt; Le contrôleur et le videur deviennent</p>
+<p>merci pour l&#8217;acticle</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-13396">
+		<div class="bottom_bg">
+		   <div id="comment-13396" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13396">17/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merci pour les corrections les gars.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-13436">
+		<div class="bottom_bg">
+		   <div id="comment-13436" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/f85f4b7b24aef894e40edd660c0d318d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Syl</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13436">19/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>J&#8217;ai pas encore lu l&#8217;article, mais je commence par un requête&#8230;.STP MAX, MET NOUS PLUS de Pierre Vassiliu!!!!!!</p>
+<p><a href="https://www.youtube.com/watch?v=Np6baChsFwU" rel="nofollow">Ça, je dis pas non!!!</a></p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-13446">
+		<div class="bottom_bg">
+		   <div id="comment-13446" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13446">19/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>^^</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-13583">
+		<div class="bottom_bg">
+		   <div id="comment-13583" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/210c7bd033b2f3f3ef52fc75e4fa9fa2?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Mojowork</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13583">24/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>D&#8217;la balle je l.attendais celui là car je bosse pas mal sur Plone et c&#8217;en est pété de ses adapteurs.<br />
+Le début de l&#8217;article est bien détaillé mais par contre le passage à la version &#8220;adapteurs &#8221; va un peu vite je trouve.<br />
+Mais Merci !!</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-13607">
+		<div class="bottom_bg">
+		   <div id="comment-13607" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://1.gravatar.com/avatar/7a8097598856b8f985414fe8e04cf62d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Stéphane</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13607">25/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>une mineur -&gt; une mineure<br />
+c’est comme objet Client -&gt; c’est comme l&#8217;objet Client<br />
+un objet proxy qui arrondie -&gt; un objet proxy qui arrondit</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-13611">
+		<div class="bottom_bg">
+		   <div id="comment-13611" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-13611">25/08/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Il faudrait intégrer un outil &#8220;suggérer une modification&#8221; directement dans le blog, avec possibilité de merger ^^</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment even thread-even depth-1" id="li-comment-14150">
+		<div class="bottom_bg">
+		   <div id="comment-14150" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='' src='http://0.gravatar.com/avatar/0d6574ad2982d38018180e1fac5e8a5d?s=60&amp;d=retro&amp;r=X' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">mek</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-14150">12/09/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Merci Sam pour le tuto.<br />
+Je pense avoir bien compris le &#8220;pattern adapter&#8221; mais le tuto me marche pas chez moi avec la declaration ci-dessous:</p>
+<p>    adapteurs = (<br />
+        PersonneAdapteur(),<br />
+        ClientAdapteur(),<br />
+        ProspectAdapteur(),<br />
+        LeClientAdapteur(),<br />
+    )</p>
+<p>Traceback (most recent call last):<br />
+  File &#8220;/home/workspace/tutorial-python/main.py&#8221;, line 115, in<br />
+    class Videur(VerificateurDeMajorite):<br />
+  File &#8220;/home/workspace/tutorial-python/main.py&#8221;, line 118, in Videur<br />
+    PersonneAdapteur(),<br />
+TypeError: __init__() takes exactly 2 arguments (1 given)</p>
+<p>Peux tu apporter plus de précisions?</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-14461">
+		<div class="bottom_bg">
+		   <div id="comment-14461" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-14461">01/10/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>Oui, j&#8217;ai mis des instances d&#8217;adapteurs au lieu des classes, c&#8217;est une erreur de ma part. Il faut faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span>VerificateurDeMajorite<span style="color: black;">&#41;</span>:
+&nbsp;
+    adapteurs = <span style="color: black;">&#40;</span>
+        PersonneAdapteur,
+        ClientAdapteur,
+        ProspectAdapteur,
+        LeClientAdapteur,
+    <span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et NON:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span>VerificateurDeMajorite<span style="color: black;">&#41;</span>:
+&nbsp;
+    adapteurs = <span style="color: black;">&#40;</span>
+        PersonneAdapteur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+        ClientAdapteur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+        ProspectAdapteur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+        LeClientAdapteur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#41;</span></pre></div></div>
+
+<p>C&#8217;est corrigé.</p>
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+   <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-14463">
+		<div class="bottom_bg">
+		   <div id="comment-14463" class="comment-body clearfix">
+				<div class="alignleft authordata">
+					<img alt='Sam' src='../wp-content/uploads/2012/02/Sam_avatar.jpg' class='avatar avatar-60 photo' height='60' width='60' />					
+					<div class="clear"></div>
+					<div class="comment-author vcard">
+						<span class="fn">Sam</span><br/>
+						<div class="comment-meta commentmetadata"><a href="index.html#comment-14463">01/10/2013		</a></div>
+					</div>
+				</div>
+				
+				<div class="comment-wrap">
+					
+										
+					<div class="comment-content"><p>J&#8217;ai aussi viré l&#8217;adapteur configurable, car ça n&#8217;aurait pas marché comme ça. Si l&#8217;on souhaite faire l&#8217;adapteur configurable, il faut définir les paramètres via :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">    adapteurs = <span style="color: black;">&#40;</span>
+        <span style="color: black;">&#40;</span>PersonneAdapteur, <span style="color: black;">&#91;</span>les paramètres<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>,
+        <span style="color: black;">&#40;</span>ClientAdapteur, <span style="color: black;">&#91;</span>les paramètres<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>,
+        <span style="color: black;">&#40;</span>ProspectAdapteur, <span style="color: black;">&#91;</span>les paramètres<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>,
+        <span style="color: black;">&#40;</span>LeClientAdapteur, <span style="color: black;">&#91;</span>les paramètres<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et faire un truc comme ça à l&#8217;instanciation :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> VerificateurDeMajorite<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> check_majorite<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, personne<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> adapteur, params <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">adapteurs</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> adapteur.<span style="color: black;">peut_adapter</span><span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span>:
+                <span style="color: #ff7700;font-weight:bold;">return</span> adapteur<span style="color: black;">&#40;</span>personne, <span style="color: #66cc66;">*</span>params<span style="color: black;">&#41;</span>.<span style="color: black;">majeur</span></pre></div></div>
+
+</div> <!-- end comment-content-->
+									</div> <!-- end comment-wrap-->  
+			</div> <!-- end comment-body-->
+		</div> <!-- end .bottom_bg-->
+</li>
+		</ol>
+		
+			
+		
+<div>
+<p class="rss-comments">
+<a href="feed/index.html" title="Flux RSS des commentaires">Flux RSS des commentaires</a>
+</p>
+</div>
+									<div id="respond">
+				<h3 id="reply-title"><span>Leave a Reply</span> <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html%3Fshare=email.html#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://sametmax.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><script type="text/javascript">var edInserted; if (!edInserted) {edToolbar(); edInserted = true;}</script>
+<textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea>
+<script type="text/javascript">var edCanvas = document.getElementById('comment');</script></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; &lt;pre lang=&quot;&quot; line=&quot;&quot; escaped=&quot;&quot; highlight=&quot;&quot;&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Submit Comment" />
+							<input type='hidden' name='comment_post_ID' value='7112' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="0ba965bb5a" /></p><script src="../index.html%3Flive-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p>					</form>
+							</div><!-- #respond -->
+						</div> <!-- end comment-section -->
+
+<div>
+<p><a href="index.html%3Fshare=email.html#" id="playmario">Jouer à mario en attendant que les autres répondent</a></p>
+
+
+
+
+
+<script type="text/javascript">
+    if (typeof jQuery !== 'undefined'){
+        jQuery('#playmario').click(function(e){
+            jQuery(this).replaceWith('<iframe src="http://www.florian-rappl.de/html5/projects/SuperMario/" style="width:500px;height:450px;overflow:hidden"></iframe><p>En HTML5 canvas :-) http://www.codeproject.com/Articles/396959/Mario5</p>');
+            e.preventDefault()
+        });
+    }
+</script>
+</div>				</div> <!-- end #content-area -->	
+	
+<div id="sidebar" class="clearfix">
+	<div id="widget-readability-buttons-id-2" class="widget sidebar-block widget-readability-buttons"><!-- This file is used to markup the public facing widget. -->
+<h3 class="widgettitle">Une lecture plus fastoche ?</h3><p class="readability-wrapper"> 
+  <div
+    class="rdbWrapper"
+    data-show-read="1"
+    data-show-send-to-kindle="0"
+    data-show-print="1"
+    data-show-email="0"
+    data-orientation="0"
+    data-version="1"
+    data-text-color="#"
+    data-bg-color="#">
+  </div>
+  <script>(function() {var s = document.getElementsByTagName("script")[0],rdb = document.createElement("script"); rdb.type = "text/javascript"; rdb.async = true; rdb.src = document.location.protocol + "//www.readability.com/embed.js"; s.parentNode.insertBefore(rdb, s); })();</script>
+</p></div> <!-- end .widget --><div id="text-4" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</div> <!-- end .widget --><div id="text-3" class="widget sidebar-block widget_text"><h3 class="widgettitle"> </h3>			<div class="textwidget"><a href="http://twitter.com/#!/sam_et_max"><img src="../wp-content/uploads/2012/05/twitter_icon.png" width="70px" style="vertical-align: middle;margin-top:-40px;"></a>&nbsp;Follow us <a href="http://twitter.com/sam_et_max">@sam_et_max</a></div>
+		</div> <!-- end .widget --><div id="blog_subscription-3" class="widget sidebar-block jetpack_subscription_widget"><h3 class="widgettitle"><label for="subscribe-field">Souscrire à nos conneries</label></h3>
+		<a name="subscribe-blog"></a>
+		<form action="index.html%3Fshare=email.html" method="post" accept-charset="utf-8" id="subscribe-blog">
+			<p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p><p>Join 208 other subscribers</p>
+
+			<p><input type="text" name="email" style="width: 95%; padding: 1px 2px" value="Email Address" id="subscribe-field" onclick="if ( this.value == 'Email Address' ) { this.value = ''; }" onblur="if ( this.value == '' ) { this.value = 'Email Address'; }" /></p>
+
+			<p>
+				<input type="hidden" name="action" value="subscribe" />
+				<input type="hidden" name="source" value="http://sametmax.com/objets-proxy-et-pattern-adapter-en-python/?share=email" />
+				<input type="hidden" name="sub-type" value="widget" />
+				<input type="hidden" name="redirect_fragment" value="blog_subscription-3" />
+				<input type="hidden" id="_wpnonce" name="_wpnonce" value="f6feefd33d" />				<input type="submit" value="J&#039;adhère bon dieu!" name="jetpack_subscriptions_widget" />
+			</p>
+		</form>
+
+		
+</div> <!-- end .widget --><div id="categories-2" class="widget sidebar-block widget_categories"><h3 class="widgettitle">Catégories</h3>		<ul>
+	<li class="cat-item cat-item-7"><a href="../category/administration-system/index.html" title="View all posts filed under Administration System">Administration System</a> (99)
+</li>
+	<li class="cat-item cat-item-11"><a href="../category/cul/index.html" title="View all posts filed under Cul">Cul</a> (52)
+</li>
+	<li class="cat-item cat-item-12"><a href="../category/gadget/index.html" title="View all posts filed under Gadget">Gadget</a> (5)
+</li>
+	<li class="cat-item cat-item-855"><a href="../category/gadgets/index.html" title="View all posts filed under Gadgets">Gadgets</a> (2)
+</li>
+	<li class="cat-item cat-item-38"><a href="../category/philo-et-culture/index.html" title="View all posts filed under Philo et culture">Philo et culture</a> (136)
+</li>
+	<li class="cat-item cat-item-3"><a href="../category/programmation/index.html" title="View all posts filed under Programmation">Programmation</a> (341)
+</li>
+	<li class="cat-item cat-item-1"><a href="../category/uncategorized/index.html" title="View all posts filed under Uncategorized">Uncategorized</a> (6)
+</li>
+	<li class="cat-item cat-item-15"><a href="../category/web/index.html" title="View all posts filed under Web">Web</a> (40)
+</li>
+		</ul>
+</div> <!-- end .widget -->		<div id="recent-posts-3" class="widget sidebar-block widget_recent_entries">		<h3 class="widgettitle">Posts récents</h3>		<ul>
+				<li><a href="../pour-vos-thumbnails-imagemagick-a-la-rescousse/index.html" title="Pour vos thumbnails, ImageMagick à la rescousse">Pour vos thumbnails, ImageMagick à la rescousse</a></li>
+				<li><a href="../changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/index.html" title="Changer le mot de passe du super utilisateur django en ligne de commande">Changer le mot de passe du super utilisateur django en ligne de commande</a></li>
+				<li><a href="../le-deuil-dune-idee/index.html" title="Le deuil d&#8217;une idée">Le deuil d&#8217;une idée</a></li>
+				<li><a href="../quest-ce-quun-namespace/index.html" title="Qu&#8217;est-ce qu&#8217;un namespace ?">Qu&#8217;est-ce qu&#8217;un namespace ?</a></li>
+				<li><a href="../astuces-de-recherche/index.html" title="Astuces de recherche">Astuces de recherche</a></li>
+				<li><a href="../cest-pour-des-trucs-comme-ca-que-jadore-python/index.html" title="C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;">C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;</a></li>
+				<li><a href="../pourquoi-il-faut-eviter-import-en-python/index.html" title="Pourquoi il faut éviter &lt;code&gt;import *&lt;/code&gt; en Python">Pourquoi il faut éviter <code>import *</code> en Python</a></li>
+				<li><a href="../quitter-son-pays/index.html" title="Quitter son pays">Quitter son pays</a></li>
+				</ul>
+		</div> <!-- end .widget --> 
+
+	<div id="popular-tabbed" class="widget"> 
+		<h3 class="widgettitle">Posts Populaires</h3>
+		<ul>
+																						<li><a href="../on-a-un-nouveau-projet-et-on-a-besoin-dune-info-sur-vous/index.html">On a un nouveau projet et on a besoin d&#8217;UNE info sur vous</a> (251)</li>																														<li><a href="../entreprendre-en-france-autopsie-dun-echec/index.html">Entreprendre en France, Autopsie d&#8217;un échec.</a> (111)</li>																														<li><a href="../fizzbuzz-en-python/index.html">FizzBuzz en Python</a> (94)</li>																														<li><a href="../fetons-le-depart-de-max/index.html">Fêtons le départ de Max</a> (87)</li>																														<li><a href="../une-journee-dans-un-fkk-maison-close-allemande/index.html">Une journée dans un FKK (maison close Allemande)</a> (84)</li>																														<li><a href="../on-est-en-2013-on-a-marche-sur-la-lune-mais-on-a-toujours-pas/index.html">On est en 2013, on a marché sur la lune, mais on a toujours pas&#8230;</a> (82)</li>																														<li><a href="../il-ne-faut-pas-prendre-des-gens-pour-des-cons-mais-ne-jamais-oublier-quils-en-sont/index.html">Il ne faut pas prendre les gens pour des cons mais ne jamais oublier qu&#8217;ils en sont</a> (82)</li>																														<li><a href="../lun-de-vous-a-un-cadeau-de-noel-qui-lattend-au-pied-du-sapin/index.html">L&#8217;un de vous a un cadeau de Noël qui l&#8217;attend au pied du sapin&#8230;</a> (80)</li>													</ul>
+	</div> <!-- end #recent-tabbed -->
+	 
+<div id="tag_cloud-3" class="widget sidebar-block widget_tag_cloud"><h3 class="widgettitle">TagCloud</h3><div class="tagcloud"><a href='../tag/bash/index.html' class='tag-link-14' title='14 topics' style='font-size: 11.456790123457pt;'>bash</a>
+<a href='../tag/blog/index.html' class='tag-link-107' title='11 topics' style='font-size: 10.592592592593pt;'>blog</a>
+<a href='../tag/bottle/index.html' class='tag-link-307' title='6 topics' style='font-size: 8.6049382716049pt;'>bottle</a>
+<a href='../tag/cache/index.html' class='tag-link-333' title='8 topics' style='font-size: 9.4691358024691pt;'>cache</a>
+<a href='../tag/comprehension-lists/index.html' class='tag-link-20' title='6 topics' style='font-size: 8.6049382716049pt;'>comprehension-lists</a>
+<a href='../tag/css/index.html' class='tag-link-188' title='8 topics' style='font-size: 9.4691358024691pt;'>css</a>
+<a href='../tag/cul-2/index.html' class='tag-link-33' title='9 topics' style='font-size: 9.9012345679012pt;'>cul</a>
+<a href='../tag/decorator/index.html' class='tag-link-265' title='7 topics' style='font-size: 9.037037037037pt;'>decorator</a>
+<a href='../tag/django/index.html' class='tag-link-28' title='63 topics' style='font-size: 16.901234567901pt;'>django</a>
+<a href='../tag/email/index.html' class='tag-link-37' title='6 topics' style='font-size: 8.6049382716049pt;'>email</a>
+<a href='../tag/encoding/index.html' class='tag-link-54' title='5 topics' style='font-size: 8pt;'>encoding</a>
+<a href='../tag/error/index.html' class='tag-link-213' title='6 topics' style='font-size: 8.6049382716049pt;'>error</a>
+<a href='../tag/ffmpeg/index.html' class='tag-link-64' title='5 topics' style='font-size: 8pt;'>ffmpeg</a>
+<a href='../tag/fun/index.html' class='tag-link-44' title='6 topics' style='font-size: 8.6049382716049pt;'>fun</a>
+<a href='../tag/git/index.html' class='tag-link-18' title='28 topics' style='font-size: 13.876543209877pt;'>git</a>
+<a href='../tag/html/index.html' class='tag-link-486' title='6 topics' style='font-size: 8.6049382716049pt;'>html</a>
+<a href='../tag/humour/index.html' class='tag-link-266' title='5 topics' style='font-size: 8pt;'>humour</a>
+<a href='../tag/import/index.html' class='tag-link-215' title='7 topics' style='font-size: 9.037037037037pt;'>import</a>
+<a href='../tag/ipython/index.html' class='tag-link-164' title='8 topics' style='font-size: 9.4691358024691pt;'>ipython</a>
+<a href='../tag/iterable/index.html' class='tag-link-217' title='9 topics' style='font-size: 9.9012345679012pt;'>iterable</a>
+<a href='../tag/javascript/index.html' class='tag-link-96' title='25 topics' style='font-size: 13.444444444444pt;'>javascript</a>
+<a href='../tag/jquery/index.html' class='tag-link-112' title='6 topics' style='font-size: 8.6049382716049pt;'>jquery</a>
+<a href='../tag/lambda/index.html' class='tag-link-292' title='7 topics' style='font-size: 9.037037037037pt;'>lambda</a>
+<a href='../tag/linux/index.html' class='tag-link-238' title='5 topics' style='font-size: 8pt;'>linux</a>
+<a href='../tag/mail/index.html' class='tag-link-624' title='6 topics' style='font-size: 8.6049382716049pt;'>mail</a>
+<a href='../tag/meta/index.html' class='tag-link-102' title='78 topics' style='font-size: 17.679012345679pt;'>meta</a>
+<a href='../tag/mysql/index.html' class='tag-link-82' title='5 topics' style='font-size: 8pt;'>mysql</a>
+<a href='../tag/nginx/index.html' class='tag-link-183' title='12 topics' style='font-size: 10.851851851852pt;'>nginx</a>
+<a href='../tag/nsfw/index.html' class='tag-link-319' title='13 topics' style='font-size: 11.197530864198pt;'>nsfw</a>
+<a href='../tag/orm/index.html' class='tag-link-43' title='5 topics' style='font-size: 8pt;'>orm</a>
+<a href='../tag/php/index.html' class='tag-link-199' title='5 topics' style='font-size: 8pt;'>php</a>
+<a href='../tag/poo/index.html' class='tag-link-549' title='9 topics' style='font-size: 9.9012345679012pt;'>poo</a>
+<a href='../tag/process/index.html' class='tag-link-87' title='5 topics' style='font-size: 8pt;'>process</a>
+<a href='../tag/python/index.html' class='tag-link-4' title='251 topics' style='font-size: 22pt;'>python</a>
+<a href='../tag/redis/index.html' class='tag-link-196' title='6 topics' style='font-size: 8.6049382716049pt;'>redis</a>
+<a href='../tag/ruby/index.html' class='tag-link-325' title='6 topics' style='font-size: 8.6049382716049pt;'>ruby</a>
+<a href='../tag/server/index.html' class='tag-link-185' title='6 topics' style='font-size: 8.6049382716049pt;'>server</a>
+<a href='../tag/sexe/index.html' class='tag-link-175' title='5 topics' style='font-size: 8pt;'>sexe</a>
+<a href='../tag/shell/index.html' class='tag-link-202' title='7 topics' style='font-size: 9.037037037037pt;'>shell</a>
+<a href='../tag/ssh/index.html' class='tag-link-206' title='6 topics' style='font-size: 8.6049382716049pt;'>ssh</a>
+<a href='../tag/sublime-text/index.html' class='tag-link-76' title='6 topics' style='font-size: 8.6049382716049pt;'>sublime text</a>
+<a href='../tag/twitter/index.html' class='tag-link-371' title='6 topics' style='font-size: 8.6049382716049pt;'>twitter</a>
+<a href='../tag/ubuntu/index.html' class='tag-link-255' title='13 topics' style='font-size: 11.197530864198pt;'>ubuntu</a>
+<a href='../tag/virtualenv/index.html' class='tag-link-259' title='6 topics' style='font-size: 8.6049382716049pt;'>virtualenv</a>
+<a href='../tag/yield/index.html' class='tag-link-287' title='7 topics' style='font-size: 9.037037037037pt;'>yield</a></div>
+</div> <!-- end .widget --><div id="archives-2" class="widget sidebar-block widget_archive"><h3 class="widgettitle">Archives</h3>		<ul>
+			<li><a href='../2013/12/index.html' title='December 2013'>December 2013</a>&nbsp;(2)</li>
+	<li><a href='../2013/11/index.html' title='November 2013'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html' title='October 2013'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html' title='September 2013'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html' title='August 2013'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html' title='July 2013'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html' title='June 2013'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html' title='May 2013'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html' title='April 2013'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html' title='March 2013'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html' title='February 2013'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html' title='January 2013'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html' title='December 2012'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html' title='November 2012'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html' title='October 2012'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html' title='September 2012'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html' title='August 2012'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html' title='July 2012'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html' title='June 2012'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html' title='May 2012'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html' title='April 2012'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html' title='March 2012'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html' title='February 2012'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+</div> <!-- end .widget --><div id="rss_links-2" class="widget sidebar-block widget_rss_links"><h3 class="widgettitle">Flux RSS</h3><p><a href="../feed/index.html" title="Subscribe to Posts"><img src="../wp-content/plugins/jetpack/_inc/images/rss/green-small.png" alt="RSS Feed" /></a>&nbsp;<a href="../feed/index.html" title="Subscribe to Posts">RSS - Posts</a></p>
+</div> <!-- end .widget --><div id="text-5" class="widget sidebar-block widget_text"><h3 class="widgettitle"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</div> <!-- end .widget --></div> <!-- end sidebar -->	</div> <!-- end #content --> 
+	
+	 <div id="footer" >
+		<div id="footer-content">
+			
+								
+				<ul id="menu-bottom-menu" class="bottom-menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Contactez-nous</a></li>
+</ul>			
+			<p id="copyright">Designed by  <a href="http://www.elegantthemes.com" title="Elegant Themes">Elegant WordPress Themes</a></p>
+		</div> <!-- end #footer-content -->
+	</div> <!-- end #footer -->
+</div> <!-- end #page-wrap -->
+	 
+				
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.cycle.all.min.js"></script> 
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/jquery.easing.1.3.js"></script>	
+	<script type="text/javascript" src="../wp-content/themes/Minimal/js/superfish.js"></script>	
+	<script type="text/javascript">
+	//<![CDATA[
+		jQuery.noConflict();
+	
+		jQuery('ul.superfish').superfish({ 
+			delay:       200,                            // one second delay on mouseout 
+			animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation 
+			speed:       'fast',                          // faster animation speed 
+			autoArrows:  true,                           // disable generation of arrow mark-up 
+			dropShadows: false                            // disable drop shadows 
+		}).find("> li > ul > li:last-child, > li > ul > li > ul > li:last-child, > li > ul > li > ul > li > ul > li:last-child").addClass("last-nav-element");
+		
+		jQuery(".js #featured, .js div#tabbed").css("display","block");
+
+				
+		var $featured_content = jQuery('#featured_content'),
+			$tabbed_area = jQuery('div#tabbed'),
+			$controllers = jQuery('div#controllers'),
+			$comments = jQuery('ol.commentlist');
+		
+		et_search_bar();
+		
+		if ($featured_content.length) {
+			$featured_content.cycle({
+									timeout: 3000				,
+				speed: 300,
+				cleartypeNoBg: true,
+				prev:   'a#left_arrow', 
+				next:   'a#right_arrow',
+				pager:  'div#controllers',
+				fx: 'fade'
+			});
+			
+			var controllersWidth = $controllers.width(),
+				controllersLeft = Math.round((960 - controllersWidth) / 2);
+			if (controllersWidth < 960) $controllers.css('padding-left',controllersLeft);
+		};
+		
+		if ($tabbed_area.length) {
+			$tabbed_area.tabs({ fx: { opacity: 'toggle' } });
+		};
+		
+		if ($comments.length) {
+			$comments.find(">li").after('<span class="bottom_bg"></span>');
+		};
+		
+
+		<!---- Random tag line ---->		
+
+var tagLine = function(){
+    var tagLines =  [
+        'Deux programmeurs qui se sortent les doigts du code',
+        '10 ko de js rien que pour charger ce message',
+        'Des articles pour geeks qui mettent les points sur les G',
+        "Aucun hipster n'a été violenté à l'écriture de ce blog",
+        'La programmation avec un grand C',
+        'Ornithorynque fuchsia hydrophobe',
+        'Python, Django, Git, et du Cul',
+        'Nous croisons les effluves',
+        'CMB DTC IRL CQFD',
+        'Tuent des chatons depuis 1997',
+        'Reticulating splines',
+        'Error: unexpected end of stupid tag line',
+        'Les bikinis et les ordinateurs épargnent les spéculations',
+        'F5',
+        '<3 (oYo)',
+        'Rien que des obsédés du serpent !',
+        "Je sers la science et c'est ma joie",
+        'On peut tout génie génétiquer!',
+        "Réparateurs d'harmonicas, professeurs de plongée",
+        "Il faut mettre d'urgence un frein à l'immobilisme!",
+        'Ho mon dieu! Ils ont tué Sam, enfoirés!',
+        "L'étincelle qui fait déborder le vase",
+        'A poil les putes !',
+        'Bannis de Reddit !',
+        "Bannis de l'AFPY !",
+        'Bannis de Claire Chazal!',
+        'Bannis de Jean-Pierre Pernaud !',
+        'Bannis de Norton !',
+        'Et si on faisait des camps pour que les gens puissent se concentrer?',
+        'Article.objects.create(type=random.choice(("dev", "cul")))',
+        'Le choc des mots, le poids des algos',
+        'Kedzalcoilt, le serpent à poil'
+    ];
+    return tagLines[Math.ceil(Math.random() * 1000000000) % tagLines.length];
+};
+
+jQuery('#slogan').show().text(tagLine());
+
+// forcer la redirection faire l'image en full size au click
+jQuery('.wp-post-image').click(function(e){e.preventDefault(); window.location.href = jQuery(e.target).attr('src')});
+
+// mettre clippy sur les comments
+
+jQuery(function(){
+    var message = "";
+    var $comment = jQuery('#comment');
+    topagent = null;
+
+    $comment.keyup(function(){
+
+        var content = jQuery(this).val();
+
+        if (content.search(/(^|\s+)(php|vim|emacs|windows|pas?\s*libre)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos trollesques. Attention, nous avons des tampons, et nous n'hésiterons pas à nous en servir !"
+        }
+
+        if (content.search(/(^|\s+)(me (tuer|suicider|tirer une balle|pendre|flinguer))([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez de propos suicidaires. Sam & Max défendent la liberté d'expression. Allez aux bouts de vos idées !"
+        }
+
+        if (content.search(/(^|\s+)(connards?|enculés?|enfoirés?|fils? de pute?)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos injurieux. Ne voulez-vous pas plutôt écrire une lettre d'insultes directement aux auteurs, via le formulaire de contact ?"
+        }
+
+        if (content.search(/(^|\s+)(culs?|nichons?|bite|chatte|sodomie|levrette|sexe)([.!?]|\s+)/i) != -1){
+            message = "Il semble que vous teniez des propos graveleux. Pourriez-vous donner plus de détails ?"
+        }
+
+        if (content.search(/\>\>\>/i) != -1){
+            message = "Le triple chevron ne passe pas dans les comments. Désolé :-( Utilisez »» à la place."
+        }
+
+        if (content.length > 2000){
+            message = "Il semble que vous écriviez un roman. Vous réalisez que ceux qui vont répondre ne l'auront pas lu jusqu'au bout ?"
+        }
+
+        if (message){
+            $comment.unbind();
+
+            jQuery("<link/>", {
+               rel: "stylesheet",
+               type: "text/css",
+               href: "http://sametmax.com/wp-content/uploads/2012/07/clippy.css"
+            }).appendTo("head").one('load ready', function(){
+                jQuery.getScript("http://sametmax.com/wp-content/uploads/2012/07/clippy.min_1.js", function(){
+                    clippy.load('Clippy', function(agent) {
+                        agent.show();
+                        var offset = $comment.offset();
+                        var left = offset.left + $comment.width() + 10;
+                        var top = offset.top;
+
+                        jQuery('.clippy').css({position:'absolute',
+                                               display:'block',
+                                               left: left, top: top})
+
+                        jQuery('.clippy-balloon').css({position:'absolute',
+                                                       display:'block',
+                                                       left: left,
+                                                       top: top - 50})
+
+                        agent.speak(message);
+                        setInterval(function(){agent.stop(); agent.animate()}, 20000);
+                    });
+
+                });
+
+            });
+
+        }
+
+    });
+});
+
+
+		<!---- Search Bar Improvements ---->
+		function et_search_bar(){
+			var $searchform = jQuery('#header div#search-form'),
+				$searchinput = $searchform.find("input#searchinput"),
+				searchvalue = $searchinput.val();
+				
+			$searchinput.focus(function(){
+				if (jQuery(this).val() === searchvalue) jQuery(this).val("");
+			}).blur(function(){
+				if (jQuery(this).val() === "") jQuery(this).val(searchvalue);
+			});
+		};
+		
+	//]]>	
+
+
+
+
+<!-- Piwik -->
+
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://88.191.153.127:7777/" : "http://88.191.153.127:7777/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+
+
+
+	</script>
+<noscript>
+<img src="http://88.191.153.127:7777/piwik.php?idsite=1&amp;rec=1" style="border:0" alt="" />
+</noscript>
+	<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?aa&#038;ver=3.3.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=3.3.1'></script>
+	<div style="display:none">
+	<div class="grofile-hash-map-fbe217bdc3e24dc94a67eb88471f6853">
+	</div>
+	<div class="grofile-hash-map-02f214f5eb4a3a950e12c8ca724e173d">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-f85f4b7b24aef894e40edd660c0d318d">
+	</div>
+	<div class="grofile-hash-map-2e74ba715a5458a256c307ad34f0f101">
+	</div>
+	<div class="grofile-hash-map-7a8097598856b8f985414fe8e04cf62d">
+	</div>
+	<div class="grofile-hash-map-0d6574ad2982d38018180e1fac5e8a5d">
+	</div>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.js%3Fver=0.1'></script>
+	<script type="text/javascript" charset="utf-8">
+	function sharing_plusone( obj ) { 
+		jQuery.ajax( {
+			url: 'http://sametmax.com/objets-proxy-et-pattern-adapter-en-python/?share=google-plus-1',
+			type: 'POST',
+			data: obj
+		} );
+	}
+	</script>
+	<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script>
+	<div id="sharing_email" style="display: none;">
+		<form action="index.html%3Fshare=email.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="text" name="target_email" id="target_email" value="" />
+			
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+				
+				<label for="source_email">Your Email Address</label>
+				<input type="text" name="source_email" id="source_email" value="" />
+
+						
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a href="index.html%3Fshare=email.html#cancel" class="sharing_cancel">Cancel</a>
+			
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+			
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js%3Fver=3.15'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/sametmax.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=3.3'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.easing-1.3.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/fancybox/jquery.fancybox-1.3.4.pack.js%3Fver=1.3.4'></script>
+<script type='text/javascript' src='../wp-content/themes/Minimal/epanel/page_templates/js/et-ptemplates-frontend.js%3Fver=1.1'></script>
+
+	<script src="http://stats.wordpress.com/e-201349.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.2.2',blog:'32490438',post:'7112'});
+	var load_cmc = function(){linktracker_init(32490438,7112,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script>	
+</body>
+</html>

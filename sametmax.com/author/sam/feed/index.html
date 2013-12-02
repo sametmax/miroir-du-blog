@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; Sam</title>
+	<atom:link href="http://sametmax.com/author/sam/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:02:45 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Pour vos thumbnails, ImageMagick à la rescousse</title>
+		<link>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/</link>
+		<comments>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/#comments</comments>
+		<pubDate>Sun, 01 Dec 2013 08:11:42 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[image]]></category>
+		<category><![CDATA[imagemagick]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[thumbnails]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8141</guid>
+		<description><![CDATA[<a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d'images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu'appeler la lib avec un bon subprocess était simplement plus rapide et donnait des résultats de meilleure qualité que d'utiliser PIL en Python ou GD en PHP.]]></description>
+			<content:encoded><![CDATA[<p><a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d&#8217;images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu&#8217;appeler la lib avec un bon <a href="http://docs.python.org/2/library/subprocess.html">subprocess</a> était simplement plus rapide et donnait des résultats de meilleure qualité que d&#8217;utiliser PIL en Python ou GD en PHP.</p>
+<p>Et je peux vous dire qu&#8217;il en a fait des tests pour obtenir le thumbnail des nichons parfait. C&#8217;est un perfectionniste quand il s&#8217;agit des tétons.</p>
+<p>En général, on trouve ImageMagick dans les dépôts. Par exemple, sous debian :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> imagemagick</pre></div></div>
+
+<p>Mais il n&#8217;est pas rare que Max compile la bête histoire d&#8217;avoir la même version partout :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">wget</span> http:<span style="color: #000000; font-weight: bold;">//</span>mirror.checkdomain.de<span style="color: #000000; font-weight: bold;">/</span>imagemagick<span style="color: #000000; font-weight: bold;">/</span>ImageMagick-6.8.7-<span style="color: #000000;">4</span>.tar.gz ; <span style="color: #c20cb9; font-weight: bold;">tar</span> <span style="color: #660033;">-xvf</span> ImageMagick-6.8.7-<span style="color: #000000;">4</span>.tar.gz ; <span style="color: #7a0874; font-weight: bold;">cd</span> ImageMagick-6.8.7-<span style="color: #000000;">4</span>
+.<span style="color: #000000; font-weight: bold;">/</span>configure
+<span style="color: #c20cb9; font-weight: bold;">make</span> <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> <span style="color: #c20cb9; font-weight: bold;">make</span> <span style="color: #c20cb9; font-weight: bold;">install</span>
+<span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>convert <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>convert
+<span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>identify <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>identify</pre></div></div>
+
+<p>Après tout ça, vous aurez accès à plusieurs commandes, qui permettent des manipulations d&#8217;images diverses.</p>
+<p>Par exemple, <code>identify</code> permet de récupérer des informations sur l&#8217;image telles que le format, la profondeur des couleurs&#8230; Nous on l&#8217;utilise surtout pour récupérer la taille :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">identify <span style="color: #660033;">-format</span> <span style="color: #ff0000;">&quot;%[fx:w],%[fx:h]&quot;</span> <span style="color: #ff0000;">&quot;chemin/vers/image&quot;</span></pre></div></div>
+
+<p>On peut utiliser un wrapper tel que <a href="http://docs.wand-py.org">wand</a> pour utiliser ça depuis Python. Mais il est très facile de se faire un wrapper vite fait à la main :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> envoy
+<span style="color: #ff7700;font-weight:bold;">from</span> minibelt <span style="color: #ff7700;font-weight:bold;">import</span> normalize
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ImageMagicError<span style="color: black;">&#40;</span><span style="color: #008000;">Exception</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, result, encoding<span style="color: black;">&#41;</span>:
+        msg = normalize<span style="color: black;">&#40;</span>result.<span style="color: black;">std_err</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span>encoding<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>ImageMagicError, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>msg<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> size<span style="color: black;">&#40;</span>img, encoding=<span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">encoding</span><span style="color: black;">&#41;</span>:
+    r = envoy.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'identify -format &quot;%[fx:w],%[fx:h]&quot; &quot;{}&quot;'</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>img<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> r.<span style="color: black;">status_code</span> <span style="color: #66cc66;">!</span>= <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> ImageMagicError<span style="color: black;">&#40;</span>r, encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    w, h = r.<span style="color: black;">std_out</span>.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">','</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>w<span style="color: black;">&#41;</span>, <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>h<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Notez que j&#8217;utilise <a href="https://github.com/sametmax/minibelt">minibelt</a> et <a href="https://github.com/kennethreitz/envoy/">envoy</a> (un wrapper pour subprocess), car je suis une grosse feignasse.</p>
+<p>Pour faire un thumbnail, la recette est plus compliquée, car ImageMagick est à l&#8217;image, ce que Perl est à la programmation. There’s_more_than_one_way_to_do_it ©.</p>
+<p>Au final, celui qui nous a donné le meilleur résultat en qualité est cette suite d&#8217;arcanes secrètes transmise d&#8217;oreille de druide à oreille de druide :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">convert chemin<span style="color: #000000; font-weight: bold;">/</span>image<span style="color: #000000; font-weight: bold;">/</span>originale <span style="color: #660033;">-thumbnail</span> largeurxhauteur^ <span style="color: #660033;">-gravity</span> center <span style="color: #660033;">-extent</span> largeurxhauteur <span style="color: #660033;">-quality</span> <span style="color: #000000;">80</span> chemin<span style="color: #000000; font-weight: bold;">/</span>vers<span style="color: #000000; font-weight: bold;">/</span>resultat.jpg</pre></div></div>
+
+<p>Ceci va redimensionner l&#8217;image en conservant le ratio, et si le résultat n&#8217;est pas adaptée aux dimensions finales, va en découper une partie tout en préservant le centre de l&#8217;image. La sortie sera un jpg avec un taux de qualité de 80%.</p>
+<p>Là encore, un petit wrapper ne fait pas de mal :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> thumb<span style="color: black;">&#40;</span>img, width, heigth, output, crop=<span style="color: #008000;">False</span>, encoding=<span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">encoding</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> crop:
+        <span style="color: #ff7700;font-weight:bold;">if</span> crop <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">True</span>:
+            crop = <span style="color: #483d8b;">'center'</span>
+        crop = <span style="color: #483d8b;">&quot;-gravity {} -extent {}x{}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>crop, width, heigth<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        crop = <span style="color: #483d8b;">''</span>
+&nbsp;
+    <span style="color: #dc143c;">cmd</span> = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;convert {img} -thumbnail {width}x{heigth}^ {crop} -quality 80 {output}&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>
+          img=img, width=width, heigth=heigth, crop=crop, output=output,
+    <span style="color: black;">&#41;</span>
+&nbsp;
+    r =  envoy.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">cmd</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> r.<span style="color: black;">status_code</span> <span style="color: #66cc66;">!</span>= <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> ImageMagicError<span style="color: black;">&#40;</span>r, encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> r</pre></div></div>
+
+<p>Bref, ce genre de petit bricolage est loin d&#8217;être propre, mais il s&#8217;est montré fort robuste et efficace au fil des années. Quand on fait des dizaines de milliers de screenshots de films de cul tous les jours, c&#8217;est important :-)</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8141&amp;md5=3660806e0a423f254095faf72f0ed79c" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fpour-vos-thumbnails-imagemagick-a-la-rescousse%2F&amp;language=en_GB&amp;category=text&amp;title=Pour+vos+thumbnails%2C+ImageMagick+%C3%A0+la+rescousse&amp;description=ImageMagick+est+la+solution+de+manipulation+d%26%238217%3Bimages+la+plus+souple+et+versatile+%C3%A0+disposition.+Apr%C3%A8s+pas+mal+de+tests%2C+Max+en+avait+conclu+qu%26%238217%3Bappeler+la+lib+avec+un+bon+subprocess...&amp;tags=image%2Cimagemagick%2Cpython%2Cthumbnails%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/O0BuGUt.jpg" length="61903" type="image/jpg" />	</item>
+		<item>
+		<title>Changer le mot de passe du super utilisateur django en ligne de commande</title>
+		<link>http://sametmax.com/changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/</link>
+		<comments>http://sametmax.com/changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/#comments</comments>
+		<pubDate>Sun, 01 Dec 2013 00:20:18 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[manage.py]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8020</guid>
+		<description><![CDATA[Vous avez oublié ce maudis mot de passe ? Impossible de se connecter à l'admin ?]]></description>
+			<content:encoded><![CDATA[<p>Vous avez oublié ce maudit mot de passe ? Impossible de se connecter à l&#8217;admin ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py changepassword username</pre></div></div>
+
+<p>Pas besoin d&#8217;être root.</p>
+<p>Souvenez-vous aussi que vous pouvez quasiment tout faire depuis un shell en faisant :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py shell</pre></div></div>
+
+<p>Ce qui vous permet d&#8217;importer les modèles de vos apps et faire toutes les querys que vous voulez.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8020&amp;md5=30502664a6433d32c395442f20ec728d" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/changer-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fchanger-le-mot-de-passe-du-super-utilisateur-django-en-ligne-de-commande%2F&amp;language=en_GB&amp;category=text&amp;title=Changer+le+mot+de+passe+du+super+utilisateur+django+en+ligne+de+commande&amp;description=Vous+avez+oubli%C3%A9+ce+maudit+mot+de+passe+%3F+Impossible+de+se+connecter+%C3%A0+l%26%238217%3Badmin+%3F+.%2Fmanage.py+changepassword+username+Pas+besoin+d%26%238217%3B%C3%AAtre+root.+Souvenez-vous+aussi+que+vous+pouvez+quasiment+tout...&amp;tags=django%2Cmanage.py%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/tumblr_mwz8n9837V1r539hzo1_500.jpg" length="47441" type="image/jpg" />	</item>
+		<item>
+		<title>Qu&#8217;est-ce qu&#8217;un namespace ?</title>
+		<link>http://sametmax.com/quest-ce-quun-namespace/</link>
+		<comments>http://sametmax.com/quest-ce-quun-namespace/#comments</comments>
+		<pubDate>Thu, 28 Nov 2013 06:42:31 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[namespace]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[xml]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8103</guid>
+		<description><![CDATA[Un mot qui vient et qui revient comme on en a des tas en informatique, et qui est utilisé par tout le monde comme si chacun était supposé savoir.]]></description>
+			<content:encoded><![CDATA[<p>Un mot qui vient et qui revient comme on en a des tas en informatique, et qui est utilisé par tout le monde comme si chacun était supposé savoir.</p>
+<p>Très énervant quand on ne sait pas ce que ça veut dire.</p>
+<p>Un namespace, ou espace de noms, est simplement un conteneur de noms, un groupe.</p>
+<p>On s&#8217;en sert pour pouvoir distinguer deux choses qui ont le même nom.</p>
+<p>Par exemple, un trou du cul peut être un anus ou un connard. Si quelqu&#8217;un fait la mention d&#8217;un &#8220;trou du cul&#8221;, j&#8217;ai besoin de contexte pour savoir si il parle d&#8217;un orifice ou d&#8217;un fils d&#8217;horreur. Ce contexte peut être donné par un namespace.</p>
+<p>Comment est représenté un namespace dépend de l&#8217;outil utilisé.</p>
+<p>Ainsi, en XML, c&#8217;est un préfixe puis deux points :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="xml" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;xsd:element<span style="color: #000000; font-weight: bold;">&gt;</span></span><span style="color: #000000; font-weight: bold;">&lt;/xsd:element<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;taoisme:element<span style="color: #000000; font-weight: bold;">&gt;</span></span><span style="color: #000000; font-weight: bold;">&lt;/taoisme:element<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></div></div>
+
+<p>Ici j&#8217;ai deux balises &#8220;element&#8221;, mais elles sont préfixées par deux namespaces : <code>xsd</code> et <code>taoisme</code>.</p>
+<p>C&#8217;est tout. Il n&#8217;y a rien d&#8217;autre caché derrière le namespace, c&#8217;est simplement un moyen de s&#8217;assurer qu&#8217;on sait bien de quoi on parle.</p>
+<p>Certains namespaces sont standardisés. Par exemple, <code>xsd</code> est un namespace réservé aux balises qu&#8217;on retrouve dans un fichier <em>.xsd</em>. D&#8217;autres sont créés par les utilisateurs pour des raisons d&#8217;organisation.</p>
+<p>En effet, un des avantages du namespace, c&#8217;est qu&#8217;il évite que deux références homonymes ne s&#8217;écrasent l&#8217;une l&#8217;autre.</p>
+<p>Par exemple en Python, le nom du module qui contient une fonction peut servir de namespace.</p>
+<p>Si je fais :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">shelve</span></pre></div></div>
+
+<p>Alors j&#8217;ai accès à trois fonctions open():</p>
+<ul>
+<li><strong>os.open()</strong>: la fonction du <code>open()</code> du module <code>os</code> dont le nom est préfixé par le namespace <em>os</em>.</li>
+<li><strong>shelve.open()</strong>: la fonction du <code>open()</code> du module <code>shelve</code> dont le nom est prefixé par le namespace <em>shelve</em>.</li>
+<li><strong>open()</strong>: la fonction du <code>open()</code> dont le nom n&#8217;est PAS préfixé est qui est donc dans le namespace <em>en cours</em>.</li>
+</ul>
+<p>Et aucune fonction ne s&#8217;écrase l&#8217;une l&#8217;autre. Le nom du module, étant utilisé comme namespace, permet la distinction pour l&#8217;humain ET la machine.</p>
+<p>Dans ce langage, cependant, on peut copier une référence d&#8217;un namespace à l&#8217;autre. Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> date</pre></div></div>
+
+<p>Ceci va importer <code>date</code> et le rendre disponible dans le namespace en cours. Du coup on aura pas besoin de préfixer <code>date</code> pour l&#8217;utiliser dans le namespace en cours, mais en contrepartie, on ne pourra pas créer de variable <code>date</code> car cela écraserait la référence précédente.</p>
+<p>Si vous prenez par exemple PHP 5 qui n&#8217;avait pas encore de mécanisme de namespace à l&#8217;époque, les dev étaient obligés de créer artificiellement un namespace en allongeant le nom de toutes leurs fonctions avec &#8216;sujet_&#8217;. Ce qui donnait <a href="http://php.net/manual/en/book.mysql.php">des noms à rallonge</a> du genre : <strong>mysql_real_escape_string()</strong>.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8103&amp;md5=7acfbe8e08424567f559e22640312edc" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-quun-namespace/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fquest-ce-quun-namespace%2F&amp;language=en_GB&amp;category=text&amp;title=Qu%26%238217%3Best-ce+qu%26%238217%3Bun+namespace+%3F&amp;description=Un+mot+qui+vient+et+qui+revient+comme+on+en+a+des+tas+en+informatique%2C+et+qui+est+utilis%C3%A9+par+tout+le+monde+comme+si+chacun+%C3%A9tait+suppos%C3%A9+savoir.+Tr%C3%A8s...&amp;tags=namespace%2Cpython%2Cxml%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/n9oCxHz.jpg" length="21473" type="image/jpg" />	</item>
+		<item>
+		<title>Astuces de recherche</title>
+		<link>http://sametmax.com/astuces-de-recherche/</link>
+		<comments>http://sametmax.com/astuces-de-recherche/#comments</comments>
+		<pubDate>Wed, 27 Nov 2013 08:46:13 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Web]]></category>
+		<category><![CDATA[définition]]></category>
+		<category><![CDATA[films]]></category>
+		<category><![CDATA[recherche]]></category>
+		<category><![CDATA[traduction]]></category>
+		<category><![CDATA[web]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8115</guid>
+		<description><![CDATA[Vrac d'astuces de recherche]]></description>
+			<content:encoded><![CDATA[<p>Quand vous voulez traduire un mot compliqué d&#8217;une langue à l&#8217;autre, les outils de traduction en ligne marchent pas super bien. Une bonne solution ? Chercher le terme sur wikipedia, puis demander l&#8217;article dans une autre langue. Non seulement on a la traduction voulue dans le titre de l&#8217;article, mais en plus tout le champ lexical lié dans le corps de l&#8217;article.</p>
+<p>Tips : la commande bang pour ddg est <code>!wfr</code> pour la version française de wikipédia.</p>
+<p>Quand vous cherchez un nouveau mot à la noix comme &#8220;lulz&#8221;, un truc cochon style &#8220;bukakke&#8221; ou une abréviation obscure du genre &#8220;GTFO&#8221;, vous n&#8217;allez pas la trouver dans le dico ou sur wikipedia. La meilleure source pour ce genre de terme : <a href="http://www.urbandictionary.com/">urbandictionry.com</a>. En plus, c&#8217;est drôle.</p>
+<p>Tips : la commande bang pour ddg est <code>!ud</code></p>
+<p>Vous voulez regarder un film ou une série en VO streaming mais elle n&#8217;est pas sortie en France ? Ou alors votre connexion bride ces fournisseurs ? Ou vous avez peur de vous faire choper ?</p>
+<p>Allez sur les sites de streaming en espangol ! Ils listent les mêmes séries, le plus souvent en VO sous-titré ES, sur des hébergeurs différents complètement hors radar de nos tristes sires français. Et en plus, il n&#8217;y a pas de limite de temps ou de débit. Exemple : <a href="http://seriesyonkis.com/pe">seriesyonkis</a> et <a href="http://pelis24.com/">peli24</a>.</p>
+<p>Tips : évitez les séries doublées en espagnol comme la peste. C&#8217;est HORRIBLE. Dans stargate O&#8217;Neil a la voix de Teal&#8217;c et inversement&#8230;</p>
+<p>Vous allez sur des sites de rencontre et vous voulez évitez les faux profiles ? Clic-droit sur la photo et enregistrez l&#8217;image sur votre bureau. Allez sur <a href="http://www.google.com/imghp">Google Image</a>, et dans le champ, cliquez sur l&#8217;appareil photo pour uploader l&#8217;image.</p>
+<p>Vous allez très vite voir si l&#8217;image a été réutilisée.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8115&amp;md5=c77c06b16c4fac2c87d5127963da52bb" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/astuces-de-recherche/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fastuces-de-recherche%2F&amp;language=en_GB&amp;category=text&amp;title=Astuces+de+recherche&amp;description=Quand+vous+voulez+traduire+un+mot+compliqu%C3%A9+d%26%238217%3Bune+langue+%C3%A0+l%26%238217%3Bautre%2C+les+outils+de+traduction+en+ligne+marchent+pas+super+bien.+Une+bonne+solution+%3F+Chercher+le+terme+sur+wikipedia%2C...&amp;tags=d%C3%A9finition%2Cfilms%2Crecherche%2Ctraduction%2Cweb%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/cra8wl2.jpg" length="85140" type="image/jpg" />	</item>
+		<item>
+		<title>C&#8217;est pour des trucs comme ça que j&#8217;adore Python&#8230;</title>
+		<link>http://sametmax.com/cest-pour-des-trucs-comme-ca-que-jadore-python/</link>
+		<comments>http://sametmax.com/cest-pour-des-trucs-comme-ca-que-jadore-python/#comments</comments>
+		<pubDate>Tue, 26 Nov 2013 06:43:31 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8098</guid>
+		<description><![CDATA[La manipulation de structures de données est fantastique dans ce langage.
+]]></description>
+			<content:encoded><![CDATA[<p>La manipulation de structures de données est fantastique dans ce langage.</p>
+<p>J&#8217;avais un problème du genre : </p>
+<p>&#8220;soit des personnes dans une file ayant un rang supposé&#8230;&#8221;"</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">persons = <span style="color: black;">&#91;</span>
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Nadine'</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Tom'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Christophe'</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cloclo'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Lily'</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Georges'</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Paul'</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Bérénice'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Ursula'</span>, <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Lea'</span>, <span style="color: #ff4500;">15</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#93;</span></pre></div></div>
+
+<p>&#8220;&#8230;trouver, parmi les 5 premières, celles qui sont effectivement à leur place&#8221;</p>
+<p>Vous connaissez mon amour immodéré pour les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intention</a> en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#91;</span>name <span style="color: #ff7700;font-weight:bold;">for</span> i, <span style="color: black;">&#40;</span>name, rank<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>persons<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: black;">&#40;</span>i + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> == rank<span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'Tom'</span>, u<span style="color: #483d8b;">'Lily'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Snif. j&#8217;en pleurerais presque.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8098&amp;md5=b068ab4f0e4baf6c3a5ae28b676c7f3f" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/cest-pour-des-trucs-comme-ca-que-jadore-python/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcest-pour-des-trucs-comme-ca-que-jadore-python%2F&amp;language=en_GB&amp;category=text&amp;title=C%26%238217%3Best+pour+des+trucs+comme+%C3%A7a+que+j%26%238217%3Badore+Python%26%238230%3B&amp;description=La+manipulation+de+structures+de+donn%C3%A9es+est+fantastique+dans+ce+langage.+J%26%238217%3Bavais+un+probl%C3%A8me+du+genre+%3A+%26%238220%3Bsoit+des+personnes+dans+une+file+ayant+un+rang+suppos%C3%A9%26%238230%3B%26%238221%3B%22+persons+%3D+%26%2391%3B...&amp;tags=comprehension-lists%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/6WdjRpU.jpg" length="479093" type="image/jpg" />	</item>
+		<item>
+		<title>Pourquoi il faut éviter import * en Python</title>
+		<link>http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/</link>
+		<comments>http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/#comments</comments>
+		<pubDate>Mon, 25 Nov 2013 07:00:41 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[splat]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8082</guid>
+		<description><![CDATA[Vous l'avez sans doute lu 100 fois, mais savez-vous pourquoi ?]]></description>
+			<content:encoded><![CDATA[<p>Ne pas utiliser l&#8217;<a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">opérateur splat</a> dans un import, vous l&#8217;avez sans doute lu 100 fois, mais savez-vous pourquoi ?</p>
+<p>Regardez la fonction <code>open</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#41;</span>
+    <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>name<span style="color: black;">&#91;</span>, mode<span style="color: black;">&#91;</span>, buffering<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>
+&nbsp;
+    Open a <span style="color: #008000;">file</span> using the <span style="color: #008000;">file</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #008000;">type</span>, returns a <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>.  <span style="color: black;">This</span> <span style="color: #ff7700;font-weight:bold;">is</span> the
+    preferred way to <span style="color: #008000;">open</span> a <span style="color: #008000;">file</span>.  <span style="color: black;">See</span> <span style="color: #008000;">file</span>.__doc__ <span style="color: #ff7700;font-weight:bold;">for</span> further information.
+<span style="color: black;">&#40;</span>END<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Maintenant, si j&#8217;importe le module <code>os</code>, ça ne change rien :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#41;</span>
+    <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>name<span style="color: black;">&#91;</span>, mode<span style="color: black;">&#91;</span>, buffering<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>
+&nbsp;
+    Open a <span style="color: #008000;">file</span> using the <span style="color: #008000;">file</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #008000;">type</span>, returns a <span style="color: #008000;">file</span> <span style="color: #008000;">object</span>.  <span style="color: black;">This</span> <span style="color: #ff7700;font-weight:bold;">is</span> the
+    preferred way to <span style="color: #008000;">open</span> a <span style="color: #008000;">file</span>.  <span style="color: black;">See</span> <span style="color: #008000;">file</span>.__doc__ <span style="color: #ff7700;font-weight:bold;">for</span> further information.
+<span style="color: black;">&#40;</span>END<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Si par contre j&#8217;importe tout le contenu du module <code>os</code>, sans namespace :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">os</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #66cc66;">*</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#41;</span>
+    <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>filename, flag <span style="color: black;">&#91;</span>, mode=0777<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> fd
+&nbsp;
+    Open a <span style="color: #008000;">file</span> <span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">for</span> low level IO<span style="color: black;">&#41;</span>.
+<span style="color: black;">&#40;</span>END<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>La différence ?</p>
+<p>Dans le premier cas, on a la fonction <code>open()</code> built-in de Python. Dans le second cas, la fonction <code>os.open()</code> a été importée et a remplacée la fonction <code>open()</code>.</p>
+<p>Ici le bug sera très difficile à trouver, car les deux fonctions ont presque la même signature :</p>
+<p><code>open(name[, mode[, buffering]]) -> file object</code></p>
+<p>VS </p>
+<p><code>open(filename, flag [, mode=0777]) -> fd</code></p>
+<p>Et en plus un usage très similaire.</p>
+<p>Bottom line, <code>import *</code>, c&#8217;est pour les sessions shell. Dans vos fichiers de code, ne l&#8217;utilisez pas, vous ne savez pas ce que vous importez.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8082&amp;md5=e41900ebed59acfdf42fcf7ebddfac09" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fpourquoi-il-faut-eviter-import-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Pourquoi+il+faut+%C3%A9viter+import+%2A+en+Python&amp;description=Ne+pas+utiliser+l%26%238217%3Bop%C3%A9rateur+splat+dans+un+import%2C+vous+l%26%238217%3Bavez+sans+doute+lu+100+fois%2C+mais+savez-vous+pourquoi+%3F+Regardez+la+fonction+open+%3A+%26gt%3B%26gt%3B%26gt%3B+help%26%2340%3Bopen%26%2341%3B+open%26%2340%3Bname%26%2391%3B%2C+mode%26%2391%3B%2C+buffering%26%2393%3B%26%2393%3B%26%2341%3B+-%26gt%3B...&amp;tags=import%2Cpython%2Csplat%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/pyclusion.jpg" length="72541" type="image/jpg" />	</item>
+		<item>
+		<title>Paramètres imbriqués dans une fonction Python</title>
+		<link>http://sametmax.com/parametres-imbriques-dans-une-fonction-python/</link>
+		<comments>http://sametmax.com/parametres-imbriques-dans-une-fonction-python/#comments</comments>
+		<pubDate>Sat, 23 Nov 2013 07:24:35 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unpacking]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7613</guid>
+		<description><![CDATA[Une fonction très peu connue de Python est la possibilité de définir un paramètre en indiquant qu'il s'agit d'une séquence.]]></description>
+			<content:encoded><![CDATA[<p>Une fonction très peu connue de Python est la possibilité de définir un paramètre en indiquant qu&#8217;il s&#8217;agit d&#8217;une séquence. Python va automatiquement appliquer l&#8217;<a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">unpacking</a> dessus :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> message_geolocalise<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #008000;">long</span>, lat<span style="color: black;">&#41;</span>, message<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'%s'</span> <span style="color: #66cc66;">%</span> message
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Longitude : %s'</span> <span style="color: #66cc66;">%</span> <span style="color: #008000;">long</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Latitude : %s'</span> <span style="color: #66cc66;">%</span> lat
+...     
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> point = <span style="color: black;">&#40;</span><span style="color: #ff4500;">4.344</span>, <span style="color: #ff4500;">2.44</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> message = <span style="color: #483d8b;">&quot;glittering prizes&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> message_geolocalise<span style="color: black;">&#40;</span>point, message<span style="color: black;">&#41;</span>
+glittering prizes
+Longitude : <span style="color: #ff4500;">4.344</span>
+Latitude : <span style="color: #ff4500;">2.44</span></pre></div></div>
+
+<p>Cette fonctionnalité a été <a href="http://www.python.org/dev/peps/pep-3113/">retirée</a> en Python 3, jugée rarement utilisée, et surtout facilement remplaçable par un unpacking explicite :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> message_geolocalise<span style="color: black;">&#40;</span>coord, message<span style="color: black;">&#41;</span>:
+    <span style="color: #008000;">long</span>, lat = coord
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'%s'</span> <span style="color: #66cc66;">%</span> message
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Longitude : %s'</span> <span style="color: #66cc66;">%</span> <span style="color: #008000;">long</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Latitude : %s'</span> <span style="color: #66cc66;">%</span> lat</pre></div></div>
+
+<p>En effet, en Python on peut utiliser de l&#8217;unpacking imbriqué :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">a, <span style="color: black;">&#40;</span>b, c<span style="color: black;">&#41;</span> = <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Et cela a été abusé en le mélangeant la syntaxe des paramètres imbriqués, qui rend le truc franchement illisible.</p>
+<p>Voilà, c&#8217;était le post &#8220;vous aviez un poney que vous ne saviez pas et maintenant que vous le savez vous l&#8217;avez plus&#8221;.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7613&amp;md5=e5d0ed3069ebdb46f5eadb0499c77224" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/parametres-imbriques-dans-une-fonction-python/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fparametres-imbriques-dans-une-fonction-python%2F&amp;language=en_GB&amp;category=text&amp;title=Param%C3%A8tres+imbriqu%C3%A9s+dans+une+fonction+Python&amp;description=Une+fonction+tr%C3%A8s+peu+connue+de+Python+est+la+possibilit%C3%A9+de+d%C3%A9finir+un+param%C3%A8tre+en+indiquant+qu%26%238217%3Bil+s%26%238217%3Bagit+d%26%238217%3Bune+s%C3%A9quence.+Python+va+automatiquement+appliquer+l%26%238217%3Bunpacking+dessus+%3A+%26gt%3B%26gt%3B%26gt%3B+def+message_geolocalise%26%2340%3B%26%2340%3Blong%2C...&amp;tags=python%2Cunpacking%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/oomouse.jpg" length="24869" type="image/jpg" />	</item>
+		<item>
+		<title>Compter les doublons avec l&#8217;ORM Django</title>
+		<link>http://sametmax.com/compter-les-doublons-avec-lorm-django/</link>
+		<comments>http://sametmax.com/compter-les-doublons-avec-lorm-django/#comments</comments>
+		<pubDate>Fri, 22 Nov 2013 08:28:48 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[group by]]></category>
+		<category><![CDATA[orm]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7761</guid>
+		<description><![CDATA[<code>GROUP BY </code>et <code>HAVING</code> sont assez peu intuitifs en SQL, et encore moins avec l'ORM Django.]]></description>
+			<content:encoded><![CDATA[<p><code>GROUP BY </code>et <code>HAVING</code> sont assez peu intuitifs en SQL, et encore moins avec l&#8217;ORM Django.</p>
+<p>Voici donc la recette pour compter le nombre d’occurrences des valeurs d&#8217;un champ, pour par exemple trouver les doublons.</p>
+<p>En supposant une table <code>Massage</code> avec une valeur <code>finish</code> :</p>
+<pre>
+ID         FINISH
+1          manuel
+2          oral
+3          oral
+4          oral
+</pre>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> Massage.<span style="color: black;">objects</span>.<span style="color: black;">values</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'finish'</span><span style="color: black;">&#41;</span>.<span style="color: black;">annotate</span><span style="color: black;">&#40;</span>count=Count<span style="color: black;">&#40;</span><span style="color: #483d8b;">'id'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'manuel'</span>: <span style="color: #ff4500;">2</span>, <span style="color: #483d8b;">'oral'</span>: <span style="color: #483d8b;">'9'</span>: <span style="color: #483d8b;">'rectal'</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">'paradoxal'</span>: -<span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Pour obtenir uniquement les doublons, il suffit de filtrer pour avoir les valeurs qui ont un <code>count</code> plus grand que 1 :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">Massage.<span style="color: black;">objects</span>.<span style="color: black;">values</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'finish'</span><span style="color: black;">&#41;</span>.<span style="color: black;">annotate</span><span style="color: black;">&#40;</span>count=Count<span style="color: black;">&#40;</span><span style="color: #483d8b;">'id'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>count__gt=<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7761&amp;md5=70ebd178c4abc22f9fe60ba0f38b5e38" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/compter-les-doublons-avec-lorm-django/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcompter-les-doublons-avec-lorm-django%2F&amp;language=en_GB&amp;category=text&amp;title=Compter+les+doublons+avec+l%26%238217%3BORM+Django&amp;description=GROUP+BY+et+HAVING+sont+assez+peu+intuitifs+en+SQL%2C+et+encore+moins+avec+l%26%238217%3BORM+Django.+Voici+donc+la+recette+pour+compter+le+nombre+d%E2%80%99occurrences+des+valeurs+d%26%238217%3Bun+champ%2C+pour...&amp;tags=django%2Cgroup+by%2Corm%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/91390283.png" length="434902" type="image/jpg" />	</item>
+		<item>
+		<title>Créer un super utilisateur Django sans prompt</title>
+		<link>http://sametmax.com/creer-un-super-utilisateur-django-sans-prompt/</link>
+		<comments>http://sametmax.com/creer-un-super-utilisateur-django-sans-prompt/#comments</comments>
+		<pubDate>Wed, 20 Nov 2013 09:23:12 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[manage.py]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[superuser]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7981</guid>
+		<description><![CDATA[Automatiser le déploiement d'un projet Django passe par un <code>syncdb</code> sans prompt, et donc pas de création de superutilisateur...]]></description>
+			<content:encoded><![CDATA[<p>Automatiser le déploiement d&#8217;un projet Django passe par un <code>syncdb</code> sans prompt, et donc pas de création de superutilisateur :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py syncdb <span style="color: #660033;">--noinput</span></pre></div></div>
+
+<p>Vous pouvez bien entendu toujours en créer un plus tard, avec :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py createsuperuser <span style="color: #660033;">--username</span>=vous <span style="color: #660033;">--email</span>=votre_mail</pre></div></div>
+
+<p>Mais il va vous prompter pour saisir le mot de passe ou alors mettre un mot de passe inutilisable automatiquement, ça ne résout pas votre problème. Une astuce consiste à le créer avec un code Python et à piper ce code dans un shell :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;from django.contrib.auth.models import User; User.objects.filter(username='vous').count() or User.objects.create_superuser('vous', votre_email', 'mot_de_passe')&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> .<span style="color: #000000; font-weight: bold;">/</span>manage.py shell</pre></div></div>
+
+<p>Personnellement je colle ça dans une tache <a href="http://sametmax.com/travailler-moins-pour-gagner-plus-en-15-minutes-avec-python-fabric/">fabric</a>. Parfois on peut même générer le mot de passe aléatoirement avec un <a href="http://sametmax.com/quest-ce-quun-uuid-et-a-quoi-ca-sert/">uuid</a> qui est printé localement.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7981&amp;md5=5968a2cf4dce21ecfb87305b3e6e8fbd" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/creer-un-super-utilisateur-django-sans-prompt/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcreer-un-super-utilisateur-django-sans-prompt%2F&amp;language=en_GB&amp;category=text&amp;title=Cr%C3%A9er+un+super+utilisateur+Django+sans+prompt&amp;description=Automatiser+le+d%C3%A9ploiement+d%26%238217%3Bun+projet+Django+passe+par+un+syncdb+sans+prompt%2C+et+donc+pas+de+cr%C3%A9ation+de+superutilisateur+%3A+.%2Fmanage.py+syncdb+--noinput+Vous+pouvez+bien+entendu+toujours+en+cr%C3%A9er...&amp;tags=django%2Cmanage.py%2Cpython%2Csuperuser%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/tumblr_mtqsqnbEqM1r539hzo1_500.jpg" length="34248" type="image/jpg" />	</item>
+		<item>
+		<title>Marre des mots de passe pour push sur git ?</title>
+		<link>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/</link>
+		<comments>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/#comments</comments>
+		<pubDate>Tue, 19 Nov 2013 08:36:34 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[auth]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[git]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8013</guid>
+		<description><![CDATA[Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement un clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.]]></description>
+			<content:encoded><![CDATA[<p>Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement une clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.</p>
+<p><a href="http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/">Ça sent le vécu n&#8217;est-ce pas ?</a></p>
+<p>Mais bien entendu git vient avec une option bien cachée au fond de son fion pour adresser ce problème :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git</span> config credential.helper <span style="color: #ff0000;">'cache --timeout=3600'</span></pre></div></div>
+
+<p>Et votre authentification sera gardée en mémoire pour une heure. Vous pouvez faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git</span> config <span style="color: #660033;">--global</span> credential.helper <span style="color: #ff0000;">'cache --timeout=3600'</span></pre></div></div>
+
+<p>Pour l&#8217;étendre à tous les repos de votre machine.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8013&amp;md5=e4c62cc7ed21334f85fbfed045830fc7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fmarre-des-mots-de-passe-pour-push-sur-git%2F&amp;language=en_GB&amp;category=text&amp;title=Marre+des+mots+de+passe+pour+push+sur+git+%3F&amp;description=Vous+%C3%AAtes+dans+une+situation+o%C3%B9+vous+ne+pouvez+pas+utiliser+uniquement+une+cl%C3%A9+pour+vous+authentifier%2C+et+il+faut+taper+votre+putain+de+mot+de+passe+%C3%A0+chaque+push....&amp;tags=auth%2Ccache%2Cgit%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/cdempDI.jpg" length="51081" type="image/jpg" />	</item>
+	</channel>
+</rss>

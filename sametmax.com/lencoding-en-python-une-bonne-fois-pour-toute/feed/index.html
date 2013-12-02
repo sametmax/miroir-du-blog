@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: L&#8217;encoding en Python, une bonne fois pour toute</title>
+	<atom:link href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:54:05 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<item>
+		<title>By: Adrien</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-15398</link>
+		<dc:creator>Adrien</dc:creator>
+		<pubDate>Mon, 04 Nov 2013 14:41:52 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-15398</guid>
+		<description>Un grand merci, enfin un tuto qui va à l&#039;essentiel. J&#039;ai enfin compris comment ça fonctionne.</description>
+		<content:encoded><![CDATA[<p>Un grand merci, enfin un tuto qui va à l&#8217;essentiel. J&#8217;ai enfin compris comment ça fonctionne.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Guts</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-14882</link>
+		<dc:creator>Guts</dc:creator>
+		<pubDate>Wed, 16 Oct 2013 10:29:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-14882</guid>
+		<description>Merci pour l&#039;article qui m&#039;a bien aidé sur certains points de blocage mais il y a toujours quelque chose que je ne parviens pas à résoudre : le parsing (avec os.walk) de fichiers qui contiennent des accents. Ce qui me déroute surtout c&#039;est la différence entre Windows et Ubuntu.
+
+Dans mon &lt;a href=&quot;https://github.com/Guts/Metadator&quot; rel=&quot;nofollow&quot;&gt;programme&lt;/a&gt; j&#039;ai une fonction (li_geofiles()) chargée de lister les fichiers compatibles (selon leur extension et l&#039;existence de leurs dépendances) contenus dans une arborescence à partir d&#039;un dossier indiqué par l&#039;utilisateur (foldertarget retourné via tkMessageBox.askdirectory) et qui bloque sur les noms de fichiers qui contiennent un accent...mais seulement sur Ubuntu ! Ça fait 2 jours que je me flagelle là-dessus et j&#039;ai essayé qqls solutions :
+- un try/except sur le nom de fichier et réencodage à la volée (solution choisie) mais qui a le (gros) défaut de ne pas lister les fichiers avec accents (os.path.isfile ne les reconnaît pas...)
+- passer foldertarget en unicode mais ça marche pô (idem avec path.normpath(foldertarget)
+
+
+Voici la fonction en question :
+
+&lt;pre lang=&quot;python&quot;&gt;
+for root, dirs, files in walk(foldertarget):
+    self.num_folders = self.num_folders + len(dirs)
+        for f in files:
+            try:
+                unicode(path.join(root, f))
+                full_path = path.join(root, f)
+            except UnicodeDecodeError, e:
+                full_path = path.join(root, f.decode(&#039;latin1&#039;).encode(&#039;utf8&#039;))
+                self.logger.error(&quot;%s:%s&quot; % (e, f.decode(&#039;utf-8&#039;)))
+            # Looping on files contained
+            if path.splitext(full_path.lower())[1] == &#039;.shp&#039; and \
+                path.isfile(&#039;%s.dbf&#039;.lower() % full_path[:-4]) and \
+                path.isfile(&#039;%s.shx&#039;.lower() % full_path[:-4]) and \
+                path.isfile(&#039;%s.prj&#039;.lower() % full_path[:-4]):
+                    # add complete path of shapefile
+                    self.li_shp.append(full_path)
+            elif path.splitext(full_path.lower())[1] == &#039;.tab&#039; and \
+                path.isfile(full_path[:-4]+ &#039;.dat&#039;.lower()) and \
+                path.isfile(full_path[:-4]+ &#039;.map&#039;.lower()) and \
+                path.isfile(full_path[:-4]+ &#039;.id&#039;.lower()):
+                    # add complete path of MapInfo file
+                    self.li_tab.append(full_path)
+&lt;/pre&gt;
+Si quelqu&#039;un voit le problème...et surtout la solution !
+
+PS : je suis géographe à la base donc pas vraiment un développeur... #indulgence</description>
+		<content:encoded><![CDATA[<p>Merci pour l&#8217;article qui m&#8217;a bien aidé sur certains points de blocage mais il y a toujours quelque chose que je ne parviens pas à résoudre : le parsing (avec os.walk) de fichiers qui contiennent des accents. Ce qui me déroute surtout c&#8217;est la différence entre Windows et Ubuntu.</p>
+<p>Dans mon <a href="https://github.com/Guts/Metadator" rel="nofollow">programme</a> j&#8217;ai une fonction (li_geofiles()) chargée de lister les fichiers compatibles (selon leur extension et l&#8217;existence de leurs dépendances) contenus dans une arborescence à partir d&#8217;un dossier indiqué par l&#8217;utilisateur (foldertarget retourné via tkMessageBox.askdirectory) et qui bloque sur les noms de fichiers qui contiennent un accent&#8230;mais seulement sur Ubuntu ! Ça fait 2 jours que je me flagelle là-dessus et j&#8217;ai essayé qqls solutions :<br />
+- un try/except sur le nom de fichier et réencodage à la volée (solution choisie) mais qui a le (gros) défaut de ne pas lister les fichiers avec accents (os.path.isfile ne les reconnaît pas&#8230;)<br />
+- passer foldertarget en unicode mais ça marche pô (idem avec path.normpath(foldertarget)</p>
+<p>Voici la fonction en question :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> root, dirs, files <span style="color: #ff7700;font-weight:bold;">in</span> walk<span style="color: black;">&#40;</span>foldertarget<span style="color: black;">&#41;</span>:
+    <span style="color: #008000;">self</span>.<span style="color: black;">num_folders</span> = <span style="color: #008000;">self</span>.<span style="color: black;">num_folders</span> + <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>dirs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> f <span style="color: #ff7700;font-weight:bold;">in</span> files:
+            <span style="color: #ff7700;font-weight:bold;">try</span>:
+                <span style="color: #008000;">unicode</span><span style="color: black;">&#40;</span>path.<span style="color: black;">join</span><span style="color: black;">&#40;</span>root, f<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+                full_path = path.<span style="color: black;">join</span><span style="color: black;">&#40;</span>root, f<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">UnicodeDecodeError</span>, e:
+                full_path = path.<span style="color: black;">join</span><span style="color: black;">&#40;</span>root, f.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'latin1'</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+                <span style="color: #008000;">self</span>.<span style="color: black;">logger</span>.<span style="color: black;">error</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;%s:%s&quot;</span> <span style="color: #66cc66;">%</span> <span style="color: black;">&#40;</span>e, f.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf-8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># Looping on files contained</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> path.<span style="color: black;">splitext</span><span style="color: black;">&#40;</span>full_path.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> == <span style="color: #483d8b;">'.shp'</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s.dbf'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s.shx'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s.prj'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+                    <span style="color: #808080; font-style: italic;"># add complete path of shapefile</span>
+                    <span style="color: #008000;">self</span>.<span style="color: black;">li_shp</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">elif</span> path.<span style="color: black;">splitext</span><span style="color: black;">&#40;</span>full_path.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> == <span style="color: #483d8b;">'.tab'</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>+ <span style="color: #483d8b;">'.dat'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>+ <span style="color: #483d8b;">'.map'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> \
+                path.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#91;</span>:-<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>+ <span style="color: #483d8b;">'.id'</span>.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+                    <span style="color: #808080; font-style: italic;"># add complete path of MapInfo file</span>
+                    <span style="color: #008000;">self</span>.<span style="color: black;">li_tab</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>full_path<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Si quelqu&#8217;un voit le problème&#8230;et surtout la solution !</p>
+<p>PS : je suis géographe à la base donc pas vraiment un développeur&#8230; #indulgence</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Max</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-14444</link>
+		<dc:creator>Max</dc:creator>
+		<pubDate>Tue, 01 Oct 2013 10:27:52 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-14444</guid>
+		<description>C&#039;est laborieux chez leaseweb :/
+Ensuite ça a été un probleme de varnish qui s&#039;est bien lancé quand leaseweb a reboot les VPS mais qui pour une raison mystérieuse ne voulait rien savoir :/</description>
+		<content:encoded><![CDATA[<p>C&#8217;est laborieux chez leaseweb :/<br />
+Ensuite ça a été un probleme de varnish qui s&#8217;est bien lancé quand leaseweb a reboot les VPS mais qui pour une raison mystérieuse ne voulait rien savoir :/</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: A_Vgyle</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-14435</link>
+		<dc:creator>A_Vgyle</dc:creator>
+		<pubDate>Fri, 27 Sep 2013 20:25:02 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-14435</guid>
+		<description>Merci grandement!
+2 jours que je plante sur ces %?!/%££!! d&#039;encoding, et en 15 minutes... Réglé
+Thanx
+Continue!!!</description>
+		<content:encoded><![CDATA[<p>Merci grandement!<br />
+2 jours que je plante sur ces %?!/%££!! d&#8217;encoding, et en 15 minutes&#8230; Réglé<br />
+Thanx<br />
+Continue!!!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: yuiio</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-12441</link>
+		<dc:creator>yuiio</dc:creator>
+		<pubDate>Mon, 05 Aug 2013 14:26:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-12441</guid>
+		<description>Juste merci</description>
+		<content:encoded><![CDATA[<p>Juste merci</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Kyoku57</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-8678</link>
+		<dc:creator>Kyoku57</dc:creator>
+		<pubDate>Sun, 05 May 2013 10:42:26 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-8678</guid>
+		<description>Alors là, très bon article !
+
+Quelque soit le langage, le problème le plus récurrent est toujours celui de la manipulation des différents types d&#039;encoding.
+
+Je ne te parle pas de ceux qui développent sous Windows avec un CP-1252 par défaut dans tous les logiciels et qui même avec un réglage de l&#039;IDE finit un jour où l&#039;autre par te ressortir l&#039;encoding par défaut genre .. à la réouverture.
+
+Bref, éternel problème que tu as très bien mis en évidence. Tout le problème est d&#039;origine interface chaise-clavier. Il faut se sortir les doigts du boule pour faire du propre.</description>
+		<content:encoded><![CDATA[<p>Alors là, très bon article !</p>
+<p>Quelque soit le langage, le problème le plus récurrent est toujours celui de la manipulation des différents types d&#8217;encoding.</p>
+<p>Je ne te parle pas de ceux qui développent sous Windows avec un CP-1252 par défaut dans tous les logiciels et qui même avec un réglage de l&#8217;IDE finit un jour où l&#8217;autre par te ressortir l&#8217;encoding par défaut genre .. à la réouverture.</p>
+<p>Bref, éternel problème que tu as très bien mis en évidence. Tout le problème est d&#8217;origine interface chaise-clavier. Il faut se sortir les doigts du boule pour faire du propre.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-8397</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Tue, 23 Apr 2013 21:38:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-8397</guid>
+		<description>C&#039;est l&#039;acceng, c&#039;est pour ça.</description>
+		<content:encoded><![CDATA[<p>C&#8217;est l&#8217;acceng, c&#8217;est pour ça.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: mentat</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-8391</link>
+		<dc:creator>mentat</dc:creator>
+		<pubDate>Tue, 23 Apr 2013 19:31:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-8391</guid>
+		<description>stdin et pas stding dans :
+sys.(stding&#124;stdout).encoding.
+
+A part çà, rien à redire, c&#039;est nickel comme d&#039;hab !</description>
+		<content:encoded><![CDATA[<p>stdin et pas stding dans :<br />
+sys.(stding|stdout).encoding.</p>
+<p>A part çà, rien à redire, c&#8217;est nickel comme d&#8217;hab !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gring</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-8367</link>
+		<dc:creator>Gring</dc:creator>
+		<pubDate>Tue, 23 Apr 2013 09:49:38 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-8367</guid>
+		<description>Merc＀ p〇ʋr cごt art%cle tr⁋s instrucⁱf !</description>
+		<content:encoded><![CDATA[<p>Merc＀ p〇ʋr cごt art%cle tr⁋s instrucⁱf !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Orlanth</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comment-8333</link>
+		<dc:creator>Orlanth</dc:creator>
+		<pubDate>Mon, 22 Apr 2013 15:14:17 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5824#comment-8333</guid>
+		<description>Copié collé direct dans mes notes, à côté de  : http://sebsauvage.net/python/charsets_et_encoding.html</description>
+		<content:encoded><![CDATA[<p>Copié collé direct dans mes notes, à côté de  : <a href="http://sebsauvage.net/python/charsets_et_encoding.html" rel="nofollow">http://sebsauvage.net/python/charsets_et_encoding.html</a></p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

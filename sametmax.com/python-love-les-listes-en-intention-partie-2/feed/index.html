@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Python love: les listes en intention (partie 2)</title>
+	<atom:link href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:54:05 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<item>
+		<title>By: DiZ</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-16228</link>
+		<dc:creator>DiZ</dc:creator>
+		<pubDate>Wed, 27 Nov 2013 04:02:42 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-16228</guid>
+		<description>On n&#039;est pas sur stackoverflow mais je n&#039;ai pas pu m&#039;empêcher !
+
+@furankun:
+Quelques petits trucs pour améliorer encore ton code ;)
+
+Déjà, tu peux te passer de ta liste second_pas en mettant directement le résultat dans ta liste premier_pas (que j&#039;ai appelé acc ici).
+&lt;pre lang=&quot;python&quot;&gt;acc = [elems[i] if mask[k] else v for k,v in enumerate(acc)]&lt;/pre&gt;
+
+Petite note sur &lt;code&gt;enumerate(list)&lt;/code&gt; au passage : ça te renvoie chaque paire (index, valeur) de ta liste. Tu peux même changer la valeur de départ avec &lt;code&gt;enumerate(list, valeur_depart&lt;/code&gt;. Très pratique !
+
+Ensuite, pour initialiser ta liste, Python dispose d&#039;une syntaxe plus efficace et plus simple également: [un_element] * nombre
+&lt;pre lang=&quot;python&quot;&gt;acc = [None] * len(elems)&lt;/pre&gt;
+
+Enfin, ici en termes de performance, mieux vaut ne pas modifier un élément de ta liste si celui-ci reste identique. Alors il vaut mieux éviter d&#039;utiliser une &#039;comprehension list&#039; ici.
+
+Ce qui donne au final :
+&lt;pre lang=&quot;python&quot;&gt;elems = [&#039;Saucisse&#039;,&#039;Canard&#039;,&#039;Gomme&#039;,&#039;Truc4&#039;,&#039;Touillette&#039;,&#039;Bas_resille&#039;]
+masks = [[1, 1, 0, 0, 0, 1],
+         [0, 0, 1, 0, 1, 0],
+         [0, 0, 0, 1, 0, 1],
+         [0, 0, 0, 1, 0, 1],
+         [0, 0, 0, 1, 0, 1],
+         [0, 0, 0, 1, 0, 1]]
+
+acc = [None] * len(elems)
+for elem,mask in zip(elems,masks):
+    for i,idx in enumerate(mask):
+        if idx: acc[i] = elem
+    print(acc)&lt;/pre&gt;
+
+Et si tu veux vraiment utiliser une &#039;comprehension list&#039; :
+&lt;pre lang=&quot;python&quot;&gt;acc = [None] * len(elems)
+for elem,mask in zip(elems,masks):
+    acc = [elem if idx else acc[i] for i,idx in enumerate(mask)]
+    print(acc)&lt;/pre&gt;
+
+Voilà voilà !</description>
+		<content:encoded><![CDATA[<p>On n&#8217;est pas sur stackoverflow mais je n&#8217;ai pas pu m&#8217;empêcher !</p>
+<p>@furankun:<br />
+Quelques petits trucs pour améliorer encore ton code ;)</p>
+<p>Déjà, tu peux te passer de ta liste second_pas en mettant directement le résultat dans ta liste premier_pas (que j&#8217;ai appelé acc ici).</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">acc = <span style="color: black;">&#91;</span>elems<span style="color: black;">&#91;</span>i<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">if</span> mask<span style="color: black;">&#91;</span>k<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">else</span> v <span style="color: #ff7700;font-weight:bold;">for</span> k,v <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>acc<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Petite note sur <code>enumerate(list)</code> au passage : ça te renvoie chaque paire (index, valeur) de ta liste. Tu peux même changer la valeur de départ avec <code>enumerate(list, valeur_depart</code>. Très pratique !</p>
+<p>Ensuite, pour initialiser ta liste, Python dispose d&#8217;une syntaxe plus efficace et plus simple également: [un_element] * nombre</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">acc = <span style="color: black;">&#91;</span><span style="color: #008000;">None</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">*</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>elems<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Enfin, ici en termes de performance, mieux vaut ne pas modifier un élément de ta liste si celui-ci reste identique. Alors il vaut mieux éviter d&#8217;utiliser une &#8216;comprehension list&#8217; ici.</p>
+<p>Ce qui donne au final :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">elems = <span style="color: black;">&#91;</span><span style="color: #483d8b;">'Saucisse'</span>,<span style="color: #483d8b;">'Canard'</span>,<span style="color: #483d8b;">'Gomme'</span>,<span style="color: #483d8b;">'Truc4'</span>,<span style="color: #483d8b;">'Touillette'</span>,<span style="color: #483d8b;">'Bas_resille'</span><span style="color: black;">&#93;</span>
+masks = <span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,
+         <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>,
+         <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,
+         <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,
+         <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,
+         <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span>
+&nbsp;
+acc = <span style="color: black;">&#91;</span><span style="color: #008000;">None</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">*</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>elems<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> elem,mask <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">zip</span><span style="color: black;">&#40;</span>elems,masks<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">for</span> i,idx <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>mask<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> idx: acc<span style="color: black;">&#91;</span>i<span style="color: black;">&#93;</span> = elem
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>acc<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et si tu veux vraiment utiliser une &#8216;comprehension list&#8217; :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">acc = <span style="color: black;">&#91;</span><span style="color: #008000;">None</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">*</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>elems<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> elem,mask <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">zip</span><span style="color: black;">&#40;</span>elems,masks<span style="color: black;">&#41;</span>:
+    acc = <span style="color: black;">&#91;</span>elem <span style="color: #ff7700;font-weight:bold;">if</span> idx <span style="color: #ff7700;font-weight:bold;">else</span> acc<span style="color: black;">&#91;</span>i<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> i,idx <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>mask<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>acc<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Voilà voilà !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Policier Moustachu</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-16201</link>
+		<dc:creator>Policier Moustachu</dc:creator>
+		<pubDate>Tue, 26 Nov 2013 10:51:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-16201</guid>
+		<description>&lt;span class=&quot;merci&quot;&gt;&lt;/span&gt;il faudrait corriger:
+
+lignes_qui_ne_finissent_pas_par_un_point = (l for l in lignes_qui_ne_finissent_pas_par_un_point if not l.endswith(&#039;.&#039;))
+
+en 
+
+lignes_qui_ne_finissent_pas_par_un_point = (l for l in &lt;strong&gt;lignes_qui_contienne_un_mot&lt;/strong&gt; if not l.endswith(&#039;.&#039;))</description>
+		<content:encoded><![CDATA[<p><span class="merci"></span>il faudrait corriger:</p>
+<p>lignes_qui_ne_finissent_pas_par_un_point = (l for l in lignes_qui_ne_finissent_pas_par_un_point if not l.endswith(&#8216;.&#8217;))</p>
+<p>en </p>
+<p>lignes_qui_ne_finissent_pas_par_un_point = (l for l in <strong>lignes_qui_contienne_un_mot</strong> if not l.endswith(&#8216;.&#8217;))</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: furankun</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-15770</link>
+		<dc:creator>furankun</dc:creator>
+		<pubDate>Thu, 14 Nov 2013 13:53:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-15770</guid>
+		<description>Salut encore!
+voilà une solution pour obtenir ce que je voulais
+
+&lt;pre lang=&quot;python&quot;&gt;mes_index = [[1, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0], [0, 0, 0, 1, 0, 1],  [0, 0, 0, 1, 0, 1], [0, 0, 0, 1, 0, 1],[0, 0, 0, 1, 0, 1],]
+mes_trucs = [&#039;Saucisse&#039;,&#039;Canard&#039;,&#039;Gomme&#039;,&#039;Truc4&#039;,&#039;Touillette&#039;,&#039;Bas_resille&#039;]
+premier_pas = [None for i in range(len(mes_trucs))]
+for index,truc in zip(mes_index, mes_trucs):
+    second_pas =[truc if index[x] else premier_pas[x] for x in range(len(index))]
+    premier_pas = second_pas&lt;/pre&gt;
+
+Ca remplit la liste résultat second_pas avec truc ou ce qu&#039;il y a dans la liste précédente premier_pas (et ça écrase si besoin).
+
+Merci beaucoup pour votre aide Sam et kontre (ça marche oui, d&#039;ailleurs), grâce à vous je suis un peu moins con :)</description>
+		<content:encoded><![CDATA[<p>Salut encore!<br />
+voilà une solution pour obtenir ce que je voulais</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">mes_index = <span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,  <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#93;</span>
+mes_trucs = <span style="color: black;">&#91;</span><span style="color: #483d8b;">'Saucisse'</span>,<span style="color: #483d8b;">'Canard'</span>,<span style="color: #483d8b;">'Gomme'</span>,<span style="color: #483d8b;">'Truc4'</span>,<span style="color: #483d8b;">'Touillette'</span>,<span style="color: #483d8b;">'Bas_resille'</span><span style="color: black;">&#93;</span>
+premier_pas = <span style="color: black;">&#91;</span><span style="color: #008000;">None</span> <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>mes_trucs<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> index,truc <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">zip</span><span style="color: black;">&#40;</span>mes_index, mes_trucs<span style="color: black;">&#41;</span>:
+    second_pas =<span style="color: black;">&#91;</span>truc <span style="color: #ff7700;font-weight:bold;">if</span> index<span style="color: black;">&#91;</span>x<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">else</span> premier_pas<span style="color: black;">&#91;</span>x<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>index<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+    premier_pas = second_pas</pre></div></div>
+
+<p>Ca remplit la liste résultat second_pas avec truc ou ce qu&#8217;il y a dans la liste précédente premier_pas (et ça écrase si besoin).</p>
+<p>Merci beaucoup pour votre aide Sam et kontre (ça marche oui, d&#8217;ailleurs), grâce à vous je suis un peu moins con :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: kontre</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-15766</link>
+		<dc:creator>kontre</dc:creator>
+		<pubDate>Thu, 14 Nov 2013 10:07:54 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-15766</guid>
+		<description>il ne doit pas y avoir besoin de multiplier truc par i, [truc if i else None for i in index] doit suffire.</description>
+		<content:encoded><![CDATA[<p>il ne doit pas y avoir besoin de multiplier truc par i, [truc if i else None for i in index] doit suffire.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-15765</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Thu, 14 Nov 2013 10:02:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-15765</guid>
+		<description>Il manque encore des éléments, mais en présupposant que tu veuilles une accumulation simple et qu&#039;il y a autant d&#039;index que de trucs, tu peux commencer comme ça :
+
+&lt;pre lang=&quot;python&quot;&gt;mes_index = [[1, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0], [0, 0, 0, 1, 0, 1],  [0, 0, 0, 1, 0, 1], [0, 0, 0, 1, 0, 1],[0, 0, 0, 1, 0, 1],]
+mes_trucs = [&#039;Saucisse&#039;,&#039;Canard&#039;,&#039;Gomme&#039;,&#039;Truc4&#039;,&#039;Touillette&#039;,&#039;Bas_resille&#039;]
+
+
+for index, truc : zip(mes_index, mes_trucs):
+    premier_pas = [truc * i if i else None for i in index]&lt;/pre&gt;
+
+Je te laisse le boulot pour la logique d&#039;accumulation.</description>
+		<content:encoded><![CDATA[<p>Il manque encore des éléments, mais en présupposant que tu veuilles une accumulation simple et qu&#8217;il y a autant d&#8217;index que de trucs, tu peux commencer comme ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">mes_index = <span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,  <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>, <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#93;</span>
+mes_trucs = <span style="color: black;">&#91;</span><span style="color: #483d8b;">'Saucisse'</span>,<span style="color: #483d8b;">'Canard'</span>,<span style="color: #483d8b;">'Gomme'</span>,<span style="color: #483d8b;">'Truc4'</span>,<span style="color: #483d8b;">'Touillette'</span>,<span style="color: #483d8b;">'Bas_resille'</span><span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> index, truc : <span style="color: #008000;">zip</span><span style="color: black;">&#40;</span>mes_index, mes_trucs<span style="color: black;">&#41;</span>:
+    premier_pas = <span style="color: black;">&#91;</span>truc <span style="color: #66cc66;">*</span> i <span style="color: #ff7700;font-weight:bold;">if</span> i <span style="color: #ff7700;font-weight:bold;">else</span> <span style="color: #008000;">None</span> <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> index<span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Je te laisse le boulot pour la logique d&#8217;accumulation.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: furankun</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-15764</link>
+		<dc:creator>furankun</dc:creator>
+		<pubDate>Thu, 14 Nov 2013 09:05:31 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-15764</guid>
+		<description>Salut,
+oui j&#039;ai bien conscience que c&#039;est pas le mieux. Juste pour répondre à ta question (quand même): il s&#039;agirait de placer dans MonRes le résultat d&#039;une opération logique entre mesTrucs et mesIndex, pour chaque élément dans mesTrucs et chaque sous-liste dans mesIndex (je sens que je ne suis pas beaucoup plus clair là...).
+En gros:
+&lt;em&gt;étape 1&lt;/em&gt;
+monRes = &#039;Saucisse&#039; &amp; [1, 1, 0, 0, 0, 1] soit 
+monRes = [&#039;Saucisse&#039;,&#039;Saucisse&#039;, None, None, None, &#039;Saucisse&#039;]
+&lt;em&gt;étape 2&lt;/em&gt;
+monRes = monRes &amp; [&#039;Canard&#039; &amp;  [0, 0, 1, 0, 1, 0]] soit 
+monRes = [&#039;Saucisse&#039;,&#039;Saucisse&#039;, &#039;Canard&#039;, None, &#039;Canard&#039;, &#039;Saucisse&#039;]
+
+&lt;em&gt;etc&lt;/em&gt;
+
+c&#039;est pas du code, c&#039;est pour avoir le principe.</description>
+		<content:encoded><![CDATA[<p>Salut,<br />
+oui j&#8217;ai bien conscience que c&#8217;est pas le mieux. Juste pour répondre à ta question (quand même): il s&#8217;agirait de placer dans MonRes le résultat d&#8217;une opération logique entre mesTrucs et mesIndex, pour chaque élément dans mesTrucs et chaque sous-liste dans mesIndex (je sens que je ne suis pas beaucoup plus clair là&#8230;).<br />
+En gros:<br />
+<em>étape 1</em><br />
+monRes = &#8216;Saucisse&#8217; &amp; [1, 1, 0, 0, 0, 1] soit<br />
+monRes = ['Saucisse','Saucisse', None, None, None, 'Saucisse']<br />
+<em>étape 2</em><br />
+monRes = monRes &amp; ['Canard' &amp;  [0, 0, 1, 0, 1, 0]] soit<br />
+monRes = ['Saucisse','Saucisse', 'Canard', None, 'Canard', 'Saucisse']</p>
+<p><em>etc</em></p>
+<p>c&#8217;est pas du code, c&#8217;est pour avoir le principe.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-15738</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Wed, 13 Nov 2013 17:51:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-15738</guid>
+		<description>Hello furankun,
+
+Je n&#039;ai pas compris comment passer de mesTrucs à MonRes, faut que tu expliques plus. 
+
+Et effectivement, les commentaires sont pas idéaux pour ce genre de question, un forum comme celui de l&#039;afpy est plus indiqué.</description>
+		<content:encoded><![CDATA[<p>Hello furankun,</p>
+<p>Je n&#8217;ai pas compris comment passer de mesTrucs à MonRes, faut que tu expliques plus. </p>
+<p>Et effectivement, les commentaires sont pas idéaux pour ce genre de question, un forum comme celui de l&#8217;afpy est plus indiqué.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: furankun</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-15734</link>
+		<dc:creator>furankun</dc:creator>
+		<pubDate>Wed, 13 Nov 2013 17:08:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-15734</guid>
+		<description>Ca fait plusieurs fois que je relis cette belle paire d&#039;articles et ils me retournent toujours autant le cerveau. Mais c&#039;est vraiment super formateur!
+Je sais qu&#039;on n&#039;est pas sur stackoverflow mais j&#039;ai quand même une question dont je n&#039;arrive pas à me débrouiller, à voir si ça vous intéresse:
+j&#039;ai une liste de listes d&#039;index complémentaires (chaque sous-liste contient des éléments qui ne se trouvent pas dans les autres), du genre 
+mesIndex = [[1, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0], [0, 0, 0, 1, 0, 1]]
+j&#039;ai une autre liste de trucs, mettons 
+mesTrucs = [&#039;Saucisse&#039;,&#039;Canard&#039;,&#039;Gomme&#039;,&#039;Truc4&#039;,&#039;Touillette&#039;,&#039;Bas_resille&#039;]
+
+&lt;del&gt;est-ce que c&#039;est possible de &lt;/del&gt; comment on fait avec les listes en intention pour filtrer mesTrucs avec mesIndex et placer ça dans une liste?
+ce que je voudrais c&#039;est:
+monRes = [&#039;Saucisse&#039;,&#039;Saucisse&#039;,&#039;Canard&#039;,&#039;Gomme&#039;,&#039;Canard&#039;,&#039;Gomme&#039;]
+
+J&#039;ai essayé
+&lt;code&gt;for ii in range(len(mesTrucs)):
+    monRes[ii] = [mesTrucs[ii] for x in mesIndex[ii][0] if x == 1]&lt;/code&gt;
+
+pour au moins obtenir monRes = [&#039;Saucisse&#039;,&#039;Saucisse&#039;,None,None,None,None]
+mais je me confronte à mes limites de pythonoob:&quot;TypeError: &#039;int&#039; object is not iterable&quot;</description>
+		<content:encoded><![CDATA[<p>Ca fait plusieurs fois que je relis cette belle paire d&#8217;articles et ils me retournent toujours autant le cerveau. Mais c&#8217;est vraiment super formateur!<br />
+Je sais qu&#8217;on n&#8217;est pas sur stackoverflow mais j&#8217;ai quand même une question dont je n&#8217;arrive pas à me débrouiller, à voir si ça vous intéresse:<br />
+j&#8217;ai une liste de listes d&#8217;index complémentaires (chaque sous-liste contient des éléments qui ne se trouvent pas dans les autres), du genre<br />
+mesIndex = [[1, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0], [0, 0, 0, 1, 0, 1]]<br />
+j&#8217;ai une autre liste de trucs, mettons<br />
+mesTrucs = ['Saucisse','Canard','Gomme','Truc4','Touillette','Bas_resille']</p>
+<p><del>est-ce que c&#8217;est possible de </del> comment on fait avec les listes en intention pour filtrer mesTrucs avec mesIndex et placer ça dans une liste?<br />
+ce que je voudrais c&#8217;est:<br />
+monRes = ['Saucisse','Saucisse','Canard','Gomme','Canard','Gomme']</p>
+<p>J&#8217;ai essayé<br />
+<code>for ii in range(len(mesTrucs)):<br />
+    monRes[ii] = [mesTrucs[ii] for x in mesIndex[ii][0] if x == 1]</code></p>
+<p>pour au moins obtenir monRes = ['Saucisse','Saucisse',None,None,None,None]<br />
+mais je me confronte à mes limites de pythonoob:&#8221;TypeError: &#8216;int&#8217; object is not iterable&#8221;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: n_arno</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-14734</link>
+		<dc:creator>n_arno</dc:creator>
+		<pubDate>Wed, 09 Oct 2013 12:00:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-14734</guid>
+		<description>Nécro-commentaire, mais bien content du bonus 2 qui explique la syntaxe de ce que j&#039;utilise pour aplatir des listes de listes sans avoir compris pourquoi les for sont dans cet ordre</description>
+		<content:encoded><![CDATA[<p>Nécro-commentaire, mais bien content du bonus 2 qui explique la syntaxe de ce que j&#8217;utilise pour aplatir des listes de listes sans avoir compris pourquoi les for sont dans cet ordre</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Max</title>
+		<link>http://sametmax.com/python-love-les-listes-en-intention-partie-2/#comment-333</link>
+		<dc:creator>Max</dc:creator>
+		<pubDate>Thu, 31 May 2012 16:04:54 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=154#comment-333</guid>
+		<description>Pourquoi y a du faux python ? :)
+
+En fait on essais surtout de parler des choses qui nous arrive en tant que developpeur AYANT des sites webs, ce qui n&#039;a rien à voir avec un developpeur classique. A comprendre que quelqu&#039;un qui a un site web va raisonner differement d&#039;un dev pur qui sort de l&#039;école et pose son cul sur une chaise en attendant le cahier des charges, on a pas les mêmes priorités, il faut faire des concessions, trouver des astuces etc, un dev qui n&#039;a pas de site va recopier le man page et sortir de la merde (je m&#039;excuse mais j&#039;aime pas les devs qui ont pas de sites web, ils sont souvent à 1000 années lumière de comprendre les priorités quand on developpe un site)
+
+Alors à chaque problème rencontré sur nos sites on poste un petit article en rapport, perso je trouve ça plus concret et plus interressant.
+
+Merci de nous lire ceci dit ;)</description>
+		<content:encoded><![CDATA[<p>Pourquoi y a du faux python ? :)</p>
+<p>En fait on essais surtout de parler des choses qui nous arrive en tant que developpeur AYANT des sites webs, ce qui n&#8217;a rien à voir avec un developpeur classique. A comprendre que quelqu&#8217;un qui a un site web va raisonner differement d&#8217;un dev pur qui sort de l&#8217;école et pose son cul sur une chaise en attendant le cahier des charges, on a pas les mêmes priorités, il faut faire des concessions, trouver des astuces etc, un dev qui n&#8217;a pas de site va recopier le man page et sortir de la merde (je m&#8217;excuse mais j&#8217;aime pas les devs qui ont pas de sites web, ils sont souvent à 1000 années lumière de comprendre les priorités quand on developpe un site)</p>
+<p>Alors à chaque problème rencontré sur nos sites on poste un petit article en rapport, perso je trouve ça plus concret et plus interressant.</p>
+<p>Merci de nous lire ceci dit ;)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

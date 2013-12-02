@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Set -e for the win</title>
+	<atom:link href="http://sametmax.com/set-e-for-the-win/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/set-e-for-the-win/</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:54:05 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/set-e-for-the-win/#comment-6953</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Fri, 15 Mar 2013 09:28:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5408#comment-6953</guid>
+		<description>Ahhh. C&#039;est ça que j&#039;avais pas capté. set -o pipefailt, et pas juste set -o. Ok, j&#039;avais mal compris.</description>
+		<content:encoded><![CDATA[<p>Ahhh. C&#8217;est ça que j&#8217;avais pas capté. set -o pipefailt, et pas juste set -o. Ok, j&#8217;avais mal compris.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: tmonjalo</title>
+		<link>http://sametmax.com/set-e-for-the-win/#comment-6951</link>
+		<dc:creator>tmonjalo</dc:creator>
+		<pubDate>Fri, 15 Mar 2013 09:15:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5408#comment-6951</guid>
+		<description>set -e marche avec tous les shells mais a des limites, notamment pour les subshells et les pipes.
+
+Avec bash, on peut aller un peu plus loin :
+set -o posix # les sous-shells héritent de ces options
+set -o errexit # équivalent long de set -e
+set -o pipefail # intercepte les erreurs de commandes suivies d&#039;un pipe</description>
+		<content:encoded><![CDATA[<p>set -e marche avec tous les shells mais a des limites, notamment pour les subshells et les pipes.</p>
+<p>Avec bash, on peut aller un peu plus loin :<br />
+set -o posix # les sous-shells héritent de ces options<br />
+set -o errexit # équivalent long de set -e<br />
+set -o pipefail # intercepte les erreurs de commandes suivies d&#8217;un pipe</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cladmi</title>
+		<link>http://sametmax.com/set-e-for-the-win/#comment-6943</link>
+		<dc:creator>Cladmi</dc:creator>
+		<pubDate>Thu, 14 Mar 2013 19:57:03 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5408#comment-6943</guid>
+		<description>Le problème que j&#039;ai eu avec &#039;set -e&#039; c&#039;est quand je voulais faire un traitement de la sortie de grep sur une ligne différente. Avec un grep assez long évidemment.
+
+Je trouve ça propre de faire ça comme ça
+
+&lt;pre lang=&quot;bash&quot;&gt;
+grep -q -e &#039;pattern_tres_tres_long&#039; \
+    -e &#039;pattern multiple meme&#039; \
+    -e &#039;avec pleins de choses a trouver&#039; \
+    --exclude-dir=&#039;houla_lui_on_l_aime_pas&#039; \
+    fichier 2&gt;/dev/null
+
+if [[ $? -eq 0 ]]; then
+    echo &quot;Ca match, on va faire un traitement&quot;
+else
+    echo &quot;Ca me va aussi c&#039;est juste un cas different&quot;
+fi
+&lt;/pre&gt;
+
+Ça évite d&#039;avoir le grep compliqué dans le if, mais du coup avec set -e, ça marche pas.
+
+Et pour le faire marcher avec set -e, je me suis retrouvé à faire des trucs ignobles du genre:
+&lt;pre lang=&quot;bash&quot;&gt;
+ret=$(grep ... &#124;&#124; echo &#039;OK&#039;)
+if [[ &quot;$ret&quot; == &quot;OK&quot; ]]; then
+...
+&lt;/pre&gt;
+
+C&#039;est moche, je sais, mais j&#039;avais pas trouvé mieux.</description>
+		<content:encoded><![CDATA[<p>Le problème que j&#8217;ai eu avec &#8216;set -e&#8217; c&#8217;est quand je voulais faire un traitement de la sortie de grep sur une ligne différente. Avec un grep assez long évidemment.</p>
+<p>Je trouve ça propre de faire ça comme ça</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">grep</span> <span style="color: #660033;">-q</span> <span style="color: #660033;">-e</span> <span style="color: #ff0000;">'pattern_tres_tres_long'</span> \
+    <span style="color: #660033;">-e</span> <span style="color: #ff0000;">'pattern multiple meme'</span> \
+    <span style="color: #660033;">-e</span> <span style="color: #ff0000;">'avec pleins de choses a trouver'</span> \
+    <span style="color: #660033;">--exclude-dir</span>=<span style="color: #ff0000;">'houla_lui_on_l_aime_pas'</span> \
+    fichier <span style="color: #000000;">2</span><span style="color: #000000; font-weight: bold;">&amp;</span>gt;<span style="color: #000000; font-weight: bold;">/</span>dev<span style="color: #000000; font-weight: bold;">/</span>null
+&nbsp;
+<span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#91;</span><span style="color: #7a0874; font-weight: bold;">&#91;</span> <span style="color: #007800;">$?</span> <span style="color: #660033;">-eq</span> <span style="color: #000000;">0</span> <span style="color: #7a0874; font-weight: bold;">&#93;</span><span style="color: #7a0874; font-weight: bold;">&#93;</span>; <span style="color: #000000; font-weight: bold;">then</span>
+    <span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;Ca match, on va faire un traitement&quot;</span>
+<span style="color: #000000; font-weight: bold;">else</span>
+    <span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;Ca me va aussi c'est juste un cas different&quot;</span>
+<span style="color: #000000; font-weight: bold;">fi</span></pre></div></div>
+
+<p>Ça évite d&#8217;avoir le grep compliqué dans le if, mais du coup avec set -e, ça marche pas.</p>
+<p>Et pour le faire marcher avec set -e, je me suis retrouvé à faire des trucs ignobles du genre:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #007800;">ret</span>=$<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #c20cb9; font-weight: bold;">grep</span> ... <span style="color: #000000; font-weight: bold;">||</span> <span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">'OK'</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#91;</span><span style="color: #7a0874; font-weight: bold;">&#91;</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">$ret</span>&quot;</span> == <span style="color: #ff0000;">&quot;OK&quot;</span> <span style="color: #7a0874; font-weight: bold;">&#93;</span><span style="color: #7a0874; font-weight: bold;">&#93;</span>; <span style="color: #000000; font-weight: bold;">then</span>
+...</pre></div></div>
+
+<p>C&#8217;est moche, je sais, mais j&#8217;avais pas trouvé mieux.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: kontre</title>
+		<link>http://sametmax.com/set-e-for-the-win/#comment-6933</link>
+		<dc:creator>kontre</dc:creator>
+		<pubDate>Thu, 14 Mar 2013 11:58:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5408#comment-6933</guid>
+		<description>Oooooh ! Shiny !</description>
+		<content:encoded><![CDATA[<p>Oooooh ! Shiny !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Lujeni</title>
+		<link>http://sametmax.com/set-e-for-the-win/#comment-6930</link>
+		<dc:creator>Lujeni</dc:creator>
+		<pubDate>Thu, 14 Mar 2013 11:27:54 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5408#comment-6930</guid>
+		<description>j&#039;ai toujours utiliser le double pipe pour gérer les erreurs</description>
+		<content:encoded><![CDATA[<p>j&#8217;ai toujours utiliser le double pipe pour gérer les erreurs</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/set-e-for-the-win/#comment-6927</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Thu, 14 Mar 2013 10:17:22 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5408#comment-6927</guid>
+		<description>Et je viens de découvrir &quot;set -o&quot; qui fait que &quot;set -e&quot; marche aussi pour les commandes intermédiares à l&#039;intérieur des pipes.
+
+C&#039;est décidé, tous mes scripts commencerons maintenant par &quot;set -eox&quot;.
+
+EDIT: et merde, -o est pas cross shell. Bon, on oublie -o.</description>
+		<content:encoded><![CDATA[<p>Et je viens de découvrir &#8220;set -o&#8221; qui fait que &#8220;set -e&#8221; marche aussi pour les commandes intermédiares à l&#8217;intérieur des pipes.</p>
+<p>C&#8217;est décidé, tous mes scripts commencerons maintenant par &#8220;set -eox&#8221;.</p>
+<p>EDIT: et merde, -o est pas cross shell. Bon, on oublie -o.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: AlexRNL</title>
+		<link>http://sametmax.com/set-e-for-the-win/#comment-6925</link>
+		<dc:creator>AlexRNL</dc:creator>
+		<pubDate>Thu, 14 Mar 2013 09:29:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5408#comment-6925</guid>
+		<description>Excellent ! À ranger précieusement à côté du &lt;code&gt;set -x&lt;/code&gt;</description>
+		<content:encoded><![CDATA[<p>Excellent ! À ranger précieusement à côté du <code>set -x</code></p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		>
+<channel>
+	<title>Comments on: Une astuce pour ne plus avoir peur des merges avec Git</title>
+	<atom:link href="http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Mon, 02 Dec 2013 10:54:05 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<item>
+		<title>By: Matthieu Moy</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-1038</link>
+		<dc:creator>Matthieu Moy</dc:creator>
+		<pubDate>Fri, 03 Aug 2012 19:01:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-1038</guid>
+		<description>Non, le git stash n&#039;est pas nécessaire, ou en tous cas n&#039;apporte pas de sécurité avant de faire un merge.
+
+Git accepte de démarrer le merge seulement si les fichiers contenant des modifs non-commitées ne sont pas ceux concernés par le merge. L&#039;option que tu cherches dans Git qui empêche de démarrer un merge en cas de danger existe déjà, elle est là par défaut et depuis toujours.
+
+Ce que tu as raté, c&#039;est l&#039;option --merge de git reset (qui elle, n&#039;existe pas depuis toujours). Conseiller &quot;git reset --hard&quot; à un débutant, par contre, je ne trouve pas que ce soit un bon conseil. C&#039;est vraiment très, très rare que &quot;git reset --hard&quot; soit la bonne réponse à une question depuis qu&#039;on a &quot;reset --keep&quot; et &quot;reset --merge&quot;.
+
+&quot;git stash&quot; est nécessaire si les fichiers concernés par le merge sont modifiés localement, mais à ce moment là, Git aurait refusé de démarrer le merge de toutes façons (en suggérant &quot;git stash&quot;).
+
+Pour les tags, je sais bien comment il marchent, mais je ne vois pas pourquoi un tag serait fait pour exister plus longtemps qu&#039;une branche. Ce qui distingue la durée de vie, c&#039;est plutôt le fait de faire un push ou pas dessus (i.e. garder privé les trucs qui n&#039;intéressent pas les autres). Avec une branche, &quot;git checkout ; git commit&quot; va déplacer la branche, ce qui a peu de chances d&#039;être ce que tu veux. Un tag est fait pour ne pas bouger (c&#039;est ça la seule différence techniquement entre un lightweight tag et une branche avec Git: &quot;git checkout &quot; te mets en detached HEAD), et c&#039;est vraiment ce que tu veux ici.</description>
+		<content:encoded><![CDATA[<p>Non, le git stash n&#8217;est pas nécessaire, ou en tous cas n&#8217;apporte pas de sécurité avant de faire un merge.</p>
+<p>Git accepte de démarrer le merge seulement si les fichiers contenant des modifs non-commitées ne sont pas ceux concernés par le merge. L&#8217;option que tu cherches dans Git qui empêche de démarrer un merge en cas de danger existe déjà, elle est là par défaut et depuis toujours.</p>
+<p>Ce que tu as raté, c&#8217;est l&#8217;option &#8211;merge de git reset (qui elle, n&#8217;existe pas depuis toujours). Conseiller &#8220;git reset &#8211;hard&#8221; à un débutant, par contre, je ne trouve pas que ce soit un bon conseil. C&#8217;est vraiment très, très rare que &#8220;git reset &#8211;hard&#8221; soit la bonne réponse à une question depuis qu&#8217;on a &#8220;reset &#8211;keep&#8221; et &#8220;reset &#8211;merge&#8221;.</p>
+<p>&#8220;git stash&#8221; est nécessaire si les fichiers concernés par le merge sont modifiés localement, mais à ce moment là, Git aurait refusé de démarrer le merge de toutes façons (en suggérant &#8220;git stash&#8221;).</p>
+<p>Pour les tags, je sais bien comment il marchent, mais je ne vois pas pourquoi un tag serait fait pour exister plus longtemps qu&#8217;une branche. Ce qui distingue la durée de vie, c&#8217;est plutôt le fait de faire un push ou pas dessus (i.e. garder privé les trucs qui n&#8217;intéressent pas les autres). Avec une branche, &#8220;git checkout ; git commit&#8221; va déplacer la branche, ce qui a peu de chances d&#8217;être ce que tu veux. Un tag est fait pour ne pas bouger (c&#8217;est ça la seule différence techniquement entre un lightweight tag et une branche avec Git: &#8220;git checkout &#8221; te mets en detached HEAD), et c&#8217;est vraiment ce que tu veux ici.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-974</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Thu, 02 Aug 2012 00:09:52 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-974</guid>
+		<description>Git stash est indispensable si on veut faire un pull qui contient des fichiers modifiés.
+
+Pour le tag, le principe sémantique est de dire &quot;ceci est important dans mon historique&quot;. Généralement c&#039;est fait pour rester. Par contre dans git, les branches, contrairement à SVN, sont faites pour être très temporaires (même si on en garde certaines très longtemps pour le dev et le trunk) du fait des workflow à base de fork/commit/rebase.
+
+Techniquement on peut utiliser un tag ou une branche, ça n&#039;a pas vraiment d&#039;importance. C&#039;est juste que si tu quittes précipitement ton bureau, il y a plus de chance que tu vois ta banche &quot;backup&quot; à ton retour et que ça te revienne, qu&#039;un tag (lister les tags, ça se fait une fois par mois à tout pêter).
+
+Notez bien que ce sont des techniques pour débutants: le but est de les rassurer en leur donnant un choix facile, comprehensible, avec des éléments par défaut sains. Ce ne sont pas les plus rapides, et il y a des décisions arbitraires.</description>
+		<content:encoded><![CDATA[<p>Git stash est indispensable si on veut faire un pull qui contient des fichiers modifiés.</p>
+<p>Pour le tag, le principe sémantique est de dire &#8220;ceci est important dans mon historique&#8221;. Généralement c&#8217;est fait pour rester. Par contre dans git, les branches, contrairement à SVN, sont faites pour être très temporaires (même si on en garde certaines très longtemps pour le dev et le trunk) du fait des workflow à base de fork/commit/rebase.</p>
+<p>Techniquement on peut utiliser un tag ou une branche, ça n&#8217;a pas vraiment d&#8217;importance. C&#8217;est juste que si tu quittes précipitement ton bureau, il y a plus de chance que tu vois ta banche &#8220;backup&#8221; à ton retour et que ça te revienne, qu&#8217;un tag (lister les tags, ça se fait une fois par mois à tout pêter).</p>
+<p>Notez bien que ce sont des techniques pour débutants: le but est de les rassurer en leur donnant un choix facile, comprehensible, avec des éléments par défaut sains. Ce ne sont pas les plus rapides, et il y a des décisions arbitraires.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Matthieu Moy</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-959</link>
+		<dc:creator>Matthieu Moy</dc:creator>
+		<pubDate>Tue, 31 Jul 2012 20:28:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-959</guid>
+		<description>Si c&#039;est juste pour pouvoir annuler un merge en cours, pas besoin de tout ça :
+
+&lt;code&gt;
+$ git pull
+# ...
+# ratage de résolution de conflits
+# ...
+$ git reset -&lt;i&gt;&lt;/i&gt;-merge
+&lt;/code&gt;
+
+git refuse de démarrer un merge si les fichiers concernés par le merge sont modifiés, et « git reset -&lt;i&gt;&lt;/i&gt;-merge » ne va réinitialiser que les fichiers concernés par le merge, donc ça marche, sans point de sauvegarde (c&#039;est juste HEAD), et sans « git stash » préalable.
+
+(sinon, j&#039;ai pas compris en quoi les tags ne seraient pas faits sémantiquement pour être supprimés, un « lightweight tag », c&#039;est justement bien à ça que ça sert, non ?)</description>
+		<content:encoded><![CDATA[<p>Si c&#8217;est juste pour pouvoir annuler un merge en cours, pas besoin de tout ça :</p>
+<p><code><br />
+$ git pull<br />
+# ...<br />
+# ratage de résolution de conflits<br />
+# ...<br />
+$ git reset -<i></i>-merge<br />
+</code></p>
+<p>git refuse de démarrer un merge si les fichiers concernés par le merge sont modifiés, et « git reset -<i></i>-merge » ne va réinitialiser que les fichiers concernés par le merge, donc ça marche, sans point de sauvegarde (c&#8217;est juste HEAD), et sans « git stash » préalable.</p>
+<p>(sinon, j&#8217;ai pas compris en quoi les tags ne seraient pas faits sémantiquement pour être supprimés, un « lightweight tag », c&#8217;est justement bien à ça que ça sert, non ?)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-693</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Wed, 18 Jul 2012 04:39:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-693</guid>
+		<description>Je comprendrais très bien qu&#039;on utilise un tag. Un tag point de sauvegarde a parfaitement du sens pour moi.
+
+Par contre je ne dirais pas qu&#039;une branche doit vivre une minimum. Je vais parfois des branches pour quelques minutes seulement.</description>
+		<content:encoded><![CDATA[<p>Je comprendrais très bien qu&#8217;on utilise un tag. Un tag point de sauvegarde a parfaitement du sens pour moi.</p>
+<p>Par contre je ne dirais pas qu&#8217;une branche doit vivre une minimum. Je vais parfois des branches pour quelques minutes seulement.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mes trouvailles du jour : 17 July 2012 &#124; DotMana</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-690</link>
+		<dc:creator>Mes trouvailles du jour : 17 July 2012 &#124; DotMana</dc:creator>
+		<pubDate>Wed, 18 Jul 2012 00:44:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-690</guid>
+		<description>[...] Une astuce pour ne plus avoir peur des merges avec Git &#124; Sam &amp; Max: Python, Django, Git et du cu... Quelques rappels utiles sur le merge sous Git et comment revenir à un commit précédent. [...]</description>
+		<content:encoded><![CDATA[<p>[...] Une astuce pour ne plus avoir peur des merges avec Git | Sam &amp; Max: Python, Django, Git et du cu&#8230; Quelques rappels utiles sur le merge sous Git et comment revenir à un commit précédent. [...]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nicolas</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-676</link>
+		<dc:creator>Nicolas</dc:creator>
+		<pubDate>Tue, 17 Jul 2012 14:05:12 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-676</guid>
+		<description>Oui mais une branche, à mon sens, c&#039;est fait pour vivre (un minimum), je trouve donc personnellement le tag plus approprié (est-ce que l&#039;abondance de tags peut nuire à un repo git ? vous avez 2 heures) :)</description>
+		<content:encoded><![CDATA[<p>Oui mais une branche, à mon sens, c&#8217;est fait pour vivre (un minimum), je trouve donc personnellement le tag plus approprié (est-ce que l&#8217;abondance de tags peut nuire à un repo git ? vous avez 2 heures) :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-675</link>
+		<dc:creator>Sam</dc:creator>
+		<pubDate>Tue, 17 Jul 2012 14:01:54 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-675</guid>
+		<description>Ca marche exactement pareil avec un tag. Mais les tags ne sont sémantiquement fait pour être supprimés. Une branche, c&#039;est sémantiquement jetable. En revanche techniquement, les deux sont des étiquettes, et les deux peuvent être créés, supprimés, et checkouté de la même manière.</description>
+		<content:encoded><![CDATA[<p>Ca marche exactement pareil avec un tag. Mais les tags ne sont sémantiquement fait pour être supprimés. Une branche, c&#8217;est sémantiquement jetable. En revanche techniquement, les deux sont des étiquettes, et les deux peuvent être créés, supprimés, et checkouté de la même manière.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nicolas</title>
+		<link>http://sametmax.com/une-astuce-pour-ne-plus-avoir-peur-des-merges-avec-git/#comment-674</link>
+		<dc:creator>Nicolas</dc:creator>
+		<pubDate>Tue, 17 Jul 2012 13:25:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1147#comment-674</guid>
+		<description>Merci pour ces différents rappels !
+
+Pourquoi est-ce qu&#039;un tag ne serait pas suffisant, si c&#039;est juste pour nommer explicitement un commit ?</description>
+		<content:encoded><![CDATA[<p>Merci pour ces différents rappels !</p>
+<p>Pourquoi est-ce qu&#8217;un tag ne serait pas suffisant, si c&#8217;est juste pour nommer explicitement un commit ?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
