@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; file</title>
+	<atom:link href="http://sametmax.com/tag/file/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Invalid cross-device link</title>
+		<link>http://sametmax.com/invalid-cross-device-link/</link>
+		<comments>http://sametmax.com/invalid-cross-device-link/#comments</comments>
+		<pubDate>Tue, 09 Apr 2013 10:19:57 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[oserror]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[rename]]></category>
+		<category><![CDATA[shutil]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5652</guid>
+		<description><![CDATA[Les erreurs d'upload de fichier, c'est 99% de problèmes de droit d'accès et d'espace disque. Mais de temps à autres, on tombe sur des petites saloperies bien vicelardes...]]></description>
+			<content:encoded><![CDATA[<p>Les erreurs d&#8217;upload de fichier, c&#8217;est 99% de problèmes de droit d&#8217;accès et d&#8217;espace disque. Mais de temps à autres, on tombe sur des petites saloperies bien vicelardes comme ce code anodin :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #dc143c;">os</span>.<span style="color: black;">rename</span><span style="color: black;">&#40;</span>uploaded_tmp_file, destination<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ce snippet, comme vous l&#8217;aurez compris, prend simplement un fichier qui vient d&#8217;être uploadé et le déplace vers un autre dossier où il sera traité, chouchouté, encodé, et mis en ligne.</p>
+<p>Sauf que la ligne en question nous a valu un cryptique :</p>
+<p><code>IOError: Invalid cross-device link</code></p>
+<p><a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">PDB</a> nous confirme le merdier, même en le faisant à la main. Pourtant la commande bash <code>MV</code> fait le déplacement du fichier sans problème.</p>
+<p>User / group ? Checked.</p>
+<p>Permission en lecture écriture ? Checked.</p>
+<p>SEL linux ? Désactivé depuis longtemps.</p>
+<p>Quid alors ?</p>
+<p><a href="http://mail.python.org/pipermail/python-list/2005-February/323335.html">Les archives de la mailling list</a> de Python nous offre une réponse à la question, que je vous traduis :</p>
+<blockquote><p>mv est un programme étonnamment complexe, tandis que os.rename est un wrapper autour de rename(2) qui est probablement documenté sur ton système comme retournant EXDEV dans ces circonstances.</p>
+<p>os.xxx est généralement une surcouche assez fine autour de ce que ton OS fournit, et en hérite toutes les limites. Pour certains actions, os.shutil fournit quelque chose qui se situe entre os.xxx et os.system(&#8220;xxx&#8221;) en terme de complexité et de capacité.</p></blockquote>
+<p>Je l&#8217;ai traduis en français, maintenant je vous la refais en langage humain : <code>os.rename</code> ne fait vaguement qu&#8217;appeler la commande <code>rename</code>, qui n&#8217;est pas très puissante, et notamment qui est incapable de gérer un déplacement de fichier d&#8217;une partition à une autre. Or dans notre cas, notre dossier temporaire était sur une partition séparée pour des raisons de perfs.</p>
+<p>La solution est d&#8217;utiliser <code>shutil</code>, un module un peu plus lent, mais surtout de plus haut niveau qui se charge des détails comme la nature et l&#8217;origine du fichier et de sa destination. </p>
+<p>Bref, la solution est tout simplement de faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #dc143c;">shutil</span>.<span style="color: black;">move</span><span style="color: black;">&#40;</span>uploaded_tmp_file, destination<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Tout ça pour ça, oui, mais c&#8217;est ce qui arrive quand une abstraction ne fait plus son boulot dans un langage de haut niveau où on a l&#8217;habitude que tout soit automatisé.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5652&amp;md5=f4e22e907d59336b3c3aaf89a65e4e9f" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/invalid-cross-device-link/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Finvalid-cross-device-link%2F&amp;language=en_GB&amp;category=text&amp;title=Invalid+cross-device+link&amp;description=Les+erreurs+d%26%238217%3Bupload+de+fichier%2C+c%26%238217%3Best+99%25+de+probl%C3%A8mes+de+droit+d%26%238217%3Bacc%C3%A8s+et+d%26%238217%3Bespace+disque.+Mais+de+temps+%C3%A0+autres%2C+on+tombe+sur+des+petites+saloperies+bien+vicelardes+comme+ce...&amp;tags=bash%2Cfile%2Cos%2Coserror%2Cpython%2Crename%2Cshutil%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/fUPKw.jpg" length="725486" type="image/jpg" />	</item>
+		<item>
+		<title>J&#8217;adore les context managers Python</title>
+		<link>http://sametmax.com/jadore-les-context-managers-python/</link>
+		<comments>http://sametmax.com/jadore-les-context-managers-python/#comments</comments>
+		<pubDate>Tue, 24 Jul 2012 15:15:53 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[contextmanager]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[with]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1296</guid>
+		<description><![CDATA[Loin de moi l'idée de faire un tuto ce matin sur les context managers, mais j'ai juste l'envie d'énoncer tout haut mon amour cette fonctionnalité.]]></description>
+			<content:encoded><![CDATA[<p>En Python il y a plein de trucs pas du tout indispensables: les metaclasses, <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs</a>, les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intentions</a>&#8230; Elles sont là uniquement pour rendre le langage plus agréable à l&#8217;usage, mais on pourrait faire sans. Les context managers en font partie. Loin de moi l&#8217;idée de faire un tuto ce matin sur les context managers, mais j&#8217;ai juste l&#8217;envie d&#8217;énoncer tout haut mon amour cette fonctionnalité.</p>
+<p>Prenez un model Django Media: vous transcodez ce media, vous faites souvent des opérations dans son dossier. Il faut s&#8217;assurer que ça marche. Et quand ça foire, il faut s&#8217;assurer que l&#8217;on a bien nettoyé le répertoire de travail.</p>
+<p>Hop:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Media<span style="color: black;">&#40;</span>models.<span style="color: black;">Model</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: black;">&#91;</span>...<span style="color: black;">&#93;</span>
+&nbsp;
+    @contextmanager
+    <span style="color: #ff7700;font-weight:bold;">def</span> in_dir<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, delete_on_error=<span style="color: #008000;">False</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># si vous ne comprenez pas ce code, ne vous en faites pas,</span>
+        <span style="color: #808080; font-style: italic;"># c'est du Python avancé</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #dc143c;">os</span>.<span style="color: black;">makedirs</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: #008000;">dir</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: black;">&#40;</span><span style="color: #008000;">OSError</span>, <span style="color: #008000;">IOError</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+            <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #008000;">self</span>.<span style="color: #008000;">dir</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> delete_on_error:
+                <span style="color: #dc143c;">shutil</span>.<span style="color: black;">rmtree</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: #008000;">dir</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">raise</span></pre></div></div>
+
+<p>Et voilà, Max dans ses scripts de transcoding magiques n&#8217;a pas à se poser de question. Il a juste à faire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> media.<span style="color: black;">in_dir</span><span style="color: black;">&#40;</span>delete_on_error=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> d:
+    <span style="color: #808080; font-style: italic;"># faire des trucs avec le dossier dont le chemin est dans &quot;d&quot;</span></pre></div></div>
+
+<p>Le chemin spécifique pour ce média est garanti d&#8217;exister. </p>
+<p>Si il y a une exception, le dossier est garanti d&#8217;être nettoyé.</p>
+<p>C&#8217;est simple, c&#8217;est propre, c&#8217;est beau. J&#8217;aime.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1296&amp;md5=efdad33271f73daaa69b88d55c8b85c9" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/jadore-les-context-managers-python/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fjadore-les-context-managers-python%2F&amp;language=en_GB&amp;category=text&amp;title=J%26%238217%3Badore+les+context+managers+Python&amp;description=En+Python+il+y+a+plein+de+trucs+pas+du+tout+indispensables%3A+les+metaclasses%2C+les+d%C3%A9corateurs%2C+les+listes+en+intentions%26%238230%3B+Elles+sont+l%C3%A0+uniquement+pour+rendre+le+langage+plus+agr%C3%A9able...&amp;tags=contextmanager%2Cdjango%2Cfile%2Cpython%2Cwith%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/sugar1.jpg" length="19402" type="image/jpg" />	</item>
+	</channel>
+</rss>

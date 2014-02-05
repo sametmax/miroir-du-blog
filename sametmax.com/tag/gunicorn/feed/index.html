@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; gunicorn</title>
+	<atom:link href="http://sametmax.com/tag/gunicorn/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>L&#8217;erreur &#8220;broken pipe&#8221; avec les serveurs Python tel Gunicorn</title>
+		<link>http://sametmax.com/lerreur-broken-pipe-avec-les-serveurs-python-tel-gunicorn/</link>
+		<comments>http://sametmax.com/lerreur-broken-pipe-avec-les-serveurs-python-tel-gunicorn/#comments</comments>
+		<pubDate>Fri, 26 Apr 2013 06:46:15 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[gunicorn]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5885</guid>
+		<description><![CDATA[Quand on commence à avoir pas mal de traffique sur son site, on commence à noter l'apparition d'une erreur inquiétante...]]></description>
+			<content:encoded><![CDATA[<p>Quand on commence à avoir pas mal de trafic sur son site, on commence à noter l&#8217;apparition d&#8217;une erreur inquiétante :</p>
+<p><code>Traceback (most recent call last):<br />
+  File "gunicorn/workers/async.py", line 44, in handle<br />
+    self.handle_request(req, client, addr)<br />
+  File "gunicorn/workers/ggevent.py", line 88, in handle_request<br />
+    super(GeventWorker, self).handle_request(*args)<br />
+  File "gunicorn/workers/async.py", line 83, in handle_request<br />
+    resp.write(item)<br />
+  File "gunicorn/http/wsgi.py", line 275, in write<br />
+    util.write(self.sock, arg, self.chunked)<br />
+  File "gunicorn/util.py", line 232, in write<br />
+    sock.sendall(data)<br />
+  File "gevent/socket.py", line 480, in sendall<br />
+    data_sent += self.send(_get_memory(data, data_sent), flags)<br />
+  File "gevent/socket.py", line 451, in send<br />
+    return sock.send(data, flags)<br />
+error: [Errno 32] Broken pipe</code></p>
+<p>Et plus il y a de trafic, plus cette erreur apparait dans les logs.</p>
+<p>Pourtant, impossible de trouver la cause de l&#8217;erreur, tout semble bien marcher, le serveur pète la forme et <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">ipdb</a> ne donne rien du tout.</p>
+<p>La raison pour laquelle vous ne trouvez rien, c&#8217;est qu&#8217;il n&#8217;y a rien à trouver. Cette erreur est levée par le module socket quand il essaye d&#8217;écrire sur une connexion qui s&#8217;est fermée brutalement.</p>
+<p>Or le serveur ne peut pas savoir quand une connexion s&#8217;est fermée si le client ne lui envoie pas le message. Et il peut y avoir énormément de raisons pour que ça arrive : fermeture d&#8217;un onglet en plein chargement, crash du navigateur, extinction du PC pendant la réponse, etc.</p>
+<p>Vous en voyez plus quand le trafic augmente tout simplement parce que statistiquement, avec plus de visiteurs, ces situations rares se rencontrent plus facilement dans la masse de connexions.</p>
+<p>Donc pour l&#8217;erreur &#8220;broken pipe&#8221;, il n&#8217;y a rien à faire, à part de monter le log level de votre serveur d&#8217;un cran pour qu&#8217;il n&#8217;affiche plus ça dans vos logs.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5885&amp;md5=43ae25e4c07b60f641fe8afcd9b664d4" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lerreur-broken-pipe-avec-les-serveurs-python-tel-gunicorn/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Flerreur-broken-pipe-avec-les-serveurs-python-tel-gunicorn%2F&amp;language=en_GB&amp;category=text&amp;title=L%26%238217%3Berreur+%26%238220%3Bbroken+pipe%26%238221%3B+avec+les+serveurs+Python+tel+Gunicorn&amp;description=Quand+on+commence+%C3%A0+avoir+pas+mal+de+trafic+sur+son+site%2C+on+commence+%C3%A0+noter+l%26%238217%3Bapparition+d%26%238217%3Bune+erreur+inqui%C3%A9tante+%3A+Traceback+%28most+recent+call+last%29%3A+File+%22gunicorn%2Fworkers%2Fasync.py%22%2C+line+44%2C...&amp;tags=django%2Cgunicorn%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/enhanced-buzz-29165-1366744861-7.jpg" length="102112" type="image/jpg" />	</item>
+		<item>
+		<title>Nginx en reverse proxy + Gunicorn pour vos apps Django</title>
+		<link>http://sametmax.com/nginx-en-reverse-proxy-gunicorn-pour-vos-apps-django/</link>
+		<comments>http://sametmax.com/nginx-en-reverse-proxy-gunicorn-pour-vos-apps-django/#comments</comments>
+		<pubDate>Mon, 03 Dec 2012 19:48:22 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[gunicorn]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[reverse proxy]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3431</guid>
+		<description><![CDATA[Petit exemple de configuration de Nginx en reverse proxy avec Gunicorn.]]></description>
+			<content:encoded><![CDATA[<p>Nginx est bien connu depuis quelques années. Puissant serveur HTTP, il peut être utilisé en tant que reverse proxy (mandataire inverse en Français) afin d&#8217;améliorer les performances.<br />
+Je vous copie/colle les avantages depuis <a href="http://fr.wikipedia.org/wiki/Mandataire_inverse">Wikipédia</a> parce que je suis une feignasse:</p>
+<p><strong>cache :</strong> le mandataire inverse ou (reverse proxy) peut décharger les serveurs Web de la charge de pages/objets statiques (pages HTML, images) par la gestion d&#8217;un cache local. La charge des serveurs Web est ainsi généralement diminuée, on parle alors d&#8217;« accélérateur web » ou d&#8217;« accélérateur HTTP ».<br />
+<strong>Intermédiaire de sécurité :</strong> le mandataire inverse protège un serveur Web des attaques provenant de l&#8217;extérieur. En effet, la couche supplémentaire apportée par les mandataires inverses peut apporter une sécurité supplémentaire. La ré-écriture programmable des URL permet de masquer et de contrôler, par exemple, l&#8217;architecture d&#8217;un site web interne. Mais cette architecture permet surtout le filtrage en un point unique des accès aux ressources Web.<br />
+<strong>Chiffrement SSL :</strong> le mandataire inverse peut être utilisé en tant que « terminateur SSL », par exemple par le biais de matériel dédié,<br />
+<strong>Répartition de charge :</strong> le mandataire inverse peut distribuer la charge d&#8217;un site unique sur plusieurs serveurs Web applicatifs. Selon sa configuration, un travail de ré-écriture d&#8217;URL sera donc nécessaire,<br />
+<strong>Compression :</strong> le mandataire inverse peut optimiser la compression du contenu des sites.</p>
+<p><strong>Pour résumé:</strong></p>
+<p><strong>Visiteur &gt; Web &gt; Votre Serveur &gt; Nginx &gt; Gunicorn &gt; Django<br />
+</strong></p>
+<p>Dans la configuration suivante Nginx va servir les fichiers statiques (images, js, etc) et envoyer le reste des requêtes sur <a href="http://gunicorn.org/#quickstart">Gunicorn</a>. Gunicorn est une interface WSGI entre le serveur HTTP (nginx) et Python, je n&#8217;ai pas trouvé de bonne explication sur WSGI à part le <a href="http://wsgi.readthedocs.org/en/latest/index.html">site officiel </a>fait par des autistes.</p>
+<p><strong>Soit la configuration de Gunicorn suivante (on peut le lancer avec <a href="https://0bin.readthedocs.org/en/latest/fr/using_supervisor.html">supervisor</a>):</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">gunicorn_django  myapp.<span style="color: black;">py</span> --bind 127.0.0.1:<span style="color: #ff4500;">8080</span> --log-<span style="color: #008000;">file</span> /var/log/myapp.<span style="color: black;">gunicorn</span>.<span style="color: black;">log</span> --log-level info --workers <span style="color: #ff4500;">2</span> --pid /tmp/myapp.<span style="color: black;">pid</span>  --worker-<span style="color: #ff7700;font-weight:bold;">class</span> gevent</pre></div></div>
+
+<p>Gunicorn va &#8220;écouter&#8221; en local sur le port 8080, il va logger des infos dans le fichier /var/log/myapp.gunicorn.log (pratique pour le debug si besoin).<br />
+Pour les workers et worker-class regardez <a href="http://docs.gunicorn.org/en/latest/configure.html">la doc</a>.</p>
+<p><strong>Configurer Nginx: </strong><br />
+Dans la conf Nginx on va avoir.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">server <span style="color: black;">&#123;</span>
+        listen       <span style="color: #ff4500;">80</span><span style="color: #66cc66;">;</span>
+        server_name mysite.<span style="color: black;">com</span> www.<span style="color: black;">mysite</span>.<span style="color: black;">com</span><span style="color: #66cc66;">;</span>
+&nbsp;
+        location /static/ <span style="color: black;">&#123;</span>
+            root  /home/myapp/prod<span style="color: #66cc66;">;</span>
+            <span style="color: #dc143c;">gzip</span>  on<span style="color: #66cc66;">;</span>
+        <span style="color: black;">&#125;</span>
+&nbsp;
+        location / <span style="color: black;">&#123;</span>
+            proxy_pass http://127.0.0.1:<span style="color: #ff4500;">8080</span><span style="color: #66cc66;">;</span> <span style="color: #808080; font-style: italic;"># Pass to Gunicorn</span>
+            proxy_set_header X-Real-IP $remote_addr<span style="color: #66cc66;">;</span> <span style="color: #808080; font-style: italic;"># get real Client IP</span>
+        <span style="color: black;">&#125;</span>
+<span style="color: black;">&#125;</span></pre></div></div>
+
+<p><a href="http://wiki.nginx.org/HttpCoreModule#location">location</a> va indiquer à Nginx ce qu&#8217;il faut faire lorsqu&#8217;il rencontre certaines URL.</p>
+<p>Dans notre cas le <strong>location /static/</strong> va dire à Nginx de servir directement tous les fichiers du répertoire /home/myapp/prod/static pour les URL http://mysite.com/static/&#8230; En général les images, javascript, etc.</p>
+<p>Pour le reste <strong>location /</strong> va renvoyer les requêtes sur votre serveur Gunicorn qui va les traiter.</p>
+<p>proxy_set_header sert à passer à Gunicorn certaines infos comme l&#8217;<a title="Récupérer l’IP client avec Nginx en proxy sous CherryPy/Django/Bottle – proxy_set_header" href="http://sametmax.com/recuperer-lip-client-avec-nginx-en-proxy-sous-cherrypy-proxy_set_header/">IP réelle du client </a>(sinon Gunicorn verrait celle de NGinx 127.0.0.1).</p>
+<p>De cette manière on ne surcharge pas Gunicorn pour servir nos fichiers statiques, on ajoute une protection (Nginx).<br />
+On peut éventuellement <a href="http://wiki.nginx.org/HttpProxyModule#proxy_cache">mettre en cache</a> certaines pages mais je n&#8217;ai jamais utilisé cette option.<br />
+Nginx peut également distribuer la charge sur plusieurs serveurs et se charger de la <a href="https://developers.google.com/speed/articles/gzip">compression des pages</a> (gzip).</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3431&amp;md5=934128f02ddca1a9b8dd8993393017d5" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nginx-en-reverse-proxy-gunicorn-pour-vos-apps-django/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fnginx-en-reverse-proxy-gunicorn-pour-vos-apps-django%2F&amp;language=en_GB&amp;category=text&amp;title=Nginx+en+reverse+proxy+%2B+Gunicorn+pour+vos+apps+Django&amp;description=Nginx+est+bien+connu+depuis+quelques+ann%C3%A9es.+Puissant+serveur+HTTP%2C+il+peut+%C3%AAtre+utilis%C3%A9+en+tant+que+reverse+proxy+%28mandataire+inverse+en+Fran%C3%A7ais%29+afin+d%26%238217%3Bam%C3%A9liorer+les+performances.+Je+vous+copie%2Fcolle...&amp;tags=django%2Cgunicorn%2Cnginx%2Cpython%2Creverse+proxy%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/330px-Reverse_proxy_h2g2bob.png" length="16681" type="image/jpg" />	</item>
+	</channel>
+</rss>

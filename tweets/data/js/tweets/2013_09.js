@@ -137,7 +137,12 @@ Grailbird.data.tweets_2013_09 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/ULFBFfBIlO",
+      "expanded_url" : "http:\/\/pyweek.org\/",
+      "display_url" : "pyweek.org"
+    } ]
   },
   "geo" : { },
   "id_str" : "374138912035188737",

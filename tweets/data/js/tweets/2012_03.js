@@ -1122,7 +1122,12 @@ Grailbird.data.tweets_2012_03 =
       "text" : "on",
       "indices" : [ 115, 118 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/9IrsmLbM",
+      "expanded_url" : "http:\/\/ow.ly\/9sjWk",
+      "display_url" : "ow.ly\/9sjWk"
+    } ]
   },
   "geo" : { },
   "id_str" : "176737949541601280",

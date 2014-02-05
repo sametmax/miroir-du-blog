@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; bytes</title>
+	<atom:link href="http://sametmax.com/tag/bytes/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>En Python 3, le type bytes est un array d&#8217;entiers</title>
+		<link>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/</link>
+		<comments>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/#comments</comments>
+		<pubDate>Thu, 05 Dec 2013 16:00:32 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ascii]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8160</guid>
+		<description><![CDATA[Le plus gros changement quand on passe de Python 2 à Python 3, c'est la gestion des chaînes de caractères.]]></description>
+			<content:encoded><![CDATA[<p>Le plus gros changement quand on passe de Python 2 à Python 3, c&#8217;est la gestion des chaînes de caractères.</p>
+<p>Pour rappel :</p>
+<ul>
+<li>En 2.7, les chaînes sont par défaut des arrays d&#8217;octets, et il faut les décoder pour obtenir de l&#8217;unicode.</li>
+<li>En 3, les chaînes sont par défaut de type &#8216;unicode&#8217;, et il faut les encoder pour obtenir de un array d&#8217;octets.</li>
+</ul>
+<p>Si vous avez besoin d&#8217;une mise à jour sur l&#8217;encoding en Python, on <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">a un article pour ça</a>.</p>
+<p>Comme toute entrée ou sortie est forcément un flux d&#8217;octets, mais pas forcément dans le même encodage, Python 2.7 pouvait poser problème pour le débutant qui essayait de comprendre pourquoi son programme plantait, bordel de merde.</p>
+<p>La version 3 prend plusieurs mesures pour éviter les bugs vicieux liés à l&#8217;encodage de caractères:</p>
+<ul>
+<li>L&#8217;encodage par défaut du code est UTF8.</li>
+<li>L&#8217;encodage par défaut de lecture et d&#8217;écriture est UTF8.</li>
+<li>On ne peut plus mélanger &#8216;bytes&#8217; et &#8216;unicode&#8217;.</li>
+<li>Les messages d&#8217;erreur expliquent clairement et tôt tout problème.</li>
+</ul>
+<p>La plupart du temps, quand on va manipuler du texte, on va donc toujours manipuler de l&#8217;unicode, en Python 3. Ce dernier va nous forcer à faire le décodage / encodage au bon moment.</p>
+<p>Mais il restera quelques fois le besoin de manipuler du <code>bytes</code>, et ce type a subi un lifting&#8230;</p>
+<h2>La base</h2>
+<p>Créer un array d&#8217;octets (le type <code>bytes</code>&#8216;, en Python 3) demande de préfixer une chaîne avec &#8216;b&#8217; :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s = b<span style="color: #483d8b;">'I am evil, stop laughing!'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'bytes'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+b<span style="color: #483d8b;">'I am evil, stop laughing!'</span></pre></div></div>
+
+<p>Première remarque, on ne peut plus utiliser ce type pour afficher quoi que ce soit, puisque l&#8217;affichage est une représentation du type (appel à <code>__repr__</code>), et pas du texte mis en forme. Déjà Python vous indique la couleur : si vous voulez manipulez du texte, n&#8217;utilisez pas ce type.</p>
+<p>Comparez avec le type unicode :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> u = s.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>u<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>u<span style="color: black;">&#41;</span>
+I am evil, stop laughing<span style="color: #66cc66;">!</span></pre></div></div>
+
+<p>L&#8217;affichage marche comme on s&#8217;y attend. Bref, vous êtes forcé de toujours rester sur de l&#8217;unicode (le type <code>str</code> en Python 3, ce qui porte à confusion) si vous manipulez du texte. Heureusement, c&#8217;est quasiment toujours ce que vous aurez.</p>
+<p>Par exemple, si vous ouvrez un fichier en Python 3 :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> content = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>content<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>C&#8217;est du texte. A moins de demander qu&#8217;il soit ouvert en mode binaire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;&gt;</span> content = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span>, <span style="color: #483d8b;">'rb'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>content<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'bytes'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Une autre différence MAJEURE, c&#8217;est que, si dans Python 2.7, les arrays d&#8217;octets pouvaient être manipulés comme un array de lettres :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s = <span style="color: #483d8b;">'I put the goal in golem...'</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># en Python 2.7</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'I'</span></pre></div></div>
+
+<p>En Python 3, les array d&#8217;octets sont au mieux manipulables comme un array d&#8217;entiers :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s = b<span style="color: #483d8b;">'I put the goal in golem...'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># en Python 3</span>
+<span style="color: #ff4500;">73</span></pre></div></div>
+
+<p>La représentation sous forme de lettre est gardée pour l&#8217;initialisation pour des raisons pratiques, mais sous le capot, il se passe ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">bytes</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">73</span>, <span style="color: #ff4500;">32</span>, <span style="color: #ff4500;">112</span>, <span style="color: #ff4500;">117</span>, <span style="color: #ff4500;">116</span>, <span style="color: #ff4500;">32</span>, <span style="color: #ff4500;">116</span>, <span style="color: #ff4500;">104</span>, <span style="color: #ff4500;">101</span>, <span style="color: #ff4500;">32</span>, <span style="color: #ff4500;">103</span>, <span style="color: #ff4500;">111</span>, <span style="color: #ff4500;">97</span>, <span style="color: #ff4500;">108</span>, <span style="color: #ff4500;">32</span>, <span style="color: #ff4500;">105</span>, <span style="color: #ff4500;">110</span>, <span style="color: #ff4500;">32</span>, <span style="color: #ff4500;">103</span>, <span style="color: #ff4500;">111</span>, <span style="color: #ff4500;">108</span>, <span style="color: #ff4500;">101</span>, <span style="color: #ff4500;">109</span>, <span style="color: #ff4500;">46</span>, <span style="color: #ff4500;">46</span>, <span style="color: #ff4500;">46</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+b<span style="color: #483d8b;">'I put the goal in golem...'</span></pre></div></div>
+
+<p>D&#8217;ailleurs, on ne peut même plus faire d&#8217;opérations de formatage avec des octets comme en Python 2.7 :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> b<span style="color: #483d8b;">&quot;Welcome to the league of %s&quot;</span> <span style="color: #66cc66;">%</span> <span style="color: #008000;">input</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>
+Draven
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">TypeError</span>: unsupported operand <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #66cc66;">%</span>: <span style="color: #483d8b;">'bytes'</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">'str'</span></pre></div></div>
+
+<p><code>format()</code> ne marche pas non plus. On est assez proche du tableau d&#8217;octets en C, sauf qu&#8217;en plus, on ne peut pas le modifier :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s = b<span style="color: #483d8b;">&quot;My right arm is a lot stronger than my left arm.&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> = <span style="color: #ff4500;">1</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">TypeError</span>: <span style="color: #483d8b;">'bytes'</span> <span style="color: #008000;">object</span> does <span style="color: #ff7700;font-weight:bold;">not</span> support item assignment</pre></div></div>
+
+<p>Les arrays d&#8217;octets sont donc maintenant essentiellement des outils de communication avec le monde extérieur.</p>
+<h2>Bytearray</h2>
+<p>Il existe encore des raisons de manipuler des arrays d&#8217;octets : les applications scientifiques. Typiquement, les algos de crypto opérent sur des arrays d&#8217;octets.</p>
+<p>Pour cette raison, Python 3 vient également avec un nouveau type de base : <code>bytearray</code>, un array d&#8217;octets modifiable.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s = <span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">&quot;this tasted purple !&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>:<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span> = b<span style="color: #483d8b;">'at'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">'that tasted purple !'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et on a toutes les opérations de liste dessus, comme <code>append</code>, <code>pop()</code>, etc :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> b<span style="color: #483d8b;">' ,puY'</span>:
+...     <span style="color: black;">s</span>.<span style="color: black;">insert</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, x<span style="color: black;">&#41;</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">'Yup, that tasted purple !'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Attention par contre, ces opérations attendent un entier en paramètres et NON un array d&#8217;octets.</p>
+<p>Et un dernier détail :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">bytes</span>, <span style="color: #dc143c;">bytearray</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">bytearray</span>, <span style="color: #dc143c;">bytes</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span></pre></div></div>
+
+<h2>Différence entre string et array d&#8217;octets</h2>
+<p>Il est facile de confondre tout ce merdier.</p>
+<p>En Python 2.7, le type <code>str</code> était un array d&#8217;octets, et on le manipulait comme une chaîne, d&#8217;où la difficulté de transition.</p>
+<p>En Python 3, bien qu&#8217;on puisse créer un array d&#8217;octets avec une syntaxe utilisant des lettres, ils ne sont plus du tout utilisés pour la manipulation de texte. Si vous voulez manipuler du texte qui vient de l&#8217;extérieur de votre programme, il faudra toujours le décoder pour obtenir un type <code>str</code> (qui est l&#8217;ancien type <code>unicode</code> de Python 2.7).</p>
+<p>Le décodage sera fait automatiquement dans la plupart des cas, et plantera si on tombe sur un cas où vous devez le faire à la main et que vous ne le faites pas. Du coup, plus de difficulté à trouver d&#8217;où vient ce bug d&#8217;encoding, car on a toujours l&#8217;erreur à la source. </p>
+<p>En ce sens, Python 3 est beaucoup plus clair : les octets d&#8217;un côté, le texte de l&#8217;autre. Bon, tout ça c&#8217;est de la surcouche, au final, tout est octet. Mais on a rarement envie de manipuler un octet directement, sinon on coderait encore en assembleur.</p>
+<p>Avec ce système, Python 3 est le langage le plus sain que j&#8217;ai pu rencontrer dans sa gestion de l&#8217;encodage : il ne cache rien, oblige l&#8217;utilisateur à coder avec de bonnes habitudes, facilite le débugage et met sur le devant de la scène la problématique de l&#8217;encoding, qui est le plus souvent cachée vite fait sous le tapis.</p>
+<p>L&#8217;alternative intelligente la plus proche étant celle de node.js, qui <a href="https://github.com/joyent/node/blob/master/lib/buffer.js#L126">interdit tout simplement la plupart des encodings dans son API</a>.</p>
+<p>La bonne nouvelle ? 99% du temps, vous n&#8217;aurez même pas à vous en soucier, car ASCII est inclus dans UTF8, et ce sont les encodings les plus utilisés. Avec Python 3 forçant UTF8 par défaut partout et des chaînes en unicode dès le départ, il n&#8217;y a presque rien à faire. Je doute que la plupart des gens aient même à manipuler le type <code>bytes</code>.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8160&amp;md5=71b1c2304c867db19a765d673fbf002f" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fen-python-3-le-type-bytes-est-un-array-dentiers%2F&amp;language=en_GB&amp;category=text&amp;title=En+Python+3%2C+le+type+bytes+est+un+array+d%26%238217%3Bentiers&amp;description=Le+plus+gros+changement+quand+on+passe+de+Python+2+%C3%A0+Python+3%2C+c%26%238217%3Best+la+gestion+des+cha%C3%AEnes+de+caract%C3%A8res.+Pour+rappel+%3A+En+2.7%2C+les+cha%C3%AEnes+sont+par+d%C3%A9faut...&amp;tags=ascii%2Cbytes%2Cencoding%2Cpython%2Cstr%2Cunicode%2Cutf8%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/CRutQrO.jpg" length="140436" type="image/jpg" />	</item>
+	</channel>
+</rss>

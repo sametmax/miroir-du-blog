@@ -4479,8 +4479,8 @@ Grailbird.data.tweets_2012_12 =
       "text" : "OpenERP",
       "indices" : [ 77, 85 ]
     }, {
-      "text" : "c",
-      "indices" : [ 134, 136 ]
+      "text" : "camptocamp",
+      "indices" : [ 134, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 113, 133 ],
@@ -6274,7 +6274,7 @@ Grailbird.data.tweets_2012_12 =
       "screen_name" : "Maitre_Eolas",
       "protected" : false,
       "id_str" : "7607262",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000793385046\/eeddab49800f77d2a6fb2367c8568d3e_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/431006737584652288\/YvTbBISf_normal.jpeg",
       "id" : 7607262,
       "verified" : false
     }
@@ -6502,8 +6502,16 @@ Grailbird.data.tweets_2012_12 =
     }, {
       "text" : "IT",
       "indices" : [ 21, 24 ]
+    }, {
+      "text" : "london",
+      "indices" : [ 139, 140 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/ReYaH0Rm",
+      "expanded_url" : "http:\/\/bit.ly\/ZhAYgU",
+      "display_url" : "bit.ly\/ZhAYgU"
+    } ]
   },
   "geo" : { },
   "id_str" : "279643877592428544",
@@ -6681,7 +6689,10 @@ Grailbird.data.tweets_2012_12 =
       "id" : 23314480
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "jobs",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ {
       "indices" : [ 115, 135 ],
       "url" : "http:\/\/t.co\/2LExVf9Y",
@@ -6840,8 +6851,16 @@ Grailbird.data.tweets_2012_12 =
       "id" : 579012419
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
-    "urls" : [ ]
+    "hashtags" : [ {
+      "text" : "Nice06",
+      "indices" : [ 139, 140 ]
+    } ],
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/GPO8PvS6",
+      "expanded_url" : "http:\/\/bit.ly\/UKnPFz",
+      "display_url" : "bit.ly\/UKnPFz"
+    } ]
   },
   "geo" : { },
   "id_str" : "279640819848331264",
@@ -8899,7 +8918,7 @@ Grailbird.data.tweets_2012_12 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "AX0rion \u270C\uFE0F",
+      "name" : "AX0rion",
       "screen_name" : "Linux_SSH",
       "indices" : [ 0, 10 ],
       "id_str" : "339292723",

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; historique</title>
+	<atom:link href="http://sametmax.com/tag/historique/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Quand Mechanize bouffe toute votre RAM et que vous ne savez pas pourquoi&#8230;.</title>
+		<link>http://sametmax.com/quand-mechanize-bouffe-toute-votre-ram-et-que-vous-ne-savez-pas-pourquoi/</link>
+		<comments>http://sametmax.com/quand-mechanize-bouffe-toute-votre-ram-et-que-vous-ne-savez-pas-pourquoi/#comments</comments>
+		<pubDate>Wed, 21 Mar 2012 17:36:52 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[historique]]></category>
+		<category><![CDATA[history]]></category>
+		<category><![CDATA[load]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[mémoire]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ram]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=282</guid>
+		<description><![CDATA[Mechanize par défaut sauve tout l'historique de votre navigation, donc imaginez le carnage quand vous avez un script qui est censé scanner des milliers de pages internet...]]></description>
+			<content:encoded><![CDATA[<p>En revenant de Bangla Road l&#8217;autre soir, je me connecte sur l&#8217;admin d&#8217;un de nos serveurs et je m&#8217;aperçois qu&#8217;un script de grabbing bouffait à lui tout seul plus de 30% de la mémoire. Après quelques recherches Sam me fait part d&#8217;un article sur <a href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> et sa tendance à avoir un history plutôt vorace en RAM.</p>
+<p><strong>Le coupable était Mechanize avec le chandelier dans le salon:</strong></p>
+<p>En effet Mechanize par défaut sauve tout l&#8217;historique de votre navigation, donc imaginez le carnage quand vous avez un script qui est censé scanner des milliers de pages internet&#8230;</p>
+<p>Pour lui couper le sifflet on peut utiliser cette méthode:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> mechanize
+<span style="color: #ff7700;font-weight:bold;">from</span> mechanize <span style="color: #ff7700;font-weight:bold;">import</span> History
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> MaxHistory<span style="color: black;">&#40;</span>History<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        History implementation with a size limit.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, max_history=<span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._history = <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>  <span style="color: #808080; font-style: italic;"># LIFO</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">max_history</span> = max_history
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> add<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, request, response<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._history.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>request, response<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">max_history</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">self</span>._history
+            <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">self</span>.<span style="color: black;">max_history</span> <span style="color: #66cc66;">&lt;</span>= <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>._history<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+            <span style="color: #008000;">self</span>._history.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+&nbsp;
+br = mechanize.<span style="color: black;">Browser</span><span style="color: black;">&#40;</span>history=MaxHistory<span style="color: black;">&#40;</span>max_history=<span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Browser.<span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;http://sametmax.com/&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et voilà!<br />
+Plus de problème de mémoire. Merci bibi.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=282&amp;md5=dfccf02836a4e3af390dd5ea05780b61" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quand-mechanize-bouffe-toute-votre-ram-et-que-vous-ne-savez-pas-pourquoi/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fquand-mechanize-bouffe-toute-votre-ram-et-que-vous-ne-savez-pas-pourquoi%2F&amp;language=en_GB&amp;category=text&amp;title=Quand+Mechanize+bouffe+toute+votre+RAM+et+que+vous+ne+savez+pas+pourquoi%26%238230%3B.&amp;description=En+revenant+de+Bangla+Road+l%26%238217%3Bautre+soir%2C+je+me+connecte+sur+l%26%238217%3Badmin+d%26%238217%3Bun+de+nos+serveurs+et+je+m%26%238217%3Baper%C3%A7ois+qu%26%238217%3Bun+script+de+grabbing+bouffait+%C3%A0+lui+tout+seul+plus+de...&amp;tags=historique%2Chistory%2Cload%2Cmechanize%2Cm%C3%A9moire%2Cpython%2Cram%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/03/gaston.jpg" length="28028" type="image/jpg" />	</item>
+	</channel>
+</rss>

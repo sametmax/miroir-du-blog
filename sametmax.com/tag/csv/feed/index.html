@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; csv</title>
+	<atom:link href="http://sametmax.com/tag/csv/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Qu&#8217;est-de que MVC et à quoi ça sert ?</title>
+		<link>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Tue, 10 Dec 2013 08:39:53 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[csv]]></category>
+		<category><![CDATA[mvc]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7440</guid>
+		<description><![CDATA[MVC, pour "Modèle, Vue, Contrôleur", est le nom donné à une manière d'organiser son code. C'est une façon d'appliquer le principe de séparation des responsabilités, en l’occurrence celles du traitement de l'information et de sa mise en forme.
+
+Une fois n'est pas coutume je vais donner un exemple en Python <strong>et PHP</strong>, car c'est une question qui hante les codeurs de ce langage. En effet on leur rabâche qu'il faut utiliser MVC, que tel framework est MVC, que leur code à eux ne l'est pas, etc. Sans que nul part, évidement, on ne donne une explication correcte de la notion.]]></description>
+			<content:encoded><![CDATA[<p>MVC, pour &#8220;Modèle, Vue, Contrôleur&#8221;, est le nom donné à une manière d&#8217;organiser son code. C&#8217;est une façon d&#8217;appliquer le principe de séparation des responsabilités, en l’occurrence celles du traitement de l&#8217;information et de sa mise en forme.</p>
+<p>Une fois n&#8217;est pas coutume je vais donner un exemple en Python <strong>et PHP</strong>, car c&#8217;est une question qui hante les codeurs de ce langage. En effet on leur rabâche qu&#8217;il faut utiliser MVC, que tel framework est MVC, que leur code à eux ne l&#8217;est pas, etc. Sans que nulle part, évidement, on ne donne une explication correcte de la notion.</p>
+<p>Long article, petite musique.</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/Bb1_zqQ-BUA" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p><em>(piqué à What the cut :-))</em></p>
+<h2>Principe de base</h2>
+<p>Il n&#8217;y a pas de Tables De La Loi qui disent ce qu&#8217;est le MVC, il y a donc autant de manières de le faire que de programmes. En fait, c&#8217;est un simple principe d&#8217;organisation de code, et il y en a d&#8217;<a href="http://cirw.in//blog/time-to-move-on.html">autres</a>. Mais généralement, c&#8217;est basé sur la répartition suivante :</p>
+<ul>
+<li>Une part du code gère l&#8217;affichage. C&#8217;est la partie &#8220;Vue&#8221;.</li>
+<li>Une part du code gère la manipulation des données. C&#8217;est la partie &#8220;Modèle&#8221;.</li>
+<li>Tout le reste. L&#8217;espèce de merdier qu&#8217;on va mettre en place pour faire marcher le programme, c&#8217;est le contrôleur. Souvent, c&#8217;est le code qui réagit à l&#8217;action de l&#8217;utilisateur, mais pas seulement.</li>
+</ul>
+<p>MVC est typiquement quelque chose d&#8217;abstrait qu&#8217;on ne peut pas comprendre avec une explication seule. Passons donc rapidement à un exemple.</p>
+<p>Imaginons que l&#8217;on ait des tas de fichiers CSV ainsi faits :</p>
+<pre>"Jeu";"Nombre de joueurs Max";"Support"
+"Secret of Mana";"3";"Super Nintendo"
+"Bomberman";"8";"Super Nintendo"
+"Mario Kart";"4";"Nintendo 64"
+"Age of Empire 2";"8";"PC"</pre>
+<p>Et que nous voulions un programme qui fasse un rapport sur le CSV, affichant :</p>
+<pre>Nombre de jeux analysés : 10
+
+Détails
+--------
+
+Support: Super Nintendo
+Nombre de jeux : 2
+Nombre de joueurs max : 8
+
+Support: Nintendo 64
+Nombre de jeux : 1
+Nombre de joueurs max : 4
+
+etc</pre>
+<p>Il y a de nombreuses manières de coder ce programme. Si on le fait en suivant le principe du modèle MVC, on va faire 3 fichiers : un pour le modèle, un pour la vue, et un pour le contrôleur. On peut avoir plus ou moins de 3 fichiers, j&#8217;ai choisi 3 fichiers pour bien illustrer le principe de séparation des responsabilités.</p>
+<h3>Le modèle</h3>
+<p>Le modèle manipule la donnée. Dans un site Web, le modèle est souvent le code qui permet de faire de requêtes à la base de données. Dans notre cas, c&#8217;est le code qui va manipuler le CSV. Encore une fois, il n&#8217;y a pas de définition divine de ce qu&#8217;est un modèle, ceci n&#8217;est qu&#8217;un exemple de ce que cela PEUT être. C&#8217;est le choix du dev.</p>
+<p><em>modele.py</em></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals, absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">csv</span> <span style="color: #ff7700;font-weight:bold;">import</span> DictReader
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> OrderedDict
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Modele<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #dc143c;">csv</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">total_jeux</span> = <span style="color: #ff4500;">0</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">supports</span> = OrderedDict<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">csv</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+            <span style="color: #808080; font-style: italic;"># on parse le csv</span>
+            <span style="color: #ff7700;font-weight:bold;">for</span> data <span style="color: #ff7700;font-weight:bold;">in</span> DictReader<span style="color: black;">&#40;</span>f, delimiter=b<span style="color: #483d8b;">';'</span>, quotechar=b<span style="color: #483d8b;">'&quot;'</span><span style="color: black;">&#41;</span>:
+                <span style="color: #808080; font-style: italic;"># on calcule les stats pour que ligne du csv</span>
+                support = <span style="color: #008000;">self</span>.<span style="color: black;">supports</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Support'</span><span style="color: black;">&#93;</span>, <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+                support<span style="color: black;">&#91;</span><span style="color: #483d8b;">'nombre_de_jeux'</span><span style="color: black;">&#93;</span> = support.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nombre_de_jeux'</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span> + <span style="color: #ff4500;">1</span>
+                <span style="color: #008000;">self</span>.<span style="color: black;">total_jeux</span> += <span style="color: #ff4500;">1</span>
+                <span style="color: #ff7700;font-weight:bold;">if</span> support.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'joueurs_max'</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;</span> data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Nombre de joueurs Max'</span><span style="color: black;">&#93;</span>:
+                    support<span style="color: black;">&#91;</span><span style="color: #483d8b;">'joueurs_max'</span><span style="color: black;">&#93;</span> = data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Nombre de joueurs Max'</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># goodies pour pouvoir itérer sur le modèle</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">supports</span>.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ca s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> modele = Modele<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Bureau/jeux.csv&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> modele.<span style="color: black;">total_jeux</span>
+<span style="color: #ff4500;">4</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> support, data <span style="color: #ff7700;font-weight:bold;">in</span> modele:
+    <span style="color: #ff7700;font-weight:bold;">print</span> support
+    <span style="color: #ff7700;font-weight:bold;">print</span> data
+...
+<span style="color: black;">Super</span> Nintendo
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">2</span>, u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'8'</span><span style="color: black;">&#125;</span>
+Nintendo <span style="color: #ff4500;">64</span>
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">1</span>, u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'4'</span><span style="color: black;">&#125;</span>
+PC
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">1</span>, u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'8'</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>On voit ici le principe : le modèle ne fait que manipuler la donnée, et rien d&#8217;autre. Il extrait, regroupe, calcule, raffine, et donne une belle interface propre pour que le reste du programme puisse utiliser le résultat sans avoir à connaitre les détails du traitement.</p>
+<h3>La vue</h3>
+<p>La vue, c&#8217;est de la présentation. C&#8217;est comment on veut que la donnée soit présentée à l&#8217;utilisateur. Ça peut être le code qui pond du HTML ou produit un CSV, ou fait configurer de jolis boutons dans une UI.</p>
+<p>Dans notre cas, c&#8217;est le code qui va formater le texte pour la console.</p>
+<p>On veut un truc comme ça :</p>
+<pre>
+Nombre de jeux analysés : 10
+
+Détails
+--------
+
+Support: Super Nintendo
+Nombre de jeux : 2
+Nombre de joueurs max : 8
+
+Support: Nintendo 64
+Nombre de jeux : 1
+Nombre de joueurs max : 4</pre>
+<p>Normalement, on voudrait un template. Mais on a pas de langage de template qui accepte les boucles dans la lib standard, alors on va faire comme la norme WSGI et retourner un générateur de strings.</p>
+<p><em>vue.py</em></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals, absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> rapport<span style="color: black;">&#40;</span>modele<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># affichage de l'en-tête</span>
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Nombre de jeux analysés : {total_jeux}<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+           <span style="color: #483d8b;">&quot;Détails<span style="color: #000099; font-weight: bold;">\n</span>--------<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>total_jeux=modele.<span style="color: black;">total_jeux</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># affichage des stats pour chaque console</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> support, data <span style="color: #ff7700;font-weight:bold;">in</span> modele:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Support: {support}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+               <span style="color: #483d8b;">&quot;Nombre de jeux : {nombre_de_jeux}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+               <span style="color: #483d8b;">&quot;Nombre de joueurs max : {joueurs_max}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>
+               support=support, <span style="color: #66cc66;">**</span>data<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et ça s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> m = Modele<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Bureau/jeux.csv&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>rapport<span style="color: black;">&#40;</span>m<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'Nombre de jeux analys<span style="color: #000099; font-weight: bold;">\x</span>e9s : 4<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\n</span>D<span style="color: #000099; font-weight: bold;">\x</span>e9tails<span style="color: #000099; font-weight: bold;">\n</span>--------<span style="color: #000099; font-weight: bold;">\n</span>'</span>, u<span style="color: #483d8b;">'Support: Super Nintendo<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 2<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 8<span style="color: #000099; font-weight: bold;">\n</span>'</span>, u<span style="color: #483d8b;">'Support: Nintendo 64<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 1<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 4<span style="color: #000099; font-weight: bold;">\n</span>'</span>, u<span style="color: #483d8b;">'Support: PC<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 1<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 8<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Encore une fois, ceci n&#8217;est pas LA manière de faire une vue. Ceci est UNE manière de faire une vue. Le but de la vue est de contenir le code qui se charge de formater la donnée pour l&#8217;utilisateur. </p>
+<p>Il est plus courant d&#8217;utiliser un template pour cela, c&#8217;est à dire une sorte lib de texte à trou à remplir plus tard avec le modèle. C&#8217;est plus facile et flexible qu&#8217;une fonction. Il y a des tas de <a href="https://wiki.python.org/moin/Templating">libs de templates en Python</a>. Je ferai sans doute un article dessus un jour. Si vous voulez un truc simple et rapide, utilisez <a href="http://www.joonis.de/en/code/templite">templite</a> : rien besoin d&#8217;installer, ça tient dans un fichier. Si vous voulez le truc le plus standard possible, utiliser <a href="http://jinja.pocoo.org/docs/">jinja2</a>, c&#8217;est plus ou moins la lib la plus connue actuellement.</p>
+<h3>Le contrôleur</h3>
+<p>Le contrôleur, c&#8217;est tout le reste. Essayer de définir le contrôleur est généralement voué à l&#8217;échec, tant sa nature change d&#8217;une application à l&#8217;autre. Certains disent que c&#8217;est le code glue qui permet de lier le modèle et la vue. D&#8217;autres qu&#8217;il contient la logique de flux du programme. Personnellement, je vous invite à vous fier à la définition &#8220;c&#8217;est tout le reste&#8221;. Avec l&#8217;expérience, vous en viendrez à faire des modèles et des vues de plus en plus adaptées, et la partie contrôleur découlera d&#8217;elle-même.</p>
+<p>De toute façon, aucun MVC n&#8217;est parfait, et un peu de vue dégouline parfois sur le contrôleur, un peu de contrôleur coule dans le modèle, ou inversement. Il ne sert à rien d&#8217;être un nazi du MVC, c&#8217;est une bonne pratique, pas un dogme religieux.</p>
+<p>Dans notre cas le programme a besoin d&#8217;un code qui :</p>
+<ul>
+<li>Importe notre vue et notre modèle.</li>
+<li>Prend en paramètre le fichier CSV via la ligne de commande.</li>
+<li>Mélange tout ça pour afficher le résultat dans la console.</li>
+</ul>
+<p>Le contrôleur est par ailleurs le point d&#8217;entrée d&#8217;un programme. Et ce sera essentiellement ça, le contrôleur de notre programme : un point d&#8217;entrée.</p>
+<p><em>controlleur.py</em></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals, absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> vue <span style="color: #ff7700;font-weight:bold;">import</span> rapport
+<span style="color: #ff7700;font-weight:bold;">from</span> modele <span style="color: #ff7700;font-weight:bold;">import</span> Modele
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on prend le csv en paramètre du script</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    f = <span style="color: #dc143c;">sys</span>.<span style="color: black;">argv</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IndexError</span>:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Veuillez passer le chemin d'un fichier CSV en paramètre.&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on vérifie que le csv existe</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>f<span style="color: black;">&#41;</span>:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Le fichier '%s' n'existe pas&quot;</span> <span style="color: #66cc66;">%</span> f<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on analyse le CSV et on affiche le rapport</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> texte <span style="color: #ff7700;font-weight:bold;">in</span> rapport<span style="color: black;">&#40;</span>Modele<span style="color: black;">&#40;</span>f<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> texte</pre></div></div>
+
+<h3>Résultat final</h3>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">$ python controlleur.<span style="color: black;">py</span> jeux.<span style="color: #dc143c;">csv</span>
+Nombre de jeux analysés : <span style="color: #ff4500;">4</span>
+&nbsp;
+Détails
+--------
+&nbsp;
+Support: Super Nintendo
+Nombre de jeux : <span style="color: #ff4500;">2</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">8</span>
+&nbsp;
+Support: Nintendo <span style="color: #ff4500;">64</span>
+Nombre de jeux : <span style="color: #ff4500;">1</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">4</span>
+&nbsp;
+Support: PC
+Nombre de jeux : <span style="color: #ff4500;">1</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">8</span></pre></div></div>
+
+<p>Vous pouvez <a href="https://github.com/sametmax/codes-des-articles/tree/master/2013/decembre">télécharger le code Python de cet article</a>.</p>
+<h2>Exemple en PHP</h2>
+<p>Le PHP a eu beaucoup de succès du fait de la facilité avec laquelle on pouvait coder un site Web, en mélangeant code et HTML. Malheureusement cela a donné lieu à des codes très sales, où on trouvait les requêtes SQL à côté de l&#8217;affichage d&#8217;un tableau, l&#8217;analyse des paramètres <code>$_GET</code> à deux pas de la vérification du mot de passe.</p>
+<p>MVC a été une réponse à cela.</p>
+<p>Un modèle MVC propre sera généralement très riche et complexe, mais il est possible de bricoler un site en MVC basique à la main sans trop de problème. Je ne vous recommande pas d&#8217;utiliser ce code en prod, mais c&#8217;est un bon début pour comprendre comment ça marche. Une fois que vous serez à l&#8217;aise avec l&#8217;idée, n&#8217;hésitez pas à coder le votre sur un petit projet, puis à tester un framework. <a href="http://symfony.com/">Symfony</a>, par exemple, est une valeur sûre en PHP.</p>
+<p>Admettons que notre site ait deux pages : <em>accueil</em> et <em>liste des utilisateurs</em>.</p>
+<p>L&#8217;accueil dit juste bonjour, la liste affiche tous les utilisateurs du site Web. Passionnant.</p>
+<h3>Le modèle</h3>
+<p>L&#8217;idée est de mettre toutes les requêtes SQL au même endroit.</p>
+<p>Les vieux routards du PHP m&#8217;excuseront, mais je n&#8217;ai plus codé dans ce langage depuis des années, donc mon style va dater un peu :-) Et honnêtement tous ces points-virgules, ces dollars et ces brackets dans tous les sens, sans compter la flèche comme caractère de look up, ça me perturbe grandement.</p>
+<p><em>modele.php</em></p>
+
+<div class="wp_syntax"><div class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>
+&nbsp;
+<span style="color: #000088;">$con</span> <span style="color: #339933;">=</span> <span style="color: #990000;">mysqli_connect</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;127.0.0.1&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'root'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'admin123'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'ma_db'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">class</span> User <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$name</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$age</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">function</span> __construct<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$age</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$name</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">age</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$age</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    static <span style="color: #000000; font-weight: bold;">function</span> liste<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+&nbsp;
+        <span style="color: #000088;">$users</span> <span style="color: #339933;">=</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #000088;">$query</span> <span style="color: #339933;">=</span>  <span style="color: #990000;">mysqli_query</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$con</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'SELECT * FROM `user`'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$row</span> <span style="color: #339933;">=</span> <span style="color: #990000;">mysql_fetch_assoc</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$query</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#123;</span>
+            <span style="color: #000088;">$users</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> User<span style="color: #009900;">&#40;</span><span style="color: #000088;">$row</span><span style="color: #009900;">&#91;</span><span style="color: #cc66cc;">0</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$row</span><span style="color: #009900;">&#91;</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+&nbsp;
+        <span style="color: #b1b100;">return</span> users<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>Et ça s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000088;">$users</span> <span style="color: #339933;">=</span> User<span style="color: #339933;">-&gt;</span><span style="color: #004000;">liste</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$users</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$user</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$user</span><span style="color: #339933;">.</span>name <span style="color: #339933;">.</span> <span style="color: #0000ff;">'('</span> <span style="color: #339933;">.</span> <span style="color: #000088;">$users</span><span style="color: #339933;">.</span>age<span style="color: #339933;">.</span> <span style="color: #0000ff;">'ans)'</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>Ce qui affiche tous les noms et les ages des utilisateurs.</p>
+<p>Bien, on a isolé l&#8217;accès aux données, maintenant on va isoler la mise en forme.</p>
+<h3>La vue</h3>
+<p>Ou plutôt, les vues, puisqu&#8217;on a deux pages, et donc deux vues.</p>
+<p>Vous ne le savez peut être pas, mais PHP vient avec une <a href="http://www.php.net/manual/fr/control-structures.alternative-syntax.php">syntaxe alternativ</a>e spécialement conçue pour être utilisée dans le HTML. Elle est similaire à la syntaxe originale, mais les blocs sont ouverts avec <code>:</code> au lieux de <code>{</code> et fermés par <code>endinstruction</code>. Les variables sont affichées avec <<code>?=$nom_de_variable?></code>.</p>
+<p>Par exemple:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">if</span> <span style="color: #000088;">$truc</span><span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+    &lt;p&gt;
+        <span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$machin</span><span style="color: #000000; font-weight: bold;">?&gt;</span>
+    &lt;/p&gt;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">endif</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span></pre></div></div>
+
+<p>Cette syntaxe permet de bien séparer le texte du code PHP, et donc sera utilisée pour la vue.</p>
+<p><em>accueil.php</em></p>
+
+<div class="wp_syntax"><div class="code"><pre class="php" style="font-family:monospace;"><span style="color: #339933;">&lt;</span>html<span style="color: #339933;">&gt;&lt;</span>body<span style="color: #339933;">&gt;&lt;</span>h1<span style="color: #339933;">&gt;</span>Bonjour<span style="color: #339933;">&lt;/</span>h1<span style="color: #339933;">&gt;&lt;/</span>body<span style="color: #339933;">&gt;&lt;/</span>html<span style="color: #339933;">&gt;</span></pre></div></div>
+
+<p><em>liste_utilisateurs.php</em></p>
+
+<div class="wp_syntax"><div class="code"><pre class="php" style="font-family:monospace;">&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Utilisateurs&lt;/h1&gt;
+&nbsp;
+        &lt;ul&gt;http://www.php.net/manual/fr/control-structures.alternative-syntax.php
+            <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">foreach</span> <span style="color: #000088;">$users</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$user</span><span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+                &lt;li&gt;<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$user</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span><span style="color: #000000; font-weight: bold;">?&gt;</span> (<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$user</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">age</span><span style="color: #000000; font-weight: bold;">?&gt;</span> ans)&lt;/li&gt;
+            <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">endforeach</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+        &lt;/ul&gt;
+&nbsp;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></div></div>
+
+<p>Et voilà, on a deux pages, et la deuxième affiche notre liste d'utilisateur. Vous remarquerez qu'il n'y a pas de requête ou de logique de choix de page, pas d'accès à <code>mysql_*</code> ou à <code>$_GET</code> dans ce code. Que de l'affichage.</p>
+<h3>Le contrôleur</h3>
+<p>Puisque le contrôleur, c'est le reste, ce sera à la fois notre point d'entrée, notre code glue et notre routing.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="php" style="font-family:monospace;">&nbsp;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+&nbsp;
+<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'page'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'page'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">==</span> <span style="color: #0000ff;">'liste'</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'modele.php'</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'liste_utilisateurs.php'</span>
+<span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'accueil.php'</span>
+<span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>Et c'est tout.</p>
+<p>Si l'utilisateur va sur l'adresse <em>monsite.com/</em>, il va arriver sur l'accueil, si il va sur <em>monsite.com/?page=liste</em>, il va atterrir sur la liste des utilisateurs.</p>
+<p>Si on veut changer le look de la page, on modifie la vue. Si on veut changer de base de source de données (et lire par exemple depuis un fichier), on change le modèle. Si on veut rajouter des pages, on change le contrôleur. L'avantage de la séparation des responsabilités, c'est la facilité de lecture et donc de maintenance et d'évolution.</p>
+<p>J'insiste sur le fait que c'est un exemple pédagogique, et pas quelque chose à utiliser en prod (par exemple à cause des URLs très moches). Mais il va vous permettre de coder votre premier site en MVC, et plus tard, aller vers des versions plus sérieuses.</p>
+<p>L'important, c'est la séparation donnée / formatage / reste du code.</p>
+<h2>MVC dans la vraie vie vivante</h2>
+<p>Créer un modèle MVC à la main propre et efficace, c'est énormément de taff. C'est pour cela qu'on utilise des outils tout fait comme des frameworks Web ou des libs graphiques (Qt, wxWidget et Gtk ont toutes des outils MVC, ex : Qt possède <a href="http://en.wikipedia.org/wiki/QML">QML</a>, un dialecte type CSS pour manipuler des vues).</p>
+<p>Un modèle MVC simple, mais propre, est celui du micro-framework Web Python <a href="http://bottlepy.org">bottle</a>, dont Max vous avait parlé <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">ici</a>. Lisez l'article, et revenez à ce paragraphe, et vous comprendrez que :</p>
+<ul>
+<li>La vue, c'est le template.</li>
+<li>Le modèle n'est inclus dans bottle, il faut le faire à la main ou utiliser quelque chose comme un ORM (<a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">peewee</a> est très bien adapté).</li>
+<li>Le contrôleur, ce sont les fonctions qu'on trouve sous les décorateurs <code>@url</code>.</li>
+</ul>
+<p>Comme je l'ai dit précédemment, il y a de nombreuses manières de séparer le contenu de sa présentation.</p>
+<p>Django par exemple n'utilise pas un modèle MVC au sens traditionnel, mais plutôt du MVT (Modèle - Vue - Template). Ce qu'il appelle les vues sont en fait ce qu'on appelle le contrôleur dans bottle : les fonctions qui mélangent les données avec le template. Django propose par contre un ORM, qui est bel est bien un système de modèle très élaboré.</p>
+<p>C'est une question de sémantique, et au final, qu'importe le flacon, pourvu qu'on ait l'ivresse.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7440&amp;md5=ef13aa60b7ec25234daadd5374a73798" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fquest-de-que-mvc-et-a-quoi-ca-sert%2F&amp;language=en_GB&amp;category=text&amp;title=Qu%26%238217%3Best-de+que+MVC+et+%C3%A0+quoi+%C3%A7a+sert+%3F&amp;description=MVC%2C+pour+%26%238220%3BMod%C3%A8le%2C+Vue%2C+Contr%C3%B4leur%26%238221%3B%2C+est+le+nom+donn%C3%A9+%C3%A0+une+mani%C3%A8re+d%26%238217%3Borganiser+son+code.+C%26%238217%3Best+une+fa%C3%A7on+d%26%238217%3Bappliquer+le+principe+de+s%C3%A9paration+des+responsabilit%C3%A9s%2C+en+l%E2%80%99occurrence+celles+du+traitement...&amp;tags=csv%2Cmvc%2Cphp%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/65XmWyF.jpg" length="75561" type="image/jpg" />	</item>
+		<item>
+		<title>YAML, XML, JSON, CSV, INI&#8230; Qu&#8217;est-ce que c&#8217;est et à quoi ça sert ?</title>
+		<link>http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Sat, 06 Jul 2013 05:23:09 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[csv]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[ini]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[xml]]></category>
+		<category><![CDATA[yaml]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6576</guid>
+		<description><![CDATA[Quand j'ai débuté la programmation, je les rencontrais partout sur le net. On en parlait comme si on parlait d'acheter du pain. Apparemment c'était <a href="http://sametmax.com/bien-expliquer-quelque-chose-les-regles-de-base/">évident</a> pour tout le monde...]]></description>
+			<content:encoded><![CDATA[<p>Que voilà de jolis acronymes !</p>
+<p>Quand j&#8217;ai débuté la programmation, je les rencontrais partout sur le net. On en parlait comme si on parlait d&#8217;acheter du pain. Apparemment c&#8217;était <a href="http://sametmax.com/bien-expliquer-quelque-chose-les-regles-de-base/">évident</a> pour tout le monde.</p>
+<p>Ça m&#8217;a énervé, mais ça m&#8217;a énervé !</p>
+<p>Et puis j&#8217;ai oublié. C&#8217;est devenu tellement le quotidien pour moi, tellement banal&#8230; Jusqu&#8217;à ce que je reçoive ce mail :</p>
+<blockquote><p>Je viens vous quémander un article</p>
+<p>Il y a une question que je me pose assez souvent avant de coder quelque chose et bien que j&#8217;ai pu me faire quelques opinions au fil du temps, je n&#8217;ai jamais trouvé un article ou une conf ou que sais-je qui explique ça clairement.</p>
+<p>Ma question concerne le format d&#8217;écriture des données.<br />
+Entre les fichiers textes genre ini, json, xml, yaml (que j&#8217;aime bien), les formats binaires (pickle, voir hdf5 pour les scientifiques et j&#8217;en ignore peut être d&#8217;autre&#8230;), les bases de données mysql, postgre, sqlite.</p>
+<p>Je n&#8217;ai pas les idées claires sur :<br />
+* cas typique d&#8217;utilisation<br />
+* les plus et les moins<br />
+* la corruptibilité<br />
+* la sécurité (point fourre-tout)</p>
+<p>En gros, mon raisonnement de béotien dit : binaire plus performant que texte mais texte lisible par l&#8217;éditeur et ça, ça rassure.</p>
+<p>A prendre ou à jeter </p></blockquote>
+<p>Aujourd&#8217;hui, je vais donc parler des formats texte, et je ferai un article sur les formats binaires plus tard.</p>
+<h2>Formats</h2>
+<p>YAML, XML, JSON, CSV, INI sont des noms de formats de données texte. Il y a plusieurs choses à comprendre ici:</p>
+<dl>
+<dt>Donnés : </dt>
+<dd>Ca peut être n&#8217;importe quoi que vous vouliez sauvegarder ou transmettre : carnet d&#8217;adresses, configuration d&#8217;un logiciel, contenu d&#8217;une base de données, nom/prenom/age/mensurations, etc. Bref, tout groupe d&#8217;informations que vous souhaitez pourvoir communiquer, ou relire plus tard. </dd>
+<dt>Format  :</dt>
+<dd>Comment sont organisées ces données. Comme on manipule les données avec un ordinateur, il est nécessaire de les ranger données d&#8217;une certaine façons. En les rangeant de cette façon, l&#8217;ordinateur, si il connait le &#8220;format&#8221;, est capable d&#8217;analyser les données qu&#8217;il reçoit. Sinon pour lui elles ne veulent rien dire.</dd>
+<dt>Texte : </dt>
+<dd>En opposition à &#8220;binaire&#8221; (ce qui est un abus de langage, puisque du texte en informatique, c&#8217;est du binaire). Cela signifie que votre format est organisé autour d&#8217;un texte lisible par les humains. C&#8217;est ce texte qui va dire &#8220;ceci est l&#8217;age&#8221;, &#8220;ceci est le nom&#8221;, &#8220;ceci est la taille de ses ganglions&#8221;, etc.</dd>
+</dl>
+<p>En résumé, un format de données texte, c&#8217;est une convention textuelle pour que des ordinateurs puissent échanger des données entre eux et que celui qui reçoit puisse retrouver la même chose que ce que l&#8217;on lui a envoyé.</p>
+<h2>Exemples</h2>
+<p>Le format XML est une convention qui dit qu&#8217;on va mettre les données (les informations qu&#8217;on transmet) entre des balises.</p>
+<p>Les balises ont la forme suivante : <code>< nomDeBalise ></ nomDeBalise ></code>.</p>
+<p>Une balise peut contenir une données, ou d&#8217;autres balises.</p>
+<p>Le choix des balises est laissé à la personne qui créer le XML. Celui qui reçoit le XML doit connaître ces balises pour récupérer les données.</p>
+<p>Imaginez un carnet d&#8217;adresses avec chaque personne ayant un nom et un numéro de téléphone. Il existe de nombreux moyens de représenter ce carnet d&#8217;adresses. L&#8217;UN des moyens de possibles, est d&#8217;écrire un fichier XML. Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="xml" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;?xml</span> <span style="color: #000066;">version</span>=<span style="color: #ff0000;">&quot;1.0&quot;</span> <span style="color: #000066;">encoding</span>=<span style="color: #ff0000;">&quot;utf8&quot;</span><span style="color: #000000; font-weight: bold;">?&gt;</span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personnes<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Sam<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>555-555-555<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Max<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>1234567890<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Bob<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>666<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personnes<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></div></div>
+
+<p>Pour vous en tant qu&#8217;humain, ça n&#8217;apporte rien.</p>
+<p>Mais quand vous avez besoin de créer un programme qui peut sauvegarder / lire ces données ou les transmettre à un autre programme (car oui, les programmes doivent pourvoir se parler entre eux, comment vous croyez que cet article arrive sur votre ordinateur ?), il va falloir choisir un format pour ces données.</p>
+<p>Chaque format et différent, et possède des avantages et des inconvénients. <strong>On peut très bien représenter les mêmes données avec deux formats différents.</strong> Ainsi, voici le même carnet d&#8217;adresses, mais au format CSV :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">&quot;nom&quot;;&quot;numero&quot;
+&quot;Sam&quot;;&quot;555-555-555&quot;
+&quot;Max&quot;;&quot;1234567890&quot;
+&quot;Bob&quot;;&quot;666&quot;</pre></div></div>
+
+<h2>Quel format est le meilleur ?</h2>
+<p>Il n&#8217;existe pas de &#8220;meilleur&#8221; format.</p>
+<p>Chaque format a ses caractéristiques, et il existe de nombreux formats. En fait, il existe même des formats dans les formats, des XML avec des balises qui ont des noms standardisés par exemple. Pire, vous pouvez inventer vos propres formats. Mais à moins d&#8217;être très bon et de combler un besoin qui ne l&#8217;est pas encore, je ne vous le recommande pas.</p>
+<p>Aussi il va vous falloir choisir un format selon votre situation. En général, on choisira parmi ces caractéristiques :</p>
+<ul>
+<li><strong>Facilité de manipulation</strong> : votre code va traiter ce format, donc si c&#8217;est galère à manipuler, vous allez vous faire du travail en plus.</li>
+<li><strong>Expressivité </strong>: certains formats permettent de &#8220;dire&#8221; plus de de choses que d&#8217;autres. Selon la complexité de vos données, certains seront trop simples ou trop complexes.</li>
+<li><strong>Pérennité </strong>: combien de temps ce format doit être lisible ? Et-il un standard reconnu ? Est-il beaucoup utilisé ? Est-il ouvert ? Avez-vous le droit d&#8217;utiliser ce format (car oui, il y a des questions légales) ?</li>
+<li><strong>Performance </strong>: le temps de traitement de ce format convient-il à votre usage ? La place qu&#8217;il prend sur le disque ? En RAM ? Le temps de transfert par un réseau ?</li>
+</ul>
+<p>Dans notre cas, nous allons étudier des formats textes ouverts qui sont tous des standards, et lisibles par un humain. Aussi la pérennité de vos données est le moindre de vos soucis, si tant est que le créateur du format est compétent et bienveillant.</p>
+<p>Dans cet article, nous allons en effet voir uniquement les formats texte. Je garderai les formats binaires pou un article suivant, et un dernier pour les bases de données.</p>
+<p>Au passage, les formats textes ont tous ces caractéristiques en commun:</p>
+<ul>
+<li>Ils sont lisibles et modifiables facilement et avec peu de moyen par les humains.</li>
+<li>On peut debugger, et même bidouiller un format texte sans trop de souci, même si on a pas de lib faite pour ça.</li>
+<li>Ils sont plus lents et prennent plus de place que les formats binaires.</li>
+<li>On les utilisent souvent pour les exports / imports de données, les fichiers de configurations, et dans la transmission d&#8217;informations sur le Web entre deux machines.</li>
+</ul>
+<p>A noter qu&#8217;au passage la sécurité et la corruptibilité ne sont pas des questions liées au format, mais à la méthode de manipulation de ces formats. Donc le choix du format ne prend pas en compte ces questions.</p>
+<h2>Le format CSV</h2>
+<p>L&#8217;acronyme CSV signifie Coma Separated Values, littéralement valeurs séparées par des virgules. C&#8217;est un des formats les plus simples que l&#8217;on puisse trouver.</p>
+<p>Dans sa version la plus basique, c&#8217;est un format ligne à ligne, et chaque ligne représente une entrée (par exemple une personne dans un carnet d&#8217;adresses, un objet dans un catalogue, des groupes d&#8217;ingrédients dans une liste de recettes, etc).</p>
+<p>Pour chaque entrée, il y a une série de valeur, chaque valeur est séparée par des virgules. Reprenons l&#8217;exemple du carnet d&#8217;adresse :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">sam,555-555-555,5 rue des lilas
+max,1234567890,thailande
+bob,666,7eme cercle</pre></div></div>
+
+<p>Mais il peut se complexifier dès qu&#8217;on veut rajouter des valeurs plus complexes. Par exemple si elles contiennent des virgules, alors il est d&#8217;usage d&#8217;entourer les valeurs de quotes :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">&quot;sam&quot;,&quot;555-555-555&quot;,&quot;5, rue des lilas&quot;
+&quot;max,&quot;1234567890&quot;,&quot;Patong, thailande&quot;
+&quot;bob&quot;,&quot;666&quot;,&quot;7eme cercle&quot;</pre></div></div>
+
+<p>Le séparateur (la virgule) et les quotes peuvent être aussi un point-virgule et un quote simple, et on peut avoir n&#8217;importe quelle combinaison :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">'sam','555-555-555','5, rue des lilas'
+'max,'1234567890','Patong, thailande'
+'bob','666','7eme cercle'</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">'sam';'555-555-555';'5, rue des lilas'
+'max;'1234567890';'Patong, thailande'
+'bob';'666';'7eme cercle'</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">sam;555-555-555;5, rue des lilas
+max;1234567890;Patong, thailande
+bob;666;7eme cercle</pre></div></div>
+
+<p>Il existe aussi des caractères d&#8217;échappement, des exceptions de retour à la ligne, et des programmes qui produisent des lignes avec un séparateur, puis des lignes avec un autre. Autant dire que d&#8217;un format simple, on arrive parfois à quelque chose de complexe. C&#8217;est d&#8217;ailleurs pour ça que je recommande de ne pas traiter le CSV à la main, mais d&#8217;utiliser des modules spécialisés comme <a ahref="http://docs.python.org/2/library/csv.html?highlight=csv#csv">csv</a> en Python.</p>
+<p>Sachez néanmoins que le format le plus courant est celui supporté par les tableurs (Excel, LibreOffice Calc&#8230;) utilisant des guillemets doubles et des point-virgules :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">&quot;Sam&quot;;&quot;555-555-555&quot;;&quot;5, rue des lilas&quot;
+&quot;Max&quot;;&quot;1234567890&quot;;&quot;Patong, thailande&quot;
+&quot;Bob&quot;;&quot;666&quot;;&quot;7eme cercle&quot;</pre></div></div>
+
+<p>C&#8217;est donc ce format que je recommande car il est du coup très facile à lire et à modifier. Il est aussi possible de donner un nom à chaque colonne sur la première ligne :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="csv" style="font-family:monospace;">&quot;nom&quot;;&quot;numero&quot;;&quot;adresse&quot;
+&quot;Sam&quot;;&quot;555-555-555&quot;;&quot;5, rue des lilas&quot;
+&quot;Max&quot;;&quot;1234567890&quot;;&quot;Patong, thailande&quot;
+&quot;Bob&quot;;&quot;666&quot;;&quot;7eme cercle&quot;</pre></div></div>
+
+<p>Vous voudrez utiliser ce format quand :</p>
+<ul>
+<li>Vos données sont simples et facile à représentées sous forme de tableau.</li>
+<li>Vous avez pas envie de vous faire chier (TRES bonne raison).</li>
+<li>Il n&#8217;y a pas d&#8217;imbrication dans vos données.</li>
+<li>Vos données sont statiques (pas de vérification, pas de calculs, pas de transtypage). Bref, on les lis tel quel.</li>
+<li>Vous voulez que ce soit lisible dans un tableur. Pratique pour les néophytes.</li>
+</ul>
+<h2>Le format INI</h2>
+<p>Le format INI, utilisé pour l&#8217;INItialisation, est surtout un format pour stocker des configurations de logiciel. On le trouve souvent dans des fichiers avec des paramètres, portant l&#8217;extension .ini, .cfg, .conf ou .txt.</p>
+<p>Il est constitué de deux types d&#8217;élément :</p>
+<ul>
+<li>Les en-têtes, ou sections, qui s&#8217;écrivent [nom_de_l_en_tete]. Ils servent à nommer et délimiter des groupes de valeurs.</li>
+<li>Les valeurs, qui s&#8217;écrivent nom=valeur.</li>
+</ul>
+<p>Les fichiers INI ne sont pas fait pour stocker des données répétitives comme des personnes d&#8217;un carnet d&#8217;adresses. Généralement, chaque entrée est unique, et représente un paramètre du programme :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="ini" style="font-family:monospace;"><span style="color: #000066; font-weight:bold;"><span style="">&#91;</span>utilisateur<span style="">&#93;</span></span>
+<span style="color: #000099;">nom</span><span style="color: #000066; font-weight:bold;">=</span><span style="color: #660066;">Sam</span>
+<span style="color: #000099;">dossier</span><span style="color: #000066; font-weight:bold;">=</span><span style="color: #660066;">/home/sam</span>
+&nbsp;
+<span style="color: #000066; font-weight:bold;"><span style="">&#91;</span>dernier_acces<span style="">&#93;</span></span>
+<span style="color: #000099;">jour</span><span style="color: #000066; font-weight:bold;">=</span><span style="color: #660066;">2013-07-06</span>
+<span style="color: #000099;">fichier</span><span style="color: #000066; font-weight:bold;">=</span><span style="color: #660066;">'le_plus_dur_est_derriere_toi.avi'</span></pre></div></div>
+
+<p>C&#8217;est un format simple à manipuler (et <a href="http://docs.python.org/2/library/configparser.html?highlight=config#ConfigParser">il existe un module Python pour ça</a>) et généralement on le lit, on modifie une valeur, et on la sauvegarde.</p>
+<p>Vous voudrez utiliser ce format quand :</p>
+<ul>
+<li>Vous voulez sauvegarder l&#8217;état ou la configuration de votre programme.</li>
+<li>Vos données sont très simples.</li>
+<li>Vous êtes sous une vieille machine Windows.</li>
+<li>Vous voulez <a href="http://www.vaulscastle.com/games/bg/bgcheathelp1.htm">tricher à Baldur&#8217;s Gate</a>.</li>
+</ul>
+<h2>Le format JSON</h2>
+<p>A la base JSON, qui signifie JavaScript Object Notation, n&#8217;était pas un format destiné à être échangé, mais seulement la représentation textuelle des objets Javascript.</p>
+<p>Il se trouve qu&#8217;avec l&#8217;age d&#8217;or du Web, et l&#8217;utilisation massive d&#8217;AJAX, il a été utilisé pour communiquer entre le navigateur et le serveur, et les gens se sont apperçu qu&#8217;il était en fait très très très pratique.</p>
+<p>Aujourd&#8217;hui, JSON est utilisé un peu pour tout, et si vous ne savez pas trop quoi choisir comme format, choisissez JSON, il y a peu de chance de se planter.</p>
+<p>Voilà à quoi ressemble le carnet d&#8217;adresses en JSON:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #009900;">&#91;</span>
+    <span style="color: #009900;">&#123;</span>
+        <span style="color: #3366CC;">'nom'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'Sam'</span><span style="color: #339933;">,</span>
+        <span style="color: #3366CC;">'numero'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'555-555-555'</span><span style="color: #339933;">,</span>
+        <span style="color: #3366CC;">'adresse'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'5, rue des lilas'</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+    <span style="color: #009900;">&#123;</span>
+        <span style="color: #3366CC;">'nom'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'Max'</span><span style="color: #339933;">,</span>
+        <span style="color: #3366CC;">'numero'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'1234567890'</span><span style="color: #339933;">,</span>
+        <span style="color: #3366CC;">'adresse'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'Patong, thailande'</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+    <span style="color: #009900;">&#123;</span>
+        <span style="color: #3366CC;">'nom'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'Bob'</span><span style="color: #339933;">,</span>
+        <span style="color: #3366CC;">'numero'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'666'</span><span style="color: #339933;">,</span>
+        <span style="color: #3366CC;">'adresse'</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">'7eme cercle'</span>
+    <span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#93;</span></pre></div></div>
+
+<p>JSON est extrêmement facile à manipuler de nos jours, et l&#8217;immense majorité des langages ont un module pour ça. <a href="http://docs.python.org/2/library/json.html?highlight=json#json">Python n&#8217;échappe pas à la règle</a>.</p>
+<p>Il est rare que JSON soit une mauvaise idée, donc je vais plutôt faire une liste de quand vous ne voulez PAS utiliser JSON :</p>
+<ul>
+<li>Vos données vont être lues souvent pas des humains sans connaissance techniques (le CSV est plus adapté).</li>
+<li>La plupart des systèmes qui vont lire ces données ont de mauvaises bibliothèques pour lire le JSON, mais de grosses facilités pour d&#8217;autres formats.</li>
+<li>Le reste du système communique avec un autre format (pas la peine de cumuler 40000 formats).</li>
+<li>Vous avez besoin de performances extrêmes (dans ce cas cherchez du côté des formats binaires).</li>
+<li>Vous voulez stocker de grosses quantités de données ou faire des analyses complexes dessus (dans ces cas cherchez du côté des bases de données).</li>
+<li>Il existe un standard qui correspond à votre usage qui n&#8217;est pas en JSON (ex: notifications : Utilisez RSS, qui est du XML, ou les emails, carnet d&#8217;adresses : utilisez ldif ou vcard, etc.) </li>
+<li>Vos données sont très très complexes et demande un format plus riche, des vérifications automatiques, un typage avancé, etc. Préférez XML.</li>
+</ul>
+<p>Sinon, allez-y, prenez du JSON. On peut l&#8217;utiliser pour les fichiers de configuration (comme le fait Sublime Text), comme API pour son service (ce que font presque tous les grands services du monde), pour communiquer entre plusieurs sites Web (JSONP), pour exporter / importer ses données (fixtures Django)&#8230;</p>
+<h2>Le format YAML</h2>
+<p>YAML, l&#8217;humoristique &#8220;Yet Another Markup Language&#8221; a des buts et qualités similaires au JSON, mais avec un format différent.</p>
+<p>Voici le fichier INI, traduit en YAML (les espaces sont significatifs) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="yaml" style="font-family:monospace;">---
+utilisateur:
+    nom: Sam
+    dossier: /home/sam
+&nbsp;
+dernier_acces:
+    jour: 2013-07-06
+    fichier: 'le_plus_dur_est_derriere_toi.avi'
+...</pre></div></div>
+
+<p>Le format YAML est néanmoins plus riche que le JSON:</p>
+<ul>
+<li>Il permet d&#8217;inclure plusieurs document dans un seul fichier en les séparant par <code>---</code></li>
+<li>Il contient des types avancés comme les dates.</li>
+<li>Il possède plusieurs manières d&#8217;écrire les textes multi-lignes</li>
+</ul>
+<p>Globalement le YAML a été créé pour être facilement lisible et éditable par un humain, et pour cette raison la communauté Ruby l&#8217;a adopté pour ses fichiers de configuration. On retrouve donc YAML dans RubyOnRail.</p>
+<p>Utilisez YAML quand :</p>
+<ul>
+<li>Votre fichier est destiné à être aussi souvent lu par une machine qu&#8217;un humain et contient des types complexes.</li>
+<li>Vous êtes dans un environnement Ruby (à Rome&#8230;).</li>
+</ul>
+<p>Contrairement à JSON, on utilisera donc plus YAML pour la configuration que l&#8217;envoie de données.</p>
+<p>Personnellement je ne suis pas un aficionado de YAML. Mon expérience est que sa syntaxe complexe (j&#8217;admet que l&#8217;exemple ne le laisse pas paraitre) amène souvent des grattements de tête suite à une édition malheureuse. Frustrant pour un simple fichier de config.. De plus, il faut souvent installer <a href="https://pypi.python.org/pypi/pyaml/13.07.0">une lib additionnelle</a> pour le lire. Par ailleurs, JSON &#8211; qui est en fait un subset de YAML &#8211; fait généralement très bien le boulot.</p>
+<h2>Le format XML</h2>
+<p>La fameux eXtensible Markup Language. Je ne vais pas vous faire un cours complet sur XML, car on pourrait y passer des mois, au sens propre. Ce format, aux apparences simples, a été utilisé pour des choses extrêmement complexes.</p>
+<p>Revenons à notre exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="xml" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;?xml</span> <span style="color: #000066;">version</span>=<span style="color: #ff0000;">&quot;1.0&quot;</span> <span style="color: #000066;">encoding</span>=<span style="color: #ff0000;">&quot;utf8&quot;</span><span style="color: #000000; font-weight: bold;">?&gt;</span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personnes<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Sam<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>555-555-555<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Max<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>1234567890<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Bob<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>666<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personnes<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></div></div>
+
+<p><code>< ?xml version="1.0" encoding="utf8"? ></code> est l&#8217;en-tête du fichier, il annonce quel format de XML on va utiliser, le reste est le contenu.</p>
+<p>Ici nous n&#8217;avons que quelques balises, mais bien entendu, les balises peuvent contenir des balises qui peuvent contenir des balises&#8230; En prime, XML autorise des attributs (nom=&#8221;valeur&#8221;), c&#8217;est à dire des valeurs sur les balises qui modifient la signification de celle-ci. Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="xml" style="font-family:monospace;">...
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Bob<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero</span> <span style="color: #000066;">type</span>=<span style="color: #ff0000;">&quot;shortcode&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>666<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+...</pre></div></div>
+
+<p>Enfin, XML permet ce qu&#8217;on appelle des namespaces, afin de dire que les balises correspondent à un dialecte et pas un autre.</p>
+<p>Exemple, j&#8217;ai deux fois nom dans ce XML :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="xml" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;?xml</span> <span style="color: #000066;">version</span>=<span style="color: #ff0000;">&quot;1.0&quot;</span> <span style="color: #000066;">encoding</span>=<span style="color: #ff0000;">&quot;utf8&quot;</span><span style="color: #000000; font-weight: bold;">?&gt;</span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personnes<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Sam<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>555-555-555<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Metro peau lisse<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>3.14,6.56<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Max<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>1234567890<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Patong<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>4.2,6.9<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Bob<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>666<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Sodome<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>-12,-13<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personnes<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></div></div>
+
+<p>Comment savoir pour ma machine ce que signifie, &#8220;nom&#8221; ?</p>
+<p>Et bien je peux les namespacer, c&#8217;est à dire les lier à une URL qui pointe vers la documentation qui dit ce que signifie chaque balise, ou au moins le site de l&#8217;auteur du XML.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="xml" style="font-family:monospace;"><span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;?xml</span> <span style="color: #000066;">version</span>=<span style="color: #ff0000;">&quot;1.0&quot;</span> <span style="color: #000066;">encoding</span>=<span style="color: #ff0000;">&quot;utf8&quot;</span><span style="color: #000000; font-weight: bold;">?&gt;</span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;personnes</span> <span style="color: #000066;">xmlns:sm</span>=<span style="color: #ff0000;">&quot;http://sametmax.com&quot;</span> <span style="color: #000066;">xmlns:osm</span>=<span style="color: #ff0000;">&quot;http://openstreetmap.org&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Sam<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>555-555-555<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;osm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Metro peau lisse<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/osm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;osm:coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>3.14,6.56<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/osm:coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Max<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>1234567890<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;osm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Patong<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/osm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;osm:coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>4.2,6.9<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/osm:coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Bob<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>666<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:numero<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;sm:ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;osm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>Sodome<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/osm:nom<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+            <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;osm:coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>-12,-13<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/osm:coord<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+        <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:ville<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/sm:personne<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/personnes<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></div></div>
+
+<p>Et si on veut se marrer un peu plus, on peut utiliser ce qu&#8217;on appelle des DTD (ou le format plus moderne XSD) : un XML, qui définit comment doit être formé un autre XML et qui permet de vérifier cela automatiquement. Il existe également un format appelé XSLT, qui permet de définir, en XML, comment transformer un autre document XML, en un document dans un troisième format de votre choix.</p>
+<p>Bref, le XML peut devenir très très compliqué. Si compliqué en fait, que des formats en XML, même avec leurs spécifications, <a href="http://ooxmlisdefectivebydesign.blogspot.fr/">deviennent difficiles à lire</a>.</p>
+<p>XML a été historiquement le premier format texte à être souple, extensible et interopérable. Aussi a-t-il été longtemps un format de choix pour communiquer entre machines et pour sauvegarder les configurations complexes. Aujourd&#8217;hui, sa verbosité et sa complexité ont amener les gens à se tourner massivement vers JSON, et XML n&#8217;est maintenant plus utilisé que pour les données très riches ou des raisons historiques (RSS, SOAP, etc).</p>
+<p>Il reste un terrain où XML brille, c&#8217;est la validation de données. En effet, grâce au DTD / XSD, on peut publier un document qui permet à tout langage avec <a href="https://pypi.python.org/pypi/pyxsd/0.1">la bibliothèque appropriée</a>, de vérifier si un XML est valide, comme un formulaire. On publie les besoins de validation une fois, et plein de langages peuvent en faire usage. C&#8217;est un vrai plus.</p>
+<p>Je recommande rarement d&#8217;utiliser XML, c&#8217;est lourd, difficile à manipuler (malgré un très <a href="http://docs.python.org/2/library/xml.etree.elementtree.html?highlight=xml#xml.etree.ElementTree">bon support général</a> de la plupart des langages), verbeux&#8230; Difficile à un débutant de mettre les mains dans votre système quand la courbe d&#8217;apprentissage est aussi hardos.</p>
+<p>Utilisez XML si :</p>
+<ul>
+<li>Un des dialectes XML correspond à un standard pour votre usage (RSS / Atom).</li>
+<li>Vous visez des systèmes qui utilisent historiquement XML : serveurs SOAP, environnement Java&#8230;</li>
+<li>La validation des données est importante et elles seront lues par de multiples langages.</li>
+</ul>
+<h2>Maintenance, versioning, documentation</h2>
+<p>Ce n&#8217;est pas le tout de choisir un format, il faut maintenant s&#8217;assurer qu&#8217;on puisse l&#8217;utiliser.</p>
+<p>Car mettre des labels à ses données, c&#8217;est bien beau, mais si le mec qui reçoit vos données ne sait pas ce que signifie ces labels, il ne peut rien en faire.</p>
+<p>Il va donc falloir écrire une documentation pour cela. Et oui, on ne documente pas seulement son code, mais aussi ses formats !</p>
+<p>Je vous invite aussi fortement à versionner vos formats, c&#8217;est à dire à toujours accompagner vos données (dans le fichier, via le protocole d&#8217;échange, ou dans le changelog de votre application) d&#8217;un numéro de version, ceci afin que les utilisateurs / développeurs / admin système ne se retrouvent pas couillonnés quand vous décider de modifier un peu votre format.</p>
+<p>Sur le long terme, comme les commentaires de code, cela va vous aider vous. Mais cela rendra aussi votre projet plus accessible et attirant pour les gens de l&#8217;extérieur, ou tout simplement vos collègues.</p>
+<p>En écrivant cela je viens de m’apercevoir que l&#8217;on a rien fait de tout cela pour <a href="https://github.com/sametmax/0bin/tree/master/zerobin">0bin</a>. La honte&#8230;</p>
+<p>Prochainement, <a href="http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/">les formats binaires</a>.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6576&amp;md5=f30b763391729c9215a267cd0e84cd93" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fyaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert%2F&amp;language=en_GB&amp;category=text&amp;title=YAML%2C+XML%2C+JSON%2C+CSV%2C+INI%26%238230%3B+Qu%26%238217%3Best-ce+que+c%26%238217%3Best+et+%C3%A0+quoi+%C3%A7a+sert+%3F&amp;description=Que+voil%C3%A0+de+jolis+acronymes+%21+Quand+j%26%238217%3Bai+d%C3%A9but%C3%A9+la+programmation%2C+je+les+rencontrais+partout+sur+le+net.+On+en+parlait+comme+si+on+parlait+d%26%238217%3Bacheter+du+pain.+Apparemment+c%26%238217%3B%C3%A9tait...&amp;tags=csv%2Cformat%2Cini%2Cjson%2Cpython%2Cxml%2Cyaml%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/07/sfxLsjC.jpg" length="34156" type="image/jpg" />	</item>
+	</channel>
+</rss>

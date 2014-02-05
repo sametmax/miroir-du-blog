@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; commande</title>
+	<atom:link href="http://sametmax.com/tag/commande/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Ecrire une commande Django</title>
+		<link>http://sametmax.com/ecrire-une-commande-django/</link>
+		<comments>http://sametmax.com/ecrire-une-commande-django/#comments</comments>
+		<pubDate>Wed, 04 Dec 2013 07:01:44 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[commande]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[manage.py]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7729</guid>
+		<description><![CDATA[Quand vous avez à faire un script pour un projet Django, il est pratique de l'avoir sous forme de sous-commande de <code>manage.py</code> : c'est portable d'un projet à l'autre et ça permet d'utiliser l'ORM et les templates sans réglage puisqu'on a accès à tous les settings, automatiquement.]]></description>
+			<content:encoded><![CDATA[<p>Quand vous avez à faire un script pour un projet Django, il est pratique de l&#8217;avoir sous forme de sous-commande de <code>manage.py</code> : c&#8217;est portable d&#8217;un projet à l&#8217;autre et ça permet d&#8217;utiliser l&#8217;ORM et les templates sans réglage puisqu&#8217;on a accès à tous les settings, automatiquement.</p>
+<p>Malheureusement le wrapper de Django destiné à cela date un peu, il est plutôt lourd, pas très souple et utilise des pratiques qui ne sont plus au goût du jour depuis quelques années. Rien de rédhibitoire, mais tout de même.</p>
+<p>D&#8217;abord, il faut placer sa commande dans un fichier portant le nom de la commande, et dans un package <code>management.commands</code> d&#8217;une de vos apps.</p>
+<p>Par exemple, si vous voulez faire une commande &#8220;nettoyer_godmichets&#8221; dans l&#8217;application &#8220;sex_shop&#8221;, il faudra la mettre bien profondément dans le tréfonds de votre projet :</p>
+<pre>racine
+│   ├── sex_shop
+│   │   ├── management
+│   │   │   ├── commands
+│   │   │   │   ├── nettoyer_godmichets.py
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── __init__.pyc
+│   │   │   ├── __init__.py</pre>
+<p>Notez les fichiers <em>__init__.py</em>, indispendables sinon votre commande ne sera pas trouvée. Oh, et &#8216;sex_shop&#8217; doit être dans <code>INSTALLED_APPS</code>.</p>
+<p>Ensuite, votre commande doit être une classe héritant de <code>BaseCommand</code>. Sa méthode <code>handle()</code> sera appelée automatiquement au lancement de la commande.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">core</span>.<span style="color: black;">management</span>.<span style="color: black;">base</span> <span style="color: #ff7700;font-weight:bold;">import</span> BaseCommand
+<span style="color: #ff7700;font-weight:bold;">from</span> sex_shop.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> Godmichet
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Command<span style="color: black;">&#40;</span>BaseCommand<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> handle<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>options<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> god <span style="color: #ff7700;font-weight:bold;">in</span> Godmichet.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+            god.<span style="color: black;">clean</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et vous pouvez lancer la commande :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">./manage.<span style="color: black;">py</span> nettoyer_godmichets</pre></div></div>
+
+<p>Néanmoins généralement on voudra avoir un peu de décorum.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">optparse</span> <span style="color: #ff7700;font-weight:bold;">import</span> make_option
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">core</span>.<span style="color: black;">management</span>.<span style="color: black;">base</span> <span style="color: #ff7700;font-weight:bold;">import</span> BaseCommand
+<span style="color: #ff7700;font-weight:bold;">from</span> sex_shop.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> Godmichet, Marque
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Command<span style="color: black;">&#40;</span>BaseCommand<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici on peut mettre un message d'aide</span>
+    <span style="color: #008000;">help</span> = <span style="color: #483d8b;">'Fait briller dard dard les dards'</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># optionellement une aide pour les arguments</span>
+    args = <span style="color: #483d8b;">'marque1, [marque2], marque3'</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On peut ajouter des options passables à la commande</span>
+    option_list = BaseCommand.<span style="color: black;">option_list</span> + <span style="color: black;">&#40;</span>
+        make_option<span style="color: black;">&#40;</span><span style="color: #483d8b;">'--dry-run'</span>,
+            action=<span style="color: #483d8b;">'store_true'</span>,
+            dest=<span style="color: #483d8b;">'dry_run'</span>,
+            default=<span style="color: #008000;">False</span>,
+            <span style="color: #008000;">help</span>=<span style="color: #483d8b;">'Affichage uniquement, aucune action réelle'</span><span style="color: black;">&#41;</span>,
+        <span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> handle<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>options<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on retrouve dans args les arguments positionnels de la commande</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> args:
+            <span style="color: #ff7700;font-weight:bold;">for</span> god <span style="color: #ff7700;font-weight:bold;">in</span> Godmichet.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+                <span style="color: #808080; font-style: italic;"># Plutôt que print(), on peut utiliser ce wrapper</span>
+                <span style="color: #808080; font-style: italic;"># pour ecrire sur le terminal. Cela permet de bénéficier</span>
+                <span style="color: #808080; font-style: italic;"># automatiquement de l'option --verbosity</span>
+                <span style="color: #008000;">self</span>.<span style="color: black;">stdout</span>.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Processing %s'</span> <span style="color: #66cc66;">%</span> god.<span style="color: black;">name</span><span style="color: black;">&#41;</span>
+&nbsp;
+                <span style="color: #808080; font-style: italic;"># La valeur des options est passée via kwargs.</span>
+                <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> options<span style="color: black;">&#91;</span><span style="color: #483d8b;">'dry_run'</span><span style="color: black;">&#93;</span>:
+                    god.<span style="color: black;">clean</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            <span style="color: #808080; font-style: italic;"># l'utilisateur a passé des marques ? On nettoie que les gods</span>
+            <span style="color: #808080; font-style: italic;"># de ces marques...</span>
+            <span style="color: #ff7700;font-weight:bold;">for</span> marque <span style="color: #ff7700;font-weight:bold;">in</span> args:
+                <span style="color: #ff7700;font-weight:bold;">try</span>:
+                    gods = Marque.<span style="color: black;">objects</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>name=marque<span style="color: black;">&#41;</span>.<span style="color: black;">gods</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+                    <span style="color: #ff7700;font-weight:bold;">for</span> god <span style="color: #ff7700;font-weight:bold;">in</span> gods:
+                        <span style="color: #008000;">self</span>.<span style="color: black;">stdout</span>.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Processing %s'</span> <span style="color: #66cc66;">%</span> god.<span style="color: black;">name</span><span style="color: black;">&#41;</span>
+&nbsp;
+                        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> options<span style="color: black;">&#91;</span><span style="color: #483d8b;">'dry_run'</span><span style="color: black;">&#93;</span>:
+                            god.<span style="color: black;">clean</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+                <span style="color: #ff7700;font-weight:bold;">except</span> Marque.<span style="color: black;">DoesNotExist</span>:
+                    <span style="color: #808080; font-style: italic;"># si la marque n'existe pas, on fait une erreur</span>
+                    <span style="color: #808080; font-style: italic;"># ceci arrête le script, retourne un code d'erreur 1</span>
+                    <span style="color: #808080; font-style: italic;"># et met le texte en rouge</span>
+                    <span style="color: #ff7700;font-weight:bold;">raise</span> CommandError<span style="color: black;">&#40;</span><span style="color: #483d8b;">'La marque %s n'</span>existe pas<span style="color: #483d8b;">' %s marque)</span></pre></div></div>
+
+<p>Et voilà, votre commande accepte maintenant optionnellement qu&#8217;on lui passe une liste de marques et/ou une option <code>--dry-run</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py nettoyer_godmichet devilmaycry choucroutebestfriend <span style="color: #660033;">--dry-run</span></pre></div></div>
+
+<p>En plus de ça, la commande accepte automatiquement :</p>
+<ul>
+<li><code>--help</code></li>
+<li><code>--verbosity</code></li>
+<li><code>--settings</code></li>
+<li><code>--pythonpath</code></li>
+</ul>
+<p>Qui ont le même effet que sur toutes les commandes django officielles.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7729&amp;md5=e5a09ee82a859a49b547ebb46111ce2a" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ecrire-une-commande-django/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fecrire-une-commande-django%2F&amp;language=en_GB&amp;category=text&amp;title=Ecrire+une+commande+Django&amp;description=Quand+vous+avez+%C3%A0+faire+un+script+pour+un+projet+Django%2C+il+est+pratique+de+l%26%238217%3Bavoir+sous+forme+de+sous-commande+de+manage.py+%3A+c%26%238217%3Best+portable+d%26%238217%3Bun+projet+%C3%A0+l%26%238217%3Bautre+et...&amp;tags=commande%2Cdjango%2Cmanage.py%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/BZ7BYa_CYAAEiTA.jpglarge.jpeg" length="31412" type="image/jpg" />	</item>
+	</channel>
+</rss>

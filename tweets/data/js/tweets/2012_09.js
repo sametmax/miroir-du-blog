@@ -535,7 +535,12 @@ Grailbird.data.tweets_2012_09 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/EBB4v1cK",
+      "expanded_url" : "http:\/\/bit.ly\/Smd6ED",
+      "display_url" : "bit.ly\/Smd6ED"
+    } ]
   },
   "geo" : { },
   "id_str" : "251307759247708160",
@@ -582,13 +587,7 @@ Grailbird.data.tweets_2012_09 =
 }, {
   "source" : "web",
   "entities" : {
-    "user_mentions" : [ {
-      "name" : "Rapid Funds",
-      "screen_name" : "zbeauvais",
-      "indices" : [ 3, 13 ],
-      "id_str" : "2187349213",
-      "id" : 2187349213
-    } ],
+    "user_mentions" : [ ],
     "media" : [ ],
     "hashtags" : [ {
       "text" : "django",
@@ -2004,7 +2003,7 @@ Grailbird.data.tweets_2012_09 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Oscar Lapprivois\u00E9e",
+      "name" : "Inigo Montoya",
       "screen_name" : "la_question",
       "indices" : [ 3, 15 ],
       "id_str" : "153133649",
@@ -2041,7 +2040,7 @@ Grailbird.data.tweets_2012_09 =
     "id" : 249547302946082817,
     "created_at" : "2012-09-22 16:34:48 +0000",
     "user" : {
-      "name" : "Oscar Lapprivois\u00E9e",
+      "name" : "Inigo Montoya",
       "screen_name" : "la_question",
       "protected" : false,
       "id_str" : "153133649",
@@ -2086,11 +2085,11 @@ Grailbird.data.tweets_2012_09 =
     "id" : 249433911766171648,
     "created_at" : "2012-09-22 09:04:13 +0000",
     "user" : {
-      "name" : "Rou Leed",
+      "name" : "Analectes muci\u00E9s",
       "screen_name" : "SkinheadDada",
       "protected" : false,
       "id_str" : "74772323",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000529023505\/803b5d5c72679a538b9a4f8cf9f2f433_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/427896010392629248\/AIf8M24p_normal.jpeg",
       "id" : 74772323,
       "verified" : false
     }
@@ -2147,7 +2146,7 @@ Grailbird.data.tweets_2012_09 =
       "screen_name" : "Le_Pouic",
       "protected" : false,
       "id_str" : "318653903",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000690287908\/7a5b836289aad959e5b5e31d2921b7a7_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/418425277186711552\/LSjBIClB_normal.jpeg",
       "id" : 318653903,
       "verified" : false
     }
@@ -4972,7 +4971,12 @@ Grailbird.data.tweets_2012_09 =
       "text" : "emploi",
       "indices" : [ 21, 28 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/Vxs5YTVP",
+      "expanded_url" : "http:\/\/bit.ly\/TaSWgr",
+      "display_url" : "bit.ly\/TaSWgr"
+    } ]
   },
   "geo" : { },
   "id_str" : "245186866465345537",
@@ -5143,8 +5147,11 @@ Grailbird.data.tweets_2012_09 =
       "text" : "job",
       "indices" : [ 129, 133 ]
     }, {
-      "text" : "s",
-      "indices" : [ 134, 136 ]
+      "text" : "startup",
+      "indices" : [ 134, 140 ]
+    }, {
+      "text" : "python",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 108, 128 ],
@@ -5333,7 +5340,12 @@ Grailbird.data.tweets_2012_09 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "https:\/\/t.co\/xtQNrdXv",
+      "expanded_url" : "https:\/\/remixjobs.com\/emploi\/Developpement\/Analyste-programmeur-PHP-Symfony-Python-H-F\/15833",
+      "display_url" : "remixjobs.com\/emploi\/Develop\u2026"
+    } ]
   },
   "geo" : { },
   "id_str" : "245181201705476096",
@@ -5380,13 +5392,7 @@ Grailbird.data.tweets_2012_09 =
 }, {
   "source" : "web",
   "entities" : {
-    "user_mentions" : [ {
-      "name" : "Marion Ag\u00E9",
-      "screen_name" : "TiteFleur59",
-      "indices" : [ 3, 15 ],
-      "id_str" : "65628544",
-      "id" : 65628544
-    } ],
+    "user_mentions" : [ ],
     "media" : [ ],
     "hashtags" : [ {
       "text" : "d\u00E9veloppeur",
@@ -5427,10 +5433,10 @@ Grailbird.data.tweets_2012_09 =
     "created_at" : "2012-09-04 08:22:24 +0000",
     "user" : {
       "name" : "Marion Ag\u00E9",
-      "screen_name" : "TiteFleur59",
+      "screen_name" : "CrimsonKaamos",
       "protected" : false,
       "id_str" : "65628544",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/2488262820\/qxug8sfm8mzkddhg7n74_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/416579514039140353\/Gzq-lWON_normal.png",
       "id" : 65628544,
       "verified" : false
     }
@@ -5715,7 +5721,12 @@ Grailbird.data.tweets_2012_09 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/p1hsys6J",
+      "expanded_url" : "http:\/\/bit.ly\/Q7TyyT",
+      "display_url" : "bit.ly\/Q7TyyT"
+    } ]
   },
   "geo" : { },
   "id_str" : "245175219436785664",
@@ -5941,8 +5952,11 @@ Grailbird.data.tweets_2012_09 =
       "text" : "Lille",
       "indices" : [ 78, 84 ]
     }, {
-      "text" : "J",
-      "indices" : [ 134, 136 ]
+      "text" : "Job",
+      "indices" : [ 134, 140 ]
+    }, {
+      "text" : "CDI",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ ]
   },
@@ -6313,7 +6327,12 @@ Grailbird.data.tweets_2012_09 =
       "text" : "emploi",
       "indices" : [ 21, 28 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/TtjgwBFU",
+      "expanded_url" : "http:\/\/bit.ly\/QxWa9w",
+      "display_url" : "bit.ly\/QxWa9w"
+    } ]
   },
   "geo" : { },
   "id_str" : "245154588573986818",
@@ -7128,11 +7147,11 @@ Grailbird.data.tweets_2012_09 =
   "source" : "\u003Ca href=\"http:\/\/code.google.com\/p\/qwit\/\" rel=\"nofollow\"\u003EQwit\u003C\/a\u003E",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Nicolas L\u0153uillet",
+      "name" : "nico_somb",
       "screen_name" : "nico_somb",
       "indices" : [ 0, 10 ],
-      "id_str" : "312005396",
-      "id" : 312005396
+      "id_str" : "2226341665",
+      "id" : 2226341665
     } ],
     "media" : [ ],
     "hashtags" : [ {
@@ -7149,7 +7168,7 @@ Grailbird.data.tweets_2012_09 =
   "id" : 243327436220137472,
   "in_reply_to_status_id" : 243326683338395648,
   "created_at" : "2012-09-05 12:39:16 +0000",
-  "in_reply_to_screen_name" : "nico_somb",
+  "in_reply_to_screen_name" : "nicosomb",
   "in_reply_to_user_id_str" : "312005396",
   "user" : {
     "name" : "SamEtMax",
@@ -7800,7 +7819,12 @@ Grailbird.data.tweets_2012_09 =
       "text" : "django",
       "indices" : [ 61, 68 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "https:\/\/t.co\/I82fViRe",
+      "expanded_url" : "https:\/\/github.com\/Psycojoker\/django-template-fragments",
+      "display_url" : "github.com\/Psycojoker\/dja\u2026"
+    } ]
   },
   "geo" : { },
   "id_str" : "242600183832121345",
@@ -7831,7 +7855,7 @@ Grailbird.data.tweets_2012_09 =
       "screen_name" : "brabram",
       "protected" : false,
       "id_str" : "96627870",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000413733513\/876a67721c79eb51c7db00ead6dda06a_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/418118763607650304\/UJBwYbOI_normal.jpeg",
       "id" : 96627870,
       "verified" : false
     }
@@ -8287,8 +8311,11 @@ Grailbird.data.tweets_2012_09 =
       "text" : "job",
       "indices" : [ 129, 133 ]
     }, {
-      "text" : "e",
-      "indices" : [ 134, 136 ]
+      "text" : "emploi",
+      "indices" : [ 134, 140 ]
+    }, {
+      "text" : "lyon",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ ]
   },
@@ -8534,7 +8561,7 @@ Grailbird.data.tweets_2012_09 =
       "screen_name" : "tim",
       "protected" : false,
       "id_str" : "76133",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/1268828738\/eightbit-489611a1-0c73-4de0-a5b2-7eee6a244e7a_normal.png",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/420207858601299968\/kgFVKhgU_normal.png",
       "id" : 76133,
       "verified" : true
     }

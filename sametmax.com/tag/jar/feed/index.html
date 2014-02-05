@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; jar</title>
+	<atom:link href="http://sametmax.com/tag/jar/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Simuler un cookie avec Mechanize en python</title>
+		<link>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/</link>
+		<comments>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/#comments</comments>
+		<pubDate>Sun, 20 May 2012 19:46:51 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cookie]]></category>
+		<category><![CDATA[jar]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=667</guid>
+		<description><![CDATA[Comment simuler la présence d'un cookie lorsque l'on veut se connecter à un site via Mechanize. ]]></description>
+			<content:encoded><![CDATA[<p>Il peut arriver que l&#8217;on ai besoin de simuler la présence d&#8217;un cookie lors de l&#8217;exploration d&#8217;un site avec <a href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> .<br />
+Un exemple tout bête l&#8217;autre jour j&#8217;essayais de me connecter à un site qui demandait une vérif d&#8217;âge, impossible de simuler le click sur &#8220;ENTER&#8221; car le bouton était géré par Jquery (et Mechanize ne fait pas de js).<br />
+Après quelques debug je me suis aperçu que le site stockait dans un cookie la confirmation d&#8217;âge sous la forme &#8220;age_verified&#8221;, valeur 1.</p>
+<p>il suffisait donc d&#8217;avoir ce cookie et le site nous laissait tranquille.<br />
+Avec Mechanize il est possible d&#8217;ajouter un cookie dans son cookie jar, voici comment:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">import mechanize
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Browser use mechanize</span>
+br = mechanize.Browser<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Cookie Jar</span>
+cj = cookielib.LWPCookieJar<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+br.set_cookiejar<span style="color: #7a0874; font-weight: bold;">&#40;</span>cj<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># add a cookie to cookie jar</span>
+cj.set_cookie<span style="color: #7a0874; font-weight: bold;">&#40;</span>cookielib.Cookie<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">0</span>, <span style="color: #ff0000;">'age_verified'</span>, <span style="color: #ff0000;">'1'</span>, <span style="color: #ff0000;">'80'</span>, False, <span style="color: #ff0000;">'www.nom_de_domaine.com'</span>, True, False, <span style="color: #ff0000;">'/'</span>, True, False, None, False, None, None, None<span style="color: #7a0874; font-weight: bold;">&#41;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Browser options</span>
+br.set_handle_redirect<span style="color: #7a0874; font-weight: bold;">&#40;</span>True<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></div></div>
+
+<p><strong>Où:</strong><br />
+age_verified : SID du cookie<br />
+1: valeur<br />
+80: port<br />
+www.nom_de_domaine.com : le nom de domaine du site auquel le cookie appartient<br />
+/: path du cookie</p>
+<p><strong>Un peu plus sur les options:</strong></p>
+<pre lang="python">cookielib.Cookie(version=0, name='SID', value=self._sid, port=None, port_specified=False, domain='.google.com', domain_specified=True, domain_initial_dot=True, path='/', path_specified=True, secure=False, expires='1600000000', discard=False, comment=None, comment_url=None, rest={})</lang></p>
+<p><strong>Quelques liens:</strong><br />
+<a href="http://nullege.com/codes/search/cookielib.Cookie">http://nullege.com/codes/search/cookielib.Cookie</a><br />
+<a href="http://docs.python.org/library/cookielib.html ">http://docs.python.org/library/cookielib.html</a><br />
+<a href="http://wwwsearch.sourceforge.net/mechanize/hints.html ">http://wwwsearch.sourceforge.net/mechanize/hints.html<br />
+</a></p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=667&amp;md5=aee086258b7275b53d5225fddbaf9ffc" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fsimuler-un-cookie-avec-mechanize-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Simuler+un+cookie+avec+Mechanize+en+python&amp;description=Il+peut+arriver+que+l%26%238217%3Bon+ai+besoin+de+simuler+la+pr%C3%A9sence+d%26%238217%3Bun+cookie+lors+de+l%26%238217%3Bexploration+d%26%238217%3Bun+site+avec+Mechanize+.+Un+exemple+tout+b%C3%AAte+l%26%238217%3Bautre+jour+j%26%238217%3Bessayais+de+me...&amp;tags=cookie%2Cjar%2Cmechanize%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/cookiejar.jpg" length="43489" type="image/jpg" />	</item>
+	</channel>
+</rss>

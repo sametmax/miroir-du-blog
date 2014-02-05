@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; signals</title>
+	<atom:link href="http://sametmax.com/tag/signals/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Réagir aux changements avec le module signals de Django</title>
+		<link>http://sametmax.com/reagir-aux-changements-avec-le-module-signals-de-django/</link>
+		<comments>http://sametmax.com/reagir-aux-changements-avec-le-module-signals-de-django/#comments</comments>
+		<pubDate>Thu, 01 Nov 2012 03:36:47 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[signals]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2799</guid>
+		<description><![CDATA[Le module <code>signals</code> contient une implémentation du <a href="http://sametmax.com/le-pattern-observer-en-utilisant-des-decorateurs/">design pattern observer</a>, c'est à dire un moyen de lier un <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a> à un événement afin de pouvoir y réagir quand il se déclenche.]]></description>
+			<content:encoded><![CDATA[<p>Le module <code>signals</code> contient une implémentation du <a href="http://sametmax.com/le-pattern-observer-en-utilisant-des-decorateurs/">design pattern observer</a>, c&#8217;est à dire un moyen de lier un <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a> à un événement afin de pouvoir y réagir quand il se déclenche.</p>
+<p>Les événements peuvent être aussi divers que &#8220;une requête a commencé&#8221; ou &#8220;un modèle a été sauvé en base de données&#8221;.</p>
+<p>L&#8217;utilisation d&#8217;un signal se fait en 3 temps:</p>
+<ol>
+<li>décider à quel événement on veut réagir;</li>
+<li>décider ce qu&#8217;on veut faire quand il se déclenche;</li>
+<li>associer l&#8217;événement à l&#8217;action.</li>
+</ol>
+<p>Par exemple, après la suppression d&#8217;un modèle, je veux faire un travail de nettoyage dans ma base de données.</p>
+<p>Je choisis l&#8217;événement auquel je veux réagir dans la <a href="https://docs.djangoproject.com/en/dev/ref/signals/">liste des signaux disponibles</a>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">db</span>.<span style="color: black;">models</span>.<span style="color: black;">signals</span> <span style="color: #ff7700;font-weight:bold;">import</span> post_delete</pre></div></div>
+
+<p>Ici j&#8217;ai choisi <code>post_delete</code>, car c&#8217;est un signal qui est envoyé après la suppression d&#8217;un modèle automatiquement par Django.</p>
+<p>Ensuite je décide de ce que je veux faire quand l&#8217;action se déclenche en écrivant une fonction:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> reaction_au_signal<span style="color: black;">&#40;</span>sender, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire ici mon opération de nettoyage</span></pre></div></div>
+
+<p>Vous noterez les arguments très spécifiques que j&#8217;accepte. Ils sont propres à l&#8217;implémentation des signaux de Django et cette signature est obligatoire. <code>sender</code> est l&#8217;objet qui envoie le signal. Dans notre cas ce sera la classe du modèle supprimé. <code>kwargs</code> c&#8217;est <a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">tout le reste</a>, et son contenu dépend du type de signal reçu. Généralement il y a plein d&#8217;informations dedans sur le contexte qui nous permettent de prendre des décisions.</p>
+<p>Ainsi, pour le signal <a href="https://docs.djangoproject.com/en/dev/ref/signals/#django.db.models.signals.post_delete">post_delete</a>, <code>kwargs</code> contient l&#8217;instance du modèle supprimé (dont les valeurs ne sont donc plus en base de données, ne faites pas de query avec !) et le nom de la base de données utilisés si vous en utilisez plusieurs.</p>
+<p>Enfin il faut associer l&#8217;événement à l&#8217;action, en utilisant la fonction <code>connect()</code>.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">post_delete.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>reaction_au_signal<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Le code complet donne ceci:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">db</span>.<span style="color: black;">models</span>.<span style="color: black;">signals</span> <span style="color: #ff7700;font-weight:bold;">import</span> post_delete
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> reaction_au_signal<span style="color: black;">&#40;</span>sender, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire ici mon opération de nettoyage dans la base de donnée</span>
+&nbsp;
+post_delete.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>reaction_au_signal<span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Réponses à quelques questions existentielles</h2>
+<h3>Mais pourquoi que à quoi ça sert de quoi donc ?</h3>
+<p>Pourquoi ne pas utiliser plutôt l&#8217;héritage, ou mettre des hooks de callback ? Et bien tout simplement parce que les signaux permettent de réagir à une événement sans avoir à toucher le code qui génère l&#8217;événement. C&#8217;est un moyen très flexible et puissant de réagir à ce que fait du code dans une autre application. Ou de permettre à du code d&#8217;autres applications de réagir à vos événements sans avoir à toucher à votre code. Car oui, vous pouvez définir vos propres signaux.</p>
+<h3>Je les mets où ces signaux ?</h3>
+<p>Généralement dans le module qui contient la même sémantique que le signal: si c&#8217;est pour les requêtes HTTP, dans <em>views.py</em>, si c&#8217;est pour l&#8217;ORM, dans <em>models.py</em>, etc.</p>
+<h3>Est-ce que Dieu existe ?</h3>
+<p>Cher lecteur, merci de ne pas prononcer mon nom en vain.</p>
+<h2>Quelques astuces avec les signaux</h2>
+<p>Il est rare que vous vouliez réagir à la suppression de tous les modèles, ou de toutes les requêtes. Généralement on veut uniquement réagir à un signal pour un émetteur précis. Django permet cela en vous laissant choisir le sender:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> TopModel<span style="color: black;">&#40;</span>models.<span style="color: black;">Model</span><span style="color: black;">&#41;</span>:
+    bonnet = models.<span style="color: black;">TextField</span><span style="color: black;">&#40;</span>max_char=<span style="color: #ff4500;">1</span>, default=<span style="color: #483d8b;">&quot;A&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+post_delete.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>reaction_au_signal, sender=TopModel<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ainsi, <code>reaction_au_signal()</code> ne sera appelée qu&#8217;à la suppression d&#8217;un objet de type <code>TopModel</code>.</p>
+<p>Sachez aussi qu&#8217;il existe une syntaxe à base de décorateurs. Ca fait la même chose, mais perso je préfère la style:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">db</span>.<span style="color: black;">models</span>.<span style="color: black;">signals</span> <span style="color: #ff7700;font-weight:bold;">import</span> post_delete
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">dispatch</span> <span style="color: #ff7700;font-weight:bold;">import</span> receiver
+&nbsp;
+@receiver<span style="color: black;">&#40;</span>pre_save, sender=MyModel<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> reaction_au_signal<span style="color: black;">&#40;</span>sender, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+    ...</pre></div></div>
+
+<p>Il faut aussi savoir que parfois, certains modules sont exécutés plusieurs fois, et si le handler du signal est déclaré dedans, il va être attaché plusieurs fois au signal, et donc lancé plusieurs fois quand le signal se déclenche. Pas glop.</p>
+<p>Pour éviter ça, on peut passer un identifiant unique en attachant le signal:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">post_delete.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>reaction_au_signal, dispatch_uid=<span style="color: #483d8b;">&quot;une_chaine_de_caracteres_quelconque&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p><code>dispatch_uid</code> peut contenir n&#8217;importe quoi, pourvu qu&#8217;il soit unique à cette association signal/callback.</p>
+<p>Il y a aussi un autre paramètre est nommé <code>weak</code>. C&#8217;est un booléen par défaut mis sur <code>True</code> qui décide si la référence vers le handler est une référence faible ou non. Mettez le sur <code>False</code> si votre callback n&#8217;a aucune autre référence que le signal, par exemple si la fonction est générée à la volée, ou si c&#8217;est une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>.</p>
+<p>Enfin, les signaux ne sont PAS exécutés dans un thread à part, donc ils bloquent l’exécution du programme comme le reste du code. La bonne nouvelle, c&#8217;est que ça vous permet d&#8217;utiliser <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> dedans. C&#8217;est particulièrement utile pour les signaux complexes comme <code>m2m_changed</code> qui est assez compliqué et pour lequel on s&#8217;y reprend à plusieurs fois.</p>
+<p>Ah, juste un dernier détails. <code>Model.objects.update()</code> ne déclenche aucun signal&#8230;</p>
+<h2><code>m2m_changed</code>, ce petit bâtard</h2>
+<p>La plupart des signaux sont super faciles à manipuler. Sauf un. <code>m2m_changed</code>. C&#8217;est un enculé.</p>
+<p>Il faut savoir que quand vous utilisez <code>models.ManyToManyField</code>, une troisième table est automatiquement et silencieusement créé qui contient l&#8217;association entre vos deux modèles, avec le modèle correspondant. Mais ce modèle ne déclenche pas les signaux <code>*_save</code> et <code>*_delete</code>.</p>
+<p>Donc si vous voulez réagir à <code>Model.objects.add()</code>, <code>clear()</code> et consorts, il va falloir se mapper sur <code>m2m_changed</code>, un espèce de fourre tout qui gère l&#8217;intégralité des cas de figures.</p>
+<p>Il s&#8217;utilise comme les autres:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> handler<span style="color: black;">&#40;</span>sender, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+   <span style="color: #808080; font-style: italic;"># truc</span>
+&nbsp;
+m2m_changed.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>handler<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Mais déjà, première différence, si vous voulez filtrer sur le sender, il faut utiliser le modèle autogénéré de la troisième table qui est un attribut de l&#8217;attribut du modèle qui définit la relation many to many. Vous suivez ? Non ? Relisez la phrase. Ça donne ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Tic<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+     partenaire = models.<span style="color: black;">ManyToManyField</span><span style="color: black;">&#40;</span>Tac<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> handler<span style="color: black;">&#40;</span>sender, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+   <span style="color: #808080; font-style: italic;"># truc</span>
+&nbsp;
+m2m_changed.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>handler, sender=Tic.<span style="color: black;">partenaire</span>.<span style="color: black;">through</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p><code>through</code> contenant toujours le modèle voulu.</p>
+<p>Ensuite, et c&#8217;est là la partie bien relou, <code>kwargs</code> va contenir en plus de <code>instance</code> et <code>using</code>:</p>
+<p><strong>action</strong></p>
+<p>Ce qui arrive pendant le signal. En gros au lieu d&#8217;avoir 6 signaux, on en a un auquel on passe la valeur: &#8220;<code>pre_add</code>, <code>post_add</code>, <code>pre_remove</code>, <code>post_remove</code>, <code>pre_clear</code>, <code>post_clear</code>&#8220;. Du coup votre code doit gérer tous les cas dans une seule fonction à grand coup de <code>if/else</code>. Génial !</p>
+<p><strong>reverse</strong></p>
+<p>Indique dans quel sens est la relation. Hyper confusionant.</p>
+<p>En gros, si j&#8217;ai:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="true" style="font-family:monospace;">class Tic(object):
+     partenaire = models.ManyToManyField(Tac)</pre></div></div>
+
+<p><code>reverse</code> est sur <code>False</code>, si on part de <code>Tic</code> pour aller vers <code>Tac</code>, et <code>True</code> si on part de <code>Tac</code> pour aller vers <code>Tic</code>, car le <code>ManyToManyField</code> est déclaré dans <code>Tic</code>. C&#8217;est complètement arbitraire, car il n&#8217;y a bien entendu aucun sens à une relation M2M, c&#8217;est justement ce qui la différencie d&#8217;un M2One.</p>
+<p>Et là où ça devient vraiment fendard, c&#8217;est que la valeur des autres paramètres changent selon la valeur de <code>reverse</code>. Il va falloir rajouter des <code>if/else</code> dans vos <code>if/else</code>.</p>
+<p><strong>model</strong></p>
+<p>La classe qui a été ajoutée, retirée ou wipée de la relation. Dans notre cas, si <code>reverse</code>, c&#8217;est <code>Tic</code>, sinon, c&#8217;est <code>Tac</code>.</p>
+<p><strong>pk_set</strong></p>
+<p>Donc le cas des actions add et remove (mais pas clear), ceci est la liste des objets concernés. Elles sont des id d&#8217;instances de <code>Tic</code>, si <code>reverse</code>, sinon des id d&#8217;instances de <code>Tac</code>.</p>
+<h2>Créer son propre signal</h2>
+<p>C&#8217;est tellement facile qu&#8217;au début on est pas sûr d&#8217;avoir tout fait.</p>
+<p>Supposons que vous voulez faire une application qui envoie un <em>POUET !</em> et que vous vouliez également permettre à une autre personne de réagir à cet événement indispensable.</p>
+<p>Dans un fichier <em>signals.py</em>, vous allez écrire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> django.<span style="color: black;">dispatch</span>
+&nbsp;
+pre_pouet = django.<span style="color: black;">dispatch</span>.<span style="color: black;">Signal</span><span style="color: black;">&#40;</span>providing_args=<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;pouet&quot;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+post_pouet = django.<span style="color: black;">dispatch</span>.<span style="color: black;">Signal</span><span style="color: black;">&#40;</span>providing_args=<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;pouet&quot;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ouai, c&#8217;est tout. Vous avez créé deux signaux importables qui attendent un argument: le pouet.</p>
+<p>Et pour déclencher ces signaux, c&#8217;est très simple:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> signals <span style="color: #ff7700;font-weight:bold;">import</span> pre_pouet, post_pouet
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> PouetGenerator<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    ...
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> send_pouet<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, pouet=<span style="color: #483d8b;">&quot;Alors là, je dis pouet !&quot;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        pre_pouet.<span style="color: black;">send</span><span style="color: black;">&#40;</span>sender=<span style="color: #008000;">self</span>, pouet=pouet<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> pouet
+        post_pouet.<span style="color: black;">send</span><span style="color: black;">&#40;</span>sender=<span style="color: #008000;">self</span>, pouet=pouet<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>C&#8217;était vachement dur !</p>
+<p>Et si quelqu&#8217;un veut réagir à vos pouets, il peut faire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> pouet_handler<span style="color: black;">&#40;</span>sender, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Tiens, un pouet !&quot;</span>
+&nbsp;
+post_pouet.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>pouet_handler<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Dans la série des subtilités, vous avez, en plus de <code>send()</code>, la possibilités d&#8217;appeler <code>send_robust()</code>. C&#8217;est la même chose, mais les exceptions sont attrapées ce qui permet à tous handlers de recevoir le signal, même en cas d&#8217;erreur. Le sender reçoit les exceptions dans un tuple à la fin.</p>
+<p>A ce stade là, vous aurez compris, handler, receiver et callback désignent la même chose: la fonction qui réagit à l&#8217;événement. Je les ai utilisées un peu partout sans y prendre garde dans l&#8217;article, donc je mets cette note pour le cas où je vous ai perdu.</p>
+<h2>Last word</h2>
+<p><code>Signal.disconnect()</code> est l&#8217;inverse de <code>connect()</code>. Je ne m&#8217;en suis jamais servis.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=2799&amp;md5=ad5619b10ac0b60831fceebf407c6ac7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/reagir-aux-changements-avec-le-module-signals-de-django/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Freagir-aux-changements-avec-le-module-signals-de-django%2F&amp;language=en_GB&amp;category=text&amp;title=R%C3%A9agir+aux+changements+avec+le+module+signals+de+Django&amp;description=Le+module+signals+contient+une+impl%C3%A9mentation+du+design+pattern+observer%2C+c%26%238217%3Best+%C3%A0+dire+un+moyen+de+lier+un+callback+%C3%A0+un+%C3%A9v%C3%A9nement+afin+de+pouvoir+y+r%C3%A9agir+quand+il+se...&amp;tags=django%2Cpython%2Csignals%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/5880f256df28799b1cb838d25fbf2830-d3ivn99.png" length="309714" type="image/jpg" />	</item>
+	</channel>
+</rss>

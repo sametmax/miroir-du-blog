@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; swap</title>
+	<atom:link href="http://sametmax.com/tag/swap/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Afficher la liste des process qui utilisent la SWAP</title>
+		<link>http://sametmax.com/afficher-la-liste-des-process-qui-utilise-la-swap/</link>
+		<comments>http://sametmax.com/afficher-la-liste-des-process-qui-utilise-la-swap/#comments</comments>
+		<pubDate>Thu, 10 May 2012 20:52:37 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[mémoire]]></category>
+		<category><![CDATA[ram]]></category>
+		<category><![CDATA[swap]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=588</guid>
+		<description><![CDATA[Un petit script bien pratique pour trouver quel process lancé par quelle ligne de commande utilise la SWAP de votre serveur.]]></description>
+			<content:encoded><![CDATA[<p>Voici un petit script bien pratique pour trouver quel process lancé par quelle ligne de commande utilise la SWAP de votre serveur.</p>
+<p>(Pour savoir si votre serveur utilise la SWAP vous pouvez utiliser un outil comme <a href="http://sametmax.com/htop-un-visualiseur-interactif-de-process/">htop</a>)</p>
+<p>Ouvrez un fichier getswap.sh avec vi ou autre et ajouter ces lignes:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#!/bin/bash</span>
+<span style="color: #666666; font-style: italic;"># Get current swap usage for all running processes</span>
+<span style="color: #666666; font-style: italic;"># Usage: ./getswap.sh | sort -n -k 5</span>
+<span style="color: #666666; font-style: italic;"># Erik Ljungstrom 27/05/2011</span>
+<span style="color: #007800;">SUM</span>=<span style="color: #000000;">0</span>
+<span style="color: #007800;">OVERALL</span>=<span style="color: #000000;">0</span>
+<span style="color: #000000; font-weight: bold;">for</span> DIR <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">find</span> <span style="color: #000000; font-weight: bold;">/</span>proc<span style="color: #000000; font-weight: bold;">/</span> <span style="color: #660033;">-maxdepth</span> <span style="color: #000000;">1</span> <span style="color: #660033;">-type</span> d <span style="color: #000000; font-weight: bold;">|</span> <span style="color: #c20cb9; font-weight: bold;">egrep</span> <span style="color: #ff0000;">&quot;^/proc/[0-9]&quot;</span><span style="color: #000000; font-weight: bold;">`</span> ; <span style="color: #000000; font-weight: bold;">do</span>
+<span style="color: #007800;">PID</span>=<span style="color: #000000; font-weight: bold;">`</span><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #007800;">$DIR</span> <span style="color: #000000; font-weight: bold;">|</span> <span style="color: #c20cb9; font-weight: bold;">cut</span> <span style="color: #660033;">-d</span> <span style="color: #000000; font-weight: bold;">/</span> <span style="color: #660033;">-f</span> <span style="color: #000000;">3</span><span style="color: #000000; font-weight: bold;">`</span>
+<span style="color: #007800;">PROGNAME</span>=<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">ps</span> <span style="color: #660033;">-p</span> <span style="color: #007800;">$PID</span> <span style="color: #660033;">-o</span> <span style="color: #c20cb9; font-weight: bold;">comm</span> --no-headers<span style="color: #000000; font-weight: bold;">`</span>
+<span style="color: #007800;">PROGPATH</span>=<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">cat</span> <span style="color: #000000; font-weight: bold;">/</span>proc<span style="color: #000000; font-weight: bold;">/</span><span style="color: #007800;">$PID</span><span style="color: #000000; font-weight: bold;">/</span>cmdline<span style="color: #000000; font-weight: bold;">`</span>
+<span style="color: #000000; font-weight: bold;">for</span> SWAP <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">grep</span> Swap <span style="color: #007800;">$DIR</span><span style="color: #000000; font-weight: bold;">/</span>smaps <span style="color: #000000;">2</span><span style="color: #000000; font-weight: bold;">&amp;</span>gt;<span style="color: #000000; font-weight: bold;">/</span>dev<span style="color: #000000; font-weight: bold;">/</span>null<span style="color: #000000; font-weight: bold;">|</span> <span style="color: #c20cb9; font-weight: bold;">awk</span> <span style="color: #ff0000;">'{ print $2 }'</span><span style="color: #000000; font-weight: bold;">`</span>
+<span style="color: #000000; font-weight: bold;">do</span>
+<span style="color: #7a0874; font-weight: bold;">let</span> <span style="color: #007800;">SUM</span>=<span style="color: #007800;">$SUM</span>+<span style="color: #007800;">$SWAP</span>
+<span style="color: #000000; font-weight: bold;">done</span>
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;PID=<span style="color: #007800;">$PID</span> - Swap used: <span style="color: #007800;">$SUM</span> - (<span style="color: #007800;">$PROGNAME</span> - <span style="color: #007800;">$PROGPATH</span>)&quot;</span>
+<span style="color: #7a0874; font-weight: bold;">let</span> <span style="color: #007800;">OVERALL</span>=<span style="color: #007800;">$OVERALL</span>+<span style="color: #007800;">$SUM</span>
+<span style="color: #007800;">SUM</span>=<span style="color: #000000;">0</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">done</span>
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;Overall swap used: <span style="color: #007800;">$OVERALL</span>&quot;</span></pre></div></div>
+
+<p><strong>Pour afficher les process lancez le avec la ligne de commande suivante:</strong><br />
+les options <strong>-n</strong> et <strong>-k</strong> de sort vont respectivement trier par ordre numérique la 5eme colone (quantité de swap utilisée)</p>
+
+<div class="wp_syntax"><div class="code"><pre class="shell" style="font-family:monospace;">./getswap.sh | sort -n -k 5</pre></div></div>
+
+<p><strong>Ce qui donne:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="shell" style="font-family:monospace;">...
+PID=854 - Swap used: 1356 - (php-cgi - /usr/local/bin/php-cgi)
+PID=2107 - Swap used: 1948 - (hald - hald)
+PID=11720 - Swap used: 2604 - (scrapy - /home/scrpamanga/.virtualenvs/scrpamanga/bin/python26/home/scrpamanga/.virtualenvs/scrpamanga/bin/scrapy crawl wikipedia)
+PID=30152 - Swap used: 4004 - (supervisord - /usr/bin/python/usr/bin/supervisord-csupervisor.ini)
+PID=2791 - Swap used: 7188 - (yum-updatesd - /usr/bin/python-tt/usr/sbin/yum-updatesd)</pre></div></div>
+
+<p>Dans notre exemple on voit qu&#8217;un process (11720) Fait swapper le système, après une plus grand investiguation un problème a été trouvé dans le script, consommant beaucoup et saturant la mémoire système obligeant ce dernier à swapper.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=588&amp;md5=0484fec666522c5972ecfb04db4bbc49" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/afficher-la-liste-des-process-qui-utilise-la-swap/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fafficher-la-liste-des-process-qui-utilise-la-swap%2F&amp;language=en_GB&amp;category=text&amp;title=Afficher+la+liste+des+process+qui+utilisent+la+SWAP&amp;description=Voici+un+petit+script+bien+pratique+pour+trouver+quel+process+lanc%C3%A9+par+quelle+ligne+de+commande+utilise+la+SWAP+de+votre+serveur.+%28Pour+savoir+si+votre+serveur+utilise+la+SWAP...&amp;tags=m%C3%A9moire%2Cram%2Cswap%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/surcharge.jpg" length="34212" type="image/jpg" />	</item>
+	</channel>
+</rss>

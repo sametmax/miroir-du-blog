@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; redirection</title>
+	<atom:link href="http://sametmax.com/tag/redirection/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Nginx &#8211; Redirection url si le fichier n&#8217;existe pas avec try_files</title>
+		<link>http://sametmax.com/nginx-redirection-url-si-le-fichier-nexiste-pas-avec-try_files/</link>
+		<comments>http://sametmax.com/nginx-redirection-url-si-le-fichier-nexiste-pas-avec-try_files/#comments</comments>
+		<pubDate>Thu, 28 Jun 2012 20:18:55 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[redirection]]></category>
+		<category><![CDATA[try_files]]></category>
+		<category><![CDATA[url]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1060</guid>
+		<description><![CDATA[Rediriger une url lorsque le fichier n'existe pas sur le serveur peut être très utile si vous décider de changer touts vos formats de fichier de jpeg à png ou formats videos de flv à mp4 etc. ]]></description>
+			<content:encoded><![CDATA[<p>Rediriger une url lorsque le fichier n&#8217;existe pas sur le serveur peut être très utile si vous décider de changer touts vos formats de fichier de jpeg à png ou formats videos de flv à mp4 etc.</p>
+<p>Par exemple vous décidé de convertir toutes les videos de votre serveur de flv à mp4, vous lancez un script de conversion à la volée et vous vous retrouver avec du flv et du mp4, vous pouvez modifier votre script php, python, etc pour tester si la video est en flv ou mp4 ou le faire directement au niveau de nginx qui a une fonction pour: <a href="http://wiki.nginx.org/HttpCoreModule#try_files" title="try_files nginx">try_files</a>.</p>
+<p><strong>Dans votre config nginx server:<br />
+</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">server <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+     <span style="color: #666666; font-style: italic;"># Serve videos for web</span>
+        location ~ <span style="color: #7a0874; font-weight: bold;">&#40;</span>.<span style="color: #000000; font-weight: bold;">*</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>\.flv$ <span style="color: #7a0874; font-weight: bold;">&#123;</span> 
+                try_files <span style="color: #007800;">$uri</span> <span style="color: #007800;">$uri</span><span style="color: #000000; font-weight: bold;">/</span> <span style="color: #007800;">$1</span>.mp4?<span style="color: #007800;">$args</span>;
+                flv; <span style="color: #666666; font-style: italic;"># http flv module</span>
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+        location ~ <span style="color: #7a0874; font-weight: bold;">&#40;</span>.<span style="color: #000000; font-weight: bold;">*</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>\.mp4$ <span style="color: #7a0874; font-weight: bold;">&#123;</span>  
+                mp4; <span style="color: #666666; font-style: italic;"># http mp4 module</span>
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></div></div>
+
+<p>nginx va tester l&#8217;url de la video flv, si il ne la trouve pas il redirige l&#8217;url appelée mais avec l&#8217;extension mp4 cette fois-ci, $args est pour rajouter les éventuels arguments venant après la requête de l&#8217;url (ex: ?start=213424)</p>
+<p>Cette astuce m&#8217;a permis entre autre de convertir à chaud 50 000 videos sur un serveur pendant que celui-ci était en prod tout en gardant les vidéos disponibles aux public et ce sans changer le script de mon site, juste en 3 lignes de conf nginx.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1060&amp;md5=06fbfcbe67609049ad86cd3a718db2c7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nginx-redirection-url-si-le-fichier-nexiste-pas-avec-try_files/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fnginx-redirection-url-si-le-fichier-nexiste-pas-avec-try_files%2F&amp;language=en_GB&amp;category=text&amp;title=Nginx+%26%238211%3B+Redirection+url+si+le+fichier+n%26%238217%3Bexiste+pas+avec+try_files&amp;description=Rediriger+une+url+lorsque+le+fichier+n%26%238217%3Bexiste+pas+sur+le+serveur+peut+%C3%AAtre+tr%C3%A8s+utile+si+vous+d%C3%A9cider+de+changer+touts+vos+formats+de+fichier+de+jpeg+%C3%A0+png+ou...&amp;tags=nginx%2Credirection%2Ctry_files%2Curl%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/redirection.jpg" length="142906" type="image/jpg" />	</item>
+	</channel>
+</rss>

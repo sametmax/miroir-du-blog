@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; awk</title>
+	<atom:link href="http://sametmax.com/tag/awk/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Remplacer sed, awk, cut et Perl par Python (= orgasme pour sysadmin)</title>
+		<link>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/</link>
+		<comments>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/#comments</comments>
+		<pubDate>Sat, 14 Dec 2013 08:28:41 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[awk]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[perl]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sed]]></category>
+		<category><![CDATA[sysadmin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8261</guid>
+		<description><![CDATA[La force de perl c'est qu'il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.
+
+C'est pour cela que c'était devenu les choix des sysadmins. Parce que jusqu'ici, le choix c'était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.
+
+Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.]]></description>
+			<content:encoded><![CDATA[<p>La force de Perl c&#8217;est qu&#8217;il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.</p>
+<p>C&#8217;est pour cela que c&#8217;était devenu les choix des sysadmins. Parce que jusqu&#8217;ici, le choix c&#8217;était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.</p>
+<p>Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.</p>
+<p>Il y a le projet <a href="http://code.google.com/p/pyp/">pyp</a>, que l&#8217;on doit à Sony Pictures Imageworks qui avait besoin de se simplifier l&#8217;automatisation des tâches de build pour ses films.</p>
+<p>Et il y a <a href="https://pypi.python.org/pypi/Pyped/1.0">pyped</a>, dont j&#8217;avais brièvement parlé <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">ici</a> (article qui mérite d&#8217;être mis à jour vu que j&#8217;ai remplace dateutils par <a href="http://sametmax.com/les-time-zones-en-python/">arrow</a>).</p>
+<p>Les deux étaient sympas, mais avait des syntaxes alambiquées. Cependant, pyped est récemment passé en v1.0, donc stable, et a une toute nouvelle approche de syntaxe qui rend la bestiole super agréable à utiliser.</p>
+<p>Présentation.</p>
+<h2>Stdin, ligne à ligne</h2>
+<p>L&#8217;installation est bateau, c&#8217;est du <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">--user</span> pyped</pre></div></div>
+
+<p>Et derrirère, on obtient la commande <code>py</code>. Elle s&#8217;utilise essentiellement à la suite d&#8217;une autre commande. Typiquement :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">cat</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>fsta <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;un truc&quot;</span></pre></div></div>
+
+<p>L&#8217;astuce, c&#8217;est que &#8220;un truc&#8221; peut être n&#8217;importe quelle expression Python. Généralement une expression qui <code>print()</code> quelque chose.</p>
+<p>Or, Pyped met automatiquement à disposition de cette expression deux variables :</p>
+<ul>
+<li>La ligne en cours, dans la variable <code>x</code>.</li>
+<li>Le numéro de la ligne en cours, dans la variable <code>i</code>.</li>
+</ul>
+<p>L&#8217;expression Python est appelée une fois pour chaque ligne.</p>
+<p>Par exemple, supposons que j&#8217;ai un fichier &#8220;fortune.txt&#8221; contenant :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">bitcoin <span style="color: #7a0874; font-weight: bold;">&#40;</span>btc<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">5</span>
+euros <span style="color: #7a0874; font-weight: bold;">&#40;</span>€<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">100</span>
+dollars <span style="color: #7a0874; font-weight: bold;">&#40;</span>$<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">80</span></pre></div></div>
+
+<p>Si je veut tout mettre en majuscule, je fais :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">$ <span style="color: #c20cb9; font-weight: bold;">cat</span> fortune.txt <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;print(x.upper())&quot;</span>
+BITCOIN <span style="color: #7a0874; font-weight: bold;">&#40;</span>BTC<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">5</span>
+EUROS <span style="color: #7a0874; font-weight: bold;">&#40;</span>€<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">100</span>
+DOLLARS <span style="color: #7a0874; font-weight: bold;">&#40;</span>$<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">80</span></pre></div></div>
+
+<p>On peut mettre plusieurs expressions d&#8217;affilé. Ainsi, si je veux récupérer la somme et le symbole uniquement :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">$ <span style="color: #c20cb9; font-weight: bold;">cat</span> fortune.txt <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;devise, sign, _, value = x.split()&quot;</span> <span style="color: #ff0000;">&quot;sign = sign.strip('()')&quot;</span> <span style="color: #ff0000;">&quot;print('%s%s' % (value, sign))&quot;</span>
+5btc
+<span style="color: #000000;">100</span>€
+<span style="color: #000000;">80</span>$</pre></div></div>
+
+<p>Ok, c&#8217;est plus long que perl, mais vachement plus facile à écrire et à relire. Et j&#8217;utilise un langage que je connais déjà. Et pas besoin de faire un mix incompréhensible de sed, awk et autre cut.</p>
+<p>Si j&#8217;ai vraiment besoin de lisibilité, je peux même le mettre sur plusieurs lignes :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">$ <span style="color: #c20cb9; font-weight: bold;">cat</span> fortune.txt <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;                                                                                                 
+devise, sign, _, value = x.split() 
+sign = sign.strip('()') 
+print('%s%s' % (value, sign))  
+&quot;</span>
+5btc
+<span style="color: #000000;">100</span>€
+<span style="color: #000000;">80</span>$</pre></div></div>
+
+<p>Vous aurez noté que j&#8217;utilise <code>print()</code> et que je semble ne pas me soucier de l&#8217;unicode. C&#8217;est parceque pyped fait ça au début du script :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> print_function, unicode_literals, division, absolute_imports</pre></div></div>
+
+<p>Du coup, on est bien en Python 2.7, mais on bénéficie de la division améliorée, de la fonction pour printer, des imports absolus et surtout, de l&#8217;unicode partout. D&#8217;ailleurs pyped vous transforme <code>x</code> pour que ce soit un objet unicode. </p>
+<h2>Tout traiter d&#8217;un coup</h2>
+<p>Parfois, on a besoin d&#8217;avoir accès à toutes les lignes, pas juste les lignes une à une. pyped permet cela avec l&#8217;option <code>-i</code>. Les variables <code>x</code> et <code>i</code> disparaissent au profit de la variable <code>l</code>, qui contient un itérable sur toutes les lignes.</p>
+<p>Par exemple, envie de trier tout ça ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">cat fortune.<span style="color: black;">txt</span> | py -i <span style="color: #483d8b;">&quot;
+lignes = (x.split() for x in l)
+lignes = sorted((v, s.strip('()')) for d, s, _, v in lignes)
+for ligne in lignes: print('%s%s' % ligne)
+&quot;</span>
+<span style="color: #ff4500;">100</span>€
+5btc
+<span style="color: #ff4500;">80</span>$</pre></div></div>
+
+<h2>Moar options</h2>
+<p>Lisez la doc, car il y a d&#8217;autres options du genre éviter que pyped vous strip automatiquement le ligne break, forcer l&#8217;encoding, etc.</p>
+<p>Parmi les trucs les plus utiles, il y a l&#8217;option <code>-b</code> qui permet de lancer un code avant la boucle. Pratique pour importer des trucs genre le module <code>tarfile</code> pour extraire une archive avant d&#8217;utiliser son contenu.</p>
+<p>Néanmoins la plupart du temps on a rien besoin d&#8217;importer car pyped importe déjà automatiquement les modules les plus utiles : maths, datetime, re, json, hashlib, uuid, etc. </p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8261&amp;md5=83a66390fd625dd860b54e895ddffdee" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fremplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin%2F&amp;language=en_GB&amp;category=text&amp;title=Remplacer+sed%2C+awk%2C+cut+et+Perl+par+Python+%28%3D+orgasme+pour+sysadmin%29&amp;description=La+force+de+Perl+c%26%238217%3Best+qu%26%238217%3Bil+permettait+de+piper+des+donn%C3%A9es+directement+via+la+ligne+de+commande+pour+faire+des+manipulations+rapides.+C%26%238217%3Best+pour+cela+que+c%26%238217%3B%C3%A9tait+devenu+les+choix...&amp;tags=awk%2Cbash%2Cperl%2Cpython%2Csed%2Csysadmin%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/hsmFx9T.jpg" length="182812" type="image/jpg" />	</item>
+	</channel>
+</rss>

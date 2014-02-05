@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; bookmarklet</title>
+	<atom:link href="http://sametmax.com/tag/bookmarklet/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Créer un bookmarklet</title>
+		<link>http://sametmax.com/creer-un-bookmarklet/</link>
+		<comments>http://sametmax.com/creer-un-bookmarklet/#comments</comments>
+		<pubDate>Fri, 31 May 2013 12:49:54 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bookmarklet]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[meta]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3972</guid>
+		<description><![CDATA[Vous avez un super outil JS que vous voulez partager avec le monde entier ? Faites un bookmarklet ! Il s'agit de compresser tout votre code sur une ligne de telle sorte qu'il puisse être mis en bookmark dans le browser et utilisé en un click.
+]]></description>
+			<content:encoded><![CDATA[<p>Vous avez un super outil JS que vous voulez partager avec le monde entier ? Faites un bookmarklet ! Il s&#8217;agit de compresser tout votre code sur une ligne de telle sorte qu&#8217;il puisse être mis en bookmark dans le browser et utilisé en un clic.</p>
+<p>Problème : débugger un pâté de JS d&#8217;une ligne, c&#8217;est relou. Et pour les gros outils, il n&#8217;y a pas la place de toute coder. L&#8217;idée est donc de packer juste l&#8217;import de votre outil.</p>
+<p>D&#8217;abord, mettre le script de votre outil quelque part (par exemple votre serveur Web). Pour l&#8217;article, je vais mettre le script sur <a href="http://yourjavascript.com">yourjavascript.com</a>.</p>
+<p>Il <a href="http://yourjavascript.com/11356413275/test.js">affiche une des tag lines du blog avec clippy</a> (on m&#8217;avait demandé une fois comment on faisait, ben voilà). Il ne marche que sur le blog et tout en haut à gauche d&#8217;une page non scrollée, mais OSEF, c&#8217;est un exemple.</p>
+<p>Ensuite, on fait le code d&#8217;include, qui va juste créer une balise SCRIPT et ajoute votre outil une fois que la page est chargée :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #006600; font-style: italic;">// on frabrique le tag SCRIPT</span>
+<span style="color: #003366; font-weight: bold;">var</span> url <span style="color: #339933;">=</span> <span style="color: #3366CC;">&quot;http://yourjavascript.com/11356413275/test.js&quot;</span><span style="color: #339933;">;</span>
+<span style="color: #003366; font-weight: bold;">var</span> head <span style="color: #339933;">=</span> document.<span style="color: #660066;">getElementsByTagName</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'head'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#91;</span><span style="color: #CC0000;">0</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+<span style="color: #003366; font-weight: bold;">var</span> script <span style="color: #339933;">=</span> document.<span style="color: #660066;">createElement</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'script'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+script.<span style="color: #660066;">type</span> <span style="color: #339933;">=</span> <span style="color: #3366CC;">'text/javascript'</span><span style="color: #339933;">;</span>
+<span style="color: #006600; font-style: italic;">// on met la date dans l'url pour éviter le cache</span>
+script.<span style="color: #660066;">src</span> <span style="color: #339933;">=</span> url <span style="color: #339933;">+</span> <span style="color: #3366CC;">'?'</span> <span style="color: #339933;">+</span> <span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">new</span> Date<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>.<span style="color: #660066;">getTime</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #006600; font-style: italic;">// on ajoute le tag ce qui va charger votre outil</span>
+head.<span style="color: #660066;">appendChild</span><span style="color: #009900;">&#40;</span>script<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></div></div>
+
+<p>Puis il faut le mettre au format bookmarklet, c&#8217;est à dire :</p>
+<ul>
+<li>Faire tenir le code sur une ligne.</li>
+<li>L&#8217;enfermer dans une <a href="http://sametmax.com/la-fonction-anonyme-appelee-immediatement-en-javascript-function/">fonction appelée immédiatement</a>.</li>
+<li>Transformer tout ça en URL (urlencoder + ajouter le protocole &#8220;javascript:&#8221;)</li>
+</ul>
+<p>Faites le une fois pour vous entraîner à comprendre ce qui se passe (avec un code plus simple, genre un <code>alert()</code>) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">javascript<span style="color: #339933;">:</span><span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span><span style="color: #000066;">alert</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;test&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span></pre></div></div>
+
+<p>Ensuite faites le avec votre vrai code, encore à la main. Une fois. Vous noterez qu&#8217;il faut un code super propre (pas de &#8220;;&#8221; manquant) pour que ça marche.</p>
+<p>Quand vous en aurez marre de galérer, vous ferez comme moi, vous utiliserez un <a href="http://chriszarate.github.io/bookmarkleter/">outil en ligne</a> pour le faire automatiquement.</p>
+<p>Le code résultant est celui-ci:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">javascript<span style="color: #339933;">:</span><span style="color: #009900;">&#40;</span><span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>var<span style="color: #339933;">%</span>20url<span style="color: #339933;">=%</span>22http<span style="color: #339933;">:</span><span style="color: #006600; font-style: italic;">//yourjavascript.com/11356413275/test.js%22;var%20head=document.getElementsByTagName('head')[0];var%20script=document.createElement('script');script.type='text/javascript';script.src=url+'%3F'+(new%20Date().getTime());head.appendChild(script);})();</span></pre></div></div>
+
+<p>On peut le mettre directement à la place de l&#8217;URL HTTP dans un bookmark. Si on clique sur le bookmark, il va lancer ce code, qui va ajouter la balise SCRIPT avec mon autre code, qui va se lancer et faire apparaitre clippy pour notre plus grand plaisir.</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="100%" height="300" src="http://jsfiddle.net/ngxuC/2/embedded/result,html/presentation/" allowfullscreen="allowfullscreen" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p>Comme je suis une feignasse, clippy apparait en haut de la page, donc il vous faudra scroller tout en haut pour voir le résultat. J&#8217;avais pas envie de me taper les calculs pour faire une posionnement relatif au viewport.</p>
+<p>Personnellement je m&#8217;en sers pour faire des petits outils comme lire des sites plein d&#8217;images en mettant toutes les images à la suite des autres en auto loading, pour charger des outils d&#8217;admin sur la page principale d&#8217;un site (genre le casting des videos pornos) ou juste debugger.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3972&amp;md5=b13c1289c759008fa99c902d3c28840d" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/creer-un-bookmarklet/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcreer-un-bookmarklet%2F&amp;language=en_GB&amp;category=text&amp;title=Cr%C3%A9er+un+bookmarklet&amp;description=Vous+avez+un+super+outil+JS+que+vous+voulez+partager+avec+le+monde+entier+%3F+Faites+un+bookmarklet+%21+Il+s%26%238217%3Bagit+de+compresser+tout+votre+code+sur+une+ligne+de...&amp;tags=bookmarklet%2Cjavascript%2Cmeta%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/oljUbOw.jpg" length="420922" type="image/jpg" />	</item>
+	</channel>
+</rss>

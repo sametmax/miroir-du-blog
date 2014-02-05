@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; startup</title>
+	<atom:link href="http://sametmax.com/tag/startup/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Exécuter du code à tout lancement de Python</title>
+		<link>http://sametmax.com/executer-du-code-a-tout-lancement-de-python/</link>
+		<comments>http://sametmax.com/executer-du-code-a-tout-lancement-de-python/#comments</comments>
+		<pubDate>Mon, 24 Jun 2013 10:54:57 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[startup]]></category>
+		<category><![CDATA[vm]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6461</guid>
+		<description><![CDATA[Mais comment lancer du code au démarrage pour Python quand on est PAS dans un shell ?]]></description>
+			<content:encoded><![CDATA[<p>Je vous avais montré comment <a href="http://sametmax.com/personnalisez-le-demarrage-dipython/">lancer du code au démarrage du shell iPython</a>, et on peut faire quelque chose de similaire pour le shell Python ordinnaire avec la variable d&#8217;environnement <code>PYTHONSTARTUP</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">export</span> <span style="color: #007800;">PYTHONSTARTUP</span>=<span style="color: #000000; font-weight: bold;">/</span>chemin<span style="color: #000000; font-weight: bold;">/</span>vers<span style="color: #000000; font-weight: bold;">/</span>fichier<span style="color: #000000; font-weight: bold;">/</span>python<span style="color: #000000; font-weight: bold;">/</span>a<span style="color: #000000; font-weight: bold;">/</span>executer<span style="color: #000000; font-weight: bold;">/</span>au<span style="color: #000000; font-weight: bold;">/</span>demarrage.py</pre></div></div>
+
+<p>Mais comment lancer du code au démarrage pour Python quand on est PAS dans un shell ?</p>
+<p>Comme pour l&#8217;<a href="http://sametmax.com/lancer-une-fonction-automatiquement-a-larret-de-python/">exécution du code à la fermeture de la VM</a>, il existe bien entendu un mécanisme pour cela.</p>
+<p>Ouvez un shell, et tapez:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">site</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">site</span>.<span style="color: black;">getusersitepackages</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'/home/sam/.local/lib/python2.7/site-packages'</span></pre></div></div>
+
+<p>Vous obtenez ainsi le dossier des sites packages locaux, c&#8217;est à dire un dossier qui est dans le PYTHON PATH, mais uniquement pour l&#8217;utilisateur courant. Donc vous pouvez mettre dedans toute bibliothèque Python que vous voulez importable de partout, mais uniquement pour vous.</p>
+<p>Dans ce dossier, créez un fichier nommé <em>usercustomize.py</em>, et voilà ! <a href="http://docs.python.org/2/tutorial/interpreter.html#the-customization-modules">Tout ce qui est dans ce fichier est automatiquement exécuté au démarrage de Python</a>.</p>
+<p>Attention cependant, il est exécuté très tôt, et donc certaines choses ne sont pas encore chargées, telle que <code>sys.argv</code> ou <code>__builtin__</code>.</p>
+<p>Il faut donc ruser un peut. Si vous êtes une loque qui n&#8217;aime pas taper <code>import ipdb; ipdb.set_trace()</code>, vous pouvez par exemple mettre dedans :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">__builtin__</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">pdb</span> <span style="color: #ff7700;font-weight:bold;">import</span> set_trace
+&nbsp;
+<span style="color: #dc143c;">__builtin__</span>.<span style="color: black;">set_trace</span> = set_trace</pre></div></div>
+
+<p>Et maintenant, dans votre code, vous pourrez appeler <code>set_trace()</code> de <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> directement, sans import, sans préfixe.</p>
+<p>Attention tout de même à ce que vous allez mettre là. Si vous commencez à trop trafiquer votre installation, vos programmes pourraient marcher dessus et pas ailleurs. Testez toujours vos logiciels sur des installations de Python standards.</p>
+<p>Bonus point: le <a href="http://mail.python.org/pipermail/tutor/2012-August/090729.html">code de startup d&#8217;un codeur Python scientifique</a>.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6461&amp;md5=09a0cff96b2273ae8f5ef2cf017c9849" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/executer-du-code-a-tout-lancement-de-python/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fexecuter-du-code-a-tout-lancement-de-python%2F&amp;language=en_GB&amp;category=text&amp;title=Ex%C3%A9cuter+du+code+%C3%A0+tout+lancement+de+Python&amp;description=Je+vous+avais+montr%C3%A9+comment+lancer+du+code+au+d%C3%A9marrage+du+shell+iPython%2C+et+on+peut+faire+quelque+chose+de+similaire+pour+le+shell+Python+ordinnaire+avec+la+variable+d%26%238217%3Benvironnement...&amp;tags=python%2Cstartup%2Cvm%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/n6XG5.jpg" length="136102" type="image/jpg" />	</item>
+	</channel>
+</rss>

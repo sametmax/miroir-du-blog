@@ -590,7 +590,12 @@ Grailbird.data.tweets_2013_01 =
       "text" : "itjob",
       "indices" : [ 20, 26 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/t0E2GNAV",
+      "expanded_url" : "http:\/\/ow.ly\/2uwjzl",
+      "display_url" : "ow.ly\/2uwjzl"
+    } ]
   },
   "geo" : { },
   "id_str" : "296205068963823617",
@@ -647,7 +652,7 @@ Grailbird.data.tweets_2013_01 =
       "id_str" : "15229075",
       "id" : 15229075
     }, {
-      "name" : "Un Marocain",
+      "name" : "M.",
       "screen_name" : "Un_Marocain",
       "indices" : [ 11, 23 ],
       "id_str" : "2205397417",
@@ -697,8 +702,8 @@ Grailbird.data.tweets_2013_01 =
       "text" : "Oracle",
       "indices" : [ 126, 133 ]
     }, {
-      "text" : "o",
-      "indices" : [ 134, 136 ]
+      "text" : "ouf",
+      "indices" : [ 134, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 65, 85 ],
@@ -3756,7 +3761,7 @@ Grailbird.data.tweets_2013_01 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "The NowHell Parable",
+      "name" : ":)))",
       "screen_name" : "ItSeventhHell",
       "indices" : [ 3, 17 ],
       "id_str" : "817581187",
@@ -3783,11 +3788,11 @@ Grailbird.data.tweets_2013_01 =
     "id" : 290517957510041601,
     "created_at" : "2013-01-13 17:57:33 +0000",
     "user" : {
-      "name" : "The NowHell Parable",
+      "name" : ":)))",
       "screen_name" : "ItSeventhHell",
       "protected" : false,
       "id_str" : "817581187",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000797836430\/1881ef498285f2847d4772f5b3c9c420_normal.png",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/429579978448322560\/vnDqmV7H_normal.jpeg",
       "id" : 817581187,
       "verified" : false
     }
@@ -3820,6 +3825,9 @@ Grailbird.data.tweets_2013_01 =
     }, {
       "text" : "job",
       "indices" : [ 132, 136 ]
+    }, {
+      "text" : "web",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 103, 123 ],
@@ -3982,7 +3990,12 @@ Grailbird.data.tweets_2013_01 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/cPtngFFj",
+      "expanded_url" : "http:\/\/bit.ly\/ZP3liu",
+      "display_url" : "bit.ly\/ZP3liu"
+    } ]
   },
   "geo" : { },
   "id_str" : "291482497924075520",
@@ -4379,7 +4392,12 @@ Grailbird.data.tweets_2013_01 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "https:\/\/t.co\/xviyNfVZ",
+      "expanded_url" : "https:\/\/careers.mozilla.org\/",
+      "display_url" : "careers.mozilla.org"
+    } ]
   },
   "geo" : { },
   "id_str" : "291477889776504832",
@@ -4448,8 +4466,19 @@ Grailbird.data.tweets_2013_01 =
     "hashtags" : [ {
       "text" : "offre",
       "indices" : [ 17, 23 ]
+    }, {
+      "text" : "job",
+      "indices" : [ 139, 140 ]
+    }, {
+      "text" : "emploi",
+      "indices" : [ 139, 140 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/M9DhPzSI",
+      "expanded_url" : "http:\/\/bit.ly\/SGQp0W",
+      "display_url" : "bit.ly\/SGQp0W"
+    } ]
   },
   "geo" : { },
   "id_str" : "291477267543109633",
@@ -4651,7 +4680,10 @@ Grailbird.data.tweets_2013_01 =
       "id" : 29508165
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "hum",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ ]
   },
   "geo" : { },
@@ -6700,7 +6732,7 @@ Grailbird.data.tweets_2013_01 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "eCom | SME | SITB ",
+      "name" : "Salons eCom SME SITB",
       "screen_name" : "eCom_Geneve",
       "indices" : [ 3, 15 ],
       "id_str" : "202965220",
@@ -6727,11 +6759,11 @@ Grailbird.data.tweets_2013_01 =
     "id" : 288676473626308608,
     "created_at" : "2013-01-08 16:00:09 +0000",
     "user" : {
-      "name" : "eCom | SME | SITB ",
+      "name" : "Salons eCom SME SITB",
       "screen_name" : "eCom_Geneve",
       "protected" : false,
       "id_str" : "202965220",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/3556484546\/eeff6d60bc3c1410e47a0c64bf5d4b80_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/426637160255463424\/34Eg51Un_normal.jpeg",
       "id" : 202965220,
       "verified" : false
     }
@@ -7793,7 +7825,12 @@ Grailbird.data.tweets_2013_01 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/j99qe7FW",
+      "expanded_url" : "http:\/\/ur1.ca\/aqhyy",
+      "display_url" : "ur1.ca\/aqhyy"
+    } ]
   },
   "geo" : { },
   "id_str" : "288247441298436096",
@@ -7922,7 +7959,7 @@ Grailbird.data.tweets_2013_01 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Code Ninja",
+      "name" : "Shawn",
       "screen_name" : "the_webhamster",
       "indices" : [ 3, 18 ],
       "id_str" : "207536489",
@@ -7949,11 +7986,11 @@ Grailbird.data.tweets_2013_01 =
     "id" : 256954058131267584,
     "created_at" : "2012-10-13 03:06:36 +0000",
     "user" : {
-      "name" : "Code Ninja",
+      "name" : "Shawn",
       "screen_name" : "the_webhamster",
       "protected" : false,
       "id_str" : "207536489",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000770337205\/550febe521fb90ac63ae2005c7b89d95_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000860765882\/t5R66QbQ_normal.jpeg",
       "id" : 207536489,
       "verified" : false
     }
@@ -9679,7 +9716,7 @@ Grailbird.data.tweets_2013_01 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "indices" : [ 3, 19 ],
       "id_str" : "541163544",
@@ -9687,7 +9724,12 @@ Grailbird.data.tweets_2013_01 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/cDxOlCaV",
+      "expanded_url" : "http:\/\/bit.ly\/YV3Gjl",
+      "display_url" : "bit.ly\/YV3Gjl"
+    } ]
   },
   "geo" : { },
   "id_str" : "286802789273845760",
@@ -9711,7 +9753,7 @@ Grailbird.data.tweets_2013_01 =
     "id" : 286666633739649024,
     "created_at" : "2013-01-03 02:53:46 +0000",
     "user" : {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "protected" : false,
       "id_str" : "541163544",

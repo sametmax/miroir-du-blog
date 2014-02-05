@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; deque</title>
+	<atom:link href="http://sametmax.com/tag/deque/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Implémenter une fenêtre glissante en Python avec un deque</title>
+		<link>http://sametmax.com/implementer-une-fenetre-glissante-en-python-avec-un-deque/</link>
+		<comments>http://sametmax.com/implementer-une-fenetre-glissante-en-python-avec-un-deque/#comments</comments>
+		<pubDate>Thu, 20 Dec 2012 19:02:43 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[deque]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3562</guid>
+		<description><![CDATA[
+On a déjà vu comment implémenter <a href="http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/">l'itération par morceaux </a>sur un itérable de n'importe quelle taille. Grâce au deque, on peut aussi facilement créer une fenêtre glissante.]]></description>
+			<content:encoded><![CDATA[<p>Quand j&#8217;entends deque, je pense plus à un deck de Magic de Gathering qu&#8217;à un module Python, mais aujourd&#8217;hui j&#8217;utilise beaucoup plus le dernier que le précédent.</p>
+<p>On a déjà vu comment implémenter <a href="http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/">l&#8217;itération par morceaux </a>sur un itérable de n&#8217;importe quelle taille. Grâce au deque, on peut aussi facilement créer une fenêtre glissante.</p>
+<h2>Qu&#8217;est-ce qu&#8217;une fenêtre glissante ?</h2>
+<p>Il s&#8217;agit de parcourir un itérable par tranches de &#8220;n&#8221; élements, en faisant en sorte que l&#8217;insertion d&#8217;un nouvel élément dans la tranche implique la supression du premier entré. Mouai, dit comme ça c&#8217;est pas clair. Un p&#8217;tit exemple ?</p>
+<p>Fenêtre glissante de 3 éléments sur une liste de 10 éléments, à la mano:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span>, <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>:<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>:<span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>:<span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+...</pre></div></div>
+
+<p>A ne pas confondre avec le parcours par morceaux, qu&#8217;on déjà traité, et qui donne ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span>, <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>:<span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">6</span>:<span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+...</pre></div></div>
+
+<p>Et bien sûr, comme d&#8217;hab, vous allez dire &#8220;Cher Sam, malgré ton génie qui n&#8217;a d&#8217;égal que ta beauté et l&#8217;incohérence de cette remarque, je ne vois pas vraiment à quoi ça sert.&#8221;</p>
+<p>Et bien essentiellement dans les situations où un élément est dépendant des précédents, par exemple pour répondre à des questions existentielles comme &#8220;quel est le premier élément qui est la somme des 5 le précédant dans cette liste ?&#8221;. Ça n&#8217;arrive certes pas tous les jours, mais fuck, j&#8217;avais pas de meilleur exemple en tête, là, tout de suite.</p>
+<h2>Qu&#8217;est-ce qu&#8217;un deque ?</h2>
+<p>Un <a href="http://docs.python.org/2.7/library/collections.html">deque</a> est une structure de données qui permet d&#8217;implémenter des comportements de types piles, files, FIFO, LIFO, et autres pipos avec efficacité. Traduit en langage de tous les jours, c&#8217;est comme une liste, mais:</p>
+<ul>
+<li>ajouter un élément à la fin ou au début est une opération super rapide;</li>
+<li>les retirer aussi;</li>
+<li>on peut itérer dessus à la même vitesse que la liste;</li>
+<li>mais accéder à un élement qui n&#8217;est pas au début ou à la fin juste par son index est très lent;</li>
+<li>on peut limiter le nombre d&#8217;éléments que ça contient automatiquement.</li>
+</ul>
+<p>On va donc l&#8217;utiliser comme acumulateur ou pour faire des files d&#8217;attentes.</p>
+<p>Démonstration:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> deque
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck = deque<span style="color: black;">&#40;</span>maxlen=<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># on limite le deque à 3 éléments</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ... et MAGIQUEMENT !</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ze_deck
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> ze_deck:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> x
+...     
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">4</span></pre></div></div>
+
+<p>Bam le dernier élément est squizzé, et tout ça rapidement et efficacement. Vous voyez où je veux subtilement en venir ?</p>
+<h2>Et finalement: comment on utilise l&#8217;un pour faire l&#8217;autre ?</h2>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> deque
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">itertools</span> <span style="color: #ff7700;font-weight:bold;">import</span> islice
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> window<span style="color: black;">&#40;</span>iterable, size=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>:
+...         <span style="color: black;">iterable</span> = <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>iterable<span style="color: black;">&#41;</span>
+...         <span style="color: black;">d</span> = deque<span style="color: black;">&#40;</span>islice<span style="color: black;">&#40;</span>iterable, size<span style="color: black;">&#41;</span>, size<span style="color: black;">&#41;</span>
+...         <span style="color: #ff7700;font-weight:bold;">yield</span> d
+...         <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> iterable:
+...                 <span style="color: black;">d</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+...                 <span style="color: #ff7700;font-weight:bold;">yield</span> d
+...         
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> window<span style="color: black;">&#40;</span><span style="color: #483d8b;">'azertyuiop'</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span> x
+...     
+<span style="color: black;">deque</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'z'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'z'</span>, <span style="color: #483d8b;">'e'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'e'</span>, <span style="color: #483d8b;">'r'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'r'</span>, <span style="color: #483d8b;">'t'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'t'</span>, <span style="color: #483d8b;">'y'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'y'</span>, <span style="color: #483d8b;">'u'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'u'</span>, <span style="color: #483d8b;">'i'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'i'</span>, <span style="color: #483d8b;">'o'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+deque<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'o'</span>, <span style="color: #483d8b;">'p'</span><span style="color: black;">&#93;</span>, maxlen=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Vous noterez au passage que nous faisons ici un usage malin des <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">générateurs</a>, ce qui nous permet de retourner un itérable sans tout charger en mémoire et de slider sur notre window avec classe.</p>
+<p>Ainsi on peut se la peter en faisant des trucs compliqués en une ligne comme:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#123;</span><span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>d<span style="color: black;">&#41;</span>: i <span style="color: #ff7700;font-weight:bold;">for</span> i, d <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>window<span style="color: black;">&#40;</span><span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">5</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">0</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span>, <span style="color: #ff4500;">9</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">7</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">6</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">1</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">3</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">2</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span>: <span style="color: #ff4500;">4</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Ce qui n&#8217;a absolument aucun intérêt, mais si vous comprenez ce que ça fait, alors vous avec bien masterisé Python.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3562&amp;md5=4c6fea5a598147047a770ca977fd1ee9" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/implementer-une-fenetre-glissante-en-python-avec-un-deque/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fimplementer-une-fenetre-glissante-en-python-avec-un-deque%2F&amp;language=en_GB&amp;category=text&amp;title=Impl%C3%A9menter+une+fen%C3%AAtre+glissante+en+Python+avec+un+deque&amp;description=Quand+j%26%238217%3Bentends+deque%2C+je+pense+plus+%C3%A0+un+deck+de+Magic+de+Gathering+qu%26%238217%3B%C3%A0+un+module+Python%2C+mais+aujourd%26%238217%3Bhui+j%26%238217%3Butilise+beaucoup+plus+le+dernier+que+le+pr%C3%A9c%C3%A9dent.+On+a+d%C3%A9j%C3%A0...&amp;tags=deque%2Citerable%2Cpython%2Cyield%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/gos-sliding-time-window.gif" length="7018" type="image/jpg" />	</item>
+	</channel>
+</rss>

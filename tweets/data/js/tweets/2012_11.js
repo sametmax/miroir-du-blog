@@ -1105,7 +1105,12 @@ Grailbird.data.tweets_2012_11 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/Dl5BRAlb",
+      "expanded_url" : "http:\/\/bit.ly\/WLnVDI",
+      "display_url" : "bit.ly\/WLnVDI"
+    } ]
   },
   "geo" : { },
   "id_str" : "273021916657360896",
@@ -2928,8 +2933,11 @@ Grailbird.data.tweets_2012_11 =
     } ],
     "media" : [ ],
     "hashtags" : [ {
-      "text" : "Fabr",
-      "indices" : [ 131, 136 ]
+      "text" : "Fabric",
+      "indices" : [ 131, 140 ]
+    }, {
+      "text" : "Python",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ ]
   },
@@ -5582,6 +5590,9 @@ Grailbird.data.tweets_2012_11 =
     }, {
       "text" : "job",
       "indices" : [ 130, 134 ]
+    }, {
+      "text" : "recrutement",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 109, 129 ],
@@ -5820,7 +5831,12 @@ Grailbird.data.tweets_2012_11 =
       "text" : "emploi",
       "indices" : [ 21, 28 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/XnZiP0Of",
+      "expanded_url" : "http:\/\/bit.ly\/WVwWuL",
+      "display_url" : "bit.ly\/WVwWuL"
+    } ]
   },
   "geo" : { },
   "id_str" : "268001930054356992",
@@ -6293,13 +6309,7 @@ Grailbird.data.tweets_2012_11 =
 }, {
   "source" : "\u003Ca href=\"http:\/\/twitter.com\/tweetbutton\" rel=\"nofollow\"\u003ETweet Button\u003C\/a\u003E",
   "entities" : {
-    "user_mentions" : [ {
-      "name" : "Yann P.",
-      "screen_name" : "Cawrotte",
-      "indices" : [ 0, 9 ],
-      "id_str" : "155260281",
-      "id" : 155260281
-    } ],
+    "user_mentions" : [ ],
     "media" : [ ],
     "hashtags" : [ ],
     "urls" : [ ]
@@ -6312,7 +6322,7 @@ Grailbird.data.tweets_2012_11 =
   "id" : 266626026614947840,
   "in_reply_to_status_id" : 266625755025403904,
   "created_at" : "2012-11-08 19:39:33 +0000",
-  "in_reply_to_screen_name" : "Cawrotte",
+  "in_reply_to_screen_name" : "Cawrtz",
   "in_reply_to_user_id_str" : "155260281",
   "user" : {
     "name" : "SamEtMax",
@@ -6326,13 +6336,7 @@ Grailbird.data.tweets_2012_11 =
 }, {
   "source" : "\u003Ca href=\"http:\/\/twitter.com\/tweetbutton\" rel=\"nofollow\"\u003ETweet Button\u003C\/a\u003E",
   "entities" : {
-    "user_mentions" : [ {
-      "name" : "Yann P.",
-      "screen_name" : "Cawrotte",
-      "indices" : [ 0, 9 ],
-      "id_str" : "155260281",
-      "id" : 155260281
-    } ],
+    "user_mentions" : [ ],
     "media" : [ ],
     "hashtags" : [ ],
     "urls" : [ ]
@@ -6345,7 +6349,7 @@ Grailbird.data.tweets_2012_11 =
   "id" : 266625146553520129,
   "in_reply_to_status_id" : 266624748589547520,
   "created_at" : "2012-11-08 19:36:03 +0000",
-  "in_reply_to_screen_name" : "Cawrotte",
+  "in_reply_to_screen_name" : "Cawrtz",
   "in_reply_to_user_id_str" : "155260281",
   "user" : {
     "name" : "SamEtMax",
@@ -6359,13 +6363,7 @@ Grailbird.data.tweets_2012_11 =
 }, {
   "source" : "\u003Ca href=\"http:\/\/twitter.com\/tweetbutton\" rel=\"nofollow\"\u003ETweet Button\u003C\/a\u003E",
   "entities" : {
-    "user_mentions" : [ {
-      "name" : "Yann P.",
-      "screen_name" : "Cawrotte",
-      "indices" : [ 0, 9 ],
-      "id_str" : "155260281",
-      "id" : 155260281
-    } ],
+    "user_mentions" : [ ],
     "media" : [ ],
     "hashtags" : [ ],
     "urls" : [ ]
@@ -6378,7 +6376,7 @@ Grailbird.data.tweets_2012_11 =
   "id" : 266624104415776768,
   "in_reply_to_status_id" : 266623792057565184,
   "created_at" : "2012-11-08 19:31:54 +0000",
-  "in_reply_to_screen_name" : "Cawrotte",
+  "in_reply_to_screen_name" : "Cawrtz",
   "in_reply_to_user_id_str" : "155260281",
   "user" : {
     "name" : "SamEtMax",
@@ -7381,7 +7379,12 @@ Grailbird.data.tweets_2012_11 =
       "text" : "Python",
       "indices" : [ 123, 130 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/cRoT0sdI",
+      "expanded_url" : "http:\/\/goo.gl\/uEHdB",
+      "display_url" : "goo.gl\/uEHdB"
+    } ]
   },
   "geo" : { },
   "id_str" : "265865421855551489",

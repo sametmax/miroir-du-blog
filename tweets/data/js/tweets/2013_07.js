@@ -800,7 +800,10 @@ Grailbird.data.tweets_2013_07 =
       "id" : 15830587
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "ssii",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ ]
   },
   "geo" : { },
@@ -1003,6 +1006,12 @@ Grailbird.data.tweets_2013_07 =
     "hashtags" : [ {
       "text" : "computing",
       "indices" : [ 127, 137 ]
+    }, {
+      "text" : "jobs",
+      "indices" : [ 139, 140 ]
+    }, {
+      "text" : "montreal",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 104, 126 ],
@@ -1079,6 +1088,11 @@ Grailbird.data.tweets_2013_07 =
       "url" : "http:\/\/t.co\/htuSl8nDHC",
       "expanded_url" : "http:\/\/www.contractjob.ne",
       "display_url" : "contractjob.ne"
+    }, {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/m7PIrX8OKL",
+      "expanded_url" : "http:\/\/bit.ly\/175cmr8",
+      "display_url" : "bit.ly\/175cmr8"
     } ]
   },
   "geo" : { },
@@ -1140,7 +1154,12 @@ Grailbird.data.tweets_2013_07 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/3Y4OdkZ2JZ",
+      "expanded_url" : "http:\/\/fb.me\/2shunzny8",
+      "display_url" : "fb.me\/2shunzny8"
+    } ]
   },
   "geo" : { },
   "id_str" : "361811924922544129",
@@ -1990,8 +2009,8 @@ Grailbird.data.tweets_2013_07 =
     } ],
     "media" : [ ],
     "hashtags" : [ {
-      "text" : "Lean",
-      "indices" : [ 134, 139 ]
+      "text" : "Leanstartuppourtous",
+      "indices" : [ 134, 140 ]
     } ],
     "urls" : [ ]
   },
@@ -2070,7 +2089,7 @@ Grailbird.data.tweets_2013_07 =
       "screen_name" : "Damienfaitlcon",
       "protected" : false,
       "id_str" : "370299325",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000775611055\/7e4a55fdf492bef282d1a3f342f45f65_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000822265701\/7575bcf2c618e8a934fcb2b2bfb426c2_normal.jpeg",
       "id" : 370299325,
       "verified" : false
     }
@@ -2976,7 +2995,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "\u200Bsprt",
+      "name" : "sprt",
       "screen_name" : "sexyprout",
       "indices" : [ 0, 10 ],
       "id_str" : "26382618",
@@ -3009,7 +3028,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "\u200Bsprt",
+      "name" : "sprt",
       "screen_name" : "sexyprout",
       "indices" : [ 0, 10 ],
       "id_str" : "26382618",
@@ -3061,7 +3080,12 @@ Grailbird.data.tweets_2013_07 =
       "text" : "emploi",
       "indices" : [ 21, 28 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/Yd5fKwd9ej",
+      "expanded_url" : "http:\/\/bit.ly\/15xQLI6",
+      "display_url" : "bit.ly\/15xQLI6"
+    } ]
   },
   "geo" : { },
   "id_str" : "360136104436965376",
@@ -3144,7 +3168,12 @@ Grailbird.data.tweets_2013_07 =
       "text" : "django",
       "indices" : [ 97, 104 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/H9NUW3BDEb",
+      "expanded_url" : "http:\/\/beta.liberation.fr",
+      "display_url" : "beta.liberation.fr"
+    } ]
   },
   "geo" : { },
   "id_str" : "360135699212664833",
@@ -3236,8 +3265,8 @@ Grailbird.data.tweets_2013_07 =
       "text" : "tornadoweb",
       "indices" : [ 117, 128 ]
     }, {
-      "text" : "continuou",
-      "indices" : [ 129, 139 ]
+      "text" : "continuousdeployment",
+      "indices" : [ 129, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 47, 69 ],
@@ -3398,14 +3427,17 @@ Grailbird.data.tweets_2013_07 =
       "id_str" : "375038445",
       "id" : 375038445
     }, {
-      "name" : "Greg Leding",
-      "screen_name" : "g",
-      "indices" : [ 137, 139 ],
-      "id_str" : "17853751",
-      "id" : 17853751
+      "name" : "Interactive Job Feed",
+      "screen_name" : "GamesJobs",
+      "indices" : [ 137, 140 ],
+      "id_str" : "378644447",
+      "id" : 378644447
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "gamejobs",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ {
       "indices" : [ 114, 136 ],
       "url" : "http:\/\/t.co\/4GbnlJHGmv",
@@ -3794,7 +3826,12 @@ Grailbird.data.tweets_2013_07 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/4MGnizxkkA",
+      "expanded_url" : "http:\/\/ow.ly\/2ytexz",
+      "display_url" : "ow.ly\/2ytexz"
+    } ]
   },
   "geo" : { },
   "id_str" : "360133150074093568",
@@ -3900,8 +3937,16 @@ Grailbird.data.tweets_2013_07 =
       "id" : 133240876
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
-    "urls" : [ ]
+    "hashtags" : [ {
+      "text" : "Python",
+      "indices" : [ 139, 140 ]
+    } ],
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/acr0PQtn4k",
+      "expanded_url" : "http:\/\/bit.ly\/1aX6ebP",
+      "display_url" : "bit.ly\/1aX6ebP"
+    } ]
   },
   "geo" : { },
   "id_str" : "360132848738500608",
@@ -4190,6 +4235,12 @@ Grailbird.data.tweets_2013_07 =
       "indices" : [ 127, 138 ],
       "id_str" : "130779141",
       "id" : 130779141
+    }, {
+      "name" : "Fran\u00E7ois Scharffe",
+      "screen_name" : "lechatpito",
+      "indices" : [ 139, 140 ],
+      "id_str" : "15179558",
+      "id" : 15179558
     } ],
     "media" : [ ],
     "hashtags" : [ ],
@@ -4312,11 +4363,11 @@ Grailbird.data.tweets_2013_07 =
       "id_str" : "25870530",
       "id" : 25870530
     }, {
-      "name" : "Science!",
-      "screen_name" : "s",
-      "indices" : [ 137, 139 ],
-      "id_str" : "347002675",
-      "id" : 347002675
+      "name" : "SamEtMax",
+      "screen_name" : "sam_et_max",
+      "indices" : [ 137, 140 ],
+      "id_str" : "507128812",
+      "id" : 507128812
     } ],
     "media" : [ ],
     "hashtags" : [ ],
@@ -6988,12 +7039,6 @@ Grailbird.data.tweets_2013_07 =
       "indices" : [ 0, 11 ],
       "id_str" : "1316380014",
       "id" : 1316380014
-    }, {
-      "name" : "Eijebong",
-      "screen_name" : "Eijebong",
-      "indices" : [ 12, 21 ],
-      "id_str" : "242039004",
-      "id" : 242039004
     } ],
     "media" : [ ],
     "hashtags" : [ ],
@@ -8388,7 +8433,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "\u003Ca href=\"http:\/\/twitter.com\/tweetbutton\" rel=\"nofollow\"\u003ETweet Button\u003C\/a\u003E",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "drowolath",
+      "name" : "Thomas",
       "screen_name" : "drowolath",
       "indices" : [ 0, 10 ],
       "id_str" : "91421969",
@@ -8427,7 +8472,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "drowolath",
+      "name" : "Thomas",
       "screen_name" : "drowolath",
       "indices" : [ 0, 10 ],
       "id_str" : "91421969",
@@ -8574,13 +8619,13 @@ Grailbird.data.tweets_2013_07 =
       "id_str" : "1187441521",
       "id" : 1187441521
     }, {
-      "name" : "David.G",
+      "name" : "DAV!D",
       "screen_name" : "Mr_DAVlD",
       "indices" : [ 21, 30 ],
       "id_str" : "48323962",
       "id" : 48323962
     }, {
-      "name" : "Th\u00E9otime",
+      "name" : "Th\u00E9otix",
       "screen_name" : "theotix",
       "indices" : [ 31, 39 ],
       "id_str" : "99528928",
@@ -8608,13 +8653,13 @@ Grailbird.data.tweets_2013_07 =
         "id_str" : "1187441521",
         "id" : 1187441521
       }, {
-        "name" : "David.G",
+        "name" : "DAV!D",
         "screen_name" : "Mr_DAVlD",
         "indices" : [ 8, 17 ],
         "id_str" : "48323962",
         "id" : 48323962
       }, {
-        "name" : "Th\u00E9otime",
+        "name" : "Th\u00E9otix",
         "screen_name" : "theotix",
         "indices" : [ 18, 26 ],
         "id_str" : "99528928",
@@ -8644,7 +8689,7 @@ Grailbird.data.tweets_2013_07 =
       "screen_name" : "Farnots",
       "protected" : false,
       "id_str" : "80065229",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000815739288\/1889931515d302500c39a3d9e75ad075_normal.png",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/418468655542726657\/ewC03lnI_normal.png",
       "id" : 80065229,
       "verified" : false
     }
@@ -9013,57 +9058,6 @@ Grailbird.data.tweets_2013_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Sploinga",
-      "screen_name" : "sploinga",
-      "indices" : [ 3, 12 ],
-      "id_str" : "1101613410",
-      "id" : 1101613410
-    } ],
-    "media" : [ ],
-    "hashtags" : [ ],
-    "urls" : [ ]
-  },
-  "geo" : { },
-  "id_str" : "355530458324410368",
-  "text" : "RT @sploinga: Markdown c'est simple. Python c'est lisible. Jinja c'est flexible. Compass c'est efficace. Git c'est pratique. Gandi c'est fi\u2026",
-  "retweeted_status" : {
-    "source" : "web",
-    "entities" : {
-      "user_mentions" : [ ],
-      "media" : [ ],
-      "hashtags" : [ ],
-      "urls" : [ ]
-    },
-    "geo" : { },
-    "id_str" : "354949597484953600",
-    "text" : "Markdown c'est simple. Python c'est lisible. Jinja c'est flexible. Compass c'est efficace. Git c'est pratique. Gandi c'est fiable.",
-    "id" : 354949597484953600,
-    "created_at" : "2013-07-10 13:05:53 +0000",
-    "user" : {
-      "name" : "Sploinga",
-      "screen_name" : "sploinga",
-      "protected" : false,
-      "id_str" : "1101613410",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000431130475\/9bf6549932966c97bc20e7ed256e213a_normal.jpeg",
-      "id" : 1101613410,
-      "verified" : false
-    }
-  },
-  "id" : 355530458324410368,
-  "created_at" : "2013-07-12 03:34:01 +0000",
-  "user" : {
-    "name" : "SamEtMax",
-    "screen_name" : "sam_et_max",
-    "protected" : false,
-    "id_str" : "507128812",
-    "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/1859873928\/img_Dog-and-rabbit_Thomas-SCHWEIZER_ref_150.001844.00_mode_zoom_normal.jpg",
-    "id" : 507128812,
-    "verified" : false
-  }
-}, {
-  "source" : "web",
-  "entities" : {
-    "user_mentions" : [ {
       "name" : "PC INpact Emploi",
       "screen_name" : "PCi_Emploi",
       "indices" : [ 3, 14 ],
@@ -9347,6 +9341,12 @@ Grailbird.data.tweets_2013_07 =
       "name" : "hopwork",
       "screen_name" : "hopwork",
       "indices" : [ 3, 11 ],
+      "id_str" : "991722949",
+      "id" : 991722949
+    }, {
+      "name" : "hopwork",
+      "screen_name" : "hopwork",
+      "indices" : [ 139, 140 ],
       "id_str" : "991722949",
       "id" : 991722949
     } ],
@@ -11758,7 +11758,7 @@ Grailbird.data.tweets_2013_07 =
       "screen_name" : "Kipetrovitchi",
       "protected" : false,
       "id_str" : "482951510",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000764871298\/65c1e4a72c77b94fcab9c4ccda89f064_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/413344518550065153\/FQgp8cA-_normal.jpeg",
       "id" : 482951510,
       "verified" : false
     }
@@ -12925,7 +12925,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "plink",
+      "name" : "plink \u264F",
       "screen_name" : "nanoPlink",
       "indices" : [ 0, 10 ],
       "id_str" : "399579605",
@@ -13761,7 +13761,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "plink",
+      "name" : "plink \u264F",
       "screen_name" : "nanoPlink",
       "indices" : [ 0, 10 ],
       "id_str" : "399579605",
@@ -14522,7 +14522,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "\u003Ca href=\"http:\/\/twitter.com\/tweetbutton\" rel=\"nofollow\"\u003ETweet Button\u003C\/a\u003E",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Arnaud A.",
+      "name" : "Arnaud\/Mosh\u00E9",
       "screen_name" : "n_Arno",
       "indices" : [ 0, 7 ],
       "id_str" : "8299552",
@@ -14573,8 +14573,16 @@ Grailbird.data.tweets_2013_07 =
     }, {
       "text" : "techjobs",
       "indices" : [ 27, 36 ]
+    }, {
+      "text" : "linux",
+      "indices" : [ 139, 140 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/nvLN0wCAS5",
+      "expanded_url" : "http:\/\/jbs.gd\/QGUtR",
+      "display_url" : "jbs.gd\/QGUtR"
+    } ]
   },
   "geo" : { },
   "id_str" : "351668386243162114",
@@ -15141,6 +15149,12 @@ Grailbird.data.tweets_2013_07 =
     }, {
       "text" : "Python",
       "indices" : [ 48, 55 ]
+    }, {
+      "text" : "recrutement",
+      "indices" : [ 139, 140 ]
+    }, {
+      "text" : "job",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ ]
   },
@@ -15227,7 +15241,7 @@ Grailbird.data.tweets_2013_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "\u200Bsprt",
+      "name" : "sprt",
       "screen_name" : "sexyprout",
       "indices" : [ 3, 13 ],
       "id_str" : "26382618",
@@ -15264,7 +15278,7 @@ Grailbird.data.tweets_2013_07 =
     "id" : 351027638648832003,
     "created_at" : "2013-06-29 17:21:25 +0000",
     "user" : {
-      "name" : "\u200Bsprt",
+      "name" : "sprt",
       "screen_name" : "sexyprout",
       "protected" : false,
       "id_str" : "26382618",
@@ -15362,7 +15376,7 @@ Grailbird.data.tweets_2013_07 =
       "screen_name" : "brandonb927",
       "protected" : false,
       "id_str" : "279734274",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000289350298\/758bc0f3ccbe1df7f9dda987880b5cdb_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/430433456816783360\/P2QDAMC8_normal.jpeg",
       "id" : 279734274,
       "verified" : false
     }

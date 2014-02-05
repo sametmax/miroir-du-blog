@@ -529,7 +529,7 @@ Grailbird.data.tweets_2012_07 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Patrick Nsukami | \u5DE3\u795E",
+      "name" : "Nsukami | \u5DE3\u795E",
       "screen_name" : "LeMeteore",
       "indices" : [ 0, 10 ],
       "id_str" : "192341176",

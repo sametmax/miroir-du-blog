@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; browser sniffing</title>
+	<atom:link href="http://sametmax.com/tag/browser-sniffing/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Detecter la version d&#8217;IE en Javascript</title>
+		<link>http://sametmax.com/detecter-la-version-die-en-javascript/</link>
+		<comments>http://sametmax.com/detecter-la-version-die-en-javascript/#comments</comments>
+		<pubDate>Tue, 19 Mar 2013 09:19:00 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[browser sniffing]]></category>
+		<category><![CDATA[ie]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5436</guid>
+		<description><![CDATA[Sniffer le browser, c'est maaaaal. Mais comme toute technique diabolique, il existe quelques corner cases dans lesquels on peut le justifier. ]]></description>
+			<content:encoded><![CDATA[<p>Sniffer le browser, c&#8217;est maaaaal. Mais comme toute technique diabolique, il existe quelques corner cases dans lesquels on peut la justifier. Par exemple, vous utilisez un plugin jQuery qui plante mystérieusement sous IE (toute ressemblance avec un événement réel n&#8217;est que purement accidentelle), et vous ne comprenez pas pourquoi. Vous ne pouvez donc pas détecter la fonctionnalité qu&#8217;il manque avec <a href="http://modernizr.com/">modernizr</a> ou autre, seulement que ça plante sous IE. En attendant que votre ticket de bug soit pris en compte, il faut bien que votre site en prod marche. Donc, détection du browser, et mise en place de mesures de contournement.</p>
+<p>Il y a d&#8217;autres cas utiles :</p>
+<ul>
+<li>Faire des statistiques sur les versions d&#8217;IE sur votre site sans taper dans votre code backend.</li>
+<li>Charger dynamiquement des feuilles de styles et scripts pour IE (en opposition aux commentaires conditionnels qui les chargent avec la page).</li>
+<li>Afficher dynamiquement plus de pub aux utilisateurs d&#8217;IE car vous savez qu&#8217;ils sont moins tech saavy que les autres et cliquent plus facilement dessus.</li>
+</ul>
+<p>Bref, la méthode la plus propre (pour un truc sale :-)) est d&#8217;utiliser des commentaires conditionnels pour mettre une classe au tag <code><html></code>.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;!doctype html&gt;
+&lt;!--[if lt IE 7 ]&gt; &lt;html class=&quot;ie6&quot;&gt; &lt;![endif]--&gt;
+&lt;!--[if IE 7 ]&gt;    &lt;html class=&quot;ie7&quot;&gt; &lt;![endif]--&gt;
+&lt;!--[if IE 8 ]&gt;    &lt;html class=&quot;ie8&quot;&gt; &lt;![endif]--&gt;
+&lt;!--[if IE 9 ]&gt;    &lt;html class=&quot;ie9&quot;&gt; &lt;![endif]--&gt;
+&lt;!--[if (gt IE 9)|!(IE)]&gt;&lt;!--&gt; &lt;html class=&quot;&quot;&gt; &lt;!--&lt;![endif]--&gt;
+&lt;head&gt;</pre></div></div>
+
+<p>Ainsi votre page va commencer avec :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;html&gt;</pre></div></div>
+
+<p> si ce n&#8217;est pas IE ou si c&#8217;est IE10 (qui est presqu&#8217;un navigateur décent).</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;html class=&quot;ie6&quot;&gt;</pre></div></div>
+
+<p> si c&#8217;est IE6 ou moins.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;html class=&quot;ie7 ou ie8 ou ie9&quot;&gt;</pre></div></div>
+
+<p> respectivement pour ie7, ie8 et ie 8</p>
+<p>Et derrière, pour cibler une version d&#8217;IE dans le code JS, jQuery fait des merveilles avec la fonction <code>is()</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #003366; font-weight: bold;">var</span> browserDeMerde <span style="color: #339933;">=</span> $<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'html'</span><span style="color: #009900;">&#41;</span>.<span style="color: #000066; font-weight: bold;">is</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'.ie6, .ie7, .ie8, .ie9'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></div></div>
+
+<p>Rappelez-vous qu&#8217;avec de grands pouvoirs viennent de grandes responsabilités, alors n&#8217;abusez pas de cette techique, c&#8217;est aussi chiant que les mecs qui font des sites Webkit only.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5436&amp;md5=b4d7ab18197bf3a66e7ca17977d58a95" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/detecter-la-version-die-en-javascript/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fdetecter-la-version-die-en-javascript%2F&amp;language=en_GB&amp;category=text&amp;title=Detecter+la+version+d%26%238217%3BIE+en+Javascript&amp;description=Sniffer+le+browser%2C+c%26%238217%3Best+maaaaal.+Mais+comme+toute+technique+diabolique%2C+il+existe+quelques+corner+cases+dans+lesquels+on+peut+la+justifier.+Par+exemple%2C+vous+utilisez+un+plugin+jQuery+qui+plante...&amp;tags=browser+sniffing%2Cie%2Cjavascript%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/2juPVdw.png" length="415254" type="image/jpg" />	</item>
+	</channel>
+</rss>

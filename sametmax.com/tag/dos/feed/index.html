@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; dos</title>
+	<atom:link href="http://sametmax.com/tag/dos/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Créer une raw string avec un antislash à la fin</title>
+		<link>http://sametmax.com/creer-une-raw-string-avec-un-antislash-a-la-fin/</link>
+		<comments>http://sametmax.com/creer-une-raw-string-avec-un-antislash-a-la-fin/#comments</comments>
+		<pubDate>Wed, 21 Aug 2013 09:40:05 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dos]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[raw string]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7150</guid>
+		<description><![CDATA[Supposons que vous vouliez créer un path pour disons, pauvre de vous, une commande DOS...]]></description>
+			<content:encoded><![CDATA[<p>Si vous vous souvenez, on ne peut pas mettre un antislash à la fin d&#8217;une raw string :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'Moi pouvoir<span style="color: #000099; font-weight: bold;">\\</span>'</span><span style="color: black;">&#41;</span>
+Moi pouvoir\\
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r<span style="color: #483d8b;">'Moi pouvoir<span style="color: #000099; font-weight: bold;">\\</span>'</span>
+<span style="color: #483d8b;">'Moi pouvoir<span style="color: #000099; font-weight: bold;">\\</span><span style="color: #000099; font-weight: bold;">\\</span>'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r<span style="color: #483d8b;">'Moi pouvoir<span style="color: #000099; font-weight: bold;">\'</span>
+  File &quot;&lt;stdin&gt;&quot;, line 1
+    r'</span>Moi pouvoir\<span style="color: #483d8b;">'
+                  ^
+SyntaxError: EOL while scanning string literal</span></pre></div></div>
+
+<p>La plupart du temps on s&#8217;en branle.</p>
+<p>Mais supposons que vous vouliez créer un path pour disons, pauvre de vous, une commande DOS&#8230;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\c</span>hemin<span style="color: #000099; font-weight: bold;">\v</span>ers<span style="color: #000099; font-weight: bold;">\d</span>ossier<span style="color: #000099; font-weight: bold;">\d</span>os<span style="color: #000099; font-weight: bold;">\\</span>&quot;</span><span style="color: black;">&#41;</span>
+\chemin
+        ers\dossier\dos\
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\c</span>hemin<span style="color: #000099; font-weight: bold;">\v</span>ers<span style="color: #000099; font-weight: bold;">\d</span>ossier<span style="color: #000099; font-weight: bold;">\d</span>os<span style="color: #000099; font-weight: bold;">\\</span>&quot;</span><span style="color: black;">&#41;</span>
+\chemin\vers\dossier\dos\\</pre></div></div>
+
+<p>Ah, ah, te voilà bien baisé, cher programmeur !</p>
+<p>Sauf que non, car une raw string n&#8217;est pas un type de string particulier, comme on l&#8217;a vu ici, donc on peut faire ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\c</span>hemin<span style="color: #000099; font-weight: bold;">\v</span>ers<span style="color: #000099; font-weight: bold;">\d</span>ossier<span style="color: #000099; font-weight: bold;">\d</span>os&quot;</span> + <span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\\</span>&quot;</span><span style="color: black;">&#41;</span>
+\chemin\vers\dossier\dos\</pre></div></div>
+
+<p>Zooooo !</p>
+<p>Et même si on se sent chaud, on peut utiliser la concaténation implicite pour se la jouer mega chaud du slip :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\c</span>hemin<span style="color: #000099; font-weight: bold;">\v</span>ers<span style="color: #000099; font-weight: bold;">\d</span>ossier<span style="color: #000099; font-weight: bold;">\d</span>os&quot;</span> <span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\\</span>&quot;</span><span style="color: black;">&#41;</span>
+\chemin\vers\dossier\dos\</pre></div></div>
+
+<p>Qu&#8217;il en faut peu pour qu&#8217;un dev se sente le roi du monde&#8230;</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7150&amp;md5=c89118a23b9b09aa1a7d137fcb55d01a" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/creer-une-raw-string-avec-un-antislash-a-la-fin/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcreer-une-raw-string-avec-un-antislash-a-la-fin%2F&amp;language=en_GB&amp;category=text&amp;title=Cr%C3%A9er+une+raw+string+avec+un+antislash+%C3%A0+la+fin&amp;description=Si+vous+vous+souvenez%2C+on+ne+peut+pas+mettre+un+antislash+%C3%A0+la+fin+d%26%238217%3Bune+raw+string+%3A+%26gt%3B%26gt%3B%26gt%3B+print%26%2340%3Br%27Moi+pouvoir%5C%5C%27%26%2341%3B+Moi+pouvoir%5C%5C+%26gt%3B%26gt%3B%26gt%3B+r%27Moi+pouvoir%5C%5C%27+%27Moi+pouvoir%5C%5C%5C%5C%27+%26gt%3B%26gt%3B%26gt%3B+r%27Moi...&amp;tags=dos%2Cpython%2Craw+string%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/LuvAcgU.jpg" length="75304" type="image/jpg" />	</item>
+	</channel>
+</rss>

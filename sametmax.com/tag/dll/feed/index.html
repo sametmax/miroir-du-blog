@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; dll</title>
+	<atom:link href="http://sametmax.com/tag/dll/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Appeler du code C depuis Python avec ctypes</title>
+		<link>http://sametmax.com/appeler-du-code-c-depuis-python-avec-ctypes/</link>
+		<comments>http://sametmax.com/appeler-du-code-c-depuis-python-avec-ctypes/#comments</comments>
+		<pubDate>Sun, 05 May 2013 06:55:40 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[ctypes]]></category>
+		<category><![CDATA[dll]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[so]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5811</guid>
+		<description><![CDATA[On vous a dit et répété que Python c'était un super langage de glu et que ça pouvait très facilement s'interfacer avec les binaires produits par du C. Mais jusqu'à quel point ?]]></description>
+			<content:encoded><![CDATA[<p>On vous a dit et répété que Python c&#8217;était un super langage de glu et que ça pouvait très facilement s&#8217;interfacer avec les binaires produits par du C. Mais jusqu&#8217;à quel point ?</p>
+<p>En vérité c&#8217;est extrêmement simple : Python permet de se mapper directement sur un .dll ou un .so, et d&#8217;appeler n&#8217;importe quelle fonction qu&#8217;il contient depuis le code Python comme si c&#8217;était une fonction normale. Il n&#8217;y a rien à installer, c&#8217;est fourni d&#8217;office.</p>
+<p>On peut tester ça facilement. Je ponds une lib d&#8217;une folle puissance grâce à mes talents de codeurs C internationalement connus dans le quartier :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="c" style="font-family:monospace;"><span style="color: #339933;">#include&lt;stdio.h&gt;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">/*
+Attend un pointeur sur un array de caractères (une chaîne en C) 
+et l'affiche.
+*/</span>
+dit_papa<span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">*</span> p<span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;%s<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> p<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;">/*
+Attend deux entiers et les multiple
+*/</span>
+multiplier<span style="color: #009900;">&#40;</span><span style="color: #993333;">long</span> a<span style="color: #339933;">,</span> <span style="color: #993333;">long</span> b<span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">return</span> a <span style="color: #339933;">*</span> b<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">/*
+Attend un pointeur de pointeur sur un array de char
+parce qu'on aime les risques.
+*/</span>
+jakadi<span style="color: #009900;">&#40;</span><span style="color: #993333;">char</span> <span style="color: #339933;">**</span> p<span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#123;</span>
+    <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;%s<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> <span style="color: #339933;">*</span>p<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>On compile tout ça. Comme je suis sous Nunux, j&#8217;utilise GCC et j&#8217;obtiens un .so, mais sous Windows c&#8217;est pareil avec VisualStudio et les .dll.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">gcc</span> <span style="color: #660033;">-shared</span> -Wl,-soname,ZeLib <span style="color: #660033;">-o</span> ZeLib.so <span style="color: #660033;">-fPIC</span> ZeLib.c</pre></div></div>
+
+<p>ZeLib.so est prête et frétille d&#8217;impatience à l&#8217;idée de vous servir. Il ne reste plus qu&#8217;à lancer le shell Python&#8230;</p>
+<p>D&#8217;abord on fait ses imports, c&#8217;est dans la lib standard tout ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> ctypes</pre></div></div>
+
+<p>Ensuite on se bind sur le binaire, il faut préciser un chemin absolu sinon ça ne marche pas :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> zelib = ctypes.<span style="color: black;">CDLL</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;/home/sam/Work/projet/ZeLib.so&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et derrière on peut appeler une fonction (Python fait la <a href="http://docs.python.org/2/library/ctypes.html?highlight=ctypes#fundamental-data-types">conversion entre tous les types</a> de bases Python et C) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> res = zelib.<span style="color: black;">multiplier</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> res
+<span style="color: #ff4500;">6</span></pre></div></div>
+
+<p>Si on veut faire des chaînes, on ne peut pas passer de l&#8217;unicode. Comme mon shell a toutes les chaînes en unicode par défaut, je dois <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">encoder</a> dans le charset de sortie (sur mon système, c&#8217;est UTF8):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> zelib.<span style="color: black;">dit_papa</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;papa&quot;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+papa
+<span style="color: #ff4500;">5</span></pre></div></div>
+
+<p>Notez au passage que la fonction retourne quelque chose même si je n&#8217;ai pas précisé de valeur de retour. Du coup j&#8217;aurais mieux fait de mettre un bon <code>return 0 </code>à la fin.</p>
+<p>Si on veut appeler une fonction qui attend un pointeur, il faut d&#8217;abord caster son type en un type C, puis appeler <code>by_ref</code> dessus, qui va passer l&#8217;argument par référence, plutôt que par valeur :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> ctypes <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #66cc66;">*</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s = ctypes.<span style="color: black;">c_char_p</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'kiwi'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> zelib.<span style="color: black;">jakadi</span><span style="color: black;">&#40;</span>byref<span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+kiwi
+<span style="color: #ff4500;">5</span></pre></div></div>
+
+<p>Voilà.</p>
+<p>Voilà, voilà.</p>
+<p>Bon attention quand même, le C n&#8217;est pas aussi conciliant que le Python : le debug est plus dur (pas de stacktrace, mais un bon vieux core dump), pas de completion dans ipython, et on peut même planter la VM si on se débrouille bien :-) </p>
+<p>P.S: je ne vais pas mettre le code C à télécharger et le code Python, franchement, il est pas énorme. Donc petite exception dans cet article : y a rien à DL et la syntaxe est pas à base de comments.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5811&amp;md5=bf1653034ac1855f6140bbaef27708c1" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/appeler-du-code-c-depuis-python-avec-ctypes/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fappeler-du-code-c-depuis-python-avec-ctypes%2F&amp;language=en_GB&amp;category=text&amp;title=Appeler+du+code+C+depuis+Python+avec+ctypes&amp;description=On+vous+a+dit+et+r%C3%A9p%C3%A9t%C3%A9+que+Python+c%26%238217%3B%C3%A9tait+un+super+langage+de+glu+et+que+%C3%A7a+pouvait+tr%C3%A8s+facilement+s%26%238217%3Binterfacer+avec+les+binaires+produits+par+du+C.+Mais+jusqu%26%238217%3B%C3%A0...&amp;tags=c%2Cctypes%2Cdll%2Cpython%2Cso%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/1fem1pip1pul.jpg" length="588534" type="image/jpg" />	</item>
+	</channel>
+</rss>

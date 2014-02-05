@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; operator</title>
+	<atom:link href="http://sametmax.com/tag/operator/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Ordonner en Python</title>
+		<link>http://sametmax.com/ordonner-en-python/</link>
+		<comments>http://sametmax.com/ordonner-en-python/#comments</comments>
+		<pubDate>Mon, 21 Jan 2013 13:37:37 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[operator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sort]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4107</guid>
+		<description><![CDATA[Python possède une manière de mettre les choses dans l'ordre qui est à la fois simple et puissante.]]></description>
+			<content:encoded><![CDATA[<p>Python possède une manière de mettre les choses dans l&#8217;ordre qui est à la fois simple et puissante.</p>
+<h2>Tout est ordonnable</h2>
+<p>Pour comprendre comment marche le tri en Python, il faut comprendre que presque tout en Python est ordonnable car comparable :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">1</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">0</span> <span style="color: #808080; font-style: italic;"># les nombres sont comparables</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">1</span> <span style="color: #66cc66;">&lt;</span> <span style="color: #ff4500;">0</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: #483d8b;">&quot;b&quot;</span> <span style="color: #808080; font-style: italic;"># les lettres, par ordre alphabetique</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">True</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">False</span> <span style="color: #808080; font-style: italic;"># les booléan (!)</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># les iterables comparés, élément par élément dans l'ordre</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># mais ils doivent être du même type</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#123;</span><span style="color: #ff4500;">1</span>:<span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: black;">&#123;</span><span style="color: #ff4500;">1</span>:<span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">0</span>:<span style="color: #ff4500;">0</span><span style="color: black;">&#125;</span> <span style="color: #808080; font-style: italic;"># les dictionnaires, par nombre d'éléments</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">2</span> <span style="color: #808080; font-style: italic;"># si on mélange des types ça peut vide devenir bizarre</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> 1j <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">1</span> <span style="color: #808080; font-style: italic;"># j'ai dis PRESQUE tout est ordonnable</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-11-ed3c013d3df8&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    1j <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">1</span>
+<span style="color: #008000;">TypeError</span>: no ordering relation <span style="color: #ff7700;font-weight:bold;">is</span> defined <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #008000;">complex</span> numbers</pre></div></div>
+
+<p>C&#8217;est ce qu&#8217;on appelle l&#8217;ordre naturel des éléments. Quand il n&#8217;y a pas d&#8217;ordre naturel évident (et que ce n&#8217;est pas une opération explicitement interdite comme avec les complexes), Python va comparer l&#8217;id (imaginez l&#8217;adresse en mémoire):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> PersonnageDeLost<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">pass</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mort1 = PersonnageDeLost<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mort2 = PersonnageDeLost<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mort1 <span style="color: #66cc66;">&lt;</span> mort2
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">id</span><span style="color: black;">&#40;</span>mort1<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># son id est plus petit, donc il est inférieur</span>
+<span style="color: #ff4500;">39611408</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">id</span><span style="color: black;">&#40;</span>mort2<span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">41720976</span></pre></div></div>
+
+<p>Mais on peut définir un ordre naturel pour un élément personnalisé en implémentant les méthodes suivantes:</p>
+<ul>
+<li><code>object.__lt__(self, other)</code></li>
+<li><code>object.__le__(self, other)</code></li>
+<li><code>object.__eq__(self, other)</code></li>
+<li><code>object.__ne__(self, other)</code></li>
+<li><code>object.__gt__(self, other)</code></li>
+<li><code>object.__ge__(self, other)</code></li>
+</ul>
+<p>N&#8217;implémentez plus <code>__cmp__</code>, elle est dépréciée.</p>
+<p>Par exemple:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, nom, erectopouvoir<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">nom</span> = nom
+        <span style="color: #008000;">self</span>.<span style="color: black;">erectopouvoir</span> = erectopouvoir
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__lt__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, other<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># on doit retourner un booléan qui confirme ou infirme </span>
+        <span style="color: #808080; font-style: italic;"># l'opération &quot;lt&quot; (&quot;lower than&quot;, c'est à dire &quot;plus petit que&quot;)</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">erectopouvoir</span> <span style="color: #66cc66;">&lt;</span> other.<span style="color: black;">erectopouvoir</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__gt__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, other<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># on doit retourner un booléan qui confirme ou infirme </span>
+        <span style="color: #808080; font-style: italic;"># l'opération &quot;gt&quot; (&quot;greater than&quot;, c'est à dire &quot;plus grand que&quot;)</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">erectopouvoir</span> <span style="color: #66cc66;">&gt;</span> other.<span style="color: black;">erectopouvoir</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on peut faire la même chose pour les autres méthodes qui </span>
+    <span style="color: #808080; font-style: italic;"># concernent les opérateurs &lt;=, &gt;=, == et !=</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Ryo Saeba'</span>, <span style="color: #ff4500;">99999</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Mamouth'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Ryo Saeba'</span>, <span style="color: #ff4500;">99999</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;</span> PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Mamouth'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span></pre></div></div>
+
+<h2>Ordonner une liste</h2>
+<p>Une liste est ce qu&#8217;on ordonne le plus souvent. Elle possède pour cela une méthode <code>sort()</code> qui est la méthode de tri la plus rapide qui existe avec la lib standard.</p>
+<p><code>sort()</code> trie une liste sur place (elle modifie donc la liste), et <strong>retourne None</strong>.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> res = l.<span style="color: black;">sort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> res <span style="color: #808080; font-style: italic;"># n'assignez jamais le résultat de sort(), ça ne sert à rien !</span>
+<span style="color: #008000;">None</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Les éléments sont triés dans leur ordre naturel automatiquement, <strong>du plus petit au plus grand</strong>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #483d8b;">'b'</span>, <span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'c'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">sort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'b'</span>, <span style="color: #483d8b;">'c'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">sort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #808080; font-style: italic;"># ordonne sur le premier élément, puis le second si il y a égalité</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> persos = <span style="color: black;">&#91;</span>PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Ryo Saeba'</span>, <span style="color: #ff4500;">99999</span><span style="color: black;">&#41;</span>, PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Mamouth'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>, PersonnageDeCityHunter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Kaori'</span>, <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> persos.<span style="color: black;">sort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> perso <span style="color: #ff7700;font-weight:bold;">in</span> persos:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> perso.<span style="color: black;">nom</span>
+...     
+<span style="color: black;">Kaori</span>
+Mamouth
+Ryo Saeba</pre></div></div>
+
+<p>On peut demander à inverser l&#8217;odre de tri en passant l&#8217;argument <code>reverse</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">sort</span><span style="color: black;">&#40;</span>reverse=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">8</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<h2>Il n&#8217;y a pas que les listes dans la vie</h2>
+<p>Tout itérable est ordonnable, et la fonction <code>sorted()</code> permet justement d&#8217;ordonner n&#8217;importe quel itérable de taille finie.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># une liste</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un set</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un tuple</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Un clavier azerty en vaut deux'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># une chaîne</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">' '</span>, <span style="color: #483d8b;">' '</span>, <span style="color: #483d8b;">' '</span>, <span style="color: #483d8b;">' '</span>, <span style="color: #483d8b;">' '</span>, <span style="color: #483d8b;">'U'</span>, <span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'c'</span>, <span style="color: #483d8b;">'d'</span>, <span style="color: #483d8b;">'e'</span>, <span style="color: #483d8b;">'e'</span>, <span style="color: #483d8b;">'e'</span>, <span style="color: #483d8b;">'e'</span>, <span style="color: #483d8b;">'i'</span>, <span style="color: #483d8b;">'l'</span>, <span style="color: #483d8b;">'n'</span>, <span style="color: #483d8b;">'n'</span>, <span style="color: #483d8b;">'r'</span>, <span style="color: #483d8b;">'r'</span>, <span style="color: #483d8b;">'t'</span>, <span style="color: #483d8b;">'t, '</span>u<span style="color: #483d8b;">', '</span>u<span style="color: #483d8b;">', '</span>v<span style="color: #483d8b;">', '</span>v<span style="color: #483d8b;">', '</span>x<span style="color: #483d8b;">', '</span>y<span style="color: #483d8b;">', '</span>z<span style="color: #483d8b;">']
+&gt;&gt;&gt; sorted(open('</span>/etc/fstab<span style="color: #483d8b;">'))[:3] # un fichier
+['</span><span style="color: #808080; font-style: italic;">#\n', '#\n', '# / was on /dev/sda5 during installation\n']</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span> <span style="color: #808080; font-style: italic;"># plus ou moins n'importe quoi</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">20</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> x <span style="color: #66cc66;">*</span> <span style="color: #ff4500;">2</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">42</span>, <span style="color: #ff4500;">69</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">21</span>, <span style="color: #ff4500;">35</span>, <span style="color: #ff4500;">37</span>, <span style="color: #ff4500;">41</span>, <span style="color: #ff4500;">48</span>, <span style="color: #ff4500;">48</span>, <span style="color: #ff4500;">54</span>, <span style="color: #ff4500;">58</span>, <span style="color: #ff4500;">58</span>, <span style="color: #ff4500;">59</span>, <span style="color: #ff4500;">62</span>, <span style="color: #ff4500;">76</span>, <span style="color: #ff4500;">82</span>, <span style="color: #ff4500;">94</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p><code>sort()</code> et <code>sorted()</code> <strong>acceptent toutes les deux les mêmes arguments</strong>. Ce que vous apprenez pour l&#8217;un vaut pour l&#8217;autre. La seul différence est que <code>sort()</code> retourne <code>None</code> et modifie sur place, tandis que <code>sorted()</code> retourne une nouvelle liste. <code>sorted()</code> est un peu moins performant.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span>, reverse=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">8</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<h2>Tri personnalisé avec <code>key</code></h2>
+<p>Parfois on a besoin de trier sur quelque chose de plus complexe qu&#8217;une lettre ou un chiffre. Par exemple, vous avez des scores dans un dictionnaires. Un dictionnaire n&#8217;est pas ordonné. Si vous imprimez un classement, il faut en faire une liste de tuples :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> scores = <span style="color: black;">&#123;</span><span style="color: #483d8b;">'Robert'</span>: <span style="color: #ff4500;">2</span>, <span style="color: #483d8b;">'Roger'</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">'Gertrude'</span>: <span style="color: #ff4500;">4</span>, <span style="color: #483d8b;">'Cunegonde'</span>: <span style="color: #ff4500;">3</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cunegonde'</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Robert'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Roger'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Et il faut maintenant ordonner ça sur le deuxième élément de chaque tuple : le score. Seulement si on appelle <code>sorted()</code>, il va trier sur l&#8217;ordre naturel, donc il va commencer par le premier élément, ça ne marchera pas :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cunegonde'</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Robert'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Roger'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>C&#8217;est là qu&#8217;intervient le paramètre <code>key</code>. <code>key</code> est très particulier, c&#8217;est un paramètre qui attend qu&#8217;on lui passe un <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a>, donc <code>key</code> attend qu&#8217;on lui passe <strong>une fonction</strong>. </p>
+<p>Pas le résultat d&#8217;une fonction. La fonction elle même.</p>
+<p>Cette fonction doit attendre en paramètre un élément, et en <strong>extraire la partie sur laquelle on veut trier</strong>.</p>
+<p>Par exemple dans le cas des scores, on doit passer à <code>key</code> une fonction qui attend un tuple en paramètre, et retourne le score :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> get_score<span style="color: black;">&#40;</span>nom_et_score<span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">return</span> nom_et_score<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># retourne le 2nd element du tuple</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, key=get_score<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># on passe la fonction a key</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Roger'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Robert'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cunegonde'</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Et voilà, c&#8217;est trié dans le bon ordre car <code>sorted()</code> va utiliser <code>get_score()</code> pour récupérer la valeur de chaque élément un par un,  sur laquelle on va trier la liste (selon l&#8217;ordre naturel de cette valeur).</p>
+<p>On peut utiliser <code>key</code> pour faire des choses beaucoup plus complexes, comme comparer sur des valeurs qui n&#8217;existent pas, mais que l&#8217;on calcule :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> carre<span style="color: black;">&#40;</span>val<span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># on va ordonner par valeur de carré</span>
+...     <span style="color: #ff7700;font-weight:bold;">return</span> val <span style="color: #66cc66;">*</span> val 
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>-<span style="color: #ff4500;">1</span>, -<span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>, key=carre<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, -<span style="color: #ff4500;">1</span>, -<span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Ici, un carré est toujours positif, du coup on retrouve -1 et -2 devant 0, car leurs carrés 1 et 4 sont plus grands que le carré 0 de 0.</p>
+<p>Ne vous embrouillez pas : la valeur retournée par <code>carre()</code> n&#8217;est pas MISE dans la liste, elle est juste utilisée pour choisir l&#8217;ordre d&#8217;un élément dans la liste.</p>
+<p>On peut même faire des comparaisons très avancées, comme par exemple comparer sur plusieurs attributs d&#8217;un objet. Imaginez, je veux ordonner des objets voitures selon leur coût d&#8217;entretien d&#8217;abord, et ensuite par coût d&#8217;achat.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Voiture<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, cout_entretien, cout_achat<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">cout_entretien</span> = cout_entretien
+        <span style="color: #008000;">self</span>.<span style="color: black;">cout_achat</span> = cout_achat
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__repr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;&lt;Voiture E-{} / A-{}&gt;&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">cout_entretien</span>, <span style="color: #008000;">self</span>.<span style="color: black;">cout_achat</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> voitures = <span style="color: black;">&#91;</span>Voiture<span style="color: black;">&#40;</span><span style="color: #ff4500;">10000</span>, <span style="color: #ff4500;">10000</span><span style="color: black;">&#41;</span>, Voiture<span style="color: black;">&#40;</span><span style="color: #ff4500;">50000</span>, <span style="color: #ff4500;">10000</span><span style="color: black;">&#41;</span>, Voiture<span style="color: black;">&#40;</span><span style="color: #ff4500;">10000</span>, <span style="color: #ff4500;">60000</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> voitures
+<span style="color: black;">&#91;</span><span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">10000</span> / A-<span style="color: #ff4500;">10000</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">50000</span> / A-<span style="color: #ff4500;">10000</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">10000</span> / A-<span style="color: #ff4500;">60000</span><span style="color: #66cc66;">&gt;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> get_entretien_achat<span style="color: black;">&#40;</span>voiture<span style="color: black;">&#41;</span>: 
+...         <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>voiture.<span style="color: black;">cout_entretien</span>, voiture.<span style="color: black;">cout_achat</span><span style="color: black;">&#41;</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>voitures, key=get_entretien_achat<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">10000</span> / A-<span style="color: #ff4500;">10000</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">10000</span> / A-<span style="color: #ff4500;">60000</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">50000</span> / A-<span style="color: #ff4500;">10000</span><span style="color: #66cc66;">&gt;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p><code>get_entretien_achat()</code> retourne un tuple de deux valeurs. Python va donc ordonner sur ce tuple, dans l&#8217;odre naturel du tuple en prenant la première valeur comme point de comparaison (coût d&#8217;entretien), puis la seconde (coût d&#8217;achat) si les valeurs sont égales. </p>
+<p>On peut donc comparer des objets arbitraires sur des critères arbitraires.</p>
+<p>La plupart du temps, vous voudrez juste comparer sur un élément ou un attribut, donc dans ce cas le module <a href="http://sametmax.com/le-module-operator-en-python/">operator</a> (ou une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>) est votre ami :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">operator</span> <span style="color: #ff7700;font-weight:bold;">import</span> attrgetter, itemgetter
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>voitures, key=attrgetter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'cout_achat'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ordonner par cout d'achat</span>
+<span style="color: black;">&#91;</span><span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">10000</span> / A-<span style="color: #ff4500;">10000</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">50000</span> / A-<span style="color: #ff4500;">10000</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>Voiture E-<span style="color: #ff4500;">10000</span> / A-<span style="color: #ff4500;">60000</span><span style="color: #66cc66;">&gt;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, key=itemgetter<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ordonner par score</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Roger'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Robert'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cunegonde'</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, key=itemgetter<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>, reverse=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span> 
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cunegonde'</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Robert'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Roger'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Pour finir, je vous invite à lire l&#8217;<a href="http://sametmax.com/heapq-le-module-python-incompris/">article sur le module heapq</a> qui lui permet de faire des tris sur des flux de données sans taille définie.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=4107&amp;md5=988bfef78db5b0faf2aacf89004324c8" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ordonner-en-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fordonner-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Ordonner+en+Python&amp;description=Python+poss%C3%A8de+une+mani%C3%A8re+de+mettre+les+choses+dans+l%26%238217%3Bordre+qui+est+%C3%A0+la+fois+simple+et+puissante.+Tout+est+ordonnable+Pour+comprendre+comment+marche+le+tri+en+Python%2C+il...&amp;tags=lambda%2Coperator%2Cpython%2Csort%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/XY7FXMW76PIX1300732739015.jpg" length="476380" type="image/jpg" />	</item>
+		<item>
+		<title>Le module operator en Python</title>
+		<link>http://sametmax.com/le-module-operator-en-python/</link>
+		<comments>http://sametmax.com/le-module-operator-en-python/#comments</comments>
+		<pubDate>Sat, 12 Jan 2013 10:17:33 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[operator]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4102</guid>
+		<description><![CDATA[Le module <code>operator</code> contient des fonctions qui font ce que font les opérateurs. ]]></description>
+			<content:encoded><![CDATA[<p>Le module <code>operator</code> contient des fonctions qui font ce que font les opérateurs. Exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">operator</span> <span style="color: #ff7700;font-weight:bold;">import</span> add, gt
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> add<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># fait en fonction ce que ferait 1 + 1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gt<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># fait en fonction ce que ferait 1 &gt; 2</span></pre></div></div>
+
+<p>On a donc dans le module <code>operator</code> de quoi remplacer les opérateurs <code>+</code>, <code><</code>, <code>not</code>, etc. par des fonctions.</p>
+<p>Les opérateurs <code>or</code> et <code>and</code> n'ont pas de fonctions équivalentes car ils short circuitent, ce que ne peut pas faire une fonction. <code>operator.and_</code> et <code>operator.or_</code> sont des fonctions pour <code>&#038;</code> et <code>|</code>, par pour <code>or</code> et <code>and</code>.</p>
+<p>Il y a des opérateurs qu'on oublie souvent, comme l'opérateur <code>[]</code>. Le module <code>operator</code> contient des fonctions pour lui également.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">operator</span> <span style="color: #ff7700;font-weight:bold;">import</span> getitem, getslice
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> lst = <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> lst<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getitem<span style="color: black;">&#40;</span>lst, <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> lst<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getslice<span style="color: black;">&#40;</span>lst, <span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>On oublie parfois l'opérateur ".". Il y a une fonction builtin pour ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Classe<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #008000;">type</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #008000;">self</span>.<span style="color: #008000;">type</span> = <span style="color: #008000;">type</span>
+...         
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c = Classe<span style="color: black;">&#40;</span><span style="color: #483d8b;">'cm2'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c.<span style="color: #008000;">type</span>
+<span style="color: #483d8b;">'cm2'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span>c, <span style="color: #483d8b;">'type'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'cm2'</span></pre></div></div>
+
+<p>Mais le plus étonnant dans le module <code>operator</code>, c'est qu'il a des fonctions qui retournent... des fonctions.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">operator</span> <span style="color: #ff7700;font-weight:bold;">import</span> itemgetter
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getfirst = itemgetter<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getfirst<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getfirst<span style="color: black;">&#40;</span><span style="color: #483d8b;">'abc'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'a'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getsecond = itemgetter<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getsecond<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getsecond<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;abc&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'b'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getlast = itemgetter<span style="color: black;">&#40;</span>-<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getlast<span style="color: black;">&#40;</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">99</span></pre></div></div>
+
+<p>Ici on créer des fonctions qui ont pour seul triste but dans la vie de retourner l'élément à l'index donné. <code>getfirst</code> retournera l'élément <code>0</code>. <code>getsecond</code> retournera l'élément à l'index <code>1</code>. <code>getlast</code> retournera l'élément à l'index <code>-1</code>. <code>itemgetter(</code>) est un créateur de fonction qui ne font que ça: retourner un seul élément.</p>
+<p>On pourrait aussi le faire avec une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> getfirst = <span style="color: #ff7700;font-weight:bold;">lambda</span> x: x<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> getfirst<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span></pre></div></div>
+
+<p>On a le même chose de chose pour les attributs. <code>attrgetter</code> est une fonction qui crée une fonction. La fonction créée retourne toujour la valeur du même attribut.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">operator</span> <span style="color: #ff7700;font-weight:bold;">import</span> attrgetter
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gettype = attrgetter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'type'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># crée une fonction qui ...</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gettype<span style="color: black;">&#40;</span>Classe<span style="color: black;">&#40;</span><span style="color: #483d8b;">'cm2'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ... retourne la valeur de l'attribut 'type'</span>
+<span style="color: #483d8b;">'cm2'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gettype<span style="color: black;">&#40;</span>Classe<span style="color: black;">&#40;</span><span style="color: #483d8b;">'6eme'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'6eme'</span></pre></div></div>
+
+<p>On pourrait aussi le faire avec une <code>lambda</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> gettype = <span style="color: #ff7700;font-weight:bold;">lambda</span> x: x.<span style="color: #008000;">type</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gettype<span style="color: black;">&#40;</span>Classe<span style="color: black;">&#40;</span><span style="color: #483d8b;">'6eme'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'6eme'</span></pre></div></div>
+
+<p>Ces fonctions n'ont pas l'air utile comme ça, mais en Python les fonctions peuvent être passées en paramètres. Cela permet donc de faire des choses intéressante comme de <a href="http://sametmax.com/quest-ce-quun-callback/">l'injection de dépendance</a>. C'est notamment ainsi que fonctionne <code>key</code> dans <a href="http://docs.python.org/2/library/functions.html?highlight=sorted#sorted">sorted()</a>.</p>
+<p>Bref, jetez un coup d'oeil à operator, il est plein comme un oeuf:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">operator</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #66cc66;">&lt;</span>tab<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">abs</span>               delitem           getslice          ilshift           ior               isSequenceType    le                neg               sequenceIncludes
+add               delslice          gt                imod              ipow              is_               lshift            not_              setitem
+and_              div               iadd              imul              irepeat           is_not            lt                or_               setslice
+attrgetter        eq                iand              index             irshift           isub              methodcaller      pos               sub
+concat            floordiv          iconcat           indexOf           isCallable        itemgetter        mod               <span style="color: #008000;">pow</span>               truediv
+contains          ge                idiv              inv               isMappingType     itruediv          mul               repeat            truth
+countOf           getitem           ifloordiv         invert            isNumberType      ixor              ne                rshift            xor</pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=4102&amp;md5=d017196ed10a6c1e5ed05314f4005b95" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-module-operator-en-python/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fle-module-operator-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Le+module+operator+en+Python&amp;description=Le+module+operator+contient+des+fonctions+qui+font+ce+que+font+les+op%C3%A9rateurs.+Exemple+%3A+%26gt%3B%26gt%3B%26gt%3B+from+operator+import+add%2C+gt+%26gt%3B%26gt%3B%26gt%3B+add%26%2340%3B1%2C+1%26%2341%3B+%23+fait+en+fonction+ce+que...&amp;tags=fonction%2Coperator%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/02486902-photo-logo-orange.jpg" length="44293" type="image/jpg" />	</item>
+	</channel>
+</rss>

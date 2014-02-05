@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; migration</title>
+	<atom:link href="http://sametmax.com/tag/migration/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Migrer wordpress d&#8217;un serveur à un autre &#8211; Pense-bête</title>
+		<link>http://sametmax.com/migrer-wordpress-dun-serveur-a-un-autre-pense-bete/</link>
+		<comments>http://sametmax.com/migrer-wordpress-dun-serveur-a-un-autre-pense-bete/#comments</comments>
+		<pubDate>Wed, 09 Jan 2013 08:59:03 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[migration]]></category>
+		<category><![CDATA[ubuntu]]></category>
+		<category><![CDATA[wordpress]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4050</guid>
+		<description><![CDATA[Quand on migre wordpress d'un serveur à autre sans vouloir se taper la réinstall il y a deux trois trucs à pas oublier...]]></description>
+			<content:encoded><![CDATA[<p>Si on veut changer de serveur sans se taper la réinstall de wordpress ça peut devenir casse-tête si on oublie deux trois trucs&#8230;</p>
+<p>Voici un petit pense-bête avec pour exemple une config Nginx / WordPress / php5-cgi  sur Ubuntu.</p>
+<p>serveura.com = serveur sur lequel se trouve l&#8217;ancien WordPress à migrer<br />
+serveurb.com = nouveau serveur qui va accueillir WordPress</p>
+<p><strong>1. on sauve la db et on l&#8217;upload sur le nouveau serveur (on peut le faire à la fin si le blog a pas mal d&#8217;activité)</strong><br />
+Sur le serveur A:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">mysqldump <span style="color: #660033;">-u</span> user_toto -ppass_toto base_a_toto <span style="color: #000000; font-weight: bold;">&gt;</span> <span style="color: #000000; font-weight: bold;">/</span>tmp<span style="color: #000000; font-weight: bold;">/</span>base_a_toto.sql
+rsync <span style="color: #660033;">-P</span> <span style="color: #660033;">-azc</span> <span style="color: #000000; font-weight: bold;">/</span>tmp<span style="color: #000000; font-weight: bold;">/</span>base_a_toto.sql user<span style="color: #000000; font-weight: bold;">@</span>serveurb.com:<span style="color: #000000; font-weight: bold;">/</span>tmp<span style="color: #000000; font-weight: bold;">/</span>base_a_toto.sql</pre></div></div>
+
+<p><strong>2. On copie wordpress sur le nouveau serveur</strong><br />
+Sur le serveur A:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">rsync <span style="color: #660033;">-P</span> <span style="color: #660033;">-azc</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>monsite<span style="color: #000000; font-weight: bold;">/</span>wordpress<span style="color: #000000; font-weight: bold;">/</span> user<span style="color: #000000; font-weight: bold;">@</span>serveurb.com:<span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>monsite<span style="color: #000000; font-weight: bold;">/</span></pre></div></div>
+
+<p><strong>3. Setup et configuration du nouveau serveur</strong><br />
+Sur le serveur B:<br />
+Installer les packets necessaires:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> php5-cgi php5-mysql mysql-server nginx spawn-fcgi <span style="color: #c20cb9; font-weight: bold;">sendmail</span></pre></div></div>
+
+<p>Il faut lancer les services nginx et spawn-cgi (pour ce dernier on peut utiliser <a href="http://supervisord.org/">supervisord</a>)</p>
+<p>Nginx:<br />
+Editer le fichier /etc/nginx/conf.d/monsite.conf . Attention à bien indiquer le chemin absolu vers votre site pour <em>root</em></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">server <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+    listen      <span style="color: #000000;">80</span>;
+    server_name  monsite.com www.monsite.com;                   <span style="color: #666666; font-style: italic;"># your domain name</span>
+    root         <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>monsite<span style="color: #000000; font-weight: bold;">/</span>wordpress;  <span style="color: #666666; font-style: italic;"># absolute path to your WordPress installation</span>
+    index index.php index.html;
+&nbsp;
+    error_log <span style="color: #ff0000;">&quot;/var/log/nginx_error.log&quot;</span>;
+    access_log  <span style="color: #ff0000;">&quot;/var/log/nginx_access.log&quot;</span>;
+&nbsp;
+    try_files <span style="color: #007800;">$uri</span> <span style="color: #007800;">$uri</span><span style="color: #000000; font-weight: bold;">/</span> <span style="color: #000000; font-weight: bold;">/</span>index.php;
+&nbsp;
+    location ~ \.php$ <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        include        <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>nginx<span style="color: #000000; font-weight: bold;">/</span>fastcgi_params;
+        fastcgi_pass   127.0.0.1:<span style="color: #000000;">53217</span>;
+        fastcgi_index index.php;
+        fastcgi_buffers <span style="color: #000000;">8</span> 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_param  SCRIPT_FILENAME  <span style="color: #007800;">$document_root</span><span style="color: #007800;">$fastcgi_script_name</span>;
+    <span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+location = <span style="color: #000000; font-weight: bold;">/</span>robots.txt <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        allow all;
+        log_not_found off;
+        access_log off;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).</span>
+location ~ <span style="color: #000000; font-weight: bold;">/</span>\. <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        deny all;
+        access_log off;
+        log_not_found off;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Deny access to any files with a .php extension in the uploads directory</span>
+location ~<span style="color: #000000; font-weight: bold;">*</span> ^<span style="color: #000000; font-weight: bold;">/</span>wp-content<span style="color: #000000; font-weight: bold;">/</span>uploads<span style="color: #000000; font-weight: bold;">/</span>.<span style="color: #000000; font-weight: bold;">*</span>.php$ <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        deny all;
+        access_log off;
+        log_not_found off;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Deny access to any files with a .php extension in the uploads directory for multisite</span>
+location ~<span style="color: #000000; font-weight: bold;">*</span> <span style="color: #000000; font-weight: bold;">/</span>files<span style="color: #000000; font-weight: bold;">/</span><span style="color: #7a0874; font-weight: bold;">&#40;</span>.<span style="color: #000000; font-weight: bold;">*</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>.php$ <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        deny all;
+        access_log off;
+        log_not_found off;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></div></div>
+
+<p><a href="http://serverfault.com/questions/6733/php-what-are-the-advantages-of-fastcgi-over-mod-php">Spawn-Fcgi</a>: C&#8217;est lui qui va lancer php5-cgi pour faire la liaison entre php et nginx. on va le lancer avec supervisor comme si c&#8217;était un service mais mieux.</p>
+<p>Installation de Supervisor:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> python-setuptools
+easy_install supervisor
+echo_supervisord_conf <span style="color: #000000; font-weight: bold;">&gt;</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>supervisord.conf</pre></div></div>
+
+<p>Editez le fichier /etc/supervisord.conf pour y rajouter spawn-fcgi, c&#8217;est mieux de lancer php5-cgi avec un user autre que root (www-data ou autre) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">&#91;</span>program:php5-cgi<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+<span style="color: #007800;">command</span>=<span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>spawn-fcgi <span style="color: #660033;">-n</span> <span style="color: #660033;">-a</span> 127.0.0.1 <span style="color: #660033;">-p</span> <span style="color: #000000;">53217</span> <span style="color: #660033;">-u</span> www-data <span style="color: #660033;">-f</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>php5-cgi
+<span style="color: #007800;">redirect_stderr</span>=<span style="color: #c20cb9; font-weight: bold;">true</span> 
+<span style="color: #007800;">stdout_logfile</span>=<span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>log<span style="color: #000000; font-weight: bold;">/</span>php5-cgi.log
+<span style="color: #007800;">stdout_logfile_maxbytes</span>=10MB</pre></div></div>
+
+<p>Pour lancer Spawn-fcgi:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">supervisorctl restart php5-cgi</pre></div></div>
+
+<p>Mysql: on ajoute mysql au demarrage et on le lance</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">chkconfig mysql on
+service mysql start</pre></div></div>
+
+<p>Dump de la DB: il faut créer un user et une base sur la nouvelle install, si possible le même que sur l&#8217;ancien serveur pour faciliter la transition.<br />
+Sur le serveur B:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">mysql <span style="color: #660033;">-u</span> root <span style="color: #660033;">-prootpass</span>
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection <span style="color: #c20cb9; font-weight: bold;">id</span> is <span style="color: #000000;">42</span>
+Server version: 5.5.28-0ubuntu0.12.04.3 <span style="color: #7a0874; font-weight: bold;">&#40;</span>Ubuntu<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+Copyright <span style="color: #7a0874; font-weight: bold;">&#40;</span>c<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">2000</span>, <span style="color: #000000;">2012</span>, Oracle and<span style="color: #000000; font-weight: bold;">/</span>or its affiliates. All rights reserved.
+&nbsp;
+Oracle is a registered trademark of Oracle Corporation and<span style="color: #000000; font-weight: bold;">/</span>or its
+affiliates. Other names may be trademarks of their respective
+owners.
+&nbsp;
+Type <span style="color: #ff0000;">'help;'</span> or <span style="color: #ff0000;">'\h'</span> <span style="color: #000000; font-weight: bold;">for</span> help. Type <span style="color: #ff0000;">'\c'</span> to <span style="color: #c20cb9; font-weight: bold;">clear</span> the current input statement.
+&nbsp;
+mysql<span style="color: #000000; font-weight: bold;">&gt;</span> create database base_a_toto;
+Query OK, <span style="color: #000000;">1</span> row affected <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">0.00</span> sec<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+mysql<span style="color: #000000; font-weight: bold;">&gt;</span> GRANT ALL PRIVILEGES ON base_a_toto.<span style="color: #000000; font-weight: bold;">*</span> TO <span style="color: #ff0000;">&quot;user_toto&quot;</span><span style="color: #000000; font-weight: bold;">@</span><span style="color: #ff0000;">&quot;localhost&quot;</span> identified by <span style="color: #ff0000;">&quot;pass_toto&quot;</span>;
+&nbsp;
+Query OK, <span style="color: #000000;">0</span> rows affected <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">16.16</span> sec<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+mysql<span style="color: #000000; font-weight: bold;">&gt;</span> FLUSH PRIVILEGES;
+Query OK, <span style="color: #000000;">0</span> rows affected <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">0.00</span> sec<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></div></div>
+
+<p>Et on importe la base de données de serveura.com:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">mysql <span style="color: #660033;">-u</span> user_toto -ppass_toto base_a_toto <span style="color: #000000; font-weight: bold;">&lt;</span> <span style="color: #000000; font-weight: bold;">/</span>tmp<span style="color: #000000; font-weight: bold;">/</span>base_a_toto.sql</pre></div></div>
+
+<p><strong>4. Changer les dns</strong><br />
+des fois on oublie :) alors changez les dns et attendez un peu, normallement ça devrait crystalliser&#8230;</p>
+<p>Ca prend pas 5 minutes, même avec les paquets tous prêts. on peut avoir de mauvaises surprises en route. Moi par exemple erreur 500 , pour m&#8217;aperçevoir au bout de 2 heures que j&#8217;avais pas installé php5-mysql d&#8217;où ce tuto ;)</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=4050&amp;md5=7bec150ad71bcbb5a9a5204da34ca11f" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/migrer-wordpress-dun-serveur-a-un-autre-pense-bete/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fmigrer-wordpress-dun-serveur-a-un-autre-pense-bete%2F&amp;language=en_GB&amp;category=text&amp;title=Migrer+wordpress+d%26%238217%3Bun+serveur+%C3%A0+un+autre+%26%238211%3B+Pense-b%C3%AAte&amp;description=Si+on+veut+changer+de+serveur+sans+se+taper+la+r%C3%A9install+de+wordpress+%C3%A7a+peut+devenir+casse-t%C3%AAte+si+on+oublie+deux+trois+trucs%26%238230%3B+Voici+un+petit+pense-b%C3%AAte+avec+pour+exemple...&amp;tags=migration%2Cubuntu%2Cwordpress%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/migration1.jpg" length="79816" type="image/jpg" />	</item>
+		<item>
+		<title>Dois-je apprendre Python 2 ou Python 3 ?</title>
+		<link>http://sametmax.com/dois-je-apprendre-python-2-ou-python-3/</link>
+		<comments>http://sametmax.com/dois-je-apprendre-python-2-ou-python-3/#comments</comments>
+		<pubDate>Wed, 12 Sep 2012 13:57:39 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[migration]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 3]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2098</guid>
+		<description><![CDATA[Les deux versions étant incompatibles, et Python 3 ayant plein de super fonctionnalités que Python 2 n'a pas, mais la V2 étant encore très rependue, on peut se demander lequel on doit apprendre.]]></description>
+			<content:encoded><![CDATA[<p>Les deux versions étant incompatibles, et Python 3 ayant plein de super fonctionnalités que Python 2 n&#8217;a pas, mais la V2 étant encore très répandue, on peut se demander lequel on doit apprendre.</p>
+<h2>Etat du lard</h2>
+<p>Python 3 permet de s&#8217;affranchir de beaucoup de problèmes d&#8217;encoding en utilisant unicode par défaut. A partir de la version 3.3, il va venir avec un <a href="sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper">virtualenv</a> intégré, et distutils2, rendant le packaging et le déploiement beaucoup plus simple. Sans compter la délégation à un sous générateur. Plus besoin non plus d&#8217;utiliser &#8216;object&#8217; dans l&#8217;héritage, et des tas de libs nettoyées. Bref, un comportement plus simple et un langage plus beau.</p>
+<p>Python 2 lui est néanmoins présent encore partout:</p>
+<ul>
+<li>Ubuntu est toujours en 2.7, et <a href="https://wiki.ubuntu.com/Python/3">passera en 3 dans la prochaine version,</a> mais laissant la possibilité d&#8217;installer la 2.</li>
+<li>Mac OS utilise toujours la 2.6 par défaut.</li>
+<li>Certains serveurs Web sont toujours en 2.4 (!) si bien que Max  recompile carrément Python 2.6 dessus (oui, c&#8217;est un acharné).</li>
+<li>Django est en phase de <a href="https://www.djangoproject.com/weblog/2012/mar/13/py3k/">transition version Python 3</a>, mais pour le moment ce n&#8217;est pas fait, et il sera toujours compatible avec Python 2.7 pour les deux prochaines versions.</li>
+<li>Une bonne partie des libs sur pypi et sur github sont <a href="http://python3wos.appspot.com/">toujours en Python 2</a>, ou au moins compatibles avec.</li>
+</ul>
+<p>Enfin, l&#8217;outil <a href="http://docs.python.org/library/2to3.html">2to3</a> permet de convertir automatiquement, et facilement, la plupart des codes de Python 2 vers Python 3.</p>
+<h2>Apprentissage et usage</h2>
+<p>Dans la vie de tous les jours, en tant que programmeur Python, vous allez donc forcément être confronté à Python 2 pendant encore 3 ou 4 ans. Je rappelle que Python 2.4 était encore assez courant il y a deux ans, et qu&#8217;il y a 5 ans je lisais encore des questions sur les fora concernant Python 2.2.</p>
+<p>Or, Python 2 est plus compliqué que Python 3, il demande des connaissances particulières: gérer l&#8217;encoding, setuper son virtualenv, faire gaffe à bien utiliser &#8216;object&#8217;, connaitre les noms des libs mal standardisés, etc.</p>
+<p>Dans tous les cas, il sera toujours <strong>beaucoup</strong> plus simple d&#8217;apprendre Python 2 et de passer à Python 3 que l&#8217;inverse, et il est improbable que vous n&#8217;ayez pas besoin de toucher un code en Python 2. Hey, nous même, nous codons encore tous nos projets en Python 2. On se posera la question de la migration quand Django l&#8217;aura fait, et même là, on aura des tas de projets qui resteront pour toujours en V2.</p>
+<p>Donc, si vous apprenez (ou enseignez le Python)<strong>, le choix le plus pragmatique est d&#8217;apprendre avec Python 2, et de rajouter l&#8217;apprentissage des différences entre la V2 et la V3</strong>. Ce faisant vous saurez aussi comment faire migrer un projet, ce dont il est possible que vous ayez un jour besoin.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=2098&amp;md5=c3e446888e7ec4563a109b99d4d87d46" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/dois-je-apprendre-python-2-ou-python-3/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fdois-je-apprendre-python-2-ou-python-3%2F&amp;language=en_GB&amp;category=text&amp;title=Dois-je+apprendre+Python+2+ou+Python+3+%3F&amp;description=Les+deux+versions+%C3%A9tant+incompatibles%2C+et+Python+3+ayant+plein+de+super+fonctionnalit%C3%A9s+que+Python+2+n%26%238217%3Ba+pas%2C+mais+la+V2+%C3%A9tant+encore+tr%C3%A8s+r%C3%A9pandue%2C+on+peut+se+demander+lequel...&amp;tags=migration%2Cpython%2Cpython+3%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/6a0120a85dcdae970b01287770a775970c.jpg" length="42754" type="image/jpg" />	</item>
+	</channel>
+</rss>

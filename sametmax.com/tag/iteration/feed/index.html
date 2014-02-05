@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; iteration</title>
+	<atom:link href="http://sametmax.com/tag/iteration/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Parcourir un itérable par morceaux en Python</title>
+		<link>http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/</link>
+		<comments>http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/#comments</comments>
+		<pubDate>Wed, 30 May 2012 17:09:24 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=809</guid>
+		<description><![CDATA[Voici une solution d'une rare élégance, car elle tient en quelques lignes, et assure une gigantesque flexibilité, sans manger beaucoup de mémoire vive.]]></description>
+			<content:encoded><![CDATA[<p>Parcourir une itérable par morceaux signifie qu&#8217;on le traite petit bout par petit bout. On parle aussi de fenêtre glissante. </p>
+<p>Par exemple, on a une liste, et on veut traiter les éléments par lot de 3:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;a&quot;</span>, <span style="color: #483d8b;">&quot;b&quot;</span>, <span style="color: #483d8b;">&quot;c&quot;</span>, <span style="color: #483d8b;">&quot;d&quot;</span>, <span style="color: #483d8b;">&quot;e&quot;</span>, <span style="color: #483d8b;">&quot;f&quot;</span>, <span style="color: #483d8b;">&quot;g&quot;</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;a&quot;</span>, <span style="color: #483d8b;">&quot;b&quot;</span>, <span style="color: #483d8b;">&quot;c&quot;</span>, <span style="color: #483d8b;">&quot;d&quot;</span>, <span style="color: #483d8b;">&quot;e&quot;</span>, <span style="color: #483d8b;">&quot;f&quot;</span>, <span style="color: #483d8b;">&quot;g&quot;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span>, <span style="color: #483d8b;">&quot;b&quot;</span>, <span style="color: #483d8b;">&quot;c&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span>, <span style="color: #483d8b;">&quot;b&quot;</span>, <span style="color: #483d8b;">&quot;c&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;d&quot;</span>, <span style="color: #483d8b;">&quot;e&quot;</span>, <span style="color: #483d8b;">&quot;f&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;d&quot;</span>, <span style="color: #483d8b;">&quot;e&quot;</span>, <span style="color: #483d8b;">&quot;f&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;g&quot;</span>,<span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;g&quot;</span>,<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span></pre></div></div>
+
+<h2>Pour les gens pressés</h2>
+<p>Il n&#8217;y a pas de fonction dans la bibliothèque standard de Python qui permette de le faire, mais on peut créer une très jolie solution à base de générateurs:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">itertools</span> <span style="color: #ff7700;font-weight:bold;">import</span> chain, islice
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> morceaux<span style="color: black;">&#40;</span>iterable, taille, format=<span style="color: #008000;">iter</span><span style="color: black;">&#41;</span>:
+    it = <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>iterable<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> format<span style="color: black;">&#40;</span>chain<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>it.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,<span style="color: black;">&#41;</span>, islice<span style="color: black;">&#40;</span>it, taille - <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et on l&#8217;utilise ainsi:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;a&quot;</span>, <span style="color: #483d8b;">&quot;b&quot;</span>, <span style="color: #483d8b;">&quot;c&quot;</span>, <span style="color: #483d8b;">&quot;d&quot;</span>, <span style="color: #483d8b;">&quot;e&quot;</span>, <span style="color: #483d8b;">&quot;f&quot;</span>, <span style="color: #483d8b;">&quot;g&quot;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> morceau <span style="color: #ff7700;font-weight:bold;">in</span> morceaux<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">3</span>, <span style="color: #008000;">tuple</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span> morceau
+...     
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span>, <span style="color: #483d8b;">&quot;b&quot;</span>, <span style="color: #483d8b;">&quot;c&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;d&quot;</span>, <span style="color: #483d8b;">&quot;e&quot;</span>, <span style="color: #483d8b;">&quot;f&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;g&quot;</span>,<span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Usage avancé</h2>
+<p>Grâce au troisième paramètre, on peut récupérer une sortie sous un format différent, par exemple une chaîne de caractères:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> morceau <span style="color: #ff7700;font-weight:bold;">in</span> morceaux<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">3</span>, <span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> morceau
+...     
+<span style="color: black;">abc</span>
+<span style="color: #ff7700;font-weight:bold;">def</span>
+g</pre></div></div>
+
+<p>Le résultat retourné par <code> morceaux()</code> est un générateur:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> morceaux<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">3</span>, <span style="color: #008000;">tuple</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>generator <span style="color: #008000;">object</span> morceaux at 0x9e31414<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>morceaux<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">3</span>, <span style="color: #008000;">tuple</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'b'</span>, <span style="color: #483d8b;">'c'</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'d'</span>, <span style="color: #483d8b;">'e'</span>, <span style="color: #483d8b;">'f'</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'g'</span>,<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Et la fonction accepte n&#8217;importe quel itérable en paramètre, pas uniquement des listes. Par exemple une chaîne de caractères:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>morceaux<span style="color: black;">&#40;</span><span style="color: #483d8b;">'123456789'</span>, <span style="color: #ff4500;">3</span>, <span style="color: #008000;">tuple</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'1'</span>, <span style="color: #483d8b;">'2'</span>, <span style="color: #483d8b;">'3'</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'4'</span>, <span style="color: #483d8b;">'5'</span>, <span style="color: #483d8b;">'6'</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'7'</span>, <span style="color: #483d8b;">'8'</span>, <span style="color: #483d8b;">'9'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Ou un fichier:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> f = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test'</span>, <span style="color: #483d8b;">'w'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'1<span style="color: #000099; font-weight: bold;">\n</span>2<span style="color: #000099; font-weight: bold;">\n</span>3<span style="color: #000099; font-weight: bold;">\n</span>4<span style="color: #000099; font-weight: bold;">\n</span>5<span style="color: #000099; font-weight: bold;">\n</span>6<span style="color: #000099; font-weight: bold;">\n</span>7<span style="color: #000099; font-weight: bold;">\n</span>8<span style="color: #000099; font-weight: bold;">\n</span>9<span style="color: #000099; font-weight: bold;">\n</span>10'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>morceaux<span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test'</span><span style="color: black;">&#41;</span>, <span style="color: #ff4500;">3</span>, <span style="color: #008000;">tuple</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'1<span style="color: #000099; font-weight: bold;">\n</span>'</span>, <span style="color: #483d8b;">'2<span style="color: #000099; font-weight: bold;">\n</span>'</span>, <span style="color: #483d8b;">'3<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'4<span style="color: #000099; font-weight: bold;">\n</span>'</span>, <span style="color: #483d8b;">'5<span style="color: #000099; font-weight: bold;">\n</span>'</span>, <span style="color: #483d8b;">'6<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'7<span style="color: #000099; font-weight: bold;">\n</span>'</span>, <span style="color: #483d8b;">'8<span style="color: #000099; font-weight: bold;">\n</span>'</span>, <span style="color: #483d8b;">'9<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'10'</span>,<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<h2>Comment ça marche ?</h2>
+<p>Cette fonction est un concentré d&#8217;astuces propres à Python: module <code>itertools</code>, mot clé <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>, iterable, passage de fonction en paramètre&#8230;</p>
+<p>D&#8217;abord, on utilise la fonction built-in <code>iter()</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">it = <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>iterable<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Sur l&#8217;itérable passé en paramètre. Elle retourne un itérateur, c&#8217;est à dire un objet qui possède une methode <code>next()</code> permettant d&#8217;accéder à la prochaine valeur de l&#8217;itérable jusqu&#8217;à épuisement de ce dernier :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur = <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">4</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">5</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-64-56409f08fc48&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">StopIteration</span></pre></div></div>
+
+<p>On créé ensuite une boucle infinie:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:</pre></div></div>
+
+<p>Cela permet de ne pas se soucier de la taille de l&#8217;iterable. Quand un iterateur arrive au bout d&#8217;un itérable, il lève l&#8217;exception <code>StopIteration</code> (c&#8217;est le mécanisme standard par lequel les boucles <code>for</code> itèrent, ce qui prouve une fois de plus que les exceptions s&#8217;utilisent partout en Python, et non juste dans la gestion des erreurs). Cette exception cassera la boucle infinie au moment opportun.</p>
+<p>Ensuite on utilise deux fonctions du module <code>itertools</code> (un module spécialisé dans la manipulation des itérables):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">chain<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>it.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,<span style="color: black;">&#41;</span>, islice<span style="color: black;">&#40;</span>it, taille - <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p><code>chain()</code> prends deux itérables et retourne un générateur qui permet d&#8217;itérer sur l&#8217;un puis l&#8217;autre. Par exemple:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l1 = <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l2 = <span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> chain<span style="color: black;">&#40;</span>l1, l2<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>itertools.<span style="color: black;">chain</span> <span style="color: #008000;">object</span> at 0x9e7c72c<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>chain<span style="color: black;">&#40;</span>l1, l2<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p><code>islice()</code> est comme la syntaxe <code>[:]</code>, mais applicable à un itérable dont on ne connait pas la taille:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l3 = <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> islice<span style="color: black;">&#40;</span>l3, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>itertools.<span style="color: black;">islice</span> <span style="color: #008000;">object</span> at 0x9e822ac<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>islice<span style="color: black;">&#40;</span>l3, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>islice<span style="color: black;">&#40;</span>l3, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p><code>chain((it.next(),), islice(it, taille - 1))</code> signifie donc &#8220;<q>chaîner un tuple qui contient la valeur suivante de l&#8217;itérable avec un autre iterable qui lui récupérera la slice du reste du morceau extrait de l&#8217;itérable</q>&#8220;. Ouf.</p>
+<p>Puis on applique :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">format<span style="color: black;">&#40;</span>...<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Sur le résultat. Ce qui permet de choisir dans quel format on souhaite avoir les morceaux (chaine, tuple, etc). Le comportement par défaut est de retourner des iterateurs :-)</p>
+<p>Et enfin on utilise <code>yield</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">yield</span> format<span style="color: black;">&#40;</span>...<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Cela assure que <code>morceaux()</code> retourne un générateur qui crééra chaque morceau à la volée, et non tout d&#8217;un coup en mémoire. Très utile si vous avez une grande liste:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> une_grande_liste = <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100000000</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> par_morceaux = morceaux<span style="color: black;">&#40;</span>une_grande_liste, <span style="color: #ff4500;">3</span>, <span style="color: #008000;">tuple</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> par_morceaux.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> par_morceaux.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> par_morceaux.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> par_morceaux.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">9</span>, <span style="color: #ff4500;">10</span>, <span style="color: #ff4500;">11</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Malgré la taille de la liste, le résultat est presque instantanné. Ce n&#8217;est pas parceque votre ordinnateur est une bête de course. C&#8217;est parceque <code>(3, 4, 5)</code> n&#8217;est pas généré juste après <code>(0, 1, 2)</code>. Il est généré au second appel de <code>next()</code>, à la volée.</p>
+<h2>Mais pourquoi faire si compliqué ?</h2>
+<p>Les bénéfices de cette approche sont:</p>
+<ul>
+<li>La possibilité de parcourir par morceaux n&#8217;importe quel itérable: des chaines, des tuples, des listes, des dictionnaires, des querysets Django, des fichiers, etc.</li>
+<li>La fonction acccepte un itérable de n&#8217;importe quelle taille. En fait, elle accepte même un itérable de taille inconnu, par exemple un flux de données issue d&#8217;internet.</li>
+<li>Cela consomme très peu de mémoire: on utilise des générateurs partout (merci à <code>yield</code> et au module <code>itertools</code>), donc toutes les valeurs sont générées uniquement quand on les demande, et jamais stockées pour rien.</li>
+<li>Et d&#8217;ailleurs, comme on retourne un générateur, on peut passer le résultat à un processus utilisant des générateurs sans casser son empreinte mémoire. Faire des pipes d&#8217;un générateur à un autre est en effet un point fort de Python.</li>
+<li>Mais comme le générateur est itérable, toute fonction qui accepte un itérable pourra utiliser le résultat: les fonctions de tri, les fonctions max, etc. La boucle <code>for</code> et les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intention</a> l&#8217;acceptent aussi.</li>
+<li>Le troisième paramètre garantit que chaque morceau est dans le format que l&#8217;on souhaite, pas quelque chose figé qu&#8217;on devra caster: c&#8217;est un bonheur pour les one-liners.</li>
+</ul>
+<p>C&#8217;est une solution d&#8217;une rare élégance, car elle tient en quelques lignes, et assure une gigantesque flexibilité, sans manger beaucoup de mémoire vive. Le seul défaut étant que la lecture enclenche le mécanisme de génération, qui est plus lent que de lire une structure de données, donc la lecture complète de toute la séquence est globalement plus lente que dans la plupart des autres approches.</p>
+<p>Dans 90 % des cas, vous pouvez utiliser <code>morceaux()</code> sans souffrir de sa vitesse. Ceux qui bossent sur les 10 % restant ont un niveaux tel qu&#8217;ils savent avec certitude si ils peuvent utiliser cette approchent où non, donc si vous vous posez la question, c&#8217;est que vous n&#8217;en faites pas partie.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=809&amp;md5=986a0a2a8f9aef028acffc12590936d8" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fparcourir-un-iterable-par-morceaux-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Parcourir+un+it%C3%A9rable+par+morceaux+en+Python&amp;description=Parcourir+une+it%C3%A9rable+par+morceaux+signifie+qu%26%238217%3Bon+le+traite+petit+bout+par+petit+bout.+On+parle+aussi+de+fen%C3%AAtre+glissante.+Par+exemple%2C+on+a+une+liste%2C+et+on+veut+traiter...&amp;tags=iteration%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/bucheron_marne.jpg" length="58193" type="image/jpg" />	</item>
+	</channel>
+</rss>

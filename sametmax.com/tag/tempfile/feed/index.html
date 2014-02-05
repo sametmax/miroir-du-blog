@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; tempfile</title>
+	<atom:link href="http://sametmax.com/tag/tempfile/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Fichiers temporaires avec tempfile en Python</title>
+		<link>http://sametmax.com/fichiers-temporaires-avec-tempfile-en-python/</link>
+		<comments>http://sametmax.com/fichiers-temporaires-avec-tempfile-en-python/#comments</comments>
+		<pubDate>Sun, 14 Jul 2013 01:21:50 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[temp]]></category>
+		<category><![CDATA[tempfile]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6634</guid>
+		<description><![CDATA[Il est de ces petits modules qui sont tout simples et bien pratiques. Et la lib standard de Python en regorge. Aujourd'hui (cette nuit, ce matin, choisissez votre référenciel, pour moi c'est le petit dej), on va voir le module <code>tempfile</code>.]]></description>
+			<content:encoded><![CDATA[<p>Il est de ces petits modules qui sont tout simples et bien pratiques. Et la lib standard de Python en regorge. Aujourd&#8217;hui (cette nuit, ce matin, choisissez votre référentiel, pour moi c&#8217;est le petit dej), on va voir le module <code>tempfile</code>.</p>
+<p>Il permet de manipuler des fichiers et dossiers &#8211; qui après tout sont des fichiers &#8211; temporaires, c&#8217;est à dire jetable, en quelque sorte.</p>
+<p>Donc :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">tempfile</span></pre></div></div>
+
+<h2>Dossier temporaire</h2>
+<p>La fonction la plus simple permet d&#8217;obtenir le dossier de l&#8217;OS dans lequel on met généralement les fichiers temporaires, comme par exemple <em>C:\TEMP</em>, <em>C:\TMP</em>, <em>/tmp</em>, <em>/var/tmp</em>, ou <em>/usr/tmp</em> selon la machine, l&#8217;OS, les variables d&#8217;environnement. Sur ma machine :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempdir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'/tmp'</span></pre></div></div>
+
+<p>Si vous avez juste besoin d&#8217;un dossier temporaire dans lequel travailler :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">mkdtemp</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'/tmp/tmps01VJw'</span></pre></div></div>
+
+<p>Il va être créé et sera accessible en lecture et écriture pour l&#8217;utilisateur qui l&#8217;a créé (permissions 700 sous Linux par exemple). Le chemin est retourné sous forme de string, à charge de votre programme de le supprimer, ou laisser l&#8217;OS s&#8217;en charger naturellement au prochain reboot.</p>
+<h2>Fichier temporaire</h2>
+<p>Il existe plusieurs manière de créer un fichier temporaire avec ce module, mais je vous invite à utiliser principalement :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> f = <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f
+<span style="color: #66cc66;">&lt;</span>open <span style="color: #008000;">file</span> <span style="color: #483d8b;">'&lt;fdopen&gt;'</span>, mode <span style="color: #483d8b;">'w+b'</span> at 0x1b7fc00<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">name</span>
+<span style="color: #483d8b;">'/tmp/tmp0FxO_c'</span></pre></div></div>
+
+<p>C&#8217;est la méthode la plus simple et la plus passe-partout. Vous pouvez oublier <code>mktemp()</code>, <code>mkstemp()</code>, <code>TemporaryFile()</code>, etc. Le fichier est automatiquement supprimé quand vous appelez <code>close()</code> dessus, à moins de passer <code>False</code> via le paramètre <code>delete</code>.</p>
+<p>Au passage vous pouvez influencer le nom du fichier résultant en passant <code>prefix</code>, <code>suffix</code>, et <code>dir</code> en arguments.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#40;</span>prefix=<span style="color: #483d8b;">'~'</span><span style="color: black;">&#41;</span>.<span style="color: black;">name</span>
+u<span style="color: #483d8b;">'/tmp/~XAoApc'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#40;</span>suffix=<span style="color: #483d8b;">&quot;tmp&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">name</span>
+u<span style="color: #483d8b;">'/tmp/tmpbirE0Jtmp'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#40;</span>suffix=<span style="color: #483d8b;">&quot;.tmp&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">name</span>
+u<span style="color: #483d8b;">'/tmp/tmpm4iHXE.tmp'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#40;</span><span style="color: #008000;">dir</span>=<span style="color: #483d8b;">&quot;/home/sam/.tmp&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">name</span>
+u<span style="color: #483d8b;">'/home/sam/.tmp/tmpHfwhQI'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#40;</span><span style="color: #008000;">dir</span>=<span style="color: #483d8b;">&quot;/home/sam/.tmp&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">name</span></pre></div></div>
+
+<p><code>mode</code> et <code>bufsize</code> sont aussi disponibles, et seront relayés à <code>file()</code> sous le capot.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.
+<span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span>    <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">TMP_MAX</span>               <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempdir</span>            <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">mkdtemp</span>               <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">mktemp</span>                <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">template</span>
+<span style="color: #dc143c;">tempfile</span>.<span style="color: black;">SpooledTemporaryFile</span>  <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">TemporaryFile</span>         <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempprefix</span>         <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">mkstemp</span>               <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">tempdir</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">get</span>
+<span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempdir</span>     <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempprefix</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempdir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'/tmp'</span></pre></div></div>
+
+<p>Une dernière astuce qui ne m&#8217;a jamais servi : <code>tempfile.SpooledTemporaryFile(max_size=X)</code>. Similaire à <code>NamedTemporaryFile</code>, mais le fichier est uniquement en mémoire, et sera transformé en un fichier sur le disque si sa taille dépasse X octets. <code>StringIO</code> est utilisé pour la partie en RAM.</p>
+<p>Le fait de demander son file descriptor (l&#8217;entier qui représente le fichier pour le programme) le fait aussi passer en mode &#8220;sur le disque&#8221; :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> a = <span style="color: #dc143c;">tempfile</span>.<span style="color: black;">SpooledTemporaryFile</span><span style="color: black;">&#40;</span>max_size=<span style="color: #ff4500;">10000</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a.<span style="color: black;">name</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-43-c0a6f6c60584&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    a.<span style="color: black;">name</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python2.7/tempfile.py&quot;</span>, line <span style="color: #ff4500;">569</span>, <span style="color: #ff7700;font-weight:bold;">in</span> name
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._file.<span style="color: black;">name</span>
+<span style="color: #008000;">AttributeError</span>: <span style="color: #483d8b;">'cStringIO.StringO'</span> <span style="color: #008000;">object</span> has no attribute <span style="color: #483d8b;">'name'</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a.<span style="color: black;">fileno</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">9</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a.<span style="color: black;">name</span>
+<span style="color: #483d8b;">'&lt;fdopen&gt;'</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6634&amp;md5=4780c44208eaf604051f732aae5bd0b9" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/fichiers-temporaires-avec-tempfile-en-python/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Ffichiers-temporaires-avec-tempfile-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Fichiers+temporaires+avec+tempfile+en+Python&amp;description=Il+est+de+ces+petits+modules+qui+sont+tout+simples+et+bien+pratiques.+Et+la+lib+standard+de+Python+en+regorge.+Aujourd%26%238217%3Bhui+%28cette+nuit%2C+ce+matin%2C+choisissez+votre+r%C3%A9f%C3%A9rentiel%2C+pour...&amp;tags=python%2Ctemp%2Ctempfile%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/07/EZS4mIt.jpg" length="69067" type="image/jpg" />	</item>
+	</channel>
+</rss>

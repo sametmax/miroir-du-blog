@@ -285,7 +285,7 @@ Grailbird.data.tweets_2012_06 =
       "id_str" : "507128812",
       "id" : 507128812
     }, {
-      "name" : "Patrick Nsukami | \u5DE3\u795E",
+      "name" : "Nsukami | \u5DE3\u795E",
       "screen_name" : "LeMeteore",
       "indices" : [ 12, 22 ],
       "id_str" : "192341176",
@@ -321,7 +321,7 @@ Grailbird.data.tweets_2012_06 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Patrick Nsukami | \u5DE3\u795E",
+      "name" : "Nsukami | \u5DE3\u795E",
       "screen_name" : "LeMeteore",
       "indices" : [ 0, 10 ],
       "id_str" : "192341176",
@@ -354,7 +354,7 @@ Grailbird.data.tweets_2012_06 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Patrick Nsukami | \u5DE3\u795E",
+      "name" : "Nsukami | \u5DE3\u795E",
       "screen_name" : "LeMeteore",
       "indices" : [ 0, 10 ],
       "id_str" : "192341176",
@@ -392,7 +392,7 @@ Grailbird.data.tweets_2012_06 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "This is [i]ooner",
+      "name" : ".iooner()",
       "screen_name" : "iooner",
       "indices" : [ 0, 7 ],
       "id_str" : "417907416",
@@ -423,7 +423,7 @@ Grailbird.data.tweets_2012_06 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "This is [i]ooner",
+      "name" : ".iooner()",
       "screen_name" : "iooner",
       "indices" : [ 0, 7 ],
       "id_str" : "417907416",

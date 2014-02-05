@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; limit_conn</title>
+	<atom:link href="http://sametmax.com/tag/limit_conn/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>nginx et limitation de connexion par IP avec limit_conn_zone</title>
+		<link>http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/</link>
+		<comments>http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/#comments</comments>
+		<pubDate>Fri, 06 Jul 2012 13:54:20 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[connexion]]></category>
+		<category><![CDATA[ip]]></category>
+		<category><![CDATA[limitation]]></category>
+		<category><![CDATA[limit_conn]]></category>
+		<category><![CDATA[limit_conn_zone]]></category>
+		<category><![CDATA[nginx]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=921</guid>
+		<description><![CDATA[Limiter une IP à une ou plusieurs connexion avec nginx, pratique si vous voulez proposer par exemple un seul téléchargement de fichier à la fois par IP sur votre serveur.]]></description>
+			<content:encoded><![CDATA[<p>Limiter une IP à une ou plusieurs connexion avec <a href="http://wiki.nginx.org/Main">nginx</a> peut s&#8217;averer utile si vous voulez proposer par exemple un seul téléchargement de fichier à la fois par IP sur votre serveur (économie de bande passante, éviter de se faire aspirer tout le site d&#8217;un coup, etc.)</p>
+<p>Nginx rappelons le est actuellement l&#8217;un des serveurs web les plus performant, gratuit qui plus est.</p>
+<p>L&#8217;exemple ci-dessous va limiter une IP à 5 connexions sur l&#8217;ensemble des images servies par votre serveur. On peut bien sur modifier la regex Location pour limiter aux videos, pdf, etc&#8230;</p>
+<p><strong><br />
+dans le fichier de config de nginx:</strong><br />
+<strong><br />
+Dans http:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">http <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+limit_conn_zone <span style="color: #007800;">$binary_remote_addr</span> <span style="color: #007800;">zone</span>=limit:10m; 
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></div></div>
+
+<p>10m veut dire qu&#8217;il va logguer les IPs connectées dans 10 MB de mémoire après il efface et recommence, ça permet de stocker les IPs connectées récement.</p>
+<p><strong><br />
+Dans server:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">server <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+    location ~ \.<span style="color: #7a0874; font-weight: bold;">&#40;</span>jpg<span style="color: #000000; font-weight: bold;">|</span>jpeg<span style="color: #000000; font-weight: bold;">|</span>gif<span style="color: #000000; font-weight: bold;">|</span>png<span style="color: #7a0874; font-weight: bold;">&#41;</span>$ <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+      limit_conn limit <span style="color: #000000;">5</span>; <span style="color: #666666; font-style: italic;"># limit to 5 cnx by IP</span>
+    <span style="color: #7a0874; font-weight: bold;">&#125;</span> 
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></div></div>
+
+<p>PS: limit est le nom de zone que vous donnez à votre règle, ça peut prendre la forme que ça veut comme dirait Egon dans Ghostbusters&#8230;</p>
+<p>Pour en savoir plus : <a href="http://wiki.nginx.org/HttpLimitZoneModule">Doc nginx HttpLimitZoneModule</a></p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=921&amp;md5=ec8b911383ae8e96e15df8b4e1261289" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fnginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone%2F&amp;language=en_GB&amp;category=text&amp;title=nginx+et+limitation+de+connexion+par+IP+avec+limit_conn_zone&amp;description=Limiter+une+IP+%C3%A0+une+ou+plusieurs+connexion+avec+nginx+peut+s%26%238217%3Baverer+utile+si+vous+voulez+proposer+par+exemple+un+seul+t%C3%A9l%C3%A9chargement+de+fichier+%C3%A0+la+fois+par+IP+sur...&amp;tags=connexion%2Cip%2Climitation%2Climit_conn%2Climit_conn_zone%2Cnginx%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/feu-rouge.jpeg" length="37223" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; hit</title>
+	<atom:link href="http://sametmax.com/tag/hit/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Savoir si une page est en cache avec Varnish</title>
+		<link>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/</link>
+		<comments>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/#comments</comments>
+		<pubDate>Wed, 01 May 2013 07:44:34 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[hit]]></category>
+		<category><![CDATA[miss]]></category>
+		<category><![CDATA[varnish]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5945</guid>
+		<description><![CDATA[Petite astuce pour savoir si Varnish fait bien son boulot. L'affichage dans les Headers d'un debug permettant de savoir si votre page a bien été servit depuis le cache plutôt que le backend.]]></description>
+			<content:encoded><![CDATA[<p>Pour savoir si cette feignasse de Varnish a bien fait son boulot voici une petite astuce pour afficher dans les HEADERS de son navigateur la provenance de la page, le cache ou le backend.<br />
+Varnish propose dans son <a href="https://www.varnish-cache.org/trac/wiki/VCLExampleHitMissHeader">wiki</a> cette méthode.</p>
+<p><strong><br />
+dans le fichier de conf de Varnish:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>varnish<span style="color: #000000; font-weight: bold;">/</span>default.vcl</pre></div></div>
+
+<p><b>et rajoutez ces quelques lignes:</b></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">sub vcl_deliver <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span>obj.hits <span style="color: #000000; font-weight: bold;">&gt;</span> <span style="color: #000000;">0</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+                <span style="color: #000000; font-weight: bold;">set</span> resp.http.X-Cache = <span style="color: #ff0000;">&quot;HIT&quot;</span>;
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span> <span style="color: #000000; font-weight: bold;">else</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+                <span style="color: #000000; font-weight: bold;">set</span> resp.http.X-Cache = <span style="color: #ff0000;">&quot;MISS&quot;</span>;
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></div></div>
+
+<p><b>On redemarre le service pour prendre en compte les changements:</b></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">service varnishd restart</pre></div></div>
+
+<p><b>Dans le navigateur:</b></p>
+<p><img src="http://sametmax.com/wp-content/uploads/2013/04/varnish.png" alt="" title="ça devrait cristalliser..." width="300" height="329" class="aligncenter size-full wp-image-5949" /></p>
+<p>Comme on le voit ici, la page a été servie par le backend, si ce n&#8217;était pas prévu il va falloir revoir vos règles.</p>
+<p>ATTENTION: Pensez à bien rafraichir votre navigateur pour être sur que ce ne soit pas la page mise en cache par ce dernier qui soit affichée, personnellement j&#8217;utilise la version navigation privé de chrome.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5945&amp;md5=be6785e27a7adbf7068ee14abcc3ccb5" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fsavoir-si-une-page-est-en-cache-avec-varnish%2F&amp;language=en_GB&amp;category=text&amp;title=Savoir+si+une+page+est+en+cache+avec+Varnish&amp;description=Pour+savoir+si+cette+feignasse+de+Varnish+a+bien+fait+son+boulot+voici+une+petite+astuce+pour+afficher+dans+les+HEADERS+de+son+navigateur+la+provenance+de+la+page%2C+le...&amp;tags=cache%2Chit%2Cmiss%2Cvarnish%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/1221965226fv47Eh.jpg" length="24506" type="image/jpg" />	</item>
+	</channel>
+</rss>

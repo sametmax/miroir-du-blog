@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; remote</title>
+	<atom:link href="http://sametmax.com/tag/remote/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Executer une commande sur un serveur distant via ssh avec Python</title>
+		<link>http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/</link>
+		<comments>http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/#comments</comments>
+		<pubDate>Thu, 21 Jun 2012 23:07:28 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[command]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[remote]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=970</guid>
+		<description><![CDATA[Executer une commande shell sur un serveur distant peut s'avérer très utile, par exemple avoir le load average du serveur distant à monitorer.]]></description>
+			<content:encoded><![CDATA[<p>Executer une commande shell sur un serveur distant peut s&#8217;avérer très utile, par exemple avoir le load average du serveur distant à monitorer, rebooter un serveur à distance, récupérer l&#8217;espace disque restant, etc.</p>
+<p>Il y a plusieurs manières d&#8217;executer une commande shell sur un serveur distant, on peut utiliser <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" title="Sept petites libs qui changent la vie d’un dev Python">paramiko</a> ou un simple popen comme suit:</p>
+<p><strong><br />
+Pour connaitre le load average du serveur skynet:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">subprocess</span> <span style="color: #ff7700;font-weight:bold;">import</span> Popen, call, PIPE
+&nbsp;
+<span style="color: #dc143c;">user</span>= arnold
+server = skynet.<span style="color: black;">com</span>
+&nbsp;
+process = Popen<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'ssh'</span>, <span style="color: #483d8b;">'-t'</span>, <span style="color: #dc143c;">user</span> + <span style="color: #483d8b;">'@'</span> + server ,<span style="color: #483d8b;">'cat'</span>, <span style="color: #483d8b;">'/proc/loadavg'</span><span style="color: black;">&#93;</span>, bufsize=<span style="color: #ff4500;">4096</span>, stdout=PIPE<span style="color: black;">&#41;</span>
+output = process.<span style="color: black;">communicate</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Ce procédé implique d&#8217;avoir des clefs <a href="http://sametmax.com/copier-ses-clefs-ssh-facilement-avec-ssh-copy-id/" title="Copier ses clefs SSH facilement avec ssh-copy-id">ssh configurées</a></p>
+<p>Note: J&#8217;ai eu quelques problèmes de blocage lors du login au serveur distant jusqu&#8217;à ce que j&#8217;ajoute l&#8217;option -t à ssh<br />
+<strong><br />
+Edit:</p>
+<p>En bash ça donne:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ssh</span> arnold<span style="color: #000000; font-weight: bold;">@</span>skynet.com <span style="color: #c20cb9; font-weight: bold;">cat</span> <span style="color: #000000; font-weight: bold;">/</span>proc<span style="color: #000000; font-weight: bold;">/</span>loadavg</pre></div></div>
+
+<p>ou pour avoir l&#8217;espace disque</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ssh</span> arnold<span style="color: #000000; font-weight: bold;">@</span>skynet.com <span style="color: #c20cb9; font-weight: bold;">df</span> <span style="color: #660033;">-h</span>
+etc.</pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=970&amp;md5=0e8b278173f00c867e9f53255f64be4d" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fexecuter-une-commande-sur-un-serveur-distant-via-ssh%2F&amp;language=en_GB&amp;category=text&amp;title=Executer+une+commande+sur+un+serveur+distant+via+ssh+avec+Python&amp;description=Executer+une+commande+shell+sur+un+serveur+distant+peut+s%26%238217%3Bav%C3%A9rer+tr%C3%A8s+utile%2C+par+exemple+avoir+le+load+average+du+serveur+distant+%C3%A0+monitorer%2C+rebooter+un+serveur+%C3%A0+distance%2C+r%C3%A9cup%C3%A9rer+l%26%238217%3Bespace...&amp;tags=command%2Cpython%2Cremote%2Cssh%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/a.aaa-crazy-remote.jpg" length="35746" type="image/jpg" />	</item>
+	</channel>
+</rss>

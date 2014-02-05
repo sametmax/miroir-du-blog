@@ -2382,7 +2382,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Elodie Philippe",
@@ -2433,7 +2433,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Andrea Lazzarotto",
@@ -2494,7 +2494,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Mathieu Agopian",
@@ -2545,7 +2545,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Axel Bouaziz",
@@ -2596,7 +2596,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Thales Jobs",
@@ -2606,8 +2606,16 @@ Grailbird.data.tweets_2013_10 =
       "id" : 23314480
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
-    "urls" : [ ]
+    "hashtags" : [ {
+      "text" : "jobs",
+      "indices" : [ 139, 140 ]
+    } ],
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/1RzCVDQq92",
+      "expanded_url" : "http:\/\/bit.ly\/16vx83L",
+      "display_url" : "bit.ly\/16vx83L"
+    } ]
   },
   "geo" : { },
   "id_str" : "393465226374701056",
@@ -2655,7 +2663,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Emploi 92",
@@ -2728,10 +2736,10 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Phil,c'est moi!!",
+      "name" : "Somebody help me",
       "screen_name" : "Akhimakia",
       "indices" : [ 3, 13 ],
       "id_str" : "724999555",
@@ -2758,11 +2766,11 @@ Grailbird.data.tweets_2013_10 =
     "id" : 393294717586509824,
     "created_at" : "2013-10-24 08:35:42 +0000",
     "user" : {
-      "name" : "Phil,c'est moi!!",
+      "name" : "Somebody help me",
       "screen_name" : "Akhimakia",
       "protected" : false,
       "id_str" : "724999555",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000654826185\/5dadf90113a40804a8c4c49c309db8f1_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/425165148844982272\/ABSama9z_normal.jpeg",
       "id" : 724999555,
       "verified" : false
     }
@@ -2779,7 +2787,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "France Games Jobs",
@@ -2788,14 +2796,17 @@ Grailbird.data.tweets_2013_10 =
       "id_str" : "375038445",
       "id" : 375038445
     }, {
-      "name" : "Greg Leding",
-      "screen_name" : "g",
-      "indices" : [ 137, 139 ],
-      "id_str" : "17853751",
-      "id" : 17853751
+      "name" : "Interactive Job Feed",
+      "screen_name" : "GamesJobs",
+      "indices" : [ 137, 140 ],
+      "id_str" : "378644447",
+      "id" : 378644447
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "gamejobs",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ {
       "indices" : [ 114, 136 ],
       "url" : "http:\/\/t.co\/HT10uzJj2h",
@@ -2855,7 +2866,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "cyberlabe",
@@ -2916,7 +2927,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Alan Zirek",
@@ -3039,7 +3050,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Christelle Mozzati",
@@ -3118,10 +3129,10 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "G. Lebourgeois",
+      "name" : "\u2693Williau.me\u2693",
       "screen_name" : "glebourg",
       "indices" : [ 3, 12 ],
       "id_str" : "78304802",
@@ -3158,7 +3169,7 @@ Grailbird.data.tweets_2013_10 =
     "id" : 390895954549014528,
     "created_at" : "2013-10-17 17:43:52 +0000",
     "user" : {
-      "name" : "G. Lebourgeois",
+      "name" : "\u2693Williau.me\u2693",
       "screen_name" : "glebourg",
       "protected" : false,
       "id_str" : "78304802",
@@ -3179,12 +3190,18 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "My Job Freelance",
       "screen_name" : "myjobfreelance",
       "indices" : [ 3, 18 ],
+      "id_str" : "570844960",
+      "id" : 570844960
+    }, {
+      "name" : "My Job Freelance",
+      "screen_name" : "myjobfreelance",
+      "indices" : [ 139, 140 ],
       "id_str" : "570844960",
       "id" : 570844960
     } ],
@@ -3252,7 +3269,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Matthias G.",
@@ -3319,7 +3336,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Git Attitude",
@@ -3330,7 +3347,12 @@ Grailbird.data.tweets_2013_10 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/iGm3hBF2l3",
+      "expanded_url" : "http:\/\/bit.ly\/gitquotidien",
+      "display_url" : "bit.ly\/gitquotidien"
+    } ]
   },
   "geo" : { },
   "id_str" : "393424877283442688",
@@ -3375,10 +3397,10 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Pycoders Weekly",
+      "name" : "Pycoder's Weekly",
       "screen_name" : "pycoders",
       "indices" : [ 3, 12 ],
       "id_str" : "484757080",
@@ -3445,11 +3467,11 @@ Grailbird.data.tweets_2013_10 =
     "id" : 393378306579767296,
     "created_at" : "2013-10-24 14:07:51 +0000",
     "user" : {
-      "name" : "Pycoders Weekly",
+      "name" : "Pycoder's Weekly",
       "screen_name" : "pycoders",
       "protected" : false,
       "id_str" : "484757080",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/1832571742\/twiter_logo_normal.png",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/429285908953579520\/InZKng9-_normal.jpeg",
       "id" : 484757080,
       "verified" : false
     }
@@ -6419,7 +6441,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LinuxFr.org",
@@ -6463,7 +6485,7 @@ Grailbird.data.tweets_2013_10 =
       "screen_name" : "linuxfrorg",
       "protected" : false,
       "id_str" : "65651300",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/1104919170\/linuxfr2_plusieur_normal.png",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000837010927\/d0bd37fbd0a4002900e158ed732f96cb_normal.png",
       "id" : 65651300,
       "verified" : false
     }
@@ -6541,7 +6563,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "golangfr",
@@ -6614,7 +6636,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "FlyersWeb",
@@ -6698,7 +6720,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ ],
     "media" : [ ],
@@ -6956,7 +6978,7 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Patrick Nsukami | \u5DE3\u795E",
+      "name" : "Nsukami | \u5DE3\u795E",
       "screen_name" : "LeMeteore",
       "indices" : [ 0, 10 ],
       "id_str" : "192341176",
@@ -7052,7 +7074,7 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Patrick Nsukami | \u5DE3\u795E",
+      "name" : "Nsukami | \u5DE3\u795E",
       "screen_name" : "LeMeteore",
       "indices" : [ 0, 10 ],
       "id_str" : "192341176",
@@ -7916,7 +7938,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LOLYves",
@@ -7967,7 +7989,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "iceTwy",
@@ -8146,7 +8168,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "maz",
@@ -8483,7 +8505,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LOLYves",
@@ -8534,7 +8556,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Prisca",
@@ -8585,7 +8607,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LOLYves",
@@ -8702,7 +8724,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Aissen",
@@ -9914,7 +9936,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "webAgencyFAIL",
@@ -9992,7 +10014,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Kounar",
@@ -10009,7 +10031,12 @@ Grailbird.data.tweets_2013_10 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/RU5JIIZifX",
+      "expanded_url" : "http:\/\/how-the-nsa-deploys-malware.jottit.com\/",
+      "display_url" : "how-the-nsa-deploys-malware.jottit.com"
+    } ]
   },
   "geo" : { },
   "id_str" : "389673996964626432",
@@ -10066,11 +10093,11 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Nicolas L\u0153uillet",
+      "name" : "nico_somb",
       "screen_name" : "nico_somb",
       "indices" : [ 0, 10 ],
-      "id_str" : "312005396",
-      "id" : 312005396
+      "id_str" : "2226341665",
+      "id" : 2226341665
     }, {
       "name" : "Jonathan Gaulupeau",
       "screen_name" : "jogaulupeau",
@@ -10105,11 +10132,11 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Nicolas L\u0153uillet",
+      "name" : "nico_somb",
       "screen_name" : "nico_somb",
       "indices" : [ 0, 10 ],
-      "id_str" : "312005396",
-      "id" : 312005396
+      "id_str" : "2226341665",
+      "id" : 2226341665
     }, {
       "name" : "Jonathan Gaulupeau",
       "screen_name" : "jogaulupeau",
@@ -10129,7 +10156,7 @@ Grailbird.data.tweets_2013_10 =
   "id" : 389673579119247360,
   "in_reply_to_status_id" : 388543610914082816,
   "created_at" : "2013-10-14 08:46:35 +0000",
-  "in_reply_to_screen_name" : "nico_somb",
+  "in_reply_to_screen_name" : "nicosomb",
   "in_reply_to_user_id_str" : "312005396",
   "user" : {
     "name" : "SamEtMax",
@@ -10144,7 +10171,7 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "SOUNTON HODONOU",
+      "name" : "Hodonou SOUNTON",
       "screen_name" : "LeSocraTIC",
       "indices" : [ 0, 11 ],
       "id_str" : "243092091",
@@ -10416,7 +10443,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Walter",
@@ -10467,7 +10494,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Romain Cheylan",
@@ -10501,7 +10528,7 @@ Grailbird.data.tweets_2013_10 =
       "screen_name" : "RomainCheylan",
       "protected" : false,
       "id_str" : "341775267",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000468757724\/e785589098d238428478fd427a7d413a_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/416533507864010752\/yct_CN35_normal.jpeg",
       "id" : 341775267,
       "verified" : false
     }
@@ -10518,7 +10545,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "La Mort",
@@ -10552,7 +10579,7 @@ Grailbird.data.tweets_2013_10 =
       "screen_name" : "LaMortLaVraie",
       "protected" : false,
       "id_str" : "765593041",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000722954011\/8a630f746faf2512080d162781ec74e6_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/415954730326962176\/6NlF-ybm_normal.jpeg",
       "id" : 765593041,
       "verified" : false
     }
@@ -10569,7 +10596,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LOLYves",
@@ -10713,7 +10740,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Michael Martinez",
@@ -10774,7 +10801,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LOLYves",
@@ -10825,7 +10852,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LOLYves",
@@ -11127,7 +11154,7 @@ Grailbird.data.tweets_2013_10 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Golgotha",
@@ -11686,12 +11713,6 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Camille F.",
-      "screen_name" : "fwix_",
-      "indices" : [ 0, 6 ],
-      "id_str" : "242491764",
-      "id" : 242491764
-    }, {
       "name" : "Tarek Ziad\u00E9",
       "screen_name" : "tarek_ziade",
       "indices" : [ 59, 71 ],
@@ -11710,7 +11731,7 @@ Grailbird.data.tweets_2013_10 =
   "id" : 387874939778265088,
   "in_reply_to_status_id" : 387717625683255296,
   "created_at" : "2013-10-09 09:39:26 +0000",
-  "in_reply_to_screen_name" : "fwix_",
+  "in_reply_to_screen_name" : "_fwix_",
   "in_reply_to_user_id_str" : "242491764",
   "user" : {
     "name" : "SamEtMax",
@@ -12735,11 +12756,11 @@ Grailbird.data.tweets_2013_10 =
       "id_str" : "128647201",
       "id" : 128647201
     }, {
-      "name" : "SametMerve \u00C7ET\u0130N",
-      "screen_name" : "sam_et_",
-      "indices" : [ 131, 139 ],
-      "id_str" : "554339836",
-      "id" : 554339836
+      "name" : "SamEtMax",
+      "screen_name" : "sam_et_max",
+      "indices" : [ 131, 140 ],
+      "id_str" : "507128812",
+      "id" : 507128812
     } ],
     "media" : [ ],
     "hashtags" : [ {
@@ -13424,7 +13445,7 @@ Grailbird.data.tweets_2013_10 =
   "source" : "\u003Ca href=\"http:\/\/twitter.com\/tweetbutton\" rel=\"nofollow\"\u003ETweet Button\u003C\/a\u003E",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Patrick Nsukami | \u5DE3\u795E",
+      "name" : "Nsukami | \u5DE3\u795E",
       "screen_name" : "LeMeteore",
       "indices" : [ 0, 10 ],
       "id_str" : "192341176",
@@ -13903,13 +13924,13 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "EL Serbo",
+      "name" : "Mr JeanFrancoaa",
       "screen_name" : "jeanfrancoaa",
       "indices" : [ 0, 13 ],
       "id_str" : "893952025",
       "id" : 893952025
     }, {
-      "name" : "\u2682 Young $MIL \u2684",
+      "name" : "Young $MIL\/iP\u00FCrpl3x",
       "screen_name" : "Young_SMiL",
       "indices" : [ 14, 25 ],
       "id_str" : "129164342",
@@ -13924,16 +13945,11 @@ Grailbird.data.tweets_2013_10 =
       "display_url" : "99bottlesofbeer.com"
     } ]
   },
-  "in_reply_to_status_id_str" : "386458763810451456",
   "geo" : { },
   "id_str" : "386461227850801153",
-  "in_reply_to_user_id" : 893952025,
   "text" : "@jeanfrancoaa @Young_SMiL Il y a toujours eu beaucoup de langage. En fait il y en a + que tu ne le crois http:\/\/t.co\/mDv3YUsp3j",
   "id" : 386461227850801153,
-  "in_reply_to_status_id" : 386458763810451456,
   "created_at" : "2013-10-05 12:01:51 +0000",
-  "in_reply_to_screen_name" : "jeanfrancoaa",
-  "in_reply_to_user_id_str" : "893952025",
   "user" : {
     "name" : "SamEtMax",
     "screen_name" : "sam_et_max",
@@ -14559,7 +14575,7 @@ Grailbird.data.tweets_2013_10 =
       "screen_name" : "AcademyMark",
       "protected" : false,
       "id_str" : "1586962356",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000734831690\/8a2b3c609708328c68e8e53cf5b82824_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/425245546744254464\/O7KgV2XN_normal.jpeg",
       "id" : 1586962356,
       "verified" : false
     }
@@ -14587,7 +14603,12 @@ Grailbird.data.tweets_2013_10 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/fE4qFZtzY5",
+      "expanded_url" : "http:\/\/bit.ly\/18PSpbX",
+      "display_url" : "bit.ly\/18PSpbX"
+    } ]
   },
   "geo" : { },
   "id_str" : "386456981977849856",
@@ -14642,7 +14663,13 @@ Grailbird.data.tweets_2013_10 =
       "id" : 467772208
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "emploi",
+      "indices" : [ 139, 140 ]
+    }, {
+      "text" : "Int\u00E9rim",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ {
       "indices" : [ 115, 137 ],
       "url" : "http:\/\/t.co\/yW1KIkk8LF",
@@ -14689,72 +14716,6 @@ Grailbird.data.tweets_2013_10 =
   },
   "id" : 386456864419872769,
   "created_at" : "2013-10-05 11:44:31 +0000",
-  "user" : {
-    "name" : "SamEtMax",
-    "screen_name" : "sam_et_max",
-    "protected" : false,
-    "id_str" : "507128812",
-    "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/1859873928\/img_Dog-and-rabbit_Thomas-SCHWEIZER_ref_150.001844.00_mode_zoom_normal.jpg",
-    "id" : 507128812,
-    "verified" : false
-  }
-}, {
-  "source" : "web",
-  "entities" : {
-    "user_mentions" : [ {
-      "name" : "Jibril Touzi",
-      "screen_name" : "jtouzi",
-      "indices" : [ 3, 10 ],
-      "id_str" : "18425003",
-      "id" : 18425003
-    }, {
-      "name" : "V\u00E9rone MANKOU",
-      "screen_name" : "verone",
-      "indices" : [ 12, 19 ],
-      "id_str" : "1157691",
-      "id" : 1157691
-    } ],
-    "media" : [ ],
-    "hashtags" : [ ],
-    "urls" : [ ]
-  },
-  "geo" : { },
-  "id_str" : "386456640993492992",
-  "text" : "RT @jtouzi: @verone Hello! Aurais-tu le contact de quelques bo\u00EEtes qui font dans le d\u00E9veloppement d'App mobiles sur Brazza (Python, Django)\u2026",
-  "retweeted_status" : {
-    "source" : "web",
-    "entities" : {
-      "user_mentions" : [ {
-        "name" : "V\u00E9rone MANKOU",
-        "screen_name" : "verone",
-        "indices" : [ 0, 7 ],
-        "id_str" : "1157691",
-        "id" : 1157691
-      } ],
-      "media" : [ ],
-      "hashtags" : [ ],
-      "urls" : [ ]
-    },
-    "geo" : { },
-    "id_str" : "385666477417705472",
-    "in_reply_to_user_id" : 1157691,
-    "text" : "@verone Hello! Aurais-tu le contact de quelques bo\u00EEtes qui font dans le d\u00E9veloppement d'App mobiles sur Brazza (Python, Django)? Thanks...",
-    "id" : 385666477417705472,
-    "created_at" : "2013-10-03 07:23:48 +0000",
-    "in_reply_to_screen_name" : "verone",
-    "in_reply_to_user_id_str" : "1157691",
-    "user" : {
-      "name" : "Jibril Touzi",
-      "screen_name" : "jtouzi",
-      "protected" : false,
-      "id_str" : "18425003",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/3629886433\/9d442efe88aedce18510bf4d113ec0b8_normal.jpeg",
-      "id" : 18425003,
-      "verified" : false
-    }
-  },
-  "id" : 386456640993492992,
-  "created_at" : "2013-10-05 11:43:37 +0000",
   "user" : {
     "name" : "SamEtMax",
     "screen_name" : "sam_et_max",
@@ -15041,7 +15002,7 @@ Grailbird.data.tweets_2013_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Muhammad",
+      "name" : "Muhammad ",
       "screen_name" : "Muhammad_Sakhi",
       "indices" : [ 0, 15 ],
       "id_str" : "260340980",
@@ -15093,7 +15054,12 @@ Grailbird.data.tweets_2013_10 =
       "text" : "job",
       "indices" : [ 126, 130 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/O7dyBrbFnD",
+      "expanded_url" : "http:\/\/emploiyvelines.com\/plaisir-ingenieur-en-developpement-java-python-pour-le-compte-dun-client-final-dans-la-cyber-securite\/",
+      "display_url" : "emploiyvelines.com\/plaisir-ingeni\u2026"
+    } ]
   },
   "geo" : { },
   "id_str" : "386452363138981888",
@@ -17347,7 +17313,7 @@ Grailbird.data.tweets_2013_10 =
       "id_str" : "320124624",
       "id" : 320124624
     }, {
-      "name" : "Driver-El",
+      "name" : "Driver",
       "screen_name" : "MovieTruth",
       "indices" : [ 28, 39 ],
       "id_str" : "298753758",
@@ -17394,7 +17360,7 @@ Grailbird.data.tweets_2013_10 =
     "source" : "\u003Ca href=\"http:\/\/hotot.org\" rel=\"nofollow\"\u003EHotot\u003C\/a\u003E",
     "entities" : {
       "user_mentions" : [ {
-        "name" : "Driver-El",
+        "name" : "Driver",
         "screen_name" : "MovieTruth",
         "indices" : [ 10, 21 ],
         "id_str" : "298753758",

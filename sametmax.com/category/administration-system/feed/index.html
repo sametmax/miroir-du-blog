@@ -13,12 +13,374 @@
 	<atom:link href="http://sametmax.com/category/administration-system/feed/" rel="self" type="application/rss+xml" />
 	<link>http://sametmax.com</link>
 	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
-	<lastBuildDate>Mon, 02 Dec 2013 10:02:45 +0000</lastBuildDate>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
 	<language>en</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
 	<generator>http://wordpress.org/?v=3.3.1</generator>
 	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Virtualenv EnvironmentError: mysql_config not found sous MAC OSX</title>
+		<link>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/</link>
+		<comments>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/#comments</comments>
+		<pubDate>Tue, 04 Feb 2014 10:56:18 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[config]]></category>
+		<category><![CDATA[erreur]]></category>
+		<category><![CDATA[mysql-python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8963</guid>
+		<description><![CDATA[Des fois il y a des petites choses comme ça qui devraient s'installer comme un rien et passer innaperçues mais non, ça vous fait une belle erreur et vous passez des heures à vous demander pourquoi ça ne veut pas s'installer. Restons zen...]]></description>
+			<content:encoded><![CDATA[<p>Comme le post précédent est inutile j&#8217;en fait un autre qui doit concerner au moins 0.00001% de la population.</p>
+<p>A vous qui essayez depuis 2 heures de configurer MySQL-python sous votre virtualenv, cet article vous est dédié.</p>
+<p>Cette erreur vicieuse m&#8217;arrive à chaque fois que j&#8217;installe MySQL-python dans un nouvel environnement virtuel. Ceci dit vous l&#8217;aurez peut-être sous un autre OS. Sur centos j&#8217;avais qu&#8217;à faire un <em>yum install mysql-devel</em> mais sous Mac c&#8217;est autre chose. Plus de puissance engendre plus de responsabilités&#8230;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">&nbsp;
+Max $  pip <span style="color: #c20cb9; font-weight: bold;">install</span> MySQL-python
+Downloading<span style="color: #000000; font-weight: bold;">/</span>unpacking MySQL-python
+  Downloading MySQL-python-1.2.5.zip <span style="color: #7a0874; font-weight: bold;">&#40;</span>108Kb<span style="color: #7a0874; font-weight: bold;">&#41;</span>: 108Kb downloaded
+  Running setup.py egg_info <span style="color: #000000; font-weight: bold;">for</span> package MySQL-python
+    <span style="color: #c20cb9; font-weight: bold;">sh</span>: mysql_config: <span style="color: #7a0874; font-weight: bold;">command</span> not found
+    Traceback <span style="color: #7a0874; font-weight: bold;">&#40;</span>most recent call <span style="color: #c20cb9; font-weight: bold;">last</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>:
+      File <span style="color: #ff0000;">&quot;&lt;string&gt;&quot;</span>, line <span style="color: #000000;">14</span>, <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000; font-weight: bold;">&lt;</span>module<span style="color: #000000; font-weight: bold;">&gt;</span>
+      File <span style="color: #ff0000;">&quot;/Users/Max/.virtualenvs/zooscator/build/MySQL-python/setup.py&quot;</span>, line <span style="color: #000000;">17</span>, <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000; font-weight: bold;">&lt;</span>module<span style="color: #000000; font-weight: bold;">&gt;</span>
+        metadata, options = get_config<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+      File <span style="color: #ff0000;">&quot;setup_posix.py&quot;</span>, line <span style="color: #000000;">43</span>, <span style="color: #000000; font-weight: bold;">in</span> get_config
+        libs = mysql_config<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #ff0000;">&quot;libs_r&quot;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+      File <span style="color: #ff0000;">&quot;setup_posix.py&quot;</span>, line <span style="color: #000000;">25</span>, <span style="color: #000000; font-weight: bold;">in</span> mysql_config
+        raise EnvironmentError<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #ff0000;">&quot;%s not found&quot;</span> <span style="color: #000000; font-weight: bold;">%</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span>mysql_config.path,<span style="color: #7a0874; font-weight: bold;">&#41;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+    EnvironmentError: mysql_config not found
+    Complete output from <span style="color: #7a0874; font-weight: bold;">command</span> python setup.py egg_info:
+    <span style="color: #c20cb9; font-weight: bold;">sh</span>: mysql_config: <span style="color: #7a0874; font-weight: bold;">command</span> not found
+&nbsp;
+Traceback <span style="color: #7a0874; font-weight: bold;">&#40;</span>most recent call <span style="color: #c20cb9; font-weight: bold;">last</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>:
+&nbsp;
+  File <span style="color: #ff0000;">&quot;&lt;string&gt;&quot;</span>, line <span style="color: #000000;">14</span>, <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000; font-weight: bold;">&lt;</span>module<span style="color: #000000; font-weight: bold;">&gt;</span>
+&nbsp;
+  File <span style="color: #ff0000;">&quot;/Users/Max/.virtualenvs/zooscator/build/MySQL-python/setup.py&quot;</span>, line <span style="color: #000000;">17</span>, <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000; font-weight: bold;">&lt;</span>module<span style="color: #000000; font-weight: bold;">&gt;</span>
+&nbsp;
+    metadata, options = get_config<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+  File <span style="color: #ff0000;">&quot;setup_posix.py&quot;</span>, line <span style="color: #000000;">43</span>, <span style="color: #000000; font-weight: bold;">in</span> get_config
+&nbsp;
+    libs = mysql_config<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #ff0000;">&quot;libs_r&quot;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+  File <span style="color: #ff0000;">&quot;setup_posix.py&quot;</span>, line <span style="color: #000000;">25</span>, <span style="color: #000000; font-weight: bold;">in</span> mysql_config
+&nbsp;
+    raise EnvironmentError<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #ff0000;">&quot;%s not found&quot;</span> <span style="color: #000000; font-weight: bold;">%</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span>mysql_config.path,<span style="color: #7a0874; font-weight: bold;">&#41;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+EnvironmentError: mysql_config not found
+&nbsp;
+<span style="color: #660033;">----------------------------------------</span>
+Command python setup.py egg_info failed with error code <span style="color: #000000;">1</span>
+Storing <span style="color: #7a0874; font-weight: bold;">complete</span> log <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000; font-weight: bold;">/</span>Users<span style="color: #000000; font-weight: bold;">/</span>Max<span style="color: #000000; font-weight: bold;">/</span>.pip<span style="color: #000000; font-weight: bold;">/</span>pip.log</pre></div></div>
+
+<p>Il faut éditer votre fichier <strong>activate</strong> qui se trouve dans le répertoire bin de votre environnement virtuel: ex &#8220;/Users/Max/.virtualenvs/zooscator/bin/activate&#8221;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span> <span style="color: #000000; font-weight: bold;">/</span>Users<span style="color: #000000; font-weight: bold;">/</span>Max<span style="color: #000000; font-weight: bold;">/</span>.virtualenvs<span style="color: #000000; font-weight: bold;">/</span>zooscator<span style="color: #000000; font-weight: bold;">/</span>bin</pre></div></div>
+
+<p><strong>Trouvez les lignes suivantes et ajoutez:</strong></p>
+<blockquote><p>PATH=&#8221;$PATH:/opt/local/lib/mysql5/bin/&#8221;
+</p></blockquote>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">...
+<span style="color: #007800;">_OLD_VIRTUAL_PATH</span>=<span style="color: #ff0000;">&quot;<span style="color: #007800;">$PATH</span>&quot;</span>
+<span style="color: #007800;">PATH</span>=<span style="color: #ff0000;">&quot;<span style="color: #007800;">$VIRTUAL_ENV</span>/bin:<span style="color: #007800;">$PATH</span>&quot;</span>
+<span style="color: #007800;">PATH</span>=<span style="color: #ff0000;">&quot;<span style="color: #007800;">$PATH</span>:/opt/local/lib/mysql5/bin/&quot;</span>
+<span style="color: #7a0874; font-weight: bold;">export</span> PATH
+...</pre></div></div>
+
+<p>Chez moi le chemin vers mysql est /opt/local/lib/mysql5/bin/, si vous ne connaissez pas le vôtre utilisez la commande <em>locate</em>: ex <em>locate mysql</em></p>
+<p><strong>Une fois le fichier <em>activate</em> édité il faut le resourcer:<br />
+</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">source</span> <span style="color: #000000; font-weight: bold;">/</span>Users<span style="color: #000000; font-weight: bold;">/</span>Max<span style="color: #000000; font-weight: bold;">/</span>.virtualenvs<span style="color: #000000; font-weight: bold;">/</span>zooscator<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>activate</pre></div></div>
+
+<p><strong>Et vous pourrez alors installer MySQL-python tranquillou billou:<br />
+</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">Max $  pip <span style="color: #c20cb9; font-weight: bold;">install</span> MySQL-python
+&nbsp;
+Downloading<span style="color: #000000; font-weight: bold;">/</span>unpacking MySQL-python
+  Running setup.py egg_info <span style="color: #000000; font-weight: bold;">for</span> package MySQL-python
+&nbsp;
+Installing collected packages: MySQL-python
+  Running setup.py <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #000000; font-weight: bold;">for</span> MySQL-python
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>....................<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+Successfully installed MySQL-python
+Cleaning up...</pre></div></div>
+
+<p>Je vais nourir mon cochon d&#8217;Inde.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8963&amp;md5=c153ddb9ef35528707273f7e6d6bc2fe" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/virtualenv-environmenterror-mysql_config-not-found-sous-mac-osx/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fvirtualenv-environmenterror-mysql_config-not-found-sous-mac-osx%2F&amp;language=en_GB&amp;category=text&amp;title=Virtualenv+EnvironmentError%3A+mysql_config+not+found+sous+MAC+OSX&amp;description=Comme+le+post+pr%C3%A9c%C3%A9dent+est+inutile+j%26%238217%3Ben+fait+un+autre+qui+doit+concerner+au+moins+0.00001%25+de+la+population.+A+vous+qui+essayez+depuis+2+heures+de+configurer+MySQL-python+sous...&amp;tags=config%2Cerreur%2Cmysql-python%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2014/02/burn_out_1086894409_sato_kronik0405.jpg" length="49452" type="image/jpg" />	</item>
+		<item>
+		<title>ERROR:  invalid locale name avec PostGres</title>
+		<link>http://sametmax.com/error-invalid-locale-name-avec-postgres/</link>
+		<comments>http://sametmax.com/error-invalid-locale-name-avec-postgres/#comments</comments>
+		<pubDate>Thu, 30 Jan 2014 13:12:02 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[locale]]></category>
+		<category><![CDATA[posgres]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8743</guid>
+		<description><![CDATA[Oui, j'avais besoin d'un poste bouche-trou.]]></description>
+			<content:encoded><![CDATA[<p>Il suffit de redémarrer PostGres.</p>
+<p>Ca arrive quand on met à jour ses locales et que des services tournent. Ils ne reçoivent pas l&#8217;information, et utilisent l&#8217;ancienne locale.</p>
+<p>Oui, j&#8217;avais besoin d&#8217;un poste bouche-trou.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8743&amp;md5=a3e3d51b364d4cb9428bd1922787d2e5" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/error-invalid-locale-name-avec-postgres/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Ferror-invalid-locale-name-avec-postgres%2F&amp;language=en_GB&amp;category=text&amp;title=ERROR%3A++invalid+locale+name+avec+PostGres&amp;description=Il+suffit+de+red%C3%A9marrer+PostGres.+Ca+arrive+quand+on+met+%C3%A0+jour+ses+locales+et+que+des+services+tournent.+Ils+ne+re%C3%A7oivent+pas+l%26%238217%3Binformation%2C+et+utilisent+l%26%238217%3Bancienne+locale.+Oui%2C+j%26%238217%3Bavais...&amp;tags=locale%2Cposgres%2Cblog" type="text/html" />
+	</item>
+		<item>
+		<title>Remplacer sed, awk, cut et Perl par Python (= orgasme pour sysadmin)</title>
+		<link>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/</link>
+		<comments>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/#comments</comments>
+		<pubDate>Sat, 14 Dec 2013 08:28:41 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[awk]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[perl]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sed]]></category>
+		<category><![CDATA[sysadmin]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8261</guid>
+		<description><![CDATA[La force de perl c'est qu'il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.
+
+C'est pour cela que c'était devenu les choix des sysadmins. Parce que jusqu'ici, le choix c'était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.
+
+Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.]]></description>
+			<content:encoded><![CDATA[<p>La force de Perl c&#8217;est qu&#8217;il permettait de piper des données directement via la ligne de commande pour faire des manipulations rapides.</p>
+<p>C&#8217;est pour cela que c&#8217;était devenu les choix des sysadmins. Parce que jusqu&#8217;ici, le choix c&#8217;était soit de faire un truc simple en connaissant par coeur la tool box GNU, soit ouvrir un fichier et faire un script.</p>
+<p>Python ne permet pas de piper des données directement dans la commande, mais des projets ont vu le jour pour le faire.</p>
+<p>Il y a le projet <a href="http://code.google.com/p/pyp/">pyp</a>, que l&#8217;on doit à Sony Pictures Imageworks qui avait besoin de se simplifier l&#8217;automatisation des tâches de build pour ses films.</p>
+<p>Et il y a <a href="https://pypi.python.org/pypi/Pyped/1.0">pyped</a>, dont j&#8217;avais brièvement parlé <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">ici</a> (article qui mérite d&#8217;être mis à jour vu que j&#8217;ai remplace dateutils par <a href="http://sametmax.com/les-time-zones-en-python/">arrow</a>).</p>
+<p>Les deux étaient sympas, mais avait des syntaxes alambiquées. Cependant, pyped est récemment passé en v1.0, donc stable, et a une toute nouvelle approche de syntaxe qui rend la bestiole super agréable à utiliser.</p>
+<p>Présentation.</p>
+<h2>Stdin, ligne à ligne</h2>
+<p>L&#8217;installation est bateau, c&#8217;est du <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">--user</span> pyped</pre></div></div>
+
+<p>Et derrirère, on obtient la commande <code>py</code>. Elle s&#8217;utilise essentiellement à la suite d&#8217;une autre commande. Typiquement :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">cat</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>fsta <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;un truc&quot;</span></pre></div></div>
+
+<p>L&#8217;astuce, c&#8217;est que &#8220;un truc&#8221; peut être n&#8217;importe quelle expression Python. Généralement une expression qui <code>print()</code> quelque chose.</p>
+<p>Or, Pyped met automatiquement à disposition de cette expression deux variables :</p>
+<ul>
+<li>La ligne en cours, dans la variable <code>x</code>.</li>
+<li>Le numéro de la ligne en cours, dans la variable <code>i</code>.</li>
+</ul>
+<p>L&#8217;expression Python est appelée une fois pour chaque ligne.</p>
+<p>Par exemple, supposons que j&#8217;ai un fichier &#8220;fortune.txt&#8221; contenant :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">bitcoin <span style="color: #7a0874; font-weight: bold;">&#40;</span>btc<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">5</span>
+euros <span style="color: #7a0874; font-weight: bold;">&#40;</span>€<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">100</span>
+dollars <span style="color: #7a0874; font-weight: bold;">&#40;</span>$<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">80</span></pre></div></div>
+
+<p>Si je veut tout mettre en majuscule, je fais :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">$ <span style="color: #c20cb9; font-weight: bold;">cat</span> fortune.txt <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;print(x.upper())&quot;</span>
+BITCOIN <span style="color: #7a0874; font-weight: bold;">&#40;</span>BTC<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">5</span>
+EUROS <span style="color: #7a0874; font-weight: bold;">&#40;</span>€<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">100</span>
+DOLLARS <span style="color: #7a0874; font-weight: bold;">&#40;</span>$<span style="color: #7a0874; font-weight: bold;">&#41;</span> : <span style="color: #000000;">80</span></pre></div></div>
+
+<p>On peut mettre plusieurs expressions d&#8217;affilé. Ainsi, si je veux récupérer la somme et le symbole uniquement :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">$ <span style="color: #c20cb9; font-weight: bold;">cat</span> fortune.txt <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;devise, sign, _, value = x.split()&quot;</span> <span style="color: #ff0000;">&quot;sign = sign.strip('()')&quot;</span> <span style="color: #ff0000;">&quot;print('%s%s' % (value, sign))&quot;</span>
+5btc
+<span style="color: #000000;">100</span>€
+<span style="color: #000000;">80</span>$</pre></div></div>
+
+<p>Ok, c&#8217;est plus long que perl, mais vachement plus facile à écrire et à relire. Et j&#8217;utilise un langage que je connais déjà. Et pas besoin de faire un mix incompréhensible de sed, awk et autre cut.</p>
+<p>Si j&#8217;ai vraiment besoin de lisibilité, je peux même le mettre sur plusieurs lignes :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">$ <span style="color: #c20cb9; font-weight: bold;">cat</span> fortune.txt <span style="color: #000000; font-weight: bold;">|</span> py <span style="color: #ff0000;">&quot;                                                                                                 
+devise, sign, _, value = x.split() 
+sign = sign.strip('()') 
+print('%s%s' % (value, sign))  
+&quot;</span>
+5btc
+<span style="color: #000000;">100</span>€
+<span style="color: #000000;">80</span>$</pre></div></div>
+
+<p>Vous aurez noté que j&#8217;utilise <code>print()</code> et que je semble ne pas me soucier de l&#8217;unicode. C&#8217;est parceque pyped fait ça au début du script :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> print_function, unicode_literals, division, absolute_imports</pre></div></div>
+
+<p>Du coup, on est bien en Python 2.7, mais on bénéficie de la division améliorée, de la fonction pour printer, des imports absolus et surtout, de l&#8217;unicode partout. D&#8217;ailleurs pyped vous transforme <code>x</code> pour que ce soit un objet unicode. </p>
+<h2>Tout traiter d&#8217;un coup</h2>
+<p>Parfois, on a besoin d&#8217;avoir accès à toutes les lignes, pas juste les lignes une à une. pyped permet cela avec l&#8217;option <code>-i</code>. Les variables <code>x</code> et <code>i</code> disparaissent au profit de la variable <code>l</code>, qui contient un itérable sur toutes les lignes.</p>
+<p>Par exemple, envie de trier tout ça ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">cat fortune.<span style="color: black;">txt</span> | py -i <span style="color: #483d8b;">&quot;
+lignes = (x.split() for x in l)
+lignes = sorted((v, s.strip('()')) for d, s, _, v in lignes)
+for ligne in lignes: print('%s%s' % ligne)
+&quot;</span>
+<span style="color: #ff4500;">100</span>€
+5btc
+<span style="color: #ff4500;">80</span>$</pre></div></div>
+
+<h2>Moar options</h2>
+<p>Lisez la doc, car il y a d&#8217;autres options du genre éviter que pyped vous strip automatiquement le ligne break, forcer l&#8217;encoding, etc.</p>
+<p>Parmi les trucs les plus utiles, il y a l&#8217;option <code>-b</code> qui permet de lancer un code avant la boucle. Pratique pour importer des trucs genre le module <code>tarfile</code> pour extraire une archive avant d&#8217;utiliser son contenu.</p>
+<p>Néanmoins la plupart du temps on a rien besoin d&#8217;importer car pyped importe déjà automatiquement les modules les plus utiles : maths, datetime, re, json, hashlib, uuid, etc. </p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8261&amp;md5=83a66390fd625dd860b54e895ddffdee" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fremplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin%2F&amp;language=en_GB&amp;category=text&amp;title=Remplacer+sed%2C+awk%2C+cut+et+Perl+par+Python+%28%3D+orgasme+pour+sysadmin%29&amp;description=La+force+de+Perl+c%26%238217%3Best+qu%26%238217%3Bil+permettait+de+piper+des+donn%C3%A9es+directement+via+la+ligne+de+commande+pour+faire+des+manipulations+rapides.+C%26%238217%3Best+pour+cela+que+c%26%238217%3B%C3%A9tait+devenu+les+choix...&amp;tags=awk%2Cbash%2Cperl%2Cpython%2Csed%2Csysadmin%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/hsmFx9T.jpg" length="182812" type="image/jpg" />	</item>
+		<item>
+		<title>Introduction à Ansible: l’outil du sysadmin paresseux mais pragmatique</title>
+		<link>http://sametmax.com/introduction-a-ansible-loutil-du-sysadmin-paresseux-mais-pragmatique/</link>
+		<comments>http://sametmax.com/introduction-a-ansible-loutil-du-sysadmin-paresseux-mais-pragmatique/#comments</comments>
+		<pubDate>Fri, 06 Dec 2013 10:43:19 +0000</pubDate>
+		<dc:creator>VonTenia</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8177</guid>
+		<description><![CDATA[Ceci est un post invité de VonTenia posté sous licence creative common 3.0 unported. Je profite du fait que Sam &#038; Max me donnent la parole pour vous parler d’Ansible, un programme très puissant et relativement simple dont je me sers depuis récemment (beaucoup trop tardivement à mon goût), mais qui a radicalement changé ma [...]]]></description>
+			<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/VonTenia/">VonTenia</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Je profite du fait que Sam &#038; Max me donnent la parole pour vous parler d’Ansible, un programme très puissant et relativement simple dont je me sers depuis récemment (beaucoup trop tardivement à mon goût), mais qui a radicalement changé ma façon de gérer mes déploiements d’appli sur serveur.</p>
+<p><strong>Avant-propos</strong> : Ce guide s’adresse avant tout à ceux et celles ayant le minimum d’aisance avec les systèmes linux. Je pense qu’il est nécessaire de savoir marcher avant d’apprendre à courir, l’automatisation de configuration est une bonne chose (vous allez voir que vous ne pourrez plus vous en passer), mais si vous n’avez aucune idée de comment éditer un fichier de configuration, ou comment redémarrer un service, vous risqueriez bien d&#8217;être pris au dépourvu&#8230; Mieux vaut alors pour vous commencer par apprendre les bases de l’administration système puis revenir une fois à l’aise avec le concept.</p>
+<h3>Pourquoi utiliser un “Configuration Management Tool”</h3>
+<p>Vous vous dites : mon boulot c’est de coder, l’administration système c’est sympa 5 minutes mais ça me gonfle… Et pourtant, au final votre application sera accédée via vos serveurs, et selon leur fragilité, la satisfaction de vos clients pourrait en pâtir (ce malgré votre excellent code parfaitement testé).</p>
+<p>En tant que dev, il serait risible pour vous de ne pas versionner votre code ou ne pas le tester. Pourtant c’est ce que vous faites avec vos systèmes en n’utilisant pas de CfM. Et personne n’est à l&#8217;abri des aléas de la vie, par exemple:</p>
+<ul>
+<li>vous êtes hébergé dans le cloud et votre voisin d’hyperviseur s&#8217;avère maintenir un site Tor de trafic d’organes et de prostitution animalière (tout ça pour blanchir des bitcoins)… Vous apprécierez moyennement le downtime lorsque le FBI saisira le serveur que vous partagiez avec cet indélicat voisin.</li>
+<li>Votre sysadmin ultra compètent pourrait se trouver dans l&#8217;incapacité d’exercer à la suite d’une banale auto-asphyxie érotique qui aurait mal tournée. Et bien évidemment il n’a rien documenté avant, le saligaud…</li>
+</ul>
+<p>Bref, le genre de risque qu&#8217;on apprend à identifier quand on passe sa certif ITIL&#8230;</p>
+<h3>Les alternatives aux CfM</h3>
+<p>Je vous vois venir, me disant que vous ne m’avez pas attendu pour envisager les situations précédentes. Vous avez déjà un plan de secours, à savoir :</p>
+<ul>
+<li>
+<p><strong>Des scripts :</strong> Si vous êtes déjà un peu plus malin que la moyenne, vous vous êtes aperçu que pour déployer une nouvelle machine, vous tapez toujours les mêmes commandes : installer vos packages, les configurer, démarrer les services. Vous aurez donc votre collection de scripts shell ou fabric pour vous aider à la tâche.</p>
+<p>Inconvénient : il faut être très organisé, gérer les différents fichiers de config peut prendre du temps lorsqu’il faut les modifier pour chaque serveur. Il est aussi parfois dangereux de relancer le script plusieurs fois sur la même machine, cela peut avoir des conséquences pour le moins hasardeuses.</p>
+</li>
+<li>
+<p><strong>Une image disque :</strong> Une fois votre serveur configuré et parfaitement fonctionnel, vous avez pris soin d’en prendre une image disque. Le saint Graal de la prod, contenant la vérité absolue. En cas de crash vous serez opérationnel en un rien de temps.</p>
+<p>Inconvénient : Les besoins de votre application vont évoluer avec le temps, les fichiers de configuration auront probablement changé aussi. A chaque changement vous devez refaire votre image… Ça devient assez lourd à la longue, et c’est facile d’oublier de le faire jusqu’au jour où “the shit hit the fan”.</p>
+</li>
+<li>
+<p><strong>Rien (ou presque) :</strong> Si vous êtes comme moi, d’un naturel optimiste, vous n’avez quasiment pas de solution de secours (à part des backups). Le jour ou votre serveur crash, vous essayez de fixer le problème, et au pire vous en re-configurez un nouveau, ce qui vous prends entre 2 heures et 2 jours, en fonction de la dernière fois où vous avez eu à le faire (je n’ai jamais prétendu être un sysadmin très compètent&#8230;). Sans aller jusqu’au crash irrécupérable, le simple fait de vouloir changer d’hébergeur peut vous faire perdre un temps précieux. Vous perdez donc en flexibilité.</p>
+<p>Inutile de vous dire que si vous faites parti de cette catégorie, je vous invite d’autant plus à continuer de lire.</p>
+</li>
+</ul>
+<h3>Ansible à votre secours</h3>
+<p>Ansible est un outil open-source de gestion de configuration écrit en python (aussi dispo en version commerciale avec une interface graphique et un service de déploiement). La configuration se fait via des fichiers appelés “Playbooks”. Citons parmi les avantages :</p>
+<ul>
+<li>Un système déclaratif : syntaxe YAML facilement lisible, ce qui rend l’apprentissage très rapide (plus qu’avec Chef à mon goût, où l’on s&#8217;empêtre très vite dans des problèmes de dépendance, et en plus je ne suis pas très fluent en ruby).</li>
+<li>Templating des fichiers de configuration : qui permet d’avoir des fichiers dynamiquement générés en fonction de ce que vous voulez, tel que le rôle du serveur, ou bien dépendant d’un autre serveur. En plus le langage de template par défaut est Jinja2, ça plaira aux amateurs de Django.</li>
+<li>Quasiment rien à installer. A part Ansible sur votre machine hôte, tout ce dont vous avez besoin c’est d’un accès root via SSH sur vos serveurs cibles.</li>
+</ul>
+<p>Ansible ne sert pas qu’à déployer votre infrastructure, il peut aussi servir à tester et s’assurer que tous les services qui sont censés fonctionner soient bien tous actifs, et que tous les fichiers de configurations sont bien à jour. Autant vous dire que plus vous avez de machines, plus ça devient intéressant.</p>
+<p>Je sens que j&#8217;écris beaucoup et que j’ai déjà perdu la moitié des lecteurs. Aussi je vous invite à suivre ce petit tutoriel que j’ai préparé rien que pour vous parce que vous êtes quand même sympa.</p>
+<h3>Tutoriel : Déployer une app django</h3>
+<p>Nous allons essayer de déployer l’application <a href="https://github.com/sametmax/Django--an-app-at-a-time">Django&#8211;an-app-at-a-time</a> sur un système Debian wheezy en utilisant Ansible.</p>
+<h4>1. Préparer la machine cible</h4>
+<p>Pour les besoins du test, créer un serveur tout neuf sous Debian Wheezy :</p>
+<ul>
+<li>Soit en utilisant Virtualbox (dans ce cas utilisez <a href="http://www.debian.org/CD/netinst/">Debian netinstall</a>). N&#8217;installez que le système de base et le serveur SSH. Seul impératif: un accès ssh via root sur la machine.</li>
+<li>Si vous avez les moyens, vous pouvez aussi vous créer temporairement une machine cloud sur OVH ou digital ocean, ça pourrait être plus rapide.</li>
+</ul>
+<h4>2. Installer Ansible</h4>
+<p>Sur votre machine hôte (que j’assume être sous Ubuntu pour simplifier):</p>
+<p>
+Installez Ansible, via pip (de façon globale sans passer par virtualenv) :<br />
+<code>$ sudo pip install ansible</code></p>
+<p>Générez clefs privée/publique si vous n’en avez pas déjà :<br />
+<code>$ ssh-keygen</code></p>
+<p>Copiez la clef publique sur le serveur cible (qui sera désigné par 192.168.1.1 dans ce tutoriel, mais bien entendu remplacez par l’adresse de votre serveur cible).<br />
+<code>$ ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.1</code></p>
+<p>Créez le fichier <strong>/etc/ansible/hosts</strong> qui contiendra la liste des serveurs à gérer, et placez-y l&#8217;adresse de votre serveur:<br />
+<code>$ sudo vim /etc/ansible/hosts</code><br />
+<code>192.168.1.1</code></p>
+<p>Testez que le serveur soit bien accessible:<br />
+<code>$ ansible all -m ping -u root </code><br />
+devrait retourner:<br />
+<code>192.168.1.1 | success >> {<br />
+    "changed": false,<br />
+    "ping": "pong"<br />
+}</code></p>
+<p>Bravo, Ansible est installé et peut communiquer avec votre serveur cible. En avant pour la magie !</p>
+<p><img src="http://sametmax.com/wp-content/uploads/2013/12/its-Magic.gif" alt="" title="its-Magic" width="350" height="196" class="alignnone size-full wp-image-8192" /><br />
+
+</p>
+<h4>3. Récupérer le Playbook de démo et l&#8217;exécuter</h4>
+<p>Clonez mon repo github concocté avec amour et exécutez le playbook:</p>
+<p><code>$ git clone https://github.com/Remiz/playbook-demo.git<br />
+$ cd playbook-demo/<br />
+$ ansible-playbook site.yml</code></p>
+<p>Maintenant, plus qu&#8217;à attendre&#8230;</p>
+<p><img src="http://sametmax.com/wp-content/uploads/2013/12/cookie-monster.gif" alt="" title="cookie monster is waiting..." width="250" height="143" class="alignnone size-full wp-image-8203" /></p>
+<h4>3. Admirer le résultat</h4>
+<p>Visitez le site hébergé à l’adresse de votre serveur (dans mon exemple <a href="http://192.168.1.1">http://192.168.1.1</a>)</p>
+<p>Votre réaction la plus normale devrait être la suivante :</p>
+<p><img src="http://sametmax.com/wp-content/uploads/2013/12/areyouawizard.png" alt="" title="areyouawizard" width="200" height="259" class="alignnone size-full wp-image-8209" /></p>
+<p>Je vous invite maintenant à ouvrir le playbook <a href="https://github.com/Remiz/playbook-demo/blob/master/site.yml">site.yml</a> et essayer de comprendre. Durant ce court laps de temps, nous avons:</p>
+<ul>
+<li>Créé un utilisateur “myproject”</li>
+<li>Ajouté cet utilisateur aux sudoers</li>
+<li>Ajouté votre clef privée locale</li>
+<li>Mis a jour la date du serveur</li>
+<li>Installé/activé le serveur NTP</li>
+<li>Sécurisé le serveur en installant fail2ban et en configurant le firewall iptables (laissant ouvert les ports 22, 80, 443 et 4949 pour le monitoring sous munin)</li>
+<li>Installé quelques outils systèmes bien utiles tel que git ou htop</li>
+<li>Installé/configuré Nginx, Supervisor, Pip, virtualenv</li>
+<li>Cloné le repo Django&#8211;an-app-at-a-time</li>
+<li>Créé un virtualenv avec django/gunicorn</li>
+<li>Configuré gunicorn pour être lancé via supervisor</li>
+<li>et finalement deployé les fichiers statiques&#8230;</li>
+</ul>
+<p>Pas mal en 5 minutes, non ? Maintenant si vous ne me croyez pas, je vous invite à vous connecter sur votre serveur</p>
+<p><code>$ ssh myproject@192.168.1.1</code></p>
+<p>et tester les commandes suivantes :</p>
+<p><code>$ date<br />
+$ sudo iptables -L<br />
+$ ps -ef | grep fail2ban<br />
+$ ps -ef | grep gunicorn</code></p>
+<p>Notez que je n’ai pas utilisé runserver de Django, tout est proprement déployé sur une stack gunicorn/supervisor/virtualenv, bref je me suis pas foutu de votre gueule. Le Playbook est à vous, c’est cadeau. J&#8217;espère qu’il vous servira comme base pour vos futurs déploiements, et si jamais vous vous rendez compte que vous gagnez un temps fou à l&#8217;utiliser, n&#8217;hésitez pas à me payer une pinte si vous êtes de passage au Canada.</p>
+<p>Une autre expérience intéressante consiste à relancer l&#8217;exécution du playbook :</p>
+<p><code>$ ansible-playbook site.yml</code></p>
+<p>Tout devrait aller beaucoup plus vite, et à la place de “changed” après chaque instruction, vous devriez lire “ok”. Ce qui veut dire qu’un playbook est plus intelligent qu’un bête script, et ne se contente pas d&#8217;exécuter des instructions, Ansible va garantir quel tel service soit bien actif et qu’il utilise bien le dernier fichier de conf. Ce qui en fait l’outil parfait pour tester vos systèmes automatiquement.</p>
+<h3>La syntaxe Playbook</h3>
+<p>Le but de ce tutoriel n’est que de vous présenter Ansible, aussi je ne rentrerai pas trop dans les détails et je vous inviterai à vous rendre sur le site officiel pour une <a href="http://www.ansibleworks.com/docs/">documentation</a> plus complète.</p>
+<p>Un playbook est avant tout composé de tâches :</p>
+<p><code>- name: Texte qui décris votre tâche<br />
+    module: option=value</code></p>
+<p>Une tâche va donc appeler un <a href="http://www.ansibleworks.com/docs/modules.html">module</a> Ansible, dont la fonction peut être de copier un fichier, démarrer un service, clôner un repository… Il y en a vraiment beaucoup. Chaque module reçoit des paramètres tels que : un fichier de configuration source (sur votre machine hôte), un path de destination, un package apt à installer… Référez vous à la doc pour savoir quels paramètres sont acceptés.</p>
+<p>Exemples :</p>
+<p><code>- name: Démarrer fail2ban<br />
+    service: name=fail2ban state=started enabled=true</code></p>
+<p>va s’assurer que le service appelé fail2ban soit bien démarré (le démarrer si ce n’est pas le cas), mais aussi s’assurer qu’il soit bien présent au démarrage du système. Quand je vous disait que la syntaxe est très simple (même plus simple qu’avec des scripts shell).</p>
+<p>Autre exemple:</p>
+<p><code>- name: Configurer Nginx<br />
+          template: src=templates/nginx.conf.j2<br />
+          dest=/etc/nginx/sites-enabled/{{ user }}.conf<br />
+notify: restart nginx</code></p>
+<p>se traduit par : récupérer le template de conf dans le répertoire local templates/ (le parser avec les bonnes valeurs), et placer le résultat dans le répertoire de conf de Nginx (en utilisant le nom d’utilisateur comme nom du fichier). Enfin redémarrer nginx via un handler (uniquement si le contenu du fichier de conf a changé).</p>
+<h3>Conclusion (et aller plus loin)</h3>
+<p>Je vous conseille de lire la documentation officielle, elle est plutôt bien faite, dites-vous que je ne connaissais pas du tout cet outil il y a deux semaines et je m’en sert désormais régulièrement (et je suis du genre slow-learner). Renseignez vous particulièrement sur les <a href="http://www.ansibleworks.com/docs/playbooks_roles.html#id5">rôles</a> que vous pouvez donner à vos serveurs, ce qui vous permet de diviser vos playbooks (frontend, cluster DB, worker celery…), et ce qui encourage aussi la réutilisation (par exemple j’ai toujours un rôle “common” qui inclus tout ce qui est nécessaire à l&#8217;ensemble de mes serveurs : utilisateur admin, sécurité, timezone…). Comme on n’apprend jamais aussi bien que par l’exemple, n&#8217;hésitez pas à vous inspirer des <a href="https://github.com/ansible/ansible-examples">exemples</a> issus de la doc (l’outil évolue vite et certains ne sont plus entièrement valides, mais c’est toujours bon à prendre).</p>
+<p>Si vous voulez pousser l’automatisation jusqu&#8217;à l&#8217;extrême, il est aussi possible de configurer Ansible sur vos serveurs pour se connecter à un repo git, récupérer les playbooks et fichiers de conf appropriés et s’auto-configurer&#8230;</p>
+<p>Voila, mon rôle s&#8217;arrête ici et libre à vous d’en apprendre plus. Au final j&#8217;espère avoir tenu ma promesse d&#8217;éclairer vos esprit sur les miracles de l’automatisation.</p>
+<p><img src="http://sametmax.com/wp-content/uploads/2013/12/mind-blown1.gif" alt="" title="mind-blown" width="200" height="200" class="alignnone size-full wp-image-8212" /></p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8177&amp;md5=0929d9232ef6125d29da5de891ac4d52" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/introduction-a-ansible-loutil-du-sysadmin-paresseux-mais-pragmatique/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fintroduction-a-ansible-loutil-du-sysadmin-paresseux-mais-pragmatique%2F&amp;language=en_GB&amp;category=text&amp;title=Introduction+%C3%A0+Ansible%3A+l%E2%80%99outil+du+sysadmin+paresseux+mais+pragmatique&amp;description=Ceci+est+un+post+invit%C3%A9+de+VonTenia+post%C3%A9+sous+licence+creative+common+3.0+unported.+Je+profite+du+fait+que+Sam+%26%23038%3B+Max+me+donnent+la+parole+pour+vous+parler+d%E2%80%99Ansible%2C...&amp;tags=blog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/sysadmin-hanged.jpg" length="167782" type="image/jpg" />	</item>
 		<item>
 		<title>Marre des mots de passe pour push sur git ?</title>
 		<link>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/</link>
@@ -45,7 +407,7 @@
 <p>Pour l&#8217;étendre à tous les repos de votre machine.</p>
  <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8013&amp;md5=e4c62cc7ed21334f85fbfed045830fc7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
 			<wfw:commentRss>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/feed/</wfw:commentRss>
-		<slash:comments>11</slash:comments>
+		<slash:comments>12</slash:comments>
 		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fmarre-des-mots-de-passe-pour-push-sur-git%2F&amp;language=en_GB&amp;category=text&amp;title=Marre+des+mots+de+passe+pour+push+sur+git+%3F&amp;description=Vous+%C3%AAtes+dans+une+situation+o%C3%B9+vous+ne+pouvez+pas+utiliser+uniquement+une+cl%C3%A9+pour+vous+authentifier%2C+et+il+faut+taper+votre+putain+de+mot+de+passe+%C3%A0+chaque+push....&amp;tags=auth%2Ccache%2Cgit%2Cblog" type="text/html" />
 <enclosure url="http://sametmax.com/wp-content/uploads/2013/11/cdempDI.jpg" length="51081" type="image/jpg" />	</item>
 		<item>
@@ -356,132 +718,5 @@ Personnellement je compile toujours nginx avec Lua et quelques autres modules, �
 		<slash:comments>11</slash:comments>
 		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fafficher-la-vrai-ip-dun-visiteur-django-vs-nginx%2F&amp;language=en_GB&amp;category=text&amp;title=Afficher+l%26%238217%3BIP+d%26%238217%3Bun+visiteur+%26%238211%3B+Django+vs+Nginx&amp;description=Lorsque+l%26%238217%3Bon+veut+connaitre+son+ip+on+fait+souvent+appel+%C3%A0+des+sites+du+genre%3A+whatismyip.com%2C+mon-ip.com+ou+on+utilise+un+ifconfig+en+ssh.+Des+fois+on+a+aussi+besoin...&amp;tags=django%2Cnginx%2Creal+ip%2Cblog" type="text/html" />
 <enclosure url="http://sametmax.com/wp-content/uploads/2013/10/identity.jpg" length="31647" type="image/jpg" />	</item>
-		<item>
-		<title>Installer SSH Plus sur Ubuntu</title>
-		<link>http://sametmax.com/installer-ssh-plus-sur-ubuntu/</link>
-		<comments>http://sametmax.com/installer-ssh-plus-sur-ubuntu/#comments</comments>
-		<pubDate>Thu, 24 Oct 2013 13:54:49 +0000</pubDate>
-		<dc:creator>Sam</dc:creator>
-				<category><![CDATA[Administration System]]></category>
-		<category><![CDATA[ssh]]></category>
-		<category><![CDATA[sshplus]]></category>
-		<category><![CDATA[ubuntu]]></category>
-
-		<guid isPermaLink="false">http://sametmax.com/?p=7499</guid>
-		<description><![CDATA[<a href="http://sametmax.com/mon-environnement-de-travail/">Je vous avais parlé</a> de <a href="http://www.gulecha.org/2011/07/29/sshplus-a-sshmenu-compatible-appindicator/">SSH Plus</a>, mais sans mentionner son process d'install, un peu chiant.]]></description>
-			<content:encoded><![CDATA[<p><a href="http://sametmax.com/mon-environnement-de-travail/">Je vous avais parlé</a> de <a href="http://www.gulecha.org/2011/07/29/sshplus-a-sshmenu-compatible-appindicator/">SSH Plus</a>, mais sans mentionner son process d&#8217;install, un peu chiant.</p>
-<p>Pour rappel, c&#8217;est un petit indicateur qui vous permet de lancer une commande arbitraire. Son usage principal est d&#8217;ouvrir un terminal qui se connecte immédiatement en SSH à un serveur distant, mais on peut y mettre n&#8217;importe quoi.</p>
-<p>Pour l&#8217;installer :</p>
-
-<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;"># on installe les dépendances</span>
-<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> python-appindicator
-<span style="color: #666666; font-style: italic;"># on se calle dans le dossier temporaire</span>
-<span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>tmp
-<span style="color: #666666; font-style: italic;"># on download le script en Python</span>
-<span style="color: #c20cb9; font-weight: bold;">wget</span> https:<span style="color: #000000; font-weight: bold;">//</span>raw.github.com<span style="color: #000000; font-weight: bold;">/</span>anilgulecha<span style="color: #000000; font-weight: bold;">/</span>misc<span style="color: #000000; font-weight: bold;">/</span>master<span style="color: #000000; font-weight: bold;">/</span>sshplus.py
-<span style="color: #666666; font-style: italic;"># on le copie dans le dossier des exécutables</span>
-<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">mv</span> sshplus.py <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>sshplus
-<span style="color: #666666; font-style: italic;"># on le rend exécutable</span>
-<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">chmod</span> +x <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>sshplus</pre></div></div>
-
-<p>Pour le lancer, il n&#8217;y a plus qu&#8217;à faire :</p>
-
-<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">sshplus</pre></div></div>
-
-<p>Dans un terminal.</p>
-<p>Moi, je le rajoute dans ma liste des programme automatiquement lancé au démarrage, comme ça je n&#8217;y pense plus (&#8220;Dash&#8221; > &#8220;Applications au démarrage&#8221;).</p>
-<p>Après, vous pouvez lui faire lancer les commandes que vous voulez, en les mettant dans le fichier de config (~/.sshplus) en suivant la syntaxe  </p>
-<pre>Nom à afficher|commande|options</pre>
-<p>Par exemple :</p>
-<pre>Server Prod 12|guake|-t -n "new" -e "ssh username@adresse_ip"
-</pre>
-<p>Ceci va rajouter une entrée dans le menu nommée &#8220;Server Prod 12&#8243;. Si on clique dessus, ça lance <code>guake -t -n "new" -e "ssh username@adresse_ip"</code>, ce qui m&#8217;ouvre un nouvel onglet dans mon terminal guake avec lance la commande <code>ssh username@adresse_ip</code> juste après.</p>
- <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7499&amp;md5=41cedb422864ba4c710122ece621c37b" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
-			<wfw:commentRss>http://sametmax.com/installer-ssh-plus-sur-ubuntu/feed/</wfw:commentRss>
-		<slash:comments>5</slash:comments>
-		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Finstaller-ssh-plus-sur-ubuntu%2F&amp;language=en_GB&amp;category=text&amp;title=Installer+SSH+Plus+sur+Ubuntu&amp;description=Je+vous+avais+parl%C3%A9+de+SSH+Plus%2C+mais+sans+mentionner+son+process+d%26%238217%3Binstall%2C+un+peu+chiant.+Pour+rappel%2C+c%26%238217%3Best+un+petit+indicateur+qui+vous+permet+de+lancer+une+commande+arbitraire....&amp;tags=ssh%2Csshplus%2Cubuntu%2Cblog" type="text/html" />
-<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/SwlAwJa.jpg" length="51490" type="image/jpg" />	</item>
-		<item>
-		<title>Rapide test d&#8217;Ubuntu 13.10</title>
-		<link>http://sametmax.com/rapide-test-dubuntu-13-10/</link>
-		<comments>http://sametmax.com/rapide-test-dubuntu-13-10/#comments</comments>
-		<pubDate>Tue, 22 Oct 2013 12:45:54 +0000</pubDate>
-		<dc:creator>Sam</dc:creator>
-				<category><![CDATA[Administration System]]></category>
-		<category><![CDATA[ubuntu]]></category>
-
-		<guid isPermaLink="false">http://sametmax.com/?p=7501</guid>
-		<description><![CDATA[Ubuntu 13.10 vient de sortir et j'ai donc fait une micro partition pour le tester.]]></description>
-			<content:encoded><![CDATA[<p>Ubuntu 13.10 vient de sortir et j&#8217;ai donc fait une micro partition pour le tester.</p>
-<p>Installation sans histoire, un peu plus de config que d&#8217;hab car il faut virer toutes les merdes intrusives pour la vie privée (mais heureusement, y a des settings pour ça). Pas beaucoup de modifs, apparemment ils ont bossé la vitesse et la stabilité, ce qui est rare pour une non LTS. </p>
-<p>Le résultat est qu&#8217;on a un OS qui est beaucoup plus stable que ce que Canonical avait l&#8217;habitude de donner les premiers jours de release. Et légèrement plus rapide.</p>
-<p>En fait je suis tenté de migrer (mais pas con au point de le faire avant quelques mois), c&#8217;est globalement agréable à utiliser, épuré et fluide. On a pas encore Mir installé par défaut (OUF), donc ça reste un truc viable, qui tourne bien, avec des paquets plus récents à dispo. </p>
-<p>Mon seul chagrin, c&#8217;est la nouveau Nautilus. La recherche est maintenant récursive par défaut, et impossible à changer. <del datetime="2013-10-22T13:07:50+00:00">En prime, plus d&#8217;extensions possibles, du coup &#8220;open terminal here&#8221; et &#8220;compare with meld&#8221; partent à la poubelle, et je les aimais beaucoup.</del></p>
- <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7501&amp;md5=9cd758cab49143f3b4b32e4f2b81f3c5" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
-			<wfw:commentRss>http://sametmax.com/rapide-test-dubuntu-13-10/feed/</wfw:commentRss>
-		<slash:comments>10</slash:comments>
-		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Frapide-test-dubuntu-13-10%2F&amp;language=en_GB&amp;category=text&amp;title=Rapide+test+d%26%238217%3BUbuntu+13.10&amp;description=Ubuntu+13.10+vient+de+sortir+et+j%26%238217%3Bai+donc+fait+une+micro+partition+pour+le+tester.+Installation+sans+histoire%2C+un+peu+plus+de+config+que+d%26%238217%3Bhab+car+il+faut+virer+toutes...&amp;tags=ubuntu%2Cblog" type="text/html" />
-<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/Kfnpv.gif" length="498010" type="image/jpg" />	</item>
-		<item>
-		<title>Attention chérie ça a tranché !</title>
-		<link>http://sametmax.com/attention-cherie-ca-a-tranche/</link>
-		<comments>http://sametmax.com/attention-cherie-ca-a-tranche/#comments</comments>
-		<pubDate>Wed, 18 Sep 2013 05:13:19 +0000</pubDate>
-		<dc:creator>Max</dc:creator>
-				<category><![CDATA[Administration System]]></category>
-		<category><![CDATA[Programmation]]></category>
-		<category><![CDATA[Web]]></category>
-		<category><![CDATA[maintenance]]></category>
-
-		<guid isPermaLink="false">http://sametmax.com/?p=7273</guid>
-		<description><![CDATA[Certains d'entre vous auront remarqué que le site était down ces derniers jours. c'est normal !]]></description>
-			<content:encoded><![CDATA[<p>Attention chérie ça a tranché !</p>
-<p>Certains d&#8217;entre vous auront remarqué que le site était down ces derniers jours, notre hébergeur a eu des petits problèmes avec ses VPS dont nous faisions partie.</p>
-<p>Sam&#038;Max n&#8217;est pas mort, Sam est actuellement indisponnible jusqu&#8217;à la fin du mois et moi je suis un peu occupé en Asie, non pas que j&#8217;ai pas le temps d&#8217;écrire un article, mais pas l&#8217;envie car la tête ailleurs, j&#8217;espère que vous le comprendrez ;)</p>
-<p>Pour ceux que ça interresse j&#8217;essaierai de vous faire un topo sur mon déménagement d&#8217;ici quelques semaines quand je serai revenu à une vitesse de croisière ^^</p>
-<p>Bises à tous et bonnes vacances, oui nous on les prend en septembre :p</p>
- <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7273&amp;md5=f55f2dda93069ea2f79b7c9281af0d42" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
-			<wfw:commentRss>http://sametmax.com/attention-cherie-ca-a-tranche/feed/</wfw:commentRss>
-		<slash:comments>8</slash:comments>
-		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fattention-cherie-ca-a-tranche%2F&amp;language=en_GB&amp;category=text&amp;title=Attention+ch%C3%A9rie+%C3%A7a+a+tranch%C3%A9+%21&amp;description=Attention+ch%C3%A9rie+%C3%A7a+a+tranch%C3%A9+%21+Certains+d%26%238217%3Bentre+vous+auront+remarqu%C3%A9+que+le+site+%C3%A9tait+down+ces+derniers+jours%2C+notre+h%C3%A9bergeur+a+eu+des+petits+probl%C3%A8mes+avec+ses+VPS+dont...&amp;tags=maintenance%2Cblog" type="text/html" />
-<enclosure url="http://sametmax.com/wp-content/uploads/2013/09/cherie-ca-va-couper.jpg" length="46065" type="image/jpg" />	</item>
-		<item>
-		<title>Servir les fichiers statiques Django avec un .htaccess Apache</title>
-		<link>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/</link>
-		<comments>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/#comments</comments>
-		<pubDate>Fri, 30 Aug 2013 18:14:43 +0000</pubDate>
-		<dc:creator>Sam</dc:creator>
-				<category><![CDATA[Administration System]]></category>
-		<category><![CDATA[.httaccess]]></category>
-		<category><![CDATA[apache]]></category>
-		<category><![CDATA[django]]></category>
-		<category><![CDATA[python]]></category>
-		<category><![CDATA[static files]]></category>
-
-		<guid isPermaLink="false">http://sametmax.com/?p=7235</guid>
-		<description><![CDATA[J'avais fais un giga article pour expliquer <a href="http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/">comment servir les fichiers statiques Django</a>, mais j'ai réalisé ensuite que les gens n'avaient pas forcément accès aux fichiers de configuration du serveur.]]></description>
-			<content:encoded><![CDATA[<p>Servir le Javascript, les images et le CSS avec Django a toujours été une grande question pour les débutants.</p>
-<p>J&#8217;avais fais un giga article pour expliquer <a href="http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/">comment servir les fichiers statiques avec ce framework</a>, mais j&#8217;ai réalisé ensuite que les gens n&#8217;avaient pas forcément accès aux fichiers de configuration du serveur.</p>
-<p>Parfois, tout ce qu&#8217;ils ont c&#8217;est un pauvre fichier <em>.htaccess</em>. Tout n&#8217;est pas perdu, avec une petite règle de rewrite :</p>
-<pre>AddHandler fcgid-script .fcgi
-RewriteEngine On
-RewriteRule /static/ /chemin/vers/dossier/racine/apache/static
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ site.fcgi/$1 [QSA,L]</pre>
-<p>Attention à ce que <em>/static/</em> corresponde bien à l&#8217;arborescence <strong>complète</strong> de sous dossiers de <em>/chemin/vers/dossier/racine/apache/</em> et à <code>settings.STATIC_ROOT</code>.</p>
-<p>Par exemple :</p>
-<pre>AddHandler fcgid-script .fcgi
-RewriteEngine On
-RewriteRule /sous/dossier/static/ /chemin/vers/dossier/racine/apache/sous/dossier/static
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ site.fcgi/$1 [QSA,L]</pre>
-<p>Et <code>settings.STATIC_ROOT = "/sous/dossier/static/"</code>.</p>
-<p>En effet, on fait un rewrite ici, on ne sert pas le sous dossier directement.</p>
-<p>P.S: ça va sans le dire, mais ça va mieux en le disant, c&#8217;est de la prod, donc faut faire un <code>manage.py collecstatic</code> avant, et s&#8217;assurer d&#8217;avoir les bonnes valeurs pour <code>settings.STATIC_ROOT</code> et <code>settings.STATIC_URL</code>/</p>
- <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7235&amp;md5=ecd3aa8b126ad5683cd47a723611ae5a" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
-			<wfw:commentRss>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/feed/</wfw:commentRss>
-		<slash:comments>4</slash:comments>
-		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fservir-les-fichiers-statiques-django-avec-un-httaccess-apache%2F&amp;language=en_GB&amp;category=text&amp;title=Servir+les+fichiers+statiques+Django+avec+un+.htaccess+Apache&amp;description=Servir+le+Javascript%2C+les+images+et+le+CSS+avec+Django+a+toujours+%C3%A9t%C3%A9+une+grande+question+pour+les+d%C3%A9butants.+J%26%238217%3Bavais+fais+un+giga+article+pour+expliquer+comment+servir+les+fichiers...&amp;tags=.httaccess%2Capache%2Cdjango%2Cpython%2Cstatic+files%2Cblog" type="text/html" />
-<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/xirtyXE.jpg" length="152901" type="image/jpg" />	</item>
 	</channel>
 </rss>

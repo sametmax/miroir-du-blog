@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; load average</title>
+	<atom:link href="http://sametmax.com/tag/load-average/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Récupérer le load average d&#8217;un serveur avec python + fonction sleep</title>
+		<link>http://sametmax.com/recuperer-le-load-average-dun-serveur-avec-python-fonction-sleep/</link>
+		<comments>http://sametmax.com/recuperer-le-load-average-dun-serveur-avec-python-fonction-sleep/#comments</comments>
+		<pubDate>Thu, 31 May 2012 11:03:39 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[load average]]></category>
+		<category><![CDATA[proc]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=819</guid>
+		<description><![CDATA[Lorsque l'on a des serveurs qui souffrent de nos scripts de torture maison il est parfois bien d'avoir un oeil sur la charge de ce dernier afin d'être averti en cas de pépin.]]></description>
+			<content:encoded><![CDATA[<p>Le load average désigne, sous les systèmes UNIX, une moyenne de la charge système, une mesure de la quantité de travail que fait le système durant la période considérée. Celle-ci est disponible via la commande top ou uptime, ou encore via le fichier système /proc/loadavg. (<a href="http://fr.wikipedia.org/wiki/Load_average">Voir wikipedia</a>)</p>
+<p>Un petit truc simple pour connaitre le load average de son serveur depuis son script python.</p>
+<p>sous un shell python on tape:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&gt;&gt;&gt;</span> open<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #ff0000;">&quot;/proc/loadavg&quot;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>.readline<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>.split<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #ff0000;">&quot; &quot;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span><span style="color: #7a0874; font-weight: bold;">&#91;</span>:<span style="color: #000000;">3</span><span style="color: #7a0874; font-weight: bold;">&#93;</span>   
+<span style="color: #7a0874; font-weight: bold;">&#91;</span><span style="color: #ff0000;">'3.01'</span>, <span style="color: #ff0000;">'2.74'</span>, <span style="color: #ff0000;">'2.91'</span><span style="color: #7a0874; font-weight: bold;">&#93;</span></pre></div></div>
+
+<p>On obtient une liste avec les load average des 1, 5 et 15 dernières minutes, c&#8217;est magique, pas besoin d&#8217;installer des scripts pourris qui mettent cent ans à configurer et qui marchent une fois sur deux (j&#8217;ai passé 1 journée pour essayer de conf <a href="http://mmonit.com/monit/">Monit</a> en vain, de la merde en boite faite par un autiste)</p>
+<p>Mon serveur a les couilles dans un étaux comme on peut le voir, on peut imaginer une fonction qui va attendre que la charge baisse avant d&#8217;exécuter la prochaine tâche de torture.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">#wait if load average is too high</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> load_average_wait<span style="color: black;">&#40;</span>treshold=<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        If server is above the treshold value, wait for lower load before continue
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">float</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;/proc/loadavg&quot;</span><span style="color: black;">&#41;</span>.<span style="color: #dc143c;">readline</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot; &quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> treshold:
+        <span style="color: #dc143c;">time</span>.<span style="color: black;">sleep</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># my script part that eat a lot...</span>
+<span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Encode video, is there anything else eating so much cpu in the universe ?</span>
+    encode_video<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># wait if cpu start boiling...</span>
+    load_average_wait<span style="color: black;">&#40;</span><span style="color: #ff4500;">1.5</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>ça m&#8217;a sauvé 2 serveurs de la mort certaine, j&#8217;ai bien tenté un <a href="http://sametmax.com/diminuer-la-charge-cpu-dun-process-avec-renice/" title="Diminuer la charge cpu d’un process avec renice">renice</a> mais ça ne suffisait pas.</p>
+<p>EDIT:<br />
+On peut également s&#8217;en servir pour s&#8217;envoyer des emails en cas de surcharge du serveur et ce sans installer d&#8217;usine à gaz genre nagio et autre&#8230;</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=819&amp;md5=f37a2da70fa57daf03dd538b9b96ddaf" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/recuperer-le-load-average-dun-serveur-avec-python-fonction-sleep/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Frecuperer-le-load-average-dun-serveur-avec-python-fonction-sleep%2F&amp;language=en_GB&amp;category=text&amp;title=R%C3%A9cup%C3%A9rer+le+load+average+d%26%238217%3Bun+serveur+avec+python+%2B+fonction+sleep&amp;description=Le+load+average+d%C3%A9signe%2C+sous+les+syst%C3%A8mes+UNIX%2C+une+moyenne+de+la+charge+syst%C3%A8me%2C+une+mesure+de+la+quantit%C3%A9+de+travail+que+fait+le+syst%C3%A8me+durant+la+p%C3%A9riode+consid%C3%A9r%C3%A9e.+Celle-ci...&amp;tags=load+average%2Cproc%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/bouillir2.png" length="184232" type="image/jpg" />	</item>
+		<item>
+		<title>Diminuer la charge cpu d&#8217;un process avec renice</title>
+		<link>http://sametmax.com/diminuer-la-charge-cpu-dun-process-avec-renice/</link>
+		<comments>http://sametmax.com/diminuer-la-charge-cpu-dun-process-avec-renice/#comments</comments>
+		<pubDate>Tue, 29 May 2012 08:44:10 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cpu]]></category>
+		<category><![CDATA[load average]]></category>
+		<category><![CDATA[nice]]></category>
+		<category><![CDATA[process]]></category>
+		<category><![CDATA[renice]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=780</guid>
+		<description><![CDATA[Si vous avez un process qui consomme pas mal de cpu vous pouvez changer sa priorite à l'aide la commande renice.
+]]></description>
+			<content:encoded><![CDATA[<p>Il arrive que l&#8217;on ai a executer certains scripts sur un serveur de prod deja pas mal encombré, je prends comme exemple mon cas ou j&#8217;ai du reencoder des vidéos, le load average est monté à 6, les perfs en sont du coup devenues execrables.<br />
+Sous linux on a heureusement plein d&#8217;outils sympas, <strong>renice</strong> en fait partie.</p>
+<p>La commande <strong>renice</strong> permet d&#8217;assigner une priorite a un process en cours qui va de -20 (tres elevee) à 20 (tres bas), 0 etant la valeur par défaut. La commande est &#8220;renice priorite id_process&#8221;, dans mon cas:</p>
+<p><strong>Note: On peut connaitre l&#8217;id du process avec un top ou <a href="http://sametmax.com/htop-un-visualiseur-interactif-de-process/" title="htop – un visualiseur interactif de process">htop</a></strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">PID USER        PR  NI  VIRT  RES  SHR S <span style="color: #000000; font-weight: bold;">%</span>CPU <span style="color: #000000; font-weight: bold;">%</span>MEM    TIME+  COMMAND          
+<span style="color: #000000;">14378</span> max 	<span style="color: #000000;">35</span>  <span style="color: #000000;">15</span>  129m  12m <span style="color: #000000;">4632</span> R <span style="color: #000000;">99.4</span>  <span style="color: #000000;">0.2</span>   <span style="color: #000000;">0</span>:<span style="color: #000000;">03.22</span> <span style="color: #c20cb9; font-weight: bold;">ffmpeg</span>       
+<span style="color: #000000;">22959</span> max       <span style="color: #000000;">20</span>  <span style="color: #000000;">15</span>  101m  79m  <span style="color: #000000;">924</span> S  <span style="color: #000000;">1.7</span>  <span style="color: #000000;">1.3</span>   <span style="color: #000000;">8</span>:<span style="color: #000000;">51.85</span> python encode.py                
+<span style="color: #000000;">22958</span> nginx     <span style="color: #000000;">20</span>   <span style="color: #000000;">0</span>  105m  83m  <span style="color: #000000;">924</span> S  <span style="color: #000000;">1.0</span>  <span style="color: #000000;">1.4</span>   <span style="color: #000000;">8</span>:<span style="color: #000000;">51.44</span> nginx</pre></div></div>
+
+<p>Ici ffmpeg à un nice (NI) de 15 qu&#8217;il a herité de mon script Python <em>encode.py</em> a qui j&#8217;ai fais un renice de 15 avec la commande &#8220;renice 15 22959&#8243;. Les process heritent automatiquement du nice des parents qui les ont lancés.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=780&amp;md5=4f9d36741f2de47afdc147b78c1f68df" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/diminuer-la-charge-cpu-dun-process-avec-renice/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fdiminuer-la-charge-cpu-dun-process-avec-renice%2F&amp;language=en_GB&amp;category=text&amp;title=Diminuer+la+charge+cpu+d%26%238217%3Bun+process+avec+renice&amp;description=Il+arrive+que+l%26%238217%3Bon+ai+a+executer+certains+scripts+sur+un+serveur+de+prod+deja+pas+mal+encombr%C3%A9%2C+je+prends+comme+exemple+mon+cas+ou+j%26%238217%3Bai+du+reencoder+des+vid%C3%A9os%2C...&amp;tags=cpu%2Cload+average%2Cnice%2Cprocess%2Crenice%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/traffic-jam.jpg" length="63310" type="image/jpg" />	</item>
+	</channel>
+</rss>

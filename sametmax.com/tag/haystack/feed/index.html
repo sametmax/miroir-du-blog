@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; haystack</title>
+	<atom:link href="http://sametmax.com/tag/haystack/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>La programmation c&#8217;est aussi ça</title>
+		<link>http://sametmax.com/la-programmation-cest-aussi-ca/</link>
+		<comments>http://sametmax.com/la-programmation-cest-aussi-ca/#comments</comments>
+		<pubDate>Thu, 23 Feb 2012 19:50:39 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[haystack]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=199</guid>
+		<description><![CDATA[Je reviens du footing, juste avant de prendre ma douche, à oualpé, je détecte un mail de Sam, simple et direct...]]></description>
+			<content:encoded><![CDATA[<p>Je reviens du footing, juste avant de prendre ma douche, à oualpé, je détecte un mail de Sam, simple et direct:</p>
+<blockquote><p>j&#8217;ai une merde avec la db, impossible de savoir d&#8217;où ça vient, en tracant le max que j&#8217;ai pu le prob se situe dans movie.py, ligne 480, dans la fonction on_save de MovieSource à la ligne movie.save() , le process bloque et prend 100% du cpu, ça ne le fait pas quand j&#8217;ajoute une todo par exemple, donc c vraiment specifique aux sources, et je peux pas tracer plus car je tombe dans les méandre de django et c la merde.</p>
+<p>me suis tapé une heure de doc git pour essayer de comprendre comment se balader dans les version mais ça n&#8217;a pas l&#8217;air de sauter aux yeux des mecs qui ont fait la doc de l&#8217;expliquer du coup je sais comment effacer les derniers xxx commits mais pas revenir&#8230;</p>
+<p><strong>je hais git, je hais django, je vais aux putes ça va détendre mon karma</strong>.
+</p></blockquote>
+<p>Finalement, après avoir échangé nos bases de données, nos fichiers de configs, nos pip freeze, moi la bite à l&#8217;air et lui les nerfs à vifs:</p>
+<blockquote><p>(14:25:35) Max: &#8230;<br />
+(14:26:48) Sam: ça en fini plus<br />
+(14:28:03) Max: je poste ton email sur sam et max<br />
+(14:28:06) Max: il est trop beau<br />
+(14:28:50) Sam: connard :)<br />
+(14:28:54) Sam: je crois que c haystack<br />
+(14:28:57) Max: &#8220;je hais git, je hais django, je vais aux putes ça va détendre mon karma.&#8221;<br />
+(14:29:01) Sam: t&#8217;as touché des trucs dessus ?<br />
+(14:29:01) Max: c&#8217;est génial !<br />
+(14:29:04) Sam: > /Users/sam/.virtualenvs/project/lib/python2.6/site-packages/haystack/backends/whoosh_backend.py(197)update()<br />
+    196                 sp = SpellChecker(self.storage)<br />
+&#8211;> 197                 sp.add_field(self.index, self.content_field_name)<br />
+    198<br />
+(14:29:21) Sam: dans self.storage y a le path vers app> tvsite<br />
+(14:29:30) Sam: y a plein de fichiers dedans je devrais ptet les del<br />
+(14:29:44) Max: self.storage c&#8217;est pa scensé allé vers tvsite<br />
+(14:29:51) Max: t&#8217;as pas changé ça dans ton local_settings.py ?<br />
+(14:29:53) Sam: si c mon path local moisi<br />
+14:30<br />
+(14:30:03) Sam: pas touché non<br />
+(14:30:16) Max: (13:49:54) Max: settings.HAYSTACK_WHOOSH_PATH = os.path.join(settings.PROJECT_DIR, &#8216;movies_site/search/woosh&#8217;)<br />
+13:50<br />
+(14:30:52) Max: on a tous les deux la même version de whoosh d&#8217;après ton pip freeze<br />
+(14:31:10) Sam: il va le créer se rep ? car je l&#8217;ai pas<br />
+(14:31:59) Sam: ça marche !<br />
+(14:32:02) Sam: bordel de merde<br />
+(14:32:26) Sam: y avait un fichier de merde dans le rep<br />
+(14:32:27) Sam: MAIN_WRITELOCK<br />
+(14:32:36) Sam: et SPELL_WRITELOCK<br />
+(14:32:42) Sam: c ptet eux qui faisait merder le truc<br />
+(14:32:49) Sam: fiouuuu quel bordel<br />
+(14:33:04) Max: :-)<br />
+(14:33:10) Sam: <strong>je hais woosh</strong><br />
+(14:33:13) Sam: <strong>je hais haystack</strong><br />
+(14:33:04) Max: :-)<br />
+(14:33:20) Sam: bon merci billou<br />
+(14:33:28) Sam: avec tout ça j&#8217;ai pas avancé cet aprem :(<br />
+(14:33:40) Max: :-)<br />
+(14:33:50) Sam: moi qui voulait rajouter le scan des films qui correspondent pas<br />
+(14:33:56) Sam: bon pas grave, demain<br />
+(14:34:02) Sam: c&#8217;est l&#8217;heure des putes ^^
+</p></blockquote>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=199&amp;md5=82ac7afb749b34a53b74bd6de8710f2b" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-programmation-cest-aussi-ca/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fla-programmation-cest-aussi-ca%2F&amp;language=en_GB&amp;category=text&amp;title=La+programmation+c%26%238217%3Best+aussi+%C3%A7a&amp;description=Je+reviens+du+footing%2C+juste+avant+de+prendre+ma+douche%2C+%C3%A0+oualp%C3%A9%2C+je+d%C3%A9tecte+un+mail+de+Sam%2C+simple+et+direct%3A+j%26%238217%3Bai+une+merde+avec+la+db%2C+impossible+de+savoir...&amp;tags=django%2Cgit%2Chaystack%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/02/lifesucks.jpg" length="29517" type="image/jpg" />	</item>
+	</channel>
+</rss>

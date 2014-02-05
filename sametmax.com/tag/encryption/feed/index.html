@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; encryption</title>
+	<atom:link href="http://sametmax.com/tag/encryption/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Shut ! J&#8217;ai un secret en Python&#8230;</title>
+		<link>http://sametmax.com/shut-jai-un-secret-en-python/</link>
+		<comments>http://sametmax.com/shut-jai-un-secret-en-python/#comments</comments>
+		<pubDate>Tue, 13 Nov 2012 15:11:32 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encryption]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1588</guid>
+		<description><![CDATA[Dans une chasse au trésor sérieuse, si on a 5 épreuves, on prend l'indice suivant, on le divise en 5, et on s'assure que réussi 3 épreuves suffisent à donner assez d'informations pour reconstituer l'indice suivant. En informatique il existe un moyen de faire cela avec le <a href="https://fr.wikipedia.org/wiki/Partage_de_cl%C3%A9_secr%C3%A8te_de_Shamir">partage de clé secrète de Shamir</a>]]></description>
+			<content:encoded><![CDATA[<p>J&#8217;adore les chasses au trésor. Préparer les énigmes, suivre les participants, c&#8217;est bien plus marrant que de faire partie d&#8217;une des équipes. Je me suis toujours dit que si je devenais obscènement riche, j&#8217;achèterais 10 millions d&#8217;euros en pièces d&#8217;or et je les planquerais quelque part, puis je lancerais une chasse au trésor mondiale pour le fun. Des années de préparation, des années d&#8217;amusement !</p>
+<p>Une des problématiques de la chasse au trésor, c&#8217;est de s&#8217;assurer que tout le monde a une chance. Il faut varier les épreuves: musique, littérature, observation, orientation, histoire, puzzle, exercice physique, etc. Et bien sûr il faut créer un système tolérant à l&#8217;échec, car le but c&#8217;est quand même que quelqu&#8217;un trouve le butin. La meilleure partie est après tout ce très court moment d’exultation où on ouvre le coffre, ou son équivalent.</p>
+<p>Quand c&#8217;est une chasse au trésor pour mioches, c&#8217;est facile, il suffit de donner un temps d&#8217;avance à l&#8217;équipe qui réussi une épreuve en premier, de balancer un indice, de retirer une contrainte, etc. Au pire on saute juste une épreuve.</p>
+<p>Dans une grosse chasse au trésor, il faut faire quelque chose de plus sérieux: on doit limiter son interaction au maximum avec les équipes pour leur donner une sensation d&#8217;aventure, et de challenge.</p>
+<p>La solution à ce problème, c&#8217;est d&#8217;utiliser des indices divisibles:</p>
+<ul>
+<li>prendre l&#8217;indice suivant;</li>
+<li>le diviser en morceaux;</li>
+<li>permettre de recoller les morceaux, et obtenir l&#8217;indice même quand on ne les a pas tous.</li>
+</ul>
+<p>Ainsi, si on a 5 épreuves, on prend l&#8217;indice suivant, on le divise en 5, et on s&#8217;assure que réussir 3 épreuves suffisse à donner assez d&#8217;informations pour reconstituer l&#8217;indice suivant. Ca marche avec les cartes incomplètes, les textes à trou, les dessins superposables, etc.</p>
+<p>En informatique il existe un moyen de faire cela avec le <a href="https://fr.wikipedia.org/wiki/Partage_de_cl%C3%A9_secr%C3%A8te_de_Shamir">partage de clé secrète de Shamir</a>. Et bien sûr, comme toujours, il y a <a href="http://code.google.com/p/python-secret-sharing/">une lib Python</a> qui permet de s&#8217;en servir.</p>
+<p>Malheureusement, comme beaucoup de libs scientifiques, elle est bien chiante à installer et elle ne respecte pas le PEP8:</p>
+<p>D&#8217;abord il vous faut installer pycrypto, une dépendance:</p>
+<p><code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install pycryto</code></p>
+<p>Assurez-vous d&#8217;avoir les headers de Python (paquet python-dev sous Ubuntu), car c&#8217;est une extension en C que pip va compiler.</p>
+<p>Ensuite, on doit cloner le repo à la main (si, si):</p>
+<p><code>git clone https://code.google.com/p/python-secret-sharing/</code></p>
+<p>Et copier le dossier nommé &#8216;ss&#8217; (un truc aussi strict, c&#8217;est forcément les nazis j&#8217;vous dis) dans le dossier de votre application ou dans votre dossier de site-package. Si j&#8217;ai le temps je leur proposerais un petit <code>setup.py</code>.</p>
+<p>Ensuite ça s&#8217;utilise très facilement:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> ss.<span style="color: black;">secret_sharing</span> <span style="color: #ff7700;font-weight:bold;">import</span> secret_sharing
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> secret = secret_sharing<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;1 - voler des caleçons. 2 - .... 3 - profit !&quot;</span>, <span style="color: #ff4500;">20</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ceci va produire un secret divisible en 20 parts, donc il ne faut que 3 parts pour relire le secret de conquête du monde que j&#8217;ai planqué dans cette citation pleine de sagesse.</p>
+<p>Je peux obtenir une part au hasard:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> secret.<span style="color: black;">share_random</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> 
+<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">16</span>, 721654044499788854347597992565674L<span style="color: black;">&#41;</span>,
+ <span style="color: black;">&#40;</span><span style="color: #ff4500;">18</span>,
+  102214856329848326909206303519239813304695812929767500268700035275955811306374521388L<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Notez que c&#8217;est un simple tuple. On peut en faire des choses avec un simple tuple, comme le serialiser, le compresser, l&#8217;obfusquer, l&#8217;encoder, le sténographier&#8230;</p>
+<p>Et si je veux retrouver le secret:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> ss.<span style="color: black;">secret_sharing_c</span> <span style="color: #ff7700;font-weight:bold;">import</span> secret_sharing_c
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> assembleur = secret_sharing_c<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> assembleur.<span style="color: black;">add_share</span><span style="color: black;">&#40;</span>secret.<span style="color: black;">share_random</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> assembleur.<span style="color: black;">add_share</span><span style="color: black;">&#40;</span>secret.<span style="color: black;">share_random</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> assembleur.<span style="color: black;">add_share</span><span style="color: black;">&#40;</span>secret.<span style="color: black;">share_random</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> assembleur.<span style="color: black;">reconstruct</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span> - voler des caleçons. <span style="color: #ff4500;">2</span> - .... <span style="color: #ff4500;">3</span> - profit <span style="color: #66cc66;">!</span></pre></div></div>
+
+<p>Attention: si on met moins ou plus de parts dans l&#8217;assembleur que prévu, il s&#8217;auto-poutre avec un salami en bêton bardé de <code>ZeroDivisionError</code> ou <code>OverflowError</code>.</p>
+<p>Bref, comme d&#8217;habitude l&#8217;informatique peut être fun, fun, fun. Je me demande pourquoi on enseigne jamais ça en cours. C&#8217;est quand même plus marrant que de créer des fonctions de manipulation de graphes en Java comme on avait eu la bonne idée de nous faire faire.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1588&amp;md5=9129a823cd0c314b95c87b0887c8a243" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/shut-jai-un-secret-en-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fshut-jai-un-secret-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Shut+%21+J%26%238217%3Bai+un+secret+en+Python%26%238230%3B&amp;description=J%26%238217%3Badore+les+chasses+au+tr%C3%A9sor.+Pr%C3%A9parer+les+%C3%A9nigmes%2C+suivre+les+participants%2C+c%26%238217%3Best+bien+plus+marrant+que+de+faire+partie+d%26%238217%3Bune+des+%C3%A9quipes.+Je+me+suis+toujours+dit+que+si+je...&amp;tags=encryption%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/PocketDecoder.png" length="128304" type="image/jpg" />	</item>
+		<item>
+		<title>Corriger l&#8217;erreur de splicing sur une partition Truecrypt</title>
+		<link>http://sametmax.com/corriger-lerreur-de-splicing-sur-une-partition-truecrypt/</link>
+		<comments>http://sametmax.com/corriger-lerreur-de-splicing-sur-une-partition-truecrypt/#comments</comments>
+		<pubDate>Sat, 30 Jun 2012 15:26:16 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[encryption]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[truecrupt]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1004</guid>
+		<description><![CDATA[Quand une partition TrueCrypt est mal démontée, il arrive qu'elle soit corrompue. Alors copier le fichier chiffré ou une partie de son contenu déclenche une erreur bizarre et l'ordinateur invoque un problème avec le splicing.
+]]></description>
+			<content:encoded><![CDATA[<p>Quand une partition <a href="http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/">TrueCrypt</a> est mal démontée, il arrive qu&#8217;elle soit corrompue. Alors copier le fichier chiffré ou une partie de son contenu déclenche une erreur bizarre et l&#8217;ordinateur invoque un problème avec le splicing.</p>
+<p>Je n&#8217;ai absolument aucune idée de ce que ça veut dire. Il pourrait aussi bien dire &#8220;<em>Reticulating splines failed</em>&#8220;.</p>
+<p>Néanmoins le problème a été corrigé de mon côté de la manière suivante:</p>
+<ol>
+<li>Monter le la partition.</li>
+<li>Dans l&#8217;interface de Truecrypt, faites un clic droit sur votre partition dans la liste des partitions montées.</li>
+<li>Lancez &#8220;check file system&#8221;.</li>
+<li>- Une fois terminé, lancez &#8220;repair file system&#8221;.</li>
+<li>- Quand le script vous demande si il doit réparer, confirmez que vous le souhaitez (entrez &#8216;y&#8217; puis &#8216;enter&#8217;).</li>
+</ol>
+<p>Ça a marché pour moi. Cela fonctionne aussi dans le cas où vous avez votre partition Truecrypt qui se met itempestivement en lecture seule (par exemple après l&#8217;avoir copié depuis une clé USB).</p>
+<p>Si cela ne marche pas, vérifiez également qu&#8217;il reste de l&#8217;espace à l&#8217;intérieur de la partition, et sur le disque dur qui contient le fichier Truecrypt. Ca peut causer la même erreur.</p>
+<p>Encore une bonne raison de toujours faire avec un backup de sa partition TrueCrypt, d&#8217;autant que c&#8217;est très facile puisqu&#8217;il suffit de faire un simple copier/coller du fichier.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1004&amp;md5=a54194e39e2f3e5ed0e07cf95e0037f5" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/corriger-lerreur-de-splicing-sur-une-partition-truecrypt/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcorriger-lerreur-de-splicing-sur-une-partition-truecrypt%2F&amp;language=en_GB&amp;category=text&amp;title=Corriger+l%26%238217%3Berreur+de+splicing+sur+une+partition+Truecrypt&amp;description=Quand+une+partition+TrueCrypt+est+mal+d%C3%A9mont%C3%A9e%2C+il+arrive+qu%26%238217%3Belle+soit+corrompue.+Alors+copier+le+fichier+chiffr%C3%A9+ou+une+partie+de+son+contenu+d%C3%A9clenche+une+erreur+bizarre+et+l%26%238217%3Bordinateur+invoque...&amp;tags=encryption%2Cs%C3%A9curit%C3%A9%2Ctruecrupt%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/MV5BMTkxMzg0NjA0Nl5BMl5BanBnXkFtZTcwNjg1ODAzMQ@@._V1._SY317_CR40214317_.jpg" length="17836" type="image/jpg" />	</item>
+	</channel>
+</rss>

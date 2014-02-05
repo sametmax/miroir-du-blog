@@ -13,12 +13,114 @@
 	<atom:link href="http://sametmax.com/tag/import/feed/" rel="self" type="application/rss+xml" />
 	<link>http://sametmax.com</link>
 	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
-	<lastBuildDate>Mon, 02 Dec 2013 10:02:45 +0000</lastBuildDate>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
 	<language>en</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
 	<generator>http://wordpress.org/?v=3.3.1</generator>
 	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Importer des données, retour d&#8217;expérience</title>
+		<link>http://sametmax.com/importer-des-donnees-retour-dexperience/</link>
+		<comments>http://sametmax.com/importer-des-donnees-retour-dexperience/#comments</comments>
+		<pubDate>Thu, 16 Jan 2014 15:49:21 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[api]]></category>
+		<category><![CDATA[data]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[xml]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8772</guid>
+		<description><![CDATA[Python est simplement le meilleur langage au monde pour l'import de données. Sa capacité à lire énormément de formats facilement, sa force de manipulation de données numériques et texte, sa philosophie d'itération, ses nombreuses libs en font un outil incroyablement souple et puissant.
+
+Voici mes 2 centimes.]]></description>
+			<content:encoded><![CDATA[<p>Dédicaçons la chanson de notre article au plus barbu de mes amis poneys.</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/9wrVTYMGTao" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p>J&#8217;ai importé des données un très grand nombre de fois dans ma vie. Depuis des APIs, des XML, des CSV, du filesystem, des formats binaires, des formats batards, etc</p>
+<p>Pour tous les jobs d&#8217;import, Python est probablement le meilleur langage au monde. Autant j&#8217;aime Python, autant je suis lucide sur le fait qu&#8217;en dev Web, Ruby et Javascript sont d&#8217;excellentes alternatives. En programmation concurrente, Go dépasse Python. En IA, Lisp est le top de la concurrence.</p>
+<p>Mais pour l&#8217;import de données, Python est simplement le meilleur langage au monde. Sa capacité à lire énormément de formats facilement, sa force de manipulation de données numériques et texte, sa philosophie d&#8217;itération, ses nombreuses libs en font un outil incroyablement souple et puissant.</p>
+<p>Malgré cela, on retrouve toujours des grosses difficultés dans l&#8217;import de données. Elles sont les mêmes pour tous les langages.</p>
+<p>Voici mes 2 centimes.</p>
+<h2>N&#8217;accordez aucune confiance à la donnée</h2>
+<p>Partez du principe que tout champ peut manquer. Que toute donnée peut être mal formée ou corrompue. Ou fausse.</p>
+<p>Même si le service en face est sérieux. J&#8217;ai bossé avec des données du service de santé américain, de France Télécom, de startups, d&#8217;outils Open Source, de scrapping de sites, de mon pote Maurice, et de mes propres scripts</p>
+<p>Vous savez ce qu&#8217;ils ont tous en commun ? Aucun ne sont fiables. Aucun.</p>
+<p>Ils ont tous des données merdiques à un moment où à un autre.</p>
+<p>Ayez donc une approche défensive. Pour CHAQUE champ, posez vous la question : que doit faire le script d&#8217;import si il manque ? Si la donnée contenue est foireuse ?</p>
+<h2>Les outils d&#8217;abstraction sont vos amis</h2>
+<p>Un import, c&#8217;est typiquement le genre de taff où les surcouches vont énormément vous aider. ORM, DSL, XML objectify et toute lib qui peut vous éviter de travailler trop proche du format va vous faire gagner un temps fou.</p>
+<p>Prenez un peu de temps pour les mettre en place. Même si ils vous font perdre un peu en perf, un gros script d&#8217;import devient TRÈS VITE un sac de nœud. Et vous voulez que les problèmes soient facilement identifiables.</p>
+<p>Pour cette même raison, virez toute la logique de l&#8217;insertion des données en dehors du script. Votre script doit avoir une logique découpée en 3 parties :</p>
+<ol>
+<li>Le script d’acquisition, qui charge les données et les passe sous forme brute à un importeur.</li>
+<li>Un importeur, qui est capable d&#8217;extraire des données raffinées à partir d&#8217;un format de données brutes et appeler le bon code d&#8217;insertion.</li>
+<li>Du code d&#8217;insertion, qui attend en paramètre une donnée toujours propre (sans aucun check), et qui se charge uniquement de prendre cette donnée et la mettre dans votre système de stockage (généralement la base de données).</li>
+</ol>
+<p>Le script d’acquisition doit rester très simple. Une suite d&#8217;instructions logiques pour récupérer la donnée, l&#8217;énumérer et la passer à l&#8217;importeur. C&#8217;est lui qui fait les appels API, qui se connecte au FTP, qui ouvre le CSV, qui parse le XML, etc. Ainsi vous pouvez facilement interchanger les importeurs ou voir si il y a une couille dans la récupération des données.</p>
+<p>L&#8217;importeur est généralement le code le plus crade. C&#8217;est une série de <code>try</code> / <code>except</code>, de logique métier, d&#8217;assainissement des données. Vous ne voulez pas de code d&#8217;insertion là dedans, car vous voulez que ce code, qui est difficile à débugger et va être celui qui va être modifié toutes les 5 minutes au fur et à mesure que vous découvrez toute les merdes, soit dédié à une seule logique : obtenir de la donnée saine. Ce code sera spaghetti, vous n&#8217;y pouvez rien. Mais vous pouvez l&#8217;isoler et le commenter à mort.</p>
+<p>Le code d&#8217;insertion est un code réutilisable. Il se fout de savoir d&#8217;où vient la donnée. Il attend un format, et un seul, et toujours de données correctes, et propres. C&#8217;est le but des importeurs de lui filer une entrée normalisée et pertinente. Ce code est propre, et doit être très bien testé via des tests unittaires. Il va vous servir plusieurs fois, car c&#8217;est le même code qui sera utilisé que vous importiez d&#8217;un service X ou un service Y. Il représente VOTRE logique métier. N&#8217;insérez pas ce code dans le code d&#8217;une autre abstraction (type ORM), ainsi, si vous changez d&#8217;outils, vous changez simplement ce code, et l&#8217;interface reste la même pour vos importeurs.</p>
+<h2>Debugging</h2>
+<p>Votre script va planter. Beaucoup. Souvent.</p>
+<p>Un champ absolument indispensable &#8211; que la spec papier notait comme toujours présent &#8211; va manquer. Un autre champ noté de type int dans le xld contient une lettre. L&#8217;encoding n&#8217;est pas le bon, alors qu&#8217;il l&#8217;a toujours été pendant 5 mois.</p>
+<p>Ce n&#8217;est pas une question de si, c&#8217;est une question de quand.</p>
+<p>Donc déjà, blindez votre script de <a href="http://sametmax.com/ecrire-des-logs-en-python/">log</a>. Quand je dis blindez, je veux dire que chaque <code>if</code>, chaque résultat de check, doit être accompagné d&#8217;une ligne affichant l&#8217;action en cours, et son contexte (la donnée traitée, de préférence avec un truc pour l&#8217;identifier, genre un ID). Quand il plantera à 3 heure du matin sur un truc hubuesque et que le relancer pour obtenir le même état prendra une demi-journée, le log sera votre seul chance de réparer la panne sans engager un psy.</p>
+<p>Mettez aussi un gros <code>try / except</code> générique qui loggue toute exception, pour pouvoir faire un debug post mortem. Idéalement, faites le dumper <code>locals()</code> et envoyez-vous un mail d&#8217;alerte. Vous ne voulez pas que le script ne tourne pas pendant une journée sans que vous le sachiez.</p>
+<p>Mettez des options dans votre scripts pour pouvoir débugger plus facilement. Par exemple, si vous avez de code d&#8217;insertion qui est sous forme de tâche asynchrone (type <a href="http://sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/">celery</a>), mettez une option <code>--synchronous</code> qui insère le code inline afin de pouvoir utiliser <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> sur tout le script en cas de besoin. Ou alors, si vous avez une grosse archive à décompresser, mettez une option <code>--nozip</code> pour pouvoir sauter cette étape.</p>
+<p>Et si vous insérez un break point, mettez le dans une condition du genre :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">if</span> id_du_champ_ou_autre_moyen_identifiant == <span style="color: #483d8b;">&quot;valeur&quot;</span>:
+    send_mail<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Alerte, on est peut être au bug. Bouge ton fion.'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">import</span> ipdb<span style="color: #66cc66;">;</span> ipdp.<span style="color: black;">set_trace</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Comme ça vous pouvez retourner à vos moutons le temps que le breakpoint s&#8217;active, ce qui, sur des gros jeux de données, peut prendre énormément de temps.</p>
+<p>Enfin, je sais qu&#8217;on a tendance à être fainéant et vouloir toujours débugger en direct. Mais faites des mocks. Faites un faux XML, une API bidon, bref, un truc qui vous permet d&#8217;insérer des cas d&#8217;import avec une données dans le format attendu, et testez votre code avec ça. Pour les petits imports, c&#8217;est une perte de temps, mais pour les gros imports, ça va vous faire gagner des jours. Ainsi vous pouvez tester des cas isolé, rajouter des bugs rencontrés, etc. Et en plus ça sert de documentation.</p>
+<h2>Problèmes courants</h2>
+<p>Il y a mille et une manière d&#8217;avoir un import qui plante, mais il y a généralement 6 grosses foirades qu&#8217;on retrouve tout le temps.</p>
+<h3>Service défaillant</h3>
+<p>Le service (FTP, API, humain en face, NAS, etc) qui doit vous fournir les données est indisponible. Vous n&#8217;y pouvez rien. Envoyez-vous un SMS pour vous prévenir, aujourd&#8217;hui <a href="http://www.twilio.com/">c&#8217;est facile et ça coûte presque rien</a>. Ainsi vous pourrez dialoguer rapidement avec les personnes responsables de problème.</p>
+<h3>Champs manquants</h3>
+<p>Grand classique. Tout champ peut manquer. Tout. Même un ID unique sans lequel la donnée n&#8217;a aucune sens. Faites vous un wrapper du genre :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get_data<span style="color: black;">&#40;</span>champ<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #808080; font-style: italic;"># extraire le champ</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> ChampAbsent, ChampMalFormé:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">None</span></pre></div></div>
+
+<p>Et utilisez le partout. Et décidez ce que doit faire votre programme si il rencontre <code>None</code>. Pour TOUS les champs. Si <code>None</code> est une valeur possible, utilisez <code>Ellipsis</code>. Si <code>Ellipsis</code> est une valeur possible, faites vous une classe <code>InvalidData</code>.</p>
+<h3>Mauvais encoding</h3>
+<p>Super vicieux. Je vous renvoie à <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">l&#8217;article sur l&#8217;encoding</a> pour cela.</p>
+<h3>Donnée aberrante</h3>
+<p>Impossible à prévoir, très difficile à identifier. Donnée de mauvais type, date ou nombre hors limites, texte dans la mauvaise langue, etc. Vous ne pouvez pas tout prévoir. Pour ça, il faudra faire au fur et à mesure des plantages.</p>
+<h3>Données mal formatée et malicieuses</h3>
+<p>En plus de <code>get_data</code>, il vous faut un <code>clean_data</code>. Qui check si on peut processer la donnée sereinement. Pour tous les champs également. C&#8217;est con, mais si LEUR système n&#8217;escape pas les entrées utilisateurs, c&#8217;est VOTRE système dans lequel se retrouve les injections de code.</p>
+<h2>Performances</h2>
+<p>La vitesse de votre script sera généralement limitée par 3 facteurs :</p>
+<ul>
+<li>Vitesse de lecture.</li>
+<li>Vitesse d&#8217;écriture.</li>
+<li>Vos plantages.</li>
+</ul>
+<p>Ces 3 facteurs sont en général très liés.</p>
+<p>La meilleur stratégie, c&#8217;est d&#8217;extrapoler un max de données, et de cacher tout ce qui est cacheable. Par exemple, copiez les données brutes sur vos serveurs (genre si c&#8217;est un fichier sur le leur). Copiez les références externes, même si vous n&#8217;en avez pas besoin afin d&#8217;éviter une query de plus, vous les supprimerez plus tard. Pré-calculez les champs, par exemple age, si vous avez la date de naissance, etc.</p>
+<p>Si vous avez beaucoup de checks à faire pour l&#8217;assainissement des données, mettez vos données en cache (par exemple dans redis), pour que les looks up soient rapides, ou au moins, ajoutez les index qui vont bien dans la DB (on peut avoir des perfs X10 rien qu&#8217;avec ça).</p>
+<p>Ensuite, partez du principe que ça va planter souvent, donc :</p>
+<ul>
+<li>Faites des opérations <a href="https://fr.wikipedia.org/wiki/Idempotent">idempotentes</a>, c&#8217;est à dire qu&#8217;on peut les relancer autant de fois qu&#8217;on veut sans risque. Typiquement, vérifiez si une donnée existe avant l&#8217;insertion, et si oui, faites une mise à jour complète.</li>
+<li>Mettez un historique. Sauvegardez quelque part l&#8217;avancement de votre import, afin de ne pas tout recommencer depuis le début après le plantage.</li>
+</ul>
+<p>Ah oui, et faites des copies de sauvegarde des données brutes ET des données importées. Pour les premières, parce qu&#8217;on est pas à l&#8217;abri un &#8220;rm -fr&#8221; malencontreux. Ne rigolez pas, ça m&#8217;est arrivé la semaine dernière. Une semaine à tout DL à nouveau. Pour les secondes, parce que tant que le dernier import n&#8217;est pas terminé, on peut toujours corrompre toute sa base avec une couille de dernière minute. Comme un encoding qui change aléatoirement sur une donnée non datée.</p>
+<h2>Bon sens</h2>
+<p>Évidement, je parle ici d&#8217;un synthèse des problématiques rencontrées. Vous ne pouvez pas appliquer TOUT ça, ou en tout cas, pas au début, ou pas sur des petits scripts, etc. Selon le sérieux de votre source de données, il faudra plus ou moins être défensif. L&#8217;expérience et la douleur vous permettra de trouver la juste dose de morphine.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8772&amp;md5=a75ae119cce37f84e878f3157e64968a" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/importer-des-donnees-retour-dexperience/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fimporter-des-donnees-retour-dexperience%2F&amp;language=en_GB&amp;category=text&amp;title=Importer+des+donn%C3%A9es%2C+retour+d%26%238217%3Bexp%C3%A9rience&amp;description=D%C3%A9dica%C3%A7ons+la+chanson+de+notre+article+au+plus+barbu+de+mes+amis+poneys.+J%26%238217%3Bai+import%C3%A9+des+donn%C3%A9es+un+tr%C3%A8s+grand+nombre+de+fois+dans+ma+vie.+Depuis+des+APIs%2C+des...&amp;tags=api%2Cdata%2Cimport%2Cpython%2Cxml%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/tumblr_mzej9jOaCN1r539hzo1_500.jpg" length="218579" type="image/jpg" />	</item>
 		<item>
 		<title>Pourquoi il faut éviter import * en Python</title>
 		<link>http://sametmax.com/pourquoi-il-faut-eviter-import-en-python/</link>

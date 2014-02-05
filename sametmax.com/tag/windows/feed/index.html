@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; windows</title>
+	<atom:link href="http://sametmax.com/tag/windows/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Ouvrir un fichier avec le bon programme en Python</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/</link>
+		<comments>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comments</comments>
+		<pubDate>Thu, 17 Oct 2013 10:09:59 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[open]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7469</guid>
+		<description><![CDATA[Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander "ouvrir le type de fichier par défaut". Par exemple, moi, si on je demande d'ouvrir un fichier vidéo, je m'attend à ce que VLC soit lancé.
+
+Voilà comment faire ça en Python.]]></description>
+			<content:encoded><![CDATA[<p>Votre logiciel doit permettre d&#8217;ouvrir un fichier avec un programme externe. Oui mais lequel ?</p>
+<p>Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander &#8220;ouvrir le prog pour ce type de fichier par défaut&#8221;. Par exemple, moi, si je demande d&#8217;ouvrir un fichier vidéo, je m&#8217;attend à ce que VLC soit lancé.</p>
+<p>Voilà comment faire ça en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">subprocess</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> run_file<span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Pas de EAFP cette fois puisqu'on est dans un process externe,</span>
+    <span style="color: #808080; font-style: italic;"># on ne peut pas gérer l'exception aussi facilement, donc on fait</span>
+    <span style="color: #808080; font-style: italic;"># des checks essentiels avant.</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Vérifier que le fichier existe</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">exists</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'No such file: %s'</span> <span style="color: #66cc66;">%</span> path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On a accès en lecture ?</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>, <span style="color: #483d8b;">'access'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">access</span><span style="color: black;">&#40;</span>path, <span style="color: #dc143c;">os</span>.<span style="color: black;">R_OK</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cannot access file: %s'</span> <span style="color: #66cc66;">%</span> path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Lancer le bon programme pour le bon OS :</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>, <span style="color: #483d8b;">'startfile'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Windows</span>
+        <span style="color: #808080; font-style: italic;"># Startfile est très limité sous Windows, on ne pourra pas savoir</span>
+        <span style="color: #808080; font-style: italic;"># si il y a eu une erreu</span>
+        proc = <span style="color: #dc143c;">os</span>.<span style="color: black;">startfile</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span>.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'linux'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Linux:</span>
+        proc = <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'xdg-open'</span>, path<span style="color: black;">&#93;</span>, 
+                                 <span style="color: #808080; font-style: italic;"># on capture stdin et out pour rendre le </span>
+                                 <span style="color: #808080; font-style: italic;"># tout non bloquant</span>
+                                 stdout=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span>, stderr=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span> == <span style="color: #483d8b;">'darwin'</span>: <span style="color: #808080; font-style: italic;"># Mac:</span>
+        proc = <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'open'</span>, <span style="color: #483d8b;">'--'</span>, path<span style="color: black;">&#93;</span>, 
+                                stdout=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span>, stderr=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span>
+            <span style="color: #483d8b;">&quot;Your `%s` isn't a supported operatin system`.&quot;</span> <span style="color: #66cc66;">%</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Proc sera toujours None sous Windows. Sous les autres OS, il permet de</span>
+    <span style="color: #808080; font-style: italic;"># récupérer le status code du programme, and lire / ecrire sur stdin et out</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> proc</pre></div></div>
+
+<p>C&#8217;était le petit snippet sympas du jour !</p>
+<p>P.S : si quelqu&#8217;un utilise <del>BDSM</del> BSD ou Solaris, je veux bien qu&#8217;il complète le snippet.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7469&amp;md5=805b865a7efd4cc59774fee70bfd710e" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fouvrir-un-fichier-avec-le-bon-programme-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Ouvrir+un+fichier+avec+le+bon+programme+en+Python&amp;description=Votre+logiciel+doit+permettre+d%26%238217%3Bouvrir+un+fichier+avec+un+programme+externe.+Oui+mais+lequel+%3F+Les+OS+ont+des+r%C3%A9glages+par+d%C3%A9faut+pour+chaque+type+de+fichier%2C+et+on+peut...&amp;tags=fichier%2Clinux%2Cmac%2Copen%2Cos%2Cpython%2Cwindows%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/qzb7emC.jpg" length="54438" type="image/jpg" />	</item>
+		<item>
+		<title>Gagner de la place sur Windows 7</title>
+		<link>http://sametmax.com/gagner-de-la-place-sur-windows-7/</link>
+		<comments>http://sametmax.com/gagner-de-la-place-sur-windows-7/#comments</comments>
+		<pubDate>Tue, 05 Mar 2013 10:02:24 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[espace disque]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5236</guid>
+		<description><![CDATA[Vous avez un dual boot que vous utilisez rarement, mais disons totalement hypothétiquement que vos amis se mettent à jouer à League of Legend et que soudainement vous allez la réutiliser.
+
+Vous bootez, et la stupeur vous gagne, il reste 2,1Mo de place libre sur la partition.]]></description>
+			<content:encoded><![CDATA[<p>Vous avez un dual boot que vous utilisez rarement, mais disons totalement <a href="http://sametmax.com/bon-bah-voila/">hypothétiquement</a> que vos amis se mettent à jouer à League of Legend et que soudainement vous allez la réutiliser.</p>
+<p>Vous bootez, et la stupeur vous gagne, il reste 2,1Mo de place libre sur la partition. Après avoir appuyé 3 fois sur &#8220;vider la corbeille&#8221; pour être bien sûr, le desespoir vous gagne.</p>
+<p>Don&#8217;t panic.</p>
+<h2>Détecter et virer les gros fichiers</h2>
+<p>Vous téléchargez <a href="http://windirstat.info/">Win Dir Stats</a>, vous lancez un scan complet, et il va vous montrer les plus gros fichiers / dossiers de votre ordi. Il ne vous reste plus qu&#8217;à surpprimer manuellement tous ces parasites avec shift + delete pour les envoyer directement dans l&#8217;oblivion, sans passer par la case corbeille, et sans toucher 20 000 francs.</p>
+<h2>Desinstaller massivement</h2>
+<p>L&#8217;utilitaire de désinstallation de Windows est à chier. <a href="http://www.glarysoft.com/absolute-uninstaller/">Absolute uninstaller</a> est rapide et vous permet de supprimer allégrement tous ces boulets qui vous encombre.</p>
+<h2>Vider winsxs</h2>
+<p>C&#8217;est un dossier que Windows 7 ADOOOOOOOOORE charger de plein de merdes qui ne sont en fait que des fichiers temporaires. Ca peut monter jusqu&#8217;à 20 Go. Si.</p>
+<p>Donc on cherche <code>cmd.exe</code> dans le menu, on clic droit &gt; &#8220;Executer en tant qu&#8217;Administrateur&#8221; et on lance la commande :</p>
+<p><code>DISM /online /Cleanup-Image /SpSuperseded</code></p>
+<p>C&#8217;est un peu long, mais ça libère quelques Go.</p>
+<h2>Se débarrasser du fichier hyberfil.sys</h2>
+<p>Quand on est en dual boot avec Linux comme système principal, on en a rien à branlé de la mise en veille de Windows. Qui prend quand même 4Go avec sont super fichier <em>hyberfil.sys</em>.</p>
+<p>Donc pareil, vous lancez une console en tant qu&#8217;administrateur, et vous lui fermez sa gueule:<br />
+<code><br />
+powercfg.exe -h off</code></p>
+<p>Un petit reboot, et l&#8217;hybernation est désactivée.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5236&amp;md5=a46f01ada914a13b0d872adcab65bc69" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/gagner-de-la-place-sur-windows-7/feed/</wfw:commentRss>
+		<slash:comments>31</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fgagner-de-la-place-sur-windows-7%2F&amp;language=en_GB&amp;category=text&amp;title=Gagner+de+la+place+sur+Windows+7&amp;description=Vous+avez+un+dual+boot+que+vous+utilisez+rarement%2C+mais+disons+totalement+hypoth%C3%A9tiquement+que+vos+amis+se+mettent+%C3%A0+jouer+%C3%A0+League+of+Legend+et+que+soudainement+vous+allez+la...&amp;tags=espace+disque%2Cwindows%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/giantmagnet.jpg" length="102951" type="image/jpg" />	</item>
+		<item>
+		<title>Programmer confortablement en Python sous Windows</title>
+		<link>http://sametmax.com/programmer-confortablement-en-python-sous-windows/</link>
+		<comments>http://sametmax.com/programmer-confortablement-en-python-sous-windows/#comments</comments>
+		<pubDate>Tue, 25 Dec 2012 19:05:46 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ipython]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3865</guid>
+		<description><![CDATA[Python est un langage qui demande très peu pour programmer: pas d'IDE, de compilateur, de RAD ou autre. Juste un petit éditeur de texte (<a href="http://notepad-plus-plus.org/fr/">notepad++</a> fait très bien l'affaire) et la ligne de commande.
+
+Problème, la ligne de commande est à chier sous Windows. Alors oui, vous pouvez coder dans ces conditions, mais franchement, pourquoi ne pas passer 30 minutes pour vous mettre à l'aise ?]]></description>
+			<content:encoded><![CDATA[<p>Python est un langage qui demande très peu pour programmer: pas d&#8217;IDE, de compilateur, de RAD ou autre. Juste un petit éditeur de texte (<a href="http://notepad-plus-plus.org/fr/">notepad++</a> fait très bien l&#8217;affaire) et la ligne de commande.</p>
+<p>Problème, la ligne de commande est à chier sous Windows. Alors oui, vous pouvez coder dans ces conditions, mais franchement, pourquoi ne pas passer 30 minutes pour vous mettre à l&#8217;aise ?</p>
+<p>Max est sous Mac, et je suis sous Ubuntu, mais c&#8217;est pas pour ça qu&#8217;on oublie nos racines. On a tous les deux commencé sous Windows. Perso, j&#8217;ai fait mes premiers clics de souris sur 3.1 (avant j&#8217;avais pas de souris :-)). Alors suivez le guide.</p>
+<h2>Avoir les commandes Python sous la main</h2>
+<p>Les commandes installées par des scripts Python, parfois même la commande <code>python</code> elle-même, ne sont pas toujours accessibles depuis la console. Assurez-vous donc d&#8217;avoir bien &#8220;c:\Python27;c:\Python27\Scripts;&#8221; <a href="http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/">à la fin de votre System PATH</a>. </p>
+<h2>Améliorer la console</h2>
+<p>Une fois que vous avez <a href="http://www.python.org/download/releases/2.7.5/">installé Python</a> (toujours v2.7 en 32 bits. TOUJOURS), vous avez accès au shell. Premier constat, copier / coller dans un terminal cmd.exe est aussi plaisant qu&#8217;une coloscopie un lendemain de cuite (pour vous et le praticien).</p>
+<p>Idéalement, il faut installer un terminal alternatif. Le logiciel opensource Console2 est parfait pour ça: on peut faire du copier / coller facilement, il a des onglets, on peut régler la taille de la fenêtre&#8230;</p>
+<p>Pour l&#8217;installer suffit de <a href="http://sourceforge.net/projects/console/">télécharger le zip</a>, l&#8217;extraire dans &#8220;C:\Programmes Files&#8221; et faire un raccourci sur le bureau vers &#8220;C:\Program Files\Console2\Console.exe&#8221;.</p>
+<h2>Améliorer le shell Python</h2>
+<p>Le shell Python est fantastique, à l&#8217;exception de tous les autres. Donc votre premier réflexe, c&#8217;est bien entendu d&#8217;installer <a href="http://pypi.python.org/pypi/ipython">iPython</a>. Sauf que Windows n&#8217;a pas readline, du coup vous n&#8217;allez pas avoir la coloration du prompt ni la completion du code. Ca craint.</p>
+<p>C&#8217;est là que <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> va encore une fois nous sauver la mise:</p>
+<p><code>pip install pyreadline</code></p>
+<p>Et votre shell iPython, lancé depuis Console2 est maintenant un outil presque aussi confortable à utiliser que sous Linux ou Mac avec historique, auto indent et tout le toutim. Presque, faut pas abuser non plus.</p>
+<h2>Et pour quelques outils de plus</h2>
+<p>Windows n&#8217;ayant pas de truc comme grep, installer <a href="http://sametmax.com/grin-le-grep-python-sous-steroid/">grin </a>va vous permettre de rapidement et confortablement chercher dans votre code. <code>Donc, pip install grin</code>.</p>
+<p>Mais aller directement dans le dossier voulu depuis la ligne de commande à grand coup de <code>cd</code>, c&#8217;est relou. On va arranger ça.</p>
+<p>Ouvre l&#8217;éditeur de registre (&#8220;Windows + R&#8221; puis regedit puis &#8220;enter&#8221;) et naviguez dans l&#8217;arboresence jusqu&#8217;à:</p>
+<p><code>HKEY_CLASSES_ROOT\Directory\shell\</code></p>
+<p>Cliquez droit dans le panel de droite, et faites &#8220;Nouveau > Clé&#8221; et appelez la clé &#8220;open_shell&#8221;. Puis cliquez sur le dossier ainsi créé, et dans le panel de droite, cliquez sur l&#8217;espèce d&#8217;icône &#8220;AB&#8221; intitulée &#8220;(Par défaut)&#8221;, et donnez lui la valeur &#8220;Ouvrir Console2 ici&#8221;.</p>
+<p>Dans le dossier &#8220;open_shell&#8221;, créez un dossier &#8220;Command&#8221; (en faisant &#8220;Clic Droit > Nouveau > Clé&#8221;).</p>
+<p>Donnez à &#8220;(Par défaut)&#8221; pour valeur le chemin vers Console2 suivit de &#8216;-d &#8220;%1&#8243;&#8216;, par exemple pour moi:</p>
+<p><code>"C:\Program Files (x86)\Console2\Console.exe" -d "%1"</code></p>
+<p>Fermer l&#8217;explorateur de fichiers, et réouvrez le. Hop ! Vous avez une nouvelle entrée dans le menu du clic droit qui permet d&#8217;ouvrir Console2 dans n&#8217;importe quel dossier.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3865&amp;md5=1cf514409dc060db194a6c96ee4c058c" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/programmer-confortablement-en-python-sous-windows/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fprogrammer-confortablement-en-python-sous-windows%2F&amp;language=en_GB&amp;category=text&amp;title=Programmer+confortablement+en+Python+sous+Windows&amp;description=Python+est+un+langage+qui+demande+tr%C3%A8s+peu+pour+programmer%3A+pas+d%26%238217%3BIDE%2C+de+compilateur%2C+de+RAD+ou+autre.+Juste+un+petit+%C3%A9diteur+de+texte+%28notepad%2B%2B+fait+tr%C3%A8s+bien+l%26%238217%3Baffaire%29+et...&amp;tags=ipython%2Cpython%2Cwindows%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/img_0203.jpg" length="141409" type="image/jpg" />	</item>
+		<item>
+		<title>Ajouter un chemin à la variable d&#8217;environnement PATH sous Windows</title>
+		<link>http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/</link>
+		<comments>http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/#comments</comments>
+		<pubDate>Thu, 18 Oct 2012 20:19:16 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[path]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2642</guid>
+		<description><![CDATA[Il y a beaucoup de tutos qui demandent de simplement "ajouter le résultat au PATH", mais assez peu expliquent pourquoi et comment le faire.
+
+Comme on aime bien faire les choses à l'envers chez Sam et Max, on va d'abord expliquer comment, et ensuite pourquoi.]]></description>
+			<content:encoded><![CDATA[<p>Il y a beaucoup de tutos qui demandent de simplement &#8220;ajouter le résultat au PATH&#8221;, mais assez peu expliquent pourquoi et comment le faire.</p>
+<p>Comme on aime bien faire les choses à l&#8217;envers chez Sam et Max, on va d&#8217;abord expliquer comment, et ensuite pourquoi.</p>
+<h2>Modifier le PATH sous Windows 7 et XP</h2>
+<p>Il faut d&#8217;abord ouvrir l&#8217;outil d&#8217;édition des variables d&#8217;environnement.</p>
+<h3>Sous Windows XP, c&#8217;est: </h3>
+<ul>
+<li>Clic droit sur l&#8217;icône &#8220;Ordinateur&#8221; de votre Bureau (ou dans le panel de gauche de l&#8217;explorateur de fichiers) et dans le menu-contextuel, allez sur &#8220;Propriétés&#8221;.</li>
+<li>Dans la fenêtre &#8220;Propriétés système&#8221; qui vient de s&#8217;ouvrir, allez dans l&#8217;onglet &#8220;Avancé&#8221;</li>
+<li>Enfin, cliquez sur le bouton &#8220;Variables d&#8217;environnement&#8230;&#8221;</li>
+</ul>
+<h3>Sous Windows 7, c&#8217;est presque pareil:</h3>
+<ul>
+<li>Clic droit sur l&#8217;icône &#8220;Ordinateur&#8221; de votre Bureau (ou dans le panel de gauche de l&#8217;explorateur de fichiers) et dans le menu-contextuel, allez sur &#8220;Propriétés&#8221;.</li>
+<li>Dans la grande fenêtre qui s&#8217;ouvre, cliquez sur le lien &#8220;Paramètres système avancés&#8221; dans la liste de gauche.</li>
+<li>Dans la nouvelle fenêtre ainsi ouverte, cliquez sur le bouton &#8220;Variables d&#8217;environnement&#8230;&#8221;</li>
+</ul>
+<p>Dans les deux cas, vous allez vous retrouver avec la fenêtre le plus détestée du monde de Windows, la fameuse fenêtre &#8220;Variables d&#8217;envionnement&#8221;. Toute petite, illisible, est pas redimensionable. Vous ne l&#8217;oublierez plus jamais:</p>
+<div id="attachment_2650" class="wp-caption aligncenter" style="width: 401px"><a href="http://sametmax.com/wp-content/uploads/2012/10/modifier_le_system_path_de_windows1.png"><img src="http://sametmax.com/wp-content/uploads/2012/10/modifier_le_system_path_de_windows1.png" alt="Capture d&#039;écran de la fenêtre des variables d&#039;environnement de Windows" title="Oh mon dieu, il nous fonce dessus !" width="391" height="432" class="size-full wp-image-2650" /></a><p class="wp-caption-text">Oh mon dieu, il nous fonce dessus !</p></div>
+<p>Dans cette fenêtre, dans la partie &#8220;Variables systèmes&#8221; (la liste du bas), il faut cliquer sur la ligne qui contient &#8216;Path&#8217;, de telle sorte qu&#8217;elle soit sélectionnée (en couleur alors que les autres items de la listes ne le sont pas). Il vous faudra sûrement scroller un peu pour la trouver.</p>
+<p>Ensuite il faut cliquer sur le bouton &#8220;Modifier&#8230;&#8221;.</p>
+<p>Là s&#8217;ouvre une fenêtre avec deux champs, le deuxième, &#8220;Valeur de la variable&#8221;, est celui qui nous intéresse.<strong> Il est absolument chiant à modifier, alors faites plutôt un copier/coller dans un éditeur de texte à part</strong>: <kbd>Ctrl + A</kbd> pour tout selectioner, <kbd>Ctrl + C</kbd> pour tout copier, puis <kbd>Ctrl + V</kbd> pour tout coller ailleurs, car je ne suis pas sûr que le clic droit fonctionne dans cette grosse bouse.</p>
+<p>Vous devriez avoir un texte qui ressemble à ceci (pas exactement le même, mais proche):</p>
+<p><code>%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;</code></p>
+<p>Ne retirez rien de cette valeur si vous ne savez pas ce que vous faites. </p>
+<p>Pour ajouter quelque chose au PATH de Windows, il suffit de le mettre <strong>tout collé à la fin, suivit d&#8217;un &#8216;;&#8217;</strong></p>
+<p>Par exemple, pour rajouter le chemin vers l&#8217;installation de Python dans le PATH de Windows:</p>
+<p><code>%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;<strong>C:\Python27;</strong></code></p>
+<p>Attention, si vous avez copié/collé le contenu ailleurs, supprimez bien l&#8217;ancien contenu en le remplaçant complètement par le nouveau (<kbd>Ctrl + A</kbd>, <kbd>Ctrl + V</kbd>) sinon vous allez tout péter.</p>
+<h2>A quoi servent les variables d&#8217;environnement et le PATH ?</h2>
+<p>Sous tous les OS, il y a des variables qui déterminent le fonctionnement de celui-ci (ou plutôt du shell, mais ce n&#8217;est pas important). Elles permettent à l&#8217;utilisateur, en changeant la variable, de choisir certains comportement primitifs du système.</p>
+<p>Par exemple, quand vous tapez une commande dans un terminal, le système va utiliser la variable d&#8217;environnement PATH. Il va prendre chaque dossier listé dans PATH, et regarder si il trouve la commande dedans. Si il trouve cette commande, il la lance, et arrête la recherche. Si il ne trouve pas la commande, il va vous dire que la commande n&#8217;existe pas.</p>
+<p>Ainsi, si vous avez installé Python mais que le shell Python ne se lance pas quand vous entrez la commande <code>python</code> dans un terminal, ajouter <code>C:\Python27;</code> au PATH peut résoudre le problème: Windows va maintenant chercher dans ce dossier également pour voir si la commande existe.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=2642&amp;md5=8623b90da6d5159917383378ff074a0f" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows%2F&amp;language=en_GB&amp;category=text&amp;title=Ajouter+un+chemin+%C3%A0+la+variable+d%26%238217%3Benvironnement+PATH+sous+Windows&amp;description=Il+y+a+beaucoup+de+tutos+qui+demandent+de+simplement+%26%238220%3Bajouter+le+r%C3%A9sultat+au+PATH%26%238221%3B%2C+mais+assez+peu+expliquent+pourquoi+et+comment+le+faire.+Comme+on+aime+bien+faire+les...&amp;tags=path%2Cpython%2Cwindows%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/paf-sigle.1197684804.jpg" length="19282" type="image/jpg" />	</item>
+	</channel>
+</rss>

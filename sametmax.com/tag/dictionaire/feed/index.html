@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; dictionaire</title>
+	<atom:link href="http://sametmax.com/tag/dictionaire/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>De l’intérêt des tuples comme clé de dictionnaire</title>
+		<link>http://sametmax.com/de-linteret-des-tuples-comme-cle-de-dictionnaire/</link>
+		<comments>http://sametmax.com/de-linteret-des-tuples-comme-cle-de-dictionnaire/#comments</comments>
+		<pubDate>Sat, 21 Dec 2013 08:18:02 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dictionaire]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[tuple]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8392</guid>
+		<description><![CDATA[On peut utiliser n'importe quel objet hashable comme clé de dictionnaire en Python, pas uniquement des strings. Donc des entiers bien entendu, mais également, et c'est rarement utilisé, des tuples.]]></description>
+			<content:encoded><![CDATA[<p>On peut utiliser n&#8217;importe quel objet hashable comme clé de dictionnaire en Python, pas uniquement des strings. Donc des entiers bien entendu, mais également, et c&#8217;est rarement utilisé, des tuples.</p>
+<p>Imaginez que vous ayez une structures de données ainsi initialisée :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">random</span> <span style="color: #ff7700;font-weight:bold;">import</span> choice, randint
+&nbsp;
+tags = <span style="color: black;">&#40;</span><span style="color: #483d8b;">'personne'</span>, <span style="color: #483d8b;">'animal'</span>, <span style="color: #483d8b;">'objet'</span><span style="color: black;">&#41;</span>
+depart = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+depart = <span style="color: black;">&#123;</span><span style="color: #483d8b;">'%s_%s'</span> <span style="color: #66cc66;">%</span> <span style="color: black;">&#40;</span>choice<span style="color: black;">&#40;</span>tags<span style="color: black;">&#41;</span>, randint<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Cela donne quelque chose comme ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'personne_6'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'personne_5'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'objet_9'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'objet_6'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'objet_4'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'personne_8'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'objet_2'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'objet_0'</span>: <span style="color: #008000;">None</span>,
+ u<span style="color: #483d8b;">'animal_8'</span>: <span style="color: #008000;">None</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>On voit que les clés ont ici une valeur sémantique importante : elles sont porteuses de sens.</p>
+<p>Si vous voulez la liste des nombres utilisés, il va vous falloir changer votre structure de données : en avoir plusieurs séparées, probablement. Ou alors faire de la manipulation de chaîne à base de <code>split()</code> et de casting.</p>
+<p>Par contre, si vous utilisez un tuple comme clé, vous avez le même format pour votre dictionnaire <code>depart</code>, avec les mêmes possibilités, mais en plus un accès aux clés plus complet.</p>
+<p>Déjà le code de génération est plus simple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">depart = <span style="color: black;">&#123;</span><span style="color: black;">&#40;</span>choice<span style="color: black;">&#40;</span>tags<span style="color: black;">&#41;</span>, randint<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Ce qui donne :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#123;</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'animal'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'personne'</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'personne'</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'objet'</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'objet'</span>, <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'animal'</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'animal'</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'animal'</span>, <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span>,
+ <span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'personne'</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span>: <span style="color: #008000;">None</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Mais en prime, on peut faire ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: black;">&#40;</span>tag, number<span style="color: black;">&#41;</span>, value <span style="color: #ff7700;font-weight:bold;">in</span> depart.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> tag, number, value
+&nbsp;
+<span style="color: #808080; font-style: italic;">## animal 2 None</span>
+<span style="color: #808080; font-style: italic;">## personne 5 None</span>
+<span style="color: #808080; font-style: italic;">## personne 4 None</span>
+<span style="color: #808080; font-style: italic;">## objet 6 None</span>
+<span style="color: #808080; font-style: italic;">## objet 10 None</span>
+<span style="color: #808080; font-style: italic;">## animal 7 None</span>
+<span style="color: #808080; font-style: italic;">## animal 1 None</span>
+<span style="color: #808080; font-style: italic;">## animal 10 None</span>
+<span style="color: #808080; font-style: italic;">## personne 8 None</span></pre></div></div>
+
+<p>Bref, quand vos clés ont une valeur sémantique importante, pensez à utiliser des tuples, voir carrément, un <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">namedtuple</a>, qui est une structure de données trop souvent ignorée alors qu&#8217;elle est très puissante, et peut remplacer bien des classes conteneurs.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8392&amp;md5=e596665cb3a170df153e4f3c0f651e83" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/de-linteret-des-tuples-comme-cle-de-dictionnaire/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fde-linteret-des-tuples-comme-cle-de-dictionnaire%2F&amp;language=en_GB&amp;category=text&amp;title=De+l%E2%80%99int%C3%A9r%C3%AAt+des+tuples+comme+cl%C3%A9+de+dictionnaire&amp;description=On+peut+utiliser+n%26%238217%3Bimporte+quel+objet+hashable+comme+cl%C3%A9+de+dictionnaire+en+Python%2C+pas+uniquement+des+strings.+Donc+des+entiers+bien+entendu%2C+mais+%C3%A9galement%2C+et+c%26%238217%3Best+rarement+utilis%C3%A9%2C+des+tuples....&amp;tags=dictionaire%2Cpython%2Ctuple%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/X0DwVhm.jpg" length="23642" type="image/jpg" />	</item>
+	</channel>
+</rss>

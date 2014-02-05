@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; env</title>
+	<atom:link href="http://sametmax.com/tag/env/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Variable d&#8217;environnement PATH et crontab</title>
+		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/</link>
+		<comments>http://sametmax.com/variable-denvironnement-path-et-crontab/#comments</comments>
+		<pubDate>Fri, 26 Oct 2012 06:55:35 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[crontab]]></category>
+		<category><![CDATA[env]]></category>
+		<category><![CDATA[path]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2741</guid>
+		<description><![CDATA[crontab peut réserver des suprises si on oublie de bien déclarer tous les repertoires dans le PATH...]]></description>
+			<content:encoded><![CDATA[<p>Si vous utilisez crontab pour vos tâche, faites attention à un détail : le PATH.</p>
+<p>il y a un fichier de conf que j&#8217;ai pas réussi à faire fonctionner dans /etc/crontab, si vous y arrivez tant mieux sinon éditez votre cron de la sorte:</p>
+<p><strong>1. Version avec PATH défini par tâche:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">30</span> <span style="color: #ff4500;">23</span> <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> PATH=$PATH:/usr/local/bin <span style="color: #66cc66;">&amp;&amp;</span> export PATH <span style="color: #66cc66;">&amp;&amp;</span> python /home/penetrator/script.<span style="color: black;">py</span></pre></div></div>
+
+<p><strong>2. Version avec variables définies en haut du fichier cron:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Env</span>
+SHELL=/bin/bash
+HOME=/home/prod
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Cmd cron</span>
+<span style="color: #ff4500;">30</span> <span style="color: #ff4500;">23</span> <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> python /home/penetrator/script.<span style="color: black;">py</span></pre></div></div>
+
+<p><em>$PATH=PATH:/usr/local/bin &#038;&#038; export PATH</em>  va rajouter /usr/local/bin dans le PATH.<br />
+Ayant installé et compilé un programme dans <em>/usr/local/bin</em> et l&#8217;utilisant dans script.py, il faut que son chemin soit dans le PATH.</p>
+<p><strong>Pour avoir des infos sur l&#8217;env de votre cron:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> <span style="color: #66cc66;">*</span> PATH=$PATH:/usr/local/bin <span style="color: #66cc66;">&amp;&amp;</span> export PATH <span style="color: #66cc66;">&amp;&amp;</span> env <span style="color: #66cc66;">&gt;</span> /tmp/cronenv</pre></div></div>
+
+<p>faites un <em>tail -f /tmp/cronenv </em>pour voir si votre PATH est bien déclaré.</p>
+<p>ça peut éviter quelques heures à s&#8217;arracher les cheveux pour le debug d&#8217;un script&#8230;</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=2741&amp;md5=d59e86f088b06b39e3ce01e65b1c79a3" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/variable-denvironnement-path-et-crontab/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fvariable-denvironnement-path-et-crontab%2F&amp;language=en_GB&amp;category=text&amp;title=Variable+d%26%238217%3Benvironnement+PATH+et+crontab&amp;description=Si+vous+utilisez+crontab+pour+vos+t%C3%A2che%2C+faites+attention+%C3%A0+un+d%C3%A9tail+%3A+le+PATH.+il+y+a+un+fichier+de+conf+que+j%26%238217%3Bai+pas+r%C3%A9ussi+%C3%A0+faire+fonctionner+dans...&amp;tags=crontab%2Cenv%2Cpath%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/homer-wall-clock.jpeg" length="44157" type="image/jpg" />	</item>
+	</channel>
+</rss>

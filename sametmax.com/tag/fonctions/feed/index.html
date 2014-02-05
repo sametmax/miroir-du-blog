@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; fonctions</title>
+	<atom:link href="http://sametmax.com/tag/fonctions/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Refactoriser ses vérifications en Python</title>
+		<link>http://sametmax.com/refactoriser-ses-verifications-en-python/</link>
+		<comments>http://sametmax.com/refactoriser-ses-verifications-en-python/#comments</comments>
+		<pubDate>Sun, 23 Jun 2013 21:56:00 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[fonctions]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6437</guid>
+		<description><![CDATA[On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre.]]></description>
+			<content:encoded><![CDATA[<p>On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> verification1<span style="color: black;">&#40;</span>val<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">bool</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+verification2 = verification1
+verification3 = verification1
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification1<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Erreur, la vérification 1 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification2<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Erreur, la vérification 2 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification3<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Erreur, la vérification 3 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> valeur</pre></div></div>
+
+<p>Ceci est évidement un exemple tout bidon, mais la problématique, c&#8217;est qu&#8217;on a plein de vérifications à faire, et un code à lancer si jamais ces vérifications échouent. Et chaîner les <code>if</code>, c&#8217;est vrai que c&#8217;est pas super mignon (même si c&#8217;est tout à fait valide, faut pas non plus se prendre trop la tête avec ça).</p>
+<p>En Python, on a plusieurs manières de s&#8217;occuper de ça. La première, j&#8217;en ai déjà parlé, c&#8217;est <a href="http://sametmax.com/quest-ce-quun-callback/">l&#8217;injection de dépendances</a>. On va passer ces checks en paramètres.</p>
+<p>Car je le rappelle, on peut passer des fonctions en paramètres, on peut mettre des fonctions dans des listes, et on peut même passer des listes de fonctions en paramètres. Ce qui ici va nous permettre de :</p>
+<ul>
+<li>Regrouper les traitements.</li>
+<li>Permettre de changer les traitements à la volée.</li>
+<li>Avoir malgré tout un traitement par défaut.</li>
+<li>Rendre les groupes de vérifications réutilisables</li>
+</ul>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+&nbsp;
+VERIF = <span style="color: black;">&#40;</span>
+    <span style="color: black;">&#40;</span>verification1, <span style="color: #483d8b;">&quot;Erreur, la vérification 1 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span>verification2, <span style="color: #483d8b;">&quot;Erreur, la vérification 2 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span>verification3, <span style="color: #483d8b;">&quot;Erreur, la vérification 3 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>,
+    <span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> v: <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">bool</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>,
+    <span style="color: #483d8b;">&quot;Erreur, la vérification 4 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> faire_verifications<span style="color: black;">&#40;</span>verifications<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">for</span> verif, msg <span style="color: #ff7700;font-weight:bold;">in</span> verifications:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verif<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span> msg
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>valeur, verifications=VERIF<span style="color: black;">&#41;</span>:
+    faire_verifications<span style="color: black;">&#40;</span>verifications<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> valeur</pre></div></div>
+
+<p>Cette manière de faire est plus verbeuse si votre liste de <code>if</code> est courte, ou si vous n&#8217;avez à le faire que pour une fonction. Mais elle devient vite plus courte et clair dans le cas où votre code grandi.</p>
+<p>Elle aussi l&#8217;avantage de pouvoir insérer ou retirer une modification très simplement (même avec une simple lambda). Enfin, le code de vérification est découplé du code de la fonction ce qui ajoute les bénéfices suivant :</p>
+<ul>
+<li>Votre code de vérification peut être déplacé dans un module dédié.</li>
+<li>Si vous avez des vérifications en plusieurs endroits, il n&#8217;y a qu&#8217;un seul endroit pour corriger les bugs des vérifications, et un seul pour faire une modification des vérifications.</li>
+<li>Le code de la fonction redevient simple : elle fait une vérification (on s&#8217;en branle de comment ça marche, on sait que ça vérifie), et ensuite elle s&#8217;occupe de SON boulot. C&#8217;est la partie du code qui nous intéresse quand on va voir la fonction.</li>
+</ul>
+<p>On peut évidement imaginer autre chose qu&#8217;un print: lever une exception, faire un log, ou même carrément aussi passer une fonction en lieu et place du message d&#8217;erreur qui fait office de callback quand la vérification échoue (et qui par défaut print, le meilleur des deux mondes).</p>
+<p>Si vos vérifications deviennent très courantes, alors, l&#8217;utilisation de décorateurs prend tout son sens. Je ne vais pas rentrer sur comment écrire son décorateur, il y a <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1">un autre article pour ça</a>, mais on peut obtenir un résultat du genre :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> verif<span style="color: black;">&#40;</span>verification, message<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> decorateur<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+                <span style="color: #ff7700;font-weight:bold;">print</span> message
+            <span style="color: #ff7700;font-weight:bold;">return</span> func<span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+    <span style="color: #ff7700;font-weight:bold;">return</span> decorateur
+&nbsp;
+<span style="color: #808080; font-style: italic;"># si on utilise souvent une vérif, on peut l'avoir </span>
+<span style="color: #808080; font-style: italic;"># tout le temps tout la main</span>
+verif3 = verif<span style="color: black;">&#40;</span>verification3, <span style="color: #483d8b;">&quot;Erreur, la vérification 3 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et ensuite il suffit d'appliquer autant de décorateur qu'on le souhaite</span>
+@verif<span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> v: <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">bool</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>, <span style="color: #483d8b;">&quot;Erreur, la vérification 4 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+@verif3
+@verif<span style="color: black;">&#40;</span>verification2, <span style="color: #483d8b;">&quot;Erreur, la vérification 2 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+@verif<span style="color: black;">&#40;</span>verification1, <span style="color: #483d8b;">&quot;Erreur, la vérification 1 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> valeur</pre></div></div>
+
+<p>Les avantages ici sont :</p>
+<ul>
+<li>Corps de la fonction initial vide de toute vérification. Les vérifications sont purement déclaratives (comme par exemple la vérification de login dans Django).</li>
+<li>Chaque vérif est très facilement réutilisable, il suffit de mettre le décorateur. Si on utilise une vérif très souvent, alors on peut même mettre le décorateur dans une variable et juste déclarer <code>@ma_verif</code>.</li>
+<li>C&#8217;est très pythonique comme style.</li>
+</ul>
+<p>En résumé : si vous avez un petit code, ne vous prenez pas la tête. Une série de if est tout à fait valide, ça marche bien, c&#8217;est clair et lisible. Il faut savoir aller au plus simple. Mais si votre code devient touffu, utiliser une liste de fonction peut aider à faire le ménage. Si vous commencer carrément à avoir un gros projet ou que vous codez une lib réutilisable, les décorateurs seront de précieux alliés : ils permettent à celui qui passe derrière vous de se foutre complètement de savoir comment ça marche et de juste assembler son code comme un légo.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/juin/verification.py">Télécharger le code de l&#8217;article</a></p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6437&amp;md5=6d1f7a3e4f25de4f829e1a375c10a1b2" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/refactoriser-ses-verifications-en-python/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Frefactoriser-ses-verifications-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Refactoriser+ses+v%C3%A9rifications+en+Python&amp;description=On+nous+a+interpel%C3%A9+sur+Twitter+pour+nous+demander+comment+faire+un+code+comme+ceci+%28en+tout+cas+similaire%29+plus+propre%3A+%23+-%2A-+coding%3A+utf-8+-%2A+%26nbsp%3B+from+__future__+import...&amp;tags=decorators%2Cfonctions%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/EoH7ChB.jpg" length="115889" type="image/jpg" />	</item>
+	</channel>
+</rss>

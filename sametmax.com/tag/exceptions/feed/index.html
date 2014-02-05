@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; exceptions</title>
+	<atom:link href="http://sametmax.com/tag/exceptions/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Log post mortem avec Python</title>
+		<link>http://sametmax.com/log-post-mortem-avec-python/</link>
+		<comments>http://sametmax.com/log-post-mortem-avec-python/#comments</comments>
+		<pubDate>Thu, 07 Mar 2013 11:25:58 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[callback]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[exceptions]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5260</guid>
+		<description><![CDATA[Recette de callback sur un crash de la VM suite à la levée d'une exception.]]></description>
+			<content:encoded><![CDATA[<p>Il y a des mois de ça, j&#8217;avais écris <a href="http://sametmax.com/lancer-une-fonction-automatiquement-a-larret-de-python/">un article sur atexit</a>, un module qui permet de lancer une fonction à la fermeture de la VM Python.</p>
+<p>Ces fonctions sont appelées même si la VM s&#8217;arrête brutalement, mais on a aucune information sur la raison de l&#8217;arrêt de la machine virtuelle Python. Et elles sont exécutées même si tout s&#8217;est bien passé.</p>
+<p>Si vous voulez réagir au plantage de votre programme, et seulement au plantage, tout en ayant en plus des informations sur la nature du foinage :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> on_crash<span style="color: black;">&#40;</span><span style="color: #008000;">type</span>, value, tb<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">type</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> value
+    <span style="color: #ff7700;font-weight:bold;">print</span> tb
+&nbsp;
+<span style="color: #dc143c;">sys</span>.<span style="color: black;">excepthook</span> = on_crash
+&nbsp;
+declencher_erreur = <span style="color: #ff4500;">1</span> + <span style="color: #483d8b;">&quot;1&quot;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## &lt;type 'exceptions.TypeError'&gt;</span>
+<span style="color: #808080; font-style: italic;">## unsupported operand type(s) for +: 'int' and 'str'</span>
+<span style="color: #808080; font-style: italic;">## &lt;traceback object at 0x00543AF8&gt;</span></pre></div></div>
+
+<p>Ca peut être très intéressant pour débugger un processus détaché comme par exemple votre serveur WSGI qui fait tourner Django qui décide de se petit-suicider : demandez à <code>sys.excepthook</code> de faire un dump de l&#8217;exception dans un fichier log , et vous pourrez voir ce qui a propoqué la crise.</p>
+<p>Si vous êtes du genre poli, vous voudrez quand même garder l&#8217;ancien comportement de <code>sys.excepthook</code>, qui est toujours disponible depuis <code>sys.__excepthook__</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> on_crash<span style="color: black;">&#40;</span><span style="color: #008000;">type</span>, value, tb<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire ce que vous voulez ici puis...</span>
+    <span style="color: #dc143c;">sys</span>.__excepthook__<span style="color: black;">&#40;</span><span style="color: #008000;">type</span>, value, tb<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et dire que vous commenciez à croire que vous saviez presque tout sur Python. Mouarf.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5260&amp;md5=49b3bf3df1505a609545c25b33674881" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/log-post-mortem-avec-python/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Flog-post-mortem-avec-python%2F&amp;language=en_GB&amp;category=text&amp;title=Log+post+mortem+avec+Python&amp;description=Il+y+a+des+mois+de+%C3%A7a%2C+j%26%238217%3Bavais+%C3%A9cris+un+article+sur+atexit%2C+un+module+qui+permet+de+lancer+une+fonction+%C3%A0+la+fermeture+de+la+VM+Python.+Ces+fonctions...&amp;tags=callback%2Cdjango%2Cexceptions%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/the-walking-dead-3-the-walking-dead-24037474-500-333.jpg" length="54725" type="image/jpg" />	</item>
+		<item>
+		<title>Pourquoi il faut spécifier l&#8217;exception qu&#8217;on gère</title>
+		<link>http://sametmax.com/pourquoi-il-faut-specifier-lexception-quon-gere/</link>
+		<comments>http://sametmax.com/pourquoi-il-faut-specifier-lexception-quon-gere/#comments</comments>
+		<pubDate>Mon, 18 Feb 2013 14:33:01 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exceptions]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4562</guid>
+		<description><![CDATA[On utilise beaucoup la gestion des exceptions en Python, mais le langage permet de faire des trucs apocryphes.]]></description>
+			<content:encoded><![CDATA[<p>On utilise beaucoup la gestion des exceptions en Python, mais le langage permet de faire des trucs apocryphes comme:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #808080; font-style: italic;"># un code qui va chier des bulles</span>
+<span style="color: #ff7700;font-weight:bold;">except</span>: <span style="color: #808080; font-style: italic;"># je les attrappe tous, comme les pokemons</span>
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></div></div>
+
+<p>Ceci n&#8217;est ni plus ni moins que l&#8217;équivalent de <code>@</code> pour silent les erreurs en PHP.</p>
+<p>C&#8217;est caca.</p>
+<p>Et la raison pour laquelle j&#8217;oppose une aversion si mesurée mais néanmoins portée par des arguments forts, c&#8217;est que c&#8217;est le grand kiff de Max d&#8217;en mettre partout, et que la semaine dernière ça lui a valu un debuggage en prod.</p>
+<p>Depuis le dernier déploiement, les logs d&#8217;un des workers d&#8217;un serveur d&#8217;encoding affichaient en boucle :</p>
+<blockquote><p>&#8220;Error accessing Database, check your connexion&#8221;</p></blockquote>
+<p>Du coup Max a cherché d&#8217;ou venait ce problème de database par les cas usuels : port ? Permission ? Network ? Mise à jour de lib de l&#8217;ORM ? Daemonisation ?</p>
+<p>Le snippet qui provoquait ce message était (en simplifié) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    new_model = Model.<span style="color: black;">objects</span>.<span style="color: black;">create</span><span style="color: black;">&#40;</span>params<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span>:
+    <span style="color: #008000;">self</span>.<span style="color: black;">logger</span>.<span style="color: black;">error</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Error accessing Database, check your connexion&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># + trucs pour gérer le bouzin</span></pre></div></div>
+
+<p>La raison du <code>try</code> / <code>except</code> est que parfois, sur ce serveur, et seulement sur ce serveur, la connection avec la DB distante droppait. Bug aléatoire ou de config ? Parfois il est plus simple de ne pas résoudre le problème et laisser le truc foirer de temps en temps, et juste garder un recovery. Ça évite un spécial case pour un seul serveur, et ça évite de migrer le serveur.</p>
+<p>Sauf que ce <code>try</code> / <code>except</code> était générique, et il attrapait tout, même les rhumes. </p>
+<p>Je lui ai demandé de virer le <code>try</code> / <code>except</code> pour voir ce qui se passait vraiment, et&#8230;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">raise</span> MissingDependency<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;The 'solr' backend requires the installation of 'pysolr'. Please refer to the documentation.&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Le truc qui n&#8217;a RIEN à voir avec la base de données. Solr est notre moteur de recherche, et c&#8217;est juste qu&#8217;à la création d&#8217;un objet de modèle Django, un signal est propagé pour mettre à jour l&#8217;index de Solr. Le nouveau déploiement était incomplet : il manquait une lib. La lib était importée à ce moment là, ça levait une exception, qui était attrapée bêtement par le <code>try</code>/<code>except</code> générique.</p>
+<p>Bref, le code a été remplacé par</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    new_model = Model.<span style="color: black;">objects</span>.<span style="color: black;">create</span><span style="color: black;">&#40;</span>params<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> DataBaseError:
+    <span style="color: #008000;">self</span>.<span style="color: black;">logger</span>.<span style="color: black;">error</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Error accessing Database, check your connexion&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># + trucs pour gérer le bouzin</span></pre></div></div>
+
+<p>Si on l&#8217;avait eu depuis le début, l&#8217;erreur aurait été apparente tout de suite et rapidement corrigée.</p>
+<p>Ne faites JAMAIS de <code>try</code>/<code>except</code> sans préciser l&#8217;exception que vous allez gérer. La seule raison pour laquelle cette feature existe, c&#8217;est qu&#8217;elle est pratique à utiliser dans un shell. En fait, même <code>DataBaseError</code> est trop générique comme Exception si vous voulez vraiment un controle fin.</p>
+<p>Notez également qu&#8217;un <code>except: pass</code> est rarement une bonne idée. Au moins prenez le temps de logger ce qui se passe dans la clause <code>except</code>. Un bon log, c&#8217;est le début du bonheur.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=4562&amp;md5=c0408d44a8ce24c5b0e338660c03bb92" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pourquoi-il-faut-specifier-lexception-quon-gere/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fpourquoi-il-faut-specifier-lexception-quon-gere%2F&amp;language=en_GB&amp;category=text&amp;title=Pourquoi+il+faut+sp%C3%A9cifier+l%26%238217%3Bexception+qu%26%238217%3Bon+g%C3%A8re&amp;description=On+utilise+beaucoup+la+gestion+des+exceptions+en+Python%2C+mais+le+langage+permet+de+faire+des+trucs+apocryphes+comme%3A+try%3A+%23+un+code+qui+va+chier+des+bulles+except%3A+%23...&amp;tags=exceptions%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/02/2205118143_561cdd1947.jpg" length="85039" type="image/jpg" />	</item>
+		<item>
+		<title>Comment recruter un développeur Python</title>
+		<link>http://sametmax.com/comment-recruter-un-developpeur-python/</link>
+		<comments>http://sametmax.com/comment-recruter-un-developpeur-python/#comments</comments>
+		<pubDate>Sat, 27 Oct 2012 14:28:54 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exceptions]]></category>
+		<category><![CDATA[humour]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2759</guid>
+		<description><![CDATA[Bonjour M. Gentil. Vous venez pour la position de stagiaire ingénieur senior en periode d'essai sur 3 ans ?
+
+C'est bien, c'est bien.
+
+Nous avons des perspectives de progression fascinantes dans notre SS3I au carré.
+
+J'ai juste quelques tests à vous faire passer. Trois fois rien. Simple formalité administrative. ]]></description>
+			<content:encoded><![CDATA[<p>Bonjour M. Gentil. Vous venez pour la position de stagiaire ingénieur senior en periode d&#8217;essai sur 3 ans ?</p>
+<p>C&#8217;est bien, c&#8217;est bien.</p>
+<p>Nous avons des perspectives de progression fascinantes dans notre SS3I au carré.</p>
+<p>J&#8217;ai juste quelques tests à vous faire passer. Trois fois rien. Simple formalité administrative. Vous comprenez, on ne peut pas embaucher pas n&#8217;importe quel Bac + 5 et le payer SMIC, comme ça sur un coup de tête.</p>
+<p>Ce n&#8217;est pas contre vous, non.</p>
+<p>Pourriez-vous me dire ce qu&#8217;affiche ce snippet ? (mouahahahahaha, rire diabolique intérieur)</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #ff4500;">1</span> + <span style="color: #483d8b;">&quot;1&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">TypeError</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;exception&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;finally&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et celui-là, il affiche la stack trace ou pas ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">1</span> + <span style="color: #483d8b;">&quot;1&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">TypeError</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Test'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;finally&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Bon ok, mais si on a un générateur alors ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #ff4500;">1</span> + <span style="color: #483d8b;">&quot;1&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">TypeError</span>:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #483d8b;">'typerror'</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #483d8b;">&quot;finally&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #483d8b;">&quot;Out&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> value <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> value</pre></div></div>
+
+<p>Quelle exception sera catchée, dans le bout de code suivant ? (tapoter son style de manière énervante sur la table)</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">assert</span> <span style="color: #ff4500;">1</span> + <span style="color: #483d8b;">&quot;1&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">AssertionError</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;assertionerror&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">Exception</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;exception&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">TypeError</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;typerror&quot;</span>
+&nbsp;
+<span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Je vois. Donc finally est exécuté dans tous les cas ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">RuntimeError</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'runtimeerror'</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'finally'</span>
+&nbsp;
+<span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Vous êtes sûr ? VRAIMENT dans tous les cas ? (regard appuyé bien stressant, travaillé durant un poste de manager chez Quick)</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        PRINTEUH <span style="color: #66cc66;">!</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">SyntaxError</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'syntaxerror'</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'finally'</span>
+&nbsp;
+<span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>VRAIMENT, VRAIMENT, dans tous les cas ? Mais alors, VRAIMENT ? (prendre la voix d&#8217;Alain Chabat, parce qu&#8217;arrivé à ce stade là c&#8217;est juste plus rigolo)</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span>bar<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> bar
+        <span style="color: #ff7700;font-weight:bold;">return</span> foo, bar
+&nbsp;
+    bar = <span style="color: #483d8b;">'bar'</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+            foo, bar = foo<span style="color: black;">&#40;</span>bar<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">RuntimeError</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'runtimeerror'</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'finally'</span>
+&nbsp;
+<span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ne vous inquiétez pas, nous ne vous JUgeons paaaaaaas. Détendez-vous. Allez. Une petite dernière. Je vous aide. <code>sys.exit(1)</code> retourne le code 1.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span>l=<span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> l
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #ff4500;">1</span> + <span style="color: #483d8b;">&quot;1&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">TypeError</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> l <span style="color: #ff7700;font-weight:bold;">or</span> l.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Je sais plus là, sérieux&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: #ff4500;">1</span>:
+            <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Bon, je sens que vous êtes fatigué. On va arrêter là peut être. Vous êtes le genre à vous en tenir là, hein ? Non. Très bien, très bien. Voici un code sur lequel on planche en interne depuis une semaine pour comprendre combien de fois il affiche finally, mais on s&#8217;est dit que vous pourriez le résoudre gratuitement pour nous:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> multiprocessing
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">Queue</span> <span style="color: #ff7700;font-weight:bold;">import</span> Empty
+&nbsp;
+in_queue = multiprocessing.<span style="color: #dc143c;">Queue</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+out_queue = multiprocessing.<span style="color: #dc143c;">Queue</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> worker<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            res = in_queue.<span style="color: black;">get</span><span style="color: black;">&#40;</span>timeout=<span style="color: #ff4500;">0.1</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> res == <span style="color: #483d8b;">'stop'</span>:
+                <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">print</span> res
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: black;">&#40;</span>Empty, multiprocessing.<span style="color: black;">TimeoutError</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">pass</span>
+        <span style="color: #ff7700;font-weight:bold;">finally</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'finally'</span>
+&nbsp;
+&nbsp;
+process = multiprocessing.<span style="color: black;">Process</span><span style="color: black;">&#40;</span>target=worker<span style="color: black;">&#41;</span>
+process.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+in_queue.<span style="color: black;">put</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'test'</span><span style="color: black;">&#41;</span>
+in_queue.<span style="color: black;">put</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'stop'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'afterstop'</span>
+&nbsp;
+<span style="color: #dc143c;">time</span>.<span style="color: black;">sleep</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'done'</span></pre></div></div>
+
+<p>Merci, ce sera tout.</p>
+<p>Bon WE, monsieur Gentil.</p>
+<p>Nous gardons votre CV. On vous recontactera.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=2759&amp;md5=44810033618021f4133c007a0acf34b0" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-recruter-un-developpeur-python/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcomment-recruter-un-developpeur-python%2F&amp;language=en_GB&amp;category=text&amp;title=Comment+recruter+un+d%C3%A9veloppeur+Python&amp;description=Bonjour+M.+Gentil.+Vous+venez+pour+la+position+de+stagiaire+ing%C3%A9nieur+senior+en+periode+d%26%238217%3Bessai+sur+3+ans+%3F+C%26%238217%3Best+bien%2C+c%26%238217%3Best+bien.+Nous+avons+des+perspectives+de+progression+fascinantes...&amp;tags=exceptions%2Chumour%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/2004_12_31_millions.jpg" length="34256" type="image/jpg" />	</item>
+	</channel>
+</rss>

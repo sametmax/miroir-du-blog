@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; require</title>
+	<atom:link href="http://sametmax.com/tag/require/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Include / require / import en javascript</title>
+		<link>http://sametmax.com/include-require-import-en-javascript/</link>
+		<comments>http://sametmax.com/include-require-import-en-javascript/#comments</comments>
+		<pubDate>Thu, 03 Jan 2013 15:04:33 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[include]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[require]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3977</guid>
+		<description><![CDATA[On ne peut pas inclure un script dans un script en JS. Il n'y a pas de mot clé <code>import</code>, <code>include</code> ou <code>require</code>.
+
+On peut néanmoins trouve un moyen d'inclure du code en le téléchargeant et en l'incluant dans la page.]]></description>
+			<content:encoded><![CDATA[<p>On ne peut pas inclure un script dans un script en JS dans un navigateur Web. Il n&#8217;y a pas de mot clé <code>import</code>, <code>include</code> ou <code>require</code>.</p>
+<p>On peut néanmoins trouver un moyen d&#8217;inclure du code en le téléchargeant et en l&#8217;incluant dans la page.</p>
+<h2>Solution 1, la bourrine</h2>
+<p>On peut faire une requête GET et un <code>eval sur</code>. C&#8217;est dangereux. C&#8217;est bancal. Ca marche que pour le domaine en cours. C&#8217;est pas une bonne idée. Je ne vous le montre donc pas.</p>
+<h2>Solution 2, la maline</h2>
+<p>On va créer une balise <code>&lt;script&gt;&lt;/script&gt;</code> et la faire pointer sur le fichier à télécharger. Ainsi on utilise le mécanisme naturel pour le navigateur d&#8217;include du code.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">var include = function(url, callback){
+&nbsp;
+    /* on crée une balise<span style="color: #339933;">&lt;</span>script type<span style="color: #339933;">=</span><span style="color: #3366CC;">&quot;text/javascript&quot;</span><span style="color: #339933;">&gt;&lt;/</span>script<span style="color: #339933;">&gt;</span> */
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+&nbsp;
+    /* On fait pointer la balise sur le script qu'on veut charger
+       avec en prime un timestamp pour éviter les problèmes de cache
+    */
+&nbsp;
+    script.src = url + '?' + (new Date().getTime());
+&nbsp;
+    /* On dit d'exécuter cette fonction une fois que le script est chargé */
+    if (callback) {
+        script.onreadystatechange = callback;
+        script.onload = script.onreadystatechange;
+    }
+&nbsp;
+    /* On rajoute la balise script dans le head, ce qui démarre le téléchargement */
+    document.getElementsByTagName('head')[0].appendChild(script);
+}</pre></div></div>
+
+<p>Ca s&#8217;utilise comme ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">include<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'http://adressedemonscript.com/fichier.js'</span><span style="color: #339933;">,</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    code à exécuter une fois que le script est chargé
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span></pre></div></div>
+
+<p>La partie <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a> est très importante. En effet, si vous essayez d&#8217;exécuter du code <strong>après</strong> <code>include()</code> qui dépend du code chargé <strong>par</strong> <code>include()</code>, ça va foirer : le code n&#8217;est pas encore téléchargé. En effet, les navigateurs téléchargent les balises scripts en arrière plan et en parallèle :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">include<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'http://adressedemonscript.com/fichier.js'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+code à exécyter une fois que le script est chargé</pre></div></div>
+
+<p>Il faut donc mettre ce code dans un callback, pour garantir qu&#8217;il soit lancé quand le script a terminé de chargé.</p>
+<h2>Solution 3, la coquine</h2>
+<p>jQuery, encore et toujours, possède un raccourcis pour faire tout ça pour vous:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'http://adressedemonscript.com/fichier.js'</span><span style="color: #339933;">,</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    code à exécuter une fois que le script est chargé
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3977&amp;md5=1374a11b2d312b98816e58e65fcf5b5a" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/include-require-import-en-javascript/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Finclude-require-import-en-javascript%2F&amp;language=en_GB&amp;category=text&amp;title=Include+%2F+require+%2F+import+en+javascript&amp;description=On+ne+peut+pas+inclure+un+script+dans+un+script+en+JS+dans+un+navigateur+Web.+Il+n%26%238217%3By+a+pas+de+mot+cl%C3%A9+import%2C+include+ou+require.+On+peut+n%C3%A9anmoins...&amp;tags=import%2Cinclude%2Cjavascript%2Crequire%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/Car-Carrier-RoRo-TransAtlantic-Import-Service-Maps.gif" length="22360" type="image/jpg" />	</item>
+	</channel>
+</rss>

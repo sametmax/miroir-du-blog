@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; mac</title>
+	<atom:link href="http://sametmax.com/tag/mac/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Ouvrir un fichier avec le bon programme en Python</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/</link>
+		<comments>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comments</comments>
+		<pubDate>Thu, 17 Oct 2013 10:09:59 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[open]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7469</guid>
+		<description><![CDATA[Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander "ouvrir le type de fichier par défaut". Par exemple, moi, si on je demande d'ouvrir un fichier vidéo, je m'attend à ce que VLC soit lancé.
+
+Voilà comment faire ça en Python.]]></description>
+			<content:encoded><![CDATA[<p>Votre logiciel doit permettre d&#8217;ouvrir un fichier avec un programme externe. Oui mais lequel ?</p>
+<p>Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander &#8220;ouvrir le prog pour ce type de fichier par défaut&#8221;. Par exemple, moi, si je demande d&#8217;ouvrir un fichier vidéo, je m&#8217;attend à ce que VLC soit lancé.</p>
+<p>Voilà comment faire ça en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">subprocess</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> run_file<span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Pas de EAFP cette fois puisqu'on est dans un process externe,</span>
+    <span style="color: #808080; font-style: italic;"># on ne peut pas gérer l'exception aussi facilement, donc on fait</span>
+    <span style="color: #808080; font-style: italic;"># des checks essentiels avant.</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Vérifier que le fichier existe</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">exists</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'No such file: %s'</span> <span style="color: #66cc66;">%</span> path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On a accès en lecture ?</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>, <span style="color: #483d8b;">'access'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">access</span><span style="color: black;">&#40;</span>path, <span style="color: #dc143c;">os</span>.<span style="color: black;">R_OK</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cannot access file: %s'</span> <span style="color: #66cc66;">%</span> path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Lancer le bon programme pour le bon OS :</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>, <span style="color: #483d8b;">'startfile'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Windows</span>
+        <span style="color: #808080; font-style: italic;"># Startfile est très limité sous Windows, on ne pourra pas savoir</span>
+        <span style="color: #808080; font-style: italic;"># si il y a eu une erreu</span>
+        proc = <span style="color: #dc143c;">os</span>.<span style="color: black;">startfile</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span>.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'linux'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Linux:</span>
+        proc = <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'xdg-open'</span>, path<span style="color: black;">&#93;</span>, 
+                                 <span style="color: #808080; font-style: italic;"># on capture stdin et out pour rendre le </span>
+                                 <span style="color: #808080; font-style: italic;"># tout non bloquant</span>
+                                 stdout=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span>, stderr=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span> == <span style="color: #483d8b;">'darwin'</span>: <span style="color: #808080; font-style: italic;"># Mac:</span>
+        proc = <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'open'</span>, <span style="color: #483d8b;">'--'</span>, path<span style="color: black;">&#93;</span>, 
+                                stdout=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span>, stderr=<span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span>
+            <span style="color: #483d8b;">&quot;Your `%s` isn't a supported operatin system`.&quot;</span> <span style="color: #66cc66;">%</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Proc sera toujours None sous Windows. Sous les autres OS, il permet de</span>
+    <span style="color: #808080; font-style: italic;"># récupérer le status code du programme, and lire / ecrire sur stdin et out</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> proc</pre></div></div>
+
+<p>C&#8217;était le petit snippet sympas du jour !</p>
+<p>P.S : si quelqu&#8217;un utilise <del>BDSM</del> BSD ou Solaris, je veux bien qu&#8217;il complète le snippet.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7469&amp;md5=805b865a7efd4cc59774fee70bfd710e" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fouvrir-un-fichier-avec-le-bon-programme-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Ouvrir+un+fichier+avec+le+bon+programme+en+Python&amp;description=Votre+logiciel+doit+permettre+d%26%238217%3Bouvrir+un+fichier+avec+un+programme+externe.+Oui+mais+lequel+%3F+Les+OS+ont+des+r%C3%A9glages+par+d%C3%A9faut+pour+chaque+type+de+fichier%2C+et+on+peut...&amp;tags=fichier%2Clinux%2Cmac%2Copen%2Cos%2Cpython%2Cwindows%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/qzb7emC.jpg" length="54438" type="image/jpg" />	</item>
+		<item>
+		<title>Tiens, je suis toujours sur OSX</title>
+		<link>http://sametmax.com/tiens-je-suis-toujours-sur-osx/</link>
+		<comments>http://sametmax.com/tiens-je-suis-toujours-sur-osx/#comments</comments>
+		<pubDate>Wed, 19 Jun 2013 11:23:42 +0000</pubDate>
+		<dc:creator>coyote</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[mac os]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6419</guid>
+		<description><![CDATA[Soudain, je sais plus exactement vers quelle version, je crois que c'était la 10.10, Ubuntu a commencé à devenir de plus en plus pénible et les nouvelles versions n'ont fait qu'accroitre la frustration.]]></description>
+			<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/coyote/">coyote</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p><strong>Attention</strong>: ce qui suit est un billet d&#8217;humeur personnel. Prenez le comme tel…</p>
+<p>Je suis un <em>linuxien</em>. Pas un activiste, mais tout de même un fervent défenseur du logiciel libre et de Linux (oui pour moi écrire <em>GNU/Linux</em> partout c&#8217;est pédant et inutile – et ça te fait passer pour un gros nazi.). J&#8217;ai même créé une association de défense du libre, un <acronym title="Linux User Group">LUG</acronym> et fait <em>switcher</em> de très nombreuses personnes.</p>
+<h2>Mais alors, <strong>bordel, que fais-je sur<sup>1</sup> OSX ?</strong></h2>
+<p><sup>1</sup> Si quelqu&#8217;un a une règle pour décrire rapidement que l&#8217;on utilise un OS, en lieu et place de “<em>sur Ubuntu</em>”, “<em>sous Windows</em>’”, etc ; qu&#8217;il la balance car c&#8217;est juste insupportable.</p>
+<p>Tout à commencé sans doute quand j&#8217;ai découvert Sublime Text (merci Sam!). J&#8217;ai alors rompu mon workflow entièrement libre pour y intégrer un outil proprio, mais fantastique et dont je me suis précipité pour payer la licence afin de remercier le développeur pour cette bouffée d&#8217;oxygène.</p>
+<p>J&#8217;utilise régulièrement des Mac comme machine depuis plusieurs années (2003?) et ce pour plusieurs raisons:</p>
+<ul>
+<li>C&#8217;est propre. Pas de sticker dégueulasse, de look plastique ou autre.</li>
+<li>C&#8217;est une grande marque avec peu de modèles: l&#8217;assurance d&#8217;avoir un support pour Linux relativement rapidement.</li>
+<li>C&#8217;est de bonne qualité (oui il y a toujours des exceptions), ça dure longtemps et ça se revend pas trop mal.</li>
+<li>Le connecteur d&#8217;alim aimanté ; tous ceux qui ont déjà cassé un laptop à cause de ça comprendront…</li>
+<li>Je fais un peu de dev multiplateforme (libre!) et il faut toujours tester/ajuster sur OSX.</li>
+</ul>
+<p>Me voilà donc avec une machine Mac dont je suis satisfait, faisant tourner un Ubuntu que j&#8217;adore avec un dual boot que j&#8217;utilise dans les aéroports ou autre car la conso batterie est <strong>incomparable</strong> entre Ubuntu et OSX.</p>
+<p>Linux a toujours eu des petits problèmes, la batterie dont je parlais, le WiFi, le suspend/hibernation, etc. Rien d&#8217;insurmontable pour quelqu&#8217;un de convaincu.</p>
+<h2>L&#8217;aigle noir</h2>
+<p>Soudain, je sais plus exactement vers quelle version, je crois que c&#8217;était la 10.10, Ubuntu a commencé à devenir de plus en plus pénible et les nouvelles versions n&#8217;ont fait qu&#8217;accroitre la frustration.</p>
+<p>Le passage à Unity a été difficile, et le fait de tester d&#8217;autres alternatives (XFCE, Xmonad) permet de se rendre compte à quel point Ubuntu est <em>intégré</em>: beaucoup de composants ne sont plus vraiment interchangeable ou alors au prix de gros efforts de configurations voir de hacks. En bref, <strong>Ubuntu, c&#8217;est bien si tu y touches pas trop</strong>.</p>
+<p>Au fil des versions, des nouveaux problèmes, des fonctionnalités perdues, toute tentative montrant à quel point Ubuntu s&#8217;écarte du Linux modulaire, j&#8217;ai décidé de franchir le Rubicon et de tester d&#8217;autres distros.</p>
+<p>Pour faire (très) court :</p>
+<ul>
+<li>Toutes les non-debian ne m&#8217;ont pas plus: la gestion des paquets est contre-productive pour moi qui ait des années d&#8217;apt dans les dents. Surtout, c&#8217;est <strong>lent comme la mort</strong>. Incroyablement lent en 2013 ; WTF?</li>
+<li>Les debian-ubuntu-based: la plupart sont des customisations d&#8217;Ubuntu avec des paquets différents, des thèmes et des outils. J&#8217;ai pas vu d&#8217;avantages vraiment et toutes ont des petits désagréments supplémentaires, sans compter que les problèmes spécifiques sont dur à résoudre car ils ont peu d&#8217;utilisateurs.</li>
+<li>debian ; j&#8217;ai beaucoup aimé car c&#8217;est très simple, la modularité est là, la vitesse aussi ; c&#8217;est bien intégré. Malheureusement, la gestion non souple des paquets (soit tout est vieux, soit tout est jeune) couplé avec l&#8217;absence de PPA (<strong>les PPA, c&#8217;est génial!</strong>) font que j&#8217;ai renoncé.</li>
+</ul>
+<h2>Archlinux</h2>
+<p>Je suis donc resté sur Archlinux. J&#8217;avais utilisé un peu par le passé et ça correspondait bien à ce que je voulais actuellement: quelque chose de propre, documenté ou je savais qu&#8217;en cas de problème, je pourrais l&#8217;identifier facilement.</p>
+<p>Archlinux m&#8217;a prit du temps pour le configurer. C&#8217;est sans doute ce qui m&#8217;a le plus dérangé car <strong>j&#8217;utilise mon laptop pour travailler</strong>, pas pour geeker. Une journée de perdue à configurer la machine, c&#8217;est une journée de travail en moins avec des conséquences en sousous.</p>
+<p>Mais j&#8217;étais satisfait d&#8217;Archlinux, c&#8217;était effectivement beaucoup plus simple et clair qu&#8217;Ubuntu. J&#8217;ai pu faire fonctionner des petites choses qui marchaient pas avec Ubuntu ; j&#8217;avais un Gnome à jour, etc.</p>
+<p>Mais, car il y a toujours un mais ; Archlinux a aussi ses problèmes: il <strong>veut</strong> que vous soyez à jour, et vous avez pas intérêt à le contrarier ; mais en même temps, il faut vérifier ce qu&#8217;il fait donc re-perte de temps.</p>
+<p>Au fil du temps, les problèmes des logiciels récents se faisaient plus frustrants ; une version qui marche ; une qui marche pas, etc.</p>
+<p>Quand je me suis rendu compte que je devais redémarrer ma machine plus d&#8217;une fois par semaine, et que je perdais vraiment du temps avec des bêtises, je me suis dis “<em>oh et puis merde, je vais mettre OSX!</em>” (oui je reste relativement poli dans ma tête).</p>
+<h2>Le trou noir</h2>
+<p>J&#8217;ai formatté ma machine sur un coup de tête, un week-end, pour voir si vraiment Linux devenait de la fiente d&#8217;âne ou si c&#8217;était partout pareil. Je me suis dis, ce sera l&#8217;occasion de voir à quoi ressemble la concurrence, de voir comment se comporte cette machine dans son environnement naturel (genre voir ce que ça fait d&#8217;utiliser un SSD qui a couté la peau du Q). Je voulais tester ça une semaine, deux tout au plus.</p>
+<p>C&#8217;était il y a des mois déjà. Je sais plus trop quand. Janvier ? Février ? Je ne m&#8217;en souviens pas car <strong>je ne pense plus à ma machine</strong>. Je l&#8217;oublie complètement.</p>
+<p>Bien sûr, au début, je raillais ce système et ses perversions (installer GCC nécessite de passer par un Store à la con), et puis, passé les deux premiers jours de <em>setup</em>, je l&#8217;ai oublié. Le matin, j&#8217;arrive au boulot, la machine est là, allumée, prête, rapide, disponible. Je travaille, et je lui <em>clou le bec</em> en partant, chose qui ne marchait pas avant.</p>
+<p>Je peux me promener avec sans craindre pour la batterie, je peux utiliser le Wifi à tout moment (pas besoin de patcher le kernel dans un hôtel), je peux faire de la visio-conf sans jongler avec 2 outils PulseAudio, le trackpad marche à merveille, le tout démarre en mois de 10s, j&#8217;ai mon Sublime Text, mon terminal, mon ipython et toute sa clique, bref, c&#8217;est le bonheur.</p>
+<p>Je ne sais pas quand je vais retourner sous Linux ; la simple idée de me retaper le setup à l&#8217;envers alors que je suis si productif maintenant me donne la nausée. Je n&#8217;ai même pas été tenté à la sortie du 13.04. Tout juste ais-je pris le temps de lancer le Live-CD dans VirtualBox.</p>
+<p>Bien sûr, tout n&#8217;est pas rose, je connais bien les arcanes de Linux, mais pas celles d&#8217;OSX ; dès qu&#8217;il y a une dépendances bizarre dans un projet (genre opencv), je prends peur car tout n&#8217;est pas aussi bien packagé, ou aussi facilement compilable, etc mais finalement, ça n&#8217;arrive pas très souvent.</p>
+<p>Vous m&#8217;avez lu jusqu&#8217;ici, bravo, je n&#8217;ai pas écris tout ça pour vous convaincre de quoi que ce soit ou pour me justifier. Je suis toujours autant dérangé par Apple, je ne me sens pas à l&#8217;aise en utilisant OSX, mais je peux enfin utiliser ma machine comme l&#8217;outil de dev qu&#8217;il devrait être et rien d&#8217;autre ; c&#8217;est un soulagement très grand.</p>
+<p>J&#8217;espère retrouver dans les commentaires de ce billet vos frustrations concernant Linux et pourquoi pas ce que vous faites pour y remédier (Punching Ball?).</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6419&amp;md5=faed6b478a934ae40deca6d09439e907" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/tiens-je-suis-toujours-sur-osx/feed/</wfw:commentRss>
+		<slash:comments>79</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Ftiens-je-suis-toujours-sur-osx%2F&amp;language=en_GB&amp;category=text&amp;title=Tiens%2C+je+suis+toujours+sur+OSX&amp;description=Ceci+est+un+post+invit%C3%A9+de+coyote+post%C3%A9+sous+licence+creative+common+3.0+unported.+Attention%3A+ce+qui+suit+est+un+billet+d%26%238217%3Bhumeur+personnel.+Prenez+le+comme+tel%E2%80%A6+Je+suis+un...&amp;tags=linux%2Cmac%2Cmac+os%2Cubuntu%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/35aTn.jpg" length="76539" type="image/jpg" />	</item>
+		<item>
+		<title>Testez vos Webapp sur iPhone / iPad avec le Simulator iOS &#8211; [Mac]</title>
+		<link>http://sametmax.com/testez-vos-webapp-sur-iphone-ipad-avec-le-simulator-ios-mac/</link>
+		<comments>http://sametmax.com/testez-vos-webapp-sur-iphone-ipad-avec-le-simulator-ios-mac/#comments</comments>
+		<pubDate>Mon, 14 Jan 2013 07:19:51 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ios]]></category>
+		<category><![CDATA[iphone]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[webapp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4120</guid>
+		<description><![CDATA[Si vous développez une application web vous allez avoir besoin de la tester. Pour iPhone il existe un émulateur gratuit proposé par Apple.]]></description>
+			<content:encoded><![CDATA[<p>La plupart d&#8217;entre vous le savent certainement mais moi je viens de le découvrir :)</p>
+<p>Au début j&#8217;utilisais <a href="https://chrome.google.com/webstore/detail/ripple-emulator-beta/geelfhphabnejjhdalkjhgipohgpdnoc">Ripple</a> mais ce n&#8217;est pas de l&#8217;émulation, juste de l&#8217;encapsulage donc pas top.</p>
+<p>Hier un pote me parle d&#8217;iOs Simulator , un émulateur iPhone / iPad livré avec Xcode. J&#8217;ai été surpris par la qualité de l&#8217;outil, un petit executable de 5 Mo qui émule très bien l&#8217;iPhone, l&#8217;iphone Retina ainsi que l&#8217;iPad.</p>
+<p>Pour se le procurer c&#8217;est un peu galère, il faut télécharger Xcode (4GB!) dans le dev center, avoir un compte dev donc. <a href="https://developer.apple.com/xcode/">ça se passe ici</a> . C&#8217;est pas la mort mais y a plus simple&#8230;</p>
+<p>Pour le trouver une fois installé..CHERCHEZ ! De tous les sites que j&#8217;ai parcouru aucun n&#8217;avait le même emplacement que moi, les dev de chez apple adorent faire des blagues. ça va donc dépendre de votre version de Xcode, de votre OS, du temps qu&#8217;il fait.<br />
+Un indice quand même c&#8217;est dans un des sous répertoires <strong><em>/Developer/</em> </strong>.<br />
+Moi il est dans <em>/Developer/Platforms/iPhoneSimulator.platform/Developer/Applications</em> et il se nomme &#8220;Simulateur iOS&#8221;</p>
+<div id="attachment_4123" class="wp-caption aligncenter" style="width: 545px"><img class=" wp-image-4123  " title="iOS Simulator" src="http://sametmax.com/wp-content/uploads/2013/01/ios_simulator.png" alt="" width="535" height="478" /><p class="wp-caption-text">Pratique pour tester ses webapps sur iPhone / iPad</p></div>
+<p>L&#8217;utilisation est nickel et j&#8217;ai pu corriger quelques bugs que je n&#8217;avais pas sur Ripple sous chrome ou même sous Safari. Ceci dit d&#8217;après un autre pote qui lui bosse en tant que dev sur les machines apple, rien ne vaut un appareil original, même avec l&#8217;émulateur il peut y avoir des problèmes.</p>
+<p>Android a lui aussi un émulateur dans son <a href="http://developer.android.com/sdk/index.html">SDK téléchargeable ici</a></p>
+<p>Pour le lancer c&#8217;est un peu plus <del datetime="2013-01-13T14:21:57+00:00">compliqué</del> long car il faut configurer un appareil.</p>
+<p>Une fois le SDK téléchargé, allez dans le répertoire <em>adt-bundle-mac-x86_64/sdk/tools</em> et lancez la commande <strong><em>./android avd</em></strong> qui va avoir pour but de lancer le manager d&#8217;appareils, depuis ce manager vous allez pouvoir créer un nouvel appareil si il n&#8217;y en a pas déjà et le lancer (bouton &#8220;start&#8221;).</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=4120&amp;md5=8a102aacde87b7decb3dff72986e78e5" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/testez-vos-webapp-sur-iphone-ipad-avec-le-simulator-ios-mac/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Ftestez-vos-webapp-sur-iphone-ipad-avec-le-simulator-ios-mac%2F&amp;language=en_GB&amp;category=text&amp;title=Testez+vos+Webapp+sur+iPhone+%2F+iPad+avec+le+Simulator+iOS+%26%238211%3B+%5BMac%5D&amp;description=La+plupart+d%26%238217%3Bentre+vous+le+savent+certainement+mais+moi+je+viens+de+le+d%C3%A9couvrir+%3A%29+Au+d%C3%A9but+j%26%238217%3Butilisais+Ripple+mais+ce+n%26%238217%3Best+pas+de+l%26%238217%3B%C3%A9mulation%2C+juste+de+l%26%238217%3Bencapsulage+donc+pas...&amp;tags=ios%2Ciphone%2Cmac%2Cwebapp%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/ios-simulator.png" length="247211" type="image/jpg" />	</item>
+		<item>
+		<title>Effacer le cache DNS sous Mac Os</title>
+		<link>http://sametmax.com/effacer-le-cache-dns-sous-mac-os/</link>
+		<comments>http://sametmax.com/effacer-le-cache-dns-sous-mac-os/#comments</comments>
+		<pubDate>Thu, 22 Nov 2012 21:17:30 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[dns]]></category>
+		<category><![CDATA[flush]]></category>
+		<category><![CDATA[mac]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3257</guid>
+		<description><![CDATA[Effacer le cache dns de votre Mac si vous avez encore l'ancienne IP en pinguant un site.]]></description>
+			<content:encoded><![CDATA[<p>Si vous avez encore l&#8217;ancienne IP lorsque vous faites un ping sur un site c&#8217;est que votre cache DNS l&#8217;a mémorisée. Il faut parfois le réinitialiser (si vous changez votre site de serveur ou que vous ne pouvez plus accéder à un site en particulier).</p>
+<p><strong>Ouvrez un Terminal:</strong><br />
+<em>Dans <strong>Applications > Utilitaires > Terminal </strong></em></p>
+<p>et tapez:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">lookupd -flushcache</pre></div></div>
+
+<p>Si ça ne marche pas  essayez (pour les Mac plus récents):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">dscacheutil -flushcache</pre></div></div>
+
+<p><strong>Rappel:</strong><br />
+la commande ping est toujours utile, c&#8217;est un outil qui sert à tester la conneciton entre 2 IPs.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">ping yahoo.<span style="color: black;">com</span>
+PING yahoo.<span style="color: black;">com</span> <span style="color: black;">&#40;</span>72.30.38.140<span style="color: black;">&#41;</span>: <span style="color: #ff4500;">56</span> data <span style="color: #dc143c;">bytes</span>
+<span style="color: #ff4500;">64</span> <span style="color: #dc143c;">bytes</span> <span style="color: #ff7700;font-weight:bold;">from</span> 72.30.38.140: icmp_seq=<span style="color: #ff4500;">0</span> ttl=<span style="color: #ff4500;">42</span> <span style="color: #dc143c;">time</span>=<span style="color: #ff4500;">275.592</span> ms
+<span style="color: #ff4500;">64</span> <span style="color: #dc143c;">bytes</span> <span style="color: #ff7700;font-weight:bold;">from</span> 72.30.38.140: icmp_seq=<span style="color: #ff4500;">1</span> ttl=<span style="color: #ff4500;">42</span> <span style="color: #dc143c;">time</span>=<span style="color: #ff4500;">212.991</span> ms
+<span style="color: #ff4500;">64</span> <span style="color: #dc143c;">bytes</span> <span style="color: #ff7700;font-weight:bold;">from</span> 72.30.38.140: icmp_seq=<span style="color: #ff4500;">2</span> ttl=<span style="color: #ff4500;">42</span> <span style="color: #dc143c;">time</span>=<span style="color: #ff4500;">255.605</span> ms</pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3257&amp;md5=3b4664b2d94f46daf51c378e96af766e" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/effacer-le-cache-dns-sous-mac-os/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Feffacer-le-cache-dns-sous-mac-os%2F&amp;language=en_GB&amp;category=text&amp;title=Effacer+le+cache+DNS+sous+Mac+Os&amp;description=Si+vous+avez+encore+l%26%238217%3Bancienne+IP+lorsque+vous+faites+un+ping+sur+un+site+c%26%238217%3Best+que+votre+cache+DNS+l%26%238217%3Ba+m%C3%A9moris%C3%A9e.+Il+faut+parfois+le+r%C3%A9initialiser+%28si+vous+changez+votre...&amp;tags=cache%2Cdns%2Cflush%2Cmac%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/terminator-main.jpg" length="181338" type="image/jpg" />	</item>
+		<item>
+		<title>Internet Explorer 6, 7, 8, 9 Sous Mac/Linux Facilement avec VMWare Fusion</title>
+		<link>http://sametmax.com/internet-explorer-6-7-8-9-sous-maclinux-facilement/</link>
+		<comments>http://sametmax.com/internet-explorer-6-7-8-9-sous-maclinux-facilement/#comments</comments>
+		<pubDate>Sun, 18 Nov 2012 16:26:36 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[Ie6]]></category>
+		<category><![CDATA[ie8]]></category>
+		<category><![CDATA[ie9]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[vmware]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3155</guid>
+		<description><![CDATA[Quand on developpe des applications web on doit s'assurer de la compatibilité de ces dernières avec les différents navigateurs du marché. Jusqu'à présent sous MAc c'était pas évident de tester son application sur Internet Explorer.]]></description>
+			<content:encoded><![CDATA[<p>Quand on developpe des applications web on doit s&#8217;assurer de la compatibilité de ces dernières avec les différents navigateurs du marché. Jusqu&#8217;à présent sous MAC/Linux c&#8217;était pas évident de tester son application sur Internet Explorer.</p>
+<p>J&#8217;ai essayé <a href="http://www.codeweavers.com/products/">cross-over</a> sous MAC qui ne vaut pas le coup à mes yeux (trop lent, plantage, pas compatible pour certaines versions d&#8217;IE, etc.), <a href="http://www.winehq.org/">Wine</a> sous Linux dont cross-over est un dérivé il me semble, mêmes galères.<br />
+Il y a aussi <a href="http://www.my-debugbar.com/wiki/IETester/HomePage">IETester</a> qui a l&#8217;air pas mal pour avoir toutes les versions d&#8217;IE sur un seul navigateur mais il ne marche que sous Windows.</p>
+<p>Les choses ont changées et Microsoft propose désormais gratuitement des Images de son Os Windows avec la version IE qui va bien.<br />
+La seule contrainte est qu&#8217;il faut posséder VMWare (<a href="https://www.virtualbox.org/">ou VirtualBox</a> GRATUIT), je conseille la <a href="http://www.vmware.com/products/fusion/overview.html">version 5 pour 50 euros</a> qui a un mode magique, le mode &#8220;Unity&#8221; qui fusionne votre Os émulé avec votre Os hôte, j&#8217;ai dans mon dock Mac une icône IE8, c&#8217;est trop mignon, fluide et pratique.<br />
+Une chose non négligeable c&#8217;est le copier/coller qui marche entre les deux OS.</p>
+<div id="attachment_3156" class="wp-caption aligncenter" style="width: 474px"><a href="http://sametmax.com/wp-content/uploads/2012/11/vmware.jpeg"><img class=" wp-image-3156 " title="Vmware et le mode Unity" src="http://sametmax.com/wp-content/uploads/2012/11/vmware.jpeg" alt="" width="464" height="290" /></a><p class="wp-caption-text">Pratique pour voir si son site fonctionne sous IE depuis son Mac</p></div>
+<p><strong><br />
+Installation:</strong></p>
+<p>Rendez-vous chez Microsoft et <a href="http://www.microsoft.com/en-us/download/details.aspx?displaylang=fr&#038;id=11575">téléchargez la version qui vous convient</a></p>
+<p>Une fois les archives téléchargées vous les décompressées (avec <a href="http://wakaba.c3.cx/s/apps/unarchiver.html">The unarchiver</a> sous Mac)</p>
+<p>Dans VMWare vous sélectionnez &#8220;Ajouter > Importer&#8221; et vous importer l&#8217;image téléchargée, c&#8217;est celle qui comporte l&#8217;extension VHD (ex: Win7_IE8.vhd). Il va vous demander de convertir l&#8217;image etc, faites mouliner.</p>
+<p><strong>Attention:</strong></p>
+<p>Le mot de passe des OS est Password1 à taper en clavier QWERTY, si vous n&#8217;y arrivez pas, cliquez à gauche à l&#8217;écran d&#8217;accueil Windows sur l&#8217;espèce de <a href="http://imgur.com/96Ta0">petite roue </a>et sélectionnez &#8220;Show keyboard&#8221;, un clavier virtuel va s&#8217;afficher et vous pourrez cliquer sur les touches.</p>
+<p>Passez l&#8217;activation de windows il n&#8217;y en a pas besoin.</p>
+<p>Pour éviter que sa copie arrive à expiration le mieux est de faire un <a href="http://www.vmware.com/support/ws55/doc/ws_preserve_sshot_taking.html">Snapshot</a> (sauvegarde de l&#8217;état de la Machine virtuelle à un instant T) dès la première installation de votre machine virtuelle.</p>
+<p>Je dois dire que c&#8217;est plutôt sympa, car je peux coder sur mon Mac tout en testant le résultat sous IE comme si c&#8217;était une appli Mac.</p>
+<p>NB: Si vous lancez un serveur web sous votre Mac et n&#8217;arrivez pas à y acceder depuis le navigateur IE, lancez le serveur sur le port 80 et l&#8217;ip de votre machine (192.168&#8230;..) </p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3155&amp;md5=f7906ce36104f06b2ac3d0a81bf60737" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/internet-explorer-6-7-8-9-sous-maclinux-facilement/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Finternet-explorer-6-7-8-9-sous-maclinux-facilement%2F&amp;language=en_GB&amp;category=text&amp;title=Internet+Explorer+6%2C+7%2C+8%2C+9+Sous+Mac%2FLinux+Facilement+avec+VMWare+Fusion&amp;description=Quand+on+developpe+des+applications+web+on+doit+s%26%238217%3Bassurer+de+la+compatibilit%C3%A9+de+ces+derni%C3%A8res+avec+les+diff%C3%A9rents+navigateurs+du+march%C3%A9.+Jusqu%26%238217%3B%C3%A0+pr%C3%A9sent+sous+MAC%2FLinux+c%26%238217%3B%C3%A9tait+pas+%C3%A9vident+de+tester...&amp;tags=Ie6%2Cie8%2Cie9%2Cmac%2Cvmware%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/fusion.jpeg" length="47103" type="image/jpg" />	</item>
+	</channel>
+</rss>

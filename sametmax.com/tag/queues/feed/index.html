@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; queues</title>
+	<atom:link href="http://sametmax.com/tag/queues/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Travail distribué en Python SANS Celery</title>
+		<link>http://sametmax.com/travail-distribue-en-python-sans-celey/</link>
+		<comments>http://sametmax.com/travail-distribue-en-python-sans-celey/#comments</comments>
+		<pubDate>Tue, 29 May 2012 03:04:37 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[celery]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[queues]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=765</guid>
+		<description><![CDATA[L'équipe de Disqus a sorti un outil pratique pour faire du traitement parallèle sans se prendre la tête.]]></description>
+			<content:encoded><![CDATA[<p><div class='three_fourth last'>
+					
+				</div><div class='clear'></div>Quand on veut effectuer une même tâche un très grand nombre de fois, on peut utiliser une boucle comme un gros bourrin et effectuer la tâches dedans.</p>
+<p>Mais il faut alors gérer:</p>
+<ul>
+<li>le cas où le processus s&#8217;interrompt et sa reprise;</li>
+<li>le parallélisme.</li>
+</ul>
+<p>Le premier cas n&#8217;est guère que du travail en plus, et pas insurmontable. Le deuxième cas est plus compliqué: les threads sont inéficaces en Python pour tout ce qui n&#8217;est pas limité par l&#8217;IO et l&#8217;alternative d&#8217;utiliser des processus séparés est énormément de boulot.</p>
+<p>Du coup généralement on ne le fait pas, et tout est traité en une fois, alors qu&#8217;on pourrait aller 4 fois plus vite avec 4 traitements en parallèle.</p>
+<h2>Kombu et Celery</h2>
+<p>Il existe des outils très puissants pour faire des queues en Python, notamment la library <a href="http://celeryproject.org/">Celery</a>, qui utilise elle-même la bibliothèque <a href="http://pypi.python.org/pypi/kombu">Kombu</a>. Mais quand on veut juste faire un petit job rapide, les mettre en oeuvre, c&#8217;est pas mal de temps. Celery brille pour mettre dans une queue plein de tâches issues de processus externes concurrents, mais rapidement mettre en place un traitement de masse, ce n&#8217;est pas son point fort.</p>
+<p>C&#8217;est pour ici qu&#8217;intervient <a href="http://justcramer.com/2012/05/04/distributing-work-without-celery/">un article de David Cramer</a>, de l&#8217;équipe des petits gars de chez <a href="http://disqus.com/">Disqus</a>. Les mecs sont doués, utilisent massivement Django et Python, et chez eux les bases de données ont des milliards d&#8217;entrées. Bref, ils ont plein de choses interessantes à dire.</p>
+<p>En l&#8217;occurence, ils ont créé ce petit outil pour leurs migrations: le <a href="https://github.com/dcramer/taskmaster">task master</a>.</p>
+<div id="attachment_770" class="wp-caption aligncenter" style="width: 446px"><a href="http://sametmax.com/wp-content/uploads/2012/05/2012-05-28-233600_1024x768_scrot.png"><img class=" wp-image-770 " title="Et en prime, on a un bel écran de progression" src="http://sametmax.com/wp-content/uploads/2012/05/2012-05-28-233600_1024x768_scrot.png" alt="Capture d'écran de la sortie de taskmaster" width="436" height="107" /></a><p class="wp-caption-text">Et en prime, on a un bel écran de progression</p></div>
+<h2>Utilisation du task master</h2>
+<p>Imaginez : vous avez besoin de transcoder des images, renommer des fichiers ou mettre à jour toutes les entrées de votre base de données. Ca va prendre 3 heures, et ça risque de planter. Ce cas de figure est exactement celui dans lequel brille le task master.</p>
+<p>On install ça (exemple sous Ubuntu) et avec <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> libzmq-dev libevent-dev python-dev
+pip <span style="color: #c20cb9; font-weight: bold;">install</span> taskmaster</pre></div></div>
+
+<p>Puis on créé un fichier <em>tasks.py</em>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get_jobs<span style="color: black;">&#40;</span>last=<span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">for</span> valeurs_traiter <span style="color: #ff7700;font-weight:bold;">in</span> liste_de_valeurs:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> valeurs_traiter
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> handle_job<span style="color: black;">&#40;</span>valeurs_traiter<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> valeurs_traiter</pre></div></div>
+
+<p>Les fonctions seront autodétectées si elles portent ce nom.</p>
+<p><code>handle_job</code> est la fonction qui va faire votre tâche. Par exemple mettre à jour un objet de votre base de données, encoder une vidéo, etc.</p>
+<p>Attention, en cas de reprise des tâches, la première peut être exécutée deux fois. Il faut donc que votre fonction gère ce cas.</p>
+<p><code>get_jobs</code> doit retourner un itérable dont chaque élément sera passé à <code>handle_job</code>. Par exemple, <code>yield</code> retournera le nom d&#8217;une vidéo, ou d&#8217;un fichier.</p>
+<p>Ensuite on lance le controlleur:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">tm-master tasks.py</pre></div></div>
+
+<p>On on créé autant de workers que l&#8217;on souhaite, ici 4:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">tm-spawn tasks.py <span style="color: #000000;">4</span></pre></div></div>
+
+<p>Dans ce cas, 4 processus vont vider l&#8217;itérable de <code>get_jobs</code> de la liste de valeurs à traiter, et appliquer <code>handle_jobs</code> dessus. Si vous arrêtez le controller ou les workers, vous pouvez les relancer plus tard : ils reprendront là où ils se sont arrêtés.</p>
+<p>Si vous avez un processeur avec quatre coeurs, le travail est effectué presque 4 fois plus vite qu&#8217;avec un script tout simple et une boucle <code>for</code>. On peut aussi installer les workers sur des machines séparées, et les faire communiquer avec le controlleur en leur donnant son adresse IP et un port, distribuant ainsi le travail sur de nombreux ordinateurs.</p>
+<p>Et en prime, contrairement à celery, toutes les tâches ne sont pas listées en mémoire, mais seulement une partie (que l&#8217;on peut définir en paramètre).</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=765&amp;md5=1676417e2841922c2cf13b52e7cd4921" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/travail-distribue-en-python-sans-celey/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Ftravail-distribue-en-python-sans-celey%2F&amp;language=en_GB&amp;category=text&amp;title=Travail+distribu%C3%A9+en+Python+SANS+Celery&amp;description=Quand+on+veut+effectuer+une+m%C3%AAme+t%C3%A2che+un+tr%C3%A8s+grand+nombre+de+fois%2C+on+peut+utiliser+une+boucle+comme+un+gros+bourrin+et+effectuer+la+t%C3%A2ches+dedans.+Mais+il+faut...&amp;tags=celery%2Cpython%2Cqueues%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/mariage-baccalaureat-mariage-baccalaureat-esclave-sexuelle-parti-dominatrice-fouet-GAME-OVER.png" length="7088" type="image/jpg" />	</item>
+	</channel>
+</rss>

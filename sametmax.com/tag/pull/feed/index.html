@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; pull</title>
+	<atom:link href="http://sametmax.com/tag/pull/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Être alerté par Git quand un fichier a été modifié durant le dernier merge</title>
+		<link>http://sametmax.com/etre-alerte-par-git-quand-un-fichier-a-ete-modifie-durant-le-dernier-merge/</link>
+		<comments>http://sametmax.com/etre-alerte-par-git-quand-un-fichier-a-ete-modifie-durant-le-dernier-merge/#comments</comments>
+		<pubDate>Mon, 28 Jan 2013 12:25:50 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[hook]]></category>
+		<category><![CDATA[merge]]></category>
+		<category><![CDATA[pull]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4303</guid>
+		<description><![CDATA[Il y a certains fichiers comme les migrations ou les fichiers de settings dont vous avez besoin de connaître l'état. Si un collègue les modifies et les push, vous voulez le savoir au moment du pull. Bien sûr vous pouvez scruter la liste des modifs à ce moment là, mais n'est-ce pas tellement mieux si votre ordinateur fait ça pour vous et affiche une grosse alerte rouge ?]]></description>
+			<content:encoded><![CDATA[<p>Il y a certains fichiers comme les migrations ou les fichiers de settings dont vous avez besoin de connaître l&#8217;état. Si un collègue les modifie et les push, vous voulez le savoir au moment du pull. Bien sûr vous pouvez scruter la liste des modifs à ce moment là, mais n&#8217;est-ce pas tellement mieux si votre ordinateur fait ça pour vous et affiche une grosse alerte rouge ?</p>
+<p>Mettez le code suivant du le fichier <em>.git/hooks/post-merge</em> de votre repo en local :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#!/bin/bash</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># On met ici tous les fichiers (ou pattern de nom) qu'on veut surveiller</span>
+<span style="color: #666666; font-style: italic;"># changez les pour les adapter à votre projet</span>
+<span style="color: #007800;">files</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #ff0000;">'settings.py'</span> <span style="color: #ff0000;">'migrations'</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>;
+&nbsp;
+<span style="color: #666666; font-style: italic;"># on récupère tous les noms de fichiers modifiés depuis le dernier merge</span>
+<span style="color: #007800;">modified_files</span>=<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">git</span> <span style="color: #c20cb9; font-weight: bold;">diff</span> <span style="color: #ff0000;">&quot;HEAD@{1}&quot;</span> --name-only<span style="color: #000000; font-weight: bold;">`</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># on boucle sur chaque nom de fichier surveillé</span>
+<span style="color: #000000; font-weight: bold;">for</span> watched_file <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${files[@]}</span>&quot;</span>; <span style="color: #000000; font-weight: bold;">do</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;"># on liste tous les fichiers modifiés qui correspondent à ce nom de</span>
+    <span style="color: #666666; font-style: italic;"># fichier surveillé</span>
+    <span style="color: #007800;">modified_watched_files</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000; font-weight: bold;">`</span><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">$modified_files</span>&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> <span style="color: #c20cb9; font-weight: bold;">grep</span> <span style="color: #007800;">$watched_file</span><span style="color: #000000; font-weight: bold;">`</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;"># si le nombre de fichiers correspondant est plus grand que 0</span>
+    <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#91;</span> <span style="color: #800000;">${#modified_watched_files[@]}</span> <span style="color: #7a0874; font-weight: bold;">&#93;</span>; <span style="color: #000000; font-weight: bold;">then</span>
+&nbsp;
+        <span style="color: #666666; font-style: italic;"># pour chaque fichier qui correspond, on affiche un avertissement</span>
+        <span style="color: #666666; font-style: italic;"># en rouge</span>
+        <span style="color: #000000; font-weight: bold;">for</span> modified_watched_file <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${modified_watched_files[@]}</span>&quot;</span>; <span style="color: #000000; font-weight: bold;">do</span>
+&nbsp;
+            <span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #660033;">-e</span> <span style="color: #ff0000;">&quot;\e[41m &quot;</span><span style="color: #007800;">$modified_watched_file</span><span style="color: #ff0000;">&quot; has changed \033[0m&quot;</span>
+&nbsp;
+        <span style="color: #000000; font-weight: bold;">done</span>
+&nbsp;
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">fi</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">done</span></pre></div></div>
+
+<p>Le hook post-merge est exécute après git pull (et seulement si il n&#8217;y a pas eu de conflit). Il va afficher une bonne grosse alerte en rouge pour chaque fichier surveillé qui a été modifié entre avant et après le pull.</p>
+<p>Notez au passage la syntaxe intuitive de bash pour utiliser des tableaux. On dirait presque que le mec qui a codé bash était un pote du gars qui a codé git.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=4303&amp;md5=44c645db1b2b3156d516421578c06eb5" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/etre-alerte-par-git-quand-un-fichier-a-ete-modifie-durant-le-dernier-merge/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fetre-alerte-par-git-quand-un-fichier-a-ete-modifie-durant-le-dernier-merge%2F&amp;language=en_GB&amp;category=text&amp;title=%C3%8Atre+alert%C3%A9+par+Git+quand+un+fichier+a+%C3%A9t%C3%A9+modifi%C3%A9+durant+le+dernier+merge&amp;description=Il+y+a+certains+fichiers+comme+les+migrations+ou+les+fichiers+de+settings+dont+vous+avez+besoin+de+conna%C3%AEtre+l%26%238217%3B%C3%A9tat.+Si+un+coll%C3%A8gue+les+modifie+et+les+push%2C+vous+voulez...&amp;tags=git%2Chook%2Cmerge%2Cpull%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/redalert_01.jpg" length="584070" type="image/jpg" />	</item>
+	</channel>
+</rss>

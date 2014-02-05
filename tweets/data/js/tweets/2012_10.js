@@ -293,8 +293,16 @@ Grailbird.data.tweets_2012_10 =
       "id" : 467772208
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
-    "urls" : [ ]
+    "hashtags" : [ {
+      "text" : "Stage",
+      "indices" : [ 139, 140 ]
+    } ],
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/UxUwjbZc",
+      "expanded_url" : "http:\/\/bit.ly\/S7s5A5",
+      "display_url" : "bit.ly\/S7s5A5"
+    } ]
   },
   "geo" : { },
   "id_str" : "263227505136250880",
@@ -378,7 +386,7 @@ Grailbird.data.tweets_2012_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "indices" : [ 3, 19 ],
       "id_str" : "541163544",
@@ -386,7 +394,12 @@ Grailbird.data.tweets_2012_10 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/9Dwmm3zt",
+      "expanded_url" : "http:\/\/bit.ly\/V3jPpD",
+      "display_url" : "bit.ly\/V3jPpD"
+    } ]
   },
   "geo" : { },
   "id_str" : "263223827318837249",
@@ -410,7 +423,7 @@ Grailbird.data.tweets_2012_10 =
     "id" : 263202684155351042,
     "created_at" : "2012-10-30 08:56:24 +0000",
     "user" : {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "protected" : false,
       "id_str" : "541163544",
@@ -2070,7 +2083,10 @@ Grailbird.data.tweets_2012_10 =
       "id" : 353948635
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "MinuteSexe",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ ]
   },
   "geo" : { },
@@ -2365,7 +2381,7 @@ Grailbird.data.tweets_2012_10 =
   "source" : "\u003Ca href=\"http:\/\/code.google.com\/p\/qwit\/\" rel=\"nofollow\"\u003EQwit\u003C\/a\u003E",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "This is [i]ooner",
+      "name" : ".iooner()",
       "screen_name" : "iooner",
       "indices" : [ 0, 7 ],
       "id_str" : "417907416",
@@ -2505,7 +2521,10 @@ Grailbird.data.tweets_2012_10 =
       "id" : 77198513
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "MERCISOPHIE",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ ]
   },
   "geo" : { },
@@ -2954,7 +2973,7 @@ Grailbird.data.tweets_2012_10 =
     "user_mentions" : [ {
       "name" : "SamEtMax",
       "screen_name" : "sam_et_max",
-      "indices" : [ 70, 81 ],
+      "indices" : [ 80, 81 ],
       "id_str" : "507128812",
       "id" : 507128812
     } ],
@@ -4999,7 +5018,7 @@ Grailbird.data.tweets_2012_10 =
     "user_mentions" : [ {
       "name" : "St\u00E9phane Pouyllau",
       "screen_name" : "spouyllau",
-      "indices" : [ 17, 27 ],
+      "indices" : [ 139, 140 ],
       "id_str" : "22467215",
       "id" : 22467215
     } ],
@@ -5199,7 +5218,7 @@ Grailbird.data.tweets_2012_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "indices" : [ 3, 19 ],
       "id_str" : "541163544",
@@ -5207,7 +5226,12 @@ Grailbird.data.tweets_2012_10 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/BI35O8qw",
+      "expanded_url" : "http:\/\/bit.ly\/VsQoeV",
+      "display_url" : "bit.ly\/VsQoeV"
+    } ]
   },
   "geo" : { },
   "id_str" : "256379189761036288",
@@ -5231,7 +5255,7 @@ Grailbird.data.tweets_2012_10 =
     "id" : 253413410816000000,
     "created_at" : "2012-10-03 08:37:19 +0000",
     "user" : {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "protected" : false,
       "id_str" : "541163544",
@@ -7238,7 +7262,7 @@ Grailbird.data.tweets_2012_10 =
       "screen_name" : "psychoz971",
       "protected" : false,
       "id_str" : "256971043",
-      "profile_image_url_https" : "https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_0_normal.png",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000828334825\/42152f65045ad5234dc2d64518381080_normal.jpeg",
       "id" : 256971043,
       "verified" : false
     }
@@ -8587,6 +8611,9 @@ Grailbird.data.tweets_2012_10 =
     }, {
       "text" : "Telecom",
       "indices" : [ 27, 35 ]
+    }, {
+      "text" : "Inform\u00E1tica",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 114, 134 ],
@@ -8650,7 +8677,7 @@ Grailbird.data.tweets_2012_10 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "bouteilledelait",
+      "name" : " MilchFlasche",
       "screen_name" : "bouteilledelait",
       "indices" : [ 0, 16 ],
       "id_str" : "93729071",
@@ -8702,6 +8729,9 @@ Grailbird.data.tweets_2012_10 =
     }, {
       "text" : "django",
       "indices" : [ 128, 135 ]
+    }, {
+      "text" : "concertenligne",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 80, 100 ],

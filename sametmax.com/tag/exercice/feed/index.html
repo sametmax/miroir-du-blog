@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; exercice</title>
+	<atom:link href="http://sametmax.com/tag/exercice/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Solution de l&#8217;exercice d&#8217;hier sur shadow</title>
+		<link>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/</link>
+		<comments>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/#comments</comments>
+		<pubDate>Wed, 29 Jan 2014 15:25:53 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unix]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8917</guid>
+		<description><![CDATA[Ça va de soit, mais ça va mieux en le disant, ceci n'est pas la solution unique, mais une solution possible parmi d'autres.]]></description>
+			<content:encoded><![CDATA[<p>Ça va de soit, mais ça va mieux en le disant, ceci n&#8217;est pas la solution unique de l&#8217;<a href="http://sametmax.com/cest-lheure-de-faire-de-lexercice/#comment-19118">exercice d&#8217;hier</a>, mais une solution possible parmi d&#8217;autres.</p>
+<p>On note l&#8217;usage de <a href="http://docs.python.org/2/library/crypt.html?highlight=crypt#crypt">crypt</a>, qui évite de se faire chier à trouver le bon algo de hashing et gère le salt automatiquement. <a href="http://docs.python.org/2/library/spwd.html?highlight=spwd#spwd">spwd</a>, c&#8217;est vraiment pour le grosses larves comme moi qui veulent même pas faire un <code>split</code>.</p>
+<p>Et c&#8217;est du Python 3, yo dog !</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> io
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">crypt</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> spwd
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">urllib</span>.<span style="color: black;">request</span> <span style="color: #ff7700;font-weight:bold;">import</span> FancyURLopener
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">zipfile</span> <span style="color: #ff7700;font-weight:bold;">import</span> ZipFile
+&nbsp;
+PASSWORDS_SOURCE = <span style="color: #483d8b;">&quot;http://xato.net/files/10k%20most%20common.zip&quot;</span>
+PASSWORDS_LIST = <span style="color: #483d8b;">'10k most common.txt'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Le fichier ZIP est derrière cloudflare, qui vous ferme la porte au nez si</span>
+<span style="color: #808080; font-style: italic;"># vous n'avez pas de User-Agent. On va donc créer un UrlOpener, un objet qui</span>
+<span style="color: #808080; font-style: italic;"># ouvre des ressources en utilisant leurs URLs, qui a un User-Agent 'TA MERE'.</span>
+<span style="color: #808080; font-style: italic;"># CloudFlare ne check pas que le UA est valide.</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> FFOpener<span style="color: black;">&#40;</span>FancyURLopener<span style="color: black;">&#41;</span>:
+   version = <span style="color: #483d8b;">'TA MERE'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Si le dictionnaire de passwords n'est pas là, on le télécharge</span>
+<span style="color: #808080; font-style: italic;"># via FFOpener().open(PASSWORDS_SOURCE).read(). C'est verbeux, c'est urllib.</span>
+<span style="color: #808080; font-style: italic;"># Normalement je ferais ça avec requests. Ensuite on lui donne une interface</span>
+<span style="color: #808080; font-style: italic;"># file-like object avec io.BytesIO pour que ZipFile puisse le traiter en mémoire</span>
+<span style="color: #808080; font-style: italic;"># sans avoir à le sauvegarder dans un vrai fichier sur le disque, et on</span>
+<span style="color: #808080; font-style: italic;"># extrait le ZIP.</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>PASSWORDS_LIST<span style="color: black;">&#41;</span>:
+    ZipFile<span style="color: black;">&#40;</span>io.<span style="color: black;">BytesIO</span><span style="color: black;">&#40;</span>FFOpener<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #008000;">open</span><span style="color: black;">&#40;</span>PASSWORDS_SOURCE<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: black;">extractall</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On extrait les mots de passe de la liste sous forme de tuple car c'est rapide</span>
+<span style="color: #808080; font-style: italic;"># à lire. Un petit rstrip vire les sauts de ligne.</span>
+passwords = <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>l.<span style="color: black;">rstrip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> l <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>PASSWORDS_LIST<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># spwd.getspall() nous évite de parser le fichier shadow à la main.</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> entry <span style="color: #ff7700;font-weight:bold;">in</span> spwd.<span style="color: black;">getspall</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Processing password for user &quot;%s&quot;: '</span> <span style="color: #66cc66;">%</span> entry.<span style="color: black;">sp_nam</span>, end=<span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Pas de hash ? On gagne du temps avec 'continue'</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #483d8b;">'$'</span> <span style="color: #ff7700;font-weight:bold;">in</span> entry.<span style="color: black;">sp_pwd</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'no password hash to process.'</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">continue</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On teste chaque password avec la fonction crypt, qui accepte en deuxième</span>
+    <span style="color: #808080; font-style: italic;"># paramètre le hash du mot de passe complet. Pas besoin de se faire chier</span>
+    <span style="color: #808080; font-style: italic;"># à le spliter, il va analyser les '$' et se démerder avec ça. On a juste</span>
+    <span style="color: #808080; font-style: italic;"># à comparer le résultat avec le hash d'origine.</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #dc143c;">pwd</span> <span style="color: #ff7700;font-weight:bold;">in</span> passwords:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #dc143c;">crypt</span>.<span style="color: #dc143c;">crypt</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">pwd</span>, entry.<span style="color: black;">sp_pwd</span><span style="color: black;">&#41;</span> == entry.<span style="color: black;">sp_pwd</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'password is &quot;%s&quot;.'</span> <span style="color: #66cc66;">%</span> <span style="color: #dc143c;">pwd</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># On break pour gagner quelques tours de boucles, et pouvoir</span>
+            <span style="color: #808080; font-style: italic;"># utiliser la condition 'else'.</span>
+            <span style="color: #ff7700;font-weight:bold;">break</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fail to break password.'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/crack_shadow.py">Télécharger le code.</a></p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8917&amp;md5=a1783918d5efb8552ac4659f4ae50c32" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fsolution-de-lexercice-dhier-sur-shadow%2F&amp;language=en_GB&amp;category=text&amp;title=Solution+de+l%26%238217%3Bexercice+d%26%238217%3Bhier+sur+shadow&amp;description=%C3%87a+va+de+soit%2C+mais+%C3%A7a+va+mieux+en+le+disant%2C+ceci+n%26%238217%3Best+pas+la+solution+unique+de+l%26%238217%3Bexercice+d%26%238217%3Bhier%2C+mais+une+solution+possible+parmi+d%26%238217%3Bautres.+On+note+l%26%238217%3Busage+de...&amp;tags=exercice%2Cpassword%2Cpython%2Cunix%2Cblog" type="text/html" />
+	</item>
+		<item>
+		<title>Solution de l&#8217;exercice d&#8217;hier</title>
+		<link>http://sametmax.com/solution-de-lexercice-dhier/</link>
+		<comments>http://sametmax.com/solution-de-lexercice-dhier/#comments</comments>
+		<pubDate>Tue, 17 Dec 2013 09:17:44 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8356</guid>
+		<description><![CDATA[Il faut bien noter que ce n'est qu'une solution parmi d'autres :]]></description>
+			<content:encoded><![CDATA[<p>Il faut bien noter que ce n&#8217;est qu&#8217;une solution parmi d&#8217;autres :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">string</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+&nbsp;
+mots = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+texte = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">argv</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'œ'</span>, <span style="color: #483d8b;">'oe'</span><span style="color: black;">&#41;</span>
+texte = <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span>, texte<span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span>, <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+texte = <span style="color: #dc143c;">re</span>.<span style="color: black;">sub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'[^%s]'</span> <span style="color: #66cc66;">%</span> <span style="color: #dc143c;">string</span>.<span style="color: black;">ascii_lowercase</span>, <span style="color: #483d8b;">' '</span>, texte.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> i, e <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>texte.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    mots.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>e, <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>
+&nbsp;
+mots = <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>mots.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, key=<span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>, <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> mot, positions <span style="color: #ff7700;font-weight:bold;">in</span> mots:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'- %s: %s'</span> <span style="color: #66cc66;">%</span> <span style="color: black;">&#40;</span>mot, <span style="color: #483d8b;">', '</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span>, positions<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>On ignore cordialement toute gestion d&#8217;erreur, donc le code peut se permettre d&#8217;être court. Et <code>.replace(u'œ', 'oe')</code> n&#8217;est pas très générique :-)</p>
+<p>Dans les propositions de code des commentaires, il faut noter :</p>
+<ul>
+<li>Une utilisation fort maline du defaultdict par bob.</li>
+<li>Le signalement d&#8217;unidecode par zanguu qui aurait géré <code>'œ'</code> sans problème. Mais ça rajoute une dépendance.</li>
+</ul>
+<p>Décorticage :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">string</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On va tocker les mots dans ce dico</span>
+mots = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Je récupère en vrac le contenu du fichier. Comme on a pas de gestion des</span>
+<span style="color: #808080; font-style: italic;"># erreurs, je récupère cash pistache le chemin de la ligne de commande</span>
+<span style="color: #808080; font-style: italic;"># et je suppose un encoding en UTF8. Le résultat obtenu est un objet</span>
+<span style="color: #808080; font-style: italic;"># unicode de tout le texte du fichier, sans le caractère 'œ'.</span>
+texte = <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">argv</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'œ'</span>, <span style="color: #483d8b;">'oe'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Astuce pour normaliser les caractères spéciaux. Ne marche que pour </span>
+<span style="color: #808080; font-style: italic;"># l'alphabet latin malheureusement. Donc le script est limité. Unidecode</span>
+<span style="color: #808080; font-style: italic;"># permettrait d'avoir un script plus générique.</span>
+texte = <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span>, texte<span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span>, <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># string.ascii_lowercase contient toutes les lettres ASCII en minuscule,</span>
+<span style="color: #808080; font-style: italic;"># ce qui permet de faire un remplacement, via regex, de </span>
+<span style="color: #808080; font-style: italic;"># [^abcdefghijklmnopqrstuvwxyz]', c'est à dire tout ce qui n'est pas</span>
+<span style="color: #808080; font-style: italic;"># une lettre ASCII minuscule.</span>
+texte = <span style="color: #dc143c;">re</span>.<span style="color: black;">sub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'[^%s]'</span> <span style="color: #66cc66;">%</span> <span style="color: #dc143c;">string</span>.<span style="color: black;">ascii_lowercase</span>, <span style="color: #483d8b;">' '</span>, texte.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Je récupère tous les &quot;mots&quot;, split() sans paramètre coupe en effet toute </span>
+<span style="color: #808080; font-style: italic;"># combinaison de caractères non imprimables. enumerate() me permet d'avoir</span>
+<span style="color: #808080; font-style: italic;"># la position de chaque mot. setdefault() me permet d'ignorer les clés qui</span>
+<span style="color: #808080; font-style: italic;"># n'existent pas encore dans le dico. J'aurais pu utiliser un defaultdict, mais</span>
+<span style="color: #808080; font-style: italic;"># comme on a qu'une seule ligne ici, c'est plus court.</span>
+<span style="color: #808080; font-style: italic;"># J'obtiens donc un dico {mot1: [positon1, position2, ...], mot2: ...}</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> i, e <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>texte.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    mots.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>e, <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On récupère le contenu du dico sous forme de liste de tuples </span>
+<span style="color: #808080; font-style: italic;"># [(mot, positions)...], et on l'ordonne selon le nombre d'apparitions</span>
+<span style="color: #808080; font-style: italic;"># (len(x[1])), ou a défaut par ordre naturel des apparitions sorted(x[1]).</span>
+<span style="color: #808080; font-style: italic;"># Pour rappel, key attend une fonction qui prend chaque élement, et retourne</span>
+<span style="color: #808080; font-style: italic;"># une clé. La clé est utilisée pour ordonner les éléments : chaque élément</span>
+<span style="color: #808080; font-style: italic;"># voit sa clé comparée à celle des autres, et ordonnée par ordre naturel.</span>
+<span style="color: #808080; font-style: italic;"># Y a un article sur ça : http://sametmax.com/ordonner-en-python/</span>
+<span style="color: #808080; font-style: italic;"># En gros, une entrée ('salut', 4, 18) aura pour clé (2, (4, 18)),</span>
+<span style="color: #808080; font-style: italic;"># ce que Python peut comparer facilement.</span>
+<span style="color: #808080; font-style: italic;"># Je réalise en rédigeant ces lignes que mon sorted est inutile, puisque </span>
+<span style="color: #808080; font-style: italic;"># le processus est incrémental et déjà ordonné. Je le laisse comme référence.</span>
+mots = <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>mots.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, key=<span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>, <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et on affiche tout ça, non sans caster les positions du type int vers str</span>
+<span style="color: #808080; font-style: italic;"># pour éviter un crash</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> mot, positions <span style="color: #ff7700;font-weight:bold;">in</span> mots:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'- %s: %s'</span> <span style="color: #66cc66;">%</span> <span style="color: black;">&#40;</span>mot, <span style="color: #483d8b;">', '</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span>, positions<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<hr/>
+<p><a href="http://sametmax.com/petit-exercice-en-python/">Enoncé de l&#8217;exercice.</a></p>
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/decembre/compter.py">Télécharger le code de l&#8217;article.</a></p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8356&amp;md5=80f003c6c2b9415b3b6ce49687108e9b" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/solution-de-lexercice-dhier/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fsolution-de-lexercice-dhier%2F&amp;language=en_GB&amp;category=text&amp;title=Solution+de+l%26%238217%3Bexercice+d%26%238217%3Bhier&amp;description=Il+faut+bien+noter+que+ce+n%26%238217%3Best+qu%26%238217%3Bune+solution+parmi+d%26%238217%3Bautres+%3A+import+re+import+sys+import+string+import+unicodedata+%26nbsp%3B+mots+%3D+%26%23123%3B%26%23125%3B+texte+%3D+open%26%2340%3Bsys.argv%26%2391%3B1%26%2393%3B%26%2341%3B.read%26%2340%3B%26%2341%3B.decode%26%2340%3B%27utf8%27%26%2341%3B.replace%26%2340%3Bu%27%C5%93%27%2C+%27oe%27%26%2341%3B+texte+%3D...&amp;tags=exercice%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/bQ3zsIi.jpg" length="40150" type="image/jpg" />	</item>
+	</channel>
+</rss>

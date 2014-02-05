@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; nodejs</title>
+	<atom:link href="http://sametmax.com/tag/nodejs/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Envie de meurtre</title>
+		<link>http://sametmax.com/envie-de-meurtre/</link>
+		<comments>http://sametmax.com/envie-de-meurtre/#comments</comments>
+		<pubDate>Fri, 19 Jul 2013 09:55:57 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[nodejs]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6725</guid>
+		<description><![CDATA[Oui, je tapes beaucoup sur nodejs et la communauté javascript en général. Mais ils le méritent, Putain !
+]]></description>
+			<content:encoded><![CDATA[<p>Oui, je tape beaucoup sur nodejs et la communauté javascript en général. Mais ils le méritent, bordel !</p>
+<p>Je tombe sur un projet OpenSource qui est sorti en janvier dernier. Ils vendent leur popote &#8220;As A Service&#8221;, donc a priori, on pourrait se dire qu&#8217;ils voudraient qu&#8217;on les prennent au sérieux.</p>
+<p>Ils fournissent un serveur pour se faire la main en local avant de taper dans leur API payante. Cool. Merci.</p>
+<p>D&#8217;abord, il faut évidement passer par l&#8217;installation de node et tout le bordel. Bon, admettons. Même si Python est installé par défaut, il faut bien installer <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>.</p>
+<p>Mais ensuite, au lancement du serveur, rien. Il reste là, silencieusement. Pas de mode verbose, un mode debug qui ne fait absolument rien.</p>
+<p>Mon code client se connecte, et puis nada. Silence radio sur leur lib client et serveur. Vide intersidéral.</p>
+<p>La doc est succincte (3 pages) et rien qui ne parle du problème. Question sur la mailling list. Pas de réponse.</p>
+<p>A ce stade j&#8217;en ai déjà ras le cul. Les libs node qui marchent pas et qui en plus veulent pas mettre un putain de message d&#8217;erreur, y en a déjà un paquet. C&#8217;est une épidémie dans cette communauté.</p>
+<p>Mais je retrousse mes manches, et je vais voir dans le code source.</p>
+<p>Et là, je tombe sur 400 lignes de ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">    <span style="color: #003366; font-weight: bold;">var</span> client<span style="color: #339933;">;</span>
+    <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span>self._clients<span style="color: #009900;">&#91;</span>key<span style="color: #009900;">&#93;</span> <span style="color: #339933;">||</span> <span style="color: #339933;">!</span><span style="color: #009900;">&#40;</span>client <span style="color: #339933;">=</span> self._clients<span style="color: #009900;">&#91;</span>key<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#91;</span>id<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+      <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>req.<span style="color: #660066;">params</span>.<span style="color: #660066;">retry</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        res.<span style="color: #660066;">send</span><span style="color: #009900;">&#40;</span><span style="color: #CC0000;">401</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+      <span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #006600; font-style: italic;">// Retry this request</span>
+        req.<span style="color: #660066;">params</span>.<span style="color: #660066;">retry</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">true</span><span style="color: #339933;">;</span>
+        setTimeout<span style="color: #009900;">&#40;</span>handle<span style="color: #339933;">,</span> <span style="color: #CC0000;">25</span><span style="color: #339933;">,</span> req<span style="color: #339933;">,</span> res<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+      <span style="color: #009900;">&#125;</span>
+      <span style="color: #000066; font-weight: bold;">return</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>C&#8217;est un appel au génocide, un style de coding comme ça ! Sérieusement, déjà Javascript est un langage moche, avec un scoping de merde, du nesting en pagaille et tout un tas de pièges qui fait que le code est dur à lire et à comprendre.</p>
+<p>Mais là, vous imaginez la concentration qu&#8217;il faut pour lire ces 10 putains de lignes ? Et les remettre dans le contexte du script complet (qui au passage est commenté comme un diabétique sucre son café).</p>
+<p>C&#8217;est trop dur de ne pas pondre des trucs innommables comme <code>!(client = self._clients[key][id])</code> ? Un ligne de plus a taper. Trop difficile de mettre des noms de variables complets ? <code>id</code>, mais id de quoi connard ? Je remonte tout le script pour m&#8217;en souvenir ? Et pourquoi tu assignes <code>client = self._clients</code>  si c&#8217;est pour ne pas t&#8217;en servir ? Et puis un double if imbriqué suivi d&#8217;un appel récursif asynchrone, c&#8217;est tellement fun pour suivre le workflow ! </p>
+<p>400 lignes comme ça, après le dîner, ça fout la chiasse. Alors oui, c&#8217;est de l&#8217;open source, faut pas faire le difficile, etc.</p>
+<p>Mais bordel, qu&#8217;on ne vienne pas me dire que c&#8217;est l&#8217;avenir. Les ex-script kiddies d&#8217;hier, codeurs PHP et VB, commencent à peine à écrire du code propre. Et là grosso modo on va se taper la vague des intégrateurs Web qui se mettent à coder parce que c&#8217;est du JS comme dans le navigateur ?</p>
+<p>GGGGGGGGGGGGRRRRRRRRRRRRRRRRRRRRRRRR !</p>
+<p>Je devrais faire une émission style &#8220;joueur du grenier&#8221;, mais pour le code pourri.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6725&amp;md5=d9304974a5ce847e095fa0f1fd3dd254" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/envie-de-meurtre/feed/</wfw:commentRss>
+		<slash:comments>42</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fenvie-de-meurtre%2F&amp;language=en_GB&amp;category=text&amp;title=Envie+de+meurtre&amp;description=Oui%2C+je+tape+beaucoup+sur+nodejs+et+la+communaut%C3%A9+javascript+en+g%C3%A9n%C3%A9ral.+Mais+ils+le+m%C3%A9ritent%2C+bordel+%21+Je+tombe+sur+un+projet+OpenSource+qui+est+sorti+en+janvier+dernier....&amp;tags=javascript%2Cnodejs%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/07/be5gI.jpg" length="55910" type="image/jpg" />	</item>
+		<item>
+		<title>Non, nodejs n&#8217;est pas mature</title>
+		<link>http://sametmax.com/non-nodejs-nest-pas-mature/</link>
+		<comments>http://sametmax.com/non-nodejs-nest-pas-mature/#comments</comments>
+		<pubDate>Mon, 14 May 2012 13:34:28 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[nodejs]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=608</guid>
+		<description><![CDATA[La maturité d'un projet ne se juge pas seulement par le code source lui-même, il se mesure aussi à tout l'écosystème et à la communauté.]]></description>
+			<content:encoded><![CDATA[<p>La maturité d&#8217;un projet ne se juge pas seulement par le code source lui-même, <strong>il se mesure aussi à tout l&#8217;écosystème et à la communauté</strong>.</p>
+<p>Un jour je me suis retrouvé à devoir choisir, sans m&#8217;y connaitre vraiment, entre apprendre Python ou Ruby. La raison pour laquelle j&#8217;ai choisi Python n&#8217;a rien de profondément philosophique: ça marchait.</p>
+<p>A l&#8217;époque, et c&#8217;est encore dans une moindre mesure le cas aujourd&#8217;hui, l&#8217;écosystème Ruby était bancale:</p>
+<ul>
+<li>installation de gem qui foire une fois sur deux;</li>
+<li>projets sans tests (oui, on est mal placé&#8230;) ni documentation;</li>
+<li>environnement isolé très compliqué à mettre en oeuvre.</li>
+</ul>
+<p>C&#8217;est éxactement ce que je ressens aujourd&#8217;hui à propos de <a href="http://nodejs.org/">NodeJS</a>. Un de mes amis prosélyte quand il s&#8217;agit de ce projet m&#8217;assurait que c&#8217;était <a href="https://github.com/joyent/node">le repo le plus suivit sur github</a>, qu&#8217;il y avait maintenant moulte ORM, frameworks, et tout ce qu&#8217;il fallait pour développer.</p>
+<h2>Et c&#8217;est vrai, Node avance très vite. Trop vite.</h2>
+<p>Emporté par l&#8217;élan de l&#8217;enthousiasme, les amateurs de la techno ventent les (réels) mérites de la bête:</p>
+<ul>
+<li>performances époustouflantes;</li>
+<li>websocket ou fallback les doigts dans le nez;</li>
+<li>un seul langage côté serveur et client;</li>
+<li>une communauté de passionés hyper compétents et productifs;</li>
+<li>et pleins de vrais projets en prod pour le prouver.</li>
+</ul>
+<p>Sur le papier c&#8217;est cool, mais en pratique, voici ce qu&#8217;on a oublié de vous dire:</p>
+<ul>
+<li>les packages ont un goût de pas fini: doc fébrile, -h qui fait planter le programme, erreurs de locale impossible à résoudre, etc.</li>
+<li>il y a 100 initiatives pour tacler le même problème. Pour l&#8217;instant pas de clair gagnant pour les libs les plus importantes. La pérénité de vos dépendances se joue à pile ou face.</li>
+<li>toutes les libs sont en travaux. C&#8217;est la seule chose qu&#8217;on trouve toujours dans la doc: <em>version beta, l&#8217;API va changer, tout va pêter, vous êtes prévenus</em>.</li>
+<li>un seul langage, mais c&#8217;est du JS. Syntaxe de merde, gestion de scope tout pourri, passage des arguments à la walou et nested callbacks en pagaille. Si bien que les projets JS les plus connus (hors jQuery et cie) sont <a href="http://coffeescript.org/">coffeescript</a> et les libs qui <a href="http://stackoverflow.com/a/4289363/9951">inlinent les appels asynchrones</a>. Ça me fait penser à Microsoft qui vente les qualités de son défragmenteur alors que la concurrence ont des FS qui ne fragmentent pas.</li>
+<li>les debug toolbars, les ORM, les générateurs de formulaires, les libs d&#8217;i18n, bref, tous ces trucs qui vous rendent 10 fois plus productifs sont loin d&#8217;offrir l&#8217;équivalence en terme de features ou de facilité de mise en oeuvre.</li>
+<li>la seule bonne source d&#8217;infos <strong>à jour</strong> sur NodeJS c&#8217;est stackoverflow&#8230; Hum&#8230; Oh certes, vous avez des docs de références au poil sur plein de sites, mais en 5 minutes, vous allez tomber sur le cas de programmation réel qui n&#8217;est décrit nul part.</li>
+<li>vous avez du mal à trouver un dev Python ou Ruby ? Essayer de trouver un dev NodeJS. Et pour la formation, bonne chance. Ca ne demande pas du tout le même niveau de compétences. La bonne nouvelle : si un mec sait s&#8217;en servir, vous êtes à peu prêt sur qu&#8217;il est bon.</li>
+</ul>
+<p>Ça me rappelle le buzz qu&#8217;il y avait eu autour de <a href="http://twistedmatrix.com/trac/">Python Twisted</a>. Travailler en asynchrone est tellement difficile pour le programmeur lambda que quand j&#8217;ai passé un entretien d&#8217;embauche chez <a href="http://www.jamendo.com/">Jamendo</a>, <strong>le mec voulait me recruter rien que parceque je savais à quoi ça servait</strong>. Du coup, les alternatives sont encensées, mais vous trouvez vraiment les <a href="http://pypi.python.org/pypi/greenlet">greenlets</a> si simple ?</p>
+<p>Je crois fermement que NodeJS va s&#8217;imposer dans le développement Web (merde, encore un truc à apprendre) car, avouons le, ça déchire sa génitrice. Mais ne vous faites pas avoir par les barbus betaddict qui prêchent la dernière update de la bonne parole, si vous mettez les mains dedans, vous allez en chier.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=608&amp;md5=967092b70dbf569256c6200a651b0f79" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/non-nodejs-nest-pas-mature/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fnon-nodejs-nest-pas-mature%2F&amp;language=en_GB&amp;category=text&amp;title=Non%2C+nodejs+n%26%238217%3Best+pas+mature&amp;description=La+maturit%C3%A9+d%26%238217%3Bun+projet+ne+se+juge+pas+seulement+par+le+code+source+lui-m%C3%AAme%2C+il+se+mesure+aussi+%C3%A0+tout+l%26%238217%3B%C3%A9cosyst%C3%A8me+et+%C3%A0+la+communaut%C3%A9.+Un+jour+je+me+suis...&amp;tags=javascript%2Cnodejs%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/oscar_pistorius_nike.jpg" length="10916" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; ramp</title>
+	<atom:link href="http://sametmax.com/tag/ramp/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Vérifier la RAM que consomme un process sous Linux avec pmap</title>
+		<link>http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/</link>
+		<comments>http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/#comments</comments>
+		<pubDate>Thu, 10 May 2012 00:30:09 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[pmap]]></category>
+		<category><![CDATA[process]]></category>
+		<category><![CDATA[ramp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=583</guid>
+		<description><![CDATA[Comment savoir la quantité de RAM utilisée par vos process ? Avec pmap bien sûr !
+Traquer les process les plus gourmants et optimisez la consommation de vos ressources serveur.]]></description>
+			<content:encoded><![CDATA[<p>Des fois on a son serveur qui swap à mort, tout ralentie, votre site vaut plus rien, vous êtes désespéré, c&#8217;est la faute à tout le monde sauf vous, etc&#8230; Sauf que vous avez fait un script qui check rien du tout, qui lance des process externes qui buguent 2 fois sur 3, votre script tout pourri a alors bouffé toute la RAM, ne laissant rien aux autres process, le système swap à mort, c&#8217;est le drame&#8230;</p>
+<p>Avec pmap vous pouvez connaitre la mémoire utilisée par un process, très pratique pour dénicher qui consomme et remonter à la source.</p>
+<p>Un petit ps aux pour connaitre l&#8217;id de votre process à espionner ou à défaut un <a title="htop – un visualiseur interactif de process" href="http://sametmax.com/htop-un-visualiseur-interactif-de-process/">htop</a>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ps</span> aux <span style="color: #000000; font-weight: bold;">|</span> <span style="color: #c20cb9; font-weight: bold;">grep</span> redis
+redis    <span style="color: #000000;">23777</span>  <span style="color: #000000;">0.1</span>  <span style="color: #000000;">6.8</span>  <span style="color: #000000;">72480</span> <span style="color: #000000;">70708</span> ?        Ss   01:<span style="color: #000000;">15</span>   <span style="color: #000000;">0</span>:03 <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>sbin<span style="color: #000000; font-weight: bold;">/</span>redis-server <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>redis.conf</pre></div></div>
+
+<p>Ensuite on passe l&#8217;ID à pmap:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">pmap <span style="color: #000000;">23777</span>
+<span style="color: #000000;">23777</span>:   <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>sbin<span style="color: #000000; font-weight: bold;">/</span>redis-server <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>redis.conf
+0089a000    108K r-x--  <span style="color: #000000; font-weight: bold;">/</span>lib<span style="color: #000000; font-weight: bold;">/</span>ld-<span style="color: #000000;">2.5</span>.so
+...
+bf9d5000     84K rw---    <span style="color: #7a0874; font-weight: bold;">&#91;</span> stack <span style="color: #7a0874; font-weight: bold;">&#93;</span>
+ total    72476K</pre></div></div>
+
+<p>Redis occupe 72Mo de RAM. Dans mon cas c&#8217;est normal, celà correspond à mes valeurs de config.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=583&amp;md5=443d2e09b049c62ce0f33a5717ea6369" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/verifier-la-ram-que-consome-un-process-sous-linux-avec-pmap/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fverifier-la-ram-que-consome-un-process-sous-linux-avec-pmap%2F&amp;language=en_GB&amp;category=text&amp;title=V%C3%A9rifier+la+RAM+que+consomme+un+process+sous+Linux+avec+pmap&amp;description=Des+fois+on+a+son+serveur+qui+swap+%C3%A0+mort%2C+tout+ralentie%2C+votre+site+vaut+plus+rien%2C+vous+%C3%AAtes+d%C3%A9sesp%C3%A9r%C3%A9%2C+c%26%238217%3Best+la+faute+%C3%A0+tout+le+monde+sauf+vous%2C+etc%26%238230%3B...&amp;tags=pmap%2Cprocess%2Cramp%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/mug.png" length="19027" type="image/jpg" />	</item>
+	</channel>
+</rss>

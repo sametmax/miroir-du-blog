@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; random hasard</title>
+	<atom:link href="http://sametmax.com/tag/random-hasard/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Récupérer des éléments d&#8217;une liste au hasard avec pondération en python</title>
+		<link>http://sametmax.com/recuperer-des-elements-dune-liste-au-hasard-avec-ponderation-en-python/</link>
+		<comments>http://sametmax.com/recuperer-des-elements-dune-liste-au-hasard-avec-ponderation-en-python/#comments</comments>
+		<pubDate>Fri, 07 Sep 2012 12:46:22 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[liste]]></category>
+		<category><![CDATA[pondération]]></category>
+		<category><![CDATA[random hasard]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2034</guid>
+		<description><![CDATA[Comment récupérer des éléments d'une liste au hasard mais avec une pondération.]]></description>
+			<content:encoded><![CDATA[<p>Une méthode qui vaut ce qu&#8217;elle vaut mais qui sert pas mal.</p>
+<p>Cas de figure, on veut uploader du contenu qui sera mis à disposition d&#8217;utilisateurs sur 3 serveurs sur lesquels il ne reste pas la même place&#8230;<br />
+on peut utiliser une commande ssh pour <a title="Executer une commande sur un serveur distant via ssh avec Python" href="http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/">récupérer la place sur les serveurs</a> par exemple et mettre le résultat dans une liste:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span>place_restante, nom_du_serveur<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span>
+&nbsp;
+servers = <span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'10'</span>,<span style="color: #483d8b;">'server1'</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#91;</span><span style="color: #483d8b;">'45'</span>,<span style="color: #483d8b;">'server2'</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#91;</span><span style="color: #483d8b;">'34'</span>,<span style="color: #483d8b;">'server3'</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>La logique voudrait qu&#8217;on balance le contenu sur tous les serveurs mais surtout sur le 1 car il a beaucoup de place le salop mais qu&#8217;il faut pas tout mettre dessus car on va bouffer toute sa bande passante lors des downloads du contenu alors qu&#8217;on a 2 autres serveurs qui branlent rien ou presque&#8230;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> w_choice<span style="color: black;">&#40;</span>lst, nb=<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        weighted choice give it a list as this:
+        [[45, 'item1'], [12, 'item2'],[88, 'item3']]
+        nb= Number of items to return
+    &quot;&quot;&quot;</span>
+    items = <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+    w_items = <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on récupère tous les serveurs de la liste et leur &quot;poids&quot; (place restante en % par ex)</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> weight, item <span style="color: #ff7700;font-weight:bold;">in</span> lst:
+        <span style="color: #808080; font-style: italic;"># on créé une liste dans laquelle on multiplie le nom du serveur par son poids, ex si server1 a 4 de poids on aura 4 éléménts server1</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span>-weight<span style="color: black;">&#41;</span>:
+            items.<span style="color: black;">append</span><span style="color: black;">&#40;</span>item<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on secoue mais on frappe pas</span>
+    <span style="color: #dc143c;">random</span>.<span style="color: black;">shuffle</span><span style="color: black;">&#40;</span>items<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on récupère x serveurs sur lesquel on uploadera le contenu</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> item <span style="color: #ff7700;font-weight:bold;">in</span> items:
+        <span style="color: #ff7700;font-weight:bold;">if</span> item <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> w_items:
+            w_items.<span style="color: black;">append</span><span style="color: black;">&#40;</span>item<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>w_items<span style="color: black;">&#41;</span>==nb:
+                <span style="color: #ff7700;font-weight:bold;">break</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> w_items</pre></div></div>
+
+<p><strong>ci-dessous un petit test pour voir que ça marche:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">servers = <span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'10'</span>,<span style="color: #483d8b;">'server1'</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#91;</span><span style="color: #483d8b;">'45'</span>,<span style="color: #483d8b;">'server2'</span><span style="color: black;">&#93;</span>,<span style="color: black;">&#91;</span><span style="color: #483d8b;">'34'</span>,<span style="color: #483d8b;">'server3'</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span>
+&nbsp;
+items = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>:
+    lst = w_choice<span style="color: black;">&#40;</span>servers<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> item <span style="color: #ff7700;font-weight:bold;">in</span> lst:
+        items.<span style="color: black;">update</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span>item:items.<span style="color: black;">get</span><span style="color: black;">&#40;</span>item, <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>+<span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span> <span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> items</pre></div></div>
+
+<p><strong>On obtient:<br />
+</strong><code>{'server1': 414, 'server2': 273, 'server3': 313}</code></p>
+<p>Ici server1 sort le plus souvent(414 fois) car la place occupée sur son disque est de 10%, logique qu&#8217;on lui envoie plus souvent du contenu histoire de le remplir.</p>
+<p>Je ne trouve pas ma fonction spécialement élégante ceci-dit, si certains ont mieux à proposer qu&#8217;ils se fassent entendre ;)</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=2034&amp;md5=e67bc10bb49f317a4fdde207b7873f77" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/recuperer-des-elements-dune-liste-au-hasard-avec-ponderation-en-python/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Frecuperer-des-elements-dune-liste-au-hasard-avec-ponderation-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=R%C3%A9cup%C3%A9rer+des+%C3%A9l%C3%A9ments+d%26%238217%3Bune+liste+au+hasard+avec+pond%C3%A9ration+en+python&amp;description=Une+m%C3%A9thode+qui+vaut+ce+qu%26%238217%3Belle+vaut+mais+qui+sert+pas+mal.+Cas+de+figure%2C+on+veut+uploader+du+contenu+qui+sera+mis+%C3%A0+disposition+d%26%238217%3Butilisateurs+sur+3+serveurs+sur...&amp;tags=liste%2Cpond%C3%A9ration%2Crandom+hasard%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/86random-f1.1.gif" length="23404" type="image/jpg" />	</item>
+	</channel>
+</rss>

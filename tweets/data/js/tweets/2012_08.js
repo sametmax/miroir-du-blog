@@ -2367,13 +2367,13 @@ Grailbird.data.tweets_2012_08 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "boptaste",
+      "name" : "outadoge",
       "screen_name" : "outadoc",
       "indices" : [ 0, 8 ],
       "id_str" : "91364927",
       "id" : 91364927
     }, {
-      "name" : "Baptiste ashka",
+      "name" : "azenet",
       "screen_name" : "shellgratuit",
       "indices" : [ 9, 22 ],
       "id_str" : "115618915",
@@ -2840,8 +2840,8 @@ Grailbird.data.tweets_2012_08 =
       "text" : "Django",
       "indices" : [ 34, 41 ]
     }, {
-      "text" : "p",
-      "indices" : [ 134, 136 ]
+      "text" : "python",
+      "indices" : [ 134, 140 ]
     } ],
     "urls" : [ ]
   },
@@ -2878,7 +2878,7 @@ Grailbird.data.tweets_2012_08 =
       "screen_name" : "Pierre_A",
       "protected" : false,
       "id_str" : "28110685",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/3710081141\/13c1796fefda7fa46123670b40ce5a5f_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000820449778\/23127f5c65ad742196708e030895ac6e_normal.jpeg",
       "id" : 28110685,
       "verified" : false
     }
@@ -4852,7 +4852,7 @@ Grailbird.data.tweets_2012_08 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "indices" : [ 3, 19 ],
       "id_str" : "541163544",
@@ -4860,7 +4860,12 @@ Grailbird.data.tweets_2012_08 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/2Mis4wsU",
+      "expanded_url" : "http:\/\/bit.ly\/Qmqwzo",
+      "display_url" : "bit.ly\/Qmqwzo"
+    } ]
   },
   "geo" : { },
   "id_str" : "233160758228291585",
@@ -4884,7 +4889,7 @@ Grailbird.data.tweets_2012_08 =
     "id" : 231362846334791680,
     "created_at" : "2012-08-03 12:16:15 +0000",
     "user" : {
-      "name" : "Trouveunjob2013",
+      "name" : "Trouveunjob2014",
       "screen_name" : "trouveunjob2012",
       "protected" : false,
       "id_str" : "541163544",
@@ -5038,7 +5043,7 @@ Grailbird.data.tweets_2012_08 =
       "id" : 1735676604
     }, {
       "name" : "Stephanie Walter",
-      "screen_name" : "walterstephanie",
+      "screen_name" : "WalterStephanie",
       "indices" : [ 8, 24 ],
       "id_str" : "211935262",
       "id" : 211935262
@@ -6601,7 +6606,7 @@ Grailbird.data.tweets_2012_08 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "\u3057\u3087\u3093\u307C\u308A\u8A18\u5FF5\u65E5\u3060\uFF67\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01",
+      "name" : "(\u00B4\uFF65\u03C9\uFF65`)",
       "screen_name" : "syonbori",
       "indices" : [ 3, 12 ],
       "id_str" : "16154302",
@@ -6628,7 +6633,7 @@ Grailbird.data.tweets_2012_08 =
     "id" : 230545837632126976,
     "created_at" : "2012-08-01 06:09:45 +0000",
     "user" : {
-      "name" : "\u3057\u3087\u3093\u307C\u308A\u8A18\u5FF5\u65E5\u3060\uFF67\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01\uFF01",
+      "name" : "(\u00B4\uFF65\u03C9\uFF65`)",
       "screen_name" : "syonbori",
       "protected" : false,
       "id_str" : "16154302",

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; heapq</title>
+	<atom:link href="http://sametmax.com/tag/heapq/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Heapq, le module Python incompris</title>
+		<link>http://sametmax.com/heapq-le-module-python-incompris/</link>
+		<comments>http://sametmax.com/heapq-le-module-python-incompris/#comments</comments>
+		<pubDate>Fri, 21 Dec 2012 17:23:44 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[heapq]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[list]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3813</guid>
+		<description><![CDATA[heapq est un algorythme qui organise une liste sous forme d'arbre binaire. Vous voyez c'était simple non ? Non ?]]></description>
+			<content:encoded><![CDATA[<p>Guido Van Rossum, notre-Dieu-à-tous-beni-soit-il, a un jour accepté de faire une session de questions-réponses publique, dans laquelle un petit malin lui a demandé &#8220;<a href="http://neopythonic.blogspot.fr/2008/10/sorting-million-32-bit-integers-in-2mb.html">Comment ordonner un million d&#8217;entiers 32 bits dans 2Mo de Ram avec Python</a>&#8220;.</p>
+<p>Ca aurait été sur ce blog, le mec se serait pris un tampon &#8220;drozophiliafucker&#8221; dans la gueule et ça aurait été plié. Mais quand on est BDFL et, à l&#8217;époque, employé chez Google, on est obligé de donner une réponse un peu sérieuse.</p>
+<p>Si vous avez suivi le lien précédent, vous verrez que sa réponse implique un obscure module appelé heapq. Si vous allez sur <a href="http://docs.python.org/2/library/heapq.html">la doc</a> du-dit module, vous verrez qu&#8217;elle implique une obscure explication innomable et vous aller retourner à la vidéo de porn que vous avez laissé bufferiser en haute résolution afin de pouvoir voir les grains de beauté qui longent le pourtour anal de la principale protagoniste. Respirons. </p>
+<h2>Il y a une explication rationnelle à tout cela</h2>
+<p>heapq est un algorithme qui organise une liste sous forme d&#8217;arbre binaire. Vous voyez c&#8217;était simple non ?</p>
+<p>Nan je déconne, je vais pas vous laisser avec ça quand même.</p>
+<p>Le module heapq permet d&#8217;utiliser le type &#8220;list&#8221; pour y ajouter ou retirer les éléments de telle sorte qu&#8217;ils soient toujours dans l&#8217;ordre.</p>
+<p>Sous le capot, ça marche effectivement avec un arbre binaire, mais on s&#8217;en branle. Tout ce qu&#8217;il faut comprendre c&#8217;est:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">heapq</span> <span style="color: #ff7700;font-weight:bold;">import</span> heappush, heappop
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">69</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">42</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">2048</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l, -<span style="color: #ff4500;">273.15</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #808080; font-style: italic;"># la liste est ordonnée en arbre binaire...</span>
+<span style="color: black;">&#91;</span>-<span style="color: #ff4500;">273.15</span>, <span style="color: #ff4500;">42</span>, <span style="color: #ff4500;">2048</span>, <span style="color: #ff4500;">69</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># et on depop pour itérer dans l'odre</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> heappop<span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span>
+...     
+-<span style="color: #ff4500;">273.15</span>
+<span style="color: #ff4500;">42</span>
+<span style="color: #ff4500;">69</span>
+<span style="color: #ff4500;">2048</span></pre></div></div>
+
+<p>Donc on a une liste, on lui met des éléments dans la tronche dans n&#8217;importe quel ordre, et bam, on peut itérer dans le bon ordre sans avoir à rien faire. Et cette insertion est assez rapide (O(lg n) pour les tatillons). Le parcours l&#8217;est également (de l&#8217;ordre de O(n log n)).</p>
+<p>Et donc c&#8217;est très pratique pour trouver les x plus petits éléments (ou les plus grands), implémenter des queues de priorité, etc.</p>
+<p>Exemple de queue de priorité, (courageusement <a href="http://joernhees.de/blog/2010/07/19/min-heap-in-python/">volé d&#8217;ici</a>):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">heapq</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> PriorityQueue<span style="color: black;">&#40;</span><span style="color: #008000;">list</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, data<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>Heap, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> i, x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">push</span><span style="color: black;">&#40;</span>i, x<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> push<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, priority, item<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            On push en rajoute une priorité
+        &quot;&quot;&quot;</span>
+        <span style="color: #dc143c;">heapq</span>.<span style="color: black;">heappush</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: black;">&#40;</span>priority, item<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> pop<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            On pop en retirant la proprité
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">heappop</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__len__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Comme on a une méthode next(), on peut se retourner soi-même.
+            Ainsi la boucle for appelera next() automatiquement. 
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> next<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot; 
+           On depop la liste du plus petit au plus grand.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IndexError</span>:
+            <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">StopIteration</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l = PriorityQueue<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;azerty&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">push</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span>, <span style="color: #483d8b;">'après'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">push</span><span style="color: black;">&#40;</span>-<span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">'avant'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">push</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span>, <span style="color: #483d8b;">'pendant'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> l:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> x
+...     
+<span style="color: black;">avant</span>
+a
+z
+e
+r
+t
+pendant
+y
+après</pre></div></div>
+
+<p>Et le plus beau, c&#8217;est qu&#8217;on peut prendre plusieurs itérables ordonnés, et utiliser <code>heapq.merge</code> pour obtenir un générateur (qui ne charge pas tout en mémoire d&#8217;un coup) qui va permettre d&#8217;iterer de manière ordonnée sur tous les éléments.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">heapq</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l1 = <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l2 = <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l3 = <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">heapq</span>.<span style="color: black;">merge</span><span style="color: black;">&#40;</span>l1, l2, l3<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span>, <span style="color: #ff4500;">59</span>, <span style="color: #ff4500;">60</span>, <span style="color: #ff4500;">171</span>, <span style="color: #ff4500;">174</span>, <span style="color: #ff4500;">262</span>, <span style="color: #ff4500;">336</span>, <span style="color: #ff4500;">402</span>, <span style="color: #ff4500;">435</span>, <span style="color: #ff4500;">487</span>, <span style="color: #ff4500;">557</span>, <span style="color: #ff4500;">645</span>, <span style="color: #ff4500;">899</span>, <span style="color: #ff4500;">949</span>, <span style="color: #ff4500;">996</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Notez que ce n&#8217;est pas du tout la même chose que de concaténer les listes:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l1 + l2 + l3
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">59</span>, <span style="color: #ff4500;">174</span>, <span style="color: #ff4500;">336</span>, <span style="color: #ff4500;">487</span>, <span style="color: #ff4500;">996</span>, <span style="color: #ff4500;">52</span>, <span style="color: #ff4500;">171</span>, <span style="color: #ff4500;">557</span>, <span style="color: #ff4500;">645</span>, <span style="color: #ff4500;">949</span>, <span style="color: #ff4500;">60</span>, <span style="color: #ff4500;">262</span>, <span style="color: #ff4500;">402</span>, <span style="color: #ff4500;">435</span>, <span style="color: #ff4500;">899</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Car des élements de <code>l2</code> peuvent être inférieurs à ceux de <code>l1</code>. <code>heap.merge</code> nous ordonne tout bien correctement. C&#8217;est l&#8217;équivalent de <code>sorted(l1 + l2 + l3)</code>, sauf que ça ne charge pas tout en mémoire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">merge</span><span style="color: black;">&#40;</span>l1, l2, l3<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>generator <span style="color: #008000;">object</span> merge at 0x0314F238<span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Alors que <code>sorted()</code>, charge tout en mémoire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>l1 + l2 + l3<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span>, <span style="color: #ff4500;">59</span>, <span style="color: #ff4500;">60</span>, <span style="color: #ff4500;">171</span>, <span style="color: #ff4500;">174</span>, <span style="color: #ff4500;">262</span>, <span style="color: #ff4500;">336</span>, <span style="color: #ff4500;">402</span>, <span style="color: #ff4500;">435</span>, <span style="color: #ff4500;">487</span>, <span style="color: #ff4500;">557</span>, <span style="color: #ff4500;">645</span>, <span style="color: #ff4500;">899</span>, <span style="color: #ff4500;">949</span>, <span style="color: #ff4500;">996</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p><del datetime="2012-12-21T17:35:16+00:00">Bien entendu, ça marche avec des listes créées avec </del><br />
+<del datetime="2012-12-21T17:35:16+00:00"><code>heapq</code>, ainsi:</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l1 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l1, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l2 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l2, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l3 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l3, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> list(heapq.merge(l1, l2, l3))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">[31, 40, 133, 360, 504, 508, 513, 679, 645, 792, 838, 413, 765, 886, 924]</del></p>
+<p><em>(Grosse connasserie de ma part, faites comme si vous aviez rien vu.)</em></p>
+<p>Quand on a de grosses quantités de données à trier, c&#8217;est très pratique, car l&#8217;effort de tri est répartie à chaque insertion, et à chaque itération pendant le parcours, pas concentré sur de gros appels de <code>sorted()</code>.</p>
+<p>On peut aussi récupérer des trucs du genre, les n plus petits / grands éléments sans tout coder à la main:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">nsmallest</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span>, l<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">nlargest</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span>, l<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">999</span>, <span style="color: #ff4500;">996</span>, <span style="color: #ff4500;">983</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Et c&#8217;est beaucoup plus efficace que de le faire soi-même.</p>
+<p>J&#8217;en profite pour rappeler au passage que tous les objets en Python sont ordonnables:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #483d8b;">&quot;b&quot;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: #483d8b;">&quot;b&quot;</span>
+<span style="color: #008000;">True</span></pre></div></div>
+
+<p>Et qu&#8217;en définissant les méthodes <a href="http://docs.python.org/2/reference/datamodel.html#object.__eq__">__eq_</a>_, <code>__lt__</code>, <code>__gt__</code>, etc., on peut donner un moyen de <a href="http://wiki.python.org/moin/HowTo/Sorting">comparer n&#8217;importe quelle classe</a>.</p>
+<p>Bref, pour tous les besoins de classement, de priorisations, d&#8217;ordonnancement, de notion de plus petits, de plus grands, etc. qui concernent un gros jeu de données, <code>heapq</code> est le module qu&#8217;il vous faut.</p>
+<p>Et là je percute que ça fait quelque temps déjà que je fais des articles élitistes pour des uses cases de 1% de la population. Donc les prochains tutos concerneront des trucs plus terre à terre. Parce que, je fais le malin là, mais je savais pas à quoi servait <code>heapq</code> il y a 3 semaines.</p>
+<p>xoxo les filles</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3813&amp;md5=4b4091c6d6943287c6063aaa22e25ec7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/heapq-le-module-python-incompris/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fheapq-le-module-python-incompris%2F&amp;language=en_GB&amp;category=text&amp;title=Heapq%2C+le+module+Python+incompris&amp;description=Guido+Van+Rossum%2C+notre-Dieu-%C3%A0-tous-beni-soit-il%2C+a+un+jour+accept%C3%A9+de+faire+une+session+de+questions-r%C3%A9ponses+publique%2C+dans+laquelle+un+petit+malin+lui+a+demand%C3%A9+%26%238220%3BComment+ordonner+un+million+d%26%238217%3Bentiers+32+bits...&amp;tags=collections%2Cheapq%2Citerable%2Clist%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/hip-hop.jpg" length="76988" type="image/jpg" />	</item>
+	</channel>
+</rss>

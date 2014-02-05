@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; trace</title>
+	<atom:link href="http://sametmax.com/tag/trace/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Afficher le queryset d&#8217;une requête dans les logs SQL sous Django</title>
+		<link>http://sametmax.com/afficher-le-queryset-dune-requete-dans-les-logs-sql-sous-django/</link>
+		<comments>http://sametmax.com/afficher-le-queryset-dune-requete-dans-les-logs-sql-sous-django/#comments</comments>
+		<pubDate>Wed, 25 Dec 2013 11:38:12 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[trace]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8447</guid>
+		<description><![CDATA[L'ORM de django pour les bases de données est chouette, agréable à utiliser mais construit des requêtes SQL qu'on ne peut reconnaître lors de l'analyse des logs MYSQL du premier coup d'oeil à moins d'avoir des années de pratique. J'ai une app django pour vous permettre de faire des débug sql éclairs !]]></description>
+			<content:encoded><![CDATA[<p>C&#8217;est Noël, 2 articles rien que pour vous dont un <a href="http://sametmax.com/est-ce-que-framework-x-supporte-la-charge/" title="Est-ce que “framework x” supporte la charge ?">très interressant de Sam</a>.</p>
+<p>L&#8217;ORM de django pour les bases de données est chouette, agréable à utiliser mais construit des requêtes SQL qu&#8217;on ne peut reconnaître lors de l&#8217;analyse des logs MYSQL du premier coup d&#8217;oeil. Et quand on a des centaines de requêtes par secondes c&#8217;est carrément impossible de s&#8217;y retrouver.</p>
+<p>Ce que je vous propose ici c&#8217;est d&#8217;afficher le queryset (sa ligne et le fichier qui le contient) qui a permit d&#8217;exêcuter la requête SQL que vous voyez défiler dans les logs SQL sous forme de <a href="http://dev.mysql.com/doc/refman/5.0/en/comments.html">commentaires SQL</a>.</p>
+<p>L&#8217;application se nomme <a href="https://pypi.python.org/pypi/django-sql-stacktrace/">Django Sql StackTrace</a>. C&#8217;est facile à installer et ça peut sauver des heures de debug.</p>
+<p><strong>Installation Django Sql StackTrace:</strong></p>
+<p><strong>Une bonne PIP comme toujours pour bien commencer.</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> django-sql-stacktrace</pre></div></div>
+
+<p><strong>Dans votre fichier settings de django.</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">INSTALLED_APPS = <span style="color: #7a0874; font-weight: bold;">&#40;</span>
+    .........................
+    <span style="color: #ff0000;">'sqlstacktrace'</span>,
+    .........................
+<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+SQL_STACKTRACE = True</pre></div></div>
+
+<p>La variable SQL_STACKTRACE sert à activer le debug.<br />
+Pensez à le désactiver lorsque vous n&#8217;en avez pas besoin.</p>
+<p><strong>Où se trouve mes super infos de debug ?</strong></p>
+<p><a href="http://adw0rd.com/2012/8/23/django-sql-stacktrace/en/#.Urq_5mRdU98">D&#8217;après la doc</a> vous pouvez executer un <a href="http://pwet.fr/man/linux/commandes/watch">watch</a></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">watch</span> <span style="color: #660033;">-n1</span> mysqladmin <span style="color: #660033;">-u</span> <span style="color: #c20cb9; font-weight: bold;">login</span> -pmot_de_passe processlist <span style="color: #660033;">--verbose</span></pre></div></div>
+
+<p>Chez moi ça n&#8217;a rien donné. Mais du côté des logs MySQL la magie a opérée.<br />
+Vérifiez tout d&#8217;abord que vos logs sont activés dans mysql.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>my.cnf</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">&#91;</span>mysqld<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+......
+log = <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>logs<span style="color: #000000; font-weight: bold;">/</span>mysql.log
+......</pre></div></div>
+
+<p><strong>Comment on teste ça ?</strong></p>
+<p>Redemarrez votre serveur web, surfez sur les pages de votre projet et observez les logs MySql. Vous deviez voir quelques chose de similaire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">tail</span> <span style="color: #660033;">-F</span> <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>logs<span style="color: #000000; font-weight: bold;">/</span>mysql.log</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">		  <span style="color: #000000;">644</span> Query	SELECT <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">id</span><span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>password<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>last_login<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>is_superuser<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>username<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>first_name<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>last_name<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>email<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>is_staff<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>is_active<span style="color: #000000; font-weight: bold;">`</span>, <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span>date_joined<span style="color: #000000; font-weight: bold;">`</span> FROM <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span> WHERE <span style="color: #000000; font-weight: bold;">`</span>auth_user<span style="color: #000000; font-weight: bold;">`</span>.<span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">id</span><span style="color: #000000; font-weight: bold;">`</span> = <span style="color: #000000;">65290</span>
+<span style="color: #000000; font-weight: bold;">/*</span> File <span style="color: #ff0000;">&quot;/Users/max/work/mon_projet/apps/mon_apps/views/others.py&quot;</span>, line <span style="color: #000000;">146</span>, <span style="color: #000000; font-weight: bold;">in</span> user_public_page
+	user = User.objects.get<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">pk</span>=user_id<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000; font-weight: bold;">*/</span></pre></div></div>
+
+<p>Observez cette merveille !<br />
+Entre <strong>/* */</strong> sont les infos générées par django-sql-stacktrace. J&#8217;ai nettoyé quelques fichiers pour plus de lisibilité.<br />
+Vous avez droit au chemin du fichier de la requête, à la ligne de la requête et à la requête django elle-même.</p>
+<p><strong>Une alternative ? J&#8217;ai pas envie d&#8217;installer d&#8217;app.</strong></p>
+<p>Pour les grosses feignasses ou si vous voulez juste tester occasionnellement quelques queries vous pouvez utiliser la méthode extra pour ajouter vos propres commentaires.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">videos = Video.objects.filter<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">status</span>=<span style="color: #ff0000;">'online'</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>.extra<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">where</span>=<span style="color: #7a0874; font-weight: bold;">&#91;</span><span style="color: #ff0000;">'1=1 /* ceci apparaitra dans les logs mysql ! */'</span><span style="color: #7a0874; font-weight: bold;">&#93;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></div></div>
+
+<p>Cependant le WHERE 1=1 peut causer quelques baisses de performances, mais lorsqu&#8217;on est en debug en local ça peut servir !</p>
+<p>PS: Je rappelle également le formidable outil <a href="https://github.com/django-debug-toolbar/django-debug-toolbar">django-debug-toolbar</a> qui devient vite indispensable.</p>
+<p>Alors ? Elle est pas belle la vie ?</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8447&amp;md5=0c39a616337564e02ef8f370811c5c82" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/afficher-le-queryset-dune-requete-dans-les-logs-sql-sous-django/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fafficher-le-queryset-dune-requete-dans-les-logs-sql-sous-django%2F&amp;language=en_GB&amp;category=text&amp;title=Afficher+le+queryset+d%26%238217%3Bune+requ%C3%AAte+dans+les+logs+SQL+sous+Django&amp;description=C%26%238217%3Best+No%C3%ABl%2C+2+articles+rien+que+pour+vous+dont+un+tr%C3%A8s+interressant+de+Sam.+L%26%238217%3BORM+de+django+pour+les+bases+de+donn%C3%A9es+est+chouette%2C+agr%C3%A9able+%C3%A0+utiliser+mais+construit+des...&amp;tags=django%2Cmysql%2Cpython%2Ctrace%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/fontaine_chocolat.jpg" length="26691" type="image/jpg" />	</item>
+	</channel>
+</rss>

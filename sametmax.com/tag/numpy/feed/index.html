@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; numpy</title>
+	<atom:link href="http://sametmax.com/tag/numpy/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Explication de code : callback à la mise à jour d&#8217;un array Numpy</title>
+		<link>http://sametmax.com/explication-de-code-callback-a-la-mise-a-jour-dun-array-numpy/</link>
+		<comments>http://sametmax.com/explication-de-code-callback-a-la-mise-a-jour-dun-array-numpy/#comments</comments>
+		<pubDate>Thu, 30 Aug 2012 14:32:13 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[callback]]></category>
+		<category><![CDATA[numpy]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1939</guid>
+		<description><![CDATA[Toujours dans l'esprit de <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">l'explication de code</a>, voici <a href="http://www.0bin.net/paste/ac4b9c44e0cbb390f77fc6682a7d2012e537ee98#floRq8jO45iZ1aYK9DtGRJnF5gooG00pO45zHB/fkl4=">un petit bout de numpyries</a> envoyé par un lecteur.]]></description>
+			<content:encoded><![CDATA[<p>Toujours dans l&#8217;esprit de <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">l&#8217;explication de code</a>, voici <a href="http://www.0bin.net/paste/ac4b9c44e0cbb390f77fc6682a7d2012e537ee98#floRq8jO45iZ1aYK9DtGRJnF5gooG00pO45zHB/fkl4=">un petit bout de numpyries</a> envoyé par un lecteur.</p>
+<p>Lisez l&#8217;article sur les <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a> si vous n&#8217;êtes pas familiers avec le principe, et en avant:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># on importe numpy, une bibliothèque spécialisée dans le calculs impliquant de grands</span>
+<span style="color: #808080; font-style: italic;"># jeux de nombres et très utilisée par les scientifiques</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> numpy <span style="color: #ff7700;font-weight:bold;">as</span> np
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On créé une classe qui hérite du type np.ndarray qui est un type d'array</span>
+<span style="color: #808080; font-style: italic;"># de taille fixe, et dont tous les objets doivent être du même type,</span>
+<span style="color: #808080; font-style: italic;"># mais qui peut avoir plusieurs dimensions et qui est très rapide à manipuler</span>
+<span style="color: #808080; font-style: italic;"># Notez que par convention NumPy n'utilise pas de majuscule pour le nom de </span>
+<span style="color: #808080; font-style: italic;"># ces types pour matcher str, int, unicode, etc. Pour rester congruent,</span>
+<span style="color: #808080; font-style: italic;"># la classe enfant ne le fait pas non plus. Ne prenez pas cette habitude, </span>
+<span style="color: #808080; font-style: italic;"># c'est un cas particulier.</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> cbarray<span style="color: black;">&#40;</span>np.<span style="color: black;">ndarray</span><span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># __new__ est la seule méthode de classe par défaut, sans déclaration de @classmethode, </span>
+    <span style="color: #808080; font-style: italic;"># donc le premier argument sera la classe en court. Normalement la convention</span>
+    <span style="color: #808080; font-style: italic;"># est d'appeler cet argument cls, mais ici l'auteur fait à sa sauce...</span>
+    <span style="color: #808080; font-style: italic;">#</span>
+    <span style="color: #808080; font-style: italic;"># Le reste des arguments sont les mêmes que pour __init__: ce sont ceux</span>
+    <span style="color: #808080; font-style: italic;"># attendus à l'instanciation de la classe cbarray:</span>
+    <span style="color: #808080; font-style: italic;">#   * data sont les données qu'on veut mettre dans l'array</span>
+    <span style="color: #808080; font-style: italic;">#   * cb est un callback qu'on appelera à chaque mise à jour de l'array</span>
+    <span style="color: #808080; font-style: italic;">#   * dtype est le type des données à mettre dans l'array (si on veut bypasser l'autodétection)</span>
+    <span style="color: #808080; font-style: italic;">#   * copy pour présicer si on veut copier les données, ou juste liér les données existantes</span>
+    <span style="color: #808080; font-style: italic;"># </span>
+    <span style="color: #808080; font-style: italic;"># __new__ est appelée avant __init__: elle prend les paramètres qu'attend __init__, </span>
+    <span style="color: #808080; font-style: italic;"># fabrique une instance, la retournepuis __init__ est appelée avec l'instance. </span>
+    <span style="color: #808080; font-style: italic;"># On a rarement besoin d'overrider __new__, en générale __init__ est un meilleur choix</span>
+    <span style="color: #808080; font-style: italic;"># car c'est plus simple. Mais certains types NumPy ne permettent pas de faire </span>
+    <span style="color: #808080; font-style: italic;"># autrement.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__new__</span><span style="color: black;">&#40;</span>subtype, data, cb=<span style="color: #008000;">None</span>, dtype=<span style="color: #008000;">None</span>, <span style="color: #dc143c;">copy</span>=<span style="color: #008000;">False</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On attache le callback à la CLASSE, et non à l'instance.</span>
+        <span style="color: #808080; font-style: italic;"># Ca peut paraitre étrange, mais on verra plus bas pour</span>
+        subtype.__defaultcb = cb
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Selon que l'on souhaite copier les données, ou juste les lier</span>
+        <span style="color: #808080; font-style: italic;"># on créé une instance d'un type différent.</span>
+        <span style="color: #808080; font-style: italic;"># Notez que l'absence d'espace atour de &quot;,&quot; et &quot;=&quot; n'est pas recommandé</span>
+        <span style="color: #808080; font-style: italic;"># pas le PEP8</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #dc143c;">copy</span>:
+            data = np.<span style="color: #dc143c;">array</span><span style="color: black;">&#40;</span>data,dtype=dtype<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            data = np.<span style="color: black;">asarray</span><span style="color: black;">&#40;</span>data,dtype=dtype<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Cette astuce permet d'utiliser un des deux types du dessus</span>
+        <span style="color: #808080; font-style: italic;"># mais au travers de l'API du type &quot;subtype&quot;, c'est à dire notre </span>
+        <span style="color: #808080; font-style: italic;"># classe.</span>
+        data = data.<span style="color: black;">view</span><span style="color: black;">&#40;</span>subtype<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On retourne l'instance ainsi créé.</span>
+        <span style="color: #808080; font-style: italic;"># Quand l'utilisateur fera cbarray(....), c'est cette instance</span>
+        <span style="color: #808080; font-style: italic;"># qu'il recevra</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> data
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Juste une méthode qui appelle le callback si il existe</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> _notify<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">cb</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">cb</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Une propriété qui retourne un attribut de l'objet</span>
+    <span style="color: #808080; font-style: italic;"># en s'assurant qu'on utilise celui du parent.</span>
+    <span style="color: #808080; font-style: italic;"># C'est une supposition mais je pense que shape est une propriété du</span>
+    <span style="color: #808080; font-style: italic;"># parent, qu'elle n'est pas dispo sur le type array ou asarray, et </span>
+    <span style="color: #808080; font-style: italic;"># que l'astuce data.view ne suffit pas à faire un proxy de celle-ci.</span>
+    <span style="color: #808080; font-style: italic;"># Donc je pense que ça sert à donner accès à cette donnée.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> _get_shape<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>cbarray, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">shape</span>
+    shape = <span style="color: #008000;">property</span><span style="color: black;">&#40;</span>_get_shape<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># __setitem__ est une méthode &quot;magique&quot;, appelée automatiquement qu'on</span>
+    <span style="color: #808080; font-style: italic;"># fait array[item] = val</span>
+    <span style="color: #808080; font-style: italic;"># Ici on l'utilise pour appeler _notify() à chaque mise à jour de l'array</span>
+    <span style="color: #808080; font-style: italic;"># et donc d'appeler le callback à chaque mise à jour.</span>
+    <span style="color: #808080; font-style: italic;"># Il est dommage de ne pas passer de paramètre à la méthode, comme </span>
+    <span style="color: #808080; font-style: italic;"># l'ancienne valeur, l'item et la nouvelle valeur. Le callback va être</span>
+    <span style="color: #808080; font-style: italic;"># du coup assez limité. Mais ça suffira si par exemple tout ce qu'on</span>
+    <span style="color: #808080; font-style: italic;"># veut faire c'est écrire dans un fichier à chaque modification.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, item, val<span style="color: black;">&#41;</span>:
+        np.<span style="color: black;">ndarray</span>.<span style="color: #0000cd;">__setitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, item, val<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>._notify<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># NumPy permet de créer des sous types à partir du type de base, c'est</span>
+    <span style="color: #808080; font-style: italic;"># d'ailleurs une manière très courrante de créer des nouveaux conteneurs</span>
+    <span style="color: #808080; font-style: italic;"># de données. Mais ce faisant, NumPy bypass le mécanisme d'instanciation,</span>
+    <span style="color: #808080; font-style: italic;"># et __new__ et __init__ ne sont donc pas appelées. Pour y pallier, NumPy</span>
+    <span style="color: #808080; font-style: italic;"># ajoute la méthode __array_finalize__ qui est toujours appelée quand</span>
+    <span style="color: #808080; font-style: italic;"># un array est prêt à être utilisé. Elle peut être utilisée pour effectuer</span>
+    <span style="color: #808080; font-style: italic;"># un traitement pour chaque array créé, quelque soit sa provenance.</span>
+    <span style="color: #808080; font-style: italic;"># Ici, on l'utilise pour attacher le callback à &quot;l'instance&quot;.</span>
+    <span style="color: #808080; font-style: italic;"># Souvenez-vous, plus haut on avait attaché le callback à la CLASSE.</span>
+    <span style="color: #808080; font-style: italic;"># Cette classe peut derrière être la source de nombreux arrays même si</span>
+    <span style="color: #808080; font-style: italic;"># __init__ n'est pas appelé pour eux :-(</span>
+    <span style="color: #808080; font-style: italic;"># La solution de l'auteur est donc de passer le callback à __new__, de </span>
+    <span style="color: #808080; font-style: italic;"># l'attacher à la classe, et à travers __array_finalize__, de l'attacher</span>
+    <span style="color: #808080; font-style: italic;"># à &quot;l'instance&quot;. Il faut garder en tête que tout nouvel appel à __new__</span>
+    <span style="color: #808080; font-style: italic;"># écrasera le callback pour toutes les instances suivantes. Mis à part</span>
+    <span style="color: #808080; font-style: italic;"># cela, ceci garanti que tout array aura le callback, et donc que </span>
+    <span style="color: #808080; font-style: italic;"># _notify aura accès au callback, et donc que __setitem__ déclenchera le </span>
+    <span style="color: #808080; font-style: italic;"># callback, et donc que la fonction sera bien appelée à chaque mise à jour</span>
+    <span style="color: #808080; font-style: italic;"># de l'array</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __array_finalize__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>,obj<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #483d8b;">&quot;cb&quot;</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># The object does not yet have a `.cb` attribute</span>
+            <span style="color: #008000;">self</span>.<span style="color: black;">cb</span> = <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span>obj,<span style="color: #483d8b;">'cb'</span>,<span style="color: #008000;">self</span>.__defaultcb<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Encore une méthode &quot;magique&quot; ajoutée par NumPy. Elle est appelée</span>
+    <span style="color: #808080; font-style: italic;"># quand on sérialise l'array et retourne des informations sur l'état</span>
+    <span style="color: #808080; font-style: italic;"># de l'array</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __reduce__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        object_state = <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>np.<span style="color: black;">ndarray</span>.__reduce__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        subclass_state = <span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">cb</span>,<span style="color: black;">&#41;</span>
+        object_state<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span> = <span style="color: black;">&#40;</span>object_state<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>,subclass_state<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>object_state<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># inverse de __reduce__</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __setstate__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>,state<span style="color: black;">&#41;</span>:
+        nd_state, own_state = state
+        np.<span style="color: black;">ndarray</span>.__setstate__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>,nd_state<span style="color: black;">&#41;</span>
+&nbsp;
+        cb, = own_state
+        <span style="color: #008000;">self</span>.<span style="color: black;">cb</span> = cb
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Le callback qui doit être appelé à chaque mise à jour de l'array</span>
+<span style="color: #808080; font-style: italic;"># Je ne pense pas que ça puisse marcher, car il attend un argument,</span>
+<span style="color: #808080; font-style: italic;"># ce que _notify() ne lui passe pas.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> callback<span style="color: black;">&#40;</span>arg<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'array changed to'</span>,arg
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># une petit démo du code si on run le script au lieu de l'importer</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ == <span style="color: #483d8b;">'__main__'</span>:
+    x = cbarray<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>,<span style="color: #ff4500;">2</span>,<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>, cb=callback<span style="color: black;">&#41;</span>
+    x<span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>,<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span> = <span style="color: #ff4500;">1.0</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1939&amp;md5=29e2cc6d96f81cda73c3467acc935bd7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/explication-de-code-callback-a-la-mise-a-jour-dun-array-numpy/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fexplication-de-code-callback-a-la-mise-a-jour-dun-array-numpy%2F&amp;language=en_GB&amp;category=text&amp;title=Explication+de+code+%3A+callback+%C3%A0+la+mise+%C3%A0+jour+d%26%238217%3Bun+array+Numpy&amp;description=Toujours+dans+l%26%238217%3Besprit+de+l%26%238217%3Bexplication+de+code%2C+voici+un+petit+bout+de+numpyries+envoy%C3%A9+par+un+lecteur.+Lisez+l%26%238217%3Barticle+sur+les+callbacks+si+vous+n%26%238217%3B%C3%AAtes+pas+familiers+avec+le+principe%2C...&amp;tags=callback%2Cnumpy%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/7-Days-Pill-Box-H19-.jpg" length="51439" type="image/jpg" />	</item>
+	</channel>
+</rss>

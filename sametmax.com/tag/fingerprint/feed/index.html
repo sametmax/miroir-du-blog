@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; fingerprint</title>
+	<atom:link href="http://sametmax.com/tag/fingerprint/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Comment bypasser les copyright youtube sur les vidéos et l&#8217;audio</title>
+		<link>http://sametmax.com/comment-bypasser-les-copyright-youtube-sur-les-videos-et-laudio/</link>
+		<comments>http://sametmax.com/comment-bypasser-les-copyright-youtube-sur-les-videos-et-laudio/#comments</comments>
+		<pubDate>Thu, 12 Apr 2012 21:03:10 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bypass]]></category>
+		<category><![CDATA[copyright]]></category>
+		<category><![CDATA[ffmpeg]]></category>
+		<category><![CDATA[fingerprint]]></category>
+		<category><![CDATA[pitch]]></category>
+		<category><![CDATA[sox]]></category>
+		<category><![CDATA[youtube]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=363</guid>
+		<description><![CDATA[Uploader des contenus videos copyrightés sur youtube, bypasser la protection des fingerprint, pitcher le son, mettre de l'overlay et mouliner le tout, faire mijotter à feux doux pendant 30 mins.]]></description>
+			<content:encoded><![CDATA[<p>Soyons vilains, sales et méchants.</p>
+<p>Youtube a un système de fingerprint pour les vidéos que l&#8217;on upload, ainsi que sur l&#8217;audio. C&#8217;est à dire qu&#8217;il peut détecter si la bande son est mijéjère et les beattles ou la Calas. pareil pour la vidéo.</p>
+<p>Des fois on a envie d&#8217;agrémenter son clip vidéo d&#8217;une musique bien sympa mais voilà youtube bloque le tout pour raison de droits d&#8217;auteurs.</p>
+<p>ATTENTION! je ne cautionne pas particulièrement le fait d&#8217;utiliser le travail d&#8217;autruis à ses fins sans payer un centime.</p>
+<p><strong>Bypasser le copyright video:</strong><br />
+j&#8217;ai essayé pas mal de méthodes, filtres et autres mais youtube s&#8217;en sort très bien, la seule soluce que j&#8217;ai trouvé c&#8217;est de mettre une image en overlay par dessus la video avec une opacité légère. pour ce faire on peut utiliser ffmpeg.</p>
+<p>Bien sur l&#8217;image va en overlay va se voir façon filigrane, ça peut tuer une video niveau esthétique. Il faut jouer avec la transparence du png qui servira de filigrane, voir le mettre en medaillon, bref à vous de fouiner.<br />
+Pour positionner le filigrane sur la video choisir une image de la taille de la vidéo (ici 640&#215;360) et placer son médaillon, logo, image à l&#8217;intérieur àl&#8217;endroit voulu)</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#init vars</span>
+vdo_tmp_path = <span style="color: #483d8b;">'/tmp/vdo_tmp'</span>
+title_path = <span style="color: #483d8b;">'/tmp/david_ghetto.flv'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">#add overlay to video</span>
+<span style="color: #dc143c;">cmd</span> = <span style="color: black;">&#40;</span><span style="color: #483d8b;">'ffmpeg -y -i %s -s 640x360 -f mp4  -b 500k '</span>
+       <span style="color: #483d8b;">'-acodec faac -ab 64k  -vf &quot;movie=mon_image_overlay.png [logo];'</span>
+       <span style="color: #483d8b;">'[in][logo] overlay=10:main_h-overlay_h-10 [out]&quot;  %s'</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> <span style="color: black;">&#40;</span>
+       vdo_tmp_path, title_path<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #dc143c;">cmd</span>
+<span style="color: #dc143c;">os</span>.<span style="color: black;">popen</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">cmd</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p><strong>Pour l&#8217;audio:</strong><br />
+En pitchant légérement l&#8217;audio on peut arriver à duper la protection youtube, là encore le son va s&#8217;en trouver altérer mais ça passe, au pire une voix un peu plus aigrelette et un tempo plus rapide.<br />
+Pour pitcher le son on va utiliser sox.<br />
+On sépare d&#8217;abord l&#8217;audio de la video avec ffmpeg, on pitch l&#8217;audio et on le remix avec la video</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># pitch to 1 semitone to bypass youtube copyright detection         </span>
+<span style="color: #dc143c;">cmd</span> = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;ffmpeg -i %(title_path)s -ac 2 -y 1_out.wav ;&quot;</span>
+       <span style="color: #483d8b;">&quot;ffmpeg -i %(title_path)s -vcodec copy -an -y 1_out.mp4 ;&quot;</span>
+       <span style="color: #483d8b;">&quot;sox 1_out.wav 1_mod.wav pitch 100 norm ;&quot;</span>
+       <span style="color: #483d8b;">&quot;ffmpeg -y -i 1_out.mp4 -i 1_mod.wav -vcodec copy %(title_path)s&quot;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">%</span> <span style="color: black;">&#123;</span>
+       <span style="color: #483d8b;">'title_path'</span> : title_path <span style="color: black;">&#125;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #dc143c;">cmd</span>
+<span style="color: #dc143c;">os</span>.<span style="color: black;">popen</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">cmd</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et on upload sur youtube&#8230;</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=363&amp;md5=be2fecf552f522cfa3f04f6d17dc9d16" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-bypasser-les-copyright-youtube-sur-les-videos-et-laudio/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fcomment-bypasser-les-copyright-youtube-sur-les-videos-et-laudio%2F&amp;language=en_GB&amp;category=text&amp;title=Comment+bypasser+les+copyright+youtube+sur+les+vid%C3%A9os+et+l%26%238217%3Baudio&amp;description=Soyons+vilains%2C+sales+et+m%C3%A9chants.+Youtube+a+un+syst%C3%A8me+de+fingerprint+pour+les+vid%C3%A9os+que+l%26%238217%3Bon+upload%2C+ainsi+que+sur+l%26%238217%3Baudio.+C%26%238217%3Best+%C3%A0+dire+qu%26%238217%3Bil+peut+d%C3%A9tecter+si+la+bande...&amp;tags=bypass%2Ccopyright%2Cffmpeg%2Cfingerprint%2Cpitch%2Csox%2Cyoutube%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/04/yt_copyrigth.jpg" length="15564" type="image/jpg" />	</item>
+	</channel>
+</rss>

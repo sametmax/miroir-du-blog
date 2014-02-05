@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; grin</title>
+	<atom:link href="http://sametmax.com/tag/grin/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Grin, le grep Python sous steroïd</title>
+		<link>http://sametmax.com/grin-le-grep-python-sous-steroid/</link>
+		<comments>http://sametmax.com/grin-le-grep-python-sous-steroid/#comments</comments>
+		<pubDate>Sat, 25 Aug 2012 16:52:53 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[grin]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[regex]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1883</guid>
+		<description><![CDATA[Chercher un mot dans 500 fichiers est un truc que nous, pauvres développeurs, avons besoin de faire assez souvent...]]></description>
+			<content:encoded><![CDATA[<p>Chercher un mot dans 500 fichiers est un truc que nous, pauvres développeurs, avons besoin de faire assez souvent.</p>
+<p>Sublime Text le fait très bien avec <kbd>Maj</kbd> + <kbd>Ctrl</kbd> + <kbd>F</kbd>, mais on est pas toujours dans son éditeur. La recherche dans tout le système type Spotlight est généralement bien large, et la seule solution qui ait la bonne puissance de frappe, tout en affichant plein de détails reste <a href="https://en.wikipedia.org/wiki/Grep">grep</a>. Problème, il faut connaître un max d&#8217;options de grep, utiliser egrep pour avoir de bonnes regex, et piper la sortie pour avoir certains résultats.</p>
+<p>Le monde de perl a trouvé depuis longtemps une solution à ce problème au travers de <a href="http://betterthangrep.com/">ack</a>, et comme les pythonistes, <a href="http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/">c&#8217;est que des gros copieurs</a>, ils ont fait leur version: <a href="http://pypi.python.org/pypi/grin">grin</a>.</p>
+<p>C&#8217;est sur <a href="http://sametmax.com/votre-python-aime-les-pip/">pypi</a>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> grin</pre></div></div>
+
+<p>Et ça s&#8217;utilise ainsi:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">grin <span style="color: #7a0874; font-weight: bold;">test</span></pre></div></div>
+
+<p>Et il va vous sortir la liste des fichiers qui contiennent &#8220;test&#8221;, et dans quel contexte, avec coloration:</p>
+<div id="attachment_1889" class="wp-caption aligncenter" style="width: 543px"><a href="http://sametmax.com/wp-content/uploads/2012/08/Espace-de-travail-1_001.jpg"><img class=" wp-image-1889 " title="Génial quand on est en remote sur un serveur" src="http://sametmax.com/wp-content/uploads/2012/08/Espace-de-travail-1_001.jpg" alt="Capture d'écran de la sortie du programme grin" width="533" height="340" /></a><p class="wp-caption-text">Génial quand on est en remote sur un serveur</p></div>
+<p>Grin vient avec quelques goodies en plus:</p>
+<ul>
+<li>Récursif par défaut.</li>
+<li>Ignore les dossiers .git, .svn, etc et les fichiers temporaires (~, .tmp, etc) par défaut.</li>
+<li>Cherche à l&#8217;intérieur de certaines archives.</li>
+<li>Très rapide.</li>
+<li>Accepte une expression rationnelle Python à la place du mot à chercher !</li>
+</ul>
+<p>Par exemple pour chercher uniquement les fichiers qui contiennent le mot &#8220;test&#8221; ou &#8220;tests&#8221; à la fin d&#8217;une ligne dans un fichier Python, récursivement:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">~<span style="color: #000000; font-weight: bold;">/</span>Work $ grin tests?$ <span style="color: #660033;">-I</span> <span style="color: #000000; font-weight: bold;">*</span>.py
+.<span style="color: #000000; font-weight: bold;">/</span>archives<span style="color: #000000; font-weight: bold;">/</span>client<span style="color: #000000; font-weight: bold;">/</span>project<span style="color: #000000; font-weight: bold;">/</span>apps<span style="color: #000000; font-weight: bold;">/</span>accounts<span style="color: #000000; font-weight: bold;">/</span>tests.py:
+   <span style="color: #000000;">65</span> :     <span style="color: #666666; font-style: italic;"># Used in Login test</span>
+.<span style="color: #000000; font-weight: bold;">/</span>archives<span style="color: #000000; font-weight: bold;">/</span>client<span style="color: #000000; font-weight: bold;">/</span>project<span style="color: #000000; font-weight: bold;">/</span>apps<span style="color: #000000; font-weight: bold;">/</span>grants<span style="color: #000000; font-weight: bold;">/</span>tests.py:
+   <span style="color: #000000;">16</span> : <span style="color: #666666; font-style: italic;"># moving settings for testing to settings_test</span>
+.<span style="color: #000000; font-weight: bold;">/</span>archives<span style="color: #000000; font-weight: bold;">/</span>client<span style="color: #000000; font-weight: bold;">/</span>project<span style="color: #000000; font-weight: bold;">/</span>apps<span style="color: #000000; font-weight: bold;">/</span>hivtest<span style="color: #000000; font-weight: bold;">/</span>tests.py:
+  <span style="color: #000000;">293</span> :         <span style="color: #666666; font-style: italic;"># print updated_hivtest</span>
+.<span style="color: #000000; font-weight: bold;">/</span>archives<span style="color: #000000; font-weight: bold;">/</span>client<span style="color: #000000; font-weight: bold;">/</span>project<span style="color: #000000; font-weight: bold;">/</span>apps<span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>tests.py:
+   <span style="color: #000000;">15</span> : <span style="color: #666666; font-style: italic;"># moving settings for testing to settings_test</span>
+...</pre></div></div>
+
+<p>Le <a href="https://svn.enthought.com/svn/sandbox/grin/trunk/">code source</a> est simple à comprendre, et il est fait de manière modulaire de telle sorte qu&#8217;on puisse réutiliser <code>grin</code> comme une lib externe pour chercher des choses avec son propre programme.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1883&amp;md5=91a0a300b4707c584bc268c047afd846" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/grin-le-grep-python-sous-steroid/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fgrin-le-grep-python-sous-steroid%2F&amp;language=en_GB&amp;category=text&amp;title=Grin%2C+le+grep+Python+sous+stero%C3%AFd&amp;description=Chercher+un+mot+dans+500+fichiers+est+un+truc+que+nous%2C+pauvres+d%C3%A9veloppeurs%2C+avons+besoin+de+faire+assez+souvent.+Sublime+Text+le+fait+tr%C3%A8s+bien+avec+Maj+%2B+Ctrl+%2B...&amp;tags=grin%2Cpython%2Cregex%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/steroid_freak.jpg" length="54260" type="image/jpg" />	</item>
+	</channel>
+</rss>

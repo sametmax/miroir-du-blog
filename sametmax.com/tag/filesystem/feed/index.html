@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; filesystem</title>
+	<atom:link href="http://sametmax.com/tag/filesystem/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Django cache illimité sur filesystem &#8211; Overrider FileBasedCache</title>
+		<link>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/</link>
+		<comments>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/#comments</comments>
+		<pubDate>Sat, 13 Oct 2012 14:00:01 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[filesystem]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2569</guid>
+		<description><![CDATA[Mettre son site en cache dans le filesystem avec django sans limite d'entrée. ]]></description>
+			<content:encoded><![CDATA[<p>Django propose plusieurs façons de mettre de son <a href="https://docs.djangoproject.com/en/1.4/topics/cache/">site en <em>cache</em></a>.<br />
+Un de nos site gourmant en pages commencait à saturer le cache en mémoire alors il a fallut le basculer sur le filesystem, oui mais Django et son backend filesystem par défaut autorise 300 entrées dans le cache, ensuite il va effacer les anciennes pour les remplacer par les nouvelles, etc&#8230;</p>
+<p>On peut régler le nombre d&#8217;entrées avec l&#8217;option MAX_ENTRIES dans les settings mais que fait django derrière ?<br />
+Il va scanner votre répertoire de <em>cache</em> et <strong>compter tous les fichiers !</strong> Niveau performance on a vu mieux !</p>
+<p>Voici un petit patch qui consiste à bypasser le comptage des fichiers dans le cas où l&#8217;ont veut un cache &#8220;infini&#8221;, ce qui soulève un autre problème, ça va <em>cacher</em> jusqu&#8217;à qu&#8217;il n&#8217;y ait plus de pages à cacher ou que le disque sature :)</p>
+<p>dans un fichier cache.py que vous mettez où vous voulez (moi dans libs par ex):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    Override FileBasedCache to extend entries cache count.
+    avoid scanning all cache dir to count entries.
+&nbsp;
+&quot;&quot;&quot;</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">core</span>.<span style="color: black;">cache</span>.<span style="color: black;">backends</span>.<span style="color: black;">filebased</span> <span style="color: #ff7700;font-weight:bold;">import</span> FileBasedCache
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> CustomFileBasedCache<span style="color: black;">&#40;</span>FileBasedCache<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> _get_num_entries<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+       count = <span style="color: #ff4500;">0</span>
+       <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>._max_entries == <span style="color: #ff4500;">9999</span>: <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #ff4500;">0</span>
+       <span style="color: #ff7700;font-weight:bold;">for</span> _,_,files <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">walk</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>._dir<span style="color: black;">&#41;</span>:
+           count += <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>files<span style="color: black;">&#41;</span>
+       <span style="color: #ff7700;font-weight:bold;">return</span> count
+    _num_entries = <span style="color: #008000;">property</span><span style="color: black;">&#40;</span>_get_num_entries<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>dans les settings rajoutez à votre backend filesystem le backend customisé &#8220;libs.cache.CustomFileBasedCache&#8221; et l&#8217;option MAX_ENTRIES à -1:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">CACHE_DEFAULT_SECONDS = <span style="color: #ff4500;">3600</span>
+CACHES = <span style="color: black;">&#123;</span>
+   <span style="color: #483d8b;">'default'</span>: <span style="color: black;">&#123;</span>
+       <span style="color: #483d8b;">'BACKEND'</span>: <span style="color: #483d8b;">'redis_cache.RedisCache'</span>,
+       <span style="color: #483d8b;">'LOCATION'</span>: <span style="color: #483d8b;">'localhost:6379'</span>,
+       <span style="color: #483d8b;">'TIMEOUT'</span>: CACHE_DEFAULT_SECONDS,
+   <span style="color: black;">&#125;</span>,
+   <span style="color: #483d8b;">'filesystem'</span>: <span style="color: black;">&#123;</span>
+       <span style="color: #483d8b;">'BACKEND'</span>: <span style="color: #483d8b;">'libs.cache.CustomFileBasedCache'</span>,
+       <span style="color: #483d8b;">'LOCATION'</span>: <span style="color: #483d8b;">'/var/tmp/django'</span>,
+       <span style="color: #483d8b;">'TIMEOUT'</span>: CACHE_DEFAULT_SECONDS,
+       <span style="color: #483d8b;">'OPTIONS'</span>: <span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'MAX_ENTRIES'</span>: <span style="color: #ff4500;">9999</span> <span style="color: #808080; font-style: italic;"># Set 9999 for unlimited cache</span>
+       <span style="color: black;">&#125;</span>
+   <span style="color: black;">&#125;</span>
+<span style="color: black;">&#125;</span></pre></div></div>
+
+<p>On évite du coup le os.walk de la méthode _get_num_entries qui dans le cas d&#8217;un grand nombre de fichiers en cache pourrait faire du mal à votre serveur.</p>
+<p>A utiliser avec précaution car ça cache, ça cache, ça cache&#8230; :)</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=2569&amp;md5=106b8f1f8b13f0e2575541d9b27c49b3" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fdjango-cache-illimite-sur-filesystem-overrider-filebasedcache%2F&amp;language=en_GB&amp;category=text&amp;title=Django+cache+illimit%C3%A9+sur+filesystem+%26%238211%3B+Overrider+FileBasedCache&amp;description=Django+propose+plusieurs+fa%C3%A7ons+de+mettre+de+son+site+en+cache.+Un+de+nos+site+gourmant+en+pages+commencait+%C3%A0+saturer+le+cache+en+m%C3%A9moire+alors+il+a+fallut+le...&amp;tags=cache%2Cdjango%2Cfilesystem%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/Gear-Diary-Burning_Hard_Drive.jpeg" length="211841" type="image/jpg" />	</item>
+	</channel>
+</rss>

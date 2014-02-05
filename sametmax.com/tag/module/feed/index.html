@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; module</title>
+	<atom:link href="http://sametmax.com/tag/module/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Les imports en Python</title>
+		<link>http://sametmax.com/les-imports-en-python/</link>
+		<comments>http://sametmax.com/les-imports-en-python/#comments</comments>
+		<pubDate>Thu, 16 May 2013 09:13:27 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[module]]></category>
+		<category><![CDATA[package]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6127</guid>
+		<description><![CDATA[Un jour vous avez du écrire votre propre module. Vous n'aviez pas vraiment réfléchi à la question. C'était juste une petite lib pour regrouper des fonctions. Ou juste une app Django. Un truc tout simple. Mais les imports ont soudainement cessé de devenir clairs. Ça ne marchait pas. Rien ne marchait. Vous aviez des <code>sys.path.append</code> partout juste au cas où et c'était encore pire.
+
+Vous avez donc décidé de vous remettre à PHP, au moins le <code>include</code> utilise les chemins de fichiers, et ça, c'est facile.]]></description>
+			<content:encoded><![CDATA[<p>Je suis fan de carmina burrana depuis l&#8217;age de 12 ans, alors pourquoi pas O Fortuna comme musique d&#8217;ambiance :</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/nIwrgAnx6Q8" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p>Les imports, c&#8217;était fastoche. Vous étiez dans votre petit programme, et pour importer un module de la lib standard, vous faisiez:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> module</pre></div></div>
+
+<p>Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span></pre></div></div>
+
+<p>Et pour importer une classe ou une fonction de cette lib, vous faisiez :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> module <span style="color: #ff7700;font-weight:bold;">import</span> fonction
+<span style="color: #ff7700;font-weight:bold;">from</span> module <span style="color: #ff7700;font-weight:bold;">import</span> Classe</pre></div></div>
+
+<p>Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> hashlib <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">md5</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">xml</span>.<span style="color: black;">etree</span> <span style="color: #ff7700;font-weight:bold;">import</span> Element</pre></div></div>
+
+<p>Parfois, c&#8217;était un peu plus compliqué, mais ça allait encore. Des fois il fallait importer un sous-module :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> package.<span style="color: black;">sous_package</span> <span style="color: #ff7700;font-weight:bold;">import</span> module</pre></div></div>
+
+<p>Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">xml</span>.<span style="color: black;">sax</span> <span style="color: #ff7700;font-weight:bold;">import</span> saxutils</pre></div></div>
+
+<p>Mais ça allait encore.</p>
+<p>Et puis un jour vous avez du écrire votre propre module. Vous n&#8217;aviez pas vraiment réfléchi à la question. C&#8217;était juste une petite lib pour regrouper des fonctions. Ou juste une app Django. Un truc tout simple. Mais les imports ont soudainement cessé de devenir clairs. Ça ne marchait pas. Rien ne marchait. Vous aviez des <code>sys.path.append</code> partout juste au cas où et c&#8217;était encore pire.</p>
+<p>Vous avez donc décidé de vous remettre à PHP, au moins le <code>include</code> utilise les chemins de fichiers, et ça, c&#8217;est facile.</p>
+<h2>Sous le capot</h2>
+<p>Quand vous utilisez <code>import</code>, sous le capot Python utilise le fonction <code>__import__</code>. Malgré ses <code>__</code> dans le nom, c&#8217;est une fonction ordinaire, et vous pouvez d&#8217;ailleurs l&#8217;utiliser vous-même :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">os</span> = <span style="color: #008000;">__import__</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'os'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'s'</span>, <span style="color: #483d8b;">'ton'</span>, <span style="color: #483d8b;">'mon'</span>, <span style="color: #483d8b;">'g'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'s/ton/mon/g'</span></pre></div></div>
+
+<p>En fait, importer un module, c&#8217;est créer un objet module qui est assigné à une variable tout à fait normale :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'module'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">os</span> = <span style="color: #483d8b;">&quot;on peut ecraser un module&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-12-e34748f24345&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>
+<span style="color: #008000;">AttributeError</span>: <span style="color: #483d8b;">'unicode'</span> <span style="color: #008000;">object</span> has no attribute <span style="color: #483d8b;">'path'</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'module'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">sys</span> = <span style="color: #483d8b;">&quot;je t'ecrase la tronche&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Le mécanisme de module Python n&#8217;est donc pas un truc à part, c&#8217;est un objet comme le reste, qui contient des attributs. Les attributs sont les variables et les fonctions du module.</p>
+<p>Pour charger un module, la fonction <code>__import__</code> passe par les étapes suivantes :</p>
+<ol>
+<li>Chercher si le module <code>os</code> existe.</li>
+<li>Chercher si le module a déjà été importé. Si oui, s&#8217;arrêter ici et renvoyer le module existant.</li>
+<li>Si non, chercher si il a été déjà compilé en .pyc.</li>
+<li>Si ce n&#8217;est pas le cas, compiler le fichier .py en .pyc.</li>
+<li>Charger le bytecode du fichier pyc.</li>
+<li>Créer un objet module vide.</li>
+<li>Éxecuter le bytecode dans le contexte de l&#8217;objet module et remplir ce dernier avec le résultat.</li>
+<li>Ajouter l&#8217;objet module dans <code>sys.modules</code>, un dictionnaire qui contient tous les modules déjà chargés.</li>
+<li>Retourner le module pour pouvoir l&#8217;assigner à une variable, par défaut la variable porte son nom.</li>
+</ol>
+<p>La fonction <code>__import__</code> est donc très complexe, et d&#8217;ailleurs si vous voulez l&#8217;utiliser pour des trucs plus compliqués qu&#8217;un simple import de module, vous allez galérer car sa signature est vraiment zarb.</p>
+<p>Mais pour vous, seule l&#8217;étape 1 est importante à comprendre. C&#8217;est l&#8217;étape à laquelle tout se joue.</p>
+<h2>Comment Python définit quel module importer ?</h2>
+<p>C&#8217;est la partie vraiment difficile, en effet si un import ne marche pas, c&#8217;est très souvent parce que Python ne trouve pas le module que vous voulez. Et la raison pour laquelle il ne le trouve pas, c&#8217;est que vous ne comprenez pas comment il cherche.</p>
+<p>Python utilise ce qu&#8217;on appelle le PYTHON PATH pour chercher les modules importables. C&#8217;est une variable système qui contient une liste de dossiers. Par exemple, sur ma machine, elle contient ceci :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#91;</span><span style="color: #483d8b;">''</span>,
+ <span style="color: #483d8b;">'/usr/bin'</span>,
+ <span style="color: #483d8b;">'/usr/local/lib/python2.7/dist-packages/grin-1.2.1-py2.7.egg'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/plat-linux2'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/lib-tk'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/lib-old'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/lib-dynload'</span>,
+ <span style="color: #483d8b;">'/home/sam/.local/lib/python2.7/site-packages'</span>,
+ <span style="color: #483d8b;">'/usr/local/lib/python2.7/dist-packages'</span>,
+ <span style="color: #483d8b;">'/usr/local/lib/python2.7/dist-packages/setuptools-0.6c11-py2.7.egg-info'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/PIL'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/gst-0.10'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/gtk-2.0'</span>,
+ <span style="color: #483d8b;">'/usr/lib/pymodules/python2.7'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/ubuntu-sso-client'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/ubuntuone-client'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/ubuntuone-control-panel'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/ubuntuone-couch'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/ubuntuone-installer'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/ubuntuone-storage-protocol'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/wx-2.6-gtk2-unicode'</span>,
+ <span style="color: #483d8b;">'/usr/lib/python2.7/dist-packages/IPython/extensions'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p> Donc, quand vous faites <code>import os</code>, Python va faire une boucle <code>for</code> là dessus et chercher dans chaque dossier si un package (un dossier avec un fichier <code>__init__.py</code>) ou un module (un fichier avec l&#8217;extension <em>.py</em>) nommé <code>os</code> existe.</p>
+<p> Dès qu&#8217;il en trouve un, il s&#8217;arrête de chercher et l&#8217;importe. Si il n&#8217;en trouve pas, il va lever une <code>ImportError</code>.</p>
+<p> Ce qui signifie que si votre module n&#8217;est PAS dans le PYTHON PATH, vous ne pouvez PAS l&#8217;importer. C&#8217;est impossible.</p>
+<p> La grande majorité des problèmes d&#8217;import vient du fait que le module que vous essayez d&#8217;importer n&#8217;est pas dans le PYTHON PATH.</p>
+<p> Maintenant, la grande question, c&#8217;est :</p>
+<h2>Qu&#8217;est-ce qui est dans le PYTHON PATH ?</h2>
+<p>Par défault, les dossiers <em>sites-packages</em> et <em>dist-packages</em> dans le dossier d&#8217;installation Python sont dans le PYTHON PATH. Quelques autres sont ajoutés selon les systèmes, mais vous pouvez toujours compter sur <em>sites-packages</em> et <em>dist-packages</em> pour être dans le PYTHON PATH. Quand vous installez une lib, par exemple avec <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>, c&#8217;est là dedans que la lib va s&#8217;installer, pour être sûre de pouvoir être importée.</p>
+<p>Quand vous êtes dans un <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenv</a>, les dossiers <em>sites-packages</em> et <em>dist-packages</em> de l&#8217;environnement virtuel sont ajoutés au PYTHON PATH.</p>
+<p>Mais tout ça ne change pas grand chose pour vous. En effet, vous n&#8217;allez pas mettre VOTRE code dans les dossiers <em>sites-packages</em> et <em>dist-packages</em>.</p>
+<p>C&#8217;est pour cela que Python possède un mécanisme supplémentaire : le dossier qui contient le module sur lequel vous lancez la commande <code>python</code> est automatiquement ajouté au PYTHON PATH.</p>
+<h2>Le PYTHON PATH, en pratique</h2>
+<p>Supposons que je sois dans le dossier <em>/home/sam/Bureau</em> et que j&#8217;aie dedans ce package. Voici à quoi ressemble mon arbo (<a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/mai/test_imports.zip">téléchargez l&#8217;arbo vierge</a> pour vos tests):</p>
+<pre><strong>/home/sam/Bureau # <-- je suis ici</strong>
+.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   |-- autre_sous_package
+    |   |   |-- __init__.py
+    |   |   `-- autre_module_en_bas.py
+    |   |-- sous_module.py
+    |   `-- sous_package
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       |-- autre_sous_package
+    |       |   |-- __init__.py
+    |       |   `-- autre_module_en_bas.py
+    |       `-- module_tout_en_bas.py
+    `-- top_module.py</pre>
+<p>Si je lance un shell Python depuis ce dossier ou un script Python contenu dans ce dossier, je peux faire <code>import test_imports</code>, car <em>/home/sam/Bureau</em> est automatiquement ajouté au PYTHON PATH.</p>
+<p>Je peux donc faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> test_imports
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> test_imports <span style="color: #ff7700;font-weight:bold;">import</span> package_tout_en_haut
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> test_imports <span style="color: #ff7700;font-weight:bold;">import</span> top_module
+test_imports.<span style="color: black;">top_module</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> test_imports.<span style="color: black;">package_tout_en_haut</span> <span style="color: #ff7700;font-weight:bold;">import</span> sous_module
+test_imports.<span style="color: black;">package_tout_en_haut</span>.<span style="color: black;">sous_module</span></pre></div></div>
+
+<p>Mais si je me mets ici dans <em>./package_tout_en_haut/sous_package</em> :</p>
+<pre>/home/sam/Bureau
+.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   |-- autre_sous_package
+    |   |   |-- __init__.py
+    |   |   `-- autre_module_en_bas.py
+    |   |-- sous_module.py
+    |   `-- <strong>sous_package     # <-- je suis ici</strong>
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       |-- autre_sous_package
+    |       |   |-- __init__.py
+    |       |   `-- autre_module_en_bas.py
+    |       |-- module_tout_en_bas.py
+    `-- top_module.py</pre>
+<p>Je ne peux PAS importer <code>test_imports</code>, ni dans un shell, ni depuis un module de ce dossier :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> test_imports
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">ImportError</span>: No module named test_imports</pre></div></div>
+
+<p>En effet, comme je lance la commande Python depuis</p>
+<p> <em>./package_tout_en_haut/sous_package</em></p>
+<p> alors</p>
+<p> <em>./package_tout_en_haut/sous_package</em> </p>
+<p> <strong>EST</strong> ajouté au PYTHON PATH, mais </p>
+<p> <em>/home/sam/Bureau/</em> </p>
+<p> n&#8217;est <strong>PAS</strong> ajouté au PYTHON PATH.</p>
+<p>Je ne peux donc PAS faire</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> test_imports <span style="color: #ff7700;font-weight:bold;">import</span> top_module</pre></div></div>
+
+<p>depuis un fichier comme </p>
+<p><em>.test_imports/package_tout_en_haut/sous_package/autre_module_en_bas.py</em> </p>
+<p>et exécuter directement</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">python autre_module_en_bas.<span style="color: black;">py</span></pre></div></div>
+
+<p>ni même</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">python ./test_imports/package_tout_en_haut/sous_package/autre_module_en_bas.<span style="color: black;">py</span></pre></div></div>
+
+<p>Je peux faire</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> test_imports <span style="color: #ff7700;font-weight:bold;">import</span> top_module</pre></div></div>
+
+<p>depuis </p>
+<p><em>autre_module_en_bas.py</em> </p>
+<p>uniquement si je lance un script Python tout en haut de mon arbo qui importe </p>
+<p><em>autre_module_en_bas.py</em>.</p>
+<h2>Mais alors, comment on fait ?<br />
+</h2>
+<p>Il faut s&#8217;assurer que le dossier qui contient <code>test_imports</code>, notre module racine, soit TOUJOURS dans le PYTHON PATH.</p>
+<p>Il y a plusieurs possibilités pour cela.</p>
+<p>La première, c&#8217;est que notre lib va être utilisée une fois installée avec pip. Dans ce cas, on s&#8217;en branle, <code>test_imports</code> sera dans sites-packages automatiquement, et on pourra faire <code>from test_imports import top_module </code> de partout joyeusement.</p>
+<p>Mais souvent, ce n&#8217;est pas le cas, votre code n&#8217;est pas fait pour être installé.</p>
+<p>La seconde technique consiste à s&#8217;assurer que l&#8217;on appelle TOUJOURS la commande Python depuis le dossier qui est tout au dessus. C&#8217;est ce que fait django avec sa commande <code>./manage.py</code> par exemple.</p>
+<p>Vous avez votre projet :</p>
+<pre>./manage.py
+projet</pre>
+<p>Et tout passe par <code>python manage.py</code>, qui est au dessus de projet, donc le dossier est bien ajouté au PYTHON PATH, et tout va bien.</p>
+<p>Dans votre cas ça veut dire vous assurer qu&#8217;on lance toujours votre programme depuis un script d&#8217;entrée qui est tout en haut de votre arborescence.</p>
+<p>Ca veut dire que vous devez avoir un point d&#8217;entrée UNIQUE pour votre package.</p>
+<p>Mais parfois ça ne convient pas. Dans le cas des tests unitaires par exemple, il vous faut un point d&#8217;entrée spécialement pour les tests.</p>
+<p>Pour ce genre de scénario, il faut donc avoir le dossier qui les contient <strong>à côté</strong> de votre package.  Ainsi, si j&#8217;avais des tests unitaires, je devrais faire un dossier <em>tests</em> à côté du dossier <em>test_imports</em>. Par exemple, transformer mon arbo en un truc comme ça :</p>
+<pre>src
+   |_ test_imports
+   |_ tests
+</pre>
+<p>Afin que je lance les tests en faisant <code>python tests</code> depuis <em>src</em>. Et dans mes fichiers de tests, je pourrai faire des <code>from test_imports import truc</code>.</p>
+<p>La manière dont vous organisez votre projet est donc très importante en Python, et si vous avez des problèmes d&#8217;import, la première chose à faire est de changer sa structure. Il n&#8217;y a pas de magie.</p>
+<p>La dernière possibilité, quand tout a échoué, c&#8217;est de rajouter à la main le dossier dans le PYTHON PATH. <code>sys.path</code> est une simple liste, on peut donc faire un <code>append()</code> dessus.</p>
+<p>Par exemple, si je veux absolument (mais je ne devrais pas :-)) pouvoir faire :</p>
+<p><code>python .test_imports/package_tout_en_haut/sous_package/autre_module_en_bas.py</code> et importer <code>test_imports</code> dans <em>autre_module_en_bas.py</em>, je peux faire un truc du genre :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+&nbsp;
+dossier = <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">abspath</span><span style="color: black;">&#40;</span>__file__<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #ff7700;font-weight:bold;">not</span> dossier.<span style="color: black;">endswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'test_imports'</span><span style="color: black;">&#41;</span>:
+    dossier = <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span>dossier<span style="color: black;">&#41;</span>
+&nbsp;
+dossier = <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span>dossier<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> dossier <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">sys</span>.<span style="color: black;">path</span>:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">path</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>dossier<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ce code va remonter dans l&#8217;arbo jusqu&#8217;à tomber sur le chemin du dossier <em>test_imports</em> et ajouter son dossier parent au PYTHON PATH.</p>
+<p>Ce n&#8217;est pas le truc le plus propre du monde, mais ça peut dépanner.</p>
+<h2>Imports absolus et relatifs</h2>
+<p>Si vous êtes dans <em>./package_tout_en_haut/sous_package</em> :</p>
+<pre>/home/sam/Bureau
+.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   |-- autre_sous_package
+    |   |   |-- __init__.py
+    |   |   `-- autre_module_en_bas.py
+    |   |-- sous_module.py
+    |   `-- <strong>sous_package     # <-- je suis ici</strong>
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       |-- autre_sous_package
+    |       |   |-- __init__.py
+    |       |   `-- autre_module_en_bas.py
+    |       |-- module_tout_en_bas.py
+    |       `-- test_imports  # <-- autre package nommé test_imports
+    |           `-- sous_module.py
+    `-- top_module.py</pre>
+<p>Vous voyez que vous avez deux packages nommés <em>test_imports</em>.</p>
+<p>Si vous écrivez <code>import test_imports</code> dans <em>autre_module_en_bas.py</em>, que va-t-il se passer ?</p>
+<p>C'est le module tout en bas qui va être importé.</p>
+<p>Ce n'est pas forcément ce que vous voulez. Python 3 corrige cela en permettant des imports relatifs, et Python 2.7 peut en bénéficier en important tout en haut du module :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> absolute_import</pre></div></div>
+
+<p>En faisant cela, vous obtenez le comportement de Python 3 dans Python 2.7, et vous pourrez alors choisir entre faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> test_imports <span style="color: #808080; font-style: italic;"># importe le module tout en haut</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> .<span style="color: black;">test_imports</span> <span style="color: #808080; font-style: italic;"># import le module dans le même dossier</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> .<span style="color: black;">test_imports</span> <span style="color: #ff7700;font-weight:bold;">import</span> sous_module
+<span style="color: #ff7700;font-weight:bold;">from</span> test_imports <span style="color: #ff7700;font-weight:bold;">import</span> top_module</pre></div></div>
+
+<p>Je vous recommande de toujours utiliser <em>from __future__ import absolute_import</em>. Ca ne coûte rien, et c'est plus cohérent. Par contre, vous ne pourrez pas tester <em>from __future__ import absolute_import</em> dans le shell, donc cet exemple ne marche pas dans ipython, mais il fonctionne parfaitement dans vos modules.</p>
+<p>On peut aussi faire des imports relatifs du package contenant avec :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> .. <span style="color: #ff7700;font-weight:bold;">import</span> truc
+<span style="color: #ff7700;font-weight:bold;">from</span> ..<span style="color: black;">package</span> <span style="color: #ff7700;font-weight:bold;">import</span> machin</pre></div></div>
+
+<p>N'oubliez pas que ceci ne marche que :</p>
+<ul>
+<li>Si <code>from __future__ import absolute_import</code> est activé.</li>
+<li>Le package tout en haut (celui qui contient tous les autres) est dans le PYTHON PATH</li>
+</ul>
+<p>Sinon, ça ne sert A RIEN. Ce n'est pas comme un <em>../</em> dans un bash. Ça ne remonte pas d'un dossier. C'est juste une notation pour dire j'utilise celui la plutôt que l'autre, quand il y a ambiguité.</p>
+<h2>Pièges des imports</h2>
+<h3>Package sans init</h3>
+<p>Si vous avez :</p>
+<pre>.
+`-- test_imports
+    |-- __init__.py
+    |-- package_sans_init
+    |   `-- nada.py</pre>
+<p><em>nada.py</em> n'est pas importable, car <em>package_sans_init</em> ne contient pas de fichier <em>__init__.py</em>, même si <em>test_imports</em> est dans le PYTHON PATH. Ce comportement est corrigé en Python 3, et tout sous-dossier d'un package importable est automatiquement importable, qu'il contienne un <em>__init__.py</em> ou non.</p>
+<h3>Imports circulaires</h3>
+<p>J'en ai déjà parlé <a href="http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/">ici</a>.</p>
+<p>Vous avez :</p>
+<pre>.
+`-- test_imports
+    |-- __init__.py
+    |-- package_tout_en_haut
+    |   |-- __init__.py
+    |   `-- sous_package
+    |       |-- __init__.py
+    |       |-- autre_module_en_bas.py
+    |       `-- module_tout_en_bas.py</pre>
+<p>Et vous importez <code>autre_module_en_bas</code> dans <code>module_tout_en_bas</code> et inversement. Non seulement ça ne marchera pas, mais en plus l'erreur est déroutante :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">ImportError</span>: No module named module_tout_en_bas</pre></div></div>
+
+<p>Oui vous avez bien lu, il va vous dire que le module n'existe pas !</p>
+<p>Il n'y a pas non plus de solution propre à ce problème : soit vous fusionnez vos deux fichiers, soit vous faites un 3eme module qui utilise ces deux modules (et ces deux modules n'importent pas ce 3eme module).</p>
+<p>Sinon il y a la solution crade : mettre un des imports dans un appel de fonction ou de méthode comme ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> truc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> module_tout_en_bas
+    module_tout_en_bas.<span style="color: black;">bidule</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Parfois, ça dépanne :-) On ne tue pas des chatons non plus, donc si ça ne devient pas une habitude, ça peut passer.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6127&amp;md5=6dfcefd6dd5011b94280860d37ab983d" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-imports-en-python/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fles-imports-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Les+imports+en+Python&amp;description=Je+suis+fan+de+carmina+burrana+depuis+l%26%238217%3Bage+de+12+ans%2C+alors+pourquoi+pas+O+Fortuna+comme+musique+d%26%238217%3Bambiance+%3A+Les+imports%2C+c%26%238217%3B%C3%A9tait+fastoche.+Vous+%C3%A9tiez+dans+votre+petit+programme%2C...&amp;tags=import%2Cmodule%2Cpackage%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/tumblr_mj4zt7GH891r539hzo1_500.jpg" length="77621" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; event</title>
+	<atom:link href="http://sametmax.com/tag/event/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Demander confirmation à la fermeture d&#8217;un onglet en javascript</title>
+		<link>http://sametmax.com/demander-confirmation-a-la-fermeture-dun-onglet-en-javascript/</link>
+		<comments>http://sametmax.com/demander-confirmation-a-la-fermeture-dun-onglet-en-javascript/#comments</comments>
+		<pubDate>Mon, 18 Mar 2013 08:28:40 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[event]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5405</guid>
+		<description><![CDATA[Votre utilisateur est en train d’écrire un commentaire, upload un ficher ou fait un truc quelconque qui n’est pas terminé. Puis il clique sur fermer l’onglet.
+
+Dans certains cas, vous voulez lui demander confirmation pour éviter qu’il perdre tout son travail.]]></description>
+			<content:encoded><![CDATA[<p>Votre utilisateur est en train d&#8217;écrire un commentaire, upload un ficher ou fait un truc quelconque qui n&#8217;est pas terminé. Puis il clique sur &#8220;fermer l&#8217;onglet&#8221;.</p>
+<p>Dans certains cas, vous voulez lui demander confirmation pour éviter qu&#8217;il perde tout son travail.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #003366; font-weight: bold;">var</span> confirmOnLeave <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>msg<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+&nbsp;
+    window.<span style="color: #660066;">onbeforeunload</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span>e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        e <span style="color: #339933;">=</span> e <span style="color: #339933;">||</span> window.<span style="color: #660066;">event</span><span style="color: #339933;">;</span>
+        msg <span style="color: #339933;">=</span> msg <span style="color: #339933;">||</span> <span style="color: #3366CC;">''</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #006600; font-style: italic;">// For IE and Firefox</span>
+        <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>e<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>e.<span style="color: #660066;">returnValue</span> <span style="color: #339933;">=</span> msg<span style="color: #339933;">;</span><span style="color: #009900;">&#125;</span>
+&nbsp;
+        <span style="color: #006600; font-style: italic;">// For Chrome and Safari</span>
+        <span style="color: #000066; font-weight: bold;">return</span> msg<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// message de confirmation générique du navigateur</span>
+confirmOnLeave<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// message de confirmation personnalisé</span>
+confirmOnLeave<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'Vous allez perdre votre travail, êtes vous sûr(e) de vouloir quitter la page ?'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></div></div>
+
+<p>Quand vous appelez la fonction <code>confirmOnLeave()</code>, le <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a> de l&#8217;événement &#8216;onbeforeunload&#8217; va être remplacé par une nouvelle fonction. Vous pouvez appeler cette fonction n&#8217;importe quand, l&#8217;événement ne se déclenche que quand l&#8217;utilisateur quitte la page de toute façon.</p>
+<p>Cette fonction ne fait que retourner un message et assigner le message à l&#8217;attribut <code>returnValue</code>.</p>
+<p>La navigateur va réagir ainsi:</p>
+<ul>
+<li>À la fermeture de la page, il va déclencher l&#8217;événement &#8216;onbeforeunload&#8217;.</li>
+<li>Au déclenchement de l&#8217;événement, il va appeler le callback.</li>
+<li>Le navigateur va ensuite regarder la valeur de <code>returnValue</code>. Si elle n&#8217;est pas <code>undefined</code>, il va demander confirmation à l&#8217;utilisateur avec une pop up.</li>
+<li>Le contenu de la pop up dépend de <code>returnValue</code>. Si c&#8217;est une chaîne vide, c&#8217;est un message générique, sinon, c&#8217;est le contenu de la chaîne qui est affiché.</li>
+</ul>
+<p>Dans la plupart des cas, cette fonction suffit. Mais si vous utilisez d&#8217;autres codes JS qui ont besoin aussi de réagir à &#8216;onbeforeunload&#8217; (comme par exemple pour faire un autosave), dans ce cas il vaut mieux utiliser utiliser une gestion avancée d&#8217;attachement de callback a des événements (pour qu&#8217;ils ne s&#8217;écrasent pas les uns les autres). Vous pouvez coder ça à la main, ou juste utiliser celui de jQuery qui fait ça très bien:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span>window<span style="color: #009900;">&#41;</span>.<span style="color: #660066;">bind</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'beforeunload'</span><span style="color: #339933;">,</span> <span style="color: #003366; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+    ...
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5405&amp;md5=8e0c507c1326327abc680d6c57dc9d18" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/demander-confirmation-a-la-fermeture-dun-onglet-en-javascript/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fdemander-confirmation-a-la-fermeture-dun-onglet-en-javascript%2F&amp;language=en_GB&amp;category=text&amp;title=Demander+confirmation+%C3%A0+la+fermeture+d%26%238217%3Bun+onglet+en+javascript&amp;description=Votre+utilisateur+est+en+train+d%26%238217%3B%C3%A9crire+un+commentaire%2C+upload+un+ficher+ou+fait+un+truc+quelconque+qui+n%26%238217%3Best+pas+termin%C3%A9.+Puis+il+clique+sur+%26%238220%3Bfermer+l%26%238217%3Bonglet%26%238221%3B.+Dans+certains+cas%2C+vous...&amp;tags=event%2Cjavascript%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/y1b7j.jpg" length="191053" type="image/jpg" />	</item>
+	</channel>
+</rss>

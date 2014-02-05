@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; warning</title>
+	<atom:link href="http://sametmax.com/tag/warning/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Warning technique à un autre développeur en Python</title>
+		<link>http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/</link>
+		<comments>http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/#comments</comments>
+		<pubDate>Fri, 22 Mar 2013 11:23:35 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[warning]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5265</guid>
+		<description><![CDATA[Une dépendance optionnelle est manquante. Une fonction est dépréciée. Une syntaxe n'est pas recommandée.
+
+Il y a mieux qu'un <code>print()</code> pour signaler ça à votre utilisateur.
+]]></description>
+			<content:encoded><![CDATA[<p>Une dépendance optionnelle est manquante. Une fonction est dépréciée. Une syntaxe n&#8217;est pas recommandée.</p>
+<p>Il y a mieux qu&#8217;un <code>print()</code> pour signaler ça à votre utilisateur.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">warnings</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on definit quels types de warning on va afficher (a faire une seule fois)</span>
+<span style="color: #dc143c;">warnings</span>.<span style="color: black;">simplefilter</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;always&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et on affiche tous nos warning</span>
+<span style="color: #dc143c;">warnings</span>.<span style="color: black;">warn</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;La fonction je_vais_a_une_boom() est depreciee&quot;</span>, <span style="color: #008000;">DeprecationWarning</span><span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">warnings</span>.<span style="color: black;">warn</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Le module optionnel 'braces' n'est pas disponible&quot;</span>, ImportWarning<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># ne mettez pas de caracteres non ASCII, sinon ca chie</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## /home/Sam/Bureau/test.py:8: DeprecationWarning: La fonction je_vais_a_une_boom() est depreciee</span>
+<span style="color: #808080; font-style: italic;">##   warnings.warn(&quot;La fonction je_vais_a_une_boom() est depreciee&quot;, DeprecationWarning)</span>
+<span style="color: #808080; font-style: italic;">## /home/Sam/Bureau/test.py:9: ImportWarning: Le module optionnel 'braces' n'est pas disponible</span>
+<span style="color: #808080; font-style: italic;">##   warnings.warn(&quot;Le module optionnel 'braces' n'est pas disponible&quot;, ImportWarning)</span></pre></div></div>
+
+<p>L&#8217;avantage d&#8217;utiliser le module <code>warning</code> est :</p>
+<ul>
+<li>Il affiche sur stderr automatiquement.</li>
+<li>Il affiche un format clair automatiquement (fichier, ligne, type de warning).</li>
+<li>On peut très vite lire le code source et voir ce qui déclenche un warning.</li>
+</ul>
+<p>Mais surtout, on peut filtrer les warning:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #dc143c;">warnings</span>.<span style="color: black;">simplefilter</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;type de filtrage&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Le module permet de choisir ce qu&#8217;on affiche comme warning. Ils sont désactivables par la ligne de commande. Et surtout, quelqu&#8217;un qui importe votre module qui balance des warnings possède de nombreux moyens de les réduire au silence ou de les rediriger ailleurs. Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #dc143c;">warnings</span>.<span style="color: black;">catch_warnings</span><span style="color: black;">&#40;</span>record=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> w:
+     <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">test</span></pre></div></div>
+
+<p>Vous trouverez ici un <a href="http://docs.python.org/2/library/warnings.html">liste des warnings disponibles ainsi que les filtres possibles</a>.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5265&amp;md5=bef106a0851575bdc3c0c9a11159cbe7" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/warning-technique-a-un-autre-developpeur-en-python/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fwarning-technique-a-un-autre-developpeur-en-python%2F&amp;language=en_GB&amp;category=text&amp;title=Warning+technique+%C3%A0+un+autre+d%C3%A9veloppeur+en+Python&amp;description=Une+d%C3%A9pendance+optionnelle+est+manquante.+Une+fonction+est+d%C3%A9pr%C3%A9ci%C3%A9e.+Une+syntaxe+n%26%238217%3Best+pas+recommand%C3%A9e.+Il+y+a+mieux+qu%26%238217%3Bun+print%28%29+pour+signaler+%C3%A7a+%C3%A0+votre+utilisateur.+import+warnings+%26nbsp%3B+%23...&amp;tags=python%2Cwarning%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/piwJK6d.jpg" length="107634" type="image/jpg" />	</item>
+	</channel>
+</rss>

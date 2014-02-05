@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; snippets</title>
+	<atom:link href="http://sametmax.com/tag/snippets/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Batbelt, la lib des petits outils Python qui vont bien</title>
+		<link>http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/</link>
+		<comments>http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/#comments</comments>
+		<pubDate>Mon, 03 Jun 2013 08:57:33 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorator]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[snippets]]></category>
+		<category><![CDATA[with]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6327</guid>
+		<description><![CDATA[A force de coder plein de projets, il y a des opérations qui reviennent très souvent. Ces traitements sont petits et complètement sans relation, difficile d'en faire quelque chose. J'ai tout de même finit par en faire un lib, batbelt, qui au final n'est qu'une grosse collections de snippets que j'utilise régulièrement.]]></description>
+			<content:encoded><![CDATA[<p>A force de coder plein de projets, il y a des opérations qui reviennent très souvent. Ces traitements sont petits et complètement sans relation, difficile d&#8217;en faire quelque chose. J&#8217;ai tout de même finit par en faire un lib, <a href="https://github.com/sametmax/Bat-belt/">batbelt</a>, qui au final n&#8217;est qu&#8217;une grosse collections de snippets que j&#8217;utilise régulièrement. Il y a aussi des trucs que j&#8217;utilise moins ou des astuces / hacks un peu crades, c&#8217;est toujours pratique pour geeker à l&#8217;arrache vite fait. Vous allez d&#8217;ailleurs retrouver des bouts de code dont j&#8217;ai déjà parlé sur le site</p>
+<p><code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install batbelt</code></p>
+<p>Et la plupart des fonctions sont accessible avec un <code>from batbelt import...</code></p>
+<p>Voici les choses qui pourraient vous intéresser le plus dans batbelt&#8230;</p>
+<h2>To timestamp</h2>
+<p>Mais combien de fois j&#8217;ai du la coder celle-là ? En plus l&#8217;inverse existe, alors pourquoi, mon Dieu, pourquoi ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> to_timestamp<span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2000</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">946692061</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">datetime</span>.<span style="color: black;">fromtimestamp</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">946688461</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># tu as codé celle là et pas l'autre connard !</span>
+<span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2000</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Récupérer une valeur dans une structure de données imbriquée</h2>
+<p>Au lieu de faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    res = data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'cle'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'autre cle'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: black;">&#40;</span><span style="color: #008000;">KeyError</span>, <span style="color: #008000;">IndexError</span><span style="color: black;">&#41;</span>:
+    res = <span style="color: #483d8b;">&quot;valeur&quot;</span></pre></div></div>
+
+<p>On peut faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">get<span style="color: black;">&#40;</span>data, <span style="color: #483d8b;">'cle'</span>, <span style="color: #ff4500;">0</span>, <span style="color: #483d8b;">'autre cle'</span>, <span style="color: #ff4500;">1</span>, default=<span style="color: #483d8b;">&quot;valeur&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Récupérer la valeur d&#8217;un attribut dans un attribut dans un attribut&#8230;</h2>
+<p>Pareil, mais pour les attributs.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    devise = voiture.<span style="color: black;">moteur</span>.<span style="color: black;">prix</span>.<span style="color: black;">devise</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">AttributeError</span>:
+    devise = <span style="color: #483d8b;">&quot;euro&quot;</span></pre></div></div>
+
+<p>On peut faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">devise = attr<span style="color: black;">&#40;</span>voiture, <span style="color: #483d8b;">'moteur'</span>, <span style="color: #483d8b;">'prix'</span>, <span style="color: #483d8b;">'devise'</span>, default=<span style="color: #483d8b;">'euro'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Itérons, mon bon</h2>
+<p>Ces fonctions retournent des générateurs qui permettent d&#8217;itérer par morceau ou par fenêtre glissante.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #dc143c;">chunk</span> <span style="color: #ff7700;font-weight:bold;">in</span> chunks<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">chunk</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> slide <span style="color: #ff7700;font-weight:bold;">in</span> window<span style="color: black;">&#40;</span>l, <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>slide<span style="color: black;">&#41;</span>
+...
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span>, <span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">6</span>, <span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">7</span>, <span style="color: #ff4500;">8</span>, <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Ça devrait être en standard dans Python.</p>
+<p>Parfois on veut juste le premier élément d&#8217;une collection. Ou juste le premier à être vrai:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> first<span style="color: black;">&#40;</span><span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> first_true<span style="color: black;">&#40;</span><span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span></pre></div></div>
+
+<p>Marche avec n&#8217;importe quel itérable, contrairement à <code>[0]</code> qui ne marche que sur les indexables. Et en prime on peut spécifier une valeur par défaut:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> first<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>, default=<span style="color: #483d8b;">&quot;What the one thing we say to the God of Death ?&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'What the one thing we say to the God of Death ?'</span></pre></div></div>
+
+<h2>Set ordonné</h2>
+<p>On a des dicts ordonnés dans la lib standard, mais pas de set ordonné. On en a pas besoin souvent, mais ça peut être TRES pratique, et TRES chiant à implémenter soi-même.</p>
+<p>Donc acte.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># booooooo</span>
+...     <span style="color: #ff7700;font-weight:bold;">print</span> x
+...
+<span style="color: #ff4500;">1</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> sset<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">2</span>, <span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># clap clap !</span>
+...     <span style="color: #ff7700;font-weight:bold;">print</span> x
+...
+<span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">1</span></pre></div></div>
+
+<p>Attention, c&#8217;est pas la structure de données la plus rapide du monde&#8230;</p>
+<h2>Je suis une feignasse et j&#8217;aime les one-liners sur les dicos</h2>
+<p>Je ne comprends pas pourquoi <code>+</code> ne fonctionne pas sur les dico.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> dmerge<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;a&quot;</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">&quot;b&quot;</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;b&quot;</span>: <span style="color: #ff4500;">2</span>, <span style="color: #483d8b;">&quot;c&quot;</span>: <span style="color: #ff4500;">3</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">'c'</span>: <span style="color: #ff4500;">3</span>, <span style="color: #483d8b;">'b'</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Ne modifie pas les dictionnaires originaux.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> batbelt.<span style="color: black;">structs</span> <span style="color: #ff7700;font-weight:bold;">import</span> rename
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> rename<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;a&quot;</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">&quot;b&quot;</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> rename<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;a&quot;</span>: <span style="color: #ff4500;">1</span>, <span style="color: #483d8b;">&quot;b&quot;</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span>, <span style="color: #483d8b;">'b'</span>, <span style="color: #483d8b;">'z'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span>, u<span style="color: #483d8b;">'z'</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Modifie le dictionnaire original et n&#8217;est PAS thread safe.</p>
+<p>Et le cas tordu mais tellement satisfaisant :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> batbelt.<span style="color: black;">structs</span> <span style="color: #ff7700;font-weight:bold;">import</span> unpack
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> dct = <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">2</span>, <span style="color: #483d8b;">'b'</span>: <span style="color: #ff4500;">4</span>, <span style="color: #483d8b;">'z'</span>: <span style="color: #ff4500;">42</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a, b, c = unpack<span style="color: black;">&#40;</span>dct, <span style="color: #483d8b;">'a'</span>, <span style="color: #483d8b;">'b'</span>, <span style="color: #483d8b;">'c'</span>, default=<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> b
+<span style="color: #ff4500;">4</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c
+<span style="color: #ff4500;">1</span></pre></div></div>
+
+<h2>Slugifier</h2>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> slugify<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Hélo Whorde&quot;</span><span style="color: black;">&#41;</span>
+helo-whorde</pre></div></div>
+
+<p>Il y a pas mal de réglages possibles avec <code>slugify()</code>, mais je vous laisse les découvrir :-) Cette fonction fait partie du sous-module <code>strings</code>, qui contient d&#8217;autres utilitaires comme <code>escape_html/unescape_html</code> (qui transforme les caractères spéciaux en HTML entities et inversement) ou <code>json_dumps/json_loads</code> (qui fait un dump / load du JSON en prenant en compte le type <codde>datetime</codde>).</p>
+<h2>Importer une classe ou une fonction depuis une string</h2>
+<p>Dès que vous faites un fichier de config vous avez besoin de ce genre de truc, mais la fonction <code>__import__</code> a une signature uber-zarb. Voici une version beaucoup plus simple:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">TaClasse = import_from_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'foo.bar.TaClasse'</span><span style="color: black;">&#41;</span>
+ton_obj = TaClasse<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Capturer les prints</h2>
+<p>Parfois on a une lib qui <code>print</code> plutôt que de retourner une valeur. C&#8217;est très chiant. J&#8217;ai donc fait un context manager qui permet de récupérer tout ce qui est printé dans le block du <code>with</code>.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">with</span> capture_ouput<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> <span style="color: black;">&#40;</span>stdout, stderr<span style="color: black;">&#41;</span>:
+...    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;hello&quot;</span>,
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> stdout.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+hello</pre></div></div>
+
+<h2>Créer un décorateur qui accepte des arguments</h2>
+<p>Même dans le cas où vous avez parfaitement compris les décorateurs grâce à un très <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">bon tuto</a> (^^), se souvenir de comment faire un décorateur qui attend des arguments en paramètre, c&#8217;est mission impossible. Voici donc un décorateur&#8230; pour créer un décorateur.</p>
+<p>Étape un, écrire votre décorateur :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># tout les arguments après 'func' sont ceux que votre décorateur acceptera</span>
+@decorator_with_args<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> votre_decorateur<span style="color: black;">&#40;</span>func, arg1, arg2=<span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> arg1:
+        <span style="color: #808080; font-style: italic;"># faire un truc</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici on fait juste le truc habituel des décorateurs</span>
+    <span style="color: #808080; font-style: italic;"># wrapper, appel de la fonction wrappée et retour du wrapper...</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># arg2 est dans une closure, on peut donc l'utiliser dans</span>
+        <span style="color: #808080; font-style: italic;"># la fonction appelée</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> func<span style="color: black;">&#40;</span>arg2<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper</pre></div></div>
+
+<p>Et on peut utiliser son décorateur tranquile-bilou :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">@votre_decorateur<span style="color: black;">&#40;</span><span style="color: #008000;">False</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> hop<span style="color: black;">&#40;</span>un_arg<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire un truc dans la fonction décorée</span></pre></div></div>
+
+<h2>Les processus parallèles finissent toujours par se rencontrer à l&#8217;infini et corrompre leurs données</h2>
+<p>Mais en attendant on en a quand même besoin. Parfois un petit worker, c&#8217;est sympa, pas besoin de faire compliqué et de sortir des libs de task queue complètes:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> batbelt.<span style="color: black;">parallel</span> <span style="color: #ff7700;font-weight:bold;">import</span> worker
+&nbsp;
+@worker<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> une_tache<span style="color: black;">&#40;</span>arg<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire un truc avec arg</span>
+    arg = arg + <span style="color: #ff4500;">10</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> arg
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on demarre le worker</span>
+process = une_tache.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on balance des tâches au worker</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>:
+    process.<span style="color: black;">put</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on récupère les résultats (optionnel)</span>
+<span style="color: #808080; font-style: italic;"># ca peut être dans un fichier différent</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> process.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## 10</span>
+<span style="color: #808080; font-style: italic;">## 11</span>
+<span style="color: #808080; font-style: italic;">## 12</span>
+<span style="color: #808080; font-style: italic;">## 13</span>
+<span style="color: #808080; font-style: italic;">## 14</span>
+<span style="color: #808080; font-style: italic;">## 15</span>
+<span style="color: #808080; font-style: italic;">## 16</span>
+<span style="color: #808080; font-style: italic;">## 17</span>
+<span style="color: #808080; font-style: italic;">## 18</span>
+<span style="color: #808080; font-style: italic;">## 19</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on arrête le worker</span>
+process.<span style="color: black;">stop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Le worker est un subprocess par défaut, mais vous pouvez en faire un thread avec @worker(method=&#8221;tread&#8221;). Toujours utile, par exemple pour avec un processeur de mails qui envoit tous les mails hors du cycle requête / réponse de votre site Web. Par contre si votre process meurt la queue est perdue.</p>
+<h2>Template du pauvre</h2>
+<p>Avec format(), on a déjà un mini-langage de template intégré. Pas de boucle, mais pour des tâches simples ça suffit. Du coup j&#8217;ai une fonction <code>render()</code> qui prend un fichier de template au format string Python et qui écrit le résultat dans un autre. Pratique pour faire des fichiers de conf configurable.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> batbelt.<span style="color: black;">strings</span> <span style="color: #ff7700;font-weight:bold;">import</span> render
+&nbsp;
+render<span style="color: black;">&#40;</span><span style="color: #483d8b;">'truc.conf.tpl'</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;var&quot;</span>: <span style="color: #483d8b;">&quot;value&quot;</span><span style="color: black;">&#125;</span>, <span style="color: #483d8b;">&quot;/etc/truc.conf&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Il y a aussi des implémentations de Singleton, du Null Pattern, etc. Mais ça s&#8217;utilise moins souvent alors je vais pas faire une tartine.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6327&amp;md5=508e8e245d0d31a0f68eeac4eaeb070d" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fbatbelt-la-lib-des-petits-outils-python-qui-vont-bien%2F&amp;language=en_GB&amp;category=text&amp;title=Batbelt%2C+la+lib+des+petits+outils+Python+qui+vont+bien&amp;description=A+force+de+coder+plein+de+projets%2C+il+y+a+des+op%C3%A9rations+qui+reviennent+tr%C3%A8s+souvent.+Ces+traitements+sont+petits+et+compl%C3%A8tement+sans+relation%2C+difficile+d%26%238217%3Ben+faire+quelque+chose.+J%26%238217%3Bai...&amp;tags=decorator%2Citerable%2Cpython%2Csnippets%2Cwith%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/7ZNvVOR.jpg" length="296662" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; cbv</title>
+	<atom:link href="http://sametmax.com/tag/cbv/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Des années plus tard, je n&#8217;aime toujours pas les CBV</title>
+		<link>http://sametmax.com/des-annees-plus-tards-je-naime-toujours-pas-les-cbv/</link>
+		<comments>http://sametmax.com/des-annees-plus-tards-je-naime-toujours-pas-les-cbv/#comments</comments>
+		<pubDate>Tue, 21 May 2013 08:52:09 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5976</guid>
+		<description><![CDATA[Les Class Bbased Views se trouvent maintenant partout en Django. Je les comprends maintenant très bien, et les utilise souvent au mieux. Dernièrement j'ai du utiliser <a href="http://django-rest-framework.org/">django-rest-framework</a>, une très belle application, qui fait un usage utile et massif des CBV, et effectivement, cette architecture m'a rendu très productif.
+
+Mais je maintiens ce que je dis depuis le début : ce n'est pas un pas en avant.]]></description>
+			<content:encoded><![CDATA[<p>Les Class Based Views se trouvent maintenant partout en Django. Je les comprends aujourd&#8217;hui très bien, et les utilise souvent au mieux. Dernièrement j&#8217;ai dû utiliser <a href="http://django-rest-framework.org/">django-rest-framework</a>, une très belle application, qui fait un usage utile et massif des CBV, et effectivement, cette architecture m&#8217;a rendu très productif.</p>
+<p>Mais je maintiens ce que je dis depuis le début : ce n&#8217;est pas un pas en avant.</p>
+<p>D&#8217;abord, qui dit CBV dit référence constante à la documentation. J&#8217;ai été productif avec CBV parce que :</p>
+<ul>
+<li>Je connais l&#8217;API Django sur le bout des doigts.</li>
+<li>Je comprends parfaitement les CBV (et la POO en Python en général).</li>
+<li>Je lis très vite, et j&#8217;ai l&#8217;habitude de fouiller dans les docs.</li>
+<li>Je me balade dans le code source naturellement.</li>
+</ul>
+<p>Mais ce n&#8217;est pas comme ça que c&#8217;est censé être. Si vous utilisez une belle API, comme <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">requests ou path.py</a>, vous n&#8217;avez PAS besoin de tout cela. Vous jetez un coup d’œil à la doc, et vous faites 80% du boulot dans le shell, puis de temps à autre, vous vous référez à la documentation sur les points ambiguës. Je n&#8217;ai jamais du aller dans le code source de <code>requests</code>, je n&#8217;ai jamais eu besoin de comprendre <code>urllib</code> de fond en comble pour utiliser <code>requests</code>, et je n&#8217;ai pas besoin de connaître les subtilités de plusieurs paradigmes de programmation pour utiliser <code>requests</code>.</p>
+<p>Alors oui, <code>requests</code> ne peut en aucun cas être comparé à Django en terme de taille et de couverture de besoin, et certes, en tant que professionnel averti, je suis tenu d&#8217;être capable de faire tout cela. Mais il y a quand même une énorme différence d&#8217;effort à fournir, et de qualification à avoir, pour l&#8217;usage de cette techno.</p>
+<p>En prime, il est TRÈS difficile de débugger une CBV :</p>
+<ul>
+<li>Dans une vue générique sous forme de fonction, on peut juste faire <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">import ipdb</a>, et faire un step puis débugger tranquillement. Dans une CBV, vous le mettez où le break point ? Soit vous overridez une méthode (et il faut savoir par cœur laquelle), soit vous faites un wrapper provisoir sous forme de fonction (!), soit vous mettez le break cash dans le code source de la lib. C&#8217;est nul à chier, et improductif. Et certainement pas à la portée d&#8217;un débutant.</li>
+<li>Les mixins ont un tas de comportements implicites, qu&#8217;il faut connaître pour comprendre pourquoi ceci fait cela. Et comme il y a généralement 3 ou 4 mixins (d&#8217;ailleurs, combien de dev peuvent donner la définition d&#8217;un mixin ?), et bien si il y a un problème, il y a 4 sources possibles. Qui héritent parfois d&#8217;autres classes, ce qui démultiplie le truc.</li>
+<li>Quand ça plante le stack trace est blindée de références à droite et à gauche. Un putain de labyrinthe.</li>
+</ul>
+<p>Rajoutez à cela que la syntaxe est verbeuse comme c&#8217;est pas permis :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get_context_data<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+    context = <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>MaClass, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">get_context_data</span><span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>
+    context<span style="color: black;">&#91;</span><span style="color: #483d8b;">'ma_var'</span><span style="color: black;">&#93;</span> = <span style="color: #483d8b;">&quot;ma valeur&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> context</pre></div></div>
+
+<p>Pour rajouter UNE variable dans le contexte ? Rhaaaaaaaaaaa. Je code en Python, pas en Java !</p>
+<p>Et terminez sur le fait que pour utiliser tous les décorateurs codés depuis 5 ans, vous avez <a href="http://stackoverflow.com/questions/6069070/how-to-use-permission-required-decorators-on-django-class-based-views">une syntaxe bien pourrie</a> ou alors des <a href="https://github.com/lukaszb/django-guardian/issues/48">réimplementations complètes</a> sous forme de mixins. Yeah !</p>
+<p>Vous comprendrez que ça me gonfle.</p>
+<p>Tout ça pour quel gain ? Oui on gagne un peu en flexibilité, mais ça ne compense pas tout le reste, et ça ne permet en rien de faire des choses qu&#8217;on ne pouvait pas faire avant.</p>
+<p>Je n&#8217;ai pas vu encore la moindre utilisation des CBV qui me fasse dire, &#8220;putain c&#8217;est tellement mieux qu&#8217;avant pour cette partie&#8221;. Ni aucune lib qui me fasse dire : &#8220;ouais, on aurait pas pu le faire aussi bien avec des vues sous forme de fonctions&#8221;.</p>
+<p>Avec les CBV devenant la manière par défaut de coder les vues en Django, le framework devient beaucoup moins accessible au débutant, alors que sa facilité d&#8217;usage était un de ses points forts.</p>
+<p>Bref, je suis de <a href="http://www.boredomandlaziness.org/2012/05/djangos-cbvs-are-not-mistake-but.html">l&#8217;avis de Nick Coghlan</a>, les CBV ne sont pas une erreur, elles ont leur utilité, mais balancer à la poubelle les vues sous forme de fonction est une vaste connerie.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5976&amp;md5=2006171290b5ea019c93fdd3d4ba381e" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/des-annees-plus-tards-je-naime-toujours-pas-les-cbv/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fdes-annees-plus-tards-je-naime-toujours-pas-les-cbv%2F&amp;language=en_GB&amp;category=text&amp;title=Des+ann%C3%A9es+plus+tard%2C+je+n%26%238217%3Baime+toujours+pas+les+CBV&amp;description=Les+Class+Based+Views+se+trouvent+maintenant+partout+en+Django.+Je+les+comprends+aujourd%26%238217%3Bhui+tr%C3%A8s+bien%2C+et+les+utilise+souvent+au+mieux.+Derni%C3%A8rement+j%26%238217%3Bai+d%C3%BB+utiliser+django-rest-framework%2C+une+tr%C3%A8s+belle...&amp;tags=cbv%2Cdjango%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/complots23.jpg" length="38284" type="image/jpg" />	</item>
+		<item>
+		<title>Une alternative aux class base views en Django</title>
+		<link>http://sametmax.com/une-alternative-aux-class-base-views-en-django/</link>
+		<comments>http://sametmax.com/une-alternative-aux-class-base-views-en-django/#comments</comments>
+		<pubDate>Sun, 26 Aug 2012 14:26:06 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1898</guid>
+		<description><![CDATA[C'est léger, et ça répond à pas mal de use cases.]]></description>
+			<content:encoded><![CDATA[<p>Ce n&#8217;est pas un secret que nous <a href="http://sametmax.com/des-vues-normales-aux-vues-generiques-django/">n&#8217;aimons pas trop les CBV sur ce blog</a>. Pourtant des tas de gens continuent de les utiliser car avoir des vues sous forme de classe leur permet plus de réutilisabilité.</p>
+<p>Ce n&#8217;est pourtant pas nécessaire.</p>
+<p>On vous a déjà dit qu&#8217;une <a href="http://sametmax.com/schema-de-fonctionnement-general-de-django/">vue Django n&#8217;était qu&#8217;une fonction ordinaire</a>, qui prenait en paramètre une requête, et retournait une réponse.</p>
+<p>On ne vous a pas tout dit.</p>
+<p>En fait Django accepte <strong>n&#8217;importe quel callable</strong> comme vue, pas juste une fonction. Et Python permet de réagir à l&#8217;appel de n&#8217;importe quel objet grâce à la méthode <strong>__call__</strong>.</p>
+<p>Du coup:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MaVue<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__call__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, request<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># mettre ici le code de la vue</span>
+        <span style="color: #808080; font-style: italic;"># comme si c'était une vue foncton</span>
+&nbsp;
+ma_vue = MaVue<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Puis dans urls.py:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">url<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/'</span>, <span style="color: #483d8b;">'ma_vue'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Marche parfaitement.</p>
+<p>Et vous pouvez hériter de <code>MaVue</code>, faire des mixins, et tout le toutim. Sans avoir à ajouter de la complexité, comme si c&#8217;était une vue fonction normale. </p>
+<p>Il y a juste un truc à savoir: tout ce qu&#8217;on met dans <strong>self.attribut</strong> est partagé entre toutes les instances. Donc sur ce type de vue sous forme de classe, <strong>on évite de stocker un truc dans self</strong>, on fait des méthodes de classes auxquelles on passe des paramètres. </p>
+<p>Sinon on évite juste d&#8217;utiliser les vues sous forme de classe. on vit très bien sans.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1898&amp;md5=4041e6ed8a8264044fb75608bcd3ee9d" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/une-alternative-aux-class-base-views-en-django/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fune-alternative-aux-class-base-views-en-django%2F&amp;language=en_GB&amp;category=text&amp;title=Une+alternative+aux+class+base+views+en+Django&amp;description=Ce+n%26%238217%3Best+pas+un+secret+que+nous+n%26%238217%3Baimons+pas+trop+les+CBV+sur+ce+blog.+Pourtant+des+tas+de+gens+continuent+de+les+utiliser+car+avoir+des+vues+sous+forme...&amp;tags=cbv%2Cdjango%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/Ersatz-Brothers1.jpeg" length="36333" type="image/jpg" />	</item>
+		<item>
+		<title>Explication de code: des mixins et des décorateurs de méthode pour Django</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/</link>
+		<comments>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comments</comments>
+		<pubDate>Tue, 21 Aug 2012 14:37:57 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[decorator]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[mixin]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1812</guid>
+		<description><![CDATA[J'ai une préférence pour mon profile de 3-quart gauche.]]></description>
+			<content:encoded><![CDATA[<p>Suite à notre <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">appel à l&#8217;envoi de code à expliquer</a>, nous avons reçu ceci:</p>
+<blockquote><p>Pouvez-vous m&#8217;aider à comprendre ce code?</p>
+<p><a href="https://gist.github.com/3092600">https://gist.github.com/3092600</a></p>
+<p>La fonction dispatch, à quoi sert-elle?</p>
+<p>L&#8217;appel via super, on appelle le parent de la classe?</p>
+<p>Merci, je vous ferai une statue un jour!
+</p></blockquote>
+<p>Prépare le marbre.</p>
+<h2>Programmation orientée objet</h2>
+<p>Commençons par:</p>
+<blockquote><p>L&#8217;appel via super, on appelle le parent de la classe?</p></blockquote>
+<p>Oui, très exactement.</p>
+<p>Et j&#8217;en profite pour rappeler que si vous utilisez les <a href="sametmax.com/des-vues-normales-aux-vues-generiques-django/">CBV</a>, il va vous falloir vous toucher en programmation orientée objet: définition de classe, héritage multiple, overriding, et autres joyeusetés.</p>
+<p>Comme ce genre d&#8217;infos peut faire l&#8217;objet d&#8217;une série d&#8217;articles à part entière, je vais être obligé de partir du principe que vous savez coder en objet pour expliquer ce code. Sinon, ce post ferait quelques milliers de lignes.</p>
+<p>Je n&#8217;exclue pas de faire un article sur l&#8217;OO un de ces 4, puisqu&#8217;on a déjà eu des demandes, si c&#8217;est aussi un truc qui vous intéresse, faites le nous savoir en com.</p>
+<h2>Worflow des CBV</h2>
+<blockquote><p>La fonction <code>dispatch</code>, à quoi sert-elle? </p></blockquote>
+<p>Les CBV ont un ordre d&#8217;éxécution pour leurs méthodes: <code>render_to_response()</code> retourne la vue, mais elle est appelée depuis <code>get()</code> ou <code>post()</code>, qui appellent aussi <code>get_context_data()</code> pour créer le <code>context</code> du template. Et <code>get_context_data()</code> appelle <code>get_query_set()</code> pour les vues qui utilisent l&#8217;ORM. Il faudrait que je fasse un gros schéma de tout ça un jour.</p>
+<p><code>Dispatch()</code> est la méthode qui appelle toutes les autres. Elle choisi notament si on appelle la méthode <code>get()</code> ou <code>post()</code>. C&#8217;est en quelque sorte la méthode mère. Si on veut faire un truc avant que la vue ne travaille, c&#8217;est la dedans qu&#8217;il faut agir.</p>
+<h2>Les décorateurs de méthode</h2>
+<p>Comme vous l&#8217;avez vu, le code utilise <code>@method_decorator</code>. Encore une fois, je vais partir du principe que vous vous touchez avec les décorateurs, si ce n&#8217;est pas le cas, <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">il y a un article pour ça</a>™.</p>
+<p>Néanmoins, dans l&#8217;article on ne parle que des décorateurs de fonctions. Comment décorer une méthode ? Et bien c&#8217;est pareil, sauf qu&#8217;il faut que votre décorateur accepte <code>self</code> en plus comme argument dans la fonction qu&#8217;il retourne.</p>
+<p>Afin d&#8217;éviter de réécrire tous les décorateurs en double, on utilise <code>@method_decorator</code> qui est un décorateur&#8230; pour décorateurs ^^ Il transforme un décorateur pour fonction afin qu&#8217;il soit applicable à une méthode.</p>
+<p>Ainsi quand vous voyez  <code>@method_decorator(login_required)</code>, ça veut dire &#8220;tranformer le décorateur <code>login_required</code> pour qu&#8217;il marche sur les méthodes, et l&#8217;apppliquer sur la méthode juste en dessous&#8221;</p>
+<h2>Les mixins</h2>
+<p>Je suis sûr que vous n&#8217;avez pas pu vous empêcher de vous demander, à la vue de ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">LoginRequiredMixin<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        View mixin which requires that the user is authenticated.
+    &quot;&quot;&quot;</span></pre></div></div>
+
+<p>Mais c&#8217;est quoi un mixin non de diou ?</p>
+<p>Alors, déjà, on se rassure, ce n&#8217;est pas encore un nouveau truc compliqué à apprendre, c&#8217;est juste le nom d&#8217;un truc que vous connaissez déjà.</p>
+<p>Un mixin, c&#8217;est le nom qu&#8217;on donne à une classe dont le but est exclusivement d&#8217;être utilisé pour l&#8217;héritage, afin de rajouter une fonctionalité à la classe enfant.</p>
+<p>En gros, ce n&#8217;est qu&#8217;un nom, ça n&#8217;a rien de spécial, c&#8217;est une classe normale. Mixin est juste le rôle de la classe.</p>
+<p>Les mixins ne sont PAS des interfaces, car ils font toujours quelque chose. Ils sont utilisés quand on a un code générique qu&#8217;on veut réutiliser dans plusieurs classes.</p>
+<p>Les mixins changent le comportement, mais PAS la nature de la classe enfant. Il n&#8217;y a pas de <code>AnimalMixing</code> dont hériterait une class <code>Chien</code>, ou <code>Chat</code>. Ca c&#8217;est de l&#8217;héritage normal. On ne parle de mixin que pour le comportement.</p>
+<p>Les mixins ne marchent que dans les langages qui autorisent l&#8217;héritage multiple, car on doit pouvoir hériter de plein de mixins d&#8217;un coup pour que ça soit utile.</p>
+<h2>Explication du premier Snippet</h2>
+<p>Vous vous souvenez du temps où c&#8217;était si simple de protéger une vue ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">@login_required
+<span style="color: #ff7700;font-weight:bold;">def</span> ma_vue<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:</pre></div></div>
+
+<p>Avec les CBV, ce temps là est finit mes amis. C&#8217;est pour ça que je n&#8217;ai pas beaucoup d&#8217;amour pour elles.</p>
+<p>Pour protéger une CBV on a plusieurs choix:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MaView<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+    ...
+&nbsp;
+<span style="color: black;">ma_vue</span> = login_required<span style="color: black;">&#40;</span>MaView.<span style="color: black;">as_view</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et on importe <code>ma_vue</code> dans <em>urls.py</em>.</p>
+<p>OU directement dans <em>urls.py</em>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">...
+<span style="color: black;">url</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/this/is/not/a/url'</span>, login_required<span style="color: black;">&#40;</span>MaView.<span style="color: black;">as_view</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+...</pre></div></div>
+
+<p>OU la méthode <a href="https://docs.djangoproject.com/en/1.4/topics/class-based-views/#decorating-the-class">recommandée</a> par les mecs de Django, méga simple et intuitive:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MaView<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+    ...
+    @method_decorator<span style="color: black;">&#40;</span>login_required<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>ProtectedView, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">dispatch</span><span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>On applique le décorateur <code>@login_required</code> à la méthode <code>dispatch()</code>. Comme c&#8217;est la méthode qui appelle toutes les autres, la vue est ainsi protégée.</p>
+<p>Seulement voilà, tout celà est bien relou, et l&#8217;auteur des snippets y remédie:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> LoginRequiredMixin<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+      View mixin which requires that the user is authenticated.
+    &quot;&quot;&quot;</span>
+    @method_decorator<span style="color: black;">&#40;</span>login_required<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>LoginRequiredMixin, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">dispatch</span><span style="color: black;">&#40;</span>
+            <span style="color: #008000;">self</span>, request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ce faisant, il créé un mixin qui va appliquer ce décorateur. Mixin qu&#8217;on peut réutiliser ainsi:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MaView<span style="color: black;">&#40;</span>LoginRequiredMixin, ListView<span style="color: black;">&#41;</span>:
+    ...</pre></div></div>
+
+<p>Et protéger une vue redevient simple à nouveau !</p>
+<p>Attention, il faut bien mettre le mixin en premier dans la liste de parents. En effet, <code>dispatch()</code> de <code>MaView</code> va appeler celui de <code>LoginRequiredMixin</code> qui va appeler <code>super()</code> qui va va ainsi appeler <code>dispatch()</code> de <code>ListView</code>. C&#8217;est ce qu&#8217;on appelle le MRO (Method Résolution Order), <a href="https://fuhm.net/super-harmful/">l&#8217;ordre à vachement d&#8217;importance</a>, et ça mériterait un article à lui tout seul.</p>
+<p>Je résume:</p>
+<p><code>dispatch()</code> est la méthode d&#8217;un vue qui appelle toutes les autres. <code>LoginRequiredMixin</code> a sa méthode <code>dispatch()</code> protégée pour qu&#8217;elle ne soit accessible que par les utilisateurs enregistrés. <code>MaView</code> hérite du mixin pour intégrer cette fonctionalité. Du coup son <code>dispatch()</code> va utiliser le <code>dispatch()</code> de <code>LoginRequiredMixin</code>, qui est protégé. Comme <code>LoginRequiredMixin</code> est bien faites, son <code>dispatch()</code> appelle celui de <code>ListView</code>, et ainsi la vue fonctionne correctement.</p>
+<h2>Les autres snippets</h2>
+<p>On peut maintenant aller plus vite.</p>
+<p>Le deuxième mixin permet de n&#8217;autoriser l&#8217;accès à une vue que si on a les permissions nécessaires (Django vient en effet avec toute une gestion des permissions dans son app contrib &#8216;auth&#8217;)</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> PermissionsRequiredMixin<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># les permissions nécessaires sont stockées dans cet attribut</span>
+    required_permissions = <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># dispatch est encore une fois protégée contre les users non loggés</span>
+    @method_decorator<span style="color: black;">&#40;</span>login_required<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># on rajoute une subtilité:</span>
+        <span style="color: #808080; font-style: italic;"># on vérifie si le user a les permissions exigées avant</span>
+        <span style="color: #808080; font-style: italic;"># d'appler le dispatch() du parent</span>
+        <span style="color: #808080; font-style: italic;"># si on a pas les permissions, on rajoute un message d'erreur</span>
+        <span style="color: #808080; font-style: italic;"># et on redirige vers la page de login</span>
+        <span style="color: #808080; font-style: italic;"># sinon on appelle le dispatch() du parent comme d'hab</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> request.<span style="color: #dc143c;">user</span>.<span style="color: black;">has_perms</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">required_permissions</span><span style="color: black;">&#41;</span>:
+            messages.<span style="color: black;">error</span><span style="color: black;">&#40;</span>
+                request,
+                <span style="color: #483d8b;">'You do not have the permission required to perform the '</span>
+                <span style="color: #483d8b;">'requested operation.'</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span>settings.<span style="color: black;">LOGIN_URL</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>PermissionsRequiredMixin, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">dispatch</span><span style="color: black;">&#40;</span>
+            request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ca s&#8217;utilise comme ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MaVue<span style="color: black;">&#40;</span>PermissionsRequiredMixin, ListView<span style="color: black;">&#41;</span>:
+    required_permissions = <span style="color: black;">&#40;</span>
+        <span style="color: #483d8b;">'dealer.create_cocaine'</span>,
+        <span style="color: #483d8b;">'dealer.delete_cocaine'</span>,
+    <span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Un utilisateur qui n&#8217;a pas les permissions <code>create_cocaine</code> et <code>delete_cocaine</code> de l&#8217;app &#8216;dealer&#8217; sera redirigé vers la page de login.</p>
+<p>En effet, <code>MaVue.dispatch</code> appelle la méthode <code>PermissionsRequiredMixin.dispatch</code>, mais avec une subtilité: le <code>self</code> passé en paramètre est celui de <code>MaVue</code>. <code>self.required_permissions</code> dans <code>PermissionsRequiredMixin.dispatch</code> est donc en vérité <code>MaVue.required_permissions</code>. Relisez ce paragraphe plusieurs fois.</p>
+<p>Notez en revanche que la page de redirection n&#8217;est pas configurable, ce qui est bien dommage. Ca se corrige facilement:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> PermissionsRequiredMixin<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    required_permissions = <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    redirect_url = settings.<span style="color: black;">LOGIN_URL</span> <span style="color: #808080; font-style: italic;"># &lt;== HOP</span>
+&nbsp;
+    @method_decorator<span style="color: black;">&#40;</span>login_required<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> request.<span style="color: #dc143c;">user</span>.<span style="color: black;">has_perms</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">required_permissions</span><span style="color: black;">&#41;</span>:
+            messages.<span style="color: black;">error</span><span style="color: black;">&#40;</span>
+                request,
+                <span style="color: #483d8b;">'You do not have the permission required to perform the '</span>
+                <span style="color: #483d8b;">'requested operation.'</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">redirect_url</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># &lt;== HOP</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>PermissionsRequiredMixin, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">dispatch</span><span style="color: black;">&#40;</span>
+            request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Du coup on a plus de marge de manoeuvre.</p>
+<p><strong>Le 3eme et 4eme snippet, c&#8217;est la même chose. Kiff kiff. Pareil.</strong></p>
+<p>Mais au lieu de vérifier les permissions, on vérifie juste si l&#8217;utilisateur à accès à l&#8217;admin Django (<code>is_staff</code>) ou que l&#8217;utilisateur est un superutilisateur (<code>is_superuser</code>: il a toutes les permissions):</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> StaffRequiredMixin<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    @method_decorator<span style="color: black;">&#40;</span>login_required<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># j'ai pas besoin de vous expliquer ça quand même ?</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> request.<span style="color: #dc143c;">user</span>.<span style="color: black;">is_staff</span>:
+            messages.<span style="color: black;">error</span><span style="color: black;">&#40;</span>
+                request,
+                <span style="color: #483d8b;">'You do not have the permission required to perform the '</span>
+                <span style="color: #483d8b;">'requested operation.'</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span>settings.<span style="color: black;">LOGIN_URL</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>StaffRequiredMixin, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">dispatch</span><span style="color: black;">&#40;</span>request,
+            <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> SuperUserRequiredMixin<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    @method_decorator<span style="color: black;">&#40;</span>login_required<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, request, <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># je pense que c'est assez explicite</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> request.<span style="color: #dc143c;">user</span>.<span style="color: black;">is_superuser</span>:
+            messages.<span style="color: black;">error</span><span style="color: black;">&#40;</span>
+                request,
+                <span style="color: #483d8b;">'You do not have the permission required to perform the '</span>
+                <span style="color: #483d8b;">'requested operation.'</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span>settings.<span style="color: black;">LOGIN_URL</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>SuperUserRequiredMixin, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">dispatch</span><span style="color: black;">&#40;</span>request,
+            <span style="color: #66cc66;">*</span>args, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Comme je le disais plus haut, on peut utiliser plusieurs mixins en même temps. Par exemple, si je veux limiter l&#8217;accès à une vue aux dealers qui font partie de mon staff:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MaVue<span style="color: black;">&#40;</span>PermissionsRequiredMixin, StaffRequiredMixin, ListView<span style="color: black;">&#41;</span>:
+    required_permissions = <span style="color: black;">&#40;</span>
+        <span style="color: #483d8b;">'dealer.create_cocaine'</span>,
+        <span style="color: #483d8b;">'dealer.delete_cocaine'</span>,
+    <span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Notez encore une fois que les mixins sont là en premier, car <code>MaVue.dispatch</code> appelle <code>PermissionsRequiredMixin.dispatch</code> qui appelle <code>StaffRequiredMixin.dispatch</code> qui appelle <code>ListView.dispatch</code>.</p>
+<p>En revanche, dans ce cas précis l&#8217;ordre des mixins, entre eux, n&#8217;a pas d&#8217;importance. Ce ne sera pas toujours le cas: il faut comprendre comment les mixins agissent pour savoir si certains doivent être mis en premier. C&#8217;est tout le problème des CBV: pour en faire un usage productif, la somme de choses à savoir est assez démente.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1812&amp;md5=05fc20fe91f89a244479f881202c413c" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fexplication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django%2F&amp;language=en_GB&amp;category=text&amp;title=Explication+de+code%3A+des+mixins+et+des+d%C3%A9corateurs+de+m%C3%A9thode+pour+Django&amp;description=Suite+%C3%A0+notre+appel+%C3%A0+l%26%238217%3Benvoi+de+code+%C3%A0+expliquer%2C+nous+avons+re%C3%A7u+ceci%3A+Pouvez-vous+m%26%238217%3Baider+%C3%A0+comprendre+ce+code%3F+https%3A%2F%2Fgist.github.com%2F3092600+La+fonction+dispatch%2C+%C3%A0+quoi+sert-elle%3F+L%26%238217%3Bappel+via+super%2C...&amp;tags=cbv%2Cdecorator%2Cdjango%2Cmixin%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/monument_miniature.jpg" length="14088" type="image/jpg" />	</item>
+		<item>
+		<title>Des vues normales aux vues génériques Django</title>
+		<link>http://sametmax.com/des-vues-normales-aux-vues-generiques-django/</link>
+		<comments>http://sametmax.com/des-vues-normales-aux-vues-generiques-django/#comments</comments>
+		<pubDate>Wed, 15 Aug 2012 18:18:20 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cbv]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[views]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1715</guid>
+		<description><![CDATA[Nous avons reçu plusieurs demandes d'explication des class based views et une explication de <a href="http://blog.sietch-tabr.com/index.php/post/2011/04/01/Django-passage-aux-vues-generiques-basees-sur-des-classes,-par-l-exemple">ce code</a> dans le cadre de notre opération <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">père castor, commente nous un snippet</a>. Je me suis dis que j'allais faire d'une pierre deux coups et trois mouvements.]]></description>
+			<content:encoded><![CDATA[<p>Nous avons reçu plusieurs demandes d&#8217;explication des class based views et une explication de <a href="http://blog.sietch-tabr.com/index.php/post/2011/04/01/Django-passage-aux-vues-generiques-basees-sur-des-classes,-par-l-exemple">ce code</a> dans le cadre de notre opération <a href="http://sametmax.com/envoyez-nous-les-scripts-que-vous-ne-pigez-pas/">père castor, commente nous un snippet</a>.</p>
+<p>Je me suis dis que j&#8217;allais faire d&#8217;une pierre deux coups et trois mouvements.</p>
+<h2>Rappel sur les bases des vues</h2>
+<p><strong>Une vue, c&#8217;est une fonction ORDINNAIRE qui prends une requête en paramètre et qui revoie une réponse.</strong></p>
+<p>Si vous avez un <em>urls.py</em> qui ressemble à ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> mon_app.<span style="color: black;">views</span> <span style="color: #ff7700;font-weight:bold;">import</span> home, tous_les_utilisateurs
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span>.<span style="color: black;">auth</span>.<span style="color: black;">views</span> <span style="color: #ff7700;font-weight:bold;">import</span> login
+&nbsp;
+urlpatterns = patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span>,
+    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^/'</span>, home<span style="color: black;">&#41;</span>,
+    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^login/'</span>, login<span style="color: black;">&#41;</span>,
+    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^list/'</span>, tous_les_utilisateurs<span style="color: black;">&#41;</span>,
+<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et une vue dans <em>views.py</em> qui ressemble à ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">shortcurts</span> <span style="color: #ff7700;font-weight:bold;">import</span> render
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span>.<span style="color: black;">auth</span>.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> User
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> tous_les_utilisateurs<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    context = <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;utilisateurs&quot;</span>: User.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> render<span style="color: black;">&#40;</span>request, <span style="color: #483d8b;">&quot;tous_les_utilisateur.html&quot;</span>, context<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Voilà ce qui va se passer si l&#8217;utilisateur visite <em>http://monsite.com/list/</em>:</p>
+<div id="attachment_1723" class="wp-caption aligncenter" style="width: 477px"><a href="http://sametmax.com/wp-content/uploads/2012/08/dessin2.png"><img class=" wp-image-1723  " title="L'important ici est de comprendre que tout ça fonctionne à base d'arc-en-ciels distillés" src="http://sametmax.com/wp-content/uploads/2012/08/dessin2.png" alt="Fonctionnement d'une vue Django" width="467" height="470" /></a><p class="wp-caption-text">L&#39;important ici est de comprendre que tout ça fonctionne à base d&#39;arc-en-ciels distillés</p></div>
+<p>Seulement voilà, vous allez vouloir rajouter des trucs, genre, la pagination.</p>
+<p>Et votre vue va se changer en ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> tous_les_utilisateurs<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># montrer 25 users par page</span>
+    paginator = Paginator<span style="color: black;">&#40;</span>User.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, <span style="color: #ff4500;">25</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># récupérer la page en cours</span>
+    page = request.<span style="color: black;">GET</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'page'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        users = paginator.<span style="color: black;">page</span><span style="color: black;">&#40;</span>page<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> PageNotAnInteger:
+        <span style="color: #808080; font-style: italic;"># si la page n'est pas un entier, on affiche la page un</span>
+        users = paginator.<span style="color: black;">page</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> EmptyPage:
+        <span style="color: #808080; font-style: italic;"># Si la page déborder, on affiche la dernière page</span>
+        users = paginator.<span style="color: black;">page</span><span style="color: black;">&#40;</span>paginator.<span style="color: black;">num_pages</span><span style="color: black;">&#41;</span>
+&nbsp;
+    context = <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;utilisateurs&quot;</span>: users, <span style="color: #483d8b;">&quot;page&quot;</span>: page<span style="color: black;">&#125;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> render<span style="color: black;">&#40;</span>request, <span style="color: #483d8b;">&quot;tous_les_utilisateur.html&quot;</span>, context<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et vous allez faire ça pour 512 vues. Des listings, c&#8217;est pas ce qui manque. Prendre un objet et afficher son détail, le modifier, vérifier si il existe, valider un formulaire, faire un listing d&#8217;objets, tout ça sont des tâches très courantes.</p>
+<p>Pour cette raison, Django fournit des vues génériques, des fonctions NORMALES, mais qui sont paramétrables afin de pouvoir faire des listings, des validations de formulaire, etc, de tout et n&#8217;importe quoi. Sans avoir à écrire le code.</p>
+<h2>Les vues génériques sous forme de fonction</h2>
+<p>Une vue générique n&#8217;a rien de magique, c&#8217;est une vue ordinaire, seulement elle a des tas et des tas d&#8217;arguments pour pouvoir en faire ce qu&#8217;on veut. Chaque vue générique à un but précis. Par exemple, la vue générique <code>object_list</code> à pour but de créer des listings de n&#8217;importe quel objet, avec pagination.</p>
+<p>Si on devait écrire notre vue précédente avec une vue générique, ça donnerait ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">views</span>.<span style="color: black;">generic</span>.<span style="color: black;">list_detail</span> <span style="color: #ff7700;font-weight:bold;">import</span> object_list
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> tous_les_utilisateurs<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> object_list<span style="color: black;">&#40;</span>request, queryset=User.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, paginate_by=<span style="color: #ff4500;">25</span>,
+                       template_name=<span style="color: #483d8b;">&quot;tous_les_utilisateur.html&quot;</span>,        
+                       template_object_name=<span style="color: #483d8b;">&quot;utilisateurs&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p><code>object_list</code> est une vue normale, donc elle attend en paramètre un objet request, et retourne une réponse. Ainsi, on lui passe <code>request</code> de <code>tous_les_utilisateurs</code>, et on récupère sa réponse, qu&#8217;on retourne comme si c&#8217;était la notre.</p>
+<p>La différence, c&#8217;est que <code>object_list</code> à plein de paramètres en plus:</p>
+<ul>
+<li><code>queryset</code> est le paramètre qui dit quel objet lister;</li>
+<li><code>template_name</code> est le paramètre qui dit quel template utiliser;</li>
+<li><code>template_object_name</code> est le paramètre qui dit quel nom donner à la liste d&#8217;objets dans le template.</li>
+</ul>
+<p><code>object_list</code> s&#8217;occupe du reste, notamment de la pagination et de la gestion des erreurs. Elle frabrique l&#8217;objet <code>context</code> et le passe au template. Il n&#8217;y a donc plus qu&#8217;à écrire le template.</p>
+<p>C&#8217;est d&#8217;ailleurs la partie difficile au début: comment on écrit le template ? En fait tout à fait normalement, il faut juste savoir quelles variables (et ce quelles contiennent) sont mises à disposition dans le template par la vue générique. Il faut lire la doc quoi :-) Ou faire comme moi et utiliser <a href="https://github.com/codysoyland/django-template-repl">django-template-repl</a> qui est une sorte de <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> pour template.</p>
+<p>Dans notre cas, le template va contenir la variable <code>pag_obj</code> (qui est l&#8217;objet de pagination) et la variables <code>utilisateurs</code> qui est une liste d&#8217;objets <code>User</code>.</p>
+<p>Les vues génériques suivent des conventions de nommage, et si on s&#8217;y tient, on peut même raccourcir le code encore plus:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> tous_les_utilisateurs<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> object_list<span style="color: black;">&#40;</span>request, queryset=User.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, paginate_by=<span style="color: #ff4500;">25</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Mais dans ce cas il faut nommer obligatoirement notre template <em>[app_label]/[model_name]_list.html</em> (dans notre cas<em>monapp/user_list.html</em>) et dans ce template, récupérer la liste d&#8217;utilisateurs dans la variable de nom <code>object_list</code> (facile à retenir, c&#8217;est le même nom que la vue).</p>
+<p>Comme toutes les vues génériques, <code>object_list</code> est très paramétrable. Supposons qu&#8217;on veuille rajouter la date du jour dans la page, il suffit de le rajouter dans le template et de faire ceci:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> tous_les_utilisateurs<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    aujourdhui = <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> object_list<span style="color: black;">&#40;</span>request, queryset=User.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+                       template_name=<span style="color: #483d8b;">&quot;tous_les_utilisateur.html&quot;</span>,
+                       paginate_by=<span style="color: #ff4500;">25</span>,
+                       template_object_name=<span style="color: #483d8b;">&quot;utilisateurs&quot;</span>,
+                       extra_context=<span style="color: black;">&#123;</span><span style="color: #483d8b;">'date_du_jour'</span>: aujourdhui<span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et le template aura automatiquement accès à la variable <code>date_du_jour</code>.</p>
+<p>Les vues génériques font gagner beaucoup de temps, mais elles font un peu peur au début car on ne sait pas trop ce qu&#8217;elles font à l&#8217;intérieur, ni comment faire le template.</p>
+<p>Pour cette raison, je ne recommande pas aux débutants de les utiliser, faites des vues à la main d&#8217;abord, et quand vous aurez assez de code derrière vous pour comprendre les points communs entre toutes ces vues, vous saurez exactement ce que fait une vue générique: ce que vous avez réécrit 100 fois.</p>
+<p>En cas de doute, la doc de Django explique <a href="https://docs.djangoproject.com/en/1.4/topics/generic-views/">comment utiliser les vues génériques</a>, et surtout, une <a href="https://docs.djangoproject.com/en/1.4/ref/generic-views/">liste des vues génériques disponibles</a> pour chaque cas d&#8217;utilisation.</p>
+<p>Parmi les vues génériques les plus utiles:</p>
+<ul>
+<li>object_list: lister un objet et paginer la liste</li>
+<li>direct_to_template: retourner juste le template sans rien d&#8217;autre</li>
+<li>redirect_to: une redirection pure et simple</li>
+<li>object_detail: afficher un objet en particulier, ou une 404 si il n&#8217;existe pas</li>
+<li>create_object: afficher un formulaire pour créer une objet</li>
+<li>update_object: afficher un formulaire pour modifier un objet</li>
+<li>delete_object: supprimer un objet, avec une confirmation</li>
+</ul>
+<p>Rappelez-vous, <strong>les vues génériques sont des vues normales, et les vues sont des fonctions ordinnaire</strong>s. La seule chose dont il faut se souvenir: elles acceptent en paramètre un objet <code>Request</code>, et retourne un objet <code>Response</code>. On peut donc faire tout ce qu&#8217;on fait d&#8217;habitude avec les fonctions: forcer des arguments,  utilisers plusieurs vues dans une, faire des callbacks, etc.</p>
+<p>Mais le plus important, on peut donc mettre une vue générique directement dans <em>urls.py</em>. Ainsi ceci:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> mon_app.<span style="color: black;">views</span> <span style="color: #ff7700;font-weight:bold;">import</span> tous_les_utilisateurs
+urlpatterns = patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span>,
+    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^list/'</span>, tous_les_utilisateurs<span style="color: black;">&#41;</span>,
+<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Peut tout à fait être remplacé par cela:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">views</span>.<span style="color: black;">generic</span>.<span style="color: black;">list_detail</span> <span style="color: #ff7700;font-weight:bold;">import</span> object_list
+urlpatterns = patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span>,
+    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^list/'</span>, object_list, <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;queryset&quot;</span>: User.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+                                 <span style="color: #483d8b;">'template_name'</span>: <span style="color: #483d8b;">'tous_les_utilisateur'</span>,
+                                 <span style="color: #483d8b;">&quot;template_object_name: &quot;</span>utilisateurs,
+                                 <span style="color: #483d8b;">&quot;paginate_by&quot;</span>: <span style="color: #ff4500;">25</span>,
+                                 extra_context=<span style="color: black;">&#123;</span><span style="color: #483d8b;">'date_du_jour'</span>: <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#41;</span></pre></div></div>
+
+<p><code>object_list</code> étant une vue normale, elle peut être appelée directement par <em>urls.py</em>. Il faut juste s&#8217;assurer de mettre le dictionnaire de paramètres additionels avec pour qu&#8217;elle soit configurée correctement. Du coup, on a zero code dans <em>views.py</em>.</p>
+<p>On utilise rarement cela pour des vues comme object_list (ça pourrit un peut le urls.py qui doit rester facile à lire). Par contre, les vues <code>direct_to_template</code> et <code>redirect_to</code> sont très souvent utilisées de cette manière.</p>
+<p>En conclusion, notez que vous pouvez très bien créer vos propres vues génériques. Une vue générique est juste une vue normale avec plein de paramètres pour qu&#8217;elle soit très souple et réutilisable.</p>
+<h2>Les vues génériques sous forme de classes</h2>
+<p>Les <a href="https://docs.djangoproject.com/en/1.4/topics/class-based-views/">class base views</a>, ou CBV, sont exactement la même chose que précédément, mais sous forme de classe. Elles se configurent plus de manière déclarative. Ainsi notre exemple précédent se ferait ainsi:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">views</span>.<span style="color: black;">generic</span> <span style="color: #ff7700;font-weight:bold;">import</span> ListView
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span>.<span style="color: black;">auth</span>.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> User
+<span style="color: #ff7700;font-weight:bold;">class</span> TousLesUtilisateurs<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+   context_object_name = <span style="color: #483d8b;">&quot;utilisateur&quot;</span>
+   queryset = User.<span style="color: #008000;">object</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+   template_name = <span style="color: #483d8b;">&quot;tous_les_utilisateurs.html&quot;</span></pre></div></div>
+
+<p>Et dans <em>urls.py</em>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> mon_app.<span style="color: black;">views</span> <span style="color: #ff7700;font-weight:bold;">import</span> TousLesUtilisateurs
+urlpatterns = patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span>,
+    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^list/'</span>, TousLesUtilisateurs.<span style="color: black;">as_view</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>,
+<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Néanmoins, quand il faut rajouter des valeurs dans le context, ça se gate. En effet, une classe, c&#8217;est de l&#8217;objet, qui dit objet, dit (sauf prototypage) héritage, et héritage, dit overriding.</p>
+<p>Les class based views sont bien faites: tout leur comportement peut être configuré. Le problème, c&#8217;est que ça suppose que vous sachiez exactement comment elles marchent. Par exemple, pour rajouter un objet dans le context, il faut overrider la méthode <code>get_context_data</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span>.<span style="color: black;">auth</span>.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> User
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">views</span>.<span style="color: black;">generic</span> <span style="color: #ff7700;font-weight:bold;">import</span> ListView
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> TousLesUtilisateurs<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+   context_object_name = <span style="color: #483d8b;">&quot;utilisateur&quot;</span>
+   queryset = User.<span style="color: #008000;">object</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+   template_name = <span style="color: #483d8b;">&quot;tous_les_utilisateurs.html&quot;</span>
+&nbsp;
+   <span style="color: #ff7700;font-weight:bold;">def</span> get_context_data<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># qui dit overriding, dit appel de la méthode parent...</span>
+        context = <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>TousLesUtilisateurs, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">get_context_data</span><span style="color: black;">&#40;</span><span style="color: #66cc66;">**</span>kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># et on rajoute la date du jour dans le context</span>
+        context<span style="color: black;">&#91;</span><span style="color: #483d8b;">'aujourdhui'</span><span style="color: black;">&#93;</span> = <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># le context retourner sera automatiquement injecté dans le template</span>
+        <span style="color: #808080; font-style: italic;"># dans la méthode render(), que vous ne voyez pas...</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> context</pre></div></div>
+
+<p>L&#8217;idée derrière ces classes, c&#8217;est que vous pouvez réutiliser du code bien plus facilement: on peut faire hériter des vues les unes des autres, et overrider seulement certaines méthodes. D&#8217;ailleurs, elles sont très bien pensées, et il y a des hooks partout.</p>
+<p>Par exemple, si vous voulez tous les users, vous pouvez faire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> TousLesUtilisateurs<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+   model = User</pre></div></div>
+
+<p>Si vous voulez un filtrage particulier, vous pouvez faire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> TousLesUtilisateurs<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+   querset = User.<span style="color: #008000;">object</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>truc=machin<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et si vous voulez un filtrage dynamique vous pouvez faire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> TousLesUtilisateurs<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> get_queryset<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Listing de tous les users, ou seulement de ceux qui ont accès
+            à l'admin Django
+        &quot;&quot;&quot;</span>
+        <span style="color: #808080; font-style: italic;"># self.args[0] suppose que l'url prend un paramètre, ce que nous </span>
+        <span style="color: #808080; font-style: italic;"># n'avons pas fait.  C'est pour l'exemple.</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">args</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> == <span style="color: #483d8b;">&quot;staff&quot;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> User.<span style="color: black;">objects</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>is_staff=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> User.<span style="color: #008000;">object</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et la chaîne logique c&#8217;est: <code>get_queryset</code> est appelé automatiquement dans <code>get_context_data</code>, si c&#8217;est le votre, il override, sinon il essaye <code>cls.queryset</code>, et si il n&#8217;existe pas, il essaye de créer le <code>queryset</code> à partir de <code>cls.model</code>. Et sinon il fait une erreur.</p>
+<p>C&#8217;est logique. Certes.</p>
+<p>Mais c&#8217;est chiant.</p>
+<p>Car c&#8217;est comme ça pour tout: il faut tout connaitre. Par coeur. Pareil pour les formulaires, les update des objets, etc. Et ensuite se rajoute la complexité des mixins. En plus la doc est super nulle sur ce point. Et il y a une sacrée <a href="https://docs.djangoproject.com/en/1.4/ref/class-based-views/">liste de CBV</a>.</p>
+<p>Et franchement, le <code>get_context_data</code>, vous trouvez ça lisible ? Je vous garantie que quand on tombe sur une méthode de 10 lignes overridées d&#8217;une classe custom qui utilise 2 mixins sur un code qu&#8217;on a laissé depuis 3 mois, ça fait tout drôle.</p>
+<p>Pour cette raison, je recommande ne ne PAS utiliser les CBV. Pour votre bien être, et celui de vos collègues. Certains de mes clients m&#8217;imposent d&#8217;ailleurs de ne pas le faire, contractuellement. Max en a horreur. Et après un an de mise en production de mes premières CBV, je confirme: le temps et la lisibilité perdus ne sont pas compensés par le gain en flexibilité.</p>
+<p>Malheureusement les CBV sont la nouvelle manière de faire, les vues génériques sous forme de fonctions ont été marquées &#8220;deprecated&#8221;. Néanmoins, et tant que c&#8217;est possible, je recommande de continuer à les préférer aux CBV: comme les vues fonctions sont des vues et fonctions ordinnaires, il sera toujours facile de récupérer le code de Django qui font ces vues, même si elles sont retirées des version futures.</p>
+<h2>Explication du code</h2>
+<p>Bah, oui, parce qu&#8217;à la base, je devrais expliquer <a href="http://blog.sietch-tabr.com/index.php/post/2011/04/01/Django-passage-aux-vues-generiques-basees-sur-des-classes,-par-l-exemple">ce code</a>, souvenez-vous&#8230;</p>
+<h3>Code 1</h3>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">urlpatterns = patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span>,
+    <span style="color: #808080; font-style: italic;"># On associe la vue &quot;listview&quot; à l'url &quot;monsupersite.com/list/&quot;. Cette</span>
+    <span style="color: #808080; font-style: italic;"># association est appelée une route. Une route est donc une ligne dans</span>
+    <span style="color: #808080; font-style: italic;"># &quot;urlpatterns&quot; de urls.py.</span>
+    <span style="color: #808080; font-style: italic;"># {} est un dictionnaire de paramètres optionels</span>
+    <span style="color: #808080; font-style: italic;"># 'myobject_list' est le nom (appelé parfois &quot;urlname&quot;) qu'on donne à</span>
+    <span style="color: #808080; font-style: italic;"># cette route</span>
+    <span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^list/'</span>, listview, <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>, <span style="color: #483d8b;">'myobject_list'</span><span style="color: black;">&#41;</span>,
+<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Avec ce model:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">## models.py</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span>.<span style="color: black;">auth</span>.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> User
+&nbsp;
+<span style="color: #808080; font-style: italic;"># MyObject est un model tout simple avec une foreign key qui pointe vers</span>
+<span style="color: #808080; font-style: italic;"># le modèle User fournit par l'application &quot;auth&quot; de Django</span>
+<span style="color: #808080; font-style: italic;"># User est un modèle tout fait pour gérer les utilisateurs, mots de passes</span>
+<span style="color: #808080; font-style: italic;"># préférence, permissions, etc.</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> MyObject<span style="color: black;">&#40;</span>models.<span style="color: black;">Model</span><span style="color: black;">&#41;</span>:
+    ...
+    <span style="color: black;">author</span> = models.<span style="color: black;">ForeignKey</span><span style="color: black;">&#40;</span>User<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et cette vue:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">## views.py</span>
+<span style="color: #808080; font-style: italic;"># on protège cette vue pour qu'elle ne soit accessible que pour les</span>
+<span style="color: #808080; font-style: italic;"># utilisateurs authentifiés</span>
+@login_required
+<span style="color: #ff7700;font-weight:bold;">def</span> listview<span style="color: black;">&#40;</span>request,
+          queryset=MyObject.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+          template_name=<span style="color: #483d8b;">'myproject/myobject_list.html'</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># notez que l'auteur à ajouté des paramètres additionels à sa propre</span>
+    <span style="color: #808080; font-style: italic;"># vue: ils lui permettront d'avoir une vue plus souple et réutilisable</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on récupère l'utilsiateur courant (request.user)</span>
+    <span style="color: #808080; font-style: italic;"># et on filtre MyObject.objects.all() pour qu'il ne contienne que les</span>
+    <span style="color: #808080; font-style: italic;"># objets qui soient pour cet utilisateurs</span>
+    qs = queryset.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>author=request.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on retourne la réponse d'une vue générique qui va nous faire le listing</span>
+    <span style="color: #808080; font-style: italic;"># de ces objets</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> object_list<span style="color: black;">&#40;</span>request, queryset=qs, template_name=template_name<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># En gros, l'auteur à CREER lui même sa propre vue générique</span>
+    <span style="color: #808080; font-style: italic;"># car je le rappelle, une vue générique est une vue normale (et une fonction</span>
+    <span style="color: #808080; font-style: italic;"># normale), mais qui a plein de paramètres pour la rendre souple et</span>
+    <span style="color: #808080; font-style: italic;"># réutilisable.</span>
+    <span style="color: #808080; font-style: italic;"># Sa vue générique à pour but de faire un listing d'objets appartenant</span>
+    <span style="color: #808080; font-style: italic;"># à l'utilisateur courant. Il délègue quand même le gros</span>
+    <span style="color: #808080; font-style: italic;"># du boulot à une vue générique de Django, parceque faut pas déconner, hein...</span></pre></div></div>
+
+<p>La vue peut être traduite ainsi en mode vue générique:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">## views.py</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ListView<span style="color: black;">&#40;</span>generic.<span style="color: black;">ListView</span><span style="color: black;">&#41;</span>:
+    queryset = MyObject.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    template_name = <span style="color: #483d8b;">&quot;myproject/myobjects_list.html&quot;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> get_queryset<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># c'est ici qu'on fait le filtre par l'utilisateur courant</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">queryset</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>author=<span style="color: #008000;">self</span>.<span style="color: black;">request</span>.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># comme un décorateur ne fonctionne pas sur une classe, cette astuce</span>
+<span style="color: #808080; font-style: italic;"># permet de récupérer l'équivalent d'une vue wrappées et importable directement</span>
+<span style="color: #808080; font-style: italic;"># dans urls.py</span>
+listview = login_required<span style="color: black;">&#40;</span>ListView.<span style="color: black;">as_view</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et c&#8217;est une bonne illustration de ce qui est relou avec les vues génériques:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> ListView<span style="color: black;">&#40;</span>generic.<span style="color: black;">ListView</span><span style="color: black;">&#41;</span>:
+    queryset = MyObject.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    template_name = <span style="color: #483d8b;">&quot;myproject/myobjects_list.html&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> get_queryset<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">queryset</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>author=<span style="color: #008000;">self</span>.<span style="color: black;">request</span>.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>
+listview = login_required<span style="color: black;">&#40;</span>ListView.<span style="color: black;">as_view</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>VERSUS</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">@login_required
+<span style="color: #ff7700;font-weight:bold;">def</span> listview<span style="color: black;">&#40;</span>request, queryset=MyObject.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>,
+             template_name=<span style="color: #483d8b;">'myproject/myobject_list.html'</span><span style="color: black;">&#41;</span>:
+    qs = queryset.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>author=request.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> object_list<span style="color: black;">&#40;</span>request, queryset=qs, template_name=template_name<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Pour avoir les mêmes fonctionalités. Le bénéfice de l&#8217;un sur l&#8217;autre n&#8217;est pas énorme (il se trouve dans la réutilisabilité, dans des cas très poussés). Et il faut apprendre tout l&#8217;API des CBV pour faire la première.</p>
+<p>Mais surtout, on perd le potentiel KISS dans le premier cas, car soyons franc, le plus souvent on a juste bsoin de ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">@login_required
+<span style="color: #ff7700;font-weight:bold;">def</span> listview<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> object_list<span style="color: black;">&#40;</span>request,
+                       queryset=MyObject.<span style="color: black;">objects</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>author=request.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>,
+                       template_name=<span style="color: #483d8b;">'myproject/myobject_list.html'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et ça, dans 3 mois, je le comprends tout de suite. Ca prends moins de place dans mon fichier. Et Max ne m&#8217;envoie pas de mails d&#8217;insultes.</p>
+<h3>Code 2</h3>
+<p>Routing:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">## urls.py</span>
+urlpatterns = patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span>,
+    <span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^list/'</span>, listview, <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>, <span style="color: #483d8b;">'myobject_list'</span><span style="color: black;">&#41;</span>,
+    <span style="color: #808080; font-style: italic;"># on rajoute une chtite vue pour créer une objet</span>
+    <span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^create/'</span>, createview, <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>, <span style="color: #483d8b;">'myobject_create'</span><span style="color: black;">&#41;</span>,
+<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Formulaire:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">## forms.py</span>
+<span style="color: #808080; font-style: italic;"># on créé un formulaire à partir du model MyObject</span>
+<span style="color: #808080; font-style: italic;"># ce  formulaire permettra donc de créer une objet MyObject</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> MyObjectForm<span style="color: black;">&#40;</span>ModelForm<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">class</span> Meta:
+        model = MyObject
+        exclude = <span style="color: black;">&#40;</span><span style="color: #483d8b;">'author'</span>,<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># le dev a ici choisi d'excluse le champ 'author' du formulaire</span>
+    <span style="color: #808080; font-style: italic;"># il veut en effet passer l'utilisateur en cours à la sauvegarde</span>
+    <span style="color: #808080; font-style: italic;"># afin que l'objet créé ait toujours pour autheur l'utilsateur courrant</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> save<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, <span style="color: #dc143c;">user</span>=<span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># ici rien de fou, on fait un override du save, on appel le parent</span>
+        <span style="color: #808080; font-style: italic;"># et l'objet est créé. Amen.</span>
+        myobject = <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>MyObjectForm, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">save</span><span style="color: black;">&#40;</span>commit=<span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+        myobject.<span style="color: black;">author</span> = <span style="color: #dc143c;">user</span>
+        myobject.<span style="color: black;">save</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Vue:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">## views.py</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> myproject.<span style="color: black;">forms</span> <span style="color: #ff7700;font-weight:bold;">import</span> MyObjectForm
+&nbsp;
+<span style="color: #808080; font-style: italic;"># voici une vue normale, faite à la main</span>
+<span style="color: #808080; font-style: italic;"># elle elle réservée aux utilisateurs authentifiés</span>
+<span style="color: #808080; font-style: italic;"># mais accepte un paramètre pour lui dire sur quel formulaire travailler</span>
+<span style="color: #808080; font-style: italic;"># c'est donc encure une fois une vue générique faite à la mano</span>
+<span style="color: #808080; font-style: italic;"># puisque je vous le rappelle... Non, je déconne.</span>
+@login_required
+<span style="color: #ff7700;font-weight:bold;">def</span> createview<span style="color: black;">&#40;</span>request, form_class=MyObjectForm<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on check si la requête est une requête POST</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> request.<span style="color: black;">method</span> == <span style="color: #483d8b;">'POST'</span>:
+        <span style="color: #808080; font-style: italic;"># si oui on prend les paramètres de la requête</span>
+        <span style="color: #808080; font-style: italic;"># et on les passe au formulaire</span>
+        <span style="color: #808080; font-style: italic;"># puis on vérifie si le formulaire est valide (pas d'erreurs de saisie)</span>
+        form = form_class<span style="color: black;">&#40;</span>request.<span style="color: black;">POST</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> form.<span style="color: black;">is_valid</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># dans ce cas: on sauvegarde le formulaire en lui passant l'utilisateur</span>
+            <span style="color: #808080; font-style: italic;"># courant: un objet MyObjet est créé avec pour auteur</span>
+            <span style="color: #808080; font-style: italic;"># l'utilisateur courant</span>
+            myobject = form.<span style="color: black;">save</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">user</span>=request.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># et on redirige sur la page décrivant l'objet</span>
+            <span style="color: #808080; font-style: italic;"># Ne cherchez pas comment il obtient ceci,</span>
+            <span style="color: #808080; font-style: italic;"># ce n'est pas expliqué dans son code surement volontairement</span>
+            <span style="color: #808080; font-style: italic;"># pour simplifier l'article, ce qui n'est pas plus mal</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> HttpResponseRedirect<span style="color: black;">&#40;</span>myobject.<span style="color: black;">get_absolute_url</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># si le formulaire n'est pas valide, render_to_response</span>
+        <span style="color: #808080; font-style: italic;"># contiendra le formulaire avec les erreurs</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #808080; font-style: italic;"># si ce n'est pas une requête POST, on créé juste un formulaire</span>
+        <span style="color: #808080; font-style: italic;"># vierge à afficher</span>
+        form = form_class<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on retourne une réponse normale, avec le formulaire dans le context</span>
+    <span style="color: #808080; font-style: italic;"># et vous pouvez ignorer RequestContext, ça n'a pas d'importance pour nous</span>
+    <span style="color: #808080; font-style: italic;"># ici</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> render_to_response<span style="color: black;">&#40;</span><span style="color: #483d8b;">'myproject/myobject_form.html'</span>,
+                              <span style="color: black;">&#123;</span><span style="color: #483d8b;">'form'</span>: form<span style="color: black;">&#125;</span>,
+                              context_instance=RequestContext<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Vous noterez que la vue précédent n&#8217;utilise pas de vue générique Django pour déléguer le boulot, ce qui explique qu&#8217;elle est longue.</p>
+<p>Et voilà à quoi ressemblerait la vue en version CBV :</p>
+<p>## views.py</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> myproject.<span style="color: black;">forms</span> <span style="color: #ff7700;font-weight:bold;">import</span> MyObjectForm
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> CreateView<span style="color: black;">&#40;</span>generic.<span style="color: black;">CreateView</span><span style="color: black;">&#41;</span>:
+    form_class = MyObjectForm
+    template_name = <span style="color: #483d8b;">&quot;myproject/myobject_form.html&quot;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># tous les classes génériques ont des hooks différent</span>
+    <span style="color: #808080; font-style: italic;"># ici on étend la CreateView, qui a a une méthode spécialement concue</span>
+    <span style="color: #808080; font-style: italic;"># pour la validation de formulaire</span>
+    <span style="color: #808080; font-style: italic;"># on l'override pour sauvegarder le formulaire en passant le user courant</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> form_valid<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, form<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: #008000;">object</span> = form.<span style="color: black;">save</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">user</span>=<span style="color: #008000;">self</span>.<span style="color: black;">request</span>.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>CreateView, <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">form_valid</span><span style="color: black;">&#40;</span>form<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># idem que précédement</span>
+createview = login_required<span style="color: black;">&#40;</span>CreateView.<span style="color: black;">as_view</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=1715&amp;md5=de0226930961bd7aee0be0b27148f9de" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/des-vues-normales-aux-vues-generiques-django/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fdes-vues-normales-aux-vues-generiques-django%2F&amp;language=en_GB&amp;category=text&amp;title=Des+vues+normales+aux+vues+g%C3%A9n%C3%A9riques+Django&amp;description=Nous+avons+re%C3%A7u+plusieurs+demandes+d%26%238217%3Bexplication+des+class+based+views+et+une+explication+de+ce+code+dans+le+cadre+de+notre+op%C3%A9ration+p%C3%A8re+castor%2C+commente+nous+un+snippet.+Je+me...&amp;tags=cbv%2Cdjango%2Cpython%2Cviews%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/kamagra_gold.jpg" length="46334" type="image/jpg" />	</item>
+	</channel>
+</rss>

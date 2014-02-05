@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; HTML XML</title>
+	<atom:link href="http://sametmax.com/tag/html-xml/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Parser du HTML avec BeautifulSoup</title>
+		<link>http://sametmax.com/parser-du-html-avec-beautifulsoup/</link>
+		<comments>http://sametmax.com/parser-du-html-avec-beautifulsoup/#comments</comments>
+		<pubDate>Thu, 23 Jan 2014 22:46:31 +0000</pubDate>
+		<dc:creator>k3c</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[HTML XML]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6161</guid>
+		<description><![CDATA[Ceci est un post invité de k3c posté sous licence creative common 3.0 unported. Un exemple de parsing HTML avec BeautifulSoup. Cet article ne traitera pas l&#8217;écriture ou la modification de HTML, et pompera allègrement la doc BeautifulSoup (traduite). De manière générale, pour télécharger une vidéo sur un site de replay, il faut récupérer un [...]]]></description>
+			<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/k3c/">k3c</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Un exemple de parsing HTML avec BeautifulSoup. </p>
+<p>Cet article ne traitera pas l&#8217;écriture ou la modification de HTML, et pompera allègrement la doc BeautifulSoup (traduite).</p>
+<p>De manière générale, pour télécharger une vidéo sur un site de replay, il faut</p>
+<ul>
+<li>récupérer un identifiant de la vidéo</li>
+<li>le passer à un autre site</li>
+<li>analyser le résultat pour trouver l&#8217;adresse de la vidéo.</li>
+</ul>
+<p>Prenons un exemple sur les replays de d8.tv, par exemple</p>
+<p><a href="http://www.d8.tv/d8-series/pid6654-d8-longmire.html">une vidéo de D8</a></p>
+<p>(attention cet exemple sera rapidement obsolète, mais c&#8217;est le principe qui nous intéresse)</p>
+<p>L&#8217;installation de BeautifulSoup 4 se fait avec, au choix</p>
+
+<div class="wp_syntax"><div class="code"><pre class="shell" style="font-family:monospace;">$ apt-get install python-bs4
+$ easy_install beautifulsoup4
+$ pip install beautifulsoup4</pre></div></div>
+
+<p>La documentation de BeautifulSoup 4 est à</p>
+<p><a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/">http://www.crummy.com/software/BeautifulSoup/bs4/doc/</a></p>
+<p>Si on regarde le code source de la page (CTRL U sous Firefox, sinon voyez avec votre navigateur préféré), on voit que la partie qui nous intéresse et qui contient videoId est courte</p>
+<p>Ici l&#8217;identifiant recherché est 943696</p>
+<p>En Python, on va donc faire quelque chose comme</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">urllib2</span> <span style="color: #ff7700;font-weight:bold;">import</span> urlopen
+<span style="color: #ff7700;font-weight:bold;">import</span> bs4 <span style="color: #ff7700;font-weight:bold;">as</span> BeautifulSoup
+html = urlopen<span style="color: black;">&#40;</span><span style="color: #483d8b;">'http://www.d8.tv/d8-series/pid6654-d8-longmire.html'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+soup = BeautifulSoup.<span style="color: black;">BeautifulSoup</span><span style="color: black;">&#40;</span>html<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Comme le dit la doc BeautifulSoup</p>
+<p><em>début du pompage de la doc BeautifulSoup</em></p>
+<p>Beautiful Soup transforme un document HTML complexe en un arbre complexe d&#8217;objets Python. Mais vous aurez à manipuler seulement quatre types d&#8217;objets : Tag, NavigableString, BeautifulSoup, et Comment.</p>
+<ul>
+<li>Tag<br />
+	Un objet Tag correspond à un tag HTML ou XML dans le document<br />
+	Les Tags ont de nombreux attributs et méthodes, que nous verrons dans<br />
+	<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#navigating-the-tree">naviguer dans l&#8217;arborescence</a><br />
+	et<br />
+	<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#searching-the-tree">chercher dans 	l&#8217;arborescence</a></p>
+<p>	Pour l&#8217;instant, les caractéristiques les plus importantes d&#8217;un tag sont<br />
+	son nom</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> tag.<span style="color: black;">name</span>
+ u<span style="color: #483d8b;">'b'</span></pre></div></div>
+
+<p>	ses attributs<br />
+	Un tag peut avoir n&#8217;importe quel nombre d&#8217;attributs. Le tag</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;b class=&quot;boldest&quot;&gt;</pre></div></div>
+
+<p> possède un attribut “class” dont la  valeur est “boldest”. On peut accéder les attributs d&#8217;un tag en le traitant comme un dictionaire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> tag<span style="color: black;">&#91;</span><span style="color: #483d8b;">'class'</span><span style="color: black;">&#93;</span>
+ u<span style="color: #483d8b;">'boldest'</span></pre></div></div>
+
+<p>	On peut accéder directement ce dictionaire avec .attrs:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span>tag.<span style="color: black;">attrs</span>
+ <span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'class'</span>: u<span style="color: #483d8b;">'boldest'</span><span style="color: black;">&#125;</span></pre></div></div>
+
+</li>
+<li>NavigableString<br />
+	Une chaîne de caractères est un peu de texte  l&#8217;intérieur d&#8217;un tag. Beautiful Soup utilise la classe NavigableString class pour contenir ces morceaux de texte:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> tag.<span style="color: #dc143c;">string</span>
+ u<span style="color: #483d8b;">'Extremely bold'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>tag.<span style="color: #dc143c;">string</span><span style="color: black;">&#41;</span>
+ <span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'bs4.element.NavigableString'</span></pre></div></div>
+
+<p>	Un NavigableString est comme une chaîne de caractères  Python Unicode, sauf que elle supporte aussi quelques unes des caractéristiques décrites dans Navigating the tree et Searching the tree. Vous pouvez convertir une chaîne de caractères NavigableString en Unicode avec unicode():</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> unicode_string = <span style="color: #008000;">unicode</span><span style="color: black;">&#40;</span>tag.<span style="color: #dc143c;">string</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> unicode_string
+ u<span style="color: #483d8b;">'Extremely bold'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>unicode_string<span style="color: black;">&#41;</span>
+ <span style="color: #008000;">type</span> <span style="color: #483d8b;">'unicode'</span></pre></div></div>
+
+</li>
+<li>
+BeautifulSoup<br />
+	L&#8217;objet BeautifulSoup lui-même représente le document dans son ensemble. Dans la plupart des cas, vous pouvez le 	traiter en tant qu&#8217;objet Cela signifie qu&#8217;il supporte la plupart des méthodes décrites dans Navigating the tree et 	Searching the tree.</p>
+<p>	Comme l&#8217;objet BeautifulSoup ne correspond pas à un tag final HTML ou XML, il n&#8217;a pas de nom et pas d&#8217;attributs. 	Mais il est parfois utile de rechercher son .name, donc on lui a donné le .name “[document]”:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">name</span>
+ u<span style="color: #483d8b;">'[document]'</span></pre></div></div>
+
+</li>
+<li> Commentaires et autres chaînes de caractères spéciales
+<p>	Tag, NavigableString, et BeautifulSoup couvrent presque tout ce que vous verrez dans un fichier HTML ou XML, mais il y a quelques cas à part. Le seul qui doit vous inquiéter (un peu) est le commentaire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">markup = &quot;&lt;b&gt;&lt;!--Hey, buddy. Want to buy a used parser?--&gt;&lt;/b&gt;&quot;</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup = BeautifulSoup<span style="color: black;">&#40;</span>markup<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> comment = soup.<span style="color: black;">b</span>.<span style="color: #dc143c;">string</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>comment<span style="color: black;">&#41;</span>
+ <span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'bs4.element.Comment'</span></pre></div></div>
+
+<p>	L&#8217;objet Comment est simplement un type spécial de NavigableString:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> comment
+ u<span style="color: #483d8b;">'Hey, buddy. Want to buy a used parser'</span></pre></div></div>
+
+<p>	Mais quand il apparaît en tant que morceau de document HTML, un Comment est affiché avec un formattage spécial :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;"># &lt;b&gt;
+#  &lt;!--Hey, buddy. Want to buy a used parser?--&gt;
+# &lt;/b&gt;</pre></div></div>
+
+<p>	Beautiful Soup définit des classes pour n&#8217;importe quoi d&#8217;autre qui apparaîtrait dans un document XML : CData, ProcessingInstruction, Declaration, et Doctype. De la meme manière que Comment, ces classes sont des sous-classes de NavigableString qui ajoutent quelque chose à la chaîne de caractères. Voici un exemple qui remplace le commentaire par un block CDATA :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> bs4 <span style="color: #ff7700;font-weight:bold;">import</span> CData
+cdata = CData<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;A CDATA block&quot;</span><span style="color: black;">&#41;</span>
+comment.<span style="color: black;">replace_with</span><span style="color: black;">&#40;</span>cdata<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>soup.<span style="color: black;">b</span>.<span style="color: black;">prettify</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;"># &lt;b&gt;
+#  &lt;![CDATA[A CDATA block]]&gt;
+# &lt;/b&gt;</pre></div></div>
+
+</li>
+</ul>
+<p><em>fin du pompage de la doc BeautifulSoup</em></p>
+<p>On peut faire un</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> soup.<span style="color: black;">prettify</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>pour voir à quoi ressemble le code HTML de la page</p>
+<p>Il faut d&#8217;abord analyser la page et rechercher ce qui suit videoId</p>
+<p>Pour commencer nous allons naviguer dans le document.</p>
+<p>BeautifulSoup permet de multiples syntaxes, par exemple, on n&#8217;est pas obligé de donner le chemin complet</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">head</span>.<span style="color: black;">meta</span></pre></div></div>
+
+<p>ou</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">meta</span></pre></div></div>
+
+<p>affichent le meme résultat, vu que la première balise meta est sous la balise head</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;meta content=&quot;text/html; charset=utf-8&quot; http-equiv=&quot;Content-Type&quot;/&gt;</pre></div></div>
+
+<p>Si on regarde les méthodes disponibles</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">dir</span><span style="color: black;">&#40;</span>soup.<span style="color: black;">meta</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'FORMATTERS'</span>, <span style="color: #483d8b;">'__call__'</span>, <span style="color: #483d8b;">'__class__'</span>, <span style="color: #483d8b;">'__contains__'</span>, <span style="color: #483d8b;">'__delattr__'</span>, <span style="color: #483d8b;">'__delitem__'</span>, <span style="color: #483d8b;">'__dict__'</span>, <span style="color: #483d8b;">'__doc__'</span>, <span style="color: #483d8b;">'__eq__'</span>, <span style="color: #483d8b;">'__format__'</span>, <span style="color: #483d8b;">'__getattr__'</span>, <span style="color: #483d8b;">'__getattribute__'</span>, <span style="color: #483d8b;">'__getitem__'</span>, <span style="color: #483d8b;">'__hash__'</span>, <span style="color: #483d8b;">'__init__'</span>, <span style="color: #483d8b;">'__iter__'</span>, <span style="color: #483d8b;">'__len__'</span>, <span style="color: #483d8b;">'__module__'</span>, <span style="color: #483d8b;">'__ne__'</span>, <span style="color: #483d8b;">'__new__'</span>, <span style="color: #483d8b;">'__nonzero__'</span>, <span style="color: #483d8b;">'__reduce__'</span>, <span style="color: #483d8b;">'__reduce_ex__'</span>, <span style="color: #483d8b;">'__repr__'</span>, <span style="color: #483d8b;">'__setattr__'</span>, <span style="color: #483d8b;">'__setitem__'</span>, <span style="color: #483d8b;">'__sizeof__'</span>, <span style="color: #483d8b;">'__str__'</span>, <span style="color: #483d8b;">'__subclasshook__'</span>, <span style="color: #483d8b;">'__unicode__'</span>, <span style="color: #483d8b;">'__weakref__'</span>, <span style="color: #483d8b;">'_all_strings'</span>, <span style="color: #483d8b;">'_attr_value_as_string'</span>, <span style="color: #483d8b;">'_attribute_checker'</span>, <span style="color: #483d8b;">'_find_all'</span>, <span style="color: #483d8b;">'_find_one'</span>, <span style="color: #483d8b;">'_lastRecursiveChild'</span>, <span style="color: #483d8b;">'_last_descendant'</span>, <span style="color: #483d8b;">'append'</span>, <span style="color: #483d8b;">'attribselect_re'</span>, <span style="color: #483d8b;">'attrs'</span>, <span style="color: #483d8b;">'can_be_empty_element'</span>, <span style="color: #483d8b;">'childGenerator'</span>, <span style="color: #483d8b;">'children'</span>, <span style="color: #483d8b;">'clear'</span>, <span style="color: #483d8b;">'contents'</span>, <span style="color: #483d8b;">'decode'</span>, <span style="color: #483d8b;">'decode_contents'</span>, <span style="color: #483d8b;">'decompose'</span>, <span style="color: #483d8b;">'descendants'</span>, <span style="color: #483d8b;">'encode'</span>, <span style="color: #483d8b;">'encode_contents'</span>, <span style="color: #483d8b;">'extract'</span>, <span style="color: #483d8b;">'fetchNextSiblings'</span>, <span style="color: #483d8b;">'fetchParents'</span>, <span style="color: #483d8b;">'fetchPrevious'</span>, <span style="color: #483d8b;">'fetchPreviousSiblings'</span>, <span style="color: #483d8b;">'find'</span>, <span style="color: #483d8b;">'findAll'</span>, <span style="color: #483d8b;">'findAllNext'</span>, <span style="color: #483d8b;">'findAllPrevious'</span>, <span style="color: #483d8b;">'findChild'</span>, <span style="color: #483d8b;">'findChildren'</span>, <span style="color: #483d8b;">'findNext'</span>, <span style="color: #483d8b;">'findNextSibling'</span>, <span style="color: #483d8b;">'findNextSiblings'</span>, <span style="color: #483d8b;">'findParent'</span>, <span style="color: #483d8b;">'findParents'</span>, <span style="color: #483d8b;">'findPrevious'</span>, <span style="color: #483d8b;">'findPreviousSibling'</span>, <span style="color: #483d8b;">'findPreviousSiblings'</span>, <span style="color: #483d8b;">'find_all'</span>, <span style="color: #483d8b;">'find_all_next'</span>, <span style="color: #483d8b;">'find_all_previous'</span>, <span style="color: #483d8b;">'find_next'</span>, <span style="color: #483d8b;">'find_next_sibling'</span>, <span style="color: #483d8b;">'find_next_siblings'</span>, <span style="color: #483d8b;">'find_parent'</span>, <span style="color: #483d8b;">'find_parents'</span>, <span style="color: #483d8b;">'find_previous'</span>, <span style="color: #483d8b;">'find_previous_sibling'</span>, <span style="color: #483d8b;">'find_previous_siblings'</span>, <span style="color: #483d8b;">'format_string'</span>, <span style="color: #483d8b;">'get'</span>, <span style="color: #483d8b;">'getText'</span>, <span style="color: #483d8b;">'get_text'</span>, <span style="color: #483d8b;">'has_attr'</span>, <span style="color: #483d8b;">'has_key'</span>, <span style="color: #483d8b;">'hidden'</span>, <span style="color: #483d8b;">'index'</span>, <span style="color: #483d8b;">'insert'</span>, <span style="color: #483d8b;">'insert_after'</span>, <span style="color: #483d8b;">'insert_before'</span>, <span style="color: #483d8b;">'isSelfClosing'</span>, <span style="color: #483d8b;">'is_empty_element'</span>, <span style="color: #483d8b;">'name'</span>, <span style="color: #483d8b;">'namespace'</span>, <span style="color: #483d8b;">'next'</span>, <span style="color: #483d8b;">'nextGenerator'</span>, <span style="color: #483d8b;">'nextSibling'</span>, <span style="color: #483d8b;">'nextSiblingGenerator'</span>, <span style="color: #483d8b;">'next_element'</span>, <span style="color: #483d8b;">'next_elements'</span>, <span style="color: #483d8b;">'next_sibling'</span>, <span style="color: #483d8b;">'next_siblings'</span>, <span style="color: #483d8b;">'parent'</span>, <span style="color: #483d8b;">'parentGenerator'</span>, <span style="color: #483d8b;">'parents'</span>, <span style="color: #483d8b;">'parserClass'</span>, <span style="color: #483d8b;">'parser_class'</span>, <span style="color: #483d8b;">'prefix'</span>, <span style="color: #483d8b;">'prettify'</span>, <span style="color: #483d8b;">'previous'</span>, <span style="color: #483d8b;">'previousGenerator'</span>, <span style="color: #483d8b;">'previousSibling'</span>, <span style="color: #483d8b;">'previousSiblingGenerator'</span>, <span style="color: #483d8b;">'previous_element'</span>, <span style="color: #483d8b;">'previous_elements'</span>, <span style="color: #483d8b;">'previous_sibling'</span>, <span style="color: #483d8b;">'previous_siblings'</span>, <span style="color: #483d8b;">'recursiveChildGenerator'</span>, <span style="color: #483d8b;">'renderContents'</span>, <span style="color: #483d8b;">'replaceWith'</span>, <span style="color: #483d8b;">'replaceWithChildren'</span>, <span style="color: #483d8b;">'replace_with'</span>, <span style="color: #483d8b;">'replace_with_children'</span>, <span style="color: #483d8b;">'select'</span>, <span style="color: #483d8b;">'setup'</span>, <span style="color: #483d8b;">'string'</span>, <span style="color: #483d8b;">'strings'</span>, <span style="color: #483d8b;">'stripped_strings'</span>, <span style="color: #483d8b;">'tag_name_re'</span>, <span style="color: #483d8b;">'text'</span>, <span style="color: #483d8b;">'unwrap'</span>, <span style="color: #483d8b;">'wrap'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>on voit que de nombreuses méthodes sont disponibles, et suivant la doc, on peut donc le traiter comme un dictionnaire</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">meta</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'http-equiv'</span><span style="color: black;">&#93;</span>
+<span style="color: #483d8b;">'Content-Type'</span></pre></div></div>
+
+<p>et tester quelques méthodes</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">meta</span>.<span style="color: black;">name</span>
+<span style="color: #483d8b;">'meta'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">meta</span>.<span style="color: black;">find_next_sibling</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'&lt;meta content=&quot;D8&quot; name=&quot;author&quot;/&gt;'</span></pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">meta</span>.<span style="color: black;">find_previous_sibling</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Nous voyons que soup.meta a un sibling (frère ou soeur) suivant, mais pas de précédent, c&#8217;est le premier de l&#8217;arborescence.<br />
+Bon, la balise meta a pour nom meta, pas un scoop, on continue avec les clés de dictionnaire, sans surprise</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">meta</span>.<span style="color: black;">find_next_sibling</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'&lt;meta content=&quot;D8&quot; name=&quot;author&quot;/&gt;'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">meta</span>.<span style="color: black;">find_next_sibling</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'content'</span><span style="color: black;">&#93;</span>
+<span style="color: #483d8b;">'D8'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">meta</span>.<span style="color: black;">find_next_sibling</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#93;</span>
+<span style="color: #483d8b;">'author'</span></pre></div></div>
+
+<p>Pour le fun, regardez ce que renvoie</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">meta</span>.<span style="color: black;">find_next_sibling</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">parent</span></pre></div></div>
+
+<p>et</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">meta</span>.<span style="color: black;">find_next_sibling</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">parent</span>.<span style="color: black;">parent</span></pre></div></div>
+
+<p>et je vous laisse deviner la prochaine commande que vous allez passer&#8230;</p>
+<p>Revenons à une recherche qui va trouver de nombreuses occurences</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p> va trouver la première balise div, et</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">findall</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>va renvoyer une liste contenant tous les div de la page, mais cela ne permet pas de trouver facilement la portion contenant videoId, par contre, la documentation de BeautifulSoup montre comment trouver spécifiquement une CSS class, voir<br />
+<a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#searching-by-css-class">searching by css class dans la doc BeautifulSoup</a><br />
+dans la documentation BeautifulSoup<br />
+Voici la syntaxe à utiliser</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;block-common block-player-programme&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>va renvoyer la partie qui nous intéresse, par exemple</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">        &lt;div class=&quot;block-common block-player-programme&quot;&gt;
+&nbsp;
+            &lt;div class=&quot;bpp-player&quot;&gt;
+                &lt;div class=&quot;playerVideo player_16_9&quot;&gt;
+&nbsp;
+		&lt;div class=&quot;itemprop&quot; itemprop=&quot;video&quot; itemscope itemtype=&quot;http://schema.org/VideoObject&quot;&gt;
+			&lt;h1&gt;Vidéo : &lt;span itemprop=&quot;name&quot;&gt;Longmire - Samedi 30 novembre à 20h50&lt;/span&gt;&lt;/h1&gt;
+			&lt;meta itemprop=&quot;duration&quot; content=&quot;&quot; /&gt;
+			&lt;meta itemprop=&quot;thumbnailUrl&quot; content=&quot;http://media.canal-plus.com/wwwplus/image/53/1/1/LONGMIRE___BANDE_ANNONCE__131120_UGC_3279_image_L.jpg&quot; /&gt;			
+&nbsp;
+			&lt;meta itemprop=&quot;embedURL&quot; content=&quot;http://player.canalplus.fr/embed/flash/CanalPlayerEmbarque.swf?vid=975153&quot; /&gt;
+			&lt;meta itemprop=&quot;uploadDate&quot; content=&quot;2013-11-29T00:00:00+01:00&quot; /&gt;
+			&lt;meta itemprop=&quot;expires&quot; content=&quot;2014-02-18T00:00:00+01:00&quot; /&gt;
+&nbsp;
+    &lt;canal:player videoId=&quot;975153&quot; width=&quot;640&quot; height=&quot;360&quot; id=&quot;CanalPlayerEmbarque&quot;&gt;&lt;/canal:player&gt;</pre></div></div>
+
+<p>Le type de cette donnée est bs4 élément tag </p>
+<p>Comme l&#8217;a dit un homme célèbre<br />
+<a href="http://sametmax.com/si-vous-ne-savez-pas-ce-que-contient-une-variable-vous-ne-comprenez-pas-le-programme/">si vous ne savez pas ce que contient une variable, vous ne comprenez pas le programme</a><br />
+on peut donc faire un type, dir, help, doc, repr, par exemple</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;block-common block-player-programme&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'bs4.element.Tag'</span></pre></div></div>
+
+<p>donc nous pouvons rechercher un tag, comme<br />
+canal:player</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;block-common block-player-programme&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'canal:player'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'&lt;canal:player height=&quot;360&quot; id=&quot;CanalPlayerEmbarque&quot; videoid=&quot;786679&quot; width=&quot;640&quot;&gt;&lt;/canal:player&gt;'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;tlog-inner&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>renvoie une liste</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#91;</span><span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;tlog-inner&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;tlog-account&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>span <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;tlog-avatar&quot;</span><span style="color: #66cc66;">&gt;&lt;</span>img height=<span style="color: #483d8b;">&quot;30&quot;</span> src=<span style="color: #483d8b;">&quot;http://media.canal-plus.com/design/front_office_d8/images/xtrans.gif&quot;</span> width=<span style="color: #483d8b;">&quot;30&quot;</span>/<span style="color: #66cc66;">&gt;&lt;</span>/span<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>a <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;tlog-logout le_btn&quot;</span> href=<span style="color: #483d8b;">&quot;#&quot;</span><span style="color: #66cc66;">&gt;</span>x<span style="color: #66cc66;">&lt;</span>/a<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>form action=<span style="color: #483d8b;">&quot;#&quot;</span> method=<span style="color: #483d8b;">&quot;post&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>label <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;switch-fb&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>span <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;cursor traa&quot;</span><span style="color: #66cc66;">&gt;</span> <span style="color: #66cc66;">&lt;</span>/span<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>input checked=<span style="color: #483d8b;">&quot;&quot;</span> <span style="color: #008000;">id</span>=<span style="color: #483d8b;">&quot;check-switch-fb&quot;</span> name=<span style="color: #483d8b;">&quot;switch-fb&quot;</span> <span style="color: #008000;">type</span>=<span style="color: #483d8b;">&quot;checkbox&quot;</span> value=<span style="color: #483d8b;">&quot;1&quot;</span>/<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/label<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/form<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #008000;">id</span>=<span style="color: #483d8b;">&quot;headerFbLastActivity&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>input <span style="color: #008000;">id</span>=<span style="color: #483d8b;">&quot;name_facebook_user&quot;</span> <span style="color: #008000;">type</span>=<span style="color: #483d8b;">&quot;hidden&quot;</span>/<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;top-arrow&quot;</span><span style="color: #66cc66;">&gt;&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;top&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;top-bg&quot;</span><span style="color: #66cc66;">&gt;&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;top-title&quot;</span><span style="color: #66cc66;">&gt;</span>Activité récente<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;middle&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;wrap-last-activity&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;entry&quot;</span><span style="color: #66cc66;">&gt;</span>Aucune<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;wrap-notification&quot;</span><span style="color: #66cc66;">&gt;&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>div <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;bottom&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>a <span style="color: #ff7700;font-weight:bold;">class</span>=<span style="color: #483d8b;">&quot;logout&quot;</span> href=<span style="color: #483d8b;">&quot;#logout&quot;</span><span style="color: #66cc66;">&gt;</span>Déconnexion<span style="color: #66cc66;">&lt;</span>/a<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/div<span style="color: #66cc66;">&gt;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>On peut prendre le premier élément de cette liste</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;tlog-inner&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>et ne vouloir que la ligne commençant par &#8220;span class&#8221;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;tlog-inner&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">span</span></pre></div></div>
+
+<p>ce qui affiche</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;span class=&quot;tlog-avatar&quot;&gt;&lt;img height=&quot;30&quot; src=&quot;http://media.canal-plus.com/design/front_office_d8/images/xtrans.gif&quot; width=&quot;30&quot;/&gt;&lt;/span&gt;</pre></div></div>
+
+<p>Voyons le type de donnée</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;tlog-inner&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">span</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'bs4.element.Tag'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>et voyons les méthodes disponibles</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">dir</span><span style="color: black;">&#40;</span>soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;tlog-inner&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">span</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'FORMATTERS'</span>, <span style="color: #483d8b;">'__call__'</span>, <span style="color: #483d8b;">'__class__'</span>, <span style="color: #483d8b;">'__contains__'</span>, <span style="color: #483d8b;">'__delattr__'</span>, <span style="color: #483d8b;">'__delitem__'</span>, <span style="color: #483d8b;">'__dict__'</span>, <span style="color: #483d8b;">'__doc__'</span>, <span style="color: #483d8b;">'__eq__'</span>, <span style="color: #483d8b;">'__format__'</span>, <span style="color: #483d8b;">'__getattr__'</span>, <span style="color: #483d8b;">'__getattribute__'</span>,
+<span style="color: #483d8b;">'__getitem__'</span>, <span style="color: #483d8b;">'__hash__'</span>, <span style="color: #483d8b;">'__init__'</span>, <span style="color: #483d8b;">'__iter__'</span>, <span style="color: #483d8b;">'__len__'</span>, <span style="color: #483d8b;">'__module__'</span>, <span style="color: #483d8b;">'__ne__'</span>, <span style="color: #483d8b;">'__new__'</span>, <span style="color: #483d8b;">'__nonzero__'</span>, <span style="color: #483d8b;">'__reduce__'</span>, <span style="color: #483d8b;">'__reduce_ex__'</span>, <span style="color: #483d8b;">'__repr__'</span>, <span style="color: #483d8b;">'__setattr__'</span>
+, <span style="color: #483d8b;">'__setitem__'</span>, <span style="color: #483d8b;">'__sizeof__'</span>, <span style="color: #483d8b;">'__str__'</span>, <span style="color: #483d8b;">'__subclasshook__'</span>, <span style="color: #483d8b;">'__unicode__'</span>, <span style="color: #483d8b;">'__weakref__'</span>, <span style="color: #483d8b;">'_all_strings'</span>, <span style="color: #483d8b;">'_attr_value_as_string'</span>, <span style="color: #483d8b;">'_attribute_checker'</span>, <span style="color: #483d8b;">'_find_all'</span>,
+<span style="color: #483d8b;">'_find_one'</span>, <span style="color: #483d8b;">'_lastRecursiveChild'</span>, <span style="color: #483d8b;">'_last_descendant'</span>, <span style="color: #483d8b;">'append'</span>, <span style="color: #483d8b;">'attribselect_re'</span>, <span style="color: #483d8b;">'attrs'</span>, <span style="color: #483d8b;">'can_be_empty_element'</span>, <span style="color: #483d8b;">'childGenerator'</span>, <span style="color: #483d8b;">'children'</span>, <span style="color: #483d8b;">'clear'</span>, <span style="color: #483d8b;">'contents'</span>,
+ <span style="color: #483d8b;">'decode'</span>, <span style="color: #483d8b;">'decode_contents'</span>, <span style="color: #483d8b;">'decompose'</span>, <span style="color: #483d8b;">'descendants'</span>, <span style="color: #483d8b;">'encode'</span>, <span style="color: #483d8b;">'encode_contents'</span>, <span style="color: #483d8b;">'extract'</span>, <span style="color: #483d8b;">'fetchNextSiblings'</span>, <span style="color: #483d8b;">'fetchParents'</span>, <span style="color: #483d8b;">'fetchPrevious'</span>, <span style="color: #483d8b;">'fetchPreviousSi
+blings'</span>, <span style="color: #483d8b;">'find'</span>, <span style="color: #483d8b;">'findAll'</span>, <span style="color: #483d8b;">'findAllNext'</span>, <span style="color: #483d8b;">'findAllPrevious'</span>, <span style="color: #483d8b;">'findChild'</span>, <span style="color: #483d8b;">'findChildren'</span>, <span style="color: #483d8b;">'findNext'</span>, <span style="color: #483d8b;">'findNextSibling'</span>, <span style="color: #483d8b;">'findNextSiblings'</span>, <span style="color: #483d8b;">'findParent'</span>, <span style="color: #483d8b;">'findParents
+'</span>, <span style="color: #483d8b;">'findPrevious'</span>, <span style="color: #483d8b;">'findPreviousSibling'</span>, <span style="color: #483d8b;">'findPreviousSiblings'</span>, <span style="color: #483d8b;">'find_all'</span>, <span style="color: #483d8b;">'find_all_next'</span>, <span style="color: #483d8b;">'find_all_previous'</span>, <span style="color: #483d8b;">'find_next'</span>, <span style="color: #483d8b;">'find_next_sibling'</span>, <span style="color: #483d8b;">'find_next_sibling
+s'</span>, <span style="color: #483d8b;">'find_parent'</span>, <span style="color: #483d8b;">'find_parents'</span>, <span style="color: #483d8b;">'find_previous'</span>, <span style="color: #483d8b;">'find_previous_sibling'</span>, <span style="color: #483d8b;">'find_previous_siblings'</span>, <span style="color: #483d8b;">'format_string'</span>, <span style="color: #483d8b;">'get'</span>, <span style="color: #483d8b;">'getText'</span>, <span style="color: #483d8b;">'get_text'</span>, <span style="color: #483d8b;">'has_attr'</span>, <span style="color: #483d8b;">'has_k
+ey'</span>, <span style="color: #483d8b;">'hidden'</span>, <span style="color: #483d8b;">'index'</span>, <span style="color: #483d8b;">'insert'</span>, <span style="color: #483d8b;">'insert_after'</span>, <span style="color: #483d8b;">'insert_before'</span>, <span style="color: #483d8b;">'isSelfClosing'</span>, <span style="color: #483d8b;">'is_empty_element'</span>, <span style="color: #483d8b;">'name'</span>, <span style="color: #483d8b;">'namespace'</span>, <span style="color: #483d8b;">'next'</span>, <span style="color: #483d8b;">'nextGenerator'</span>, <span style="color: #483d8b;">'nextSibling'</span>, <span style="color: #483d8b;">'ne
+xtSiblingGenerator'</span>, <span style="color: #483d8b;">'next_element'</span>, <span style="color: #483d8b;">'next_elements'</span>, <span style="color: #483d8b;">'next_sibling'</span>, <span style="color: #483d8b;">'next_siblings'</span>, <span style="color: #483d8b;">'parent'</span>, <span style="color: #483d8b;">'parentGenerator'</span>, <span style="color: #483d8b;">'parents'</span>, <span style="color: #483d8b;">'parserClass'</span>, <span style="color: #483d8b;">'parser_class'</span>, <span style="color: #483d8b;">'prefix'</span>,
+<span style="color: #483d8b;">'prettify'</span>, <span style="color: #483d8b;">'previous'</span>, <span style="color: #483d8b;">'previousGenerator'</span>, <span style="color: #483d8b;">'previousSibling'</span>, <span style="color: #483d8b;">'previousSiblingGenerator'</span>, <span style="color: #483d8b;">'previous_element'</span>, <span style="color: #483d8b;">'previous_elements'</span>, <span style="color: #483d8b;">'previous_sibling'</span>, <span style="color: #483d8b;">'previous_sibli
+ngs'</span>, <span style="color: #483d8b;">'recursiveChildGenerator'</span>, <span style="color: #483d8b;">'renderContents'</span>, <span style="color: #483d8b;">'replaceWith'</span>, <span style="color: #483d8b;">'replaceWithChildren'</span>, <span style="color: #483d8b;">'replace_with'</span>, <span style="color: #483d8b;">'replace_with_children'</span>, <span style="color: #483d8b;">'select'</span>, <span style="color: #483d8b;">'setup'</span>, <span style="color: #483d8b;">'string'</span>, <span style="color: #483d8b;">'strings'</span>
+, <span style="color: #483d8b;">'stripped_strings'</span>, <span style="color: #483d8b;">'tag_name_re'</span>, <span style="color: #483d8b;">'text'</span>, <span style="color: #483d8b;">'unwrap'</span>, <span style="color: #483d8b;">'wrap'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Nous voulons maintenant juste ce qui suit videoId.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">dir</span><span style="color: black;">&#40;</span>soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;block-common block-player-programme&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'canal:player'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>montre, entre autres choses, que la méthode get est disponible.<br />
+Pour récupérer l&#8217;identifiant qui nous intéresse, on peut donc faire</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;block-common block-player-programme&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'canal:player'</span><span style="color: black;">&#41;</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'videoid'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'975153'</span></pre></div></div>
+
+<p>ou utiliser une autre syntaxe</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;block-common block-player-programme&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'canal:player'</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'videoid'</span><span style="color: black;">&#93;</span>
+<span style="color: #483d8b;">'975153'</span></pre></div></div>
+
+<p>De la même manière, on peut récupérer le titre de la vidéo</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'h3'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;bpp-title&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'&lt;h3 class=&quot;bpp-title&quot;&gt;Longmire - Samedi 30 novembre à 20h50&lt;/h3&gt;'</span></pre></div></div>
+
+<p>mais on veut juste le titre, donc</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'h3'</span>,attrs=<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:u<span style="color: #483d8b;">&quot;bpp-title&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">text</span>
+<span style="color: #dc143c;">uu</span><span style="color: #483d8b;">'Longmire - Samedi 30 novembre <span style="color: #000099; font-weight: bold;">\x</span>e0 20h50'</span></pre></div></div>
+
+<p>Maintenant que l&#8217;on a le numéro de la vidéo, on peut le passer au site qui contient l&#8217;adresse, et avec un peu de scripting XML, récupérer l&#8217;adresse de la vidéo (un autre article sera consacré au scripting XML)<br />
+Selon que la vidéo vient de D8 ou de canal, elle sera sur<br />
+<a href="http://service.canal-plus.com/video/rest/getVideosLiees/d8/">vidéo de d8</a><br />
+ou<br />
+<a href="http://service.canal-plus.com/video/rest/getVideosLiees/cplus/">vidéo de Canal Plus</a><br />
+et avec un peu de code</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> lxml <span style="color: #ff7700;font-weight:bold;">import</span> objectify
+<span style="color: #ff7700;font-weight:bold;">def</span> get_HD<span style="color: black;">&#40;</span>d8_cplus,vid<span style="color: black;">&#41;</span>:
+    root = objectify.<span style="color: black;">fromstring</span><span style="color: black;">&#40;</span>urlopen<span style="color: black;">&#40;</span><span style="color: #483d8b;">'http://service.canal-plus.com/video/rest/getVideosLiees/'</span>+d8_cplus+<span style="color: #483d8b;">'/'</span>+vid<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> root.<span style="color: #008000;">iter</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> x.<span style="color: black;">tag</span> == <span style="color: #483d8b;">'VIDEO'</span> <span style="color: #ff7700;font-weight:bold;">and</span> x.<span style="color: black;">ID</span>.<span style="color: black;">text</span> == vid:
+            <span style="color: #ff7700;font-weight:bold;">for</span> vres <span style="color: #ff7700;font-weight:bold;">in</span> vidattr:
+                <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>x.<span style="color: black;">MEDIA</span>.<span style="color: black;">VIDEOS</span>, vres<span style="color: black;">&#41;</span>:
+                    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Resolution :'</span>, vres
+                    videoUrl = <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span>x.<span style="color: black;">MEDIA</span>.<span style="color: black;">VIDEOS</span>, vres<span style="color: black;">&#41;</span>.<span style="color: black;">text</span>
+                <span style="color: #ff7700;font-weight:bold;">break</span>
+        <span style="color: #ff7700;font-weight:bold;">break</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> videoUrl
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'d8'</span>,<span style="color: #483d8b;">'cplus'</span><span style="color: black;">&#93;</span>:
+    get_HD<span style="color: black;">&#40;</span>x,vid<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>on peut trouver l&#8217;adresse de la vidéo.<br />
+Il reste juste à envoyer la commande rtmpdump, dans ce cas</p>
+
+<div class="wp_syntax"><div class="code"><pre class="shell" style="font-family:monospace;">rtmpdump -r rtmp://ugc-vod-fms.canalplus.fr/ondemand/videos/1311/LONGMIRE___BANDE_ANNONCE__131120_UGC_3279_video_HD.mp4 -c 1935 -m 10 -B 1 -o mavideo.mp4</pre></div></div>
+
+<p>Voilà, il reste à noter que BeautifulSoup peut restreindre sa recherche à une partie du document, utiliser <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#a-regular-expression">une regex</a> (même si <a href="http://sametmax.com/comment-parser-de-html-avec-des-regex/">c&#8217;est le mal</a>), on peut <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#the-limit-argument">limiter la taille de la liste renvoyée par findAll</a></p>
+<p>Quelles sont les méthodes les plus utiles, si vous avez la flemme de lire toute la doc ?</p>
+<ul>
+<li>.contents, les enfants d&#8217;un tag sont disponibles dans une liste appelée .contents</li>
+<li>.has_key(&#8216;value&#8217;) vous rendra de grands services, associé parfois à
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#91;</span><span style="color: #483d8b;">'value'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">!</span>= u<span style="color: #483d8b;">''</span></pre></div></div>
+
+</li>
+<li>pour extraire un tag sans attribut, par exemple pour un tag p, la syntaxe sera simplement
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'p'</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">'class'</span>: <span style="color: #008000;">None</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+</li>
+<li>.attrs vous affichera un dictionnaire qui peut être intéressant, par exemple :
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span>soup.<span style="color: black;">head</span>.<span style="color: black;">link</span>
+ <span style="color: #483d8b;">'&lt;link href=&quot;http://media.canal-plus.com/design_pack/front_office_d8/css/d8.d25540b7a93dba7baf89e5ca53ef00e5.min.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">head</span>.<span style="color: black;">link</span>.<span style="color: black;">attrs</span>
+ <span style="color: black;">&#123;</span><span style="color: #483d8b;">'href'</span>: <span style="color: #483d8b;">'http://media.canal-plus.com/design_pack/front_office_d8/css/d8.d25540b7a93dba7baf89e5ca53ef00e5.min.css'</span>, <span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'text/css'</span>, <span style="color: #483d8b;">'rel'</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'stylesheet'</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span></pre></div></div>
+
+</li>
+<li>.previousSibling (et .next_sibling) peut être utile, par exemple, avec un simple HTML comme ce qui suit
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;div class=&quot;category_link&quot;&gt;
+Category:
+&lt;a href=&quot;/category/personal&quot;&gt;Personal&lt;/a&gt;
+&lt;/div&gt;</pre></div></div>
+
+<p>    on peut récupérer la chaîne Category : de plusieurs manières, par exemple l&#8217;évident</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">contents</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+u<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>  Category:<span style="color: #000099; font-weight: bold;">\n</span>  '</span></pre></div></div>
+
+<p>	mais aussi en remontant depuis la balise a</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'a'</span><span style="color: black;">&#41;</span>.<span style="color: black;">previousSibling</span>
+u<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>  Category:<span style="color: #000099; font-weight: bold;">\n</span>  '</span></pre></div></div>
+
+<p>	Sinon cela est aussi utile avec un HTML mal foutu comme</p>
+
+<div class="wp_syntax"><div class="code"><pre class="html" style="font-family:monospace;">&lt;p&gt;z1&lt;/p&gt;tagada
+&lt;p&gt;z2&lt;/p&gt;tsointsoin</pre></div></div>
+
+<p>	Dans ce cas, pour récupérer tagada tsointsoin<br />
+	on fera par exemple</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'p'</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">next_sibling</span>
+soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'p'</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>.<span style="color: black;">next_sibling</span></pre></div></div>
+
+<p>ou, pour faire plaisir à Sam/Max</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#91;</span>p.<span style="color: black;">next_sibling</span> <span style="color: #ff7700;font-weight:bold;">for</span> p <span style="color: #ff7700;font-weight:bold;">in</span> soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'p'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'tagada'</span>, u<span style="color: #483d8b;">'tsoitsoin'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<li>A quoi sert text=True ?<br />
+	Simplement à récupérer juste du texte dans du Html, sans toute la syntaxe HTML.<br />
+	Un exemple, toujours sur la vidéo de D8 va illustrer cela</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:<span style="color: #483d8b;">&quot;tmlog-wdrw wdrw&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">a</span>
+<span style="color: #483d8b;">'&lt;a class=&quot;tmlogin-btn&quot; href=&quot;#&quot;&gt;'</span>
+<span style="color: #483d8b;">'&lt;span&gt;Se connecter&lt;/span&gt;'</span>
+<span style="color: #483d8b;">'&lt;/a&gt;'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:<span style="color: #483d8b;">&quot;tmlog-wdrw wdrw&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">a</span>.<span style="color: black;">contents</span>
+ <span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span>, <span style="color: #66cc66;">&lt;</span>span<span style="color: #66cc66;">&gt;</span>Se connecter<span style="color: #66cc66;">&lt;</span>/span<span style="color: #66cc66;">&gt;</span>, u<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:<span style="color: #483d8b;">&quot;tmlog-wdrw wdrw&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">a</span>.<span style="color: black;">text</span>
+ u<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>Se connecter<span style="color: #000099; font-weight: bold;">\n</span>'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> soup.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'div'</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;class&quot;</span>:<span style="color: #483d8b;">&quot;tmlog-wdrw wdrw&quot;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">a</span>.<span style="color: black;">findAll</span><span style="color: black;">&#40;</span>text=<span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+ <span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span>, u<span style="color: #483d8b;">'Se connecter'</span>, u<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#93;</span></pre></div></div>
+
+</li>
+<li> Une dernière chose, si vous avez besoin de parser des documents de plusieurs centaines de Mo et donc de performances, oubliez le parser HTML par défaut dans BeautifulSoup, et <a href="http://www.crummy.com/software/BeautifulSoup/bs4/doc/#installing-a-parser">installez</a> le rapide <a href="http://lxml.de/performance.html">lxml</a> ou un autre parser. Si comme moi vous traitez des documents &#8220;petits&#8221;, ça n&#8217;a pas d&#8217;importance.
+</ul>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6161&amp;md5=6ac8150f5a8c26f9d85342a659aceba8" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/parser-du-html-avec-beautifulsoup/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fparser-du-html-avec-beautifulsoup%2F&amp;language=en_GB&amp;category=text&amp;title=Parser+du+HTML+avec+BeautifulSoup&amp;description=Ceci+est+un+post+invit%C3%A9+de+k3c+post%C3%A9+sous+licence+creative+common+3.0+unported.+Un+exemple+de+parsing+HTML+avec+BeautifulSoup.+Cet+article+ne+traitera+pas+l%26%238217%3B%C3%A9criture+ou+la+modification...&amp;tags=HTML+XML%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/PP1PjyX.png" length="266135" type="image/jpg" />	</item>
+	</channel>
+</rss>

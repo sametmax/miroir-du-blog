@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; print</title>
+	<atom:link href="http://sametmax.com/tag/print/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Conséquences de print devenant une fonction en Python 3</title>
+		<link>http://sametmax.com/consequence-de-print-devenant-une-fonction-en-python-3/</link>
+		<comments>http://sametmax.com/consequence-de-print-devenant-une-fonction-en-python-3/#comments</comments>
+		<pubDate>Tue, 03 Dec 2013 08:31:37 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[print]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 3]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8164</guid>
+		<description><![CDATA[Devoir utiliser <code>print()</code> au lieu de <code>print</code> m'arrache la gueule, je dois l'avouer. J'ai l'impression que ces deux parenthèses ma prennent 5 heures à taper, là où avant mon petit espace était à portée de pouce.
+
+Mais évidement, la décision de faire de <code>print</code> une fonction est parfaitement rationnelle, et en voici tous les avantages...]]></description>
+			<content:encoded><![CDATA[<p>Devoir utiliser <code>print()</code> au lieu de <code>print</code> m&#8217;arrache la gueule, je dois l&#8217;avouer. J&#8217;ai l&#8217;impression que ces deux parenthèses ma prennent 5 heures à taper, là où avant mon petit espace était à portée de pouce.</p>
+<p>Mais évidement, la décision de faire de <code>print</code> une fonction est parfaitement rationnelle, et en voici tous les avantages&#8230;</p>
+<h2><code>print</code> n&#8217;est plus une déclaration, mais une expression</h2>
+<p>Il y a deux types d&#8217;instructions en Python : les déclarations (&#8216;statement&#8217; dans la langue de Chuck Norris) et les expressions.</p>
+<p>Les déclarations sont des instructions indépendantes : <code>while</code>, <code>var = 'valeur'</code>, <code>try</code>, <code>def</code>, etc. On ne peut pas les mettre dans une expression, seulement les imbriquer dans une autre déclaration.</p>
+<p>Les expressions, elles, sont imbricables dans n&#8217;importe quoi, et elles retournent toujours quelques chose quelque chose, fusse <code>None</code>. Parmis les expressions on retrouve : les lambdas, les listes en intentions, les appels de fonctions, etc.</p>
+<p>Avant, <code>print</code> était une déclaration, ce qui était très peu souple. Maintenant, c&#8217;est un appel de fonction, et donc une expression.</p>
+<p>On peut donc utiliser <code>print</code> dans une autre expression et ainsi :</p>
+<p>Dans une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">crier = <span style="color: #ff7700;font-weight:bold;">lambda</span> x, <span style="color: #66cc66;">*</span>a, <span style="color: #66cc66;">**</span>k: <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x.<span style="color: black;">upper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, <span style="color: #66cc66;">*</span>a, <span style="color: #66cc66;">**</span>k<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Dans une <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">liste en intention</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#91;</span><span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<h2>Plus de syntaxe bizarre</h2>
+<p>Comment supprimer le saut de ligne quand on print avec l&#8217;ancienne syntaxe ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Hello&quot;</span>, <span style="color: #808080; font-style: italic;"># &lt;- notez la virgule</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;You&quot;</span>
+Hello You</pre></div></div>
+
+<p>Avec la nouvelle syntaxe :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Hello &quot;</span>, end=<span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'You'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Comment rediriger le print vers stderr avec l&#8217;ancienne syntaxe ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #66cc66;">&gt;&gt;</span> <span style="color: #dc143c;">sys</span>.<span style="color: black;">stderr</span>, <span style="color: #483d8b;">'arg !'</span></pre></div></div>
+
+<p>Avec la nouvelle ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'arg !'</span>, <span style="color: #008000;">file</span>=<span style="color: #dc143c;">sys</span>.<span style="color: black;">stderr</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Comment faire une liste séparée par des virgules avec l&#8217;ancienne syntaxe ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l = <span style="color: black;">&#91;</span><span style="color: #483d8b;">'Des petits trous'</span>, <span style="color: #483d8b;">'des petits trous'</span>, <span style="color: #483d8b;">'toujours des petits trous'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">', '</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span>
+Des petits trous, des petits trous, toujours des petits trous</pre></div></div>
+
+<p>Avec la nouvelle ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #66cc66;">*</span>l, sep=<span style="color: #483d8b;">', '</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>En gros, la syntaxe est unifiée, plus besoin de penser à tous ces cas particuliers. Et en plus on peut demander de l&#8217;aide avec <code>help(print)</code> alors qu&#8217;avant ça faisait une syntaxe error.</p>
+<h2>On peut récupérer une référence sur
+<pre>print</pre>
+</h2>
+<p>Et donc la passer en paramètre pour faire de l&#8217;<a href="http://sametmax.com/quest-ce-quun-callback/">injection de dépendance</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> truc<span style="color: black;">&#40;</span>a, <span style="color: #ff7700;font-weight:bold;">print</span>=<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire un truc avec a</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>a<span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span> <span style="color: #808080; font-style: italic;"># on peut utiliser print normalement</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">logging</span>
+log = loging.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+truc<span style="color: black;">&#40;</span>machin, <span style="color: #ff7700;font-weight:bold;">print</span>=log<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># on print pas, on log !</span>
+truc<span style="color: black;">&#40;</span>autre_machin, <span style="color: #ff7700;font-weight:bold;">print</span>=<span style="color: #ff7700;font-weight:bold;">lambda</span> <span style="color: #66cc66;">*</span>a, <span style="color: #66cc66;">**</span>k: <span style="color: #008000;">None</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ignore les prints !</span></pre></div></div>
+
+<p>Et également appliquer tous les outils de programmation fonctionnelle de Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> partial
+error = partial<span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">print</span>, <span style="color: #008000;">file</span>=<span style="color: #dc143c;">sys</span>.<span style="color: black;">stderr</span><span style="color: black;">&#41;</span>
+error<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Wrong !'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># va directement sur stderr</span></pre></div></div>
+
+<h2>Activer <code>print()</code> en Python 2.7</h2>
+<p>Si vous voulez prendre toute de suite de bonnes habitudes, vous pouvez faire, en Python 2.7 :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> print_function</pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8164&amp;md5=a05024d9531d9af8137f90e782c3a559" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/consequence-de-print-devenant-une-fonction-en-python-3/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fconsequence-de-print-devenant-une-fonction-en-python-3%2F&amp;language=en_GB&amp;category=text&amp;title=Cons%C3%A9quences+de+print+devenant+une+fonction+en+Python+3&amp;description=Devoir+utiliser+print%28%29+au+lieu+de+print+m%26%238217%3Barrache+la+gueule%2C+je+dois+l%26%238217%3Bavouer.+J%26%238217%3Bai+l%26%238217%3Bimpression+que+ces+deux+parenth%C3%A8ses+ma+prennent+5+heures+%C3%A0+taper%2C+l%C3%A0+o%C3%B9+avant+mon+petit...&amp;tags=print%2Cpython%2Cpython+3%2Cblog" type="text/html" />
+	</item>
+	</channel>
+</rss>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; light</title>
+	<atom:link href="http://sametmax.com/tag/light/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Utiliser Cherrypy (serveur web léger) avec Bottle (Framework léger)</title>
+		<link>http://sametmax.com/utiliser-cherrypy-serveur-web-leger-avec-bottle-framework-leger/</link>
+		<comments>http://sametmax.com/utiliser-cherrypy-serveur-web-leger-avec-bottle-framework-leger/#comments</comments>
+		<pubDate>Thu, 15 Nov 2012 16:01:38 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[bottle]]></category>
+		<category><![CDATA[cherrypy]]></category>
+		<category><![CDATA[light]]></category>
+		<category><![CDATA[serveur]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3081</guid>
+		<description><![CDATA[Pour les sites/app qu'on developpe en une journée, Bottle et Cherrypy sont deux larons en foire qui s'accouplent parfaitement...]]></description>
+			<content:encoded><![CDATA[<p>Pour les sites/app qu&#8217;on developpe en une journée, <a href="http://bottlepy.org/docs/dev/">Bottle</a> et <a href="http://www.cherrypy.org/">Cherrypy</a> sont deux larons en foire qui s&#8217;accouplent parfaitement&#8230;</p>
+<p><strong>Rappel:</strong></p>
+<p style="padding-left: 30px;"><strong></strong><strong>Bottle:</strong> Framework python light, allez voir <a title="Créer un site avec bottle en 5 minutes" href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">&#8220;Créer un site avec bottle en 5 minutes&#8221;</a><br />
+<strong>Cherrypy:</strong> Framework python light + serveur web</p>
+<p><strong><br />
+Une bonne <a href="http://sametmax.com/votre-python-aime-les-pip/">Pip</a> pour commencer:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">monsieur@fion:~<span style="color: #808080; font-style: italic;"># pip install cherrypy</span></pre></div></div>
+
+<p><strong>Dans votre fichier start.py:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">run<span style="color: black;">&#40;</span>host=<span style="color: #483d8b;">'0.0.0.0'</span>, port=<span style="color: #ff4500;">80</span>, server=<span style="color: #483d8b;">'cherrypy'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p><strong>Note:</strong> le 0.0.0.0 permet d&#8217;acceder à votre site depuis l&#8217;extérieur.</p>
+<p>Pour lancer en daemon vous pouvez utiliser <a href="http://supervisord.org/">supervisord</a> <strong>ou</strong> faire un script dans le répertoire où se trouve <em>start.py</em> de votre projet et y coller:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#! /bin/sh</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">### Run server in daemon mode</span>
+nohup python start.<span style="color: black;">py</span> <span style="color: #66cc66;">&amp;</span></pre></div></div>
+
+<p><strong>Plusieurs serveurs web sur la même machine:</strong><br />
+Si vous avez un autre serveur web qui tourne sur votre machine et qui vous empêche de lancer cherrypy sur le port 80 vous pouvez utiliser <a href="http://nginx.org/">nginx</a> en <a href="http://wiki.nginx.org/HttpProxyModule">proxy</a>. Pour ce faire modifiez le port de cherrypy dans votre fichier <em>start.py</em> (voir plus haut) et réglez-le sur 7777 par exemple avec un host 127.0.0.1.<br />
+Ouvrez un fichier de conf nginx et copiez ceci:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">upstream monsite_cherrypy <span style="color: black;">&#123;</span>
+    server 127.0.0.1:<span style="color: #ff4500;">7777</span><span style="color: #66cc66;">;</span>
+<span style="color: black;">&#125;</span>
+&nbsp;
+server <span style="color: black;">&#123;</span>
+        listen       <span style="color: #ff4500;">80</span><span style="color: #66cc66;">;</span>
+        server_name monsite.<span style="color: black;">com</span> www.<span style="color: black;">monsite</span>.<span style="color: black;">com</span> <span style="color: #66cc66;">;</span>
+&nbsp;
+        location /favicon.<span style="color: black;">ico</span> <span style="color: black;">&#123;</span>
+            root  /home/monsite/static/img<span style="color: #66cc66;">;</span>
+        <span style="color: black;">&#125;</span>
+&nbsp;
+        location / <span style="color: black;">&#123;</span>
+            proxy_pass http://monsite_cherrypy<span style="color: #66cc66;">;</span> 
+        <span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Relancez Nginx (service nginx restart). Et votre site est en place. C&#8217;est ce qu&#8217;on utilise pour <a href="http://multiboards.net/">multiboards</a> par exemple.</p>
+<p>C&#8217;est rapide et simple et ça peut tenir pas mal de visiteurs. ça évite d&#8217;installer des trucs lourds avec 3 tonnes de config.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3081&amp;md5=a2c10fb5e5f33b4eb3bcd4476523bc87" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/utiliser-cherrypy-serveur-web-leger-avec-bottle-framework-leger/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Futiliser-cherrypy-serveur-web-leger-avec-bottle-framework-leger%2F&amp;language=en_GB&amp;category=text&amp;title=Utiliser+Cherrypy+%28serveur+web+l%C3%A9ger%29+avec+Bottle+%28Framework+l%C3%A9ger%29&amp;description=Pour+les+sites%2Fapp+qu%26%238217%3Bon+developpe+en+une+journ%C3%A9e%2C+Bottle+et+Cherrypy+sont+deux+larons+en+foire+qui+s%26%238217%3Baccouplent+parfaitement%26%238230%3B+Rappel%3A+Bottle%3A+Framework+python+light%2C+allez+voir+%26%238220%3BCr%C3%A9er+un+site+avec...&amp;tags=bottle%2Ccherrypy%2Clight%2Cserveur%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/cherry.jpeg" length="433436" type="image/jpg" />	</item>
+	</channel>
+</rss>

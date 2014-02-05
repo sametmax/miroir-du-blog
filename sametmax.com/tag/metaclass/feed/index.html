@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; metaclass</title>
+	<atom:link href="http://sametmax.com/tag/metaclass/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Le guide ultime et définitif sur la programmation orientée objet en Python à l’usage des débutants qui sont rassurés par les textes détaillés qui prennent le temps de tout expliquer. Partie 8.</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-8/</link>
+		<comments>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-8/#comments</comments>
+		<pubDate>Tue, 02 Jul 2013 07:31:26 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[metaclass]]></category>
+		<category><![CDATA[poo]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6524</guid>
+		<description><![CDATA[Vous n'avez absolument pas besoin des métaclasses. Mais quand même, ça serait tellement cool de savoir vous en servir.]]></description>
+			<content:encoded><![CDATA[<p>8ème et dernier chapitre sur la programmation orientée objet en Python. Nous allons voir l&#8217;ultime réalité, le secret cosmique de nirvana Pythonique, le truc dont personne ne se sert avant d&#8217;avoir au moins codé 3 moteurs de blogs, un bot twitter et une IA de real doll.</p>
+<p>J&#8217;ai nommé&#8230;</p>
+<p>Les métaclasses.</p>
+<p>Comme tous les articles sur la question, je commence avec la citation standard :</p>
+<blockquote><p>Les métaclasses sont une magie trop obscure pour que 99% des utilisateurs s&#8217;en préoccupe. Si vous vous demandez si vous en avez besoin, ce n&#8217;est pas le cas (les gens qui en ont vraiment besoin le savent avec certitude et n&#8217;ont pas besoin d&#8217;explications sur la raison).
+    </p></blockquote>
+<p>    <em>Tim Peters, les mec qui <a href="http://www.python.org/dev/peps/pep-0020/">a écrit le PEP20</a>.</em></p>
+<p>En résumé, cet article ne vous servira probablement pas. Je me suis servi, en 10 ans, deux fois des métaclasses dans ma vie. C&#8217;est pour le sport, quoi.</p>
+<p>Pré-requis:</p>
+<ul>
+<li>Avoir lu la <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-7/">partie précédente</a> et bien tout compris. Mais alors bien tout. Si il subsiste un doute dans votre esprit, relisez toute la série car vous ne vous en sortirez pas.</li>
+<li>Notamment, avoir bien pigé le principe de <code>object</code>, car les metaclasses ne fonctionnent qu&#8217;avec les New Style classes.</li>
+<li>Comprendre le principe de références, callable, lambdas et dictionnaires en Python. En fait à peu prêt tout sauf les métaclasses parce que ce truc est ce que vous voulez apprendre en dernier de toute façon.</li>
+<li>Être bien reposé et avoir du temps devant soi. Pas la peine de lire en diagonal. Vraiment.</li>
+</ul>
+<p>Musique.</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/AfNdyoNfPi8" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<h2>Au début, il y avait les objets</h2>
+<p>Et <del>Dieu</del> Guido vit que cela était bon, et qu&#8217;il n&#8217;y avait pas de raison de ne pas se marrer un bon coup, alors il décida que les classes, qui servaient à fabriquer les objets, seraient aussi des objets.</p>
+<p>Dans la plupart des langages, une classe est vraiment juste un plan pour produire un objet, un bout de code, une syntaxe élaborée pour dire &#8220;voici ma classe&#8221;. On peut l&#8217;imaginer comme cela en Python également, et vivre très heureux et avoir beaucoup de bons moments :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> CreateurDObject<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">pass</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mon_objet = CreateurDObject<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>mon_objet<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>__main__.<span style="color: black;">CreateurDObject</span> <span style="color: #008000;">object</span> at 0x1c22fd0<span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Sauf qu&#8217;en Python, les classes sont aussi des objets.</p>
+<p>Je vous laisse maturer ça 1 minute. Prenez une inspiration.</p>
+<p>Quand l&#8217;interpréteur Python lit le mot <code>class</code>, il crée un objet. Dans le code ci-dessus, en mémoire, Python crée un objet <code>CreateurDObject</code>.</p>
+<p>Cet objet est une classe, il permet de créer d&#8217;autres objets &#8211; ses instances &#8211; mais ça reste un objet. Et comme tous les objets&#8230;</p>
+<p>On peut l&#8217;assigner à une variable :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> ReferenceACreateurDObjet = CreateurDObject
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ReferenceACreateurDObjet<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>__main__.<span style="color: black;">CreateurDObject</span> <span style="color: #008000;">object</span> at 0x1c320d0<span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>On peut le passer en paramètre :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> afficher_une_class<span style="color: black;">&#40;</span>cls<span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Hey, on m'a passé la classe %s&quot;</span> <span style="color: #66cc66;">%</span> cls<span style="color: black;">&#41;</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> afficher_une_class<span style="color: black;">&#40;</span>CreateurDObject<span style="color: black;">&#41;</span>
+Hey, on m<span style="color: #483d8b;">'a passé la classe &lt;class '</span><span style="color: #dc143c;">__main__</span>.<span style="color: black;">CreateurDObject</span><span style="color: #483d8b;">'&gt;</span></pre></div></div>
+
+<p>On peut lui ajouter des attributs à la volée :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> CreateurDObject.<span style="color: black;">nouvel_attribut</span> = <span style="color: #483d8b;">'nouvelle valeur'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>CreateurDObject, <span style="color: #483d8b;">'nouvel_attribut'</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> CreateurDObject.<span style="color: black;">nouvel_attribut</span>
+u<span style="color: #483d8b;">'nouvelle valeur'</span></pre></div></div>
+
+<h2>Le 7eme jour, on se faisait grave chier alors on a créé des classes dynamiquement</h2>
+<p>Peut être vous souvenez-vous qu&#8217;on peut <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">créer des fonctions à la volée </a>?</p>
+<p>Parce qu&#8217;on peut faire pareil avec les classes :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> fabriquer_une_class<span style="color: black;">&#40;</span>nom<span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> nom == <span style="color: #483d8b;">'bulbizarre'</span>:
+...         <span style="color: #ff7700;font-weight:bold;">class</span> Bulbizarre<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...             <span style="color: #ff7700;font-weight:bold;">pass</span>
+...         <span style="color: #ff7700;font-weight:bold;">return</span> Bulbizarre <span style="color: #808080; font-style: italic;"># je retourne Bulbizarre, PAS Bulbizarre()</span>
+...     <span style="color: #ff7700;font-weight:bold;">else</span>:
+...         <span style="color: #ff7700;font-weight:bold;">class</span> Salameche<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># qui prenait carapuce, sérieux ?</span>
+...             <span style="color: #ff7700;font-weight:bold;">pass</span>
+...         <span style="color: #ff7700;font-weight:bold;">return</span> Salameche
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Pokemon = fabriquer_une_class<span style="color: black;">&#40;</span><span style="color: #483d8b;">'autre'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>Pokemon<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># Pokemon est une CLASSE, pas une instance</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'type'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> nouveau_pokemon = Pokemon<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># la je créer une instance</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>nouveau_pokemon<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'__main__.Salameche'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Une classe n&#8217;est pas quelque chose de figé dans le marbre, comme tout le reste en  Python, on peut les fabriquer dynamiquement, les modifier en cours de route, les malmener, etc.</p>
+<p>Aucun pokemon n&#8217;a cependant été blessé pendant la rédaction de cet article. Tiens je me demande si il y a des sites zoophiles spécialisés dans les Pokemons. Qu&#8217;est-ce que je raconte ? Évidement qu&#8217;il y en a. D&#8217;ailleurs Pikachu est comme une shocking flech torch avec piles incluses quand on y pense. Ou un appareil à abdos. Il faut que je fasse des abdos, j&#8217;ai pris du bide. Heu&#8230; où j&#8217;en étais ?</p>
+<p>A oui. Classes. Dynamiques.</p>
+<p>Comme toutes les <del>opérations courantes</del> idées à la con, Python vous permet de faire ça complètement à la main. Maintenant vient la troisième Révélation Des Métaclasses : la fonction <code>type()</code> a deux usages.</p>
+<p>Dans une première vie <code>type()</code> est une fonction ordinaire, elle sert à retourner le type d&#8217;un objet :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'int'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;1&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>CreateurDObject<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'type'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>CreateurDObject<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'__main__.CreateurDObject'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Et propose à sa logeuse de descendre ses poubelles. Mais elle a une autre vie électronique, elle est aussi capable de créer une classe.</p>
+<p>Oui c&#8217;est très con d&#8217;avoir choisit la même PUTAIN DE FONCTION pour faire deux trucs qui n&#8217;ont rien à voir. Mais les deux usages ont un avenir et il va falloir faire avec, se caler ça où je pense et oubliez votre avocat.</p>
+<p>Bref, ça marche comme ça :</p>
+<p><code>type(nom de la classe, tuple des parents de la classe, dictionnaire contenant les attributs)</code></p>
+<p>Le nom de la classe, je pense que vous avez pigé.</p>
+<p>Le tuple des parents, il peut être vide. C&#8217;est dans le cas où vous souhaitez un héritage : vous pouvez passer des références aux classes parentes.</p>
+<p>Le dictionnaire est assez simple : chaque clé est un nom d&#8217;attribut, chaque valeur est une valeur d&#8217;attribut.</p>
+<p>Exemple, cette classe :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Pokeball<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">pass</span></pre></div></div>
+
+<p>Peut se créer ainsi :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> Pokeball = <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Pokeball'</span>, <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et s&#8217;utiliser tout pareil :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>Pokeball<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'__main__.Pokeball'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>Pokeball<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>__main__.<span style="color: black;">Pokeball</span> <span style="color: #008000;">object</span> at 0x1c32450<span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Vous aurez noté que le nom de classe passé en paramètre est le même que celui de la variable qui va recevoir la classe ainsi créée. Oui, ils peuvent être différents. Non, ça ne sert à rien.</p>
+<p>Et je sais que certains auraient préféré MyLittlePoney, mais je fais avec ma maigre culture G. Faudrait que je tente avec des noms de Pogs.</p>
+<p>Un petit exemple avec des attributs :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Pokeball<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...     <span style="color: black;">couleurs</span> = <span style="color: black;">&#40;</span><span style="color: #483d8b;">'rouge'</span>, <span style="color: #483d8b;">'blanc'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ce qui donne :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> Pokeball = <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Pokeball'</span>, <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">'couleurs'</span>: <span style="color: black;">&#40;</span><span style="color: #483d8b;">'rouge'</span>, <span style="color: #483d8b;">'blanc'</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Pokeball.<span style="color: black;">couleurs</span>
+<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'rouge'</span>, u<span style="color: #483d8b;">'blanc'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Étant donné que les méthodes sont des attributs&#8230;</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Pokeball<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+  ...     <span style="color: #ff7700;font-weight:bold;">def</span> attraper<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+  ...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;ratééééééééééééé&quot;</span><span style="color: black;">&#41;</span>
+  ...</pre></div></div>
+
+<p>Peut se traduire par :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> out<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;ratéééééééééééé&quot;</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Pokeball = <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Pokeball'</span>, <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">'attraper'</span>: out<span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Pokeball<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">attraper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+ratéééééééééééé</pre></div></div>
+
+<p>Au passage, toute classe créée par <code>type</code> hérite automatiquement de <code>object</code>, pas besoin de le préciser.</p>
+<p>Petite démo avec de l&#8217;héritage  :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Masterball<span style="color: black;">&#40;</span>Pokeball<span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">def</span> attraper<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;yeahhhhhhhhhh&quot;</span><span style="color: black;">&#41;</span>
+...</pre></div></div>
+
+<p>Se transforme en :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> out<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;yeahhhhhhhhhh&quot;</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Masterball = <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Masterball'</span>, <span style="color: black;">&#40;</span>Pokeball,<span style="color: black;">&#41;</span>, <span style="color: black;">&#123;</span><span style="color: #483d8b;">'attraper'</span>: out<span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Masterball<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">attraper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+yeahhhhhhhhhh</pre></div></div>
+
+<p>Je répète les Révélations Divines :</p>
+<ol>
+<li>
+Les classes sont des objets.
+</li>
+<li>On peut créer les classes à la volée.</li>
+<li><code>type()</code> permet de créer une classe manuellement.</li>
+<li>Keanu Reeves est un mauvais acteur.</li>
+</ol>
+<p>Vous voyez où je veux en venir, là, non ?</p>
+<h2>Et le tout puissant déclara : tu créeras des classes avec des classes</h2>
+<p>Et tu n&#8217;aimeras pas ça. Alors au début tu le feras avec des fonctions parce que c&#8217;est plus facile.</p>
+<p>Une métaclasse, c&#8217;est seulement le nom du &#8220;truc&#8221; qui fabrique une classe. C&#8217;est tout.</p>
+<p>C&#8217;est pour ça qu&#8217;on appelle les métaclasses, les classes des classes.</p>
+<p>Puisque les classes sont des objets ?</p>
+<p>Vous suivez ?</p>
+<p>Non ?</p>
+<p>Ah.</p>
+<p>o</p>
+<p>En deux lignes alors :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">UneClasse = MetaClass<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+un_objet = UneClasse<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Mieux ?</p>
+<p>Vous avez vu la fonction <code>type()</code> créer des classes ? En fait la fonction <code>type()</code> est une métaclasse. C&#8217;est la métaclasse dont Python se sert pour créer tous les objets classes, quand vous tapez le keyword <code>class</code>.</p>
+<p>Il est facile de voir ça en regardant l&#8217;attribut <code>__class__</code>, qui indique quelle classe a servi à créer un objet :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> pokemon_capture = <span style="color: #ff4500;">149</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> pokemon_capture.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'int'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> nom = <span style="color: #483d8b;">'magicarp'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> nom.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> attrapez_les_presque_tous<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">pass</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> attrapez_les_presque_tous.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'function'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Pokedex<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">pass</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gadget = Pokedex<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gadget.__class__
+<span style="color: #66cc66;">&lt;</span>class <span style="color: #483d8b;">'__main__.Pokedex'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Mais quelle est le <code>__class__</code> de tout <code>__class__</code> ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> attrapez_les_presque_tous.__class__.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'type'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> pokemon_capture.__class__.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'type'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> nom.__class__.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'type'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gadget.__class__.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'type'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Normalement c&#8217;est à ce moment là que vous avez la Grande Révélation.</p>
+<p>Faites &#8220;Ahhhhhhhhhhhhhhhhh&#8221;.</p>
+<p>Donc la métaclasse, c&#8217;est le machin qui fabrique les classes, c&#8217;est une factory de classe. <code>type</code> est la métaclasse utilisée par défaut, mais vous pensez bien, chers amis, qu&#8217;on peut fabriquer ses propres métaclasses. Sinon ça serait pas marrant.</p>
+<p>Ça marche comme ça :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> UneClasse<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+  <span style="color: #0000cd;">__metaclass__</span> = votre métaclasse
+  <span style="color: black;">&#91;</span> le reste du <span style="color: #dc143c;">code</span> de la classe <span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Quand Python va voir ça, il ne va pas créer la classe immédiatement, il d&#8217;abord suivre le chaîne d&#8217;héritage pour trouver qu&#8217;elle métaclasse utiliser pour fabriquer la classe :</p>
+<p>Il va regarder d&#8217;abord vérifier si il y a <code>__metaclass__</code> de déclarée. Si ce n&#8217;est pas le cas, il va chercher dans les parents si ils ont un attribut <code>__metaclass__</code>. Si ce n&#8217;est pas le cas, il va utiliser <code>type</code>. Si Python trouve <code>__metaclass__</code>, alors il utilisera son contenu à la place de <code>type</code>.</p>
+<p>Dans les deux cas, il va collecter toutes les informations sur la classe (le nom, les parents, les attributs), et les passer en paramètres à <code>type</code> ou votre métaclasse, et récupérer le résultat. Puis, seulement à ce moment là, il enregistre votre classe en mémoire.</p>
+<p>Prenez votre temps sur ces paragraphes, c&#8217;est un peu la clé de tout le tuto.</p>
+<p>Bon, nouvelle révélation : une métaclasse n&#8217;a pas besoin d&#8217;être une classe.</p>
+<p>Je sais, c&#8217;est idiot d&#8217;appeler un truc &#8220;métaclass&#8221; si ça n&#8217;a pas besoin d&#8217;être une classe. Mais on parle de la fonctionnalité qui utilise <code>type</code> pour un truc qui n&#8217;a rien à avoir. Ça devait être le jour du beaujolais nouveau quand ils ont introduit la feature.</p>
+<p>En fait, une métaclasse peut être n&#8217;importe quel callable qui retourne une classe, donc une fonction toute conne fait très bien l&#8217;affaire.</p>
+<p>Le but de la métaclasse, c&#8217;est d&#8217;intercepter la création de la classe afin de la modifier, et voici ce que ça donne :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># une métaclasse DOIT avoir la même signature que type() puisque</span>
+<span style="color: #808080; font-style: italic;"># Python va lui passer tout ça automatiquement en paramètre</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> prefixer<span style="color: black;">&#40;</span>nom, parents, attributs<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        On va créer une métaclasse qui prend tous les noms de méthodes,
+        et les prefixe du mot &quot;attaque&quot;. Oui ça ne sert à rien. Mais
+        les usages des métaclasses qui servent à quelques choses sont
+        généralement très compliqués.
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On crée un nouveau dictionnaire d'attributs avec les noms préfixés</span>
+    <span style="color: #808080; font-style: italic;"># On fait gaffe à pas modifier les __méthodes_magique__.</span>
+    nouveaux_attributs = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> nom, val <span style="color: #ff7700;font-weight:bold;">in</span> attributs.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> nom.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'__'</span><span style="color: black;">&#41;</span>:
+            nouveaux_attributs<span style="color: black;">&#91;</span><span style="color: #483d8b;">'attaque_'</span> + nom<span style="color: black;">&#93;</span> = val
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            nouveaux_attributs<span style="color: black;">&#91;</span>nom<span style="color: black;">&#93;</span> = val
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On délègue la création de la classe à type() :</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>nom, parents, nouveaux_attributs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>L&#8217;utilisation est toute simple, on écrit une classe normale, et on lui rajoute <code>__metaclass__</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Ronflex<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #0000cd;">__metaclass__</span> = prefixer
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> armure<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;defense +15&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> dodo<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;zzzzzz&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r = Ronflex<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">attaque_armure</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+defense +<span style="color: #ff4500;">15</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">attaque_dodo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+zzzzzz
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">dodo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-58-90dd54234d5d&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    r.<span style="color: black;">dodo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">AttributeError</span>: <span style="color: #483d8b;">'armure'</span> <span style="color: #008000;">object</span> has no attribute <span style="color: #483d8b;">'dodo'</span></pre></div></div>
+
+<p>Voilà, c&#8217;est à peut prêt tout ce qu&#8217;il y a à comprendre des métaclasses :</p>
+<ol>
+<li>On intercepte la création classe.</li>
+<li>On modifie les paramètres.</li>
+<li>On retourne la classe customisée.</li>
+</ol>
+<p>Maintenant, la grande question : à quoi ça sert ?</p>
+<p>Généralement, ça sert à faire de jolies APIs. Par exemple, les ORM (<a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">peewee</a>, SQLAlchemy, l&#8217;ORM de Django) utilisent les métaclasses pour avoir un style déclaratif :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Article<span style="color: black;">&#40;</span>Model<span style="color: black;">&#41;</span>:
+    titre = model.<span style="color: black;">CharField</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ici, <code>Model</code> va contenir une métaclasse, comme c&#8217;est un parent, la métaclasse sera aussi appelée pour <code>Article</code>, et elle peut donc agir pour modifier <code>titre</code> à la volée.</p>
+<p>En effet, quand vous faites :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> art = Article.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #008000;">id</span>=<span style="color: #ff4500;">13</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> art.<span style="color: black;">titre</span>
+u<span style="color: #483d8b;">'Python pour les méca-scriptophiles'</span></pre></div></div>
+
+<p>Avec un ORM, vous récupérez la valeur de <code>titre</code> dans la base de données et non un <code>CharField()</code>. C&#8217;est le but : cacher des requêtes SQL et donner l&#8217;impression de manipuler des objets.</p>
+<p>Ici le rôle de la métaclasse, c&#8217;est de prendre tous les attributs de types <code>xxxField()</code>, et modifier la classe pour qu&#8217;accéder à l&#8217;attribut fasse la requête voulue à la base de données.</p>
+<p>On peut aussi utiliser les métaclasses pour faire des vérifications : s&#8217;assurer que la classe n&#8217;utilise pas un nom que vous voulez réserver, ou qu&#8217;elle contient bien un attribut.</p>
+<p>Il y a même des <a href="http://docs.python.org/2/library/abc.html?highlight=abc#abc">implémentations</a> d&#8217;interfaces (ou plutôt de l&#8217;équivalent des classes abstraites en Java) pour Python utilisant les métaclasses. Je ne suis pas convaincus par leur utilité, mais c&#8217;est possible.</p>
+<h2>Soyez prophètes</h2>
+<p>C&#8217;est pas le tout, mais maintenant que vous avez compris, il est temps de limer les bords pour que vous alliez porter la bonne parole.</p>
+<p>Donc déjà, bon à savoir : <code>metaclass</code> est un paramètre de classe en Python 3. Ca donne ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> DePython3<span style="color: black;">&#40;</span>metaclass=votre_metaclasse<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Ensuite, il y des conventions de nommage. Tout comme on nomme <code>self</code> le premier paramètre des méthodes, et <code>*args</code> / <code>**kwargs</code> les paramètres dynamiques, les paramètres des métaclasses ont des noms conventionels. La métaclasse précédente s&#8217;écrirait donc plus proprement :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> prefixer<span style="color: black;">&#40;</span>name, bases, dct<span style="color: black;">&#41;</span>:
+    nouveaux_attributs = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> nom, val <span style="color: #ff7700;font-weight:bold;">in</span> dct.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> nom.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'__'</span><span style="color: black;">&#41;</span>:
+            nouveaux_attributs<span style="color: black;">&#91;</span><span style="color: #483d8b;">'attaque_'</span> + nom<span style="color: black;">&#93;</span> = val
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            nouveaux_attributs<span style="color: black;">&#91;</span>nom<span style="color: black;">&#93;</span> = val
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On délègue la création de la classe à type() :</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>name, bases, nouveaux_attributs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Enfin, souvenez-vous que les métaclasses ne fonctionnent qu&#8217;avec les New Style classes, donc celles qui héritent de <code>object</code>.</p>
+<p>Par ailleurs, vous croisez peut être des fois <code>__metaclass__</code> en plein milieu d&#8217;un module (pas dans une classe donc). C&#8217;est une vieille façon de faire, qui affecte toutes les classes du module. Ce n&#8217;est plus recommandé.</p>
+<p>Terminons sur une version de métaclasse qui fait la même chose que <code>prefixer()</code>, mais sous forme de classe. Parce que sinon à quoi ça sert que ça s&#8217;appelle une métaclasse, hein ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Oui, on peut hériter de type(), car c'est une classe, enfin une métaclasse.</span>
+<span style="color: #808080; font-style: italic;"># Mais pas sous forme de fonction. Sous forme de classe. Mais son nom</span>
+<span style="color: #808080; font-style: italic;"># est en minuscule, comme celui des classes int() et str(). Qui ne sont</span>
+<span style="color: #808080; font-style: italic;"># pas des métaclasses. Souvenez-vous : Beaujolais.</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Prefixer<span style="color: black;">&#40;</span><span style="color: #008000;">type</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># __new__ est le vrai constructeur en Python, et il retourne l'instance</span>
+    <span style="color: #808080; font-style: italic;"># en cours d'une classe. Or, qu'elle est l'instance d'une métaclasse ?</span>
+    <span style="color: #808080; font-style: italic;"># Une classe !</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__new__</span><span style="color: black;">&#40;</span>cls, name, bases, dct<span style="color: black;">&#41;</span>:
+&nbsp;
+        nouveaux_attributs = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> nom, val <span style="color: #ff7700;font-weight:bold;">in</span> dct.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> nom.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'__'</span><span style="color: black;">&#41;</span>:
+                nouveaux_attributs<span style="color: black;">&#91;</span><span style="color: #483d8b;">'attaque_'</span> + nom<span style="color: black;">&#93;</span> = val
+            <span style="color: #ff7700;font-weight:bold;">else</span>:
+                nouveaux_attributs<span style="color: black;">&#91;</span>nom<span style="color: black;">&#93;</span> = val
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On délègue la création de la classe à son parent.</span>
+        <span style="color: #808080; font-style: italic;"># Notez que cls doit être passé de bout en bout, ce qui n'est pas</span>
+        <span style="color: #808080; font-style: italic;"># le cas d'habitude avec 'self'</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>Prefixer, cls<span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__new__</span><span style="color: black;">&#40;</span>cls, name, bases, nouveaux_attributs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et ça s&#8217;utilise pareil</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Ronflex<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #0000cd;">__metaclass__</span> = Prefixer
+    <span style="color: #ff7700;font-weight:bold;">def</span> armure<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;defense +15&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dodo<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;zzzzzz&quot;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r = Ronflex<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">attaque_dodo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+zzzzzz
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">attaque_armure</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+defense +<span style="color: #ff4500;">15</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">dodo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-66-90dd54234d5d&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    r.<span style="color: black;">dodo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">AttributeError</span>: <span style="color: #483d8b;">'Ronflex'</span> <span style="color: #008000;">object</span> has no attribute <span style="color: #483d8b;">'dodo'</span></pre></div></div>
+
+<p>Pourquoi utiliser une classe plutôt qu&#8217;une fonction alors que c&#8217;est vraiment plus compliqué ?</p>
+<p>Et bien l&#8217;avantage d&#8217;utiliser une classe est qu&#8217;elle peut avoir des attributs et hériter. Car bien entendu, on peut avoir des metaclasses, qui héritent de metaclasses, et ainsi de suite, jusqu&#8217;à ce que du Lisp paraisse avoir du sens en comparaison.</p>
+<p>On peut même faire plus vicieux et utiliser <code>__call__</code> au lieu de <code>__new__</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># on hérite plus de type, rien à foutre</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Prefixer<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, prefix=<span style="color: #483d8b;">'attaque'</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">prefix</span> = prefix
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># __call__ est la méthode appelée automatiquement quand on ajoute () après</span>
+    <span style="color: #808080; font-style: italic;"># un nom d'objet. Ca permet de rendre un objet callable. En gros, ça nous</span>
+    <span style="color: #808080; font-style: italic;"># permet d'utiliser une instance de Prefixer() comme une fonction</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__call__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>, name, bases, dct<span style="color: black;">&#41;</span>:
+&nbsp;
+        nouveaux_attributs = <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> nom, val <span style="color: #ff7700;font-weight:bold;">in</span> dct.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> nom.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'__'</span><span style="color: black;">&#41;</span>:
+                nouveaux_attributs<span style="color: black;">&#91;</span><span style="color: #008000;">self</span>.<span style="color: black;">prefix</span> + nom<span style="color: black;">&#93;</span> = val
+            <span style="color: #ff7700;font-weight:bold;">else</span>:
+                nouveaux_attributs<span style="color: black;">&#91;</span>nom<span style="color: black;">&#93;</span> = val
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>name, bases, nouveaux_attributs<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Et c&#8217;est sympa car du coup on peut passer des paramètres à notre métaclasse :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Ronflex<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #0000cd;">__metaclass__</span> = Prefixer<span style="color: black;">&#40;</span>prefix=<span style="color: #483d8b;">'tatayoyo_'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> armure<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;defense +15&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> dodo<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;zzzzzz&quot;</span><span style="color: black;">&#41;</span>
+...         
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r = Ronflex<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">tatayoyo_dodo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+zzzzzz</pre></div></div>
+
+<p>Voilà, vous avez vu le visage de Dieu en face. C&#8217;est comme ça qu&#8217;il fabrique le monde.</p>
+<p>Ah mais attendez ? Si <code>type()</code> est la métaclasse de tous les objets ? Qu&#8217;est-ce qui et la métaclasse de <code>type()</code> ?</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span>.__class__
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'type'</span><span style="color: #66cc66;">&gt;</span></pre></div></div>
+
+<p>Je vous laisse méditer sur cette découverte métaphysique.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6524&amp;md5=d8e07460f74d9528ca38e6d90fdf4d35" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-8/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fle-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-8%2F&amp;language=en_GB&amp;category=text&amp;title=Le+guide+ultime+et+d%C3%A9finitif+sur+la+programmation+orient%C3%A9e+objet+en+Python+%C3%A0+l%E2%80%99usage+des+d%C3%A9butants+qui+sont+rassur%C3%A9s+par+les+textes+d%C3%A9taill%C3%A9s+qui+prennent+le+temps+de+tout+expliquer.+Partie+8.&amp;description=8%C3%A8me+et+dernier+chapitre+sur+la+programmation+orient%C3%A9e+objet+en+Python.+Nous+allons+voir+l%26%238217%3Bultime+r%C3%A9alit%C3%A9%2C+le+secret+cosmique+de+nirvana+Pythonique%2C+le+truc+dont+personne+ne+se+sert+avant...&amp;tags=metaclass%2Cpoo%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/07/tumblr_mkdufxjm9L1qfpgjto1_500.jpg" length="34995" type="image/jpg" />	</item>
+	</channel>
+</rss>

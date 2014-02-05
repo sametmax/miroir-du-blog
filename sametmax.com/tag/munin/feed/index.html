@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; munin</title>
+	<atom:link href="http://sametmax.com/tag/munin/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Monitorez vos serveurs avec munin et notifications par email</title>
+		<link>http://sametmax.com/monitorez-vos-serveurs-avec-munin-et-notifications-par-email/</link>
+		<comments>http://sametmax.com/monitorez-vos-serveurs-avec-munin-et-notifications-par-email/#comments</comments>
+		<pubDate>Wed, 24 Apr 2013 06:02:07 +0000</pubDate>
+		<dc:creator>Max</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[admin]]></category>
+		<category><![CDATA[munin]]></category>
+		<category><![CDATA[serveurs]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5860</guid>
+		<description><![CDATA[C'est toujours utile d'avoir une vue d'ensemble de son serveur, avec pourquoi pas  des notifications par email lorsque quelque chose ne tourne pas rond, ça peut éviter bien des désagréments comme un disque dur plein, un cpu qui a atteint la température du soleil, etc.]]></description>
+			<content:encoded><![CDATA[<p>Avoir un serveur c&#8217;est bien, en prendre soin c&#8217;est mieux. J&#8217;ai longtemps administré des serveurs sans trop me soucier de ce qui pouvait leur arriver et bien des fois tout a planté car je n&#8217;avais pas su anticiper la catastrophe.<br />
+Un exemple courant, j&#8217;ai viré Apache pour installer Nginx et ce dernier log par defaut les accès http, après quelques semaines, le disque dur bien rempli, le serveur me claque dans les doigts, plus de place, tout merde, c&#8217;est le drame, pas moyen de rebooter à part en safe mode car disque plein, les hémorroïdes s&#8217;en mêlent, c&#8217;est foutu.</p>
+<p>J&#8217;ai commencé par <a href="http://oss.oetiker.ch/mrtg/">MRTG</a>, pas terrible à installer mais il fait son boulot. Et puis j&#8217;ai changé de serveur pas mal de fois en une année, horrible d&#8217;avoir à réinstaller ce truc à chaque fois alors j&#8217;ai cherché autre chose, après quelques tests pas terribles je suis tombé sur munin, plutôt complet avec des plugins que l&#8217;on peut écrire soit-même. Facile à installer quand on utilise les packages, suivez le guide.</p>
+<p><strong>Installation de <a>Munin</a>:</strong><br />
+Munin se compose de deux programmes.<br />
+<strong>Le maître (munin):</strong> qui va récupérer les infos et générer les graphs.<br />
+<strong>Le noeud (munin-node):</strong> qui s&#8217;installe sur tous les serveurs à monitorer y compris le maître si besoin et qui va envoyer les infos au maître.</p>
+<p><strong>Sur le serveur Maître pour une distribution Ubuntu:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> munin munin-node munin-plugins-extra
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>cache<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>www <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>www<span style="color: #000000; font-weight: bold;">/</span>munin
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>init.d<span style="color: #000000; font-weight: bold;">/</span>munin-node restart</pre></div></div>
+
+<p>Pour voir s&#8217;afficher les pages il vous faudra un serveur web, exemple avec Nginx:<br />
+dans le répertoire conf.d de Nginx ajoutez un fichier munin.conf et mettez-y le code suivant.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>nginx<span style="color: #000000; font-weight: bold;">/</span>conf.d<span style="color: #000000; font-weight: bold;">/</span>munin.conf</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">server <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+&nbsp;
+    listen       <span style="color: #000000;">80</span>;
+    server_name munin.monserveur.com;
+&nbsp;
+	location <span style="color: #000000; font-weight: bold;">/</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+	        auth_basic            <span style="color: #ff0000;">&quot;Restricted&quot;</span>;
+	        <span style="color: #666666; font-style: italic;"># Create the htpasswd file with the htpasswd tool.</span>
+	        auth_basic_user_file  <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>nginx<span style="color: #000000; font-weight: bold;">/</span>htpasswd;
+&nbsp;
+	        root <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>www<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>;
+	        index  index.html index.htm;
+	        expires modified +310s;
+	<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></div></div>
+
+<p>Note: vous pouvez désactiver l&#8217;authentification si vous voulez rendre votre page publique.</p>
+<p>Après réglage de vos DNS chez votre registrar vous devriez avoir quelque chose à la page <strong>http://munin.monserveur.com</strong></p>
+<p><strong>Sur les serveurs à monitorer (les noeuds):</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get</span> <span style="color: #c20cb9; font-weight: bold;">install</span> munin-node munin-plugins-extra</pre></div></div>
+
+<p>Il faut maintenant &#8220;dire&#8221; au serveur noeud l&#8217;IP du serveur maître pour qu&#8217;il puisse lui envoyer les informations sur l&#8217;état de la machine.</p>
+<p>Editez le fichier /etc/munin/munin-node.conf</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">allow ^<span style="color: #000000;">192</span>\.168\.1\.200$</pre></div></div>
+
+<p>Cette partie va permettre au Maître de venir récupérer les infos nécessaires. Remplacez l&#8217;IP par celle de votre serveur Maître.</p>
+<p>On redémarre munin-node pour prendre en compte les changements.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>init.d<span style="color: #000000; font-weight: bold;">/</span>munin-node restart</pre></div></div>
+
+<p>PS: Si il ne se passe rien vérifiez que vous n&#8217;avez pas un firewall qui bloque l&#8217;IP et/ou le port TCP/4949</p>
+<p><strong>Les plugins:</strong><br />
+Les plugins sont des petits programmes permettant de rajouter des fonctionnalitées au monitoring comme la supervision de services tels que Redis, Varnish, Nginx, etc. <a href="https://github.com/munin-monitoring/contrib/tree/master/plugins">La liste est ici</a></p>
+<p>Attention: L&#8217;ajout des plugins se fait côté serveur Noeud !</p>
+<p>En fait il s&#8217;agit de simples liens symboliques dans le répertoire <strong>/etc/munin/plugins/</strong> pointants vers le répertoire <strong>/usr/share/munin/plugins/</strong>.<br />
+La liste des plugins disponibles s&#8217;obtient avec:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> munin-node-configure</pre></div></div>
+
+<p><strong>Exemple rajouter le plugin pour monitorer Mysql:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>share<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>plugins<span style="color: #000000; font-weight: bold;">/</span>mysql_queries <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>plugins<span style="color: #000000; font-weight: bold;">/</span>mysql_queries</pre></div></div>
+
+<div id="attachment_5863" class="wp-caption aligncenter" style="width: 626px"><img class=" wp-image-5863 " title="Mysql monitoré, il en chie des briques là..." src="http://sametmax.com/wp-content/uploads/2013/04/munin.png" alt="" width="616" height="418" /><p class="wp-caption-text">Mysql en train de mourir...</p></div>
+<p><strong>Après que les machines noeuds aient été configurées on les déclarent au serveur Maître:</strong><br />
+Il faut éditer le fichier munin.conf sur le serveur Maître.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span>  <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>munin.conf</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">&#91;</span>sametmax<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address sametmax.com
+    df._home.warning <span style="color: #000000;">95</span>
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>machine_locale_maitre<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  127.0.0.1
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  127.0.0.1
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;serveur_adolf<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  33.94.124.33
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;serveur_himler<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  33.94.124.33
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;serveur_DSK<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  69.69.69.69
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span></pre></div></div>
+
+<p><strong>Analysons la config ci-dessus:</strong></p>
+<p><em>sametmax:</em><br />
+Le premier va nous sortir les stats du serveur sametmax.com, on peut mettre l&#8217;ip comme le nom de domaine.</p>
+<p><em>machine_locale_maitre:</em><br />
+Si on veut monitorer la machine maitre on met 127.0.0.1</p>
+<p><em>groupe_de_serveurs:</em><br />
+Va définir un groupe de serveurs, l&#8217;affichage groupera tous les serveurs y appartenant, c&#8217;est juste pour un affichage plus clair, ne pas oublier le &#8220;;&#8221; à la fin</p>
+<p><em>groupe_de_serveurs;serveur_adolf:</em><br />
+Un serveur qui apparaîtra dans le groupe de serveurs avec himler et DSK</p>
+<p><strong>Notification par email:</strong><br />
+Avec munin il est possible de recevoir des notifications lorsque certains capteurs de votre monitoring atteignent un certain seuil.</p>
+<p>Vérifiez bien que sendmail est installé et qu&#8217;il <a href="http://stackoverflow.com/questions/10359437/sendmail-how-to-configure-sendmail-on-ubuntu">fonctionne</a><br />
+Dans le shell on teste sendmail</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">'Promo sur les BBW'</span> <span style="color: #000000; font-weight: bold;">|</span> mail <span style="color: #660033;">-s</span> <span style="color: #ff0000;">'sujet à poil les putes'</span> monmail<span style="color: #000000; font-weight: bold;">@</span>moi.com</pre></div></div>
+
+<p><strong>Toujours dans le fichier munin.conf sur le serveur Maître:</strong></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#email notifications settings</span>
+contacts max
+contact.max.command mail <span style="color: #660033;">-s</span> <span style="color: #ff0000;">&quot;Munin notif <span style="color: #007800;">${var:host}</span>&quot;</span> monmail<span style="color: #000000; font-weight: bold;">@</span>moi.com
+contact.max.always_send warning critical</pre></div></div>
+
+<p>La premiere ligne définie un contact, la deuxième va envoyer l&#8217;email de notification via sendmail au mail indiqué.<br />
+La dernière ligne va indiquer à munin qu&#8217;il faut envoyer les alertes pour les <em>warning</em> et les <em>critical</em>.</p>
+<p>Les seuils pour les notifications sont définis par warning et critical. Regardez plus haut pour le serveur [sametmax] nous avons défini un seuil pour df (disk free) de 95%.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">&#91;</span>sametmax<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address sametmax.com
+    df._home.warning <span style="color: #000000;">95</span>
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span></pre></div></div>
+
+<p>Ce qui veut dire que lorsque l&#8217;usage disque de<strong> /home</strong> aura dépassé les 95% d&#8217;utilisation munin va vous envoyer une notification par email. ça peut devenir lourd à la longue par contre car il s&#8217;arrête jamais :)</p>
+<p><b>On redémarre munin sur le serveur maître pour prendre en compte les modif:</b></p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">su</span> - munin <span style="color: #660033;">--shell</span>=<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span><span style="color: #c20cb9; font-weight: bold;">bash</span>
+<span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>share<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>munin-update</pre></div></div>
+
+<p>Bon monitorage!</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=5860&amp;md5=f8555e58642f9ccb20c6b2bc0898e138" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/monitorez-vos-serveurs-avec-munin-et-notifications-par-email/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fmonitorez-vos-serveurs-avec-munin-et-notifications-par-email%2F&amp;language=en_GB&amp;category=text&amp;title=Monitorez+vos+serveurs+avec+munin+et+notifications+par+email&amp;description=Avoir+un+serveur+c%26%238217%3Best+bien%2C+en+prendre+soin+c%26%238217%3Best+mieux.+J%26%238217%3Bai+longtemps+administr%C3%A9+des+serveurs+sans+trop+me+soucier+de+ce+qui+pouvait+leur+arriver+et+bien+des+fois+tout...&amp;tags=admin%2Cmunin%2Cserveurs%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/chaplin.jpeg" length="10150" type="image/jpg" />	</item>
+	</channel>
+</rss>

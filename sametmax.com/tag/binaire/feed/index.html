@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; binaire</title>
+	<atom:link href="http://sametmax.com/tag/binaire/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>La fin du mystère du binaire (nananère)</title>
+		<link>http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/</link>
+		<comments>http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/#comments</comments>
+		<pubDate>Tue, 21 Jan 2014 15:01:56 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[base 10]]></category>
+		<category><![CDATA[base 2]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8808</guid>
+		<description><![CDATA[Le binaire c'est simple. Tout le monde peut le comprendre. Par contre, il y a beaucoup de choses à savoir.]]></description>
+			<content:encoded><![CDATA[<p>Quand mon voisin de table en cours de SVT a commencé à m&#8217;expliquer le binaire (il programmait en assembleur sur sa TI89), j&#8217;ai pas bien pigé. Des années plus tard, en cours d&#8217;archi, un prof nous a fait un cours magistral sur la question. Je n&#8217;ai définitivement rien pigé. J&#8217;ai regardé des tutos sur le net. RIEN P-I-G-É.</p>
+<p>J&#8217;ai mis presque 10 ans (littéralement) avant que mon cerveau tilte. Non pas que je n&#8217;avais pas compris le principe, mais le détails, comment on faisait la conversion, ce qu&#8217;on pouvait faire avec, etc&#8230; Ca me passait au dessus de la tête.</p>
+<p>Je râle beaucoup sur le manque de pédagogie d’autrui, et après tout, d&#8217;autres ont compris le truc à partir de ces explications. Mais je vais me répéter : leurs explications étaient merdiques.</p>
+<p>Le binaire c&#8217;est simple. Tout le monde peut le comprendre.</p>
+<p>Si vous ne pigez pas, c&#8217;est que le mec en face de vous est une grosse pine.</p>
+<p>Par contre, il y a beaucoup de choses à savoir, alors à long article, loooooooooooongue musique :</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/6XIpR59xeEU" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p>Long article car j&#8217;ai vu des connards mélanger tout et n&#8217;importe quoi dans leurs explications du binaire, et je vais devoir démêler le sac de nœuds qu&#8217;ils ont fait dans votre tête.</p>
+<h2>Pourquoi apprendre le binaire ?</h2>
+<p>Pour le sport, essentiellement. La culture G. Parce qu&#8217;en toute honnêteté, aujourd&#8217;hui, ça ne sert plus à grand chose, tellement vous avez de couches d&#8217;abstraction entre les manipulations binaires et vous.</p>
+<p>Il y a toujours quelques grincheux qui vous diront des trucs de grincheux comme &#8220;oui, mais pour comprendre les erreurs de flottant en arithmétique, il faut comprendre le binaire&#8221; comme mon père qui me disait qu&#8217;il fallait apprendre le latin au lycée. Meh.</p>
+<p>D&#8217;abord, on a pas plus besoin d&#8217;apprendre le binaire pour comprendre les erreurs de flottant qu&#8217;on a besoin de comprendre la composition moléculaire de l&#8217;essence pour savoir pourquoi une voiture tombe en panne quand il y en a plus. Ensuite, vous n&#8217;avez même pas besoin de comprendre pourquoi il y a des erreurs de flottant, juste à savoir comment les éviter (ce que des tas de gens &#8220;qui les comprennent&#8221; ne sont pas foutu de faire).</p>
+<p>Bref, c&#8217;est l&#8217;éternel bataille de l&#8217;arrière garde qui veut défendre le savoir aujourd&#8217;hui obsolète &#8211; qu&#8217;il a accumulé parce qu&#8217;a son époque c&#8217;était indispensable &#8211; à grand renfort de pédanterie. On voit ça dans tous les domaines. Généralement avec  force exemples de niches et enculage de mouche.</p>
+<p>Mais au delà de ça, le binaire est encore utilisé dans certains domaines, comme la programmation de micro-contrôleurs (si vous planifiez de bosser chez Intel, Nvidia ou la NASA, ça peut servir), la cryptographie ou la programmation de calculatrices en cours de bio. Ce dernier point étant semble-t-il, un sujet intemporel qui ne se démode jamais.</p>
+<p>Néanmoins ça reste 0.00001 % de l&#8217;informatique actuelle. Vous n&#8217;aurez pas besoin du binaire pour vos tâches de Sys Admin, vos GUI, votre app mobile, votre site Web, votre algo de simulation, etc. Bref, les trucs pour lesquels les gens sont payés dans les années 2000.</p>
+<p>Maintenant que j&#8217;ai bien été désagréable avec une partie du lectorat, précisons tout de même que savoir 2, 3 trucs sur le binaire, ça ne fait pas de mal. Vous êtes informaticiens, ça fait un peu partie du folklore.</p>
+<h2>Valeur et représentation</h2>
+<p>En informatique, il y a le problème sans fond de la dualité valeur / représentation. L&#8217;écriture des nombres est un exemple parfait de cela.</p>
+<p>Par exemple, j&#8217;ai ce nombre d&#8217;étoiles :</p>
+<pre>* * * * *</pre>
+<p>Il y a la valeur du nombre d&#8217;étoiles. Cette valeur ne peut pas être manipulée, elle existe, c&#8217;est tout. On ne peut que constater le nombre d&#8217;étoiles en interprétant ce que l&#8217;on voit.</p>
+<p>Si on veut manipuler cette valeur (parler d&#8217;une valeur, c&#8217;est déjà manipuler la valeur), il faut lui donner une représentation.</p>
+<p>Les arabes nous ont donné une représentation : 5.</p>
+<p>Les romains avaient une autre représentation : V.</p>
+<p>La valeur derrière ces deux représentations est strictement la même.</p>
+<p>Le binaire est juste une autre représentation. Il n&#8217;y a rien de magique derrière le binaire.</p>
+<p>Par exemple, la valeur que l&#8217;on représentante par 5, se représente ainsi en binaire : 101.</p>
+<p>C&#8217;est la même valeur de nombre d&#8217;étoiles. Juste écrit différemment. Cela n&#8217;a aucun impact sur la réalité, ne change rien sur la nature des étoiles ou la valeur manipulée. C&#8217;est une manière de transmettre une information.</p>
+<h2>A la base de la base</h2>
+<p>La raison pour laquelle on s&#8217;embrouille facilement avec le binaire, c&#8217;est que la plupart d&#8217;entre nous ont appris à lire les nombres par cœur. On lit un nombre comme un tout.</p>
+<p>En vérité, un nombre est une notation qui obéit à des règles très strictes, et non seulement chaque chiffre donne une information, mais <strong>sa place</strong> dans le nombre donne une information. Ce qu&#8217;on appelle &#8220;centaine&#8221;, &#8220;millier&#8221;, etc, sont des notions qu&#8217;on manipule sans y penser, mais derrière, il y a en fait un système.</p>
+<p>Le système des bases.</p>
+<p>Quand on utilise les chiffres arabes pour écrire un nombre, on utilise une série de symboles, et on les aligne dans un ordre précis. <strong>Selon la base utilisée, l&#8217;ordre implique une valeur différente.</strong></p>
+<p>On ne s&#8217;en rend pas compte, mais on utilise tous les jours l&#8217;ordre de la base 10. On pense en base 10. On a tellement l&#8217;habitude de tout calculer en base 10 qu&#8217;on ne se rend pas compte qu&#8217;on suit une règle précise pour cela.</p>
+<p>Que signifie le fait d&#8217;utiliser une base 10 ?</p>
+<p>Deux choses.</p>
+<p>La première, c&#8217;est que l&#8217;on a DIX symboles pour représenter DIX valeurs. On ne sait représenter directement que ces DIX valeurs là.</p>
+<pre>
+          0
+*         1
+**        2
+***       3
+****      4
+*****     5
+******    6
+*******   7
+********  8
+********* 9</pre>
+<p>On a des valeurs (un nombre d&#8217;étoiles), et on fait correspondre <strong>complètement arbitrairement</strong> dix symboles pour ces valeurs. On connait ces symboles par cœur, ce sont des conventions. Ils ne signifient rien par eux-même, nous leur avons donné cette signification.</p>
+<p>Ça c&#8217;est la première règle. La deuxième règle, c&#8217;est que quand on tombe à cours de symboles parceque la valeur est trop grande, on utilise <strong>la position</strong> des symboles pour dire combien de groupes de dizaines de symboles il y a.</p>
+<p>Par exemple avec ce nombre :</p>
+<pre>10</pre>
+<p>10 veut dire (en lisant de droite à gauche, ce sont des chiffres arabes, je le rappelle), 0 unité, et 1 groupe d&#8217;une dizaine.</p>
+<p>Si on a 587, on dit (toujours de droite à gauche) : il y a 7 unités et 8 groupes d&#8217;une dizaine et 5 groupes d&#8217;une <strong>dizaine de dizaines</strong>.</p>
+<p>La position du chiffre dit si l&#8217;on parle d&#8217;un groupe de 1, de 10, de 10 groupes de 10 (cent), de 10 groupes de 10 groupes de 10 (1000), etc.</p>
+<p>C&#8217;est pour ça qu&#8217;on parle de base 10. Tout est en groupe de 10. On fait des paquets de 10. Puis des paquets de 10 paquets de 10. Puis des paquets de 10 paquets de 10 paquets de 10&#8230;</p>
+<p>Exemple avec le nombre 1982 :</p>
+<pre>
+[1][9][8][2]
+ |  |  |  |
+ |  |  |  2 unités
+ |  |  8 groupes de 10
+ |  9 groupes de 10 groupes de 10 (10 x 10 = 100)
+1 groupe de 10 groupes de 10 groupes de 10 (10 x 10 x 10 = 1000)</pre>
+<p>Si on lit un chiffre comme un tableau en informatique (donc en commençant par 0), mais de droite à gauche, on peut utiliser les puissances pour noter ça de manière propre :</p>
+<pre>
+[1][9][8][2]
+ |  |  |  |
+ |  |  |  2 est à la place 0, sa "valeur" est 2 x 10^0 = 2 * 1 = 2
+ |  |  8 est à la place 1, sa "valeur" est 8 x 10^1 = 8 * 10 = 80
+ |  9 est à la place 2, sa "valeur" est 9 x 10^2 = 9 x 10 x 10 = 9 x 100 = 900
+1 est à la place 3, sa "valeur" est 1 x 10^3 = 1 x 10 x 10 x 10 = 1 x 1000 = 1000</pre>
+<p>Ça vous parait évident sans avoir à faire le calcul ? C&#8217;est parce que vous êtes tellement habitué à compter en base 10 que c&#8217;est automatique pour vous. Pourtant, en base 2, c&#8217;est <strong>exactement la même chose.</strong></p>
+<p>On a DEUX symboles pour représenter DEUX valeurs. On ne sait représenter que ces DEUX valeurs là.</p>
+<pre>
+  0
+* 1</pre>
+<p>Quand on tombe à cours de symbole parce qu&#8217;une valeur est trop grande, on utilise <strong>la position</strong> des symboles pour dire combien de groupes de deux symboles il y a.</p>
+<p>Par exemple avec ce nombre :</p>
+<pre>10</pre>
+<p>10, <strong>qui ne se prononce PAS dix</strong>, veut dire (en lisant de droite à gauche), 0 unité, et 1 groupe d&#8217;une paire. Donc deux en base 10 :-).</p>
+<p>Pour les chiffres plus longs, c&#8217;est kiff, kiff :</p>
+<pre>
+[1][1][1][0]
+ |  |  |  |
+ |  |  |  0 unité
+ |  |  1 groupes de 2
+ |  1 groupes de 2 groupes de 2 (2 x 2 = 4 en base 10)
+1 groupe de 2 groupes de 2 groupes de 2 (2 x 2 x 2 = 8 en base 10)</pre>
+<p>Donc en base 10 : 8 + 4 + 2, soit 14.</p>
+<p>Si on le représente en puissance de 2 :</p>
+<pre>
+[1][1][1][0]
+ |  |  |  |
+ |  |  |  0 est à la place 0, sa "valeur" est 0 x 2^0 = 0 * 1 = 0
+ |  |  1 est à la place 1, sa "valeur" est 1 x 2^1 = 1 * 2 = 2
+ |  1 est à la place 2, sa "valeur" est 1 x 2^2 = 1 x 2 x 2 = 1 x 4 = 4
+1 est à la place 3, sa "valeur" est 1 x 2^3 = 1 x 2 x 2 x 2 = 1 x 8 = 8</pre>
+<p>En gros pour convertir du binaire en base 10, il suffit de réciter les puissances de deux dans sa tête :</p>
+<p>2, 4, 8, 16, 32&#8230; (2 fois 2 = 4, 2 fois 4 = 8, 2 fois 8 = 16, 2 fois 16 = 32&#8230;)</p>
+<p>Et les appliquer de droite à gauche :</p>
+<pre>[1][0][1][1][1][0] => [1 * 32] + [0 * 16] + [1 * 8] + [1 * 4] + [1 * 2] + [O * 1] => 46 en base 10</pre>
+<p>Une illustration graphique ?</p>
+<p>Voici quarante-six étoiles :</p>
+<pre>**********************************************</pre>
+<p>Si je les représente en base 10, je noterais ça 46, soit 4 groupes de dizaines, et 6 unités :</p>
+<pre>
+    4          6
+
+**********   ******
+**********
+**********
+**********
+</pre>
+<p>Si je le représente en base 2, je le note 101110: soit 1 groupe de trente-deux, 0 groupe de seize, 1 groupe de huit, 1 groupe de quatre, 1 groupe de deux, et 0 unité.</p>
+<pre>
+                1                  0      1        1     1    0
+
+********************************   -   ********   ****   **   -</pre>
+<p>On peut faire ça avec n&#8217;importe quelle base. On peut compter en base 3 (ternaire) ou en base 4, 5, 6&#8230; On utilise notamment parfois en informatique la base 8 (octale) et la base 16 (hexadécimale). Pour cette base, il y a 16 symboles : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, représentant chacun une valeur, puis, quand on a plus de symbole, on utilise la position pour signaler un paquet de 16.</p>
+<h2>Passons au code</h2>
+<p>En Python on peut écrire un nombre en binaire en le préfixant de &#8217;0b&#8217;:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> 0b101110
+<span style="color: #ff4500;">46</span></pre></div></div>
+
+<p>Mais par défaut Python <strong>représente</strong> toujours à l&#8217;affichage ce nombre en base 10. La valeur derrière est la même de toute façon (qui, de manière amusante, est sockée en binaire).</p>
+<p>Si vous voulez forcer <strong>l&#8217;affichage</strong> du nombre en binaire, vous pouvez utilisez <code>bin()</code> ou <code>format()</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'Le nombre {0} en binaire donne : {0:b}'</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">46</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'Le nombre 46 en binaire donne : 101110'</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> bin<span style="color: black;">&#40;</span><span style="color: #ff4500;">46</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'0b101110'</span></pre></div></div>
+
+<p>A l&#8217;inverse, si vous avez une représentation textuelle d&#8217;un chiffre binaire, vous pouvez préciser la base via le second paramètre de <code>int()</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'101110'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># la base 10 est le réglage par défaut...</span>
+<span style="color: #ff4500;">101110</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'101110'</span>, <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ...donc on récupère cent un mille cent dix.</span>
+<span style="color: #ff4500;">101110</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'101110'</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># si on précise la base 2, on récupère quarante-six.</span>
+<span style="color: #ff4500;">46</span></pre></div></div>
+
+<p>Mais si on n&#8217;a pas codé sa petite fonction pour faire pareil à la main à 50 ans, on a raté sa vie. Donc, voici un exemple simple d&#8217;une fonction qui convertit une représentation textuelle d&#8217;un chiffre binaire en int Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> bin2dec<span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on rejette les chaînes vides</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> s:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'The string cannot be empty'</span><span style="color: black;">&#41;</span>
+&nbsp;
+    total = <span style="color: #ff4500;">0</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on itère sur la chaîne, de droite à gauche</span>
+    reversed_number = s<span style="color: black;">&#91;</span>::-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> pos, num <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>reversed_number<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on multiplie le chiffre en cours par la puissance de 2</span>
+        <span style="color: #808080; font-style: italic;"># qui correspond à sa position</span>
+        total += <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>num<span style="color: black;">&#41;</span> <span style="color: #66cc66;">*</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span> <span style="color: #66cc66;">**</span> pos<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> total
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>bin2dec<span style="color: black;">&#40;</span><span style="color: #483d8b;">'0'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>bin2dec<span style="color: black;">&#40;</span><span style="color: #483d8b;">'1'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>bin2dec<span style="color: black;">&#40;</span><span style="color: #483d8b;">'10'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>bin2dec<span style="color: black;">&#40;</span><span style="color: #483d8b;">'101'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>bin2dec<span style="color: black;">&#40;</span><span style="color: #483d8b;">'10011100'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## 0</span>
+<span style="color: #808080; font-style: italic;">## 1</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 5</span>
+<span style="color: #808080; font-style: italic;">## 156</span></pre></div></div>
+
+<p>Et la fonction inverse :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> division <span style="color: #808080; font-style: italic;"># pour être tous d'accord sur la division entière</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> dec2bin<span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>:
+&nbsp;
+    numbers = <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> i == <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> i
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On divise (avec la division entière) par deux jusqu'à ce qu'il ne reste</span>
+    <span style="color: #808080; font-style: italic;"># plus rien à diviser (on fait des paquets de 2, quoi).</span>
+    <span style="color: #808080; font-style: italic;"># Avant chaque division par deux, on regarde si il y aura un reste</span>
+    <span style="color: #808080; font-style: italic;"># pour la prochaine division. Si oui, on met 1 pour le paquet de 2 actuel,</span>
+    <span style="color: #808080; font-style: italic;"># sinon on met 0.</span>
+    <span style="color: #808080; font-style: italic;"># C'est comme pour la multiplication à la main (&quot;je met 2 et je retiens 1&quot;),</span>
+    <span style="color: #808080; font-style: italic;"># mais à l'envers.</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> i <span style="color: #66cc66;">!</span>= <span style="color: #ff4500;">0</span>:
+        numbers.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span>i <span style="color: #66cc66;">%</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        i = i // <span style="color: #ff4500;">2</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Ensuite on inverse tout ça et on join() tout en une belle string</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>numbers<span style="color: black;">&#91;</span>::-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>dec2bin<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>dec2bin<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>dec2bin<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>dec2bin<span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>dec2bin<span style="color: black;">&#40;</span><span style="color: #ff4500;">156</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## 0</span>
+<span style="color: #808080; font-style: italic;">## 1</span>
+<span style="color: #808080; font-style: italic;">## 10</span>
+<span style="color: #808080; font-style: italic;">## 101</span>
+<span style="color: #808080; font-style: italic;">## 10011100</span></pre></div></div>
+
+<h2>Et les opérateurs bitwise ?</h2>
+<p>Dans les tutos on voit souvent mélanger la notion de binaire, avec la représentation des nombres, du texte, et les opérateurs spécialisés dans la manipulation du binaire : </p>
+<pre>|, ^, ~, >>, <<, >>>, &#038;, etc</pre>
+<p>C&#8217;est le bordel.</p>
+<p>On les appelle ces opérateurs &#8220;bitwise&#8221;, et ils sont essentiellement de deux types : les shifts, et les opérateurs logiques.</p>
+<p>Les shifts, souvent notés <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, etc, décalent d&#8217;un bit. Un bit, c&#8217;est une case dans un nombre binaire, une d&#8217;un chiffre position, qui prend donc la valeur 0 ou 1.</p>
+<p>Ex: 1010 est un nombre de 4 bits. 10100 est un nombre de 5 bits.</p>
+<p>Par décaler, j&#8217;entends qu&#8217;ils poussent littéralement les bits dans un sens ou dans l&#8217;autre :</p>
+<p>1010 &gt;&gt; 1 va donner 101 (les bits se sont décalés vers la droite d&#8217;un cran, c&#8217;est le rshift). Ca fait disparaitre un bit à droite.<br />
+1010 &lt;&lt; 1 va donner 10100 (les bits se sont décalés vers la gauche d&#8217;un cran, c&#8217;est le lshift). Ca rajoute un bit à droite.</p>
+<p>Si on met un plus grand nombre, on décale de plusieurs bits :</p>
+<p>1010 &lt;&lt; 3 va donner 1010000 (les bits se sont décalés vers la gauche de 3 crans)</p>
+<p>C&#8217;est une opération très rapide, puisqu&#8217;il suffit de décaler les chiffres, sans faire de calculs complexes. Pourtant, c&#8217;est l&#8217;équivalent de certaines opérations mathématiques.</p>
+<p>Par exemple, un lshift peut être équivalent à une multiplication par une puissance de 2.</p>
+<p>Ainsi, si je prends le chiffre 10 en (binaire 1010), et que je lui applique un lshift de 3, c&#8217;est comme si je le multipliais par 2^3 (soit 8). Démo en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> 0b1010
+<span style="color: #ff4500;">10</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> 0b1010 <span style="color: #66cc66;">&lt;&lt;</span> <span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">80</span></pre></div></div>
+
+<p>Mais l&#8217;opération prend beaucoup moins de cycles CPU qu&#8217;une multiplication. C&#8217;est une astuce d&#8217;optimisation qui a été beaucoup utilisée au paléolithique et qui reste en vigueur chez les cryptonerds. Néanmoins ne l&#8217;utilisez pas en Python, les gains sont minimes. C&#8217;est surtout utile pour les codes C ou assembleur qui sont déjà sur optimisés et ont besoin de ce petit coup de pouce supplémentaire.</p>
+<p>Ensuite il y a les opérateurs logiques. Ils appliquent tout simplement la logique booléenne à chaque bit d&#8217;un nombre avec chaque bit d&#8217;un autre nombre dont la position correspond. Par exemple :</p>
+<p>Si je fais &#8220;1101 ET (représenté souvent par &#8216;&#038;&#8217;) 110&#8243;, je vais obtenir :</p>
+<pre>
+[1][1][0][1]
+ |  |  |  |
+ &#038;  &#038;  &#038;  &#038;
+ |  |  |  |
+[ ][1][1][0]
+ |  |  |  |
+ v  v  v  v
+ 0  1  0  0
+
+1 et rien => vrai ET faux ? => faux => 0
+1 et 1 => vrai ET vrai ? => vrai => 1
+0 et 1 => faux ET vrai ? => faux => 0
+1 et 0 => faux ET vrai ? => faux => 0
+</pre>
+<p>C&#8217;est de la logique booléenne de base, vous pouvez la tester avec <code>True</code>, <code>False</code>, <code>and</code> et <code>or</code> dans votre shell si ça ne vous parle pas.</p>
+<p>En code Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> bin<span style="color: black;">&#40;</span>0b1101 <span style="color: #66cc66;">&amp;</span> 0b100<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'0b100'</span></pre></div></div>
+
+<p>On l&#8217;utilise parfois pour faire ce qu&#8217;on appelle des &#8220;masques&#8221;, c&#8217;est à dire représenter une série d&#8217;états sous forme de grille de bits, et changer un état de cette grille en appliquant une opération logique avec une autre grille.</p>
+<p>Je sais, ça fait flou comme ça. Un exemple peut-être ?</p>
+<p>Les permissions d&#8217;un fichiers Unix sont Read (lire), Write (écrire) et Execute (exécuter). Soit &#8220;rwx&#8221;. Elles s&#8217;appliquent à User (utilisateur), Group (groupe), Other (autre), soit &#8220;ugo&#8221;.</p>
+<p>Cela est peut être représenté par 3 groupes de 3 bits, soit 9 bits :</p>
+<pre>
+    U         G         O
+[r][w][x] [r][w][x] [r][w][x]</pre>
+<p>1 veut dire que la permission est donnée, 0 veut dire qu&#8217;elle n&#8217;est pas donnée.</p>
+<p>Ainsi :</p>
+<pre>
+[1][1][1] [1][0][1] [1][0][1]</pre>
+<p>Veut dire que l&#8217;utilisateur à le droit de lire, écrire et exécuter le fichier. Le groupe et les autres n&#8217;ont que le droit de le lire et exécuter le fichier.</p>
+<p>Si vous mettez ça en base 10, ça donne 7/5/5 (et NON sept-cent-cinquante-cinq car il y a 3 valeurs). Cela  explique le fameux <code>chmod 755</code> que vous voyez dans tous les tutos bash.</p>
+<p>Si vous faites :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">chmod</span> g+<span style="color: #c20cb9; font-weight: bold;">w</span> fichier</pre></div></div>
+
+<p>Le programme va rajouter la permission d&#8217;écrire au groupe. On peut représenter cette opération par l&#8217;application d&#8217;une opération &#8220;OU&#8221; (représentée par &#8216;|&#8217;) :</p>
+<p>En effet on a 101 pour les permissions du groupe et on veut obtenir 111. Il suffit d&#8217;appliquer le masque 010 (qui correspond pile poil à un 1 à la case de la permission voulue) :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> bin<span style="color: black;">&#40;</span>0b101 | 0b010<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'0b111'</span></pre></div></div>
+
+<h2>Représentation des nombres dans un ordinateur</h2>
+<p>Cette partie c&#8217;est vraiment pour vos beaux yeux hein, ne vous en faites pas si vous ne pigez pas tout. Je ne vais pas dans le détail car ça demanderait un autre article complet, plus un comparatif des archis, des notions, des systèmes de typages des langages, etc. Et j&#8217;ai vraiment pas envie de le faire.</p>
+<p>Bon, déjà, la représentation des nombres dans un ordi, c&#8217;est une grande source de confusion : en effet, <strong>l’ordinateur ne stocke pas la représentation binaire directe d&#8217;un nombre</strong>.</p>
+<p>On pourrait se dire : l’ordinateur manipule du binaire, on traduit nos nombres en binaire, on fout tout tel quel dedans, et yala.</p>
+<p>Mais un ordinateur a des limitations techniques. Notamment, il possède des plages de mémoires d&#8217;un nombre de bits limité. Il faut donc faire tenir la représentation de la valeur sur cet espace limité.</p>
+<p>Si votre espace de mémoire pour représenter une valeur est limité à 16 bits et que vous devez stocker un nombre entier dedans, il pourra être au maximum 2^16 &#8211; 1 = 65535.</p>
+<p>C&#8217;est pour cela qu&#8217;en C on déclare le type d&#8217;une variable qui va contenir un nombre qu&#8217;on va manipuler. On dit clairement, &#8220;alloue moi cet espace mémoire, mon nombre ne sera jamais plus grand que ça&#8221;. En Python, c&#8217;est automatiquement et transparent.</p>
+<p>(C&#8217;est aussi pour ça qu&#8217;on parle de processeur 16bits, 32bits, 64bits, etc. C&#8217;est la taille des jeux d&#8217;instructions qu&#8217;ils sont capables de traiter en un cycle.)</p>
+<p>Mais il se rajoute une autre complexité : un entier peut avoir un signe plus ou un signe moins. Il faut bien le représenter quelque part. On peut le faire en utilisant le premier bit, mais aussi avec un format appelé &#8220;le complément à deux&#8221;. Comme cet article est déjà super long, je vais pas me lancer dans l&#8217;explication. J&#8217;ai mal aux doigts. Sachez juste qu&#8217;on utilise en quelque sorte &#8220;l&#8217;inverse&#8221; du nombre.</p>
+<p>Encore une fois, en C, on déclare que l&#8217;on va utiliser un &#8220;signed int&#8221; ou un &#8220;unsigned int&#8221; à l&#8217;initialisation d&#8217;une variable.</p>
+<p>Enfin, il y a les nombres à virgule, aussi appelés &#8220;flottants&#8221; (d&#8217;où le type &#8220;float&#8221; en Python).</p>
+<p>On pourrait se dire qu&#8217;on utilise les puissances de deux négatives :</p>
+<p>0.92 se lit en base 10 &#8220;0 x 1 + 9 x 10^-1 + 2 x 10^-2&#8243;</p>
+<p>On garderait la logique des positions.</p>
+<p>Donc :</p>
+<p>0.11 se lit en base 2 &#8220;0 x 1 + 1 x 2^-1 + 1 x 2^-1 + 1 x 2^-2&#8243;</p>
+<p>A priori on pourrait stocker le nombre en utilisant ce principe. Mais ça ne permet pas de présenter les nombres très grands (tendant vers l&#8217;infini) ou très petit (tendant vers zéro). Alors on utilise un autre principe : on représente un nombre avec la formule <code>m x 2^n</code>, très couramment sur 64 bits (ce que fait le type float Python, mais on peut avoir <a href="http://docs.scipy.org/doc/numpy/user/basics.types.html">plus de choix</a> de manoeuvre en utilisant numpy).</p>
+<p><code>m</code> est un nombre à virgule compris entre 1 et 2 (ce dernier étant exclus). On appelle ça la mantisse. Ce sera stocké sur 52 bits en utilisant une représentation binaire littérale.</p>
+<p><code>n</code> est l&#8217;exposant, c&#8217;est un nombre entier compris entre -1022 et 1023, stocké sur 11 bits.</p>
+<p>On garde le premier bit pour le signe.</p>
+<p>Et il y a des exceptions pour 0, l&#8217;infini et NaN.</p>
+<p>(et je n&#8217;ai pas la moindre putain d&#8217;idée de comment sont représentés les complexes)</p>
+<p>Si vous êtes en manque d&#8217;aspirine, tout ça est codifié dans la norme <a href="http://fr.wikipedia.org/wiki/IEEE_754">IEEE 754</a>, que Python respecte scrupuleusement.</p>
+<p>Mais ça vous fait une belle jambe pas vrai ?</p>
+<p>Tout ça pour dire que même avec une belle précision, le nombre de chiffres stockés après la virgule est limité. Du coup, on a une valeur <strong>approximative</strong> stockée dans l&#8217;ordi, ce qui fait que les calculs se font sur des approximations :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;{0:.35f}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0.9999999999999999999999999999999999999999999999999999999</span> + <span style="color: #ff4500;">0.000000000000000000001</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'1.00000000000000000000000000000000000'</span></pre></div></div>
+
+<p>En Python on peut gagner en précision en utilisant le module <code>decimal</code>:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">decimal</span> <span style="color: #ff7700;font-weight:bold;">import</span> Decimal
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Decimal<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;0.9999999999999999999999999999999999999999999999999999999&quot;</span><span style="color: black;">&#41;</span> + Decimal<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;0.000000000000000000001&quot;</span><span style="color: black;">&#41;</span>
+Decimal<span style="color: black;">&#40;</span><span style="color: #483d8b;">'1.000000000000000000001000000'</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>C&#8217;est plus lent, mais plus intuitif. Quand on manipule des sous, du temps, des unités de poids, de température, de longueur, etc, c&#8217;est utile.</p>
+<h2>Représentation du texte</h2>
+<p>Pour le texte, c&#8217;est encore autre chose. Et là je vous renvoie à l&#8217;<a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">article sur les encodings</a>.</p>
+<p>En résumé, le stockage du texte n&#8217;a rien à avoir avec l&#8217;arithmétique binaire, c&#8217;est juste qu&#8217;on fait correspondre un nombre (on montre souvent sa représentation binaire pour l&#8217;ASCII et sa représentation hexa pour l&#8217;unicode, mais ça reste un nombre, point) à un caractère. Il y a un grand tableau en mémoire qui fait cette correspondance de manière totalement arbitraire. </p>
+<p><strong>C&#8217;est une norme arbitraire de correspondance, c&#8217;est tout.</strong></p>
+<p>Donc quand on vous dit &#8220;ecrivez les mots &#8216;glory hole&#8217; en binaire&#8221;, <strong>ça ne veut rien dire</strong>.</p>
+<p>Une bonne consigne serait de dire : &#8220;donnez moi la suite de nombres, représentés sous forme binaire, qui corresponde aux caractères qui compose les mots &#8216;glory hole&#8217; selon l&#8217;encoding ASCII&#8221;.</p>
+<p>On peut obtenir la valeur numérique ASCII en utilisant <code>ord()</code> en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #483d8b;">'glory hole'</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #008000;">ord</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: #ff4500;">103</span>
+<span style="color: #ff4500;">108</span>
+<span style="color: #ff4500;">111</span>
+<span style="color: #ff4500;">114</span>
+<span style="color: #ff4500;">121</span>
+<span style="color: #ff4500;">32</span>
+<span style="color: #ff4500;">104</span>
+<span style="color: #ff4500;">111</span>
+<span style="color: #ff4500;">108</span>
+<span style="color: #ff4500;">101</span></pre></div></div>
+
+<p>Après, c&#8217;est juste du formatage pour afficher le binaire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #483d8b;">'glory hole'</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;{:b}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #008000;">ord</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: #ff4500;">1100111</span>
+<span style="color: #ff4500;">1101100</span>
+<span style="color: #ff4500;">1101111</span>
+<span style="color: #ff4500;">1110010</span>
+<span style="color: #ff4500;">1111001</span>
+<span style="color: #ff4500;">100000</span>
+<span style="color: #ff4500;">1101000</span>
+<span style="color: #ff4500;">1101111</span>
+<span style="color: #ff4500;">1101100</span>
+<span style="color: #ff4500;">1100101</span></pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8808&amp;md5=d36e3a0ab4132d5ca90d332dc6b67d99" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/feed/</wfw:commentRss>
+		<slash:comments>46</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fla-fin-du-mystere-du-binaire-nananere%2F&amp;language=en_GB&amp;category=text&amp;title=La+fin+du+myst%C3%A8re+du+binaire+%28nanan%C3%A8re%29&amp;description=Quand+mon+voisin+de+table+en+cours+de+SVT+a+commenc%C3%A9+%C3%A0+m%26%238217%3Bexpliquer+le+binaire+%28il+programmait+en+assembleur+sur+sa+TI89%29%2C+j%26%238217%3Bai+pas+bien+pig%C3%A9.+Des+ann%C3%A9es+plus+tard%2C...&amp;tags=base+10%2Cbase+2%2Cbinaire%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/JQXdcds.gif" length="511572" type="image/jpg" />	</item>
+		<item>
+		<title>plist, pickle, hdf5, protocol buffers&#8230; : les formats binaires</title>
+		<link>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/</link>
+		<comments>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/#comments</comments>
+		<pubDate>Mon, 15 Jul 2013 19:24:18 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[binaire]]></category>
+		<category><![CDATA[bson]]></category>
+		<category><![CDATA[format]]></category>
+		<category><![CDATA[hdf5]]></category>
+		<category><![CDATA[json]]></category>
+		<category><![CDATA[msgpack]]></category>
+		<category><![CDATA[pickle]]></category>
+		<category><![CDATA[plist]]></category>
+		<category><![CDATA[protocol buffer]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[serialisation]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6654</guid>
+		<description><![CDATA[Dans un article précédent, on avait fait un petit tour des formats texte, et j'avais promis qu'on verrait les formats binaires.
+
+Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.]]></description>
+			<content:encoded><![CDATA[<p>Dans <a href="http://sametmax.com/yaml-xml-json-csv-ini-quest-ce-que-cest-et-a-quoi-ca-sert/">un article précédent</a>, on avait fait un petit tour des formats texte, et j&#8217;avais promis qu&#8217;on verrait les formats binaires.</p>
+<p>Contrairement à cette fois là, je vais faire un peu plus technique, et donc <strong>il est probable que ça ne parle pas aux non informaticiens</strong>.</p>
+<p>Avant toute chose, il faut faire un peu de ménage. En effet, tous les formats de données sont des formats binaires, même les formats texte. Quand bien même on retire les formats texte par convention, tout le reste sont des formats binaires.</p>
+<p>tar.gz, zip, 7zip, rar, iso, dmg et compagnie sont des formats binaires. Il servent à l&#8217;archivage.</p>
+<p>doc, xls, ppt, pps, etc. sont des formats binaires. Ils servent à sauvegarder un document édité sous une suite Microsoft Office.</p>
+<p>jpg, tiff, png, gif ou webp sont des formats binaires. Ils servent à représenter des images.</p>
+<p>wav, mp3, ogg, acc, opus et monkey sont des formats binaires. Ils servent à stocker des données sonores.</p>
+<p>mkv, avi, mov, mp4, ogm, webm&#8230; sont des formats binaires. Ils servent à contenir des informations vidéos.</p>
+<p>Bref, tout fichier est un format binaire, toute donnée transmise d&#8217;un système informatique à un autre est un format binaire.</p>
+<p>Alors qu&#8217;est-ce qu&#8217;on entend ici par &#8220;format binaire&#8221; ?</p>
+<p>Principalement, format de <strong>sérialisation</strong> binaire.</p>
+<p>En effet JSON, XML ou CSV sont avant tout, bien que pas uniquement, des formats de sérialisation, et nous allons donc voir des équivalents dans le monde du binaire. Attention cependant, il existe de centaines de formats, et beaucoup sont très utilisés même si je n&#8217;en ai jamais entendu parler. Les formats de sérialisation binaires sont en effet moins universels, c&#8217;est à dire qu&#8217;on les retrouve plus souvent liés à un usage ou un corps de métier. Les scientifiques ont les leurs, les industriels les leurs, les concepteurs d&#8217;OS les leurs, les constructeur de matériel les leurs, etc. Le fait que je ne les connaisse pas ne veut pas du tout dire qu&#8217;ils ne sont pas massivement utilisés. Cela veut juste dire que je ne les ai jamais croisés dans mon activité.</p>
+<p>Par ailleurs je ne présenterai pas tous ceux que j&#8217;ai effectivement croisés. Voyez l&#8217;article comme une base de travail qui va vous permettre d&#8217;évaluer les autres formats binaires plutôt qu&#8217;un listing exhaustif.</p>
+<p>En théorie, on distingue des données binaires, et des données encodées en binaire. En pratique, on s&#8217;en branle.</p>
+<h2>Séria-quoi ?</h2>
+<p>A la conception d&#8217;un programme se pose la question de savoir comment stocker ses données dans un fichier ou les transmettre par le réseau. Vous avez vos données sous forme de code, par exemple en Python une collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes, etc. Ces objets, il va falloir les transformer en quelque chose qui puisse sauvegardé dans un fichier. Ou envoyé sur le réseau.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la sérialisation.</p>
+<p>Quand on lit le fichier ou que l&#8217;on récupère la donnée via un réseau, on doit la transformer pour obtenir des objets manipulables sous forme de code : les collections d&#8217;instances de vos propres classes, des dictionnaires, des listes, des entiers, des chaînes qui étaient là à l&#8217;origine.</p>
+<p>Cette opération de transformation, c&#8217;est ce qu&#8217;on appelle la dé-sérialisation.</p>
+<p>Prenons un exemple en Python. J&#8217;ai une classe <code>Personne()</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Personne<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+...    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>nom, age<span style="color: black;">&#41;</span>:
+...         <span style="color: #008000;">self</span>.<span style="color: black;">nom</span> = nom
+...         <span style="color: #008000;">self</span>.<span style="color: black;">age</span> = age</pre></div></div>
+
+<p>Et j&#8217;ai un calendrier qui liste les personnes présentes selon les jours de la semaine :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> gertrude = Personne<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> monique = Personne<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Monique&quot;</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> jenifer = Personne<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Jenifer&quot;</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> cal = <span style="color: black;">&#123;</span>
+<span style="color: #483d8b;">&quot;lundi&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mardi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mercredi&quot;</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;jeudi&quot;</span>: <span style="color: black;">&#91;</span>monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;vendredi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;samedi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;dimanche&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>
+<span style="color: black;">&#125;</span></pre></div></div>
+
+<p>On a donc un format riche ici, avec plusieurs types imbriqués : du dico, de la liste, de l&#8217;instance de classe perso, de l&#8217;entier et des strings. On a donc des primitives, des données associatives, des séquences ordonnées et un structure complexe.</p>
+<p>Pour sauvegarder ça dans un fichier ou le faire passer sur un réseau, il va falloir écrire un sacré bout de code. Par exemple si vous voulez le transformer en XML ou en JSON, il n&#8217;y a pas de type &#8220;Personne&#8221; dans ces formats. Il va donc falloir vous mettre d&#8217;accord sur une convention, écrire le code qui génère les données formatées selon cette convention, et également le code qui permet de lire ces données formatées et recréer les bons objets derrière. Sans parler du fait que la techno qui écrit ne va peut être pas être celle qui lit. C&#8217;est ça, la problématique de la sérialisation.</p>
+<p>Les formats binaires se prêtent bien au jeu de la sérialisation, bien qu&#8217;ils puissent, eux aussi, servir à bien d&#8217;autre chose. Il sont compacts, et non limités par un besoin de lisibilité, ils contiennent souvent des moyens de contenir des données au format complexe. Ils sont aussi en général rapides à traiter, et prennent peu de place.</p>
+<h2>Pickle</h2>
+<p><a href="http://docs.python.org/2/library/pickle.html?highlight=pickle#pickle">Pickle</a> est un format de sérialisation spécialisé pour Python. Seul un programme Python peut écrire et lire du Pickle, même si <a href="https://github.com/terryf/Phpickle">des projets existent</a> pour faire le pont avec d&#8217;autres langages.</p>
+<p>Voilà ce que ça donne à l&#8217;usage, en reprenant notre calendrier précédent :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">pickle</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">pickle</span>.<span style="color: black;">dumps</span><span style="color: black;">&#40;</span>cal<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">&quot;(dp0<span style="color: #000099; font-weight: bold;">\n</span>Vmardi<span style="color: #000099; font-weight: bold;">\n</span>p1<span style="color: #000099; font-weight: bold;">\n</span>(lp2<span style="color: #000099; font-weight: bold;">\n</span>ccopy_reg<span style="color: #000099; font-weight: bold;">\n</span>_reconstructor<span style="color: #000099; font-weight: bold;">\n</span>p3<span style="color: #000099; font-weight: bold;">\n</span>(c__main__<span style="color: #000099; font-weight: bold;">\n</span>Personne<span style="color: #000099; font-weight: bold;">\n</span>p4<span style="color: #000099; font-weight: bold;">\n</span>c__builtin__<span style="color: #000099; font-weight: bold;">\n</span>object<span style="color: #000099; font-weight: bold;">\n</span>p5<span style="color: #000099; font-weight: bold;">\n</span>Ntp6<span style="color: #000099; font-weight: bold;">\n</span>Rp7<span style="color: #000099; font-weight: bold;">\n</span>(dp8<span style="color: #000099; font-weight: bold;">\n</span>S'nom'<span style="color: #000099; font-weight: bold;">\n</span>p9<span style="color: #000099; font-weight: bold;">\n</span>VGertrude<span style="color: #000099; font-weight: bold;">\n</span>p10<span style="color: #000099; font-weight: bold;">\n</span>sS'age'<span style="color: #000099; font-weight: bold;">\n</span>p11<span style="color: #000099; font-weight: bold;">\n</span>I18<span style="color: #000099; font-weight: bold;">\n</span>sbag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp12<span style="color: #000099; font-weight: bold;">\n</span>Rp13<span style="color: #000099; font-weight: bold;">\n</span>(dp14<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VMonique<span style="color: #000099; font-weight: bold;">\n</span>p15<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I12<span style="color: #000099; font-weight: bold;">\n</span>sbasVsamedi<span style="color: #000099; font-weight: bold;">\n</span>p16<span style="color: #000099; font-weight: bold;">\n</span>(lp17<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag13<span style="color: #000099; font-weight: bold;">\n</span>ag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp18<span style="color: #000099; font-weight: bold;">\n</span>Rp19<span style="color: #000099; font-weight: bold;">\n</span>(dp20<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VJenifer<span style="color: #000099; font-weight: bold;">\n</span>p21<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I97<span style="color: #000099; font-weight: bold;">\n</span>sbasVvendredi<span style="color: #000099; font-weight: bold;">\n</span>p22<span style="color: #000099; font-weight: bold;">\n</span>(lp23<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag19<span style="color: #000099; font-weight: bold;">\n</span>asVjeudi<span style="color: #000099; font-weight: bold;">\n</span>p24<span style="color: #000099; font-weight: bold;">\n</span>(lp25<span style="color: #000099; font-weight: bold;">\n</span>g13<span style="color: #000099; font-weight: bold;">\n</span>asVlundi<span style="color: #000099; font-weight: bold;">\n</span>p26<span style="color: #000099; font-weight: bold;">\n</span>(lp27<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVdimanche<span style="color: #000099; font-weight: bold;">\n</span>p28<span style="color: #000099; font-weight: bold;">\n</span>(lp29<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVmercredi<span style="color: #000099; font-weight: bold;">\n</span>p30<span style="color: #000099; font-weight: bold;">\n</span>(lp31<span style="color: #000099; font-weight: bold;">\n</span>s.&quot;</span></pre></div></div>
+
+<p>Ce blougi blouga est une représentation sérialisée de notre calendrier. Si vous le sauvegardez dans un fichier ou que vous l&#8217;envoyez à un autre programme Python, il peut récupérer les objets initiaux :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> cal2 = <span style="color: #dc143c;">pickle</span>.<span style="color: black;">loads</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;(dp0<span style="color: #000099; font-weight: bold;">\n</span>Vmardi<span style="color: #000099; font-weight: bold;">\n</span>p1<span style="color: #000099; font-weight: bold;">\n</span>(lp2<span style="color: #000099; font-weight: bold;">\n</span>ccopy_reg<span style="color: #000099; font-weight: bold;">\n</span>_reconstructor<span style="color: #000099; font-weight: bold;">\n</span>p3<span style="color: #000099; font-weight: bold;">\n</span>(c__main__<span style="color: #000099; font-weight: bold;">\n</span>Personne<span style="color: #000099; font-weight: bold;">\n</span>p4<span style="color: #000099; font-weight: bold;">\n</span>c__builtin__<span style="color: #000099; font-weight: bold;">\n</span>object<span style="color: #000099; font-weight: bold;">\n</span>p5<span style="color: #000099; font-weight: bold;">\n</span>Ntp6<span style="color: #000099; font-weight: bold;">\n</span>Rp7<span style="color: #000099; font-weight: bold;">\n</span>(dp8<span style="color: #000099; font-weight: bold;">\n</span>S'nom'<span style="color: #000099; font-weight: bold;">\n</span>p9<span style="color: #000099; font-weight: bold;">\n</span>VGertrude<span style="color: #000099; font-weight: bold;">\n</span>p10<span style="color: #000099; font-weight: bold;">\n</span>sS'age'<span style="color: #000099; font-weight: bold;">\n</span>p11<span style="color: #000099; font-weight: bold;">\n</span>I18<span style="color: #000099; font-weight: bold;">\n</span>sbag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp12<span style="color: #000099; font-weight: bold;">\n</span>Rp13<span style="color: #000099; font-weight: bold;">\n</span>(dp14<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VMonique<span style="color: #000099; font-weight: bold;">\n</span>p15<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I12<span style="color: #000099; font-weight: bold;">\n</span>sbasVsamedi<span style="color: #000099; font-weight: bold;">\n</span>p16<span style="color: #000099; font-weight: bold;">\n</span>(lp17<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag13<span style="color: #000099; font-weight: bold;">\n</span>ag3<span style="color: #000099; font-weight: bold;">\n</span>(g4<span style="color: #000099; font-weight: bold;">\n</span>g5<span style="color: #000099; font-weight: bold;">\n</span>Ntp18<span style="color: #000099; font-weight: bold;">\n</span>Rp19<span style="color: #000099; font-weight: bold;">\n</span>(dp20<span style="color: #000099; font-weight: bold;">\n</span>g9<span style="color: #000099; font-weight: bold;">\n</span>VJenifer<span style="color: #000099; font-weight: bold;">\n</span>p21<span style="color: #000099; font-weight: bold;">\n</span>sg11<span style="color: #000099; font-weight: bold;">\n</span>I97<span style="color: #000099; font-weight: bold;">\n</span>sbasVvendredi<span style="color: #000099; font-weight: bold;">\n</span>p22<span style="color: #000099; font-weight: bold;">\n</span>(lp23<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>ag19<span style="color: #000099; font-weight: bold;">\n</span>asVjeudi<span style="color: #000099; font-weight: bold;">\n</span>p24<span style="color: #000099; font-weight: bold;">\n</span>(lp25<span style="color: #000099; font-weight: bold;">\n</span>g13<span style="color: #000099; font-weight: bold;">\n</span>asVlundi<span style="color: #000099; font-weight: bold;">\n</span>p26<span style="color: #000099; font-weight: bold;">\n</span>(lp27<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVdimanche<span style="color: #000099; font-weight: bold;">\n</span>p28<span style="color: #000099; font-weight: bold;">\n</span>(lp29<span style="color: #000099; font-weight: bold;">\n</span>g7<span style="color: #000099; font-weight: bold;">\n</span>asVmercredi<span style="color: #000099; font-weight: bold;">\n</span>p30<span style="color: #000099; font-weight: bold;">\n</span>(lp31<span style="color: #000099; font-weight: bold;">\n</span>s.&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>cal2<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'dict'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> jour, personnes <span style="color: #ff7700;font-weight:bold;">in</span> cal2.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>jour<span style="color: black;">&#41;</span>
+...     <span style="color: #ff7700;font-weight:bold;">for</span> personne <span style="color: #ff7700;font-weight:bold;">in</span> personnes:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\t</span>- {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>personne.<span style="color: black;">nom</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">mardi</span>
+    - Gertrude
+    - Monique
+samedi
+    - Gertrude
+    - Monique
+    - Jenifer
+vendredi
+    - Gertrude
+    - Jenifer
+jeudi
+    - Monique
+lundi
+    - Gertrude
+dimanche
+    - Gertrude
+mercredi</pre></div></div>
+
+<p>On utilisera Pickle essentiellement par fainéantise, quand on veut sauvegarder des objets Python et qu&#8217;on souhaite les récupérer plus tard, mais qu&#8217;on ne veut pas coder un code de sérialisation. Il existe des formes hybrides de cette approche, comme <a href="http://jsonpickle.github.io/">cette lib</a> qui essaye de mélanger JSON et une forme de sérialisation d&#8217;objets complexes.</p>
+<p>Quel que soit l&#8217;approche choisit, restaurer des objets complets, et non juste des primitives, comporte sont lot de risques de sécurité. En effet, un fichier Pickle malicieux sera exécuté comme code Python valide sans aucune vérification.</p>
+<p>A noter que Python vient avec un autre format de sérialisation : <a href="http://docs.python.org/2/library/marshal.html">marshall</a>. Il est utilisé par Python en interne pour les fichiers .pyc et n&#8217;est pas recommandé pour un usage de persistance de données car le format évolue avec les versions de Python.</p>
+<h2>plist</h2>
+<p>Il existe de nombreux formats binaires qu&#8217;utilisent les OS comme .DS_store ou Thumbs.db. plist est l&#8217;un deux, et on va le voir parce qu&#8217;il est relativement simple à comprendre par rapport aux autres. Le principe est le même pour tous : on a des données, on les stock dans le fichier.</p>
+<p>plist est un format qui existe aujourd&#8217;hui en XML, preuve que le même rôle peut très bien être rempli par deux formats différents. Il sert à stocker les réglages qu&#8217;on effectue dans le finder de Mac OS X, et ceux pour chaque dossier. Il sait représenter les types suivant : string, nombre, boolean, date, array, dictionnaire et des données arbitraires en base64 (un encodage binaire représentable sous forme de texte. Qu&#8217;est-ce qu&#8217;on se marre ^^).</p>
+<p>Ce qui signifie par exemple, qu&#8217;il n&#8217;est pas capable de représenter un objet <strong>Personne()</strong> tel quel. Par contre il a des équivalents des types list, int, str, etc, ce qui en fait un format facile à manipuler en Python, surtout étant donné que la lib standard contient <a href="http://docs.python.org/2/library/plistlib.html?highlight=plist#plistlib">un module pour ça</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">gertrude = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>
+monique = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Monique&quot;</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+jenifer = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Jenifer&quot;</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>
+cal = <span style="color: black;">&#123;</span>
+<span style="color: #483d8b;">&quot;lundi&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mardi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;mercredi&quot;</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;jeudi&quot;</span>: <span style="color: black;">&#91;</span>monique<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;vendredi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;samedi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique, jenifer<span style="color: black;">&#93;</span>,
+<span style="color: #483d8b;">&quot;dimanche&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>
+<span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> gertrude = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> monique = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Monique&quot;</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> jenifer = <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Jenifer&quot;</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> cal = <span style="color: black;">&#123;</span>
+... <span style="color: #483d8b;">&quot;lundi&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;mardi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;mercredi&quot;</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;jeudi&quot;</span>: <span style="color: black;">&#91;</span>monique<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;vendredi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, jenifer<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;samedi&quot;</span>: <span style="color: black;">&#91;</span>gertrude, monique, jenifer<span style="color: black;">&#93;</span>,
+... <span style="color: #483d8b;">&quot;dimanche&quot;</span>: <span style="color: black;">&#91;</span>gertrude<span style="color: black;">&#93;</span>
+... <span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> plistlib.<span style="color: black;">writePlistToString</span><span style="color: black;">&#40;</span>cal<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;plist version=&quot;1.0&quot;&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;dict&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;dimanche&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;jeudi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Monique&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;12&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;lundi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;mardi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Monique&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;12&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;mercredi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;samedi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Monique&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;12&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Jenifer&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;97&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;key&gt;vendredi&lt;/key&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Gertrude&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;18&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;string&gt;Jenifer&lt;/string&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;integer&gt;97&lt;/integer&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&lt;/array&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;/dict&gt;<span style="color: #000099; font-weight: bold;">\n</span>&lt;/plist&gt;<span style="color: #000099; font-weight: bold;">\n</span>'</span></pre></div></div>
+
+<p>Bon, là j&#8217;ai un peu foiré mon exemple parce que la lib standard, elle pond la version XML (puisque la version binaire est obsolète), pas la version binaire de plist, et maintenant que j&#8217;ai écris tout ça, ça me fait chier de tout refaire. Heureusement j&#8217;ai trouvé <a href="https://github.com/wooster/biplist">une lib sur le net</a> qui va sauver mon honneur :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> biplist.<span style="color: black;">writePlistToString</span><span style="color: black;">&#40;</span>cal<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'bplist00bybiplist1.0<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>d7<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>02<span style="color: #000099; font-weight: bold;">\x</span>03<span style="color: #000099; font-weight: bold;">\x</span>04<span style="color: #000099; font-weight: bold;">\x</span>05<span style="color: #000099; font-weight: bold;">\x</span>06<span style="color: #000099; font-weight: bold;">\x</span>07<span style="color: #000099; font-weight: bold;">\x</span>08<span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\x</span>0b<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\x</span>0ee<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00if<span style="color: #000099; font-weight: bold;">\x</span>00s<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00v<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00j<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00l<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00h<span style="color: #000099; font-weight: bold;">\x</span>00eh<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>0f<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12h<span style="color: #000099; font-weight: bold;">\x</span>00G<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00t<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14g<span style="color: #000099; font-weight: bold;">\x</span>00M<span style="color: #000099; font-weight: bold;">\x</span>00o<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00q<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\x</span>a3<span style="color: #000099; font-weight: bold;">\x</span>15<span style="color: #000099; font-weight: bold;">\x</span>16<span style="color: #000099; font-weight: bold;">\x</span>17<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19g<span style="color: #000099; font-weight: bold;">\x</span>00J<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00f<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>10a<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>1a<span style="color: #000099; font-weight: bold;">\x</span>1b<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1c<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1d<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1e<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a0<span style="color: #000099; font-weight: bold;">\x</span>15$/&lt;MXct<span style="color: #000099; font-weight: bold;">\x</span>85<span style="color: #000099; font-weight: bold;">\x</span>b2<span style="color: #000099; font-weight: bold;">\x</span>d0<span style="color: #000099; font-weight: bold;">\x</span>d9<span style="color: #000099; font-weight: bold;">\x</span>de<span style="color: #000099; font-weight: bold;">\x</span>e3<span style="color: #000099; font-weight: bold;">\x</span>e8<span style="color: #000099; font-weight: bold;">\x</span>88<span style="color: #000099; font-weight: bold;">\x</span>9e<span style="color: #000099; font-weight: bold;">\x</span>8b<span style="color: #000099; font-weight: bold;">\x</span>9c<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>b0<span style="color: #000099; font-weight: bold;">\x</span>b6<span style="color: #000099; font-weight: bold;">\x</span>b9<span style="color: #000099; font-weight: bold;">\x</span>bc<span style="color: #000099; font-weight: bold;">\x</span>bf<span style="color: #000099; font-weight: bold;">\x</span>ce<span style="color: #000099; font-weight: bold;">\x</span>d3<span style="color: #000099; font-weight: bold;">\x</span>d6<span style="color: #000099; font-weight: bold;">\x</span>db<span style="color: #000099; font-weight: bold;">\x</span>e0<span style="color: #000099; font-weight: bold;">\x</span>e5<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>1f<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>e9'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> biplist.<span style="color: black;">readPlistFromString</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'bplist00bybiplist1.0<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>d7<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>02<span style="color: #000099; font-weight: bold;">\x</span>03<span style="color: #000099; font-weight: bold;">\x</span>04<span style="color: #000099; font-weight: bold;">\x</span>05<span style="color: #000099; font-weight: bold;">\x</span>06<span style="color: #000099; font-weight: bold;">\x</span>07<span style="color: #000099; font-weight: bold;">\x</span>08<span style="color: #000099; font-weight: bold;">\t</span><span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\x</span>0b<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\x</span>0ee<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00if<span style="color: #000099; font-weight: bold;">\x</span>00s<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00v<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00j<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ie<span style="color: #000099; font-weight: bold;">\x</span>00l<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00ih<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00a<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00h<span style="color: #000099; font-weight: bold;">\x</span>00eh<span style="color: #000099; font-weight: bold;">\x</span>00m<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00c<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>0f<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12h<span style="color: #000099; font-weight: bold;">\x</span>00G<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00t<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00d<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14g<span style="color: #000099; font-weight: bold;">\x</span>00M<span style="color: #000099; font-weight: bold;">\x</span>00o<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00q<span style="color: #000099; font-weight: bold;">\x</span>00u<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>0c<span style="color: #000099; font-weight: bold;">\x</span>a3<span style="color: #000099; font-weight: bold;">\x</span>15<span style="color: #000099; font-weight: bold;">\x</span>16<span style="color: #000099; font-weight: bold;">\x</span>17<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19g<span style="color: #000099; font-weight: bold;">\x</span>00J<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00n<span style="color: #000099; font-weight: bold;">\x</span>00i<span style="color: #000099; font-weight: bold;">\x</span>00f<span style="color: #000099; font-weight: bold;">\x</span>00e<span style="color: #000099; font-weight: bold;">\x</span>00r<span style="color: #000099; font-weight: bold;">\x</span>10a<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>1a<span style="color: #000099; font-weight: bold;">\x</span>1b<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>18<span style="color: #000099; font-weight: bold;">\x</span>19<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1c<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>13<span style="color: #000099; font-weight: bold;">\x</span>14<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1d<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>1e<span style="color: #000099; font-weight: bold;">\x</span>a2<span style="color: #000099; font-weight: bold;">\x</span>11<span style="color: #000099; font-weight: bold;">\x</span>12<span style="color: #000099; font-weight: bold;">\x</span>a0<span style="color: #000099; font-weight: bold;">\x</span>15$/&lt;MXct<span style="color: #000099; font-weight: bold;">\x</span>85<span style="color: #000099; font-weight: bold;">\x</span>b2<span style="color: #000099; font-weight: bold;">\x</span>d0<span style="color: #000099; font-weight: bold;">\x</span>d9<span style="color: #000099; font-weight: bold;">\x</span>de<span style="color: #000099; font-weight: bold;">\x</span>e3<span style="color: #000099; font-weight: bold;">\x</span>e8<span style="color: #000099; font-weight: bold;">\x</span>88<span style="color: #000099; font-weight: bold;">\x</span>9e<span style="color: #000099; font-weight: bold;">\x</span>8b<span style="color: #000099; font-weight: bold;">\x</span>9c<span style="color: #000099; font-weight: bold;">\x</span>a1<span style="color: #000099; font-weight: bold;">\x</span>b0<span style="color: #000099; font-weight: bold;">\x</span>b6<span style="color: #000099; font-weight: bold;">\x</span>b9<span style="color: #000099; font-weight: bold;">\x</span>bc<span style="color: #000099; font-weight: bold;">\x</span>bf<span style="color: #000099; font-weight: bold;">\x</span>ce<span style="color: #000099; font-weight: bold;">\x</span>d3<span style="color: #000099; font-weight: bold;">\x</span>d6<span style="color: #000099; font-weight: bold;">\x</span>db<span style="color: #000099; font-weight: bold;">\x</span>e0<span style="color: #000099; font-weight: bold;">\x</span>e5<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>01<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>1f<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>00<span style="color: #000099; font-weight: bold;">\x</span>e9'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'mardi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Monique'</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'samedi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Monique'</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Jenifer'</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'vendredi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span>, <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Jenifer'</span>, <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'jeudi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Monique'</span>, <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'lundi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'dimanche'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Gertrude'</span>, <span style="color: #ff4500;">18</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>, <span style="color: #483d8b;">'mercredi'</span>: <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span></pre></div></div>
+
+<p>Pourquoi utiliser plist ? A part quand on est en Objectif-C où c&#8217;est le format le plus simple à parser ou si on veut communiquer avec finder, il n&#8217;y a pas vraiment de raison. C&#8217;est le cas typique d&#8217;un format qui a été créé parce qu&#8217;à l&#8217;époque il n&#8217;y avait rien d&#8217;aussi bien, les parsers XML étaient alors trop lents pour scanner toutes les plist de tous les dossiers récursivement.</p>
+<h2>hdf5</h2>
+<p>hdf5 est très intéressant, c&#8217;est le cas typique d&#8217;un format qui existe pour un usage très très particulier, et que des formats ordinaires ne comblent pas, ne peuvent pas par nature combler. C&#8217;est un format cross-plateforme qui peut contenir de très grosses quantités de données numériques (un fichier peut avoir une taille virtuellement illimitée), et les manipuler pour faire des calculs complexes. Cela ressemble à un système de fichiers&#8230; qui tient dans un fichier. En effet, il peut contenir une arborescence de données, et gère la compression transparente, mais les données sont essentiellement des arrays à plusieurs dimensions, appelés ici datasets.</p>
+<p>On peut y mettre des arrays, des labels, des attributs, organiser tout ça par groupe et même avoir des références vers des données extérieures. L&#8217;avantage c&#8217;est qu&#8217;on peut bosser dessus presque de manière transparente, comme si c&#8217;était en RAM. Tout ce qui est array est stocké tel quel, et donc très rapide d&#8217;accès (bien plus qu&#8217;une colonne de base SQL), pour le reste, c&#8217;est indexé avec arbre binaire, donc facilement triable.</p>
+<p>Pour manipuler ce format avec Python, on va utiliser la lib <a href="http://www.h5py.org">h5py</a> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">sudo apt-get install libhdf5-serial-dev python-dev <span style="color: #808080; font-style: italic;"># sur ubuntu en tout cas</span>
+pip install numpy
+pip install h5py</pre></div></div>
+
+<p>La normalement, ça compile à mort pendant 10 minutes.</p>
+<p>Et pif paf pouf :</p>
+<p>>>> import numpy # hdf5 s&#8217;utilise beaucoup avec les libs scientifiques type numpy<br />
+>>> import h5py<br />
+>>> array = numpy.ones((1000000000, 1000000000)) # une grosse matrice<br />
+>>> f = h5py.File(&#8216;data.hdf5&#8242;)<br />
+>>> dset = f.create_dataset(&#8220;Nom du dataset&#8221;, data=array)<br />
+>>> dset<br />
+<HDF5 dataset "Nom du dataset": shape (100, 100), type "<i8"><br />
+>>> f.close()</p>
+<p>Et voilà, on vient de créer array contenant 1000000000 lignes de 1000000000 de 1000000000 de int ayant pour valeur &#8220;1&#8243;, et stocké tout ça dans un fichier au format hdf5. Ca prend quelques secondes, et le fichier fait quand même 800 Mo !</p>
+<p>On le voit ici, hdf5 est entre le format de sérialisation et la base de données, et il est très orienté chiffre. Il existe tout un tas de formats binaires spécialisés pour un usage en particulier comme hdf5, à votre charge, donc, de chercher si il en existe un pour le votre. Ou même si vous en avez besoin d&#8217;un.</p>
+<p>Des libs de haut niveau ont été construite en utilisant hdf5, telles que <a href="http://www.pytables.org/">pytables</a>, qui permettent de traiter très facilement d&#8217;énormes jeux de données tabulaires.</p>
+<h2>Protocol Buffers</h2>
+<p>Aussi appelé protobuf par ses amis, c&#8217;est un format de sérialisation <a href="https://developers.google.com/protocol-buffers/">inventé par Google</a> qu&#8217;il utilise pour communiquer entre ses machines. On a donc vu un format de sérialisation orienté persistance avec Pickle, un orienté configuration, un orienté &#8220;grosse quantité de données&#8221; et voilà un dernier orienté communication réseau.</p>
+<p>Protocol Buffers est un espèce d&#8217;hybride, puisqu&#8217;il utilise une description du schéma pour générer du code qui va sérialiser les donner en binaire. Vous suivez ? Non ?</p>
+<p>Attendez ça va devenir plus clair.</p>
+<p>Reprenons notre bonne vielle personne. Pour utiliser protobuf, vous allez décrire à quoi ressemble votre personne, dans un <strong>format texte</strong> spécialement conçu :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="java" style="font-family:monospace;">message Personne <span style="color: #009900;">&#123;</span>
+  required string nom <span style="color: #339933;">=</span> <span style="color: #cc66cc;">1</span><span style="color: #339933;">;</span>
+  required int32 age <span style="color: #339933;">=</span> <span style="color: #cc66cc;">2</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></div></div>
+
+<p>Vous constatez qu&#8217;on décrit ici un message, qui va devoir contenir au minimum un nom et un age, de type string et entier. Les chiffres représentent des identifiants uniques de champs qui seront utilisés dans le message binaire.</p>
+<p>Ceci n&#8217;est pas du code d&#8217;un langage particulier, c&#8217;est la syntaxe de modèle de protobuf.</p>
+<p>On sauvegarde tout ça dans un fichier <em>personne.proto</em>, et on utilise la commande <code>protoc</code> pour transformer cette description en code dans le langage de son choix. C++ et Java sont supportés, nous on va utiliser Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="bash" style="font-family:monospace;">protoc personne.proto --python_out=.</pre></div></div>
+
+<p>Et il va nous pondre un fichier <em>personne_pb2.py</em>, qui est un module Python valide qui va contenir une classe <code>Personne</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> personne_pb2 <span style="color: #ff7700;font-weight:bold;">import</span> Personne
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> p = Personne<span style="color: black;">&#40;</span>nom=<span style="color: #483d8b;">&quot;Gertrude&quot;</span>, age=<span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> p.<span style="color: black;">SerializeToString</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\x</span>08Gertrude<span style="color: #000099; font-weight: bold;">\x</span>10<span style="color: #000099; font-weight: bold;">\x</span>0c'</span></pre></div></div>
+
+<p>Il vous suffit d&#8217;envoyer ça par un socket, et de l&#8217;autre côté, une machine qui possède le même fichier .proto peut le lire et récupérer la donnée sous forme d&#8217;un objet Python, Java ou C++. Il a donc l&#8217;avantage d&#8217;un pickle, multi langages.</p>
+<p>Parmi les bénéfices de protobuf, il y a que sa sortie est assez courte :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> json.<span style="color: black;">dumps</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;nom&quot;</span>:<span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #483d8b;">&quot;age&quot;</span>:<span style="color: #ff4500;">12</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'{&quot;nom&quot;: &quot;Gertrude&quot;, &quot;age&quot;: 12}'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">pickle</span>.<span style="color: black;">dumps</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;nom&quot;</span>:<span style="color: #483d8b;">&quot;Gertrude&quot;</span>, <span style="color: #483d8b;">&quot;age&quot;</span>:<span style="color: #ff4500;">12</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'(dp0<span style="color: #000099; font-weight: bold;">\n</span>Vnom<span style="color: #000099; font-weight: bold;">\n</span>p1<span style="color: #000099; font-weight: bold;">\n</span>VGertrude<span style="color: #000099; font-weight: bold;">\n</span>p2<span style="color: #000099; font-weight: bold;">\n</span>sVage<span style="color: #000099; font-weight: bold;">\n</span>p3<span style="color: #000099; font-weight: bold;">\n</span>I12<span style="color: #000099; font-weight: bold;">\n</span>s.'</span></pre></div></div>
+
+<p>Ca fait moins de données à envoyer par le réseau.</p>
+<p>Et en prime on a la validation des données :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> p.<span style="color: black;">age</span> = <span style="color: #483d8b;">&quot;12&quot;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-4-d897accc3848&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    p.<span style="color: black;">age</span> = <span style="color: #483d8b;">&quot;12&quot;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python2.7/dist-packages/google/protobuf/internal/python_message.py&quot;</span>, line <span style="color: #ff4500;">435</span>, <span style="color: #ff7700;font-weight:bold;">in</span> setter
+    type_checker.<span style="color: black;">CheckValue</span><span style="color: black;">&#40;</span>new_value<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python2.7/dist-packages/google/protobuf/internal/type_checkers.py&quot;</span>, line <span style="color: #ff4500;">104</span>, <span style="color: #ff7700;font-weight:bold;">in</span> CheckValue
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">TypeError</span><span style="color: black;">&#40;</span>message<span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: u<span style="color: #483d8b;">'12'</span> has <span style="color: #008000;">type</span> <span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span>, but expected one of: <span style="color: black;">&#40;</span><span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'int'</span><span style="color: #66cc66;">&gt;</span>, <span style="color: #66cc66;">&lt;</span>type <span style="color: #483d8b;">'long'</span><span style="color: #66cc66;">&gt;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Du coup on peut utiliser protobuf en lieu et place d&#8217;un XML + DTD, en tout cas pour les cas simples.</p>
+<p>Normalement, c&#8217;est aussi un format très rapide à parser.</p>
+<p>Bref, Google a voulu le format pour les utilisations industrielles : c&#8217;est un peu chiant à mettre en place, mais c&#8217;est performant, robuste et ça marche avec les 3 langages qu&#8217;ils utilisent en interne.</p>
+<p>Néanmoins ce n&#8217;est pas le seul à avoir pensé à ça : <a lang="http://msgpack.org/">msgpack</a> est une sorte de JSON binaire plus rapide à parser et qui prend moins de place. Il est assez utilisé avec les outils de file d&#8217;attente genre celery ou de communication type ZeroMq. Mais il perd un intérêt fort du JSON : sa transparence pour javascript, et n&#8217;a pas la vérification des données comme protobuf. <a href="http://bsonspec.org/">BSON</a> existe aussi dans le même genre, et sert de format de stockage pour mongodb, en supportant nativement des types avancées comme les dates.</p>
+<p>Comme je vous le disais, des formats binaire, il y en a <a href="http://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Pastiches/Pifom%C3%A8tre#Les_unit.C3.A9s_du_syst.C3.A8me_pifom.C3.A8trique">une bonne chiée</a>.</p>
+<p>La prochaine et dernière session, on se fera un petit tour des bases de données SQL et NoSQL.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6654&amp;md5=c22470fd5124424eb8594b10e6f5c655" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/plist-pickle-hdf5-protocol-buffer-les-formats-binaires/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fplist-pickle-hdf5-protocol-buffer-les-formats-binaires%2F&amp;language=en_GB&amp;category=text&amp;title=plist%2C+pickle%2C+hdf5%2C+protocol+buffers%26%238230%3B+%3A+les+formats+binaires&amp;description=Dans+un+article+pr%C3%A9c%C3%A9dent%2C+on+avait+fait+un+petit+tour+des+formats+texte%2C+et+j%26%238217%3Bavais+promis+qu%26%238217%3Bon+verrait+les+formats+binaires.+Contrairement+%C3%A0+cette+fois+l%C3%A0%2C+je+vais+faire+un...&amp;tags=binaire%2Cbson%2Cformat%2Chdf5%2Cjson%2Cmsgpack%2Cpickle%2Cplist%2Cprotocol+buffer%2Cpython%2Cserialisation%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/07/xzGrVLH.png" length="466059" type="image/jpg" />	</item>
+	</channel>
+</rss>

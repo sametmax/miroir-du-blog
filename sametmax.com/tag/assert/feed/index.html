@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; assert</title>
+	<atom:link href="http://sametmax.com/tag/assert/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Un gros guide bien gras sur les tests unitaires en Python, partie 1</title>
+		<link>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/</link>
+		<comments>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/#comments</comments>
+		<pubDate>Wed, 15 Jan 2014 15:26:00 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[assert]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unit tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8764</guid>
+		<description><![CDATA[Les tests unitaires font partie de ces "bonnes pratiques" que tout le monde semble appliquer sur le net. Tous les devs hypes parlent de tests unitaires : les conférences, les blogs, les tutos, les livres, whooooo !
+
+Dans la vraie vie vivante, on croise pourtant peu de gens qui les utilisent vraiment. On les retrouvent surtout dans les gros projets et les grosses boîtes, et encore.]]></description>
+			<content:encoded><![CDATA[<p>La zik maintenant traditionelle :</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/1pm4fQRl72k" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p>Les tests unitaires font partie de ces &#8220;bonnes pratiques&#8221; que tout le monde semble appliquer sur le net. Tous les devs hypes parlent de tests unitaires : les conférences, les blogs, les tutos, les livres, whooooo !</p>
+<p>Dans la vraie vie vivante, on croise pourtant peu de gens qui les utilisent vraiment. On les retrouvent surtout dans les gros projets et les grosses boîtes, et encore.</p>
+<p>Il y a plusieurs raisons à cela. D&#8217;une part, beaucoup, beaucoup, beaucoup de développeurs n&#8217;ont aucune idée de ce qu&#8217;est un test unitaire. Ceux qui savent, ne voient pas forcément l’intérêt, et ceux qui en voient l’intérêt n&#8217;ont pas forcément l&#8217;expérience nécessaire à leur mise en œuvre.</p>
+<p>Je connais des tas de dev qui codent des tas d&#8217;excellents projets sans le moindre test unitaires.</p>
+<p>L&#8217;adage selon lequel un code sans test unitaire est un code buggé est parfaitement faux puisque existe bien d&#8217;autres manières de tester son code. De plus, même un code bien testé est un code buggé. Je le sais, je l&#8217;ai codé.</p>
+<p>Malgré cela, vous devriez maitriser l&#8217;usage des tests unitaires, car quand vous arrivez à vous sortir les extrémités digitales de la terminaison dorsale afin de les mettre en place, le bénéfice est très important. Mais aussi parce que certains projets ne peuvent pas s&#8217;en passer, et donc que vous ne pourrez pas travailler dessus sans savoir en faire. Certains projets sur Github n&#8217;acceptent pas de pull request sans couverture de tests, et certaines personnes n&#8217;utiliseront pas votre lib si elle n&#8217;est pas testée. C&#8217;est un gage de qualité.</p>
+<p>Je n&#8217;en ferai pas une question morale ou de principe, les projets que l&#8217;on publie sur Sam et Max sont parfaitement exempt de tests unitaires, et d&#8217;ailleurs, la plupart des projets pros avec Max n&#8217;ont aucun tests non plus.</p>
+<p>En revanche, en tant que freelance, je prends généralement le temps d&#8217;en faire.</p>
+<p>Pas de dogmatisme du test donc, mais passé le goût de crabe dans la bouche, ça vaut le coup, alors lisez ce guide.</p>
+<h2>Qu&#8217;est-ce qu&#8217;un test unitaire</h2>
+<p>Le test unitaire est un bout de code qui fait exactement ce que son nom dit : il teste une unité de code.</p>
+<p>Le problème c&#8217;est quoi tester, qu&#8217;est-ce qu&#8217;une &#8220;unité de code&#8221;, ce n&#8217;est pas quelque chose d&#8217;évident à définir, et vient avec la pratique. En théorie c&#8217;est un bout de code minimaliste, que l&#8217;on ne peut pas réduire plus. En pratique, on choisit avec pragmatisme un truc assez petit, mais pas trop, parce que merde, hein.</p>
+<p>Mais alors que veut-on dire par &#8220;tester&#8221; ?</p>
+<p>Et bien c&#8217;est d&#8217;une banalité affligeante : on donne des entrées au code, et on vérifie que ses sorties sont celles attendues pour ces entrées.</p>
+<p>Bref, généralement (mais pas toujours) on teste une fonction. Souvent avec une autre fonction. Et c&#8217;est d&#8217;un manque d&#8217;originalité terrible.</p>
+<p>Le test unitaire le plus bête qu&#8217;on puisse avoir en Python :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Fichier de code</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_a_tester<span style="color: black;">&#40;</span>param1, param2<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> param1 + param2</pre></div></div>
+
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Fichier de test</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> fichier_de_code <span style="color: #ff7700;font-weight:bold;">import</span> fonction_a_test
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">assert</span> fonction_a_tester<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> == <span style="color: #ff4500;">2</span>  <span style="color: #808080; font-style: italic;"># test de l'addition</span>
+<span style="color: #ff7700;font-weight:bold;">assert</span> fonction_a_tester<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, -<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> == <span style="color: #ff4500;">0</span> <span style="color: #808080; font-style: italic;"># test avec chiffre négatif</span>
+<span style="color: #ff7700;font-weight:bold;">assert</span> fonction_a_tester<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span>, <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> == <span style="color: #ff4500;">6</span> <span style="color: #808080; font-style: italic;"># test avec autre chose que des 1</span>
+<span style="color: #ff7700;font-weight:bold;">assert</span> fonction_a_tester<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span>., <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> == <span style="color: #ff4500;">6</span>. <span style="color: #808080; font-style: italic;"># test avec des floats</span></pre></div></div>
+
+<p>Deux constats :</p>
+<ul>
+<li>C&#8217;est parfaitement chiant. Les tests unitaires sont dans 99% des cas des tautologiques super ennuyeuses.</li>
+<li>On teste le même code plusieurs fois, avec plusieurs cas de figure, pour être certain que ça se comporte comme prévu.</li>
+</ul>
+<p><code>assert</code> est un mot clé qui lève l&#8217;exception <code>AssertionError</code> quand l&#8217;expression évaluée ne retourne pas <code>True</code>. L&#8217;utilisation d&#8217;<code>assert</code> n&#8217;est pas le sujet de l&#8217;article, ici on s&#8217;en sert pour faire un test unitaire tout simplement parce que la première ligne qui ne renverra pas <code>True</code> fera  planter le programme. C&#8217;est le test unitaire du pauvre.</p>
+<p>Un test unitaire, ce n&#8217;est que ça. Un répétition bête et emmerdante de vérifications généralement très connes.</p>
+<h2>C&#8217;est minable ! A quoi ça sert ?</h2>
+<p>Là normalement vous vous dites &#8220;je sais ce que fait mon code, surtout une unité minimaliste, je n&#8217;ai pas besoin d&#8217;écrire des évidences pour le tester&#8221;. Et c&#8217;est pour cela que je ne suis pas dogmatique sur les tests unitaires, car c&#8217;est en partie vrai. Beaucoup de codes sont suffisamment simples ou peu critiques pour ne pas avoir besoin d&#8217;être renforcés par des tests unitaires. Et même si il faut des tests, tout le code n&#8217;a pas nécessairement besoin d&#8217;être testé.</p>
+<p>Lancer un blog pour sa cousine n&#8217;est pas la même chose qu&#8217;une site de rencontre pour un grand compte.</p>
+<p>Mais le test unitaire a plusieurs bénéfices. Le premier c&#8217;est qu&#8217;il vous oblige à réfléchir aux entrées et sorties de vos fonctions, et à l&#8217;API de votre code en général. Vous vous apercevrez à l&#8217;usage qu&#8217;un code est plus ou moins facile à tester selon la manière dont vous l&#8217;avez organisé, et ce faisant, vous serez forcé d&#8217;écrire un code plus souple, propre, extensible.</p>
+<p>Écrire des tests fait de vous un meilleur développeur.</p>
+<p>Cependant ce n&#8217;est pas le principal intérêt. Le véritable gain tient dans ce que vous gagnez dans le futur : quand vous allez modifier votre code, vous pourrez rapidement voir si il n&#8217;est pas cassé. En effet, votre code va grossir, et vous ne vous souviendrez pas de toutes les dépendances, de tous les effets de bords, de toutes les interactions. Certains dev sont meilleurs que d&#8217;autres à tout garder dans la tête, mais même Cortex a ses limites. Au bout d&#8217;un moment, le code est plus fort que vous.</p>
+<p>À partir de là, vous allez tout de même avoir besoin de factoriser le code, bouger des choses, en ajouter d&#8217;autres, corriger un bug, faire un petit ajustement. À chaque fois que vous le faites, vous prenez le risque de casser un truc. Au début du projet, le risque est faible, et même si ça arrive, ça se répare vite. Après 2 mois de dev, les tests seront votre filet de sécurité. Vous pouvez les lancer après chaque modif, et voir que vous n&#8217;avez rien pété. Vous pouvez les lancer après une contribution d&#8217;un autre dev, et voir que ça tourne toujours. Vous pouvez les lancer après un changement d’environnement (OS, base de données, système de fichier, format, etc) et vous assurer que ça n&#8217;a pas d’impacts.</p>
+<p>Particulièrement, des tests unitaires ont beaucoup de valeur sur un projet avec beaucoup de participants, tels que des logiciels libres populaires ou des systèmes de grandes sociétés.</p>
+<p>Par exemple, sur notre dernière fonction bidon, on décide de faire une petite modification :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Fichier de code</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_a_tester<span style="color: black;">&#40;</span>param1, param2<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>param1<span style="color: black;">&#41;</span> + <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>param2<span style="color: black;">&#41;</span></pre></div></div>
+
+<p>On peut maintenant passer une string, et elle sera convertie en entier.</p>
+<p>On lance notre batterie de tests, et là, au milieu de centaines d&#8217;autres tests, celui là foire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">assert</span> fonction_a_tester<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span>., <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> == <span style="color: #ff4500;">6</span>. <span style="color: #808080; font-style: italic;"># test avec des floats</span></pre></div></div>
+
+<p>On voit très vite que notre idée était pourrie, car on a un use case qui ne sera plus compatible. Si quelqu&#8217;un a utilisé des floats avec notre fonction, on va casser son code.</p>
+<p>En l&#8217;essence, c&#8217;est ça l’intérêt des tests unitaires : vous faire sauter au yeux quand quelque chose casse. On appelle ça des &#8220;tests de régression&#8221;, et c&#8217;est l&#8217;usage le plus courant.</p>
+<p>Plus tard vous verrez qu&#8217;on utilise aussi les tests pour développer son code (TDD), pour définir un comportement du produit avec le client (BDD) ou tout simplement pour servir de documentation.</p>
+<p>Mais l&#8217;usage de base, c&#8217;est ça. S&#8217;assurer qu&#8217;on est pas en train de merder.</p>
+<h2>Résumé</h2>
+<ol>
+<li>N&#8217;écoutez pas les Papes du test vous disant que si vous n&#8217;avez pas des tests unitaires à 50 ans, vous avez raté votre vie. Les tests, c&#8217;est bien. Un projet livré, c&#8217;est mieux. Une documentation est plus importante que des tests. Les 3, évidement, c&#8217;est l&#8217;idéal.</li>
+<li>Un test, c&#8217;est une suite parfaitement chiante d&#8217;énonciations d&#8217;évidences. Il n&#8217;y a généralement rien de compliqué dans les tests. Vous vous sentirez parfois insulté en les écrivant tellement c&#8217;est con.</li>
+<li>L’intérêt majeur des tests est d&#8217;avoir une alerte rouge qui se lance quand vous avez pété un truc. Ça arrive bien plus souvent que vous ne le croyez sans que vous ne vous en aperceviez car vous n&#8217;avez pas de tests.</li>
+</ol>
+<p>Ces bases posées, la prochaine partie fera la démonstration du module <a href="http://docs.python.org/2/library/unittest.html">unittest</a> afin de créer vos premiers tests unitaires en Python, puis on enchaînera, partie par partie, sur les applications pratiques, les variantes, les girafes lesbiennes et tout ce qui fait un bon article de s&#038;m.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=8764&amp;md5=ca05e3d293406df04c3c71bb017b88a4" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fun-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1%2F&amp;language=en_GB&amp;category=text&amp;title=Un+gros+guide+bien+gras+sur+les+tests+unitaires+en+Python%2C+partie+1&amp;description=La+zik+maintenant+traditionelle+%3A+Les+tests+unitaires+font+partie+de+ces+%26%238220%3Bbonnes+pratiques%26%238221%3B+que+tout+le+monde+semble+appliquer+sur+le+net.+Tous+les+devs+hypes+parlent+de+tests...&amp;tags=assert%2Cpython%2Cunit+tests%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/sm4y87Q.jpg" length="31863" type="image/jpg" />	</item>
+	</channel>
+</rss>

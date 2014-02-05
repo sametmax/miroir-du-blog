@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; www</title>
+	<atom:link href="http://sametmax.com/tag/www/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Redirection de &#8220;www&#8221; pour Apache, Nginx et Lighttpd</title>
+		<link>http://sametmax.com/redirection-de-www-pour-apache-nginx-et-lighttpd/</link>
+		<comments>http://sametmax.com/redirection-de-www-pour-apache-nginx-et-lighttpd/#comments</comments>
+		<pubDate>Wed, 06 Jun 2012 01:44:39 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[apache]]></category>
+		<category><![CDATA[lighttp]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[server]]></category>
+		<category><![CDATA[serveur]]></category>
+		<category><![CDATA[www]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=870</guid>
+		<description><![CDATA[Une fois que vous avez décidé si votre nom de domaine allait être précédé ou non de "www", il va falloir vous y tenir. Il va aussi falloir créer une redirection de l'un vers l'autre.]]></description>
+			<content:encoded><![CDATA[<p>Une fois que vous avez décidé si votre nom de domaine allait être précédé ou non de &#8220;www&#8221;, il va falloir vous y tenir. Il va aussi falloir créer une redirection de l&#8217;un vers l&#8217;autre. Cela est en effet nécessaire  pour éviter que les moteurs de recherche ne considèrent qu&#8217;il y a du contenu dupliqué, mais aussi parceque certains outils (je ne vise personne en particulier, et sûrement pas l&#8217;admin WordPress) utilisent parfois les mauvaises URLs.</p>
+<h2>Rediriger &#8220;www&#8221; avec Apache</h2>
+<p>On peut mettre la redirection dans les fichiers de configuration Apache, mais le plus simple est de créer un fichier <em>.htaccess</em> dans le dossier qui contient tout le code de votre site Web, et d&#8217;y mettre le code qui gère la redirection.</p>
+<h3>Pour rediriger de &#8220;www&#8221; vers l&#8217;adresse sans &#8220;www&#8221;</h3>
+<p><code><br />
+RewriteEngine On<br />
+RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]<br />
+RewriteRule ^(.*) http://%1/$1 [R=301,L]</code></p>
+<h3>Pour rediriger l&#8217;adresse sans &#8220;www&#8221; vers &#8220;www&#8221;</h3>
+<p><code>RewriteEngine On<br />
+RewriteCond %{HTTP_HOST} ^votresupersiteweb\.com$ [NC]<br />
+RewriteRule ^(.*)$ http://www.votresupersiteweb.com/$1 [R=301,L]</code></p>
+<p>Pour que la redirection marche, il faut vous assurer que le module <code>mod_rewrite</code> d&#8217;Apache est installé et activé, ce qui est la cas dans la plupart des installations et hébergeurs par défaut.</p>
+<h2>Rediriger &#8220;www&#8221; avec Nginx</h2>
+<p>Il faut mettre la redirection dans le fichier de configuration de votre site, généralement situé dans <em>/etc/nginx/conf.d/</em>. Vous avez besoin que nginx soit compilé avec le module rewrite, ce qui est le cas par défaut.</p>
+<h3>Pour rediriger de &#8220;www&#8221; vers l&#8217;adresse sans &#8220;www&#8221;</h3>
+<p><code>server {<br />
+  listen 80;<br />
+  server_name www.votresupersiteweb.com;<br />
+  rewrite ^/(.*) http://votresupersiteweb.com/$1 permanent;<br />
+}</code></p>
+<h3>Pour rediriger l&#8217;adresse sans &#8220;www&#8221; vers &#8220;www&#8221;</h3>
+<p><code>server {<br />
+  listen 80;<br />
+  server_name votresupersiteweb.com;<br />
+  rewrite ^/(.*) http://www.votresupersiteweb.com/$1 permanent;<br />
+}</code></p>
+<p>Si vous avez déjà un bloc &#8220;server&#8221;, mettez celui-ci au dessus du précédent. Redémarrez Nginx pour que les changements soient pris en compte.</p>
+<h2>Rediriger &#8220;www&#8221; avec Lighttpd</h2>
+<p>Assurez vous que le module &#8220;mod_redirect&#8221; est activé dans le fichier de configuration de Lighttpd.<br />
+This trick requires mod_redirect module. You should put it close to the top of the configuration file before other redirect or rewrite rules.</p>
+<h3>Pour rediriger de &#8220;www&#8221; vers l&#8217;adresse sans &#8220;www&#8221;</h3>
+<p><code>$HTTP["host"] =~ "^www\.(.*)$" {<br />
+  url.redirect = ( "^/(.*)" => "http://%1/$1" )<br />
+}<br />
+</code></p>
+<h3>Pour rediriger l&#8217;adresse sans &#8220;www&#8221; vers &#8220;www&#8221;</h3>
+<p><code>$HTTP["host"] =~ "^votresupersiteweb\.com$" {<br />
+  url.redirect = ( "^/(.*)" => "http://www.votresupersiteweb.com/$1" )<br />
+}</code></p>
+<p>Redémarrez Lighttpd pour que les changements soient pris en compte.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=870&amp;md5=cad65229b8573505ebee8bf7a0a562bc" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/redirection-de-www-pour-apache-nginx-et-lighttpd/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fredirection-de-www-pour-apache-nginx-et-lighttpd%2F&amp;language=en_GB&amp;category=text&amp;title=Redirection+de+%26%238220%3Bwww%26%238221%3B+pour+Apache%2C+Nginx+et+Lighttpd&amp;description=Une+fois+que+vous+avez+d%C3%A9cid%C3%A9+si+votre+nom+de+domaine+allait+%C3%AAtre+pr%C3%A9c%C3%A9d%C3%A9+ou+non+de+%26%238220%3Bwww%26%238221%3B%2C+il+va+falloir+vous+y+tenir.+Il+va+aussi+falloir+cr%C3%A9er+une...&amp;tags=apache%2Clighttp%2Cnginx%2Cserver%2Cserveur%2Cwww%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/images1.jpeg" length="12270" type="image/jpg" />	</item>
+	</channel>
+</rss>

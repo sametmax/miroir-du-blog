@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; docstring</title>
+	<atom:link href="http://sametmax.com/tag/docstring/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>Les docstrings en Python</title>
+		<link>http://sametmax.com/les-docstrings/</link>
+		<comments>http://sametmax.com/les-docstrings/#comments</comments>
+		<pubDate>Wed, 06 Mar 2013 09:34:00 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[doctest]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=570</guid>
+		<description><![CDATA[Du fait de la nature du tuto, exceptionellement je ne respecterai pas le nouveau format de rédaction. Mais y aura quand même de la zik : Une des mes fonctionnalités favorites en Python est son mécanisme de documentation du code : les doctrings. En effet, je crois qu&#8217;il est très important de rendre simple les [...]]]></description>
+			<content:encoded><![CDATA[<p>Du fait de la nature du tuto, exceptionellement je ne respecterai pas le <a href="http://sametmax.com/quelques-changements-sur-le-blog/">nouveau format de rédaction</a>. Mais y aura quand même de la zik :</p>
+
+<!-- iframe plugin v:2.3 - wordpress.org/extend/plugins/iframe/ -->
+<iframe width="560" height="315" src="http://www.youtube.com/embed/ls-LYas5j8U" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+<p>Une des mes fonctionnalités favorites en Python est son mécanisme de documentation du code : les doctrings. En effet, je crois qu&#8217;il est très important de rendre simple les tâches over chiantes comme <a href="http://sametmax.com/se-simplifier-les-tests-python-avec-pytest/">les tests unitaires</a> ou la doc car moins il y a de frein à le faire, plus il y a de chances qu&#8217;on le fasse.</p>
+<h2>Principe</h2>
+<p>La docstring est une chaîne de caractères que l&#8217;on n&#8217;assigne pas, et qui est placée à un endroit spécifique du code pour décrire ce dernier.</p>
+<p>La docstring la plus courante est placée sous une fonction. Voici une fonction SANS docstring :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> ajouter<span style="color: black;">&#40;</span>a, b<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b</pre></div></div>
+
+<p>Et voici une fonction AVEC docstring :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> ajouter<span style="color: black;">&#40;</span>a, b<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Ajoute deux nombres l'un à l'autre et retourne
+        le résultat.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b</pre></div></div>
+
+<p>La chaîne de caractère doit être placée juste en dessous de la signature de la fonction.</p>
+<p>Écrire des docstrings offrent de nombreux avantages :</p>
+<ul>
+<li>La fonction <code>help()</code> affiche cette documentation dans un shell.</li>
+<li>Les outils de programmation tels que les shells ou les IDE affichent cette documentation quand le développeur qui ne lit pas votre code, mais l&#8217;utilise, en a besoin.</li>
+<li>On peut générer une bonne doc du code avec des commandes qui extraient ces docstrings.</li>
+<li>C&#8217;est un mécanisme standardisé de documentation : tout le monde sait que si c&#8217;est là, et que ça a cette forme, c&#8217;est une documentation.</li>
+<li>Le code Python peut utiliser la docstring pour la lire ou l&#8217;afficher.</li>
+<li>On peut mettre des tests dans les docstrings, qui servent alors d&#8217;exemples d&#8217;utilisation.</li>
+</ul>
+<h2>Usage</h2>
+<p>Si vous avez une fonction ainsi faite :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> ajouter<span style="color: black;">&#40;</span>a, b<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Ajoute deux nombres l'un à l'autre et retourne
+        le résultat.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b</pre></div></div>
+
+<p>Alors dans un shell, toute personne qui va utiliser votre fonction pourra faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span>ajouter<span style="color: black;">&#41;</span>
+Help on function ajouter <span style="color: #ff7700;font-weight:bold;">in</span> module <span style="color: #dc143c;">__main__</span>:
+&nbsp;
+ajouter<span style="color: black;">&#40;</span>a, b<span style="color: black;">&#41;</span>
+    Ajoute deux nombres l<span style="color: #483d8b;">'un à l'</span>autre et retourne
+    le résultat.</pre></div></div>
+
+<p>Il y a ainsi une documentation de votre fonction DANS le shell, sans avoir à se connecter à Internet ou quoi que ce soit. Il n&#8217;a pas à ouvrir le moindre fichier.</p>
+<p>On peut documenter également les modules en plaçant la docstring comme première expression Python (qui n&#8217;est pas un commentaire) tout en haut du fichier :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    Ceci est un module génial qui va faire 
+    plein de trucs super cool.
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">threading</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> multiprocessing
+<span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> wraps
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">Queue</span> <span style="color: #ff7700;font-weight:bold;">import</span> Empty
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> BaseAsbtractAdapterStrategyFactoryMock<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></div></div>
+
+<p>On peut aussi documenter une classe et ses méthodes :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> ADallas<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Cette classe vous donne le classe à Dallas
+        quand vous en avez vraiment besoin.
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> univers_impitoyable<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Retourne un objet univers, prêt
+            à être impitoyable.
+        &quot;&quot;&quot;</span></pre></div></div>
+
+<p>La plupart des fonctions et modules de la lib standard sont ainsi documentées, vous pouvez donc faire :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> partial
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span>partial<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'foo'</span>.<span style="color: black;">upper</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Bonnes pratiques</h2>
+<p>D&#8217;abord, et malgré mes exemples à caractère purement pédagogique précédents, votre docstring devrait être en anglais. Même quand vous travaillez uniquement avec des français. L&#8217;anglais est la lingua franca (oui, oui, je sais&#8230;) de l&#8217;informatique, et de plus vous évitez tout problème d&#8217;encoding car vous n&#8217;avez aucun moyen de savoir si cette doc sera lue dans un shell rêglé avec les pieds (comme celui de Windows).</p>
+<p>J&#8217;écrirai un article pour motiver les résistants à se mettre à l&#8217;anglais une bonne fois pour toute.</p>
+<p>L&#8217;anglais est votre ami. Il est la novlang de notre métier. C&#8217;est pas vendeur ça ?</p>
+<p>Bref.</p>
+<p>Ensuite, il existe plusieurs manières de formater une docstring, et il y a même un <a href="http://www.python.org/dev/peps/pep-0257/">PEP 257</a> qui ne parle que de ça. En résumé :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;Docstring d'une ligne&quot;&quot;&quot;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;Résumé de la docstring de plusieurs lignes.
+&nbsp;
+    Contenu détaillé de la doctstring.
+    Contenu détaillé de la doctstring.
+    Contenu détaillé de la doctstring.
+&nbsp;
+    &quot;&quot;&quot;</span></pre></div></div>
+
+<p>Je ne respecte jamais cette convention. Généralement je fais plutôt :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Docstring d'une ligne.
+    &quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Résumé de la docstring de plusieurs lignes.
+&nbsp;
+        Contenu détaillé de la doctstring.
+        Contenu détaillé de la doctstring.
+        Contenu détaillé de la doctstring.
+    &quot;&quot;&quot;</span></pre></div></div>
+
+<p>Je trouve ça immensément plus lisible dans le code. Je ne peux pas vous recommander de faire comme moi, puisque c&#8217;est aller à l&#8217;encontre du PEP. Tout ce que je peux vous dire c&#8217;est que personne ne s&#8217;est jamais plaint de cette habitude. En matière de docstring, la plupart des gens sont juste déjà trop heureux qu&#8217;il y en ait.</p>
+<p>En revanche, tout le monde est d&#8217;accord sur le fait qu&#8217;une ligne de la docstring ne doit pas faire plus de 80 caractères. Donc indentez en conséquence. Le plugin SublimeText <a href="https://github.com/ehuss/Sublime-Wrap-Plus">Wrap-Plus</a> permet de le faire automatiquement avec <kbd>Alt</kbd> + <kbd>Q</kbd> (et bien plus). Un must have.</p>
+<h2>Usage avancé</h2>
+<p>Python étant un langage qui aime l&#8217;instrospection, la docstring est accessible depuis le code sous la forme de l&#8217;attribut <code>__doc__</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #483d8b;">&quot;&quot;&quot;
+...         Can foo a bar with ease
+...     &quot;&quot;&quot;</span>
+...     <span style="color: #ff7700;font-weight:bold;">pass</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> foo.__doc__
+<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>        Can foo a bar with ease<span style="color: #000099; font-weight: bold;">\n</span>    '</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span></pre></div></div>
+
+<p>Vous ne vous en servirez pas souvent, mais c&#8217;est utile pour créer le help d&#8217;un script (c&#8217;est ce que fait <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">clize</a>) ou faire une popup dans un IDE.</p>
+<p>Une autre particularité des docstrings, c&#8217;est qu&#8217;elles sont très utilisées dans les générateurs de documentation comme <a href="http://sphinx-doc.org/">sphinx</a>. Et ils comprennent généralement très bien <a href="http://thomas-cokelaer.info/tutorials/sphinx/docstring_python.html">le format RST</a>.</p>
+<p>Le format RST est une convention de balisage pour formater du texte. Il garde le texte lisible, mais permet de générer du HTML, du PDF et un tas d&#8217;autres trucs plus propres. Aussi je vous invite à l&#8217;utiliser si vous avez une docstring dont vous sentez qu&#8217;elle a besoin d&#8217;être aussi complète que possible.</p>
+<p>Voici toutes les balises à votre disposition :</p>
+<pre>:param arg1: description
+:param arg2: description
+:type arg1: type
+:type arg1: type
+:return: description de la valeur de retour
+:rtype: type de la valeur de retour
+
+:Example:
+
+Un exemple écrit après un saut de ligne.
+
+.. seealso:: Référence à une autre partie du code
+.. warnings:: Avertissement
+.. note:: Note
+.. todo:: A faire</pre>
+<p>On peut aussi utilise <code>``element``</code> pour signaler un morceau de code au milieu du texte. Sur les docstrings très longues (il n&#8217;est pas rare qu&#8217;une docstring soit plus longue que le code qu&#8217;elle documente), comme celles des modules, on peut sous-ligner les titres et sous-titres avec des <code>=</code> et des <code>-</code>.</p>
+<p>Par exemple :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    The ``obvious`` module
+    ======================
+&nbsp;
+    Use it to import very obvious functions.
+&nbsp;
+    :Example:
+&nbsp;
+    &gt;&gt;&gt; from obvious import add
+    &gt;&gt;&gt; add(1, 1)
+    2
+&nbsp;
+    This is a subtitle
+    -------------------
+&nbsp;
+    You can say so many things here ! You can say so many things here !
+    You can say so many things here ! You can say so many things here !
+    You can say so many things here ! You can say so many things here !
+    You can say so many things here ! You can say so many things here !
+&nbsp;
+    This is another subtitle
+    ------------------------
+&nbsp;
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+&nbsp;
+&nbsp;
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> add<span style="color: black;">&#40;</span>a, b<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Adds two numbers and returns the result.
+&nbsp;
+        This add two real numbers and return a real result. You will want to
+        use this function in any place you would usually use the ``+`` operator
+        but requires a functional equivalent.
+&nbsp;
+        :param a: The first number to add
+        :param b: The second number to add
+        :type a: int
+        :type b: int
+        :return: The result of the addition
+        :rtype: int
+&nbsp;
+        :Example:
+&nbsp;
+        &gt;&gt;&gt; add(1, 1)
+        2
+        &gt;&gt;&gt; add(2.1, 3.4)  # all int compatible types work
+        5.5
+&nbsp;
+        .. seealso:: sub(), div(), mul()
+        .. warnings:: This is a completly useless function. Use it only in a 
+                      tutorial unless you want to look like a fool.
+        .. note:: You may want to use a lambda function instead of this.
+        .. todo:: Delete this function. Then masturbate with olive oil.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b</pre></div></div>
+
+<p>Aucun champ n&#8217;est obligatoire, aucuns ne sont interdépendant. Cela vous donne une grande flexibilité pour savoir jusqu&#8217;à quel point vous voulez documenter votre fonction.</p>
+<p>La section la plus importante à mon sens est <code>:Example:</code>. Avec ça une personne peut généralement avoir une bonne idée de ce qui se passe, et en plus ça sert de tests (comme on le verra plus loin).</p>
+<p>La section la plus inutile est de loin <code>.. todo::</code>. En fait je vous recommande de ne pas l&#8217;utiliser. Si vous avez des todos, utilisez plutôt la convention de commentaire :</p>
+<p><code># TODO: un truc à faire</code></p>
+<p>Car :</p>
+<ul>
+<li>Je pense que vos TODO n&#8217;ont rien à foutre dans la doc.</li>
+<li>Il faut mieux avoir un TODO le plus proche du truc qu&#8217;il doit modifier. Le mettre en haut de la fonction n&#8217;a pas toujours de sens.</li>
+<li>De très nombreux outils et services détectent ce format automatiquement et en font quelque chose d&#8217;utile.</li>
+</ul>
+<p>Le typage des arguments et de la valeur de retour n&#8217;est pas toujours utile, surtout avec Python faisant massivement usage du duck typing. La description est plus importante. Mettez le typage quand le type n&#8217;est pas intuitif ou signalez une caratéristique comme : itérable, indexable, file-like object, etc.</p>
+<p><em>EDIT: ah, y aussi un field <code>raises</code> pour déclarer que le code peut lever une exception en particulier. J&#8217;avais zappé. On m&#8217;a aussi demandé si il y avait des équivalent à <code>@since</code> et <code>@depreciated</code> mais non, en général on fout ça dans <code>.. note::</code> ou <code>.. warning:: </code></em></p>
+<h2>Doc tests<br />
+</h2>
+<p>Une fonctionalité controversée des docstrings sont les doctests, des tests unitaires directement intégrés dans la docstring.</p>
+<p>Mon conseil : utilisez les docstests pour des petites fonctions simples ou pour quelques exemples sur les fonctions complexes, et complétez les avec des tests ordinnaires. Ce sont des bons compléments, mais pas forcément idéales pour contenir TOUS les tests. Après, si c&#8217;est le seul truc qui vous motive pour écrire des tests, mettez tout dedans, il vaut mieux ça que rien du tout.</p>
+<p>Une doc test est donc la rédaction d&#8217;une partie de la docstring avec la syntaxe d&#8217;un shell :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> add<span style="color: black;">&#40;</span>a, b<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Do I neeed to explain this ?
+&nbsp;
+        :Example:
+&nbsp;
+        &gt;&gt;&gt; add(1, 1)
+        2
+        &gt;&gt;&gt; add(2.1, 3.4)  # all int compatible types work
+        5.5
+&nbsp;
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b
+&nbsp;
+<span style="color: #808080; font-style: italic;"># A la fin de votre script, mettez ce snippet qui va activer les doctest</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ == <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">doctest</span>
+    <span style="color: #dc143c;">doctest</span>.<span style="color: black;">testmod</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<p>Si vous importez ce module, il ne se passera rien. Mais si vous faites <code>python script.py</code>, Python va exécuter <code>add(1, 1)</code> et vérifier que cela affiche bien <code>2</code>, puis exécuter <code>add(2.1, 3.4)</code> et vérifier que cela affiche bien <code>5.5</code>.</p>
+<p>Si il n&#8217;y a aucune erreur, le script se termine silencieusement (il donne des détails si on utilise l&#8217;option <code>-v</code>). Sinon, il beugle. Par exemple si je rajoute :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> add<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">3</span></pre></div></div>
+
+<p>On obtient en sortie :</p>
+<pre>$ python script.py
+*******************************************
+File "script.py", line 7, in __main__.add
+Failed example:
+    add(1, 1)
+Expected:
+    3
+Got:
+    2
+*******************************************
+1 items had failures:
+   1 of   2 in __main__.add
+***Test Failed*** 1 failures.</pre>
+<p><strong>Attention !</strong></p>
+<p>Python compare non pas la valeur, mais CE QUI S&#8217;AFFICHE. Ça peut être très déroutant. Si j&#8217;ai les tests :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>add<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>        
+<span style="color: #ff4500;">2</span>        
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>add<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>        
+<span style="color: #ff4500;">2</span></pre></div></div>
+
+<p>Ça va planter :</p>
+<pre>$ python script.py
+*******************************************
+File "script.py", line 10, in __main__.add
+Failed example:
+    str(add(1, 1))
+Expected:
+    2
+Got:
+    '2'
+*******************************************
+1 items had failures:
+   1 of   2 in __main__.add
+***Test Failed*** 1 failures.</pre>
+<p>Il aurait fallu que j&#8217;écrive :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>add<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>add<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'2'</span></pre></div></div>
+
+<p>Notez les guillemets. C&#8217;est ainsi que ça s&#8217;afficherait dans le shell. Donc c&#8217;est ce que teste Python.</p>
+<p>C&#8217;est la raison pour laquelle les docstests ne sont pas parfaites pour les gros tests. Si vous testez des caratères d&#8217;échappements ou du texte unicode, il vous faudra préfixer vos doctests de <code>ur</code> sinon ça va échouer :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">ur<span style="color: #483d8b;">&quot;&quot;&quot;
+    Ceci est une doctring écrite en unicode, sans interprétation des caractères
+    d'échappement.
+&quot;&quot;&quot;</span></pre></div></div>
+
+<p>Même problème pour les textes longs. Il faut préciser qu&#8217;on veut tester une sortie tronquée avec <code>+ELLIPSIS</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># doctest: +ELLIPSIS</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>, <span style="color: #ff4500;">1</span>, ..., <span style="color: #ff4500;">18</span>, <span style="color: #ff4500;">999</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Car vous allez pas écrire les 1000 entiers pour le fun dans le test. Pareil pour les stacktraces.</p>
+<p>Les espaces sont signficatifs, du coup il faut parfois marquer les tests avec <code>+NORMALIZE_WHITESPACE</code> :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">20</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># doctest: +NORMALIZE_WHITESPACE</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>,   <span style="color: #ff4500;">1</span>,  <span style="color: #ff4500;">2</span>,  <span style="color: #ff4500;">3</span>,  <span style="color: #ff4500;">4</span>,  <span style="color: #ff4500;">5</span>,  <span style="color: #ff4500;">6</span>,  <span style="color: #ff4500;">7</span>,  <span style="color: #ff4500;">8</span>,  <span style="color: #ff4500;">9</span>,
+<span style="color: #ff4500;">10</span>,  <span style="color: #ff4500;">11</span>, <span style="color: #ff4500;">12</span>, <span style="color: #ff4500;">13</span>, <span style="color: #ff4500;">14</span>, <span style="color: #ff4500;">15</span>, <span style="color: #ff4500;">16</span>, <span style="color: #ff4500;">17</span>, <span style="color: #ff4500;">18</span>, <span style="color: #ff4500;">19</span><span style="color: black;">&#93;</span></pre></div></div>
+
+<p>Sinon c&#8217;est galère car il faut reformater la sortie à la main correctement.</p>
+<p>Enfin, sur les structures de données comme les dicos, l&#8217;ordre des éléments n&#8217;est pas garanti, donc l&#8217;ordre d&#8217;affichage non plus. Quand aux données aléatoires&#8230;</p>
+<p>Bref, les docstests, c&#8217;est cool, mais il ne faut pas en abuser.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=570&amp;md5=50490beac989c8e1654ba090db51aa97" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-docstrings/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fles-docstrings%2F&amp;language=en_GB&amp;category=text&amp;title=Les+docstrings+en+Python&amp;description=Du+fait+de+la+nature+du+tuto%2C+exceptionellement+je+ne+respecterai+pas+le+nouveau+format+de+r%C3%A9daction.+Mais+y+aura+quand+m%C3%AAme+de+la+zik+%3A+Une+des+mes+fonctionnalit%C3%A9s...&amp;tags=docstring%2Cdoctest%2Cpython%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/291486324_426.jpg" length="57343" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques bonnes raisons de plus d&#8217;utiliser iPython</title>
+		<link>http://sametmax.com/quelques-bonnes-raisons-de-plus-dutiliser-ipython/</link>
+		<comments>http://sametmax.com/quelques-bonnes-raisons-de-plus-dutiliser-ipython/#comments</comments>
+		<pubDate>Sun, 23 Dec 2012 18:01:36 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[ipython]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[shell]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3644</guid>
+		<description><![CDATA[Le shell Python est vraiment pratique pour expérimenter, apprendre le langage, tester un snippet vitos ou administrer son site à distance. Mais <a href="http://ipython.org/">iPython</a>, ola, iPython, il déchire sa génitrice avec une poutrelle en verre pilé.]]></description>
+			<content:encoded><![CDATA[<p>Le shell Python est vraiment pratique pour expérimenter, apprendre le langage, tester un snippet vitos ou administrer son site à distance. Mais <a href="http://ipython.org/">iPython</a>, ola, iPython, il déchire sa génitrice avec une poutrelle en verre pilé.</p>
+<p>Voici quelques commandes qui vous donneront moult raisons de plus pour très vite installer ce shell alternatif.</p>
+<h2>Autocall</h2>
+<p>Taper des parenthèses et des guillemets, c&#8217;est sooooooo 1995.  iPython peut vous les rajouter automatiquement dans les appels de fonctions, il faut juste préfixer de &#8220;/&#8221;, &#8220;,&#8221; ou &#8220;;&#8221; votre appel de fonction pour qu&#8217;il fasse la conversion:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">/f <span style="color: #ff4500;">1</span>,<span style="color: #ff4500;">2</span> =<span style="color: #66cc66;">&gt;</span> f<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>,<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+,f <span style="color: #ff4500;">1</span> <span style="color: #ff4500;">2</span> =<span style="color: #66cc66;">&gt;</span> f<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;1&quot;</span>,<span style="color: #483d8b;">&quot;2&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">;</span>f <span style="color: #ff4500;">1</span> <span style="color: #ff4500;">2</span> =<span style="color: #66cc66;">&gt;</span> f<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;1 2&quot;</span><span style="color: black;">&#41;</span></pre></div></div>
+
+<h2>Accès au shell système</h2>
+<p>Préfixez votre commande d&#8217;un &#8220;!&#8221; bien couillu, et iPython va vous exécuter ça dans le shell système (par exemple bash) et vous retourner le résulat:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span> cat /etc/fstab | grep <span style="color: #483d8b;">'ext4'</span>
+UUID=e33c5b98-<span style="color: #ff4500;">1570</span>-44d6-a32f-5e7970e1e588 /               ext4    errors=remount-ro <span style="color: #ff4500;">0</span>       <span style="color: #ff4500;">1</span></pre></div></div>
+
+<p>Oui, oui, on est dans un shell Python là. Ou comment bien faire chier la coloration syntaxique de votre blog.</p>
+<p>Et on peut mettre tout ça dans une variable et le traiter en Python derrière:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> files = <span style="color: #66cc66;">!</span>ls
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#91;</span>f.<span style="color: black;">upper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> f <span style="color: #ff7700;font-weight:bold;">in</span> files<span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'BUREAU'</span>, <span style="color: #483d8b;">'DOCUMENTS'</span>, <span style="color: #483d8b;">'EXAMPLES.DESKTOP'</span>, <span style="color: #483d8b;">'IMAGES'</span>, <span style="color: #483d8b;">'MOD<span style="color: #000099; font-weight: bold;">\x</span>c3<span style="color: #000099; font-weight: bold;">\x</span>a8LES'</span>, <span style="color: #483d8b;">'MUSIQUE'</span>, <span style="color: #483d8b;">'PUBLIC'</span>, <span style="color: #483d8b;">'T<span style="color: #000099; font-weight: bold;">\x</span>c3<span style="color: #000099; font-weight: bold;">\x</span>a9L<span style="color: #000099; font-weight: bold;">\x</span>c3<span style="color: #000099; font-weight: bold;">\x</span>a9CHARGEMENTS'</span>, <span style="color: #483d8b;">'UBUNTU ONE'</span>, <span style="color: #483d8b;">'VID<span style="color: #000099; font-weight: bold;">\x</span>c3<span style="color: #000099; font-weight: bold;">\x</span>a9OS'</span>,<span style="color: black;">&#93;</span></pre></div></div>
+
+<p>A noter que tout est exécuté dans un autre process, ainsi <code>!cd</code> n&#8217;aura aucun effet. Mais tout est prévu: <code>%cd</code> et <code>%pwd</code> proxient tout ça vers <code>os.chdir</code> et <code>os.getcwd</code> :-)</p>
+<h2>Debugger</h2>
+<p>Entrez <code>%timeit</code> expression pour qu&#8217;il qu&#8217;iPython vous l&#8217;exécute 10000000 fois et vous donne sa performance.</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">%</span><span style="color: #dc143c;">timeit</span> x=<span style="color: #ff4500;">2</span><span style="color: #66cc66;">**</span><span style="color: #ff4500;">100</span>
+<span style="color: #ff4500;">10000000</span> loops, best of <span style="color: #ff4500;">3</span>: <span style="color: #ff4500;">22.5</span> ns per loop</pre></div></div>
+
+<p>Autre commande: <code>%pdb</code> vous lancera automatiquement votre <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">débuggeur favoris</a> si une exception se lève durant votre session.</p>
+<h2>Se faciliter la vie</h2>
+<p><code>%edit</code> ouvre un editeur (par défault VI sous nunux, mais c&#8217;est <a href="http://sametmax.com/personnalisez-le-demarrage-dipython/">configurable</a>), et si vous sauvegardez, le contenu tapé est récupéré et exécuté par iPython. Génial pour les bouts de code trop relou à taper sur le prompt.</p>
+<p><code>%gui qt|wx|gtk</code> lance l&#8217;intégration de la main loop d&#8217;un des toolkits graphiques afin pour de pouvoir faire mumuse avec des widgets sans bloquer votre shell.</p>
+<p>Vous étiez vous demandé pourquoi le prompt iPython était plein de <code>In</code> et de <code>Out</code>, et pas de <code>>>></code> ? Parce que tout l&#8217;historique est numéroté, et accessible:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">38</span><span style="color: black;">&#93;</span>: <span style="color: #ff4500;">1</span> + <span style="color: #ff4500;">1</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">38</span><span style="color: black;">&#93;</span>: <span style="color: #ff4500;">2</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">39</span><span style="color: black;">&#93;</span>: In<span style="color: black;">&#91;</span><span style="color: #ff4500;">38</span><span style="color: black;">&#93;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">39</span><span style="color: black;">&#93;</span>: u<span style="color: #483d8b;">'1 + 1'</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">40</span><span style="color: black;">&#93;</span>: Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">38</span><span style="color: black;">&#93;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">40</span><span style="color: black;">&#93;</span>: <span style="color: #ff4500;">2</span></pre></div></div>
+
+<p>Mais vous pouvez aussi utiliser <code>%doctest_mode</code> qui donne à votre prompt un air de shell Python normal. L&#8217;avantage ? On peut copier le contenu d&#8217;un autre shell dedans (et donc d&#8217;une doctest) avec les chevrons !</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">49</span><span style="color: black;">&#93;</span>: <span style="color: #66cc66;">%</span>doctest_mode
+<span style="color: #008000;">Exception</span> reporting mode: Plain
+Doctest mode <span style="color: #ff7700;font-weight:bold;">is</span>: ON
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> pom <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'pom'</span>, <span style="color: #483d8b;">'pom'</span>, <span style="color: #483d8b;">'pom'</span>, <span style="color: #483d8b;">'pom'</span><span style="color: black;">&#41;</span>:
+...     ...     <span style="color: #ff7700;font-weight:bold;">print</span> pom
+...     ... 
+<span style="color: black;">pom</span>
+pom
+pom
+pom</pre></div></div>
+
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=3644&amp;md5=50b7961852b0af705abf2486fc538929" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-bonnes-raisons-de-plus-dutiliser-ipython/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fquelques-bonnes-raisons-de-plus-dutiliser-ipython%2F&amp;language=en_GB&amp;category=text&amp;title=Quelques+bonnes+raisons+de+plus+d%26%238217%3Butiliser+iPython&amp;description=Le+shell+Python+est+vraiment+pratique+pour+exp%C3%A9rimenter%2C+apprendre+le+langage%2C+tester+un+snippet+vitos+ou+administrer+son+site+%C3%A0+distance.+Mais+iPython%2C+ola%2C+iPython%2C+il+d%C3%A9chire+sa+g%C3%A9nitrice+avec...&amp;tags=docstring%2Cipython%2Cpython%2Cshell%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/277EB_mac-gyver.jpg" length="14600" type="image/jpg" />	</item>
+	</channel>
+</rss>

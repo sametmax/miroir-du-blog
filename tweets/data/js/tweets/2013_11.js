@@ -655,7 +655,7 @@ Grailbird.data.tweets_2013_11 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Arnaud A.",
+      "name" : "Arnaud\/Mosh\u00E9",
       "screen_name" : "n_Arno",
       "indices" : [ 0, 7 ],
       "id_str" : "8299552",
@@ -873,7 +873,7 @@ Grailbird.data.tweets_2013_11 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Martin Korolczuk",
+      "name" : "Martin Korolczuk \u2603",
       "screen_name" : "martin1975",
       "indices" : [ 0, 11 ],
       "id_str" : "14445737",
@@ -936,7 +936,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Stephen Turner",
@@ -1009,7 +1009,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "MrKooky",
@@ -1047,9 +1047,9 @@ Grailbird.data.tweets_2013_11 =
     "user" : {
       "name" : "MrKooky",
       "screen_name" : "zKooky",
-      "protected" : false,
+      "protected" : true,
       "id_str" : "242432694",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000317547053\/ce57d6a03c11eb8ca9cb52a3aa73df57_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/417424611794354176\/tujyPDhL_normal.jpeg",
       "id" : 242432694,
       "verified" : false
     }
@@ -1066,7 +1066,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Meetrenk !!!",
@@ -1077,8 +1077,11 @@ Grailbird.data.tweets_2013_11 =
     } ],
     "media" : [ ],
     "hashtags" : [ {
-      "text" : "meetr",
-      "indices" : [ 133, 139 ]
+      "text" : "meetrenk",
+      "indices" : [ 133, 140 ]
+    }, {
+      "text" : "emploi",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 110, 132 ],
@@ -1139,7 +1142,7 @@ Grailbird.data.tweets_2013_11 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Martin Korolczuk",
+      "name" : "Martin Korolczuk \u2603",
       "screen_name" : "martin1975",
       "indices" : [ 0, 11 ],
       "id_str" : "14445737",
@@ -1199,7 +1202,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "V\u00E9ronique Houdebert",
@@ -1250,7 +1253,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "KaosIdea",
@@ -1311,7 +1314,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "KaosIdea",
@@ -1411,7 +1414,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "coup d'oeil",
@@ -1496,7 +1499,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "AccelRH",
@@ -1569,7 +1572,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "RJdev",
@@ -1583,8 +1586,8 @@ Grailbird.data.tweets_2013_11 =
       "text" : "emploi",
       "indices" : [ 121, 128 ]
     }, {
-      "text" : "informati",
-      "indices" : [ 129, 139 ]
+      "text" : "informatique",
+      "indices" : [ 129, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 98, 120 ],
@@ -1645,10 +1648,10 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "G. Lebourgeois",
+      "name" : "\u2693Williau.me\u2693",
       "screen_name" : "glebourg",
       "indices" : [ 3, 12 ],
       "id_str" : "78304802",
@@ -1691,7 +1694,7 @@ Grailbird.data.tweets_2013_11 =
     "id" : 406406056684703745,
     "created_at" : "2013-11-29 12:55:29 +0000",
     "user" : {
-      "name" : "G. Lebourgeois",
+      "name" : "\u2693Williau.me\u2693",
       "screen_name" : "glebourg",
       "protected" : false,
       "id_str" : "78304802",
@@ -1970,7 +1973,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "The Mass Deception",
@@ -3996,7 +3999,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Sam de Pixionary",
@@ -4040,7 +4043,7 @@ Grailbird.data.tweets_2013_11 =
       "screen_name" : "pixionary",
       "protected" : false,
       "id_str" : "49666197",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000364292166\/b92652dd6c7357f6a2c82fab4fc10898_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/424229680691314688\/Yl8HN_YM_normal.jpeg",
       "id" : 49666197,
       "verified" : false
     }
@@ -4057,7 +4060,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "keyist",
@@ -4312,7 +4315,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Khertan",
@@ -4402,7 +4405,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Khertan",
@@ -4594,7 +4597,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Gilles W.",
@@ -5163,7 +5166,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Tux-FreeHost",
@@ -5837,7 +5840,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "djangoparis",
@@ -5888,7 +5891,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "djangoparis",
@@ -6006,7 +6009,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Chris Grim",
@@ -6063,7 +6066,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "RJdev",
@@ -6139,7 +6142,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Victor Stinner",
@@ -6149,7 +6152,10 @@ Grailbird.data.tweets_2013_11 =
       "id" : 252513102
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "python",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ {
       "indices" : [ 64, 86 ],
       "url" : "http:\/\/t.co\/Kfyrdn010d",
@@ -6203,7 +6209,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Absys ",
@@ -6270,7 +6276,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "mydevpartner",
@@ -6337,7 +6343,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Pierrick Filippi",
@@ -7570,7 +7576,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Adam Rabinovitch",
@@ -7590,8 +7596,8 @@ Grailbird.data.tweets_2013_11 =
       "text" : "job",
       "indices" : [ 126, 130 ]
     }, {
-      "text" : "datasci",
-      "indices" : [ 131, 139 ]
+      "text" : "datascience",
+      "indices" : [ 131, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 103, 125 ],
@@ -7655,7 +7661,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "EMPLOI TUNISIE",
@@ -7749,7 +7755,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "ICTerGezocht.nl",
@@ -7816,7 +7822,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Bram",
@@ -7856,7 +7862,7 @@ Grailbird.data.tweets_2013_11 =
       "screen_name" : "brabram",
       "protected" : false,
       "id_str" : "96627870",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000413733513\/876a67721c79eb51c7db00ead6dda06a_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/418118763607650304\/UJBwYbOI_normal.jpeg",
       "id" : 96627870,
       "verified" : false
     }
@@ -7873,7 +7879,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Bertier_Luyt",
@@ -7939,7 +7945,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Pannill Camp",
@@ -8072,7 +8078,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Guido van Rossum",
@@ -8133,7 +8139,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Florent Messa",
@@ -8220,7 +8226,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Benoit Calvez",
@@ -8252,7 +8258,7 @@ Grailbird.data.tweets_2013_11 =
     "user" : {
       "name" : "Benoit Calvez",
       "screen_name" : "dzen",
-      "protected" : false,
+      "protected" : true,
       "id_str" : "24299195",
       "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/2609465585\/2zbycx3y1p7eon711kgg_normal.jpeg",
       "id" : 24299195,
@@ -8271,7 +8277,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "jacobian",
@@ -8401,7 +8407,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "groug",
@@ -9439,7 +9445,7 @@ Grailbird.data.tweets_2013_11 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "EL Serbo",
+      "name" : "Mr JeanFrancoaa",
       "screen_name" : "jeanfrancoaa",
       "indices" : [ 0, 13 ],
       "id_str" : "893952025",
@@ -9449,16 +9455,11 @@ Grailbird.data.tweets_2013_11 =
     "hashtags" : [ ],
     "urls" : [ ]
   },
-  "in_reply_to_status_id_str" : "401785914877177856",
   "geo" : { },
   "id_str" : "401788202383462400",
-  "in_reply_to_user_id" : 893952025,
   "text" : "@jeanfrancoaa Je t'aime aussi.",
   "id" : 401788202383462400,
-  "in_reply_to_status_id" : 401785914877177856,
   "created_at" : "2013-11-16 19:05:46 +0000",
-  "in_reply_to_screen_name" : "jeanfrancoaa",
-  "in_reply_to_user_id_str" : "893952025",
   "user" : {
     "name" : "SamEtMax",
     "screen_name" : "sam_et_max",
@@ -9646,7 +9647,7 @@ Grailbird.data.tweets_2013_11 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "EL Serbo",
+      "name" : "Mr JeanFrancoaa",
       "screen_name" : "jeanfrancoaa",
       "indices" : [ 0, 13 ],
       "id_str" : "893952025",
@@ -9656,16 +9657,11 @@ Grailbird.data.tweets_2013_11 =
     "hashtags" : [ ],
     "urls" : [ ]
   },
-  "in_reply_to_status_id_str" : "401782234387992576",
   "geo" : { },
   "id_str" : "401782835519819776",
-  "in_reply_to_user_id" : 893952025,
   "text" : "@jeanfrancoaa Tu as raison, 140 caract\u00E8res, c'est beaucoup trop. Qui a besoin de mots quand on a des onomatop\u00E9es ?",
   "id" : 401782835519819776,
-  "in_reply_to_status_id" : 401782234387992576,
   "created_at" : "2013-11-16 18:44:27 +0000",
-  "in_reply_to_screen_name" : "jeanfrancoaa",
-  "in_reply_to_user_id_str" : "893952025",
   "user" : {
     "name" : "SamEtMax",
     "screen_name" : "sam_et_max",
@@ -9712,7 +9708,7 @@ Grailbird.data.tweets_2013_11 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "EL Serbo",
+      "name" : "Mr JeanFrancoaa",
       "screen_name" : "jeanfrancoaa",
       "indices" : [ 0, 13 ],
       "id_str" : "893952025",
@@ -9722,16 +9718,11 @@ Grailbird.data.tweets_2013_11 =
     "hashtags" : [ ],
     "urls" : [ ]
   },
-  "in_reply_to_status_id_str" : "401779246856540160",
   "geo" : { },
   "id_str" : "401781319086002176",
-  "in_reply_to_user_id" : 893952025,
   "text" : "@jeanfrancoaa Pardon. Un vil individu outrepasse la capacit\u00E9 de traitement de notre serveur, me for\u00E7ant \u00E0 mettre fin \u00E0 cet exercice ludique.",
   "id" : 401781319086002176,
-  "in_reply_to_status_id" : 401779246856540160,
   "created_at" : "2013-11-16 18:38:25 +0000",
-  "in_reply_to_screen_name" : "jeanfrancoaa",
-  "in_reply_to_user_id_str" : "893952025",
   "user" : {
     "name" : "SamEtMax",
     "screen_name" : "sam_et_max",
@@ -10482,7 +10473,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Sarcasm",
@@ -10516,7 +10507,7 @@ Grailbird.data.tweets_2013_11 =
       "screen_name" : "ThatsSarcasm",
       "protected" : false,
       "id_str" : "321445166",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000334689467\/bc036dfe3f9248a575df2f170d9f495d_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/421383231037247488\/U0ZYJfcm_normal.jpeg",
       "id" : 321445166,
       "verified" : false
     }
@@ -12904,7 +12895,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Recruteo",
@@ -12965,7 +12956,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "coup d'oeil",
@@ -13050,7 +13041,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Nikolay Kushin",
@@ -13111,7 +13102,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "JobProd Python",
@@ -13172,7 +13163,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Absys ",
@@ -13267,7 +13258,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Vacaturestream.nl",
@@ -13346,7 +13337,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Ronan Amicel",
@@ -13407,7 +13398,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Stadvacaturebank",
@@ -13421,7 +13412,12 @@ Grailbird.data.tweets_2013_11 =
       "text" : "Vacature",
       "indices" : [ 18, 27 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/tGvX4WC82u",
+      "expanded_url" : "http:\/\/bit.ly\/19GjCPb",
+      "display_url" : "bit.ly\/19GjCPb"
+    } ]
   },
   "geo" : { },
   "id_str" : "398735075933949952",
@@ -13469,7 +13465,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "portailtice",
@@ -13530,7 +13526,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "S\u00E9bastien Quioc",
@@ -13544,8 +13540,11 @@ Grailbird.data.tweets_2013_11 =
       "text" : "deckjs",
       "indices" : [ 126, 133 ]
     }, {
-      "text" : "mark",
-      "indices" : [ 134, 139 ]
+      "text" : "markdown",
+      "indices" : [ 134, 140 ]
+    }, {
+      "text" : "remind",
+      "indices" : [ 139, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 102, 125 ],
@@ -13606,7 +13605,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "hopwork",
@@ -13657,7 +13656,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "UpSourcing",
@@ -13730,7 +13729,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "souleymane sidibe",
@@ -13797,7 +13796,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "RJdev",
@@ -13873,7 +13872,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Espace Emplois",
@@ -13962,7 +13961,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Emprego XL",
@@ -14023,7 +14022,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "MontrealITJobs",
@@ -14046,7 +14045,12 @@ Grailbird.data.tweets_2013_11 =
       "text" : "Jobs",
       "indices" : [ 114, 119 ]
     } ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/SDYr0w87fU",
+      "expanded_url" : "http:\/\/bit.ly\/17gvokp",
+      "display_url" : "bit.ly\/17gvokp"
+    } ]
   },
   "geo" : { },
   "id_str" : "398732644739211264",
@@ -14103,7 +14107,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "reportingbusiness",
@@ -14170,7 +14174,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "rh business",
@@ -14296,85 +14300,6 @@ Grailbird.data.tweets_2013_11 =
   "text" : "Emails HTML responsifs qui marchent sur la plupart des clients mails http:\/\/t.co\/ayHQ7Ikt6C Enfin c'est ce qu'ils disent. A tester.",
   "id" : 398731101868285952,
   "created_at" : "2013-11-08 08:37:57 +0000",
-  "user" : {
-    "name" : "SamEtMax",
-    "screen_name" : "sam_et_max",
-    "protected" : false,
-    "id_str" : "507128812",
-    "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/1859873928\/img_Dog-and-rabbit_Thomas-SCHWEIZER_ref_150.001844.00_mode_zoom_normal.jpg",
-    "id" : 507128812,
-    "verified" : false
-  }
-}, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
-  "entities" : {
-    "user_mentions" : [ {
-      "name" : "Makina Corpus",
-      "screen_name" : "makina_corpus",
-      "indices" : [ 3, 17 ],
-      "id_str" : "175335903",
-      "id" : 175335903
-    } ],
-    "media" : [ ],
-    "hashtags" : [ {
-      "text" : "recrutement",
-      "indices" : [ 124, 136 ]
-    }, {
-      "text" : "T",
-      "indices" : [ 137, 139 ]
-    } ],
-    "urls" : [ {
-      "indices" : [ 100, 122 ],
-      "url" : "http:\/\/t.co\/Ad7TS1sUrK",
-      "expanded_url" : "http:\/\/bit.ly\/WBurM3",
-      "display_url" : "bit.ly\/WBurM3"
-    } ]
-  },
-  "geo" : { },
-  "id_str" : "398730693964218368",
-  "text" : "RT @makina_corpus: Makina Corpus recrute un UX Designer \u2013 Concepteur d'interactions mobiles et web  http:\/\/t.co\/Ad7TS1sUrK  #recrutement #T\u2026",
-  "retweeted_status" : {
-    "source" : "web",
-    "entities" : {
-      "user_mentions" : [ ],
-      "media" : [ ],
-      "hashtags" : [ {
-        "text" : "recrutement",
-        "indices" : [ 105, 117 ]
-      }, {
-        "text" : "Toulouse",
-        "indices" : [ 118, 127 ]
-      }, {
-        "text" : "emploi",
-        "indices" : [ 128, 135 ]
-      }, {
-        "text" : "job",
-        "indices" : [ 136, 140 ]
-      } ],
-      "urls" : [ {
-        "indices" : [ 81, 103 ],
-        "url" : "http:\/\/t.co\/Ad7TS1sUrK",
-        "expanded_url" : "http:\/\/bit.ly\/WBurM3",
-        "display_url" : "bit.ly\/WBurM3"
-      } ]
-    },
-    "geo" : { },
-    "id_str" : "314052477710376962",
-    "text" : "Makina Corpus recrute un UX Designer \u2013 Concepteur d'interactions mobiles et web  http:\/\/t.co\/Ad7TS1sUrK  #recrutement #Toulouse #emploi #job",
-    "id" : 314052477710376962,
-    "created_at" : "2013-03-19 16:35:20 +0000",
-    "user" : {
-      "name" : "Makina Corpus",
-      "screen_name" : "makina_corpus",
-      "protected" : false,
-      "id_str" : "175335903",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/1844203072\/Roue90dpi_reasonably_small_normal.png",
-      "id" : 175335903,
-      "verified" : false
-    }
-  },
-  "id" : 398730693964218368,
-  "created_at" : "2013-11-08 08:36:20 +0000",
   "user" : {
     "name" : "SamEtMax",
     "screen_name" : "sam_et_max",
@@ -14595,7 +14520,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "LOLYves",
@@ -14646,7 +14571,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Mehdi Mebarki",
@@ -14757,7 +14682,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Mehdi Mebarki",
@@ -14868,7 +14793,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Tomate Am\u00E8re",
@@ -16237,13 +16162,7 @@ Grailbird.data.tweets_2013_11 =
 }, {
   "source" : "web",
   "entities" : {
-    "user_mentions" : [ {
-      "name" : "Taz",
-      "screen_name" : "hgwca",
-      "indices" : [ 0, 6 ],
-      "id_str" : "330382805",
-      "id" : 330382805
-    } ],
+    "user_mentions" : [ ],
     "media" : [ ],
     "hashtags" : [ ],
     "urls" : [ ]
@@ -16256,7 +16175,7 @@ Grailbird.data.tweets_2013_11 =
   "id" : 397648618028421120,
   "in_reply_to_status_id" : 397647242825576448,
   "created_at" : "2013-11-05 08:56:33 +0000",
-  "in_reply_to_screen_name" : "hgwca",
+  "in_reply_to_screen_name" : "dat_taz",
   "in_reply_to_user_id_str" : "330382805",
   "user" : {
     "name" : "SamEtMax",
@@ -17181,7 +17100,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Git Attitude",
@@ -17192,7 +17111,12 @@ Grailbird.data.tweets_2013_11 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/iGm3hBF2l3",
+      "expanded_url" : "http:\/\/bit.ly\/gitquotidien",
+      "display_url" : "bit.ly\/gitquotidien"
+    } ]
   },
   "geo" : { },
   "id_str" : "396374531864285185",
@@ -17237,7 +17161,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "Jeff Fillion",
@@ -17288,7 +17212,7 @@ Grailbird.data.tweets_2013_11 =
     "verified" : false
   }
 }, {
-  "source" : "\u003Ca href=\"http:\/\/twitter.com\" rel=\"nofollow\"\u003ETwitter Web Client\u003C\/a\u003E",
+  "source" : "web",
   "entities" : {
     "user_mentions" : [ {
       "name" : "ITJobStar.nl",

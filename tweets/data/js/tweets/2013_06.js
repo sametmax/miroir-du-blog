@@ -159,7 +159,37 @@ Grailbird.data.tweets_2013_06 =
       "id_str" : "1057791726",
       "id" : 1057791726
     } ],
-    "media" : [ ],
+    "media" : [ {
+      "expanded_url" : "http:\/\/twitter.com\/phndiaye\/status\/344471711611224064\/photo\/1",
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/rUe2gcqOTE",
+      "media_url" : "http:\/\/pbs.twimg.com\/media\/BMfPMlYCAAEWyJe.png",
+      "id_str" : "344471711615418369",
+      "id" : 344471711615418369,
+      "media_url_https" : "https:\/\/pbs.twimg.com\/media\/BMfPMlYCAAEWyJe.png",
+      "sizes" : [ {
+        "h" : 625,
+        "resize" : "fit",
+        "w" : 579
+      }, {
+        "h" : 150,
+        "resize" : "crop",
+        "w" : 150
+      }, {
+        "h" : 625,
+        "resize" : "fit",
+        "w" : 579
+      }, {
+        "h" : 625,
+        "resize" : "fit",
+        "w" : 579
+      }, {
+        "h" : 367,
+        "resize" : "fit",
+        "w" : 340
+      } ],
+      "display_url" : "pic.twitter.com\/rUe2gcqOTE"
+    } ],
     "hashtags" : [ ],
     "urls" : [ ]
   },
@@ -2127,27 +2157,16 @@ Grailbird.data.tweets_2013_06 =
 }, {
   "source" : "\u003Ca href=\"http:\/\/twitter.com\/tweetbutton\" rel=\"nofollow\"\u003ETweet Button\u003C\/a\u003E",
   "entities" : {
-    "user_mentions" : [ {
-      "name" : "Eijebong",
-      "screen_name" : "Eijebong",
-      "indices" : [ 0, 9 ],
-      "id_str" : "242039004",
-      "id" : 242039004
-    } ],
+    "user_mentions" : [ ],
     "media" : [ ],
     "hashtags" : [ ],
     "urls" : [ ]
   },
-  "in_reply_to_status_id_str" : "349142727746781184",
   "geo" : { },
   "id_str" : "349143461334745088",
-  "in_reply_to_user_id" : 242039004,
   "text" : "@Eijebong  LOL",
   "id" : 349143461334745088,
-  "in_reply_to_status_id" : 349142727746781184,
   "created_at" : "2013-06-24 12:34:22 +0000",
-  "in_reply_to_screen_name" : "Eijebong",
-  "in_reply_to_user_id_str" : "242039004",
   "user" : {
     "name" : "SamEtMax",
     "screen_name" : "sam_et_max",
@@ -2455,7 +2474,10 @@ Grailbird.data.tweets_2013_06 =
       "id" : 68133488
     } ],
     "media" : [ ],
-    "hashtags" : [ ],
+    "hashtags" : [ {
+      "text" : "python",
+      "indices" : [ 139, 140 ]
+    } ],
     "urls" : [ {
       "indices" : [ 117, 139 ],
       "url" : "http:\/\/t.co\/LKjDgJKF3H",
@@ -3234,7 +3256,7 @@ Grailbird.data.tweets_2013_06 =
       "screen_name" : "Maitre_Eolas",
       "protected" : false,
       "id_str" : "7607262",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/378800000793385046\/eeddab49800f77d2a6fb2367c8568d3e_normal.jpeg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/431006737584652288\/YvTbBISf_normal.jpeg",
       "id" : 7607262,
       "verified" : false
     }
@@ -3948,7 +3970,12 @@ Grailbird.data.tweets_2013_06 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/m0CdLnNvfl",
+      "expanded_url" : "http:\/\/dochub.io\/",
+      "display_url" : "dochub.io"
+    } ]
   },
   "geo" : { },
   "id_str" : "347796300424691712",
@@ -4138,7 +4165,7 @@ Grailbird.data.tweets_2013_06 =
       "screen_name" : "aymericaugustin",
       "protected" : false,
       "id_str" : "102982202",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/2235838155\/profil_2011_square_normal.jpg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/429695423901474817\/LjA-TfBU_normal.jpeg",
       "id" : 102982202,
       "verified" : false
     }
@@ -4330,7 +4357,7 @@ Grailbird.data.tweets_2013_06 =
       "screen_name" : "aymericaugustin",
       "protected" : false,
       "id_str" : "102982202",
-      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/2235838155\/profil_2011_square_normal.jpg",
+      "profile_image_url_https" : "https:\/\/pbs.twimg.com\/profile_images\/429695423901474817\/LjA-TfBU_normal.jpeg",
       "id" : 102982202,
       "verified" : false
     }
@@ -5756,7 +5783,12 @@ Grailbird.data.tweets_2013_06 =
     } ],
     "media" : [ ],
     "hashtags" : [ ],
-    "urls" : [ ]
+    "urls" : [ {
+      "indices" : [ 139, 140 ],
+      "url" : "http:\/\/t.co\/qkCWktwxAb",
+      "expanded_url" : "http:\/\/bit.ly\/18FTBRk",
+      "display_url" : "bit.ly\/18FTBRk"
+    } ]
   },
   "geo" : { },
   "id_str" : "346980666317082625",
@@ -7449,7 +7481,7 @@ Grailbird.data.tweets_2013_06 =
   "source" : "web",
   "entities" : {
     "user_mentions" : [ {
-      "name" : "Arnaud A.",
+      "name" : "Arnaud\/Mosh\u00E9",
       "screen_name" : "n_Arno",
       "indices" : [ 0, 7 ],
       "id_str" : "8299552",
@@ -11172,8 +11204,8 @@ Grailbird.data.tweets_2013_06 =
       "text" : "informatique",
       "indices" : [ 80, 93 ]
     }, {
-      "text" : "\u00E9voluti",
-      "indices" : [ 131, 139 ]
+      "text" : "\u00E9volution",
+      "indices" : [ 131, 140 ]
     } ],
     "urls" : [ {
       "indices" : [ 108, 130 ],

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; sign</title>
+	<atom:link href="http://sametmax.com/tag/sign/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
+	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+		<item>
+		<title>PYTHON, WHY U NO HAZ A SIGN FUNCTION ?</title>
+		<link>http://sametmax.com/python-why-u-no-haz-a-sign-function/</link>
+		<comments>http://sametmax.com/python-why-u-no-haz-a-sign-function/#comments</comments>
+		<pubDate>Sat, 24 Aug 2013 12:36:22 +0000</pubDate>
+		<dc:creator>Sam</dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[math]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sign]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7165</guid>
+		<description><![CDATA[Bien que Python soit un langage massivement utilisé par la communauté scientifique, la lib standard ne contient pas de fonction aussi simple que <code>sign()</code>.]]></description>
+			<content:encoded><![CDATA[<p>Bien que Python soit un langage massivement utilisé par la communauté scientifique, la lib standard ne contient pas de fonction aussi simple que <code>sign()</code>. Et on voit ça et là des libs qui contiennent quelque chose comme ça:</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> sign<span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> x <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #ff4500;">1</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> x == <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #ff4500;">0</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sign<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sign<span style="color: black;">&#40;</span>-<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+-<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sign<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0</span></pre></div></div>
+
+<p>Comme <a href="http://sametmax.com/pourquoi-join-en-python/">d&#8217;autres de choix étonnants</a> dans l&#8217;architecture de Python, il y a une raison raisonnablement raisonnable : il n&#8217;existe aucun standard sur ce que doit faire une telle fonction dans les cas ambigües.</p>
+<p>En effet, que doit faire la fonction avec <code>NaN</code> ? Avec un complexe ?</p>
+<p>Il y a eu un débat sur ce qu&#8217;il faut faire dans ce cas, et <a href="http://bugs.python.org/msg59137">un consensus n&#8217;a PAS été trouvé</a>.</p>
+<p>Par contre, il existe <a href="http://en.wikipedia.org/wiki/IEEE_floating_point">un standard international</a> définissant une autre opération : celle de copier un signe. Elle a donc été implémentée :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">math</span> <span style="color: #ff7700;font-weight:bold;">import</span> copysign
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span>, -<span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+-<span style="color: #ff4500;">10.0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span>, <span style="color: #ff4500;">22</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">10.0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span>, <span style="color: #008000;">float</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'-NaN'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+-<span style="color: #ff4500;">10</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span>, -2j<span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-13-ece93d1317dc&gt;&quot;</span>, line <span style="color: #ff4500;">1</span>, <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span>, -2j<span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: can<span style="color: #483d8b;">'t convert complex to float</span></pre></div></div>
+
+<p>Copier le signe n&#8217;est pas la même chose que de retourner quelque chose selon le signe, et donc sémantiquement, choisir quoi retourner était plus facile. Comme la plupart du temps, on veut récupérer <code>-1</code> ou <code>1</code> pour le multiplier avec quelque chose et justement copier le signe, cela résolvait pas mal de problèmes.</p>
+<p>Mais même dans le rare cas où on a besoin du résultat que renverrait <code>sign()</code>, il est très facile à obtenir en une ligne :</p>
+
+<div class="wp_syntax"><div class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> mon_nombre = <span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mon_nombre <span style="color: #ff7700;font-weight:bold;">and</span> copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, mon_nombre<span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1.0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mon_nombre = -<span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mon_nombre <span style="color: #ff7700;font-weight:bold;">and</span> copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, mon_nombre<span style="color: black;">&#41;</span>
+-<span style="color: #ff4500;">1.0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mon_nombre = <span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mon_nombre <span style="color: #ff7700;font-weight:bold;">and</span> copysign<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>, mon_nombre<span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0</span></pre></div></div>
+
+<p>Et pour ce cas de figure, les retours sur des valeurs ambigües sont laissés à la charge du codeur.</p>
+<p>P.S: je sais qu&#8217;il y a des exemples sur le net montrant <code>cmp(0, mon_nombre)</code> pour obtenir la même fonctionnalité. Sachez que <code>cmp</code> a été retirée de Python 3, donc faites attention si vous l&#8217;utilisez.</p>
+ <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7165&amp;md5=77f721f581bfec1a4620c86be0e805ee" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/python-why-u-no-haz-a-sign-function/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fpython-why-u-no-haz-a-sign-function%2F&amp;language=en_GB&amp;category=text&amp;title=PYTHON%2C+WHY+U+NO+HAZ+A+SIGN+FUNCTION+%3F&amp;description=Bien+que+Python+soit+un+langage+massivement+utilis%C3%A9+par+la+communaut%C3%A9+scientifique%2C+la+lib+standard+ne+contient+pas+de+fonction+aussi+simple+que+sign%28%29.+Et+on+voit+%C3%A7a+et+l%C3%A0...&amp;tags=math%2Cpython%2Csign%2Cblog" type="text/html" />
+<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/Yz4Ki.jpg" length="120970" type="image/jpg" />	</item>
+	</channel>
+</rss>
