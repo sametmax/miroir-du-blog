@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; protocol</title>
+	<atom:link href="http://sametmax.com/tag/protocol/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Qu&#8217;est-ce que les websockets et à quoi ça sert ? 8</title>
+		<link>http://sametmax.com/quest-ce-que-les-websockets-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/quest-ce-que-les-websockets-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Tue, 30 Dec 2014 04:51:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[protocol]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[web]]></category>
+		<category><![CDATA[websocket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15615</guid>
+		<description><![CDATA[<blockquote>Le protocole WebSocket vise à développer un canal de communication full-duplex sur un socket TCP.</blockquote>
+
+LOL. C'est clair non ?
+
+Vous inquiétez pas, tonton Sam est là.]]></description>
+				<content:encoded><![CDATA[<blockquote><p>Le protocole WebSocket vise à développer un canal de communication full-duplex sur un socket TCP.</p></blockquote>
+<p>LOL. C&#8217;est clair non ?</p>
+<p>Vous inquiétez pas, tonton Sam est là.</p>
+<p>Le Web a évolué. On est passé de Gopher a HTTP 1 puis 1.1. Et on a eu AJAX pour rafraîchir la page sans tout recharger.</p>
+<p>Et maintenant on a des apps complètes qui font des centaines de requêtes au serveur alors même que l&#8217;utilisateur ne change pas de page. D&#8217;ailleurs, je parie que plein de gens ne savent même plus ce qu&#8217;est une page&#8230;</p>
+<p>Le problème c&#8217;est qu&#8217;AJAX, c&#8217;est toujours HTTP, et HTTP est sans état (stateless) : il ne garde aucune information en mémoire d&#8217;une requête à l&#8217;autre. Ça a des avantages, mais cela implique qu&#8217;à chaque requête, il faut ouvrir une connexion et la refermer. Ce qui bouffe quelques ms à chaque fois, et d&#8217;autant plus si on utilise SSL.</p>
+<p>Une autre limite, c&#8217;est que le serveur ne peut pas envoyer de données au client (ici le navigateur) si le client ne fait pas une requête au préalable. Du coup, pour savoir si il y a quelque chose de nouveau, le navigateur doit régulièrement faire des requêtes au serveur ou utiliser des gros hacks comme le long polling.</p>
+<p>Les websockets (c&#8217;est un abus de langage, on devrait parler du protocole Websocket) ont été créés pour répondre à ces besoins : elles permettent d&#8217;ouvrir une connexion permanente entre le navigateur et le serveur. Ainsi, chaque requête est plus rapide, et plus légère. En prime, le serveur peut envoyer des requêtes au navigateur pour le prévenir qu&#8217;il y a du nouveau.</p>
+<p>Ceci permet de faire tout ce que permettait de faire AJAX mais en plus rapide, et en plus léger. Et également d&#8217;envoyer des notifications (ce contenu a changé, un message est arrivé, l&#8217;autre joueur a fait cette action&#8230;) au navigateur au moment où l&#8217;événement se produit.</p>
+<p>En gros, de faire des apps Web quasi temps réel.</p>
+<p>Il existe d&#8217;autre technos pour faire cela : applets Java, flash, comet, server sent events&#8230;</p>
+<p>Mais aucune n&#8217;ont décollé. Websocket est donc aujourd&#8217;hui la solution de facto.</p>
+<h2>Caractéristiques</h2>
+<p>Le protocole Websocket utilise l&#8217;abréviation <code>ws</code> et <code>wss</code> si SSL, les URLs vers des endpoints websocket ressemblent donc à : <code>ws://domaine.tld/chemin/vers/truc/</code>.</p>
+<p>Intelligemment, il utilise un handshake compatible avec celui de HTTP, permettant à un serveur de gérer les deux sur les mêmes ports. Donc on peut faire du Websocket sur le port 80 et 443. Néanmoins, certains proxy se gourent quand ils voient du websocket non chiffré et gauffrent votre connexion en la traitant comme du HTTP. Donc si vous voulez une app solide, investissez dans un certif SSL.</p>
+<p>Tout ça fonctionne à partir de IE10. Notez comme IE est devenu le standard de ce qui ce fait de moins bien à tel point que je n&#8217;ai même pas besoin de vous parler des autres, vous savez que ça marche. Il existe en plus des <a href="https://github.com/gimite/web-socket-js">plugins flash</a> pour simuler des websockets sur les navigateurs anciens, c&#8217;est à dire les encore plus vieux IE.</p>
+<p>Par défaut, les websockets permettent de faire de requêtes crossdomain, contrairement à AJAX. Avec les nouvelles apps qui utilisent NodeJS en local (comme <a href="http://getpopcornti.me/">popcorntime</a>) on peut imaginer une nouvelle type d&#8217;attaque : une page web qui se connecte à un serveur websocket local de votre machine. Comme les websockets sont souvent utilisées pour du RPC, il y a du potentiel.</p>
+<h2>Bon, ta gueule, et montre le code</h2>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="100%" height="300" src="http://jsfiddle.net/rpecs5f1/embedded/result,js" allowfullscreen="allowfullscreen" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Vous noterez que ce qui prend du temps dans l&#8217;exemple c&#8217;est la connexion, qu&#8217;on ne fait qu&#8217;une fois. Ensuite l&#8217;échange de données est super rapide.</p>
+<p>Ceci est un exemple Javascript, mais un client websocket n&#8217;est pas forcément un navigateur. En fait, c&#8217;est très précisément le cas avec <a href="http://sametmax.com/presentation-de-wamp-round-2/">WAMP</a>, dont les clients peuvent être des programmes Python, Objective C, Java, C++, etc. L&#8217;avantage de WAMP, c&#8217;est qu&#8217;il automatise toute la machinerie pour découper la logique de son programme en divers fonctions et services, plutôt que d&#8217;avoir à tout faire à la main avec <code>send()</code> et <code>onmessage()</code>.</p>
+<p>Dans tous les cas, il vous faudra un serveur qui supporte les Websockets pour l&#8217;utiliser. En Python, c&#8217;est Tornado ou Twisted (sur lequel est basé le serveur WAMP crossbar). En Javascript, c&#8217;est NodeJS. Quoi qu&#8217;il en soit, il vous faut un logiciel qui gère l&#8217;IO de manière <a href="http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/">non bloquante</a>, car il y a de nombreuses connexions ouvertes en simultanées, si on veut que ça soit performant.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-que-les-websockets-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/12/ybWpMif.jpg" length="81034" type="image/jpg" />	</item>
+	</channel>
+</rss>

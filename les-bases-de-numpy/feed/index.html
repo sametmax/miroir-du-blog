@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Les bases de Numpy</title>
+	<atom:link href="http://sametmax.com/les-bases-de-numpy/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/les-bases-de-numpy/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: kontre</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-21004</link>
+		<dc:creator><![CDATA[kontre]]></dc:creator>
+		<pubDate>Mon, 10 Mar 2014 20:28:30 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-21004</guid>
+		<description><![CDATA[Toi, tu as fait du Matlab où il y a implicitement un nombre infini de dimensions de taille 1 supplémentaires. En python ce n&#039;est pas le cas.
+Si tu déclares un array de 3 éléments, ça a une dimension de longueur 3. Mais tu peux reshaper comme tu veux en rajoutant des dimensions de taille 1.
+Comment ça se fait que tu ne connaisses pas le nombre de dimensions dans ton code ? Il doit y avoir un truc pas clair avant. Ton souci vient du fait que si n est sensé valoir 1 il vaut 0
+
+Petites remarques sur ton code:
+- &lt;code&gt;.reshape(len(item),1)&lt;/code&gt; peut être remplacé par &lt;code&gt;.reshape(-1,1)&lt;/code&gt; (la dimension avec -1 contient tout ce qui&#039; n&#039;est pas rentré dans le reste)
+- dans le try depth aura une taille de (len(item),1) alors que dans le except depth n&#039;aura pas de dimension, c&#039;est un scalaire.
+- Pour rajouter une dimension, faire comme tu as fait fonctionne mais c&#039;est moche. Tu peux soit faire buffer = buffer.reshape(1, -1), soit buffer = buffer[np.newaxis, :] (np.newaxis est en fait égal à None, c&#039;est juste une écriture plus explicite)
+- Au final je pense que tu peux utiliser np.concatenate plutôt que np.hstack pour que ça concatène dans la bonne dimension. Ça devrait même pouvoir remplacer tout ton code.
+
+Numpy c&#039;est pas de la bouse (même si y&#039;a des défauts), il faut juste savoir l&#039;utiliser. Si t&#039;as pas peur de l&#039;anglais, http://wiki.scipy.org/Tentative_NumPy_Tutorial couvre bien les bases.]]></description>
+		<content:encoded><![CDATA[<p>Toi, tu as fait du Matlab où il y a implicitement un nombre infini de dimensions de taille 1 supplémentaires. En python ce n&#8217;est pas le cas.<br />
+Si tu déclares un array de 3 éléments, ça a une dimension de longueur 3. Mais tu peux reshaper comme tu veux en rajoutant des dimensions de taille 1.<br />
+Comment ça se fait que tu ne connaisses pas le nombre de dimensions dans ton code ? Il doit y avoir un truc pas clair avant. Ton souci vient du fait que si n est sensé valoir 1 il vaut 0</p>
+<p>Petites remarques sur ton code:<br />
+&#8211; <code>.reshape(len(item),1)</code> peut être remplacé par <code>.reshape(-1,1)</code> (la dimension avec -1 contient tout ce qui&#8217; n&#8217;est pas rentré dans le reste)<br />
+&#8211; dans le try depth aura une taille de (len(item),1) alors que dans le except depth n&#8217;aura pas de dimension, c&#8217;est un scalaire.<br />
+&#8211; Pour rajouter une dimension, faire comme tu as fait fonctionne mais c&#8217;est moche. Tu peux soit faire buffer = buffer.reshape(1, -1), soit buffer = buffer[np.newaxis, :] (np.newaxis est en fait égal à None, c&#8217;est juste une écriture plus explicite)<br />
+&#8211; Au final je pense que tu peux utiliser np.concatenate plutôt que np.hstack pour que ça concatène dans la bonne dimension. Ça devrait même pouvoir remplacer tout ton code.</p>
+<p>Numpy c&#8217;est pas de la bouse (même si y&#8217;a des défauts), il faut juste savoir l&#8217;utiliser. Si t&#8217;as pas peur de l&#8217;anglais, <a href="http://wiki.scipy.org/Tentative_NumPy_Tutorial" rel="nofollow">http://wiki.scipy.org/Tentative_NumPy_Tutorial</a> couvre bien les bases.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: furankun</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20979</link>
+		<dc:creator><![CDATA[furankun]]></dc:creator>
+		<pubDate>Mon, 10 Mar 2014 09:42:18 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20979</guid>
+		<description><![CDATA[oui alors clairement c&#039;est trop haut niveau pour moi... j&#039;ose espérer que tu t&#039;en es dépatouillé!
+Ceci mis à part je voulais apporter ce témoignage tout personnel: Numpy c&#039;est de la bouse. Ou alors je n&#039;ai pas compris. Mais franchement son intégration dans un bout de code m&#039;a énervé toute la journée vendredi, pour une simple histoire de dimensions &lt;del&gt;(de merde!)&lt;/del&gt;
+Si on déclare un array de deux fois trois éléments, ça fait un array de dimensions 2x3. normal.
+Si maintenant on déclare un array de UNE fois trois éléments, ça fait un... truc de dimensions 3x&lt;strong&gt;0&lt;/strong&gt;. Et c&#039;est là que les ennuis commencent.
+Les dimensions ne sont pas déclarées de manière homogène. Impossible d&#039;itérer dessus le long de la deuxième dimension (puisqu&#039;elle n&#039;existe pas). Impossible d&#039;append le long de cette dimension (idem). Bref, si jamais vous ne connaissez pas les dimensions de votre array dès le départ ou que vous devez le modifier en cours de route, vous êtes niqués.
+Une solution possible, pas ce que j&#039;appelle le plus simple mais visiblement c&#039;est le cas: ajouter une dimension après avoir examiné la tronche de votre array. Bonjour la fluidité.
+Exemple:
+
+&lt;pre lang=&quot;python&quot;&gt;
+# item = np.array de taille n lignes par 4 colonnes;
+# on veut récupérer la quatrième colonne &#039;depth&#039; et 
+# l&#039;ajouter à un buffer
+        
+# get item depth and reshape it
+try:
+  depth = item[:,3].reshape(len(item),1)
+except IndexError:
+  depth = item[3]
+
+# give buffer a supplementary dimension if needed
+if len(buffer.shape) == 1:
+  buffer= np.array([buffer]) # ce truc m&#039;a gavé
+
+result = np.hstack((buffer, depth))
+&lt;/pre&gt;]]></description>
+		<content:encoded><![CDATA[<p>oui alors clairement c&#8217;est trop haut niveau pour moi&#8230; j&#8217;ose espérer que tu t&#8217;en es dépatouillé!<br />
+Ceci mis à part je voulais apporter ce témoignage tout personnel: Numpy c&#8217;est de la bouse. Ou alors je n&#8217;ai pas compris. Mais franchement son intégration dans un bout de code m&#8217;a énervé toute la journée vendredi, pour une simple histoire de dimensions <del>(de merde!)</del><br />
+Si on déclare un array de deux fois trois éléments, ça fait un array de dimensions 2&#215;3. normal.<br />
+Si maintenant on déclare un array de UNE fois trois éléments, ça fait un&#8230; truc de dimensions 3x<strong>0</strong>. Et c&#8217;est là que les ennuis commencent.<br />
+Les dimensions ne sont pas déclarées de manière homogène. Impossible d&#8217;itérer dessus le long de la deuxième dimension (puisqu&#8217;elle n&#8217;existe pas). Impossible d&#8217;append le long de cette dimension (idem). Bref, si jamais vous ne connaissez pas les dimensions de votre array dès le départ ou que vous devez le modifier en cours de route, vous êtes niqués.<br />
+Une solution possible, pas ce que j&#8217;appelle le plus simple mais visiblement c&#8217;est le cas: ajouter une dimension après avoir examiné la tronche de votre array. Bonjour la fluidité.<br />
+Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># item = np.array de taille n lignes par 4 colonnes;</span>
+<span style="color: #808080; font-style: italic;"># on veut récupérer la quatrième colonne 'depth' et </span>
+<span style="color: #808080; font-style: italic;"># l'ajouter à un buffer</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># get item depth and reshape it</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+  depth <span style="color: #66cc66;">=</span> item<span style="color: black;">&#91;</span>:<span style="color: #66cc66;">,</span><span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>.<span style="color: black;">reshape</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>item<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IndexError</span>:
+  depth <span style="color: #66cc66;">=</span> item<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># give buffer a supplementary dimension if needed</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>buffer.<span style="color: black;">shape</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">==</span> <span style="color: #ff4500;">1</span>:
+  buffer<span style="color: #66cc66;">=</span> np.<span style="color: #dc143c;">array</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>buffer<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ce truc m'a gavé</span>
+&nbsp;
+result <span style="color: #66cc66;">=</span> np.<span style="color: black;">hstack</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>buffer<span style="color: #66cc66;">,</span> depth<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: kontre</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20516</link>
+		<dc:creator><![CDATA[kontre]]></dc:creator>
+		<pubDate>Thu, 27 Feb 2014 23:07:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20516</guid>
+		<description><![CDATA[Je l&#039;ai fait mais le résultat est faux ! J&#039;ai corrigé un peu mais la correction est sur mon ordi du boulot, que je ne retrouverai que lundi...]]></description>
+		<content:encoded><![CDATA[<p>Je l&#8217;ai fait mais le résultat est faux ! J&#8217;ai corrigé un peu mais la correction est sur mon ordi du boulot, que je ne retrouverai que lundi&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Max</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20506</link>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+		<pubDate>Thu, 27 Feb 2014 17:08:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20506</guid>
+		<description><![CDATA[@furankun,
+
+here it is:  https://ivulab.asu.edu/software/quality/cpbd]]></description>
+		<content:encoded><![CDATA[<p>@furankun,</p>
+<p>here it is:  <a href="https://ivulab.asu.edu/software/quality/cpbd" rel="nofollow">https://ivulab.asu.edu/software/quality/cpbd</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: furankun</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20501</link>
+		<dc:creator><![CDATA[furankun]]></dc:creator>
+		<pubDate>Thu, 27 Feb 2014 14:49:41 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20501</guid>
+		<description><![CDATA[fais péter! ça m&#039;intéresse oui, à tous niveaux.]]></description>
+		<content:encoded><![CDATA[<p>fais péter! ça m&#8217;intéresse oui, à tous niveaux.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Max</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20496</link>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+		<pubDate>Thu, 27 Feb 2014 13:23:30 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20496</guid>
+		<description><![CDATA[@funrankun
+
+je te remercie grandement mais quelqu&#039;un s&#039;en est déjà occupé ;) . Le cher Kontre qui rôde souvent sur le blog ^^
+Si toutefois tu veux quand même jetter un oeil ne serait-ce que pour la beauté du sport demande moi ;) 
+ça parle d&#039;image processing, détection de la nettetée d&#039;une image pour être précis.]]></description>
+		<content:encoded><![CDATA[<p>@funrankun</p>
+<p>je te remercie grandement mais quelqu&#8217;un s&#8217;en est déjà occupé ;) . Le cher Kontre qui rôde souvent sur le blog ^^<br />
+Si toutefois tu veux quand même jetter un oeil ne serait-ce que pour la beauté du sport demande moi ;)<br />
+ça parle d&#8217;image processing, détection de la nettetée d&#8217;une image pour être précis.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: furankun</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20487</link>
+		<dc:creator><![CDATA[furankun]]></dc:creator>
+		<pubDate>Thu, 27 Feb 2014 11:17:37 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20487</guid>
+		<description><![CDATA[Tout d&#039;abord, merci pour l&#039;article, pour les articles en fait. Etant un scientificos venant de Matlab de base j&#039;avais attaqué Python directement via Numpy et Scipy, et vous m&#039;avez montré la lumière avec le Python &quot;simple&quot;. Maintenant je pense avoir des bases plus solides pour pouvoir m&#039;y remettre un peu plus facilement, le cas échéant (j&#039;ai déjà réessayé et il y a quand même du boulot).
+Et donc Max, je ne prétends pas être un bourrin en Matlab ni en Python, mais je peux toujours jeter un oeil sur ton code si tu le souhaites. De toute façon si ça dépasse mes compétences je te le dirai très vite :D]]></description>
+		<content:encoded><![CDATA[<p>Tout d&#8217;abord, merci pour l&#8217;article, pour les articles en fait. Etant un scientificos venant de Matlab de base j&#8217;avais attaqué Python directement via Numpy et Scipy, et vous m&#8217;avez montré la lumière avec le Python &#8220;simple&#8221;. Maintenant je pense avoir des bases plus solides pour pouvoir m&#8217;y remettre un peu plus facilement, le cas échéant (j&#8217;ai déjà réessayé et il y a quand même du boulot).<br />
+Et donc Max, je ne prétends pas être un bourrin en Matlab ni en Python, mais je peux toujours jeter un oeil sur ton code si tu le souhaites. De toute façon si ça dépasse mes compétences je te le dirai très vite :D</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Max</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20230</link>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+		<pubDate>Sat, 22 Feb 2014 10:40:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20230</guid>
+		<description><![CDATA[Dommage qu&#039;on ait pas plus de contributeurs dans cette section super interressante.
+
+&lt;span style=&quot;color: #FF0000&quot;&gt;
+A ce propos je cherche un kador en matlab qui serait passé du côté obscur du python (numpy/opencv) pour porter un ptit bout de code (à vue de nez une centaine de lignes)
+&lt;/span&gt;
+
+à vot bon coeur msieux dames...]]></description>
+		<content:encoded><![CDATA[<p>Dommage qu&#8217;on ait pas plus de contributeurs dans cette section super interressante.</p>
+<p><span style="color: #FF0000"><br />
+A ce propos je cherche un kador en matlab qui serait passé du côté obscur du python (numpy/opencv) pour porter un ptit bout de code (à vue de nez une centaine de lignes)<br />
+</span></p>
+<p>à vot bon coeur msieux dames&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: kontre</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20171</link>
+		<dc:creator><![CDATA[kontre]]></dc:creator>
+		<pubDate>Thu, 20 Feb 2014 19:29:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20171</guid>
+		<description><![CDATA[@Marien: tu as la fonction clip pour ça: http://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html
+x = x.clip(bounds[0], bounds[1])
+
+Cet article est très bien, mais dites-vous bien qu&#039;il effleure à peine la surface... Ce qui m&#039;amène à ma remarque: la doc numpy est plutôt bien fichue (et bien mieux que matplotlib) mais il y a un paquet de fonctions, ce qui rend la lib difficile à aborder. Un point de départ pas mal est http://wiki.scipy.org/Tentative_NumPy_Tutorial (en anglais). C&#039;est gros, mais ça présente juste la base. Dites vous que je ressens la même chose quand vous parlez de django ;)
+
+Il n&#039;y a pas vraiment d&#039;intérêt à un tuto sur scipy, c&#039;est principalement un ensemble de fonction qui vient compléter numpy. Perso je m&#039;en sers très très rarement, alors que &lt;code&gt;import numpy as np&lt;/code&gt; (cete manière d&#039;importer est aussi standard que le pep8) est de base dans mes scripts avec les imports de __future__.
+
+J&#039;aurais plein de trucs à raconter, mais pour finir je dirais que sous windows les gens utilisent en général des distributions python scientifiques parce que c&#039;est la merde à compiler à la main. Il existe principalement python(x,y) (la meilleure à mon sens mais que en 32 bits), WinPython (portable, vous pouvez l&#039;installer sur une clé usb) et Anaconda.
+Sous Linux 99% des paquets sont dans les dépôts, le reste c&#039;est pip.
+
+N&#039;hésitez pas à poser des questions !]]></description>
+		<content:encoded><![CDATA[<p>@Marien: tu as la fonction clip pour ça: <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html" rel="nofollow">http://docs.scipy.org/doc/numpy/reference/generated/numpy.clip.html</a><br />
+x = x.clip(bounds[0], bounds[1])</p>
+<p>Cet article est très bien, mais dites-vous bien qu&#8217;il effleure à peine la surface&#8230; Ce qui m&#8217;amène à ma remarque: la doc numpy est plutôt bien fichue (et bien mieux que matplotlib) mais il y a un paquet de fonctions, ce qui rend la lib difficile à aborder. Un point de départ pas mal est <a href="http://wiki.scipy.org/Tentative_NumPy_Tutorial" rel="nofollow">http://wiki.scipy.org/Tentative_NumPy_Tutorial</a> (en anglais). C&#8217;est gros, mais ça présente juste la base. Dites vous que je ressens la même chose quand vous parlez de django ;)</p>
+<p>Il n&#8217;y a pas vraiment d&#8217;intérêt à un tuto sur scipy, c&#8217;est principalement un ensemble de fonction qui vient compléter numpy. Perso je m&#8217;en sers très très rarement, alors que <code>import numpy as np</code> (cete manière d&#8217;importer est aussi standard que le pep8) est de base dans mes scripts avec les imports de __future__.</p>
+<p>J&#8217;aurais plein de trucs à raconter, mais pour finir je dirais que sous windows les gens utilisent en général des distributions python scientifiques parce que c&#8217;est la merde à compiler à la main. Il existe principalement python(x,y) (la meilleure à mon sens mais que en 32 bits), WinPython (portable, vous pouvez l&#8217;installer sur une clé usb) et Anaconda.<br />
+Sous Linux 99% des paquets sont dans les dépôts, le reste c&#8217;est pip.</p>
+<p>N&#8217;hésitez pas à poser des questions !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/les-bases-de-numpy/#comment-20170</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 20 Feb 2014 18:50:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=9198#comment-20170</guid>
+		<description><![CDATA[Merci bash !]]></description>
+		<content:encoded><![CDATA[<p>Merci bash !</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

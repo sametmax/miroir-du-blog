@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; list</title>
+	<atom:link href="http://sametmax.com/tag/list/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Redis : pourquoi et comment ? 23</title>
+		<link>http://sametmax.com/redis-pourquoi-et-comment/</link>
+		<comments>http://sametmax.com/redis-pourquoi-et-comment/#comments</comments>
+		<pubDate>Tue, 14 Oct 2014 11:31:17 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[hash]]></category>
+		<category><![CDATA[hyperloglog]]></category>
+		<category><![CDATA[list]]></category>
+		<category><![CDATA[pub/sub]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[redis]]></category>
+		<category><![CDATA[set]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12279</guid>
+		<description><![CDATA[Redis fait partie de ces technologies tellement utiles et simples à mettre en oeuvre qu'il est facile d'oublier toutes les personnes qui ne savent toujours pas ce que c'est. D'autant plus qu'on l'associe avec beaucoup d'étiquettes : cache, queues, pub/sub, base de données, nosql... Et qu'est-ce que Redis comparé à Memcache, MongoDB, MySQL, RabbitMQ, des technos qui n'ont rien à voir et auxquelles on le compare ?
+
+Bref, c'est pas clair tout ça.]]></description>
+				<content:encoded><![CDATA[<p>Redis fait partie de ces technologies tellement utiles et simples à mettre en oeuvre qu&#8217;il est facile d&#8217;oublier toutes les personnes qui ne savent toujours pas ce que c&#8217;est. D&#8217;autant plus qu&#8217;on l&#8217;associe avec beaucoup d&#8217;étiquettes : cache, queues, pub/sub, base de données, nosql&#8230; Et qu&#8217;est-ce que Redis comparé à Memcache, MongoDB, MySQL, RabbitMQ, des technos qui n&#8217;ont rien à voir et auxquelles on le compare ?</p>
+<p>Bref, c&#8217;est pas clair tout ça.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/6VAkOhXIsI0?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Hello redis</h2>
+<h3>D&#8217;abord, installer le bouzin. </h3>
+<p>Si vous êtes sous Linux, Redis est dans votre gestionnaire de paquets. Par exemple, sous Ubuntu :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> redis-server</pre></td></tr></table></div>
+
+<p>Pour Mac, via macport :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> port <span style="color: #c20cb9; font-weight: bold;">install</span> redis
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> port load redis</pre></td></tr></table></div>
+
+<p>Je crois que <code>brew install redis</code> marche aussi pour les amateurs de homebrew.</p>
+<p>Pour Windows, il y a un exe à télécharger <a href="https://github.com/MSOpenTech/redis/blob/2.8/bin/release/redis-2.8.17.zip">ici</a>.</p>
+<p>Mais le plus fun avec redis, c&#8217;est que même quand il y a pas de binaire, c&#8217;est le truc le plus facile du monde <a href="https://github.com/MSOpenTech/redis/blob/2.8/bin/release/redis-2.8.17.zip">à compiler.</a> Et Dieu sait que je hais la compilation, donc quand je vous dis que c&#8217;est simple, c&#8217;est que c&#8217;est mega, ultra, simple.</p>
+<h3>Ensuite lui faire dire bonjour.</h3>
+<p>Utiliser Redis se fait à base de commandes, dont <a href="http://redis.io/commands">la liste est sur le site officiel</a>. On peut envoyer ces commandes depuis n&#8217;importe quel langage, mais Redis fournit un shell qui permet de rentrer ces commandes directement:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ redis-cli <span style="color: #666666; font-style: italic;"># lancer le shell redis</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span>  ECHO <span style="color: #ff0000;">&quot;Hello&quot;</span>
+<span style="color: #ff0000;">&quot;Hello&quot;</span></pre></td></tr></table></div>
+
+<h2>Redis comme base de données clés/valeurs expirables</h2>
+<p>L&#8217;usage de base de Redis, c&#8217;est de stocker des valeurs associées à des clés. Le serveur Redis est comme un gigantesque Hash Map, dictionnaire Python, object Javascript, Array associatif en PHP&#8230; En premier lieu, donc, on utilise Redis pour stocker des choses ainsi :</p>
+<pre>"cle1" => valeur1
+"cle2" => valeur2
+etc</pre>
+<p>La clé doit être une chaîne de caractères, de préférence ASCII. La valeur peut être n&#8217;importe quoi, vraiment, mais généralement c&#8217;est un gros bloc de texte, un entier ou un blob binaire.</p>
+<p>Ca s&#8217;utilise avec les commandes <code>SET</code> et <code>GET</code>, qui peuvent, comme toutes les commandes, être tapées dans le shell de Redis :</p>
+<pre>127.0.0.1:6379> GET une_cle
+(nil)
+127.0.0.1:6379> SET une_cle "Une valeur"
+OK
+127.0.0.1:6379> GET une_cle
+"Une valeur"
+127.0.0.1:6379> SET une_cle 780708
+OK
+127.0.0.1:6379> GET une_cle
+"780708"</pre>
+<p>Ce genre d&#8217;usage est surtout sollicité pour stocker des paramètres de configurations ou des compteurs.</p>
+<p>En effet, la plupart des opérations sur les clés sont atomiques, rendant ce genre d&#8217;usage idéal. On peut même incrémenter ou décrémenter une valeur avec <code>INCR</code> et <code>DECR</code> atomiquement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> INCR une_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">780709</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> INCR une_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">780710</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> DECR une_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">780709</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span></pre></td></tr></table></div>
+
+<p>Vous allez me dire, mais quel intérêt ? Je peux déjà faire ça avec une variable. Certes, mais Redis est accessible depuis n&#8217;importe quel programme de votre serveur. Vous pouvez donc facilement partager des valeurs entre vos processus. Par exemple, avec Django, on a souvent plusieurs workers WSGI, et Redis permet donc de partager des informations entre ces workers. Pour cette raison, on peut utiliser Redis pour créer un <a href="https://github.com/antirez/redlock-rb">lock partagé</a>.</p>
+<p>Ainsi, un paramètre dynamique peut être changé et lu depuis tous les process de votre projet en utilisant Redis, et la valeur sera garantie d&#8217;être à jour. On peut bien entendu faire ça avec une base de données ordinaire, mais Redis a un plus : la performance.</p>
+<p>En effet, Redis est par défaut configuré pour garder toutes les données de sa base en mémoire vive. Pour cette raison, il est très, très rapide, supportant 100000 lectures/écritures par seconde. Si vous comptez le nombre de visiteurs en ligne pour l&#8217;afficher sur chaque page, votre base de données vous dira merci de plutôt demander à Redis.</p>
+<p>Plus encore, les clés peuvent expirer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> SET une_autre_cle <span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+OK
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> EXPIRE une_autre_cle <span style="color: #000000;">5</span> <span style="color: #666666; font-style: italic;"># cette clé expire dans 5 secondes</span>
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">1</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>nil<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>nil<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></td></tr></table></div>
+
+<p>La limite en taille de ce qu&#8217;on peut stocker par couple est <a href="http://sametmax.com/les-limites-theoriques-de-redis/">assez large</a>.</p>
+<p>On peut également utiliser <code>EXPIREAT</code> et un timestamp unique si on a une date en tête.</p>
+<p>Cette caractéristique le rend similaire à Memcache, qui est basé sur des clés/valeurs en mémoire qui peuvent expirer. Et comme Memcache, cela fait de Redis un outil idéal pour gérer du cache : faites une opération longue, stockez-là avec une clé, mettez lui une date d&#8217;expiration et pouf, vous avez une valeur cachée globale à votre app.</p>
+<p>Redis a néanmoins 3 différences majeures qui le sépare de Memcache :</p>
+<ul>
+<li>Redis sauvegarde régulièrement toutes les données sur le disque. Si vous rebootez le serveur, vous perdez au pire, quelques secondes de données. Avec Memcache, vous perdez tout.</li>
+<li>Memcache possède des fonctionalités de clusterisation que n&#8217;a pas encore Redis, bien que ce soit actuellement en beta.</li>
+<li>Redis peut faire bien plus que du stockage clé/valeur.</li>
+</ul>
+<h2>Redis comme base NoSQL zarbie</h2>
+<p>Redis n&#8217;a pas besoin d&#8217;un schéma particulier à définir pour pouvoir sauvegarder ses données, mais n&#8217;est pas pour autant limité à une forme d&#8217;organisation basique. En fait, des types très proches de ceux qu&#8217;on trouve dans le langage Python sont disponibles pour stocker internalement les données, et ils sont <a href="http://redis.io/topics/data-types-intro">décrits dans son excellente doc</a>.</p>
+<h3>Liste</h3>
+<p>Une <a href="http://redis.io/commands#list">liste</a> est juste une collection ordonnée d&#8217;éléments. On utilise toujours la logique de clé, mais au lieu d&#8217;une valeur, on a une séquence d&#8217;éléments.</p>
+<p>Cela permet d&#8217;avoir :</p>
+<pre>cle => [
+	valeur1,
+	valeur2,
+	...
+]</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> lpush batman na
+(integer) 1
+127.0.0.1:6379> lpush batman na
+(integer) 2
+127.0.0.1:6379> lpush batman na
+(integer) 3
+127.0.0.1:6379> lpush batman na
+(integer) 4
+127.0.0.1:6379> lpush batman na
+(integer) 5
+127.0.0.1:6379> lpush batman na
+(integer) 6
+127.0.0.1:6379> llen batman
+(integer) 6
+127.0.0.1:6379> LINDEX batman 3
+"na"
+127.0.0.1:6379> LINDEX batman 10
+(nil)
+127.0.0.1:6379> LRANGE batman 0 -1 # du début au dernier élément
+1) "na"
+2) "na"
+3) "na"
+4) "na"
+5) "na"
+6) "na"
+127.0.0.1:6379> LRANGE batman 2 3
+1) "na"
+2) "na"
+127.0.0.1:6379></pre>
+<p>On peut faire toutes les opérations qu&#8217;on a l&#8217;habitude de faire sur des listes : récupérer un élément, en ajouter un, en retirer un, faire du LIFO, du FIFO, du pipo, etc.</p>
+<p>Utile pour créer des files d&#8217;attente, des journaux d&#8217;évènements (pensez jeux vidéos) ou plus simplement une valeur de config plus complexe qu&#8217;une entrée.</p>
+<h3>Hash</h3>
+<p><a href="http://redis.io/commands#hash">Le Hash</a> se comporte comme un Hash Map, dictionnaire Python, object Javascript, Array associatif en PHP&#8230; Bref, comme Redis lui-même en fait, mais sans expiration de clé. Cela permet d&#8217;avoir :</p>
+<pre>cle => {
+	cle : valeur,
+	cle : valeur,
+}</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> HSET scores titi 1
+(integer) 1
+127.0.0.1:6379> HSET scores grosminet 0
+(integer) 1
+127.0.0.1:6379> HSET scores tom 0
+(integer) 1
+127.0.0.1:6379> HSET scores jerry 1
+(integer) 1
+127.0.0.1:6379> HGET scores jerry
+"1"
+127.0.0.1:6379> HGETALL scores
+1) "titi"
+2) "1"
+3) "grosminet"
+4) "0"
+5) "tom"
+6) "0"
+7) "jerry"
+8) "1"
+127.0.0.1:6379></pre>
+<p>Notez encore une fois qu&#8217;il n&#8217;est pas utile de vérifier que la clé existe avant de rajouter une valeur dans le hash, bien qu&#8217;il y ait une commande pour le faire. Si on essaye de récupérer une clé qui n&#8217;existe pas, Redis retourne <code>nil</code>.</p>
+<p>Le hash est fort pratique pour toute forme de compteurs groupés, ou juste pour mettre en cache des relations. Redis n&#8217;ayant pas de <code>JOIN</code>, on utilise parfois un hash pour faire le lien entre deux listes par exemple.</p>
+<h3>Set</h3>
+<p>Comme les sets en Python, le <a href="http://redis.io/commands#set">set</a> est une collection NON ordonnée d&#8217;éléments uniques. Il ne peut pas y avoir de doublons dans un set, et vérifier si un élément fait partie d&#8217;un set est une opération très rapide. Ils permettent aussi de faire des opérations ensemblistes de manière performante, par exemple vérifier quels éléments d&#8217;un set sont ou non dans un autre set.</p>
+<pre>cle => { valeur1, valeur2, ...}</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> SADD ip 192.168.1.1
+(integer) 1
+127.0.0.1:6379> SADD ip 192.168.1.1 # ajouter 2x le même ne fait rien
+(integer) 0
+127.0.0.1:6379> SADD ip 192.168.1.1
+(integer) 0
+127.0.0.1:6379> SADD ip 192.168.1.2
+(integer) 1
+127.0.0.1:6379> SADD ip 192.168.1.3
+(integer) 1
+127.0.0.1:6379> SCARD ip
+(integer) 3
+127.0.0.1:6379> SMEMBERS ip
+1) "192.168.1.2"
+2) "192.168.1.1"
+3) "192.168.1.3"
+127.0.0.1:6379> SADD ip:banned 192.168.1.3 # le ":" est une séparateur courant pour les clés
+(integer) 1
+127.0.0.1:6379> SADD ip:banned 192.168.1.10 # ip:banned est un AUTRE set
+(integer) 1
+127.0.0.1:6379> SINTER ip ip:banned # trouver les IP qui sont dans les 2 sets
+1) "192.168.1.3"</pre>
+<p>On va utiliser les sets pour éviter les doublons (tirage au sort par exemple) ou pour vérifier facilement une appartenance (notion de groupes, de permissions, etc.).</p>
+<p>Le set possède une variante, le <a href="http://redis.io/commands#sorted_set">set ordonné</a>, qui associe à chaque élément du set un score. On peut changer ce score, l&#8217;incrémenter ou le décrémenter atomiquement, avoir deux scores égaux&#8230; Et au final, récupérer le set dans l&#8217;ordre ascendant ou descendant des scores. </p>
+<pre>cle => { valeur1 (1), valeur2 (3), ...}</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> zadd participants 1 staline
+(integer) 1
+127.0.0.1:6379> zadd participants 1 hitler
+(integer) 1
+127.0.0.1:6379> zadd participants 2 "pol pot"
+(integer) 1
+127.0.0.1:6379> zadd participants 1999 "rainbow dash"
+(integer) 1
+127.0.0.1:6379> zrange participants 0 - 1
+(error) ERR value is not an integer or out of range
+127.0.0.1:6379> zrange participants 0 -1 
+1) "hitler"
+2) "staline"
+3) "pol pot"
+4) "rainbow dash"
+127.0.0.1:6379> zrange participants 0 -1 withscores
+1) "hitler"
+2) "1"
+3) "staline"
+4) "1"
+5) "pol pot"
+6) "2"
+7) "rainbow dash"
+8) "1999"
+</pre>
+<h3>HyperLogLog</h3>
+<p>J&#8217;ai déjà parlé de l&#8217;HyperLogLog <a href="http://sametmax.com/le-compteur-mal-connu-lhyperloglog/">ici</a> et <a href="http://redis.io/commands#hyperloglog">celui de Redis</a> fonctionne pareil. Cette structure de données permettra de faire des compteurs d&#8217;éléments uniques, comme par exemple un compteur de visiteurs ou de gens connectés, qui soit approximatif (+ ou &#8211; 1%) mais prenne une taille fixe en mémoire.</p>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> PFADD connectes toto
+(integer) 1
+127.0.0.1:6379> PFADD connectes toto
+(integer) 0
+127.0.0.1:6379> PFADD connectes toto
+(integer) 0
+127.0.0.1:6379> PFADD connectes tata
+(integer) 1
+127.0.0.1:6379> PFADD connectes titi
+(integer) 1
+127.0.0.1:6379> PFADD connectes tutu
+(integer) 1
+127.0.0.1:6379> PFADD connectes tutu
+(integer) 0
+127.0.0.1:6379> PFADD connectes tutu
+(integer) 0
+127.0.0.1:6379> PFADD connectes tete
+(integer) 1
+127.0.0.1:6379> PFADD connectes bob
+(integer) 1
+127.0.0.1:6379> PFcount connectes
+(integer) 6
+127.0.0.1:6379>
+</pre>
+<h2>Redis comme super pote de Python</h2>
+<p>Vu que Redis est simple à installer et à configurer, c&#8217;est un outil qu&#8217;on dégaine facilement, même pour un petit script, pas forcément pour une grosse app Web. Par exemple, je fais une analyse de mon serveur, plutôt que de stocker le résultat dans un fichier, je peux mettre tout ça dans Redis, c&#8217;est tellement pratique.</p>
+<p>D&#8217;abord, la <a href="https://pypi.python.org/pypi/redis/">lib</a> pour communiquer avec Redis est à un <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> du clavier :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> redis</pre></td></tr></table></div>
+
+<p>Ensuite, si vous utilisez le client <code>StrictRedis</code>, l&#8217;API est exactement la même que les commandes du shell :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> redis
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r <span style="color: #66cc66;">=</span> redis.<span style="color: black;">StrictRedis</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">hgetall</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'scores'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span>b<span style="color: #483d8b;">'titi'</span>: b<span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> b<span style="color: #483d8b;">'tom'</span>: b<span style="color: #483d8b;">'0'</span><span style="color: #66cc66;">,</span> b<span style="color: #483d8b;">'jerry'</span>: b<span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> b<span style="color: #483d8b;">'grosminet'</span>: b<span style="color: #483d8b;">'0'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Il existe aussi des drivers asynchrones pour tornado, twisted et asyncio.</p>
+<h2>Redis comme message broker</h2>
+<p>J&#8217;aime le <a href="http://redis.io/commands#pubsub">pub/sub</a>, je pense qu&#8217;après mon <a href="http://sametmax.com/introduction-a-wamp-en-python/">enthousiasme</a> pour WAMP.ws, c&#8217;est clair.</p>
+<p>Redis met à disposition des primitives pour créer des files d&#8217;attente de messages et les lire, comme une version simplifiée de RabbitMQ ou Crossbar.io. Pour que ce soit intéressant, il nous faut deux process. D&#8217;abord un shell Python qui écoute les messages arrivant sur la file &#8220;sametmax&#8221; :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> redis
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r <span style="color: #66cc66;">=</span> redis.<span style="color: black;">StrictRedis</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> listener <span style="color: #66cc66;">=</span> r.<span style="color: black;">pubsub</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> listener.<span style="color: black;">subscribe</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'sametmax'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> item <span style="color: #ff7700;font-weight:bold;">in</span> listener.<span style="color: black;">listen</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>item<span style="color: black;">&#41;</span>
+...</pre></td></tr></table></div>
+
+<p>Le code va bloquer, et affichera quelque chose à chaque fois qu&#8217;il reçoit un message.</p>
+<p>Du coup si je fais ceci dans le shell Redis :</p>
+<pre>127.0.0.1:6379> publish sametmax yolo
+(integer) 1
+127.0.0.1:6379> publish sametmax carpediem
+(integer) 1
+127.0.0.1:6379> publish sametmax wololo
+(integer) 1
+127.0.0.1:6379> publish sametmax2 oyooyo
+(integer) 0
+127.0.0.1:6379></pre>
+<p>Mon shell python va afficher :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'subscribe'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'message'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: b<span style="color: #483d8b;">'yolo'</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'message'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: b<span style="color: #483d8b;">'carpediem'</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'message'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: b<span style="color: #483d8b;">'wololo'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Il n&#8217;a pas affiché <code>oyooyo</code> puisque c&#8217;est sur une autre channel.</p>
+<p>C&#8217;est une méthode assez simple de faire du pub/sub. C&#8217;est bas niveau, il n&#8217;y a pas de RPC, il faut boucler à la main et créer soit-même la mécanique pour arrêter d&#8217;écouter ou faire du multitask, mais c&#8217;est facile pour débuter. Pour cette raison, plein de gens utilisent une solution bricolée là-dessus pour faire du pub/sub.</p>
+<h2>Et donc</h2>
+<p>Non seulement Redis est facile à installer, simple à utiliser et performant, mais en plus il est accessible depuis de nombreux langages. Ajoutez à cela ses très nombreuses fonctionnalités, et vous avez là un système qui est installé par défaut sur la plupart de mes serveurs. Par ailleurs, suivez <a href="http://antirez.com/latest/0">le blog de l&#8217;auteur</a>, ce mec est un génie. Il écrit pas souvent, mais quand il écrit, c&#8217;est passionant, et humble. C&#8217;est beau.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/redis-pourquoi-et-comment/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/BkUjyyCCQAA3i_T.jpg-medium.jpg" length="41148" type="image/jpg" />	</item>
+		<item>
+		<title>Le choix d&#8217;un langage influence le fun de votre carrière 32</title>
+		<link>http://sametmax.com/le-choix-dun-langage-influence-le-fun-de-votre-carriere/</link>
+		<comments>http://sametmax.com/le-choix-dun-langage-influence-le-fun-de-votre-carriere/#comments</comments>
+		<pubDate>Tue, 14 May 2013 09:47:04 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[java]]></category>
+		<category><![CDATA[list]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ruby]]></category>
+		<category><![CDATA[scala]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6095</guid>
+		<description><![CDATA[Les langages de programmation sont censés être des technologies neutres, mais comme toute chose utilisée dans le monde réel pour des usages concrets et nombreux, l'humain finit par leur donner une orientation, une préférence.]]></description>
+				<content:encoded><![CDATA[<p>Les langages de programmation sont censés être des technologies neutres, mais comme toute chose utilisée dans le monde réel pour des usages concrets et nombreux, l&#8217;humain finit par leur donner une orientation, une préférence.</p>
+<p>De fait, chaque langage finit par être plus utilisé dans certains types de métiers ou d&#8217;activités, pour certains types de projets, dans certains environnements. Plus important encore, un langage appelle d&#8217;autres outils, et un certain type de collègue, et même si, comme d&#8217;habitude, la généralisation est un piège à con, il y a bien des stéréotypes visibles qui se dégagent.</p>
+<p>Ainsi, Java et PHP sont des langages pour lesquels il est très facile de trouver du travail. Il y a une telle base de code là dehors qu&#8217;il y a des annonces partout, et tout le temps. En revanche, les environnements Java sont généralement très très lourds à manipuler. Pas en terme de performance (Java est aujourd&#8217;hui très rapide), mais en terme de charge de travail : énormément de configuration, beaucoup d&#8217;abstractions et de design pattern imbriqués, des APIs et des formats très verbeux&#8230;</p>
+<p>Travailler dans un monde Java, c&#8217;est généralement travailler à un rythme lent, plus souvent dans des grosses boîtes, pour des systèmes assez larges avec un grosse inertie. Ne vous attendez pas à des Java-party avec vos collègues après le boulot.</p>
+<p>PHP, c&#8217;est la même chose, avec des projets et composants plus simples (dans des entreprises de toutes tailles), et souvent bien plus dégueulasses. Non pas qu&#8217;on ne puisse pas écrire du PHP propre, mais 15 ans de PHP codé à l&#8217;arrache ne s&#8217;effacent pas avec quelques années de Symfony, et autre cakePHP. Du coup on hérite souvent d&#8217;un projet moche comme ta mère. </p>
+<p>Bref, Java et PHP vous garantissent un job, mais les projets sont rarement marrants, et l&#8217;ambiance au taff sera pas pumped up. Par contre il y a de la doc et des tutos, même si généralement ceux pour PHP sont de meilleure qualité que pour Java (qui peuvent être assez indigestes).</p>
+<p>Il y a une alternative intermédiaire : le C#. Beau langage, beaux outils, c&#8217;est propre sans être trop lourd, et la base de code est pas à vomir. Mais on reste dans le corporate, et la plupart du temps, sur du 98% Microsoft ou affiliés. </p>
+<p>Après vous avez des langages spécialisés comme Erlang, Scala, Lisp. Là, trouver du taff sera généralement un challenge. Ce n&#8217;est pas le genre de truc qu&#8217;on voit partout. Et le niveau sera difficile : un débutant peut arriver avec la bite et le couteau dans un projet PHP, mais si vous vous pointez avec 3 mois d&#8217;expérience sur une gateway jabber haute tolérance, le bidouillage ça va pas le faire. </p>
+<p>Ce sont des langages qu&#8217;il faut choisir si on aime le taff de haut niveau, la débrouillardise et les solutions intelligentes. En général les missions sont super intéressantes, mais la reconversion est dure. Par contre, vous rencontrerez des collègues qui valent le détour.</p>
+<p>Puis il y a les langages de bas niveau, type C/C++. Aujourd&#8217;hui, c&#8217;est massivement des missions scientifiques ou de l&#8217;embarqué : analyse d&#8217;image, cartes électroniques, petites machines, etc. Il y a encore des trucs pas cool genre Windev (j&#8217;ai un pote coincé là dedans, c&#8217;est triste, fuyez ces annonces), mais ce n&#8217;est plus la majorité. Ces langages, c&#8217;est une question de tempérament. Est-ce que vous aimez la minutie ? L&#8217;efficacité des algos ? Le travail sous contrainte technique ? Si oui, alors ce genre de taff peut être très sympa. Sinon, choisissez un langage plus dynamique.</p>
+<p>Ensuite il y a les langages de niches : Cobol, Power Builder, etc. Là c&#8217;est généralement des projets de merde très bien payés. Plus personne ne veut coder avec ces trucs, mais ça coûte trop cher à changer. Les jeunes sont acceptés, les formations offertes, le salaire de début de carrière est bon, mais par contre, le code est un truc de mémé. C&#8217;est pas mal pour commencer une carrière et se faire un peu de thune, mais faut savoir en sortir, et ça ne donne pas de bonnes habitudes en prog.</p>
+<p>Et pour finir il y des langages dit &#8220;modernes&#8221; (ce qui est un abus&#8230; de langage, car ils ne datent pas d&#8217;hier) comme Python, Ruby ou Javascript. Le côté &#8220;moderne&#8221; vient surtout du fait qu&#8217;ils sont maintenant très adaptés à des projets modernes, où la souplesse de développement a priorité sur le reste des caractéristiques. Choisissez ces langages si vous visez des missions, principalement Web, sur des produits récents. Ce sont les communautés les plus sympas et dynamiques, ça brasse pas mal dans le milieu et c&#8217;est assez jeune. Mais un grand nombre de start up, donc il faut pas chercher la sécurité de l&#8217;emploi.</p>
+<p>Une petite parenthèse pour Python tout de même : il n&#8217;est pas autant limité au Web et on le voit aussi beaucoup dans le secteur scientifique et bancaire. C&#8217;est sa versatilité et la facilité de reconversion qu&#8217;il offre qui me fait dire que c&#8217;est un très bon choix comme premier langage. Mais. Car il y a un &#8220;mais&#8221;. Trouver une offre Python sera plus difficile qu&#8217;une offre Ruby, et BEAUCOUP plus difficile qu&#8217;une offre PHP ou Java. Après perso je n&#8217;ai jamais connu le chômage.</p>
+<p>Warning ! Il faut faire gaffe à se lancer dans le dev Web. C&#8217;est très tentant, mais contrairement aux autres carrières, ça veut dire <a href="http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/">une courbe d&#8217;apprentissage beaucoup plus longue</a>. Vous ne pouvez pas juste apprendre votre langage, ses libs et son env et vous vendre comme &#8220;expert&#8221;.</p>
+<p>J&#8217;ai laissé pas mal de truc de côté, comme l&#8217;objective C, Haskell, Smalltalk, le Bash, Perl et <a href="http://99-bottles-of-beer.net">quelques milliers d&#8217;autres langages</a>. On ne peut pas tout faire, et je voudrais surtout peindre un tableau global du marché. En me relisant, je me dis que c&#8217;est bourré d&#8217;idées reçues, qu&#8217;il y a plein d&#8217;exceptions, etc. Mais je pense que les infos données peuvent permettre à des gens qui se posent la question de l&#8217;orientation de prendre une décision moins mauvaise que &#8220;je lance un D20 et on verra bien&#8221;.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-choix-dun-langage-influence-le-fun-de-votre-carriere/feed/</wfw:commentRss>
+		<slash:comments>32</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/m6UwO0w.jpg" length="28964" type="image/jpg" />	</item>
+		<item>
+		<title>Heapq, le module Python incompris 14</title>
+		<link>http://sametmax.com/heapq-le-module-python-incompris/</link>
+		<comments>http://sametmax.com/heapq-le-module-python-incompris/#comments</comments>
+		<pubDate>Fri, 21 Dec 2012 17:23:44 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[heapq]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[list]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3813</guid>
+		<description><![CDATA[heapq est un algorythme qui organise une liste sous forme d'arbre binaire. Vous voyez c'était simple non ? Non ?]]></description>
+				<content:encoded><![CDATA[<p>Guido Van Rossum, notre-Dieu-à-tous-beni-soit-il, a un jour accepté de faire une session de questions-réponses publique, dans laquelle un petit malin lui a demandé &#8220;<a href="http://neopythonic.blogspot.fr/2008/10/sorting-million-32-bit-integers-in-2mb.html">Comment ordonner un million d&#8217;entiers 32 bits dans 2Mo de Ram avec Python</a>&#8220;.</p>
+<p>Ca aurait été sur ce blog, le mec se serait pris un tampon &#8220;drozophiliafucker&#8221; dans la gueule et ça aurait été plié. Mais quand on est BDFL et, à l&#8217;époque, employé chez Google, on est obligé de donner une réponse un peu sérieuse.</p>
+<p>Si vous avez suivi le lien précédent, vous verrez que sa réponse implique un obscure module appelé heapq. Si vous allez sur <a href="http://docs.python.org/2/library/heapq.html">la doc</a> du-dit module, vous verrez qu&#8217;elle implique une obscure explication innomable et vous aller retourner à la vidéo de porn que vous avez laissé bufferiser en haute résolution afin de pouvoir voir les grains de beauté qui longent le pourtour anal de la principale protagoniste. Respirons. </p>
+<h2>Il y a une explication rationnelle à tout cela</h2>
+<p>heapq est un algorithme qui organise une liste sous forme d&#8217;arbre binaire. Vous voyez c&#8217;était simple non ?</p>
+<p>Nan je déconne, je vais pas vous laisser avec ça quand même.</p>
+<p>Le module heapq permet d&#8217;utiliser le type &#8220;list&#8221; pour y ajouter ou retirer les éléments de telle sorte qu&#8217;ils soient toujours dans l&#8217;ordre.</p>
+<p>Sous le capot, ça marche effectivement avec un arbre binaire, mais on s&#8217;en branle. Tout ce qu&#8217;il faut comprendre c&#8217;est:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">heapq</span> <span style="color: #ff7700;font-weight:bold;">import</span> heappush<span style="color: #66cc66;">,</span> heappop
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l<span style="color: #66cc66;">,</span> <span style="color: #ff4500;">69</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l<span style="color: #66cc66;">,</span> <span style="color: #ff4500;">42</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l<span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2048</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> heappush<span style="color: black;">&#40;</span>l<span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">273.15</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #808080; font-style: italic;"># la liste est ordonnée en arbre binaire...</span>
+<span style="color: black;">&#91;</span>-<span style="color: #ff4500;">273.15</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">42</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2048</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">69</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># et on depop pour itérer dans l'odre</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> heappop<span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span>
+...     
+-<span style="color: #ff4500;">273.15</span>
+<span style="color: #ff4500;">42</span>
+<span style="color: #ff4500;">69</span>
+<span style="color: #ff4500;">2048</span></pre></td></tr></table></div>
+
+<p>Donc on a une liste, on lui met des éléments dans la tronche dans n&#8217;importe quel ordre, et bam, on peut itérer dans le bon ordre sans avoir à rien faire. Et cette insertion est assez rapide (O(lg n) pour les tatillons). Le parcours l&#8217;est également (de l&#8217;ordre de O(n log n)).</p>
+<p>Et donc c&#8217;est très pratique pour trouver les x plus petits éléments (ou les plus grands), implémenter des queues de priorité, etc.</p>
+<p>Exemple de queue de priorité, (courageusement <a href="http://joernhees.de/blog/2010/07/19/min-heap-in-python/">volé d&#8217;ici</a>):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">heapq</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> PriorityQueue<span style="color: black;">&#40;</span><span style="color: #008000;">list</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> data<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>Heap<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">push</span><span style="color: black;">&#40;</span>i<span style="color: #66cc66;">,</span> x<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> push<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> priority<span style="color: #66cc66;">,</span> item<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            On push en rajoute une priorité
+        &quot;&quot;&quot;</span>
+        <span style="color: #dc143c;">heapq</span>.<span style="color: black;">heappush</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span>priority<span style="color: #66cc66;">,</span> item<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> pop<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            On pop en retirant la proprité
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">heappop</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__len__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Comme on a une méthode next(), on peut se retourner soi-même.
+            Ainsi la boucle for appelera next() automatiquement. 
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> next<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot; 
+           On depop la liste du plus petit au plus grand.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IndexError</span>:
+            <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">StopIteration</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> PriorityQueue<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;azerty&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">push</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'après'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">push</span><span style="color: black;">&#40;</span>-<span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'avant'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">push</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pendant'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> l:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> x
+...     
+<span style="color: black;">avant</span>
+a
+z
+e
+r
+t
+pendant
+y
+après</pre></td></tr></table></div>
+
+<p>Et le plus beau, c&#8217;est qu&#8217;on peut prendre plusieurs itérables ordonnés, et utiliser <code>heapq.merge</code> pour obtenir un générateur (qui ne charge pas tout en mémoire d&#8217;un coup) qui va permettre d&#8217;iterer de manière ordonnée sur tous les éléments.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">heapq</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l1 <span style="color: #66cc66;">=</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l2 <span style="color: #66cc66;">=</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l3 <span style="color: #66cc66;">=</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">heapq</span>.<span style="color: black;">merge</span><span style="color: black;">&#40;</span>l1<span style="color: #66cc66;">,</span> l2<span style="color: #66cc66;">,</span> l3<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">59</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">60</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">171</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">174</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">262</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">336</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">402</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">435</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">487</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">557</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">645</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">899</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">949</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">996</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Notez que ce n&#8217;est pas du tout la même chose que de concaténer les listes:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l1 + l2 + l3
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">59</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">174</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">336</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">487</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">996</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">52</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">171</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">557</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">645</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">949</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">60</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">262</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">402</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">435</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">899</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Car des élements de <code>l2</code> peuvent être inférieurs à ceux de <code>l1</code>. <code>heap.merge</code> nous ordonne tout bien correctement. C&#8217;est l&#8217;équivalent de <code>sorted(l1 + l2 + l3)</code>, sauf que ça ne charge pas tout en mémoire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">merge</span><span style="color: black;">&#40;</span>l1<span style="color: #66cc66;">,</span> l2<span style="color: #66cc66;">,</span> l3<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>generator <span style="color: #008000;">object</span> merge at <span style="color: #ff4500;">0x0314F238</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Alors que <code>sorted()</code>, charge tout en mémoire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>l1 + l2 + l3<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">59</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">60</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">171</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">174</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">262</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">336</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">402</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">435</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">487</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">557</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">645</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">899</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">949</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">996</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p><del datetime="2012-12-21T17:35:16+00:00">Bien entendu, ça marche avec des listes créées avec </del><br />
+<del datetime="2012-12-21T17:35:16+00:00"><code>heapq</code>, ainsi:</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l1 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l1, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l2 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l2, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> l3 = []</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> for x in xrange(5): heappush(l3, random.randint(0, 1000))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">>>> list(heapq.merge(l1, l2, l3))</del></p>
+<p><del datetime="2012-12-21T17:35:16+00:00">[31, 40, 133, 360, 504, 508, 513, 679, 645, 792, 838, 413, 765, 886, 924]</del></p>
+<p><em>(Grosse connasserie de ma part, faites comme si vous aviez rien vu.)</em></p>
+<p>Quand on a de grosses quantités de données à trier, c&#8217;est très pratique, car l&#8217;effort de tri est répartie à chaque insertion, et à chaque itération pendant le parcours, pas concentré sur de gros appels de <code>sorted()</code>.</p>
+<p>On peut aussi récupérer des trucs du genre, les n plus petits / grands éléments sans tout coder à la main:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">nsmallest</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> l<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">heapq</span>.<span style="color: black;">nlargest</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> l<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">999</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">996</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">983</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Et c&#8217;est beaucoup plus efficace que de le faire soi-même.</p>
+<p>J&#8217;en profite pour rappeler au passage que tous les objets en Python sont ordonnables:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #483d8b;">&quot;b&quot;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: #483d8b;">&quot;b&quot;</span>
+<span style="color: #008000;">True</span></pre></td></tr></table></div>
+
+<p>Et qu&#8217;en définissant les méthodes <a href="http://docs.python.org/2/reference/datamodel.html#object.__eq__">__eq_</a>_, <code>__lt__</code>, <code>__gt__</code>, etc., on peut donner un moyen de <a href="http://wiki.python.org/moin/HowTo/Sorting">comparer n&#8217;importe quelle classe</a>.</p>
+<p>Bref, pour tous les besoins de classement, de priorisations, d&#8217;ordonnancement, de notion de plus petits, de plus grands, etc. qui concernent un gros jeu de données, <code>heapq</code> est le module qu&#8217;il vous faut.</p>
+<p>Et là je percute que ça fait quelque temps déjà que je fais des articles élitistes pour des uses cases de 1% de la population. Donc les prochains tutos concerneront des trucs plus terre à terre. Parce que, je fais le malin là, mais je savais pas à quoi servait <code>heapq</code> il y a 3 semaines.</p>
+<p>xoxo les filles</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/heapq-le-module-python-incompris/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/hip-hop.jpg" length="76988" type="image/jpg" />	</item>
+	</channel>
+</rss>

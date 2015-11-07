@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; sets</title>
+	<atom:link href="http://sametmax.com/tag/sets/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Le compteur mal connu : l&#8217;HyperLogLog 13</title>
+		<link>http://sametmax.com/le-compteur-mal-connu-lhyperloglog/</link>
+		<comments>http://sametmax.com/le-compteur-mal-connu-lhyperloglog/#comments</comments>
+		<pubDate>Tue, 07 Oct 2014 14:02:58 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[redis]]></category>
+		<category><![CDATA[sets]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12353</guid>
+		<description><![CDATA[Non, <a href="https://en.wikipedia.org/wiki/HyperLogLog">ce n'est pas une faute de frappe</a>. l'HyperLogLog est un algo qui permet de compter approximativement des éléments uniques en prenant très peu de mémoire.
+]]></description>
+				<content:encoded><![CDATA[<p>Non, <a href="https://en.wikipedia.org/wiki/HyperLogLog">ce n&#8217;est pas une faute de frappe</a>. l&#8217;HyperLogLog est un algo qui permet de compter approximativement des éléments uniques en prenant très peu de mémoire.</p>
+<p>Prenez par exemple un compteur d&#8217;IP uniques. En Python, on l&#8217;implémenterait en mettant les adresses IP dans un <code>set()</code> (puisqu&#8217;ils éliminent les doublons) et pour obtenir le nombre d&#8217;IP uniques, on ferait <code>len()</code> sur le <code>set</code>.</p>
+<p>Une bonne stratégie, performante (les sets sont très rapides pour ce genre d&#8217;usage), simple, mais avec un défaut : la taille du <code>set</code> ne va cesser d&#8217;augmenter au fur et à mesure qu&#8217;on le remplit d&#8217;IP puisqu&#8217;il nous faut l&#8217;historique de toutes celles rencontrées pour éviter les doublons.</p>
+<p>L&#8217;HyperLogLog répond à cette problématique : il tient un journal probabiliste qui va se remplir au fur et à mesure qu&#8217;on rencontre des nouveaus éléments. On peut ensuite demander au journal combien d&#8217;éléments uniques il a rencontré, et il répond avec une marge d&#8217;erreur.</p>
+<p><strong>Avantage </strong>: la taille en mémoire est fixe.<br />
+<strong>Désavantage </strong>: le compteur n&#8217;est pas parfaitement précis.</p>
+<p>La précision obtenue est dépendante de la place en mémoire, par exemple si on on tolère 1% d&#8217;erreur, le journal prendra au maximum 12kb, permettant de compter jusqu&#8217;à 2^64 items.</p>
+<p>Bref, si vous faites juste un compteur à afficher en pied de page de votre site, c&#8217;est un très bon compromis. On peut accepter d&#8217;avoir un peu plus ou un peu moins de visiteurs que la réalité qui s&#8217;affiche, sachant que la stat elle-même n&#8217;est pas vraiment réprésentative de la réalité (IP != de visiteurs uniques).</p>
+<p>En Python, il existe une lib (uniquement 2.7 il me semble) pour ça :</p>
+<pre lang="bash>pip install hyperloglog</pre>
+<p>Et ça s&#8217;utilise très simplement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> hyperloglog<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">random</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> hll <span style="color: #66cc66;">=</span> hyperloglog.<span style="color: black;">HyperLogLog</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0.01</span><span style="color: black;">&#41;</span>  <span style="color: #808080; font-style: italic;"># on accepte une erreur de 1%</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> hll.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;119.250.66.95&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>hll<span style="color: black;">&#41;</span>  
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> hll.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;119.250.66.95&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>hll<span style="color: black;">&#41;</span>  
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> hll.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;219.81.118.147&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>hll<span style="color: black;">&#41;</span>  
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>:
+... <span style="color: black;">ip</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;.&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">255</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+... <span style="color: #ff7700;font-weight:bold;">print</span> ip
+... <span style="color: black;">hll</span>.<span style="color: black;">add</span><span style="color: black;">&#40;</span>ip<span style="color: black;">&#41;</span>
+114.208.49.91
+11.72.239.16
+67.56.229.66
+191.62.59.163
+61.104.232.43
+110.58.69.141
+246.123.30.234
+244.246.65.219
+98.93.193.114
+185.143.143.69
+191.177.161.213
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>hll<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># 1000 items unique. Environ :)</span>
+<span style="color: #ff4500;">1004</span></pre></td></tr></table></div>
+
+<p>Vous pouvez également profiter de l&#8217;HyperLogLog via une <a href="http://tapoueh.org/blog/2013/02/25-postgresql-hyperloglog">extension PostGres</a> ou en utilisant une version récente de <a href="http://redis.io/commands#hyperloglog">Redis</a>.</p>
+<p>La plupart des compteurs sur les sites sont complètement bidons, alors vous, honnête que vous êtes, embrassez l&#8217;approximatif ! C&#8217;est presque la vérité. Presque.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-compteur-mal-connu-lhyperloglog/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/verite12.jpg" length="42937" type="image/jpg" />	</item>
+		<item>
+		<title>Quelques innovation de Python 3 backportées en Python 2.7 4</title>
+		<link>http://sametmax.com/quelques-innovation-de-python-3-backportees-en-python-2-7/</link>
+		<comments>http://sametmax.com/quelques-innovation-de-python-3-backportees-en-python-2-7/#comments</comments>
+		<pubDate>Mon, 05 Nov 2012 11:36:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[context manager]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sets]]></category>
+		<category><![CDATA[strings]]></category>
+		<category><![CDATA[unit tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2863</guid>
+		<description><![CDATA[Comme nous l'avons vu avec les vues ou les collections, Python 2.7 vient avec pas mal de bonus issus directement de la branche 3. En voici quelques autres. Tout ceci n'est bien sûr ni nouveau ni exhaustif, mais je m’aperçois que peu de personnes le savent.]]></description>
+				<content:encoded><![CDATA[<p>Comme nous l&#8217;avons vu avec les <a href="http://sametmax.com/les-vues-sur-des-collections-en-python/">vues</a> ou les <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">collections</a>, Python 2.7 vient avec pas mal de bonus issus directement de la branche 3. En voici quelques autres. Tout ceci n&#8217;est bien sûr ni nouveau ni exhaustif, mais je m’aperçois que peu de personnes le savent.</p>
+<p>Une notation littérale pour les sets:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#123;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span> <span style="color: #66cc66;">==</span> <span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">True</span></pre></td></tr></table></div>
+
+<p>Une syntaxe pour les dictionnaires en intention:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #008000;">chr</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>: x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">65</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">91</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'A'</span>: <span style="color: #ff4500;">65</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'C'</span>: <span style="color: #ff4500;">67</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'B'</span>: <span style="color: #ff4500;">66</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'E'</span>: <span style="color: #ff4500;">69</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'D'</span>: <span style="color: #ff4500;">68</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'G'</span>: <span style="color: #ff4500;">71</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'F'</span>: <span style="color: #ff4500;">70</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'I'</span>: <span style="color: #ff4500;">73</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'H'</span>: <span style="color: #ff4500;">72</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'K'</span>: <span style="color: #ff4500;">75</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'J'</span>: <span style="color: #ff4500;">74</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'M'</span>: <span style="color: #ff4500;">77</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'L'</span>: <span style="color: #ff4500;">76</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'O'</span>: <span style="color: #ff4500;">79</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'N'</span>: <span style="color: #ff4500;">78</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Q'</span>: <span style="color: #ff4500;">81</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'P'</span>: <span style="color: #ff4500;">80</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'S'</span>: <span style="color: #ff4500;">83</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'R'</span>: <span style="color: #ff4500;">82</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'U'</span>: <span style="color: #ff4500;">85</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'T'</span>: <span style="color: #ff4500;">84</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'W'</span>: <span style="color: #ff4500;">87</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'V'</span>: <span style="color: #ff4500;">86</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Y'</span>: <span style="color: #ff4500;">89</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'X'</span>: <span style="color: #ff4500;">88</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Z'</span>: <span style="color: #ff4500;">90</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Imbriquer <code>with</code>:</p>
+<p>Avant il fallait utiliser <a href="http://docs.python.org/2/library/contextlib.html#contextlib.nested">nested()</a> ou imbriquer à la main</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichiera'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> a:
+    <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichiera'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> b:
+        <span style="color: #808080; font-style: italic;"># faire un truc</span></pre></td></tr></table></div>
+
+<p>Maintenant on peut faire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichiera'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> a<span style="color: #66cc66;">,</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichiera'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> b:
+    <span style="color: #808080; font-style: italic;"># faire un truc</span></pre></td></tr></table></div>
+
+<p>Rien à voir, mais toujours sympa. <code>timedelta</code> a maintenant une méthode <code>total_seconds()</code> qui retourne la valeur de la durée en seconde. En effet, l&#8217;attribut <code>seconds</code> ne retourne que ce qui reste en seconde une fois qu&#8217;on a retiré les jours:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> timedelta
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> delta <span style="color: #66cc66;">=</span> timedelta<span style="color: black;">&#40;</span>days<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> seconds<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> delta.<span style="color: black;">seconds</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> delta.<span style="color: black;">total_seconds</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">86401.0</span></pre></td></tr></table></div>
+
+<p>Notez qu&#8217;il n&#8217;y a toujours ni attribut minutes, ni heures.</p>
+<p>Le module <code>unittest</code> gagne une pléthore d&#8217;améliorations, et notamment:</p>
+<p>L&#8217;utilisation de <code>assertRaises</code> comme context manager:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">self</span>.<span style="color: black;">assertRaises</span><span style="color: black;">&#40;</span><span style="color: #008000;">KeyError</span><span style="color: black;">&#41;</span>:
+    <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'foo'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Et un bon gros nombres de méthodes:</p>
+<p><code>assertIsNone()</code> / <code>assertIsNotNone()</code>, <code>assertIs()</code> / <code>assertIsNot()</code>, <code>assertIsInstance()</code> / <code>assertNotIsInstance()</code>, <code>assertGreater()</code> / <code>assertGreaterEqual()</code> / <code>assertLess()</code> / <code>assertLessEqual()</code>, <code>assertRegexpMatches()</code> / <code>assertNotRegexpMatches()</code>, <code>assertRaisesRegexp()</code>,<br />
+<code>assertIn()</code> / <code>assertNotIn()</code>, <code>assertDictContainsSubset()</code>, <code>assertAlmostEqual()</code> / <code>assertNotAlmostEqual()</code>.</p>
+<p>Enfin <code>format()</code> commence à devenir une alternative valable à <code>%</code> car il propose maintenant des marqueurs sans noter d’index:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;{}, puis {} et finalement {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>*<span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'0, puis 1 et finalement 2'</span></pre></td></tr></table></div>
+
+<p>Et il ajoute le séparateur des milliers au mini-langage de formatage, mais pour la virgule uniquement. Par exemple, si avoir un nombre de 15 caractères minimum formater en tant que float, avec deux chiffres après la virgules, et donc les milliers sont groupés à l&#8217;américaine:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'{:15,.2f}'</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">54321</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'      54,321.00'</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelques-innovation-de-python-3-backportees-en-python-2-7/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/Pimp-My-Ride-43797.jpg" length="291183" type="image/jpg" />	</item>
+	</channel>
+</rss>

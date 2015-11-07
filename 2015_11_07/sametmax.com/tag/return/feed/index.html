@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; return</title>
+	<atom:link href="http://sametmax.com/tag/return/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Quelle valeur retourner quand on ne trouve rien en Python ? 5</title>
+		<link>http://sametmax.com/quelle-valeur-retourner-quand-on-ne-trouve-rien/</link>
+		<comments>http://sametmax.com/quelle-valeur-retourner-quand-on-ne-trouve-rien/#comments</comments>
+		<pubDate>Wed, 30 Jan 2013 09:25:16 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[return]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4321</guid>
+		<description><![CDATA[Techniquement une fonction Python ne peut pas ne rien retourner. Il n'existe rien de telle qu'un procédure dans ce langage. Si vous ne donnez aucune valeur de retour, elle va retourner <code>None</code>.
+
+Ne rien retourner, c'est donc choisir de retourner <code>None</code>. Or la valeur de retour est une choix d'API, et va dicter comme les gens vont utiliser votre fonction. Il convient donc de bien choisir sa valeur de retour "à vide".]]></description>
+				<content:encoded><![CDATA[<p>Hier je me suis dit que maintenant je mettrai de la musique à écouter pendant le tuto. Parce que. Donc détendez-vous avez un petit morceau de K&#8217;s Choice :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/7kNzDk2CPHI" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Techniquement une fonction Python ne peut pas ne rien retourner. Il n&#8217;existe rien de telle qu&#8217;un procédure dans ce langage. Si vous ne donnez aucune valeur de retour, elle va retourner <code>None</code>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> metal<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff4500;">1</span> + <span style="color: #ff4500;">1</span>
+...     
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> metal<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">None</span></pre></td></tr></table></div>
+
+<p>Ne rien retourner, c&#8217;est donc choisir de retourner <code>None</code>. Or la valeur de retour est un choix d&#8217;API, et va dicter comme les gens vont utiliser votre fonction. Il convient donc de bien choisir sa valeur de retour &#8220;à vide&#8221;.</p>
+<h2>Fonction qui produit un résultat</h2>
+<p>La fonction qui produit un résultat, par exemple on lui donne deux valeur, et elle calcule une troisième, est le cas le plus facile.</p>
+<p>Si la valeur peut être calculée, on retourne la valeur. Sinon, c&#8217;est qu&#8217;il y a un problème avec les arguments. Comme Python n&#8217;est pas un langage compilé, on ne check pas la nature des arguments. De plus parfois ce n&#8217;est pas tant un problème de nature que de valeur (comme le domaine de définition en maths). Dans ce cas, le mieux est de lever une exception (souvent ValueError ou un descendant) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> by_poison<span style="color: black;">&#40;</span>arg1<span style="color: #66cc66;">,</span> arg2<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># faire l'opération ici</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ah, ça marche pas ?</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;{} et {} doivent être bidule truc sinon ça ne marche pas&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>arg1<span style="color: #66cc66;">,</span> arg2<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On évite la plupart du temps les valeurs qui veulent dire sémantiquement &#8220;mauvaise opération&#8221; comme <code>NaN</code> en Python. On préférera lever une exception. <code>None</code> est rarement une bonne idée ici.</p>
+<h2>Fonction qui cherche un résultat</h2>
+<p>Ce genre de fonction ne va pas lever une exception sous prétexte qu&#8217;elle n&#8217;a pas trouvé un truc. Ne pas trouver est un état tout à fait normal (à moins que la présence soit requise, mais dans ce cas lever l&#8217;exception ne doit pas être à ce niveau mais à celui plus haut de toute façon).</p>
+<p>Si c&#8217;est une vérification de présence, on retourne juste <code>True</code> / <code>False</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> is_inside<span style="color: black;">&#40;</span>value<span style="color: #66cc66;">,</span> other_value<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># vérifier que value est dans other value</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span> <span style="color: #808080; font-style: italic;"># ou False</span></pre></td></tr></table></div>
+
+<p>Notez que si vous faites les choses proprement, il vaut mieux overrider <code>__contains__</code> pour permettre d&#8217;utiliser <code>in</code> directement.</p>
+<p>Si votre recherche doit retourner une liste d&#8217;items (comme les lignes dans une base de données), dans ce cas quand on ne trouve rien, il vaut mieux retourner une liste vide. Cela permet de faire une boucle <code>for</code> sur le résultat dans tous les cas sans vérification ni side effect.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> inignition<span style="color: black;">&#40;</span>query<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># chercher un truc, et si on trouve le retourner</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># et tout à la fin, au cas où</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Si vous cherchez un élément en particulier (genre un nombre premier dans la liste donnée), le mieux est de retourner <code>None</code> si il ne fait pas partie des données retournable. Si <code>None</code> fait partie des données trouvable, on retourne au fait de lever des exceptions :(. Mais c&#8217;est qu&#8217;il y a un problème ailleurs, car <code>None</code> ne devrait pas être une donnée significative.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fed<span style="color: black;">&#40;</span>truc<span style="color: #66cc66;">,</span> bidule<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># chercher un truc, et si on trouve le retourner</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># et tout à la fin, au cas où</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">None</span></pre></td></tr></table></div>
+
+<p>Certains cas particuliers demandent de retourner le même type que celui recherché. Il n&#8217;y a pas de règle pour ça, il va falloir utiliser votre tête, pour faire quelque chose de cohérent.</p>
+<p>Par exemple, rechercher la chaîne la plus longue dans une séquence doit-il retourner <code>None</code> si aucune n&#8217;est trouvée, ou une chaîne vide ? Il n&#8217;y a pas de bonne réponse, c&#8217;est selon la sémantique de votre appli. Si elle traite uniquement avec des types string, une chaîne vide peut avoir du sens. Si c&#8217;est la présence ou l&#8217;absence de chaîne la plus longue qui est importante, alors <code>None</code> sera plus approprié.</p>
+<p>A l&#8217;inverse, des fonctions comme &#8220;trouver la position&#8221; ne doit pas retourner -1 comme dans la plupart des autres langages. -1 est en effet très significatif en Python (pour le slicing par exemple). Évitez donc d&#8217;utiliser le même type pour dire &#8220;rien n&#8217;est trouvé&#8221; si la valeur risque d&#8217;être significative. Dans ce cas choisissez <code>None</code>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">megalist<span style="color: black;">&#91;</span>:littlelist.<span style="color: black;">search</span><span style="color: black;">&#40;</span>truc<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># si littlelist.search(truc) retourn -1 c'est la merde !</span></pre></td></tr></table></div>
+
+<p>La bibliothèque Python a tendance à lever des exception à tout va :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'Tasse'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s.<span style="color: black;">index</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'p'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-14-e5567af6b163&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    s.<span style="color: black;">index</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'p'</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">ValueError</span>: substring <span style="color: #ff7700;font-weight:bold;">not</span> found</pre></td></tr></table></div>
+
+<p>C&#8217;est un comportement acceptable, mais ce n&#8217;est pas le plus pratique. Vous allez voir pourquoi.</p>
+<h2>Valeur par défaut</h2>
+<p>Retourner <code>None</code> quand on ne trouve rien peut résulter en une API extrêmement agréable car l&#8217;action la plus utilisée comme contre mesure est d&#8217;avoir une valeur par défaut. Prenez pas exemple un dictionnaire. Récupérer un élement et assigner une valeur par défaut si il manque ressemble à ça avec une exception :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> dicos <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'petit larousse'</span> : <span style="color: #483d8b;">'dans la tête'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'gros robert'</span> : <span style="color: #483d8b;">'dans le derriere'</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> dicos<span style="color: black;">&#91;</span><span style="color: #483d8b;">'urban dictionary'</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># un entrée inexistante lève l'exception KeyError</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-18-0d425e038e32&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    dicos<span style="color: black;">&#91;</span><span style="color: #483d8b;">'urban dictionary'</span><span style="color: black;">&#93;</span>
+<span style="color: #008000;">KeyError</span>: <span style="color: #483d8b;">'urban dictionary'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">try</span>: <span style="color: #808080; font-style: italic;"># du coup on doit faire un try</span>
+...     <span style="color: black;">ou_ca</span> <span style="color: #66cc66;">=</span> dicos<span style="color: black;">&#91;</span><span style="color: #483d8b;">'urban dictionary'</span><span style="color: black;">&#93;</span>
+... <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">KeyError</span>:
+...     <span style="color: black;">ou_ca</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'sur le net'</span>
+...     
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ou_ca
+<span style="color: #483d8b;">'sur le net'</span></pre></td></tr></table></div>
+
+<p>Mais Python permet <a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">un raccourcis pour ça</a>, vraiment sympas :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> dicos.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'urban dictionary'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'sur le net'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'sur le net'</span></pre></td></tr></table></div>
+
+<p>La méthode <code>get()</code> permet de récupérer une valeur, et si la clé n&#8217;existe pas, elle retourne le deuxième argument. Or, par défaut, le second argument est None :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> dicos.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'urban dictionary'</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">None</span></pre></td></tr></table></div>
+
+<p>Donc si vous avez une fonction qui cherche quelque chose et qui risque de ne pas trouver, il peut être très pratique de proposer une argument comme valeur de retour par défaut, et de le mettre à <code>None</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> and_blind<span style="color: black;">&#40;</span>cherche<span style="color: #66cc66;">,</span> default<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+&nbsp;
+     <span style="color: #ff7700;font-weight:bold;">if</span> je_trouve_pas_cherche:
+        <span style="color: #ff7700;font-weight:bold;">return</span> default</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelle-valeur-retourner-quand-on-ne-trouve-rien/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/anaconda-3.jpg" length="63123" type="image/jpg" />	</item>
+	</channel>
+</rss>

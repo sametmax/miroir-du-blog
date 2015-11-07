@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; properties</title>
+	<atom:link href="http://sametmax.com/tag/properties/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Les descripteurs en Python 17</title>
+		<link>http://sametmax.com/les-descripteurs-en-python/</link>
+		<comments>http://sametmax.com/les-descripteurs-en-python/#comments</comments>
+		<pubDate>Sat, 24 Nov 2012 13:11:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[descriptors]]></category>
+		<category><![CDATA[properties]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3276</guid>
+		<description><![CDATA[Un descripteur est une classe qu'on instancie comme attribut d'une autre classe pour faire office de setter et de getter sur cet attribut. Le descripteur doit implémente les méthodes <code>__get__</code> et <code>__set__</code> qui seront exécutées quand on essayer d'assigner ou lire l'attribut. ]]></description>
+				<content:encoded><![CDATA[<p>Un descripteur est une classe qu&#8217;on instancie comme attribut d&#8217;une autre classe pour faire office de setter et de getter sur cet attribut. Le descripteur doit implémenter les méthodes <code>__get__</code> et <code>__set__</code> qui seront exécutées quand on essaye d&#8217;assigner ou lire l&#8217;attribut. Respecter cette signature, c&#8217;est adopter ce qu&#8217;on appelle pompeusement le &#8220;descriptor protocol&#8221;.</p>
+<p>Si le principe vous rappelle les <a href="http://docs.python.org/2/library/functions.html#property">propriétés</a>, c&#8217;est normal, les propriétés sont implémentées en utilisant des descripteurs.</p>
+<p>Exemple balot et complètement arbitraire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> JeSuisUnDescripteurEtJeVousEmmerde<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># les noms des attributs sont des conventions</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__get__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> objtype<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> obj<span style="color: #66cc66;">,</span> objtype
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__set__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> obj<span style="color: #66cc66;">,</span> value
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> JeSuisUneClasseNormaleEtJeVousAime<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    ze_attribute <span style="color: #66cc66;">=</span> JeSuisUnDescripteurEtJeVousEmmerde<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> objet_affecteux <span style="color: #66cc66;">=</span> JeSuisUneClasseNormaleEtJeVousAime<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> objet_affecteux.<span style="color: black;">ze_attribute</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #dc143c;">__main__</span>.<span style="color: black;">JeSuisUneClasseNormaleEtJeVousAime</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x1cb20d0</span><span style="color: #66cc66;">&gt;</span> <span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'__main__.JeSuisUneClasseNormaleEtJeVousAime'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> objet_affecteux.<span style="color: black;">ze_attribute</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'dtc '</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #dc143c;">__main__</span>.<span style="color: black;">JeSuisUneClasseNormaleEtJeVousAime</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x1cedf10</span><span style="color: #66cc66;">&gt;</span> dtc</pre></td></tr></table></div>
+
+<p>Vous noterez que <code>obj</code> est donc toujours l&#8217;instance de l&#8217;objet qui possède l&#8217;attribut sur lequel on agit. Dans <code>__get__</code>, <code>objtype</code> est la classe de cet objet. Dans <code>__set__</code>, <code>value</code> est la nouvelle valeur qu&#8217;on assigne à l&#8217;objet.</p>
+<p>Vous allez me dire: pourquoi utiliser les descriptors plutôt que les properties ?</p>
+<p>D&#8217;abord, les descripteurs sont des unités de code indépendantes. Vous pouvez faire un module avec vos descripteurs, et les distribuer en tant que lib. Donc c&#8217;est réutilisable. Ensuite, vous n&#8217;êtes pas limités à votre méthode en cours, vous avez accès à tout l&#8217;arsenal de la programmation OO.</p>
+<p>Par exemple, si vous pouvez faire un descriptor d&#8217;alerte, qui envoie un signal à tous les abonnés pour cette valeur:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> SignalDescriptor<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    abonnements <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">classmethod</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> previens_moi<span style="color: black;">&#40;</span>cls<span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> attr<span style="color: #66cc66;">,</span> callback<span style="color: black;">&#41;</span>:
+        cls.<span style="color: black;">abonnements</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>obj<span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>attr<span style="color: #66cc66;">,</span> <span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: black;">add</span><span style="color: black;">&#40;</span>callback<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> nom<span style="color: #66cc66;">,</span> valeur_initiale<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">nom</span> <span style="color: #66cc66;">=</span> nom
+        <span style="color: #008000;">self</span>.<span style="color: black;">valeur</span> <span style="color: #66cc66;">=</span> valeur_initiale
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__get__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> objtype<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> callback <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">abonnements</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>obj<span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">nom</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+            callback<span style="color: black;">&#40;</span><span style="color: #483d8b;">'get'</span><span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">nom</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">valeur</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">valeur</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__set__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> valeur<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> callback <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">abonnements</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>obj<span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">nom</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+            callback<span style="color: black;">&#40;</span><span style="color: #483d8b;">'set'</span><span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">nom</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">valeur</span><span style="color: #66cc66;">,</span> valeur<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">valeur</span> <span style="color: #66cc66;">=</span> valeur</pre></td></tr></table></div>
+
+<p>Et voilà, vous pouvez distribuer ça sur Github, c&#8217;est plug and play.</p>
+<p>Par exemple, pour créer un objet <code>Joueur</code> sur lequel on veut monitorer le nombre de crédits :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Joueur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    credits <span style="color: #66cc66;">=</span> SignalDescriptor<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;credits&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On l&#8217;utilise normalement:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> j <span style="color: #66cc66;">=</span> Joueur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">15</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span>
+<span style="color: #ff4500;">15</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span> +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">5</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span>
+<span style="color: #ff4500;">20</span></pre></td></tr></table></div>
+
+<p>Mais si on rajoute un abonné :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> monitorer_credits<span style="color: black;">&#40;</span>action<span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> attribut<span style="color: #66cc66;">,</span> valeur_actuelle<span style="color: #66cc66;">,</span> nouvelle_valeur<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+&nbsp;
+   <span style="color: #ff7700;font-weight:bold;">if</span> action <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'set'</span>:
+       <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Les crédits ont changé:&quot;</span>
+   <span style="color: #ff7700;font-weight:bold;">else</span>:
+       <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Les crédits ont été consultés:&quot;</span>
+   <span style="color: #ff7700;font-weight:bold;">print</span> action<span style="color: #66cc66;">,</span> obj<span style="color: #66cc66;">,</span> attribut<span style="color: #66cc66;">,</span> valeur_actuelle<span style="color: #66cc66;">,</span> nouvelle_valeur
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> SignalDescriptor.<span style="color: black;">previens_moi</span><span style="color: black;">&#40;</span>j<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'credits'</span><span style="color: #66cc66;">,</span> monitorer_credits<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Alors à chaque action sur les crédits, tous les abonnés sont appelés :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span>
+Les crédits ont été consultés:
+get <span style="color: #66cc66;">&lt;</span><span style="color: #dc143c;">__main__</span>.<span style="color: black;">Joueur</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x1f6b190</span><span style="color: #66cc66;">&gt;</span> credits <span style="color: #ff4500;">20</span> <span style="color: #008000;">None</span>
+<span style="color: #ff4500;">20</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span> <span style="color: #66cc66;">=</span> -<span style="color: #ff4500;">20</span>
+Les crédits ont changé:
+<span style="color: #008000;">set</span> <span style="color: #66cc66;">&lt;</span><span style="color: #dc143c;">__main__</span>.<span style="color: black;">Joueur</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x1f6b190</span><span style="color: #66cc66;">&gt;</span> credits <span style="color: #ff4500;">20</span> -<span style="color: #ff4500;">20</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> j.<span style="color: black;">credits</span> -<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">10</span> <span style="color: #808080; font-style: italic;"># get ET set</span>
+Les crédits ont été consultés:
+get <span style="color: #66cc66;">&lt;</span><span style="color: #dc143c;">__main__</span>.<span style="color: black;">Joueur</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x1f6b190</span><span style="color: #66cc66;">&gt;</span> credits -<span style="color: #ff4500;">20</span> <span style="color: #008000;">None</span>
+Les crédits ont changé:
+<span style="color: #008000;">set</span> <span style="color: #66cc66;">&lt;</span><span style="color: #dc143c;">__main__</span>.<span style="color: black;">Joueur</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x1f6b190</span><span style="color: #66cc66;">&gt;</span> credits -<span style="color: #ff4500;">20</span> -<span style="color: #ff4500;">30</span></pre></td></tr></table></div>
+
+<p>On vient d&#8217;implémenter une version encapsulée du <a href="http://sametmax.com/le-pattern-observer-en-utilisant-des-decorateurs">pattern observer</a> dédié à un attribut. On peut faire de nombreuses choses avec les descripteurs: grouper des attributs, les transformer à la volée, les sauvegarder ailleurs (imaginez un objet de config qui sauvegarde automatiquement chaque modification de ses attributs dans un fichier…).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-descripteurs-en-python/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/wmygplyl.jpg" length="78327" type="image/jpg" />	</item>
+	</channel>
+</rss>

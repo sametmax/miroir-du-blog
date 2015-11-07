@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; champion</title>
+	<atom:link href="http://sametmax.com/tag/champion/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>La martingale à la roulette en Python 14</title>
+		<link>http://sametmax.com/la-martingale-a-la-roulette-en-python/</link>
+		<comments>http://sametmax.com/la-martingale-a-la-roulette-en-python/#comments</comments>
+		<pubDate>Thu, 01 May 2014 10:17:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[auchan]]></category>
+		<category><![CDATA[casino]]></category>
+		<category><![CDATA[champion]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8930</guid>
+		<description><![CDATA[Sur internet, c'est bien connu, on peut perdre du poids, trouver une fille facile prêt de chez soit, et gagner beaucoup d'argent facilement et sans risque.
+
+Une de ces techniques qu'on vous vend est la fameuse <a href="Martingale">martingale</a>, mais appliquée aux casinos en ligne. ]]></description>
+				<content:encoded><![CDATA[<p>Sur internet, c&#8217;est bien connu, on peut perdre du poids, trouver une fille facile près de chez soi, et gagner beaucoup d&#8217;argent rapidement et sans risque.</p>
+<p>Une de ces techniques qu&#8217;on vous vend est la fameuse <a href="https://fr.wikipedia.org/wiki/Martingale">martingale</a>, mais appliquée aux casinos en ligne. Outre le fait que vous ne pouvez pas vous fier à un serveur distant pour ne pas tricher, les jeux de hasard sont de toute façon toujours en faveur de la banque.</p>
+<p>Nous allons nous intéresser à la martingale la plus simple, celle appliquée à la roulette. Quand j&#8217;étais à l&#8217;université, entre deux parties de Munchkins, nous cherchions un moyen de faire du pognon. Et on a failli s&#8217;organiser une session au casino de notre ville pour appliquer la technique suivante :</p>
+<ol>
+<li>Jouer une petite mise sur une couleur;</li>
+<li>Si on perd, revenir en 1 mais avec une mise équivalent au double de ses pertes.</li>
+<li>Si on gagne, encaisser, retourner en 1, mais avec la toute petite mise de départ.</li>
+</ol>
+<p>L&#8217;idée était que si tu perdais, tu doublais ta mise jusqu&#8217;à ce que ça te rembourse tes pertes. Sinon, tu gagnes, et tu empoches. Seulement voilà, la roulette à la couleur, ce n&#8217;est pas 50% de chance, car il y a le zéro, qui n&#8217;est ni rouge, ni noir.</p>
+<p>Comme on était des petits cons nuls en probas, mais des petits cons programmeurs, on avait simulé le jeu avec un programme Python, juste au cas où :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Une roulette (en France), c'est un 0 vert, et des numéros de</span>
+<span style="color: #808080; font-style: italic;"># 1 à 36 alternativement rouges et noirs.</span>
+roulette <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;green&quot;</span><span style="color: black;">&#93;</span>
+roulette.<span style="color: black;">extend</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;red&quot;</span> <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">37</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+roulette.<span style="color: black;">extend</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;black&quot;</span> <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">37</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Regardons ce que donne la proba de choper le rouge avec le générateur</span>
+<span style="color: #808080; font-style: italic;"># de nombre pseudo-aléatoires de Python.</span>
+count <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100000</span><span style="color: black;">&#41;</span>:
+    count +<span style="color: #66cc66;">=</span> <span style="color: #dc143c;">random</span>.<span style="color: black;">choice</span><span style="color: black;">&#40;</span>roulette<span style="color: black;">&#41;</span> <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;red&quot;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Average chance of picking red: %s&quot;</span> % <span style="color: black;">&#40;</span>count / <span style="color: #ff4500;">100000</span> * <span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Time to play ! Insérer ici la musique d'un film américain ambiance Las Vegas.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> play<span style="color: black;">&#40;</span>rounds<span style="color: #66cc66;">,</span> budget<span style="color: #66cc66;">=</span><span style="color: #ff4500;">10000</span><span style="color: #66cc66;">,</span> color<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;red&quot;</span><span style="color: #66cc66;">,</span> start_bet<span style="color: #66cc66;">=</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>:
+    initial_budget <span style="color: #66cc66;">=</span> budget
+    max_bet <span style="color: #66cc66;">=</span> start_bet
+    bet <span style="color: #66cc66;">=</span> start_bet
+    loss <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+    <span style="color: #808080; font-style: italic;"># On limite le nombre de paris</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #008000;">round</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span>rounds<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># On mise</span>
+        budget -<span style="color: #66cc66;">=</span> bet
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #dc143c;">random</span>.<span style="color: black;">choice</span><span style="color: black;">&#40;</span>roulette<span style="color: black;">&#41;</span> <span style="color: #66cc66;">!=</span> color:
+            <span style="color: #808080; font-style: italic;"># On a perdu, on mise le double de ses pertes.</span>
+            loss +<span style="color: #66cc66;">=</span> bet
+            bet <span style="color: #66cc66;">=</span> loss * <span style="color: #ff4500;">2</span>
+            <span style="color: #808080; font-style: italic;"># Si jamais c'est plus que notre pognon, on se couche et on chiale.</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> bet <span style="color: #66cc66;">&gt;</span> budget:
+                <span style="color: #ff7700;font-weight:bold;">break</span>
+            <span style="color: #808080; font-style: italic;"># On garde une trace de notre mise max pour évaluer le budget max.</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: black;">&#40;</span>max_bet <span style="color: #66cc66;">&lt;</span> bet<span style="color: black;">&#41;</span>:
+                max_bet <span style="color: #66cc66;">=</span> bet
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            <span style="color: #808080; font-style: italic;"># Si on gagne, on récupère notre mise et le gain, et on recommence.</span>
+            budget +<span style="color: #66cc66;">=</span> bet * <span style="color: #ff4500;">2</span>
+            bet <span style="color: #66cc66;">=</span> start_bet
+            loss <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> budget - initial_budget<span style="color: #66cc66;">,</span> max_bet
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;10 rounds | balance: %s (max=%s)&quot;</span> % play<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;100 rounds | balance: %s (max=%s)&quot;</span> % play<span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;1000 rounds | balance: %s (max=%s)&quot;</span> % play<span style="color: black;">&#40;</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;10000 rounds | balance: %s (max=%s)&quot;</span> % play<span style="color: black;">&#40;</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Là le budget est large, mais nous on avait 800 euros&#8230; Bref, le résultat :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ python3 roulette.py
+Average chance of picking red: <span style="color: #000000;">48.78</span>
+<span style="color: #000000;">10</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">10</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">90</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">100</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">1835</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">1000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-3585</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">10000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-3495</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+$ python3 roulette.py
+Average chance of picking red: <span style="color: #000000;">48.67</span>
+<span style="color: #000000;">10</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">15</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">30</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">100</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-3620</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">1000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-3180</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">10000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-4670</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">7290</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+$ python3 roulette.py
+Average chance of picking red: <span style="color: #000000;">48.507</span>
+<span style="color: #000000;">10</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">45</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">90</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">100</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">1800</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">1000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-3370</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">10000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-3455</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+$ python3 roulette.py
+Average chance of picking red: <span style="color: #000000;">48.4</span>
+<span style="color: #000000;">10</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">50</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">30</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">100</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">1940</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">1000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #000000;">1435</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">7290</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">10000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-970</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">7290</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+$ python3 roulette.py
+Average chance of picking red: <span style="color: #000000;">48.853</span>
+<span style="color: #000000;">10</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-115</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">270</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">100</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-3535</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">2430</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">1000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-2100</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">7290</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #000000;">10000</span> rounds <span style="color: #000000; font-weight: bold;">|</span> balance: <span style="color: #660033;">-2120</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #007800;">max</span>=<span style="color: #000000;">7290</span><span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est pas vraiment la fortune assurée et en prime, dès qu&#8217;on veut jouer un peu sérieusement, il faut un budget max énorme. Mais surtout, il y a une grosse contrainte de temps, puisque 10 rounds c&#8217;est une bonne heure de jeu dans un casino réel.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/mai/roulette.py">Télécharger le code de l&#8217;article.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-martingale-a-la-roulette-en-python/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/05/7U2Uby3.jpg" length="158314" type="image/jpg" />	</item>
+	</channel>
+</rss>

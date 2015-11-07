@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; algorithme</title>
+	<atom:link href="http://sametmax.com/tag/algorithme/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Complexité algorithmique : pourquoi tant de &#8220;n&#8221; ? 25</title>
+		<link>http://sametmax.com/complexite-algorithmique-pourquoi-tant-de-n/</link>
+		<comments>http://sametmax.com/complexite-algorithmique-pourquoi-tant-de-n/#comments</comments>
+		<pubDate>Tue, 22 Apr 2014 16:29:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[algo]]></category>
+		<category><![CDATA[algorithme]]></category>
+		<category><![CDATA[complexité]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10051</guid>
+		<description><![CDATA[Que ayez eu un prof à l'ancienne durant vos études, où que vous vous soyez plongez dans des documents traitant d'optimisation, vous êtes peut être un jour tombé sur ces fameuse notation : O(n), O(1), O(log(n)), etc.]]></description>
+				<content:encoded><![CDATA[<p>Que ayez eu un prof à l&#8217;ancienne durant vos études, où que vous vous soyez plongé dans des documents traitant d&#8217;optimisation, vous êtes peut être un jour tombé sur ces fameuses notations : O(n), O(1), O(log(n)), etc.</p>
+<h2>Qu&#8217;est-ce que cela signifie-t-il donc, alors, hein ?</h2>
+<p>C&#8217;est une manière de décrire l&#8217;ordre de grandeur de temps que va prendre un algo pour s&#8217;exécuter pour un nombre &#8220;n&#8221; d&#8217;éléments.</p>
+<p>Par exemple, si je fais ceci en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">elements <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> elements:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 1</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 3</span></pre></td></tr></table></div>
+
+<p>Ici, j&#8217;ai 3 éléments, donc n = 3. Mon algorithme va tous les utiliser une fois, mais pas plus d&#8217;une. Il va donc faire un nombre d&#8217;opérations proportionnel au nombres d&#8217;éléments. On note ce type de comportement O(n). Cela signifie que le temps de traitement de mon code suit à peu près &#8220;n&#8221;.</p>
+<p>Je dis à peu près car le nombre d&#8217;éléments n&#8217;est pas uniquement ce qui va rentrer en compte. La taille des éléments, l&#8217;état de la machine au moment de l&#8217;exécution et tout un tas d&#8217;autres paramètres vont être des facteurs. Mais, globalement, je peux donner une évaluation convenable du temps que le code va prendre en notant le temps de traitement d&#8217;un seul élément, et en le multipliant par le nombre total d&#8217;éléments.</p>
+<p>La notation O(truc), que l&#8217;on prononce &#8220;Oh de truc&#8221;, sert juste à indiquer quel type de comportement un algo a : est-ce qu&#8217;il prend du temps par rapport au nombre d&#8217;éléments ? Si oui à quel point ?</p>
+<p>&#8220;A quel point&#8221; est une question importante, car si mon algo est celui ci:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">elements <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> elements:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> elements:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>i<span style="color: #66cc66;">,</span> end<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 123</span>
+<span style="color: #808080; font-style: italic;">## 123</span>
+<span style="color: #808080; font-style: italic;">## 123</span></pre></td></tr></table></div>
+
+<p>Alors, si n est grand, non seulement ma première boucle s&#8217;allonge, mais ma seconde boucle s&#8217;allonge aussi car j&#8217;affiche TOUS les éléments pour CHAQUE élément. Mon temps d&#8217;exécution dépend alors de &#8220;n&#8221; multiplié par lui-même : n X n. En effet, si j&#8217;ai 2 éléments, je vais faire 2 x 2 = 4 <code>print()</code>, si j&#8217;en ai 3, je vais faire 3 x 3 <code>print()</code>, etc.</p>
+<p>Bien sûr, je pourrais faire des choses beaucoup plus compliquées qu&#8217;un <code>print()</code>, mais ça n&#8217;a pas d&#8217;importance. On en mesure pas le temps de tout le programme, seulement l&#8217;efficacité d&#8217;un algorithme. Ici, cela dépend du nombre d&#8217;éléments fois lui-même, soit au carré. On le note O(n²).</p>
+<p>Il existe tout <a href="http://fr.wikipedia.org/wiki/Analyse_de_la_complexit%C3%A9_des_algorithmes">un tas de ces notations</a>. Par exemple, 0(1) signifie un temps &#8220;constant&#8221;, c&#8217;est un abus de langage pour dire que le temps que met l&#8217;ago à s&#8217;effectuer ne dépend pas du nombre d&#8217;éléments.</p>
+<p>Par exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">elements <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>elements<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 1</span></pre></td></tr></table></div>
+
+<p>Afficher le premier élément prend un temps du même ordre de grandeur &#8211; car c&#8217;est ça l&#8217;important, l&#8217;ordre de grandeur &#8211; si il y a 1 ou 10000 éléments. On note donc cet algo O(1).</p>
+<p>Il y a des cas plus complexes. Imaginez celui-ci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+&nbsp;
+number <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Choosing: %s&quot;</span> % number<span style="color: black;">&#41;</span>
+smallest <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+biggest <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">100</span>
+guess <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">50</span>
+<span style="color: #ff7700;font-weight:bold;">while</span> guess <span style="color: #66cc66;">!=</span> number:
+    <span style="color: #ff7700;font-weight:bold;">if</span> number <span style="color: #66cc66;">&gt;=</span> guess:
+        smallest <span style="color: #66cc66;">=</span> guess
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        biggest <span style="color: #66cc66;">=</span> guess
+&nbsp;
+    guess <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>biggest - smallest<span style="color: black;">&#41;</span>//<span style="color: #ff4500;">2</span> + smallest
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;New guess: %s&quot;</span> % guess<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Last guess: %s&quot;</span> % guess<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## Choosing: 69</span>
+<span style="color: #808080; font-style: italic;">## New guess: 75</span>
+<span style="color: #808080; font-style: italic;">## New guess: 62</span>
+<span style="color: #808080; font-style: italic;">## New guess: 68</span>
+<span style="color: #808080; font-style: italic;">## New guess: 71</span>
+<span style="color: #808080; font-style: italic;">## New guess: 69</span>
+<span style="color: #808080; font-style: italic;">## Last guess: 69</span></pre></td></tr></table></div>
+
+<p>Dans cet exemple, le nombre d&#8217;opérations dépend du nombre d&#8217;éléments &#8220;n&#8221; (ici 100) mais on divise l&#8217;interval de recherche par deux à chaque tour de boucle. On note cette complexité O(log n), puisque la fonction log illustre bien le concept d&#8217;avoir une mi-molle sur la fin de son algo :)</p>
+<p>Il y a aussi l&#8217;inverse :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">elements <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+copies <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> elements:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> copies:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>i<span style="color: #66cc66;">,</span> end<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;&quot;</span><span style="color: black;">&#41;</span>
+    copies.<span style="color: black;">extend</span><span style="color: black;">&#40;</span>elements<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 12345</span>
+<span style="color: #808080; font-style: italic;">## 1234512345</span>
+<span style="color: #808080; font-style: italic;">## 123451234512345</span>
+<span style="color: #808080; font-style: italic;">## 12345123451234512345</span></pre></td></tr></table></div>
+
+<p>Ici on augment la charge à traiter à chaque tour de boucle, et cette augmentation dépend du nombre d&#8217;éléments &#8220;n&#8221;. On parle d&#8217;une augmentation exponentielle de la charge de travail et on le note O(e<sup>n</sup>).</p>
+<h2>A quoi ça sert ?</h2>
+<p>Essentiellement à avoir une idée d&#8217;où on met les pieds. Si vous lisez une doc, et qu&#8217;on vous dis &#8220;cet algo met un temps O(log(n))&#8221;, vous savez que même sur un grand ensemble de données, le traitement ne sera pas trop agressif. Si plus tard vous rencontrez des problèmes de perf, ce ne sera pas le premier endroit à regarder.</p>
+<p>Par contre si vous lisez qu&#8217;un algo est O(n!) &#8211; là on tape dans les factoriels, c&#8217;est énorme &#8211; alors au premier ralentissement il faut jeter un coup d’œil sur ce bout de code.</p>
+<p>C&#8217;est aussi utile pour comparer l&#8217;efficacité de deux implémentations.</p>
+<p>Imaginez la structure suivante :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Examen:
+    <span style="color: #483d8b;">&quot;&quot;&quot;C'est un exemple pédagogique, ne faites pas ça chez vous les enfants&quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">notes</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> ajouterNote<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> note<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">notes</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>note<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> moyenne<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        total <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> note <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">notes</span>:
+            total +<span style="color: #66cc66;">=</span> note
+        <span style="color: #ff7700;font-weight:bold;">return</span> total / <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">notes</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Récupérer la moyenne est une opération O(n). En revanche, si on a :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Examen:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">notes</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">moyenne</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">None</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> ajouterNote<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> note<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">moyenne</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">None</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">moyenne</span> <span style="color: #66cc66;">=</span> note
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">moyenne</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">notes</span><span style="color: black;">&#41;</span>*<span style="color: #008000;">self</span>.<span style="color: black;">moyenne</span> + note<span style="color: black;">&#41;</span> / <span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">notes</span><span style="color: black;">&#41;</span>+<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">notes</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>note<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Là, récupérer la moyenne devient une opération O(1), on a déchargé et réparti le calcul sur l&#8217;ajout des notes. Selon que l&#8217;application va lire souvent la moyenne ou non, l&#8217;un ou l&#8217;autre algo est préférable, et la notation Big O va donner une idée duquel utiliser si on est face à la doc et pas au code, qui est généralement vachement plus compliqué que ça.</p>
+<p>Bon, ok, dans la VVV, aucune de ces deux solutions n&#8217;est un problème, on s&#8217;en branle. Mais sur des algos plus riches, sur du matos plus limité, ou un jeu de données plus grand, c&#8217;est important. Ainsi, <a href="http://redis.io/commands/zremrangebyrank">la doc de redis donne la notation Big O de toutes les commandes</a>.</p>
+<h2>En Python, qui est quoi ?</h2>
+<p>Parcourir un itérable, c&#8217;est généralement du O(n), en tout cas pour les listes, les tuples, les dicos, les strings et les sets. Ajouter un élément ou en retirer un, c&#8217;est du O(1). Récupérer leurs tailles, c&#8217;est du O(1) aussi (elle est mise en cache), donc vous pouvez y aller avec <code>len()</code>.</p>
+<p>En revanche, l&#8217;opérateur <code>in</code> a un temps moyen de O(n) pour les strings, les tuples et les listes (il doit parcourir l&#8217;itérable jusqu&#8217;à trouver l&#8217;élément), et un temps de O(1) pour les sets et les dicos. Ces derniers utilisent des hash, rendant la recherche très très rapide. C&#8217;est pour cela qu&#8217;on vous dit d&#8217;utiliser la bonne structure de données pour le bon usage.</p>
+<p>Attention cependant, c&#8217;est de l&#8217;optimisation de poil de cul, mais c&#8217;est pour la culture, O(1) ne veut pas dire &#8220;plus rapide que O(n)&#8221;. O(1) veut juste dire que le temps est indépendant du nombre d&#8217;éléments. Ainsi :</p>
+<p><code>1 in [1, 2, 3]</code> sera beaucoup plus rapide que <code>1 in [1, 2, 3..., 1000].</code></p>
+<p>Et :</p>
+<p><code>1 in {1, 2, 3}</code> prendra un temps similaire à 1 in <code>{1, 2, 3..., 1000}</code></p>
+<p>Mais :</p>
+<p><code>1 in {1, 2, 3}</code> peut tout à faire être plus lent que <code>1 in [1, 2, 3]</code></p>
+<p>Par contre, il est presque certain que :</p>
+<p><code>1 in {1, 2, 3..., 1000}</code> est BEAUCOUP plus rapide que <code>1 in [1, 2, 3..., 1000]</code></p>
+<p>De plus, il y énormément de structures de données dans la stdlib Python, toutes avec des capacités différentes. <a href="http://sametmax.com/heapq-le-module-python-incompris/">Heapq</a> assure que votre structure de données est toujours ordonnées pour un coût de O(log n) à l&#8217;insertion. Les <a href="http://sametmax.com/implementer-une-fenetre-glissante-en-python-avec-un-deque/">deques</a> sont très rapides comme FIFO/LIFO (O(1)), mais récupérer une donnée au milieu est une opération O(n). Certaines opérations, comme retirer un élément d&#8217;un type <code>list</code> sont étonnamment coûteuses ((O(n) dans le cas du del).</p>
+<p>Voici <a href="https://wiki.python.org/moin/TimeComplexity">quelques notations</a> de la doc de Python.</p>
+<h2>La théorie, la pratique, et la mauvaise foi</h2>
+<p>La notation O est une bonne indication pour faire un choix d&#8217;algo ou pour commencer ses recherches de goulot d&#8217;étranglement dans un code.</p>
+<p>Néanmoins, c&#8217;est la performance sur la papier. En pratique, on peut obtenir des résultats un peu différents, voir carrément surprenant. Il peut y avoir de multiples causes :</p>
+<ul>
+<li>L&#8217;implémentation ne se comporte pas comme prévu. CPython et Jython n&#8217;ont pas les mêmes perfs pour les mêmes choses. Jython n&#8217;a pas de GIL.</li>
+<li>Vous avez oublié un paramètre. Un accès disque ou un accès réseau au mauvais endroit, et bam, votre évaluation est à revoir. </li>
+<li>Les données de la vie réelle ont généralement des tendances. Par exemple elles sont souvent un peu triées plutôt que complètement en bordel. C&#8217;est pour cette raison que Python utilise <a href="http://en.wikipedia.org/wiki/Timsort">Timsort</a>.</li>
+<li>Le matos ne fait pas ce que vous croyez. Les processeurs / cartes graphiques actuels sont devenus <a href="http://www.grantjenks.com/docs/sortedcontainers/implementation.html">incroyablement efficaces à certaines opérations réputées lentes</a></li>
+<li>Votre machine ne fait pas que faire tourner votre algo. Il y a d&#8217;autres processus, avec des conséquences.</li>
+</ul>
+<p>Donc si les perfs sont importantes, comme toujours en informatique, on a le dernier mot en mesurant soi-même.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/complexite-algorithmique-pourquoi-tant-de-n/feed/</wfw:commentRss>
+		<slash:comments>25</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/p8IfIPY.jpg" length="108943" type="image/jpg" />	</item>
+		<item>
+		<title>Du Darwinisme pythonien 34</title>
+		<link>http://sametmax.com/du-darwinisme-pythonien/</link>
+		<comments>http://sametmax.com/du-darwinisme-pythonien/#comments</comments>
+		<pubDate>Thu, 12 Dec 2013 10:13:22 +0000</pubDate>
+		<dc:creator><![CDATA[golgotha]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[algorithme]]></category>
+		<category><![CDATA[génétique]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8171</guid>
+		<description><![CDATA[Qui n'a jamais rêvé de cloner des <del datetime="2013-12-02T19:59:20+00:00">moutons</del> clara morgane et de s'adonner à des expérimentations scientifiques de haut niveau ?]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/golgotha/">golgotha</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Qui n&#8217;a jamais rêvé de cloner des <del datetime="2013-12-02T19:59:20+00:00">moutons</del> clara morgane et de s&#8217;adonner à des expérimentations scientifiques de haut niveau ?</p>
+<p>Bon ici, nous n&#8217;avons pas de clara morgane sous la main pour notre expérience mais, avec le python et les théories scientifiques de Darwin, on peut faire quelques trucs sympas : On va essayer de déterminer le plus court chemin à prendre pour relier plusieurs points entre eux, le truc cool c&#8217;est que pour solutionner le problème on va utiliser un algorithme génétique.</p>
+<p>De la génétique dans du python ?!</p>
+<p>En fait c&#8217;est assez simple (encore des termes barbares pour épater les copains..), écoutez bien, je vous explique le concept : on va faire des individus, chaque individu va faire un parcours en fonction des points du tracé en paramètre. A la fin, on note chaque individu avec un score, le score étant la longueur du parcours de l&#8217;individu. Vous suivez toujours ? Bien. On prend les meilleurs (Normal) et on les accouple avec des moins bons (faut les pousser un peu, au début ils sont timides mais, après ça va tout seul, c&#8217;est même l&#8217;orgie parfois&#8230;) ce qui donne une nouvelle population, normalement un poil meilleure que l&#8217;ancienne qu&#8217;on va vite mettre à la poubelle. On recommence le processus <code>n</code> fois et à la fin, on devrait arriver à des super individus, genre blonds aux yeux bleus qui parlent 14 langues : ça c&#8217;est notre solution.</p>
+<p>Passons aux travaux pratiques !</p>
+<p>Je commence par déclarer deux variables globales, la population et la liste de points.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">population <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+a_map <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Ensuite on créer une classe Point standard :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Point<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    COUNT <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> x<span style="color: #66cc66;">,</span> y<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">X</span> <span style="color: #66cc66;">=</span> x
+        <span style="color: #008000;">self</span>.<span style="color: black;">Y</span> <span style="color: #66cc66;">=</span> y
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__str__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;Point(%s,%s)&quot;</span>%<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">X</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">Y</span><span style="color: black;">&#41;</span> 
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> distance<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        dx <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">X</span> - other.<span style="color: black;">X</span>
+        dy <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">Y</span> - other.<span style="color: black;">Y</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> sqrt<span style="color: black;">&#40;</span>dx**<span style="color: #ff4500;">2</span> + dy**<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Rien de particulier ici, l&#8217;objet nous sera utile plus tard.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Individu<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># le constructeur de l'objet.</span>
+    <span style="color: #808080; font-style: italic;"># on met le score à zéro.</span>
+    <span style="color: #808080; font-style: italic;"># on peut aussi lui passer la liste de points</span>
+    <span style="color: #808080; font-style: italic;"># pour qu'il initialise une route au hasard.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> init <span style="color: #66cc66;">=</span> <span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> map_point <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">score</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">route</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> init :
+            <span style="color: #008000;">self</span>.<span style="color: black;">set_route</span><span style="color: black;">&#40;</span>map_point<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici on créé une route avec un mélange des points</span>
+    <span style="color: #808080; font-style: italic;"># on utilise shuffle pour mélanger les points.</span>
+    <span style="color: #808080; font-style: italic;"># ensuite on calcul le score, c'est à dire la longueur du trajet.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> set_route<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> map_point<span style="color: black;">&#41;</span> :
+        shuffle<span style="color: black;">&#40;</span>map_point<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">route</span> <span style="color: #66cc66;">=</span> map_point
+        <span style="color: #ff7700;font-weight:bold;">for</span> p <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>map_point<span style="color: black;">&#41;</span> - <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> :
+            <span style="color: #008000;">self</span>.<span style="color: black;">score</span> +<span style="color: #66cc66;">=</span> map_point<span style="color: black;">&#91;</span>p<span style="color: black;">&#93;</span>.<span style="color: black;">distance</span><span style="color: black;">&#40;</span>map_point<span style="color: black;">&#91;</span>p+<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici on donne à l'objet la capacité de faire un enfant</span>
+    <span style="color: #808080; font-style: italic;"># ça prend comme paramètre l'objet (lui même), et un autre individu.</span>
+    <span style="color: #808080; font-style: italic;"># on prend la moitié du trajet de l'objet et on complète avec</span>
+    <span style="color: #808080; font-style: italic;"># les points de l'autre individu.</span>
+    <span style="color: #808080; font-style: italic;"># on retourne un enfant, qui est un individu.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> croisement<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        child <span style="color: #66cc66;">=</span> Individu<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># je prends la moitier de moi-même.</span>
+        wdth <span style="color: #66cc66;">=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">route</span><span style="color: black;">&#41;</span>/<span style="color: #ff4500;">2</span>
+        first_segment <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">route</span><span style="color: black;">&#91;</span>:wdth/<span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+        last_segment  <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+        <span style="color: #808080; font-style: italic;"># je complète avec l'autre</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">route</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> :
+            <span style="color: #ff7700;font-weight:bold;">if</span> other.<span style="color: black;">route</span><span style="color: black;">&#91;</span>i<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> first_segment :
+                last_segment.<span style="color: black;">append</span><span style="color: black;">&#40;</span>other.<span style="color: black;">route</span><span style="color: black;">&#91;</span>i<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+        child.<span style="color: black;">set_route</span><span style="color: black;">&#40;</span>first_segment + last_segment<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> child
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici on défini une fonction pour que l'objet puisse se dessiner.</span>
+    <span style="color: #808080; font-style: italic;"># pour cela on utilisera Turtle de python.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> show_me<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #dc143c;">turtle</span>.<span style="color: black;">clearscreen</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        pen <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">turtle</span>.<span style="color: black;">Turtle</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        pen.<span style="color: black;">speed</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+        pen.<span style="color: black;">up</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        pen.<span style="color: black;">setpos</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">route</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">X</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">route</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">Y</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> point <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">route</span> :
+            pen.<span style="color: black;">goto</span><span style="color: black;">&#40;</span>point.<span style="color: black;">X</span><span style="color: #66cc66;">,</span> point.<span style="color: black;">Y</span><span style="color: black;">&#41;</span>
+            pen.<span style="color: black;">down</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            pen.<span style="color: black;">dot</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        pen.<span style="color: black;">goto</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">route</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">X</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">route</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">Y</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Voilà pour l&#8217;objet individu (pas très inspiré sur le nom j&#8217;avoue..) qui est donc capable maintenant de faire pas mal de choses qui sera utile: se montrer, faire un petit (capacité que beaucoup d&#8217;objet lui envie déjà) et choisir une route parmi une liste de points.</p>
+<p>La suite, j&#8217;ai écris ça dans des fonctions, il y a surement plus propre mais bon, le but est de vous montrer comment fonctionne un algo génétique, je laisserai le soin aux pro du python d&#8217;améliorer le code en lui-même (je ne vais pas faire tout le boulot non plus !)</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># initialisation des points de la carte.</span>
+<span style="color: #808080; font-style: italic;"># prend en paramètre un nombre de points.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> init_map<span style="color: black;">&#40;</span>nb<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">global</span> a_map
+    <span style="color: #ff7700;font-weight:bold;">del</span> a_map<span style="color: black;">&#91;</span>:<span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span>nb<span style="color: black;">&#41;</span>:
+        p <span style="color: #66cc66;">=</span> Point<span style="color: black;">&#40;</span>randint<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">300</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> randint<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">300</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        a_map.<span style="color: black;">append</span><span style="color: black;">&#40;</span>p<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># initialisation de la population.</span>
+<span style="color: #808080; font-style: italic;"># prend en paramètre le nombre d'individus à créer.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> init_pop<span style="color: black;">&#40;</span>nb<span style="color: #66cc66;">,</span> map_point<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">global</span> population
+    <span style="color: #ff7700;font-weight:bold;">del</span> population<span style="color: black;">&#91;</span>:<span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span>nb<span style="color: black;">&#41;</span>:
+        i <span style="color: #66cc66;">=</span> Individu<span style="color: black;">&#40;</span><span style="color: #008000;">True</span><span style="color: #66cc66;">,</span> map_point<span style="color: black;">&#41;</span>
+        population.<span style="color: black;">append</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># fonction qui sert à trier les individus suivant leur score.</span>
+<span style="color: #808080; font-style: italic;"># utile pour trouver les meilleurs.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> selection<span style="color: black;">&#40;</span>pop<span style="color: black;">&#41;</span>:
+    pop.<span style="color: black;">sort</span><span style="color: black;">&#40;</span>key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: x.<span style="color: black;">score</span><span style="color: #66cc66;">,</span> reverse<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># dans cette fonction, on sélectionne les 15 meilleurs individus de la population</span>
+<span style="color: #808080; font-style: italic;"># que l'on croise avec les autres individus.</span>
+<span style="color: #808080; font-style: italic;"># la nouvelle population est constituée des 15 meilleurs plus les enfants.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> croisement<span style="color: black;">&#40;</span>pop<span style="color: black;">&#41;</span>:
+    new_pop <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+    best_pop <span style="color: #66cc66;">=</span> population<span style="color: black;">&#91;</span><span style="color: #ff4500;">85</span>:<span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>pop<span style="color: black;">&#41;</span>-<span style="color: #ff4500;">15</span><span style="color: black;">&#41;</span> :
+        new_pop.<span style="color: black;">append</span><span style="color: black;">&#40;</span>choice<span style="color: black;">&#40;</span>best_pop<span style="color: black;">&#41;</span>.<span style="color: black;">croisement</span><span style="color: black;">&#40;</span>choice<span style="color: black;">&#40;</span>population<span style="color: black;">&#91;</span><span style="color: #ff4500;">20</span>:<span style="color: #ff4500;">85</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> new_pop + best_pop</pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># la fonction principal.</span>
+<span style="color: #808080; font-style: italic;"># on passe en paramètre le nombre de générations que l'on souhaite faire</span>
+<span style="color: #808080; font-style: italic;"># et le nombre de points. </span>
+<span style="color: #808080; font-style: italic;"># Ensuite, on itère selon un algorithme précis :</span>
+<span style="color: #808080; font-style: italic;"># Création d'une population initiale.</span>
+<span style="color: #808080; font-style: italic;"># Sélection puis croisement de la population</span>
+<span style="color: #808080; font-style: italic;"># à chaque génération on regarde si on a un meilleur score</span>
+<span style="color: #808080; font-style: italic;"># si oui, on l'affiche.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> play<span style="color: black;">&#40;</span>nb_gene<span style="color: #66cc66;">,</span> nb_point<span style="color: black;">&#41;</span> :
+    init_map<span style="color: black;">&#40;</span>nb_point<span style="color: black;">&#41;</span>
+    init_pop<span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span><span style="color: #66cc66;">,</span> a_map<span style="color: black;">&#41;</span>
+    best_score <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1000000</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span>nb_gene<span style="color: black;">&#41;</span> :
+        <span style="color: #ff7700;font-weight:bold;">global</span> population
+        population <span style="color: #66cc66;">=</span> croisement<span style="color: black;">&#40;</span>population<span style="color: black;">&#41;</span>
+        selection<span style="color: black;">&#40;</span>population<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> best_score <span style="color: #66cc66;">&gt;</span> population<span style="color: black;">&#91;</span><span style="color: #ff4500;">99</span><span style="color: black;">&#93;</span>.<span style="color: black;">score</span> :
+            best_score <span style="color: #66cc66;">=</span> population<span style="color: black;">&#91;</span><span style="color: #ff4500;">99</span><span style="color: black;">&#93;</span>.<span style="color: black;">score</span>
+            <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'meilleur score : '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>population<span style="color: black;">&#91;</span><span style="color: #ff4500;">99</span><span style="color: black;">&#93;</span>.<span style="color: black;">score</span><span style="color: black;">&#41;</span>
+            population<span style="color: black;">&#91;</span><span style="color: #ff4500;">99</span><span style="color: black;">&#93;</span>.<span style="color: black;">show_me</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Voilà le morceau, je pense que j&#8217;ai laissé assez de commentaires dans le code pour bien comprendre comment ça fonctionne et au niveau du python en lui-même il n&#8217;y a vraiment rien de spécial, ici ce qui compte c&#8217;est que vous voyez rapidement comment fonctionne l&#8217;algorithme.</p>
+<p>Alors, maintenant : Pourquoi s&#8217;emmerder à accoupler des objets à 2,78 Ghz ?</p>
+<p>Le problème ci-dessus, un problème dit <a href="http://fr.wikipedia.org/wiki/Problème_NP-complet" title="nb-complet" target="_blank">np-complet</a>, c&#8217;est-à-dire que c&#8217;est la merde pour trouver une solution dans un temps raisonnable si on l&#8217;a fait de façon traditionnelle : pour trouver le meilleur trajet sur 10 points, on sera obligé dans un premier temps de trouver tous les trajets possibles, avec N villes on a (N-1)!/2 trajet possible, le nombre de trajets explose littéralement si N augmente. Avec 100 points il est déjà pratiquement impossible de calculer tous les trajets possibles en un temps raisonnable.</p>
+<p>C&#8217;est là que l&#8217;algorithme génétique est très fort, on arrive très vite à une solution approchée, il est tout de même à noter que le résultat obtenu par l&#8217;algorithme génétique n&#8217;est pas LA solution exact au problème, il donne une solution approchée.</p>
+<p>Dernier point sur le code ci-dessus, ce n&#8217;est que les bases de l&#8217;algorithme génétique, avec ce code vous ne pourrez pas venir à bout d&#8217;un parcours de plus de 20 ou 30 villes, pour cela il faut améliorer l&#8217;algorithme, par exemple le croisement entre deux individus peut être fait de plusieurs façons différentes, dans mon exemple je prends la moitié du &#8220;code génétique&#8221; d&#8217;un individu que je colle à une autre moitié, on peut aussi faire du crossover : c&#8217;est-à-dire qu&#8217;on prend des bouts du code génétique des deux individus alternativement. Ensuite, il y a aussi des mutations génétiques à introduire dans le croisement, à un certain taux, par exemple 1% des croisements entre individus produira une mutation génétique, concrètement : on fait le croisement puis on change aléatoirement des données du code génétique, dans notre exemple on échangera deux points sur le parcours. Cela a pour effet de produire des individus potentiellement meilleurs que les autres, en terme mathématique ça permet aussi de ne pas s&#8217;enfermer dans une solution locale, ce qui est souvent le cas.</p>
+<p>J&#8217;espère ne pas vous avoir complètement perdu avec mes explications et vous avoir donné envie de regarder de plus près cet algorithme que je trouve très élégant.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/du-darwinisme-pythonien/feed/</wfw:commentRss>
+		<slash:comments>34</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/yO8DJCe.jpg" length="30561" type="image/jpg" />	</item>
+		<item>
+		<title>Union d&#8217;un ensemble d&#8217;intervalles 15</title>
+		<link>http://sametmax.com/union-dun-ensemble-dintervalles/</link>
+		<comments>http://sametmax.com/union-dun-ensemble-dintervalles/#comments</comments>
+		<pubDate>Sun, 17 Feb 2013 06:42:43 +0000</pubDate>
+		<dc:creator><![CDATA[recher]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[algorithme]]></category>
+		<category><![CDATA[bonhomme sur un mur]]></category>
+		<category><![CDATA[bourrin]]></category>
+		<category><![CDATA[intersection]]></category>
+		<category><![CDATA[intervalle]]></category>
+		<category><![CDATA[jeux de plate-forme]]></category>
+		<category><![CDATA[matheux]]></category>
+		<category><![CDATA[optimisation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sort]]></category>
+		<category><![CDATA[sperme]]></category>
+		<category><![CDATA[tri]]></category>
+		<category><![CDATA[union]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4572</guid>
+		<description><![CDATA[Un algo simple et classe pour fusionner et classer des intervalles qui se chevauchent, s'intersectionnent, etc.]]></description>
+				<content:encoded><![CDATA[<blockquote><p>Ceci est un post invité de <a href="http://recher.wordpress.com" target="_blank">Réchèr</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">creative common 3.0 unported.</a></p></blockquote>
+<p>Kikoo amis matheux ou pas. Aujourd&#8217;hui, on va se faire un petit algo de derrière les fagots. Vous n&#8217;en aurez peut-être jamais besoin dans le monde réel, mais, qui a dit qu&#8217;on allait se contenter uniquement de ce dont on a besoin ? De plus, je présenterais, à la fin, une astuce générique d&#8217;algorithmiciens.</p>
+<h2>Pré-requis</h2>
+<ul>
+<li>Connaître très vaguement la notion des O(n²), O(truc), &#8230; qui définissent le temps d&#8217;exécution d&#8217;un algorithme en fonction de la quantité de données à traiter. (Si ça vous parle pas c&#8217;est pas grave).
+</li>
+<li>Savoir que le pluriel d&#8217;intervalle n&#8217;est pas &#8220;intervaux&#8221;.</li>
+</ul>
+<p>Petite précision : pour définir des intervalles d&#8217;entiers, j&#8217;emploierais la convention pythonienne : le dernier élément n&#8217;est pas inclus. C&#8217;est à dire que [2, 7] correspond à 5 éléments : 2, 3, 4, 5, 6. </p>
+<h2>Énoncé</h2>
+<p>Soit une liste de couple de nombres, représentant des intervalles. Ils sont tout en vrac, y&#8217;en a qui se chevauchent, d&#8217;autres qui s&#8217;inclusent, etc. Bref, l&#8217;ensemble fait penser à une partouse animale multi-espèces. </p>
+<p>exemple : [ [2, 7], [3, 7], [1, 5], [9, 10], [8, 9] ]<br />
+<a href="http://sametmax.com/wp-content/uploads/2013/02/intervalle-1.png" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/intervalle-1.png" alt="Les crochets d&#039;intervalles ont une tronche bizarre. C&#039;est pour bien montrer que le dernier élément n&#039;est pas inclus." title="Les crochets d&#039;intervalles ont une tronche bizarre. C&#039;est pour bien montrer que le dernier élément n&#039;est pas inclus." width="455" height="255" class="alignnone size-full wp-image-4575" /></a></p>
+<p>Vous voulez une méthode pour rassembler tout ça, et obtenir une liste d&#8217;intervalles, triée, sans chevauchement, correspondant à la fusion de tous les intervalles de départ. En maths, on appelle cette opération une union. En partouse animale multi-espèces, on appelle aussi ça une union, mais ce n&#8217;est pas le sujet.</p>
+<p>résultat souhaité : [ [1, 7], [8, 10] ]<br />
+<a href="http://sametmax.com/wp-content/uploads/2013/02/intervalle-2.png" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/intervalle-2.png" alt="Toujours cet éternel problème de nombre de poteaux versus nombre d&#039;intervalles. Je suis sûr que si on était dans un univers non-eucliden on serait pas emmerdé avec ce genre de détail à la con." title="Toujours cet éternel problème de nombre de poteaux versus nombre d&#039;intervalles. Je suis sûr que si on était dans un univers non-eucliden on serait pas emmerdé avec ce genre de détail à la con." width="449" height="160" class="alignnone size-full wp-image-4577" /></a></p>
+<h2>Solutions auxquelles on pense en premier</h2>
+<h3>Le bourrin pas-à-pas</h3>
+<p>On récupère le début d&#8217;intervalle le plus à gauche, et la fin la plus à droite. On boucle entre ces deux valeurs. À chaque itération, on effectue le traitement suivant : </p>
+<ul>
+<li>Vérifier si la valeur courante est dans au moins un intervalle. </li>
+<li>Si oui, et que juste avant on était dans aucun intervalle, alors on marque cette valeur comme un début d&#8217;intervalle.
+</li>
+<li>Si non, et que juste avant on était dans au moins un intervalle, alors on marque cette valeur comme une fin d&#8217;intervalle.</li>
+</ul>
+<h4>Désavantages</h4>
+<p>Si, au départ, on a deux intervalles très éloignés, par exemple [0, 2] et [1000000, 1000002] on va faire une boucle de 1000002 itérations. Pour traiter 2 intervalles, c&#8217;est un peu lourd.</p>
+<p>Ça ne marche qu&#8217;avec des entiers. Si on a des intervalles de réels, on itère comment ? En avançant de 0.0000000001 en 0.0000000001 ? Même problème avec des intervalles de date-heure.</p>
+<h3>Le bourrin cumulatif</h3>
+<p>On crée une liste géante de booléens, tous à False, qui s&#8217;étend du premier début d&#8217;intervalle à la fin du dernier. Chaque booléen indiquera si le nombre correspondant se trouve dans au moins un intervalle. On met les bons booléens à True en parcourant les intervalles de la liste initiale. Puis, on construit la liste finale d&#8217;intervalles, en se basant sur les booléens.</p>
+<h4>Désavantages</h4>
+<p>Si on a en entrée un million de fois l&#8217;intervalle [10, 210], on va mettre un million de fois à True la même suite de 200 booléens. 200 millions d&#8217;opérations pour ressortir un unique intervalle [10, 210].</p>
+<p>Même problème que précédemment. Ça ne marche qu&#8217;avec des nombres entiers.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2013/02/881911164.jpg" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/881911164.jpg" alt="Du bourrin et du cumulatif : serait-ce l&#039;occasion d&#039;invoquer une grand-mère à moustache ?" title="Du bourrin et du cumulatif : serait-ce l&#039;occasion d&#039;invoquer une grand-mère à moustache ?" width="210" height="300" class="alignnone size-full wp-image-4579" /></a></p>
+<h3>L&#8217;enfileur de perles</h3>
+<p>On a d&#8217;un côté la liste finale des intervalles (initialisée à vide), et de l&#8217;autre, la liste initiale, en bordel. On passe les intervalles d&#8217;une liste à l&#8217;autre, un par un, en testant les cas suivants :</p>
+<ul>
+<li>Le début et la fin de l&#8217;intervalle en cours n&#8217;est dans aucun intervalle final -> ça fait un nouvel intervalle final.
+</li>
+<li>Le début est dans un intervalle final, mais pas la fin -> ça rallonge l&#8217;interval final existant.</li>
+<li>La fin est dans un intervalle final, mais pas le début -> ça rallonge l&#8217;intervalle final existant, mais par l&#8217;autre côté.</li>
+<li>La fin et le début sont dans le même intervalle final -> l&#8217;intervalle en cours ne sert à rien.</li>
+<li>La fin et le début sont dans deux intervalles finaux différents. -> il faut fusionner les deux intervalles finaux.</li>
+</ul>
+<p>Et en plus de tout ça, il faut également tester s&#8217;il n&#8217;y a pas des intervalles finaux entièrement inclus dans l&#8217;intervalle en cours. Auquel cas, ils ne servent plus à rien, et doivent être enlevé de la liste.</p>
+<h4>Désavantages</h4>
+<p>Une bonne grosse prise de tête à coder tous les cas possibles, sans rien oublier, sans bug. </p>
+<p>Le fait de chercher si un nombre se trouve dans une liste d&#8217;intervalles, fut-elle triée, est une opération qui prend un certain temps. Ça peut s&#8217;optimiser avec de la dichotomie ou des trucs du genre, mais quand même. </p>
+<p>Par contre, cette algo marche avec des nombres réels et des date-heure. Youpi.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2013/02/JB333.jpg" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/JB333.jpg" alt="Je pige même pas comment ce jouet est censé fonctionner. Faut mettre les perles dans le trou de la machine ? Comment le trou de perle se met en face du fil ? Est-ce que ça serait pas encore plus galère qu&#039;à la main ?" title="Je pige même pas comment ce jouet est censé fonctionner. Faut mettre les perles dans le trou de la machine ? Comment le trou de perle se met en face du fil ? Est-ce que ça serait pas encore plus galère qu&#039;à la main ?" width="359" height="275" class="alignnone size-full wp-image-4581" /></a></p>
+<h2>Et si on arrêtait les conneries ?</h2>
+<p>Dans ces premières solutions, on considère les intervalles comme des objets immuables. Il faut en traiter un entièrement avant de passer au suivant. Mais on peut aussi les voir comme deux événements distincts (un début et une fin), que l&#8217;on peut dissocier totalement, et traiter dans leur ordre d&#8217;arrivée. On ne sera plus capable de retrouver quel début correspond à quelle fin, mais ça on s&#8217;en fout, y&#8217;a rien qui ressemble plus à un intervalle qu&#8217;un autre intervalle.</p>
+<p>Imaginez un petit bonhomme (ou une petite bonne femme, respectons la parité). Au départ, il est au niveau du sol. Il avance vers la droite. Quand il rencontre un début d&#8217;intervalle, il monte sur un mur d&#8217;un étage. Quand il rencontre une fin, il descend d&#8217;un étage. Il peut être sur plusieurs étages superposés. Au fur et à mesure qu&#8217;il se déplace, on note les endroits où il se retrouve sur le sol. Ces endroits correspondent à des zones sans aucun intervalle. </p>
+<p><a href="http://sametmax.com/wp-content/uploads/2013/02/jill-of-the-jungle_3crop.png" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/jill-of-the-jungle_3crop.png" alt="Je vous laisse retrouver de quel jeu vidéo est tiré ce screenshot. Je l&#039;avais beaucoup aimé. Je trouvais l&#039;univers très onirique, et très &quot;compte de fée mais pas cucul, parce que y&#039;a quand même dedans des aventures qui poutrent de la rascasse particulaire avec un chandelier dans la véranda.&quot;" title="Je vous laisse retrouver de quel jeu vidéo est tiré ce screenshot. Je l&#039;avais beaucoup aimé. Je trouvais l&#039;univers très onirique, et très &quot;compte de fée mais pas cucul, parce que y&#039;a quand même dedans des aventures qui poutrent de la rascasse particulaire avec un chandelier dans la véranda.&quot;" width="258" height="138" class="alignnone size-full wp-image-4582" /></a></p>
+<p><a href="http://sametmax.com/wp-content/uploads/2013/02/gfs_29955_2_14_mid.jpg" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/gfs_29955_2_14_mid.jpg" alt="Mes parents n&#039;arrêtaient pas de me dire que mes jeux se ressemblaient tous. Puis ils m&#039;emmenaient visiter des églises et des châteaux qui se ressemblaient tous. Bizarre..." title="Mes parents n&#039;arrêtaient pas de me dire que mes jeux se ressemblaient tous. Puis ils m&#039;emmenaient visiter des églises et des châteaux qui se ressemblaient tous. Bizarre..." width="270" height="169" class="alignnone size-full wp-image-4583" /></a></p>
+<h3>Le code</h3>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> tri_bonhomme_sur_un_mur<span style="color: black;">&#40;</span>list_intervalle_en_bordel<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Effectue une union de tous les intervalles indiqués en paramètre.
+&nbsp;
+    Données d'entrée : une liste de liste de deux éléments, représentant
+    des intervalles.
+     - Le type des éléments n'est pas imposé. Il faut juste qu'on puisse 
+       les ordonner et les trier. 
+     - Dans chaque liste de deux éléments, le premier doit être plus 
+       petit que le second. 
+    La fonction ne vérifie pas ces contraintes. Si elles ne sont pas 
+    respectées, le comportement est indéterminé. Ça peut planter, 
+    ça peut renvoyer un résultat faux sans avertissement, etc.
+&nbsp;
+    Sortie : une liste de liste de deux éléments, unionnisée et triée
+    comme il faut.
+    &quot;&quot;&quot;</span>
+    <span style="color: #808080; font-style: italic;"># On extrait tous les débuts d'intervalles, et toutes les fins.</span>
+    list_debut <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span> interv<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> interv <span style="color: #ff7700;font-weight:bold;">in</span> list_intervalle_en_bordel <span style="color: black;">&#93;</span>
+    list_fin <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span> interv<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> interv <span style="color: #ff7700;font-weight:bold;">in</span> list_intervalle_en_bordel <span style="color: black;">&#93;</span>
+    <span style="color: #808080; font-style: italic;"># On les trie, pour pouvoir les traiter de gauche à droite.</span>
+    list_debut.<span style="color: black;">sort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    list_fin.<span style="color: black;">sort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># Cette liste contiendra les intervalles unionnisés et triés.</span>
+    list_intervalle_final <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+    <span style="color: #808080; font-style: italic;"># indique le nombre d'invervalle superposés dans lesquels on se trouve</span>
+    <span style="color: #808080; font-style: italic;"># actuellement. (C'est à dire : le nombre d'étages sur lequel</span>
+    <span style="color: #808080; font-style: italic;"># marche le bonhomme).</span>
+    nb_superposition <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+    <span style="color: #808080; font-style: italic;"># Lorsqu'on est dans un ou plusieurs intervalles superposés, on doit</span>
+    <span style="color: #808080; font-style: italic;"># se souvenir à quelle position on est entré dans le premier.</span>
+    <span style="color: #808080; font-style: italic;"># Cela permettra de créer l'intervalle final, lorsqu'on sera </span>
+    <span style="color: #808080; font-style: italic;"># complètement sorti de la superposition en cours.</span>
+    debut_intervalle_courant <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># C'est parti ! Le petit bonhomme avance. On lui fait traiter les</span>
+    <span style="color: #808080; font-style: italic;"># événements d'entrée et de sortie d'intervalle au fur et à mesure </span>
+    <span style="color: #808080; font-style: italic;"># qu'ils arrivent.</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> list_debut:
+        <span style="color: #808080; font-style: italic;"># Le premier élément de list_debut, c'est le premier début </span>
+        <span style="color: #808080; font-style: italic;"># d'intervalle qu'on rencontrera. Le premier élément de list_fin,</span>
+        <span style="color: #808080; font-style: italic;"># c'est la première fin d'intervalle qu'on rencontrera. On </span>
+        <span style="color: #808080; font-style: italic;"># détermine, parmi ces deux événements, lequel on rencontrera en </span>
+        <span style="color: #808080; font-style: italic;"># tout premier.</span>
+        <span style="color: #808080; font-style: italic;">#</span>
+        <span style="color: #808080; font-style: italic;"># La fonction cmp renvoie -1, 0, ou 1, selon la comparaison </span>
+        <span style="color: #808080; font-style: italic;"># effectuée entre les deux valeurs passées en paramètre.</span>
+        <span style="color: #808080; font-style: italic;"># Faire un petit help(cmp) pour connaître les détails.</span>
+        ordre_debut_fin <span style="color: #66cc66;">=</span> <span style="color: #008000;">cmp</span><span style="color: black;">&#40;</span>list_debut<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> list_fin<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> ordre_debut_fin <span style="color: #66cc66;">==</span> -<span style="color: #ff4500;">1</span>:
+            <span style="color: #808080; font-style: italic;"># L'événement rencontré est un début d'intervalle.</span>
+            <span style="color: #808080; font-style: italic;"># On enlève l'événement de la liste, puisqu'on va le traiter,</span>
+            <span style="color: #808080; font-style: italic;"># là, tout de suite.</span>
+            pos_debut <span style="color: #66cc66;">=</span> list_debut.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> nb_superposition <span style="color: #66cc66;">==</span> <span style="color: #ff4500;">0</span>:
+                <span style="color: #808080; font-style: italic;"># On était dans aucun intervalle, et on vient d'en </span>
+                <span style="color: #808080; font-style: italic;"># rencontrer un. Dans la liste finale d'intervalles, </span>
+                <span style="color: #808080; font-style: italic;"># ça va donc compter comme un début. On retient </span>
+                <span style="color: #808080; font-style: italic;"># cette info.</span>
+                debut_intervalle_courant <span style="color: #66cc66;">=</span> pos_debut
+            <span style="color: #808080; font-style: italic;"># Dans tous les cas, on ajoute une superposition d'intervalle</span>
+            <span style="color: #808080; font-style: italic;"># (le bonhomme monte d'un étage).</span>
+            nb_superposition +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+        <span style="color: #ff7700;font-weight:bold;">elif</span> ordre_debut_fin <span style="color: #66cc66;">==</span> +<span style="color: #ff4500;">1</span>:
+            <span style="color: #808080; font-style: italic;"># L'événement rencontré est une fin d'intervalle.</span>
+            <span style="color: #808080; font-style: italic;"># On l'enlève de la liste.</span>
+            pos_fin <span style="color: #66cc66;">=</span> list_fin.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># On enlève une superposition d'intervalle.</span>
+            nb_superposition -<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> nb_superposition <span style="color: #66cc66;">==</span> <span style="color: #ff4500;">0</span>:
+                <span style="color: #808080; font-style: italic;"># Après avoir enlevé la superposition, on se retrouve</span>
+                <span style="color: #808080; font-style: italic;"># avec 0 intervalle superposé. </span>
+                <span style="color: #808080; font-style: italic;"># (Le bonhomme est redescendu jusqu'au niveau du sol).</span>
+                <span style="color: #808080; font-style: italic;"># Il faut donc enregistrer ça comme une fin d'intervalle </span>
+                <span style="color: #808080; font-style: italic;"># final. Tant qu'on y est, on crée tout de suite ce nouvel</span>
+                <span style="color: #808080; font-style: italic;"># intervalle final et on le met dans la liste.</span>
+                nouvel_intervalle <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>debut_intervalle_courant<span style="color: #66cc66;">,</span> pos_fin<span style="color: black;">&#41;</span>
+                list_intervalle_final.<span style="color: black;">append</span><span style="color: black;">&#40;</span>nouvel_intervalle<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            <span style="color: #808080; font-style: italic;"># On rencontre à la fois un début et une fin d'intervalle.</span>
+            <span style="color: #808080; font-style: italic;"># Rien de spécial à faire. Faut juste virer les 2 événements </span>
+            <span style="color: #808080; font-style: italic;"># traités de leur liste respectives.</span>
+            list_debut.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+            list_fin.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Durant toute cette boucle, la variable nb_superposition augmente</span>
+        <span style="color: #808080; font-style: italic;"># et diminue. Mais elle n'est jamais censée devenir négative.</span>
+        <span style="color: #808080; font-style: italic;"># Si ça arrive, c'est que les données d'entrées sont mal foutues.</span>
+        <span style="color: #808080; font-style: italic;"># On entre dans un cas d'indétermination. </span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Arrivé à la fin de la boucle, il peut rester, ou pas des éléments</span>
+    <span style="color: #808080; font-style: italic;"># dans list_fin. Ce qui est sûr, c'est que list_debut se vide</span>
+    <span style="color: #808080; font-style: italic;"># avant list_fin. Si ce n'est pas le cas, c'est encore un cas</span>
+    <span style="color: #808080; font-style: italic;"># d'indétermination.</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> list_fin:
+        <span style="color: #808080; font-style: italic;"># On a passé tous les débuts d'intervalle, mais il reste des</span>
+        <span style="color: #808080; font-style: italic;"># fins. Ça veut dire qu'on est encore dans un ou plusieurs</span>
+        <span style="color: #808080; font-style: italic;"># intervalles. On devrait normalement avoir :</span>
+        <span style="color: #808080; font-style: italic;"># len(list_fin) == nb_superposition. Si c'est pas le cas, c'est</span>
+        <span style="color: #808080; font-style: italic;"># un cas d'indétermination.</span>
+        <span style="color: #808080; font-style: italic;">#</span>
+        <span style="color: #808080; font-style: italic;"># On pourrait traiter les événements de fin d'intervalle un par un,</span>
+        <span style="color: #808080; font-style: italic;"># et diminuer progressivement nb_superposition. Mais on s'en fout,</span>
+        <span style="color: #808080; font-style: italic;"># c'est pas nécessaire. On prend juste la fin d'intervalle qui </span>
+        <span style="color: #808080; font-style: italic;"># supprimera la dernière superposition (c'est à dire la dernière</span>
+        <span style="color: #808080; font-style: italic;"># fin d'intervalle), et on construit un dernier intervalle final</span>
+        <span style="color: #808080; font-style: italic;"># avec ça.</span>
+        pos_fin <span style="color: #66cc66;">=</span> list_fin<span style="color: black;">&#91;</span>-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+        nouvel_intervalle <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>debut_intervalle_courant<span style="color: #66cc66;">,</span> pos_fin<span style="color: black;">&#41;</span>
+        list_intervalle_final.<span style="color: black;">append</span><span style="color: black;">&#40;</span>nouvel_intervalle<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> list_intervalle_final</pre></td></tr></table></div>
+
+<h3>Les avantages (parce que y&#8217;a aucun désavantages)</h3>
+<p>Ça marche avec des réels, des dates, et de manière générale, <a href="http://sametmax.com/ordonner-en-python/" target="_blank">tout ce qu&#8217;on peut trier</a>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span>tri_bonhomme_sur_un_mur<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">8</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span> <span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">8</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Testez pas ça chez vous ! Ça prend trois plombes ! Mettez juste 1000.</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span>tri_bonhomme_sur_un_mur<span style="color: black;">&#40;</span> <span style="color: black;">&#91;</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">210</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#93;</span> * <span style="color: #ff4500;">1000000</span> <span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">210</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Voyons voir ce que ça donne avec des réels </span>
+<span style="color: #808080; font-style: italic;"># (dont certains sont négatifs, tant qu'à faire).</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span>tri_bonhomme_sur_un_mur<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span> 
+    <span style="color: black;">&#91;</span>-<span style="color: #ff4500;">7.2</span><span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">6.9</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>-<span style="color: #ff4500;">8.4</span><span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">5.3</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>-<span style="color: #ff4500;">10.5</span><span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">5.25</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> 
+    <span style="color: black;">&#91;</span>-<span style="color: #ff4500;">1.7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0.01</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">0.0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4.0</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> 
+    <span style="color: black;">&#91;</span><span style="color: #ff4500;">12.125</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">13.9</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">13.9</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">15.0</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span>-<span style="color: #ff4500;">10.5</span><span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">5.25</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span>-<span style="color: #ff4500;">1.7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4.0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">12.125</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">15.0</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>    
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et avec des dates</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span>tri_bonhomme_sur_un_mur<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>
+    <span style="color: black;">&#91;</span><span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">21</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">16</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">54</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> 
+     <span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2013</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">02</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">16</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">59</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> 
+    <span style="color: black;">&#91;</span><span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2013</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">02</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">14</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> 
+     <span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2069</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">01</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">01</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">13</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">37</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#93;</span> <span style="color: black;">&#93;</span> <span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">21</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">16</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">54</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+  <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2069</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">13</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">37</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>En ajoutant à peine 2-3 lignes de code à la fonction, on peut récupérer le nombre maximal d&#8217;intervalles superposés.</p>
+<p>En re-ajoutant quelques autres lignes, on peut récupérer les zones dans lesquelles ce maximum est atteint. Ce qui pourrait servir pour effectuer l&#8217;opération mathématique d&#8217;intersection. (Je vous laisse chercher ça par vous mêmes).</p>
+<p>L&#8217;algorithme est principalement constitué d&#8217;une bi-boucle, c&#8217;est à dire une boucle unique, qui avance dans deux listes différentes (je viens d&#8217;inventer ce terme, ne m&#8217;embêtez pas). C&#8217;est encore plus simple que deux boucles imbriquées. Le nombre d&#8217;itérations à effectuer est égal au nombre d&#8217;intervalle multiplié par deux, c&#8217;est tout. Dans tous les cas limites présentés ci-dessus, ça fait une solution acceptable, demandant un temps d&#8217;exécution peu pharaonique.</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2013/02/resize.jpg" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/resize.jpg" alt="Exemple de deux bi-boucles imbriquées au niveau de la vis. Cette image vous a été offerte par les Scissor Sisters." title="Exemple de deux bi-boucles imbriquées au niveau de la vis. Cette image vous a été offerte par les Scissor Sisters." width="370" height="370" class="alignnone size-full wp-image-4587" /></a></p>
+<h2>Mais ou est passé la complexité ?</h2>
+<p>Les premières solutions avaient l&#8217;air de demander énormément de temps d&#8217;exécution, surtout avec beaucoup d&#8217;intervalles en entrée. Ça ne semble pas être le cas pour la solution du &#8220;bonhomme sur un mur&#8221;. Pourtant, la complexité d&#8217;une tâche, ça ne disparaît pas comme par magie. Y&#8217;aurait-il une entourloupe quelque part ?</p>
+<p>Il y en a une. Ce sont les deux opérations de tri effectuées au début de la fonction. Un tri, ce n&#8217;est pas anodin, et son temps d&#8217;exécution peut augmenter très beaucoup et très vite. La complexité n&#8217;a pas disparue, on n&#8217;a fait que la déplacer vers des tris. Alors finalement, ma solution n&#8217;est pas si bien que ça ?</p>
+<p>Eh bien si. Parce que le tri, même s&#8217;il reste coûteux en temps et en ressource, est un problème archi-connu, archi-réglé, et archi-optimisé. Le python, comme beaucoup d&#8217;autres langages, profite pleinement du travail réalisé par des centaines de matheux algorithmologues, qui se sont masturbés l&#8217;esprit sur des centaines de méthodes de tri différentes.</p>
+<div id="attachment_4589" style="width: 510px" class="wp-caption alignnone"><a href="http://sametmax.com/wp-content/uploads/2013/02/P1060165-resize1.jpg" class="grouped_elements" rel="tc-fancybox-group4572"><img src="http://sametmax.com/wp-content/uploads/2013/02/P1060165-resize1.jpg" alt="Y&#039;a des fois, on sait que l&#039;image dont on a besoin ne sera pas trouvable sur l&#039;internet. Alors on est obligé de la créer soi-même. (Mais je me suis fait aider)." title="Y&#039;a des fois, on sait que l&#039;image dont on a besoin ne sera pas trouvable sur l&#039;internet. Alors on est obligé de la créer soi-même. (Mais je me suis fait aider)." width="500" height="375" class="size-full wp-image-4589" /></a><p class="wp-caption-text">Photo prise dans le bureau d&#039;un chercheur en algorithmologie.</p></div>
+<p>C&#8217;est ça l&#8217;astuce générique dont je vous parlais au début. Face à un nouveau problème, le matheux <del datetime="2013-02-17T02:34:17+00:00">sort son zguègue</del> tente de trouver des équivalents à un ou plusieurs problèmes connus, que lui et ses amis matheux ont déjà réglés. C&#8217;est souvent bien plus simple que de tenter de régler le problème directement, en partant de rien. </p>
+<p><em>&#8220;Un nain éjacule bien plus loin lorsqu&#8217;il est perché sur les épaules d&#8217;un géant.&#8221;</em> Et pour respecter la parité, j&#8217;ajouterais qu&#8217;une naine femme-fontainise bien plus loin lorqu&#8217;elle est perchée sur les épaules d&#8217;une géante.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/union-dun-ensemble-dintervalles/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/02/intervillesinternational_06.jpg" length="52807" type="image/jpg" />	</item>
+	</channel>
+</rss>

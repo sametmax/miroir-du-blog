@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">                          
+<!--<![endif]-->
+					<head>
+				    <meta charset="UTF-8" />
+				    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+            				    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				    <link rel="profile" href="http://gmpg.org/xfn/11" />
+				    <link rel="pingback" href="../xmlrpc.php" />
+
+				   <!-- Icons font support for IE6-7  -->
+				    <!--[if lt IE 8]>
+				      <script src="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/lte-ie7.js"></script>
+				    <![endif]-->
+				    <style type="text/css" id="customizr-inline-fonts">@font-face{font-family:genericons;src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot');src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot%3F') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.svg') format('svg')}@font-face{font-family:entypo;src:url('http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot);src:url(http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot?#iefix') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.svg') format('svg')}</style><title>Écrire des logs en Python | Sam &amp; Max</title>
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Feed" href="../feed.1" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Écrire des logs en Python Comments Feed" href="feed/index.html" />
+<link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=4.0.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-polls-css'  href='../wp-content/plugins/wp-polls/polls-css.css%3Fver=2.68.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-syntax-css-css'  href='../wp-content/plugins/wp-syntax/css/wp-syntax.css%3Fver=1.0.css' type='text/css' media='all' />
+<link rel='stylesheet' id='customizr-skin-css'  href='../wp-content/themes/customizr/inc/assets/css/black2.min.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<style id='customizr-skin-inline-css' type='text/css'>
+
+.sticky-enabled .tc-shrink-on .site-logo img {
+						height:30px!important;width:auto!important
+					}
+
+					.sticky-enabled .tc-shrink-on .brand .site-title {
+						font-size:0.6em;opacity:0.8;line-height:1.2em
+					}
+
+.tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+          .single .tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+
+</style>
+<link rel='stylesheet' id='customizr-style-css'  href='../wp-content/themes/customizr/style.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<link rel='stylesheet' id='fancyboxcss-css'  href='../wp-content/themes/customizr/inc/assets/js/fancybox/jquery.fancybox-1.3.4.min.css%3Fver=4.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='../wp-content/plugins/jetpack/_inc/genericons/genericons/genericons.css%3Fver=3.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='../wp-content/plugins/jetpack/css/jetpack.css%3Fver=3.3.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.11.1'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min.js%3Fver=1.2.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var TCParams = {"FancyBoxState":"1","FancyBoxAutoscale":"1","SliderName":"","SliderDelay":"","SliderHover":"1","SmoothScroll":"linear","ReorderBlocks":"1","CenterSlides":"1","HasComments":"1","LeftSidebarClass":".span3.left.tc-sidebar","RightSidebarClass":".span3.right.tc-sidebar","LoadModernizr":"1","stickyCustomOffset":"0","stickyHeader":"1","dropdowntoViewport":"0","timerOnScrollAllBrowsers":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/tc-scripts.min.js%3Fver=3.2.10'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Log post mortem avec Python' href='../log-post-mortem-avec-python/index.html' />
+<link rel='next' title='Et le Bitcoin est toujours là' href='../et-le-bitcoin-est-toujours-la/index.html' />
+<meta name="generator" content="WordPress 4.1" />
+<link rel='canonical' href='index.html' />
+<link rel='shortlink' href='http://wp.me/p2ckfk-1mX' />
+<style type="text/css">
+.wp-polls .pollbar {
+	margin: 1px;
+	font-size: 6px;
+	line-height: 8px;
+	height: 8px;
+	background-image: url('../wp-content/plugins/wp-polls/images/default/pollbg.gif');
+	border: 1px solid #c8c8c8;
+}
+</style>
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.4.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.4.css");
+/* ]]> */
+</style><link rel="shortcut icon" href="../wp-content/uploads/2015/06/favicon.png" type="image/png">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Écrire des logs en Python" />
+<meta property="og:url" content="http://sametmax.com/ecrire-des-logs-en-python/" />
+<meta property="og:description" content="Au lieu de mettre des print() partout qu&#039;il va falloir retirer après et qui en plus ne servent à rien dans un processus daemonisé, utiliser les facilités de logging de Python peut se révéler un bon..." />
+<meta property="article:published_time" content="2013-03-08T12:17:42+00:00" />
+<meta property="article:modified_time" content="2013-05-17T09:22:25+00:00" />
+<meta property="article:author" content="http://sametmax.com/author/sam/" />
+<meta property="og:site_name" content="Sam &amp; Max" />
+<meta property="og:image" content="http://sametmax.com/wp-content/uploads/2013/03/3EekM.jpg" />
+<meta name="twitter:site" content="@jetpack" />
+<meta name="twitter:image:src" content="http://sametmax.com/wp-content/uploads/2013/03/3EekM.jpg?w=640" />
+<meta name="twitter:card" content="summary_large_image" />
+		<link rel="stylesheet" id="custom-css-css" type="text/css" href="../index.html%3Fcustom-css=1&amp;csblog=1&amp;cscache=6&amp;csrev=13.css" />
+						    <!--Icons size hack for IE8 and less -->
+				    <!--[if lt IE 9]>
+				      <link href="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/ie8-hacks.css" rel="stylesheet" type="text/css"/>
+				    <![endif]-->
+				</head>
+				
+	<body class="single single-post postid-5267 single-format-standard tc-fade-hover-links tc-sticky-header tc-transparent-on-scroll" itemscope itemtype="http://schema.org/WebPage">
+		
+		
+	   	<header class="tc-header clearfix row-fluid tc-tagline-off tc-title-logo-on  tc-shrink-on tc-menu-on logo-left" role="banner">
+			      <div class="brand span3 pull-left ">
+
+        <h1><a class="site-title" href="../index.html" title="Sam &amp; Max | Du code, du cul">Sam &amp; Max</a></h1>
+      </div> <!-- brand span3 pull-left -->
+      <div class="container outside"><h2 class="site-description">Du code, du cul</h2></div>      	<div class="navbar-wrapper clearfix span9 tc-submenu-fade tc-submenu-move tc-open-on-hover left">
+        	<div class="navbar resp">
+          		<div class="navbar-inner" role="navigation">
+            		<div class="row-fluid">
+              		<div class="social-block span5" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></div><h2 class="span7 inside site-description">Du code, du cul</h2><button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><div class="nav-collapse collapse tc-hover-menu-wrapper"><div class="menu-top-menu-container"><ul id="menu-top-menu-2" class="nav tc-hover-menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Prog</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin Sys</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo &#038; culture</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours &#038; tutos</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12415"><a href="../planet-python-fr/index.html">Veille Python Fr</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15634"><a href="http://indexerror.net">Questions Python</a></li>
+</ul></div></div>          			</div>
+          		</div><!-- /.navbar-inner -->
+        	</div><!-- /.navbar resp -->
+      	</div><!-- /.navbar-wrapper -->
+    			</header>
+		<div id="tc-reset-margin-top" class="container-fluid" style="margin-top:103px"></div><div id="main-wrapper" class="container">
+
+        
+    <div class="container" role="main">
+        <div class="row column-content-wrapper">
+
+                            
+                <div id="content" class="span9 article-container">
+                    
+                    
+                        
+                                                                                    
+                                                                    <article id="post-5267" class="post-5267 post type-post status-publish format-standard has-post-thumbnail hentry category-programmation row-fluid">
+                                                <header class="entry-header">
+          <h1 class="entry-title format-icon">Écrire des logs en Python <span class="comments-link"><a href="index.html#tc-comment-title" title="Comment(s) on Écrire des logs en Python"><span class="tc-comment-bubble fs1 icon-bubble" ></span><span class="inner">61</span></a></span></h1>            <div class="entry-meta">
+                This entry was posted in <a class="btn btn-mini" href="../category/programmation/index.html" title="View all posts in Programmation"> Programmation </a> on <a href="../2013/03/08/index.html" title="12:17" rel="bookmark"><time class="entry-date updated" datetime="2013-03-08T12:17:42+00:00">08/03/2013</time></a> <span class="by-author">by <span class="author vcard"><a class="url fn n" href="../author/sam/index.html" title="View all posts by Sam" rel="author">Sam</a></span></span>             </div><!-- .entry-meta -->
+            <hr class="featurette-divider __before_content">        </header>
+            
+
+          <section class="entry-content ">
+              <p>Good morning&#8230;</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/IB7LsjkZvvc" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Au lieu de mettre des <code>print()</code> partout qu&#8217;il va falloir retirer après et qui en plus ne servent à rien dans un processus daemonisé, utiliser les facilités de logging de Python peut se révéler un bon investissement. Investissement car le module <code>logging</code> est du même genre que <code>urllib2</code>, <code>datetime</code> ou <code>os.path</code> : on peut tout faire avec mais vaut mieux avoir la doc sous la main.</p>
+<h2>Pour les gens pressés</h2>
+<p>Avant de se lancer dans les explications, voici le snippet qui permet d&#8217;afficher les informations à l&#8217;écran et dans un fichier de log :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">logging</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">handlers</span> <span style="color: #ff7700;font-weight:bold;">import</span> RotatingFileHandler
+&nbsp;
+<span style="color: #808080; font-style: italic;"># création de l'objet logger qui va nous servir à écrire dans les logs</span>
+logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># on met le niveau du logger à DEBUG, comme ça il écrit tout</span>
+logger.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">DEBUG</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># création d'un formateur qui va ajouter le temps, le niveau</span>
+<span style="color: #808080; font-style: italic;"># de chaque message quand on écrira un message dans le log</span>
+<span style="color: #dc143c;">formatter</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">Formatter</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%(asctime)s :: %(levelname)s :: %(message)s'</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># création d'un handler qui va rediriger une écriture du log vers</span>
+<span style="color: #808080; font-style: italic;"># un fichier en mode 'append', avec 1 backup et une taille max de 1Mo</span>
+file_handler <span style="color: #66cc66;">=</span> RotatingFileHandler<span style="color: black;">&#40;</span><span style="color: #483d8b;">'activity.log'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000000</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># on lui met le niveau sur DEBUG, on lui dit qu'il doit utiliser le formateur</span>
+<span style="color: #808080; font-style: italic;"># créé précédement et on ajoute ce handler au logger</span>
+file_handler.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">DEBUG</span><span style="color: black;">&#41;</span>
+file_handler.<span style="color: black;">setFormatter</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">formatter</span><span style="color: black;">&#41;</span>
+logger.<span style="color: black;">addHandler</span><span style="color: black;">&#40;</span>file_handler<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># création d'un second handler qui va rediriger chaque écriture de log</span>
+<span style="color: #808080; font-style: italic;"># sur la console</span>
+steam_handler <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">StreamHandler</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+steam_handler.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">DEBUG</span><span style="color: black;">&#41;</span>
+logger.<span style="color: black;">addHandler</span><span style="color: black;">&#40;</span>steam_handler<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Après 3 heures, on peut enfin logguer</span>
+<span style="color: #808080; font-style: italic;"># Il est temps de spammer votre code avec des logs partout :</span>
+logger.<span style="color: black;">info</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Hello'</span><span style="color: black;">&#41;</span>
+logger.<span style="color: black;">warning</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Testing %s'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Cette config va afficher :</p>
+<pre>Hello
+Testing foo</pre>
+<p>sur la console</p>
+<p>Et :</p>
+<pre>2013-03-08 11:37:31,311 :: INFO :: Hello
+2013-03-08 11:37:31,411 :: WARNING :: Testing foo</pre>
+<p>Dans le fichier de <em>activity.log</em>.</p>
+<p>Quand vous passez en prod, mettez simplement une condition sur le stream handler, et le <code>setLevel</code> sur <code>logging.WARN</code> et vous êtes tranquile, quel que soit le nombre de <code>logger.info</code> que vous avez mis partout.</p>
+<p>Mais bon, avouez le, si vous aviez dû le faire vous même, vous auriez abandonné avant de trouver. D&#8217;une manière générale, quand vous voyez des noms en camelCase comme <code>setLevel</code> dans une lib Python, c&#8217;est que la lib va être relou à utiliser.</p>
+<p>Donc, faites comme moi, mettez cette config dans un fichier à part, et pour chaque nouveau projet, copier le bêtement. Comme ça vous aurez en une seconde la possibilité de logger dans un fichier et sur la console avec une désactivation facile.</p>
+<h2>Un peu de théorie</h2>
+<p>En Python, les logs se font à travers un logger. Le logger prend toute écriture que vous lui demandez, et regarde si le niveau de log est suffisamment haut pour continuer. Si non, il ignore l&#8217;entrée, si oui, il va passer le message à chaque handler.</p>
+<p>Chaque handler fait le même test pour lui même : le niveau est il assez élevé pour moi ? Si non, il ne fait rien. Si oui, il écrit le log. La manière dont il écrit le log dépend du type du logger : le StreamHandler va écrire par défaut sur la console, le FileHandler dans un fichier, le SmtpHandler va envoyer un email, etc. Un logger peut avoir autant de handlers qu&#8217;il veut, et donc autant de type d&#8217;écritures qu&#8217;il veut.</p>
+<p>Tout handler possède un formatter, qui est un objet qui décide dans quel format il va écrire la nouvelle entrée du log. Le formateur par défaut écrit juste le message, mais on peut lui demander (comme on l&#8217;a fait plus haut), d&#8217;écrire un timestamp, le niveau du message ou des choses plus complexes comme des éléments de la pile d&#8217;appel.</p>
+<p>Vous avez suivi ? Allez, comme je suis sympa, je vous mets un dessin :</p>
+<div id="attachment_5275" style="width: 465px" class="wp-caption aligncenter"><a href="../wp-content/uploads/2013/03/logging.png" class="grouped_elements" rel="tc-fancybox-group5267"><img class=" wp-image-5275  " title="Si vous saviez combien de temps prennent ces schémas à la con à faire..." src="../wp-content/uploads/2013/03/logging.png" alt="Schéma de l'organisation de la configuration d'un logger" width="455" height="644" /></a><p class="wp-caption-text">Si vous saviez combien de temps prennent ces schémas à la con à faire...</p></div>
+<p>Bref, pour configurer un logger en Python :</p>
+<ul>
+<li>On créé un objet logger</li>
+<li>On lui ajoute des handlers</li>
+<li>On ajoute des formateurs aux handlers</li>
+<li>On set les niveaux du loggers et des handlers</li>
+</ul>
+<p>Et enfin, on peut logger avec <code>logger.(info|warn|debug|error|critical)</code>.</p>
+<p>Mais là vient s&#8217;intercaler un des plus grands mystères de l&#8217;histoire du logging : les niveaux. Personne ne se rappelle comme ça marche.</p>
+<p>Si vous mettez un flingue sur la tête de quelqu&#8217;un et que vous lui donnez une dernière chance d&#8217;expliquer les niveaux de logging sinon vous le butez lui et toute sa famille, il se mettra à chouiner bêtement. Inutile de monter la pression en menaçant de profaner leurs tombes et violer leurs cadavres. Il ne sait tout simplement pas.</p>
+<h2>Donc, un bonne fois pour toute, voilà comment les niveaux marchent</h2>
+<table>
+<tbody>
+<tr>
+<th>Niveau
+</th>
+<th>Valeur
+</th>
+<th>Usage
+</th>
+</tr>
+<tr>
+<td>CRITICAL</td>
+<td>50
+</td>
+<td>Le programme complet est en train de partir en couille.
+</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>40
+</td>
+<td>Une opération a foirée.
+</td>
+</tr>
+<tr>
+<td>WARNING</td>
+<td>30
+</td>
+<td>Pour avertir que quelque chose mérite l&#8217;attention : enclenchement d&#8217;un mode particulier, detection d&#8217;une situation rare, un lib optionelle peut être installée.
+</td>
+</tr>
+<tr>
+<td>INFO</td>
+<td>20
+</td>
+<td>Pour informer de la marche du programme. Par exemple : &#8220;Starting CSV parsing&#8221;
+</td>
+</tr>
+<tr>
+<td>DEBUG</td>
+<td>10
+</td>
+<td>Pour dumper des information quand vous débuggez. Par exemple savoir ce qu&#8217;il y a dans ce putain de dictionnaire.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Vous spécifiez les niveaux une fois quand vous créez vos loggers et handlers avec <code>setLevel</code>. Vous passez à cette méthode une des valeurs suivantes : <code>logging.DEBUG</code>, <code>logging.INFO</code>, <code>logging.WARNING</code>, etc. C&#8217;est la valeur minimal qu&#8217;ils acceptent.</p>
+<p>Ensuite, à chaque écriture de message dans le logger, vous passez le niveau avec le message:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> logger.<span style="color: black;">log</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">DEBUG</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Message !'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Comme c&#8217;est relou à taper, Python fournit des raccourcis :</p>
+<p><code>logger.debug('message')</code> va faire <code>logger.log(logging.DEBUG, 'message')</code></p>
+<p><code>logger.error('message')</code> va faire <code>logger.log(logging.ERROR, 'message')</code></p>
+<p>Etc</p>
+<p>A chaque fois que vous allez envoyer un message, le logger (et chaque handler) va comparer le niveau du message avec le sien. Si le niveau du message est inférieur au sien, il l&#8217;ignore, sinon il l&#8217;écrit.</p>
+<p>Exemple :</p>
+<pre>CRITICAL
+ERROR
+WARNING <- niveau du logger (ou du handler)
+INFO    <- niveau du message
+DEBUG
+</pre>
+<p>Le message est ignoré.</p>
+<pre>
+CRITICAL
+ERROR   <- niveau du message
+WARNING <- niveau du logger (ou du handler)
+INFO
+DEBUG</pre>
+<p>Le message est écrit.</p>
+<pre>CRITICAL
+ERROR   <- niveau du message et du logger
+WARNING
+INFO
+DEBUG
+</pre>
+<p>Le message est écrit.</p>
+<p>Ce mécanisme permet de controler la sortie de votre programme. Si vous passez le programme en prod, vous avez sans doute plus envie de tous les messages d'information et de debug. Vous mettez alors le level sur, par exemple, ERROR, et vous aurez un log avec uniquement les erreurs.</p>
+<p>Cette techique permet un gros niveau de granularité puisque non seulement le logger à un level, mais aussi chaque handler.</p>
+<p>Exemple : vous avez un logger avec deux handlers, un qui va vers la console, et l'autre dans un fichier.</p>
+<pre>CRITICAL
+ERROR
+WARNING  <- niveau du handler fichier
+INFO    <- niveau du logger et du handler console
+DEBUG
+</pre>
+<p>Si un message arrive avec un niveau DEBUG, il est ignoré. Si il arrive avec un niveau INFO, il est affiché sur la console. Si il arrive avec un niveau WARNING ou plus, il est affiché sur la console ET mis dans le fichier.</p>
+<h2>Des combos de ouf</h2>
+<p>Rappelez-vous qu'on peut avoir autant de handlers qu'on veut, et même plusieurs handlers de même nature tels que deux handlers fichiers. Le premier peut par exemple logger les infos, et l'autre juste les erreurs.</p>
+<p>Vous pouvez même créez vos propres niveaux (<code>logging.CAMERDEGRAVE</code>) et vos propres handlers. Un handler qui appelle une URL quand il y a une erreur, un handler qui met tout le debug en coloration syntaxique, un handler qui envoit un SMS en cas de critical, etc.</p>
+<p>Les handlers disponibles dans la lib standard sont :</p>
+<ul>
+<li><strong>FileHandler</strong>: écrit tout dans un fichier.</li>
+<li><strong>RotatingFileHandler</strong>: écrit tout dans un fichier. Si le fichier depasse une certaine taile, renomme le fichier avec un compter, et recommence avec un nouveau fichier. Le nombre de backup est configurable.</li>
+<li><strong>TimedRotatingFileHandler</strong>: écrit tout dans un fichier. Après un certain temps, renomme le fichier avec un compter, et recommence avec un nouveau fichier. Le nombre de backup est configurable.</li>
+<li><strong>WatchedFileHandler</strong>: écrit dans un fichier, mais surveille si il n'a pas été modifié entre temps. Ne marche pas sous Windows</li>
+<li><strong>HTTPHandler</strong>: envoit le contenu par POST ou GET à l'URL donnée.</li>
+<li><strong>SMTPHandler</strong>: envoit le contenu par email.</li>
+<li><strong>MemoryHandler</strong>: garde tout en mémoire jusqu'à un certain temps, puis balance tout à un autre handler. Utile avec SMTPHandler.</li>
+<li><strong>BufferingHandler</strong>: accumule tout en mémoire, et vide régulièrement le buffer. Utile pour l'instrospection.</li>
+<li><strong>NTEventLogHandler</strong>: envoit les entrées sur le event log de Windows NT.</li>
+<li><strong>SysLogHandler</strong>: envoit les entrées sur un serveur syslog.</li>
+<li><strong>SocketHandler</strong>: envoit les entrées (picklées) via une socket.</li>
+<li><strong>DatagramHandler</strong>: envoit les entrées sur une socket datagram.</li>
+</ul>
+<h2>Traiter le fichier de log</h2>
+<p>90% du temps, vous voudrez juste un bon vieux fichier de log. Mais rien ne sert d'avoir un fichier de log si on ne peut pas le lire.</p>
+<p>D'abord, choisissez le bon endroit pour le mettre. Si c'est juste du debug, le dossier courant fera l'affaire. Si vous pensez qu'il va rester longtemps mais qu'il faudra le vider de temps à autre (et qu'il ne contient pas des informations qui ne doivent être lues que par root), alors mettez le dans un fichier temporaire. Le module <a href="http://docs.python.org/2/library/tempfile.html?highlight=tempfile#tempfile">tempfile</a> est votre ami.</p>
+<p>Sinon, pour les logs plus sérieux, il faudra le mettre dans le dossier officiel pour les logs du systèmes. Par exemple pour Ubuntu server : <em>/var/log</em>.</p>
+<p>Attention aux permissions d'écriture, vous risquez de vous retrouver avec une erreur à la con sur les bras. Vérifiez bien vos droits d'accès.</p>
+<p>Ensuite, il faut bien choisir son format de log. Sauf cas particulier, j'utilise ce formatteur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #dc143c;">formatter</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">Formatter</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%(asctime)s :: %(levelname)s :: %(message)s'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Il produit des sorties du genre "TIMESTAMP :: LEVEL :: Message", par exemple :</p>
+<pre>
+2012-03-08 12:01:31,311 :: INFO :: My life for Aiur
+2012-03-08 12:20:31,311 :: ERROR :: We require more Vespin Gaz
+2012-03-08 12:37:31,311 :: WARNING :: We are under attack
+2012-03-08 12:38:31,311 :: CRITICAL :: Nuclear launch detected
+</pre>
+<p>Ce format est facile à analyser car le séparateur a peu de risque de se retrouver dans le message.</p>
+<p>On peut très rapidement filtrer uniquement les erreurs, par exemple sous bash on peut voir si il y a eu récement des erreurs ainsi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">tail</span> <span style="color: #660033;">-n</span> <span style="color: #000000;">100</span> fichier.log <span style="color: #000000; font-weight: bold;">|</span> <span style="color: #c20cb9; font-weight: bold;">grep</span> ERROR</pre></td></tr></table></div>
+
+<p>Sous Python on peut faire des traitements super chiadés en deux secondes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+lines <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>ligne.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">' :: '</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> ligne <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichier.log'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+errors <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>date<span style="color: #66cc66;">,</span> mes<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> date<span style="color: #66cc66;">,</span> lvl<span style="color: #66cc66;">,</span> mes <span style="color: #ff7700;font-weight:bold;">in</span> lines <span style="color: #ff7700;font-weight:bold;">if</span> lvl <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'ERROR'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'CRITICAL'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+before<span style="color: #66cc66;">,</span> after <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">24</span><span style="color: black;">&#41;</span>
+parse <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> d: <span style="color: #dc143c;">datetime</span>.<span style="color: black;">strptime</span><span style="color: black;">&#40;</span>d<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'%Y-%m-%d %H:%M:%S,%f'</span><span style="color: black;">&#41;</span>
+dated_line <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>date<span style="color: #66cc66;">,</span> mes<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> date<span style="color: #66cc66;">,</span> mess <span style="color: #ff7700;font-weight:bold;">in</span> errors <span style="color: #ff7700;font-weight:bold;">if</span> before <span style="color: #66cc66;">&lt;=</span> parse<span style="color: black;">&#40;</span>date<span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;=</span> after<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> date<span style="color: #66cc66;">,</span> message <span style="color: #ff7700;font-weight:bold;">in</span> dated_line:
+    <span style="color: #ff7700;font-weight:bold;">print</span> date<span style="color: #66cc66;">,</span> message
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Affiche uniquement les message d'erreur ou criques qui sont arrivés entre</span>
+<span style="color: #808080; font-style: italic;">#  le 12 janviers 2012 et le 24 mars 2012</span></pre></td></tr></table></div>
+
+<p>Et je ne vous parle même pas de ce qu'on peut faire avec des libs comme <a href="http://pandas.pydata.org/">pandas</a>.</p>
+<h2>Aller plus loin</h2>
+<p>Le log peut vous emener très loin. En vérité, non seulement on peut avoir plusieurs handlers, mais on peut aussi avoir plusieurs loggers.</p>
+<p>Quand vous faites:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Vous récupérez ce qu'on appelle le logger "racine" (ou "root"). Mais vous pouvez aussi donner un nom au logger :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'encoding'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ceci vous permet de préconfigurer le logger quelque part dans le programme, et de récupérer celui-ci en particulier à un autre endroit, sans se trimbaler la référence. <code>logging.getLogger('encoding')</code> n'a besoin d'être configuré qu'une fois, si vous refaites ça ailleurs, vous récupérez le même logger.</p>
+<p>On peut même utiliser des sous-noms:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">enc_aud_logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'encoding.audio'</span><span style="color: black;">&#41;</span>
+enc_vid_logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'encoding.video'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Alors chaque logger aura sa propre config, MAIS, tout message envoyé sur un logger nommé "encoding.quelquechose" sera aussi automatiquement envoyé au logger "encoding" si il existe.</p>
+<p>Vous pouvez donc créer une hierarchie de log, par exemple pour avoir un fichier par process, et un gros log central sur un serveur à part via socket. Ca ne m'a jamais servi, mais je me suis dit que je ferai circuler l'info.</p>
+<p>Je n'ai pas parlé des filters, qui sont des objets qui permettent de faire la même chose que les niveaux, mais avec des règles d'écriture dans les logs plus avancées que juste "c'est le bon niveau". Et je n'ai pas abordé non plus les formateurs particuliers. Là on rentre dans le domaine de la drosophilie.</p>
+<p>En revanche si vous avez le temps, je vous conseille de passer quelque temps sur les options de configuration (plein de recettes <a href="http://docs.python.org/2/howto/logging-cookbook.html">ici</a>). En effet, en général on veut avoir un log configurable (c'est un peu le but de la manœuvre, sinon on ferait des print). Or, le logger peut se configurer de plein d'autres façons qu'avec du code Python.</p>
+<p>On peut notamment déclarer la configuration avec un <a href="http://docs.python.org/2/howto/logging-cookbook.html#an-example-dictionary-based-configuration">gros dictionaire</a> (c'est ce que fait <a href="https://docs.djangoproject.com/en/dev/topics/logging/">Django</a>) ou avec un <a href="http://docs.python.org/2/library/logging.config.html#configuration-file-format">fichier ini</a>.</p>
+<p>Enfin, normalement ce package est thread-safe. Vous devriez pouvoir logger en toute impunité dans plusieurs threads. Je recommande quand même de faire la configuration du logger avant d'entrer dans un thread, on ne sait jamais.</p>
+<p>Pour ceux qui veulent se plonger dans les méandres de tout ce qu'on peut faire avec logging, chechez <a href="http://docs.python.org/2/library/logging.html?highlight=logging#logging">la doc</a> et <a href="http://www.red-dove.com/python_logging.html">cet article</a> de l'auteur du module.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/mars/tuto_logging.py">Télécharger le code de l'article</a></p>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing"><h3 class="sd-title">Partager:</h3><div class="sd-content"><ul><li class="share-twitter"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsametmax.com%2Fecrire-des-logs-en-python%2F&#038;counturl=http%3A%2F%2Fsametmax.com%2Fecrire-des-logs-en-python%2F&#038;count=horizontal&#038;text=%C3%89crire%20des%20logs%20en%20Python%3A" style="width:101px; height:20px;"></iframe></div></li><li class="share-facebook"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsametmax.com%2Fecrire-des-logs-en-python%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;locale=en_US&amp;width=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:96px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-google-plus-1"><div class="googleplus1_button"><div class="g-plus" data-action="share" data-annotation="bubble" data-href="http://sametmax.com/ecrire-des-logs-en-python/"></div></div></li><li class="share-email"><a rel="nofollow" data-shared="" class="share-email sd-button" href="index.html%3Fshare=email.html" title="Click to email this to a friend"><span>Email</span></a></li><li><a href="index.html#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-reddit"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?width=120&amp;url=http%3A%2F%2Fsametmax.com%2Fecrire-des-logs-en-python%2F&amp;title=%C3%89crire%20des%20logs%20en%20Python" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-pinterest"><div class="pinterest_button"><a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fsametmax.com%2Fecrire-des-logs-en-python%2F&#038;description=%C3%89crire%20des%20logs%20en%20Python" data-pin-do="buttonBookmark" data-pin-config="beside"><img src="http://assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a></div></li><li class="share-end"></li><li class="share-tumblr"><a target="" href="http://www.tumblr.com/share/link/?url=http%3A%2F%2Fsametmax.com%2Fecrire-des-logs-en-python%2F&name=%C3%89crire%20des%20logs%20en%20Python" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:62px; height:20px; background:url('http://platform.tumblr.com/v1/share_2.png') top left no-repeat transparent;">Share on Tumblr</a></li><li class="share-pocket"><div class="pocket_button"><a href="https://getpocket.com/save" class="pocket-btn" data-lang="en" data-save-url="http://sametmax.com/ecrire-des-logs-en-python/" data-pocket-count="horizontal" >Pocket</a></div></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div>                        </section><!-- .entry-content -->
+
+        <footer class="entry-meta"><hr class="featurette-divider"><div class="author-info"><div class="row-fluid"><div class="comment-avatar author-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=100&amp;d=retro&amp;r=X' class='avatar avatar-100 photo' height='100' width='100' /></div> <div class="author-description span10"><h3>About Sam</h3><p>Waf !</p><div class="author-link"><a href="../author/sam/index.html" rel="author">View all posts by Sam <span class="meta-nav">&rarr;</span></a></div></div></div></div></footer>                                    </article>
+                                
+                            
+                        
+                    
+<div id="comments" class="comments-area" >
+	<h2 id="tc-comment-title" class="comments-title">61 thoughts on &ldquo;<span>Écrire des logs en Python</span>&rdquo;</h2>              <ul class="commentlist">
+                        <li class="comment even thread-even depth-1" id="li-comment-6737">
+          
+            <article id="comment-6737" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/437805955e9381e69429143c0fc40f6e?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">foxmask  </cite> <a class="comment-date" href="index.html#comment-6737"><time datetime="2013-03-08T12:32:30+00:00">08/03/2013 at 12:32</time></a></header>  <section class="comment-content comment"><p>coucou ;) </p>
+<p>au final quelque soit le langage (digne de ce nom) utilisé on utilise les memes handler/logger ; on n&#8217;est pas perdu ;) je pense notamment à log4j.</p>
+<p>sinon j&#8217;ai une version pour neuneu &#8216;comme moi&#8217; sur le sujet prévu lundi ;)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-6738">
+          
+            <article id="comment-6738" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6738"><time datetime="2013-03-08T12:34:31+00:00">08/03/2013 at 12:34</time></a></header>  <section class="comment-content comment"><p>D&#8217;ailleurs, toi qui est phpeux, y a un truc comme ça en PHP ? Je me souviens d&#8217;avoir codé ma propre lib il y a des années comme sujet de mémoire, mais si ça se trouve ça existait déjà.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-foxmask even thread-even depth-1" id="li-comment-6739">
+          
+            <article id="comment-6739" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/437805955e9381e69429143c0fc40f6e?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">foxmask  </cite> <a class="comment-date" href="index.html#comment-6739"><time datetime="2013-03-08T12:41:06+00:00">08/03/2013 at 12:41</time></a></header>  <section class="comment-content comment"><p>ya une fonction syslog qui repose sur le meme syslog unix sinon chaque framework propose son systeme de log et une autre error_log</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6741">
+          
+            <article id="comment-6741" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/fc32c6686686ecc595f05ad1885c2fb3?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">roro  </cite> <a class="comment-date" href="index.html#comment-6741"><time datetime="2013-03-08T13:11:47+00:00">08/03/2013 at 13:11</time></a></header>  <section class="comment-content comment"><p>ça me rappelle le tuto de Maité sur le truffage de la dinde de Noel.<br />
+Celui où à la fin tu as la fourchette à la main et la serviette autour du cou.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6742">
+          
+            <article id="comment-6742" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/3482232b0f56c59cb4f3380415664312?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Teocali  </cite> <a class="comment-date" href="index.html#comment-6742"><time datetime="2013-03-08T13:12:41+00:00">08/03/2013 at 13:12</time></a></header>  <section class="comment-content comment"><p>Ah mais ce module est clairement inspiré du monde java, hein, que ce soit par Log4J (avec lequel j&#8217;ai beauuucoup de mal, surtout depuis qu&#8217;il n&#8217;est plus maintenu) ou part java.logging. La preuve ? CamelCase :)<br />
+Bon, sinon, je vous laisse je dois retourner a mon programme C++&#8230; :'( J&#8217;ai rarement eu autant l&#8217;impression d&#8217;avancer dans le noir qu&#8217;avec ce langage. Rendez-moi mon Java !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6743">
+          
+            <article id="comment-6743" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/3482232b0f56c59cb4f3380415664312?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Teocali  </cite> <a class="comment-date" href="index.html#comment-6743"><time datetime="2013-03-08T13:14:06+00:00">08/03/2013 at 13:14</time></a></header>  <section class="comment-content comment"><p>Merde. C&#8217;est bien entendu à foxmask que je m&#8217;adressais.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6744">
+          
+            <article id="comment-6744" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6744"><time datetime="2013-03-08T14:06:07+00:00">08/03/2013 at 14:06</time></a></header>  <section class="comment-content comment"><p>unittest, urllib2, xml, et logging ont été clairement écrits par des anciens codeurs java bourrés à l&#8217;irish coffee. Y des abstractions dans tous les sens, des adapteurs, le niveau 0 du pep8&#8230; </p>
+<p>C&#8217;est dans ces moments là que ça me donne envie de coder une alternative.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6746">
+          
+            <article id="comment-6746" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/3482232b0f56c59cb4f3380415664312?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Teocali  </cite> <a class="comment-date" href="index.html#comment-6746"><time datetime="2013-03-08T14:42:50+00:00">08/03/2013 at 14:42</time></a></header>  <section class="comment-content comment"><p>Pourquoi &#8220;ancien&#8221; ? c&#8217;est incompatible de faire les deux en même temps ? Bah merde&#8230; :)</p>
+<p>Plus serieusement, ça me fait penser&#8230; je me demande s&#8217;il est possible d&#8217;executer &#8220;simplement&#8221; (en utilisant les mecanismes internes) du code Python au sein d&#8217;un code Java. J&#8217;imagine que oui. Faudra que je me penche dessus.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6749">
+          
+            <article id="comment-6749" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6749"><time datetime="2013-03-08T15:00:24+00:00">08/03/2013 at 15:00</time></a></header>  <section class="comment-content comment"><p>A regarder de prêt :</p>
+<p><a href="http://py4j.sourceforge.net/index.html" rel="nofollow">http://py4j.sourceforge.net/index.html</a></p>
+<p>C&#8217;est fait pour appeler du java depuis Python, mais apparement ça autorise aussi Java à appeler des objets python dans certains cas.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6752">
+          
+            <article id="comment-6752" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Anucunnilinguiste  </cite> <a class="comment-date" href="index.html#comment-6752"><time datetime="2013-03-08T16:12:43+00:00">08/03/2013 at 16:12</time></a></header>  <section class="comment-content comment"><p>@Sam</p>
+<p>&#8220;unittest, urllib2, xml, et logging ont été clairement écrits par des anciens codeurs java bourrés à l’irish coffee&#8221;</p>
+<p>On lit les mêmes articles ;)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6753">
+          
+            <article id="comment-6753" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/3d961f728cc9bb37266d7f3b8aba3ba5?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Anucunnilinguiste  </cite> <a class="comment-date" href="index.html#comment-6753"><time datetime="2013-03-08T16:14:39+00:00">08/03/2013 at 16:14</time></a></header>  <section class="comment-content comment"><p>@Sam</p>
+<p>Pour taper dans le Java, il y a aussi :</p>
+<p><a href="http://pyjnius.readthedocs.org/en/latest/" rel="nofollow">http://pyjnius.readthedocs.org/en/latest/</a></p>
+<p>Petit remarque, le framework opengl Kivy utilise ce système de log par défaut.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6754">
+          
+            <article id="comment-6754" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/a0d8bc68f5928fa656a3f4d0b396ba98?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Stéphane Bunel  </cite> <a class="comment-date" href="index.html#comment-6754"><time datetime="2013-03-08T16:32:22+00:00">08/03/2013 at 16:32</time></a></header>  <section class="comment-content comment"><p>Bel article. A propos, pour l&#8217;avoir vécu, j&#8217;ai gardé dans un coin de ma tête qu&#8217;il ne faut pas utiliser ce module dans les parties de code qui nécessite un maximum de performance. En effet, même avec le debug désactivé (ex: niveau de sortie sur CRITICAL) il mange beaucoup de temps alors qu&#8217;il devrait juste ignorer le message de debug. Je ne sais pas pourquoi ni même si c&#8217;est toujours le cas.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6755">
+          
+            <article id="comment-6755" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6755"><time datetime="2013-03-08T17:14:31+00:00">08/03/2013 at 17:14</time></a></header>  <section class="comment-content comment"><p>C&#8217;est sûr. Heureusement un algo qui a besoin d&#8217;être rapide et en Python a rarement besoin de log. On met généralement les logs dans le code métier, qui lui est rarement le bottleneck.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6757">
+          
+            <article id="comment-6757" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/502f55b818f01ac589d5708616e6bfd8?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.sciunto.org' rel='external nofollow' class='url'>François</a>  </cite> <a class="comment-date" href="index.html#comment-6757"><time datetime="2013-03-08T19:30:56+00:00">08/03/2013 at 19:30</time></a></header>  <section class="comment-content comment"><p>Moi, j&#8217;ai tendance à utiliser les sous-noms pour identifier (surtout en debug) la classe/le fichier qui écrit. C&#8217;est mon manque d&#8217;expérience qui fait faire ça ? puisque d&#8217;après ce que je comprends, tu ne fais pas ça. Un seul namespace n&#8217;est-il pas fouillis ? </p>
+<p>Merci.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6758">
+          
+            <article id="comment-6758" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6758"><time datetime="2013-03-08T19:37:46+00:00">08/03/2013 at 19:37</time></a></header>  <section class="comment-content comment"><p>C&#8217;est très bien d&#8217;utiliser des sous-noms. En général les gens font ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">getLogger<span style="color: black;">&#40;</span>__name__<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Comme ça c&#8217;est fait automatiquement.</p>
+<p>Moi je suis juste un feignant. Je me contente généralement d&#8217;un ou deux gros logs centralisés.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6761">
+          
+            <article id="comment-6761" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/46e7f01f5cb79a23bf5dadd6025ab80b?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">dodoecchi  </cite> <a class="comment-date" href="index.html#comment-6761"><time datetime="2013-03-08T22:13:39+00:00">08/03/2013 at 22:13</time></a></header>  <section class="comment-content comment"><p><span class="merci"></span>Merci pour ce super article, comme d&#8217;habitude.<br />
+C&#8217;est vrai que les logs en python, sans la doc, c&#8217;est chaud patate :/</p>
+<p>quelques erreurs dans l&#8217;article :<br />
+ &#8211; ca particulier -&gt; cas particulier<br />
+ &#8211; plein de recettes ici). -&gt; lien cassé</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6762">
+          
+            <article id="comment-6762" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/9d9f72243b73cab98a82fa04f56e3438?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Baronsed  </cite> <a class="comment-date" href="index.html#comment-6762"><time datetime="2013-03-08T22:42:46+00:00">08/03/2013 at 22:42</time></a></header>  <section class="comment-content comment"><p>Des fichiers de log de 120 Go ? C&#8217;est là qu&#8217;il vaut mieux savoir maîtriser <a href="http://blog.sanctum.geek.nz/actually-using-ed/" rel="nofollow">ed</a>.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-6764">
+          
+            <article id="comment-6764" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6764"><time datetime="2013-03-09T01:12:09+00:00">09/03/2013 at 01:12</time></a></header>  <section class="comment-content comment"><p>Il vaut mieux maitriser rm.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6771">
+          
+            <article id="comment-6771" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/0069bde219363077b50c55ee261ff092?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://gr3gr.free.fr' rel='external nofollow' class='url'>gregR</a>  </cite> <a class="comment-date" href="index.html#comment-6771"><time datetime="2013-03-09T08:53:45+00:00">09/03/2013 at 08:53</time></a></header>  <section class="comment-content comment"><p>@Sam<br />
+En Php, il y a le package Log de PEAR qui fait vaguement la même chose que logging : <a href="http://pear.php.net/package/Log/" rel="nofollow">http://pear.php.net/package/Log/</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6772">
+          
+            <article id="comment-6772" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/dd1892e541e59d322887158910a063cb?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">N.  </cite> <a class="comment-date" href="index.html#comment-6772"><time datetime="2013-03-09T09:18:03+00:00">09/03/2013 at 09:18</time></a></header>  <section class="comment-content comment"><p>Donc le prochain article, c&#8217;est comment configurer le logging de django?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6773">
+          
+            <article id="comment-6773" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6773"><time datetime="2013-03-09T09:23:00+00:00">09/03/2013 at 09:23</time></a></header>  <section class="comment-content comment"><p>@gregR: ok. Rien en natif donc ?</p>
+<p>@N.: cest vrai que ça mérite.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6775">
+          
+            <article id="comment-6775" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/0069bde219363077b50c55ee261ff092?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://gr3gr.free.fr' rel='external nofollow' class='url'>gregR</a>  </cite> <a class="comment-date" href="index.html#comment-6775"><time datetime="2013-03-09T09:40:16+00:00">09/03/2013 at 09:40</time></a></header>  <section class="comment-content comment"><p>@Sam pas à ma connaissance mais je crois que le paquet PEAR est écrit en PHP &#8220;pur&#8221;</p>
+<p>Y&#8217;en a d&#8217;autres<br />
+<a href="https://github.com/katzgrau/KLogger" rel="nofollow">https://github.com/katzgrau/KLogger</a><br />
+<a href="http://logging.apache.org/log4php/" rel="nofollow">http://logging.apache.org/log4php/</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6776">
+          
+            <article id="comment-6776" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/647dae215d91b81bb1b5da30d6990302?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Krypted  </cite> <a class="comment-date" href="index.html#comment-6776"><time datetime="2013-03-09T11:25:31+00:00">09/03/2013 at 11:25</time></a></header>  <section class="comment-content comment"><p>Est-il possible d&#8217;intégrer un logger dans un autre logger ?<br />
+Je m&#8217;explique :<br />
+Je voudrais récupérer le logger &#8220;sqlalchemy&#8221; et le mettre dans un autre logger &#8220;monprogramme&#8221;</p>
+<p>Faut-il attacher au logger &#8220;sqlalchemy&#8221; le même handler que &#8220;monprogramme&#8221; ou y a-t&#8217;il une méthode plus propre?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6822">
+          
+            <article id="comment-6822" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/437805955e9381e69429143c0fc40f6e?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">foxmask  </cite> <a class="comment-date" href="index.html#comment-6822"><time datetime="2013-03-11T09:11:40+00:00">11/03/2013 at 09:11</time></a></header>  <section class="comment-content comment"><p>@Baronsed : vaut mieux configurer son appender pour ne pas dépasser &#8216;x&#8217; Mega et &#8216;y&#8217; fichiers de log dans le rolling appender ; ca évite un fichier de 120G.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6825">
+          
+            <article id="comment-6825" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6825"><time datetime="2013-03-11T09:30:02+00:00">11/03/2013 at 09:30</time></a></header>  <section class="comment-content comment"><p>@Krypted: ça veut dire auoi &#8220;mettre&#8221; ? Tu veux qu&#8217;il se passe quoi quand tu fais quoi ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6828">
+          
+            <article id="comment-6828" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/647dae215d91b81bb1b5da30d6990302?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Krypted  </cite> <a class="comment-date" href="index.html#comment-6828"><time datetime="2013-03-11T10:05:18+00:00">11/03/2013 at 10:05</time></a></header>  <section class="comment-content comment"><p>En fait je voudrais pouvoir voir les logs de SQLAlchemy dans le fichier de log de mon application.<br />
+En gros, ma classe de logs hérite de celle de CherryPy. J&#8217;ai donc mes logs persos + ceux de cherrypy dans le même fichier log. Je veux également ajouter ceux de SQLAlchemy. </p>
+<p>Je pensais pouvoir faire un :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'sqlalchemy'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mais je ne sais pas quoi faire de cet objet.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6830">
+          
+            <article id="comment-6830" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/71171d6af3ad639298d3d29adda1b4aa?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">DrFunk  </cite> <a class="comment-date" href="index.html#comment-6830"><time datetime="2013-03-11T12:55:02+00:00">11/03/2013 at 12:55</time></a></header>  <section class="comment-content comment"><p>Salut.</p>
+<p>Ca fait un moment que je suis votre site et ses <em>très</em> bons articles en Python.<br />
+Merci pour celui-ci sur le logging, j&#8217;avais commencé à utiliser un peu la librairie mais là ça met bien les choses au clair.<br />
+Juste une correction : le lien vers le &#8220;logging Cookbook&#8221; en fin d&#8217;article est cassé, la bonne URL est <a href="http://docs.python.org/2/howto/logging-cookbook.html" rel="nofollow">http://docs.python.org/2/howto/logging-cookbook.html</a></p>
+<p>Continuez vos articles, je suis sûr qu&#8217;il y a plein de gens comme moi qui les lisent et les apprécient même s&#8217;ils le disent pas souvent ! (oui je sais, saÿmal&#8230;)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-6831">
+          
+            <article id="comment-6831" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6831"><time datetime="2013-03-11T13:29:38+00:00">11/03/2013 at 13:29</time></a></header>  <section class="comment-content comment"><p>Merci. C&#8217;est corrigé.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-6832">
+          
+            <article id="comment-6832" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-6832"><time datetime="2013-03-11T13:57:51+00:00">11/03/2013 at 13:57</time></a></header>  <section class="comment-content comment"><p>@Krypted: dans ce cas, ajoute un MemoryHandler dans le logger sqlalquemy qui va tout renvoyer dans un handler de ton logger.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6834">
+          
+            <article id="comment-6834" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/647dae215d91b81bb1b5da30d6990302?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Krypted  </cite> <a class="comment-date" href="index.html#comment-6834"><time datetime="2013-03-11T15:09:03+00:00">11/03/2013 at 15:09</time></a></header>  <section class="comment-content comment"><p>Ok je vais jeter un oeil au MemoryHandler. Merci!</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-6907">
+          
+            <article id="comment-6907" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/3412644f9501fa6cf9d87c2ef2865a8d?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">GM  </cite> <a class="comment-date" href="index.html#comment-6907"><time datetime="2013-03-13T12:27:10+00:00">13/03/2013 at 12:27</time></a></header>  <section class="comment-content comment"><p>&#8220;Enfin, normalement ce package est thread-safe.&#8221;</p>
+<p>Thread-safe peut-être, mais pas multiprocess-safe, donc gaffe.<br />
+Ca m&#8217;est arrivé par le passé d&#8217;avoir plusieurs process du même script qui arrivent en concurrence sur un RotatingFileHandler, et qui font la rotation tous en même temps.</p>
+<p>Résultat : au lieu d&#8217;avoir 5 log.old de 50 Mio, j&#8217;avais 5 log.old de 100 octets, et le vieux log disparu.<br />
+La solution : utiliser un verrou sur le fichier au moment de la création du logger.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6947">
+          
+            <article id="comment-6947" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/75be759a2751164a7cf44aeb38ef9b64?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">k3c  </cite> <a class="comment-date" href="index.html#comment-6947"><time datetime="2013-03-15T07:45:27+00:00">15/03/2013 at 07:45</time></a></header>  <section class="comment-content comment"><p>Sinon pour éviter les print le module trace est pas mal aussi</p>
+<p><a href="http://pymotw.com/2/trace/index.html" rel="nofollow">http://pymotw.com/2/trace/index.html</a></p>
+<p>Ca permet de voir où on est passé (tiens, pourquoi je sors de la boucle là ?)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-7375">
+          
+            <article id="comment-7375" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bcc404e8ab0f0a708d5275aa69633d20?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Xavier O  </cite> <a class="comment-date" href="index.html#comment-7375"><time datetime="2013-03-28T10:12:48+00:00">28/03/2013 at 10:12</time></a></header>  <section class="comment-content comment"><p>Suite aux excellents articles sur les décorateurs et le présent article, je me suis attelé à l&#8217;élaboration d&#8217;un module de logs.<br />
+Ce faisant, je me suis heurté à un joli problème : dans l&#8217;exécution de mon décorateur, je suis incapable de déterminer la classe exacte de la méthode :<br />
+1) La fonction n&#8217;est pas encore liée à la méthode.<br />
+2) Si je passe par la variable &#8220;self&#8221;, la classe est celle de l&#8217;objet et non celle de la méthode exécutée.<br />
+Y&#8217;a-t-il un moyen de trouver cette information ?<br />
+Voici mon code :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> functools
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">logging</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">logging</span> <span style="color: #ff7700;font-weight:bold;">import</span> DEBUG<span style="color: #66cc66;">,</span> INFO<span style="color: #66cc66;">,</span> WARNING<span style="color: #66cc66;">,</span> ERROR<span style="color: #66cc66;">,</span> CRITICAL
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">logging</span> <span style="color: #ff7700;font-weight:bold;">import</span> handlers
+&nbsp;
+LOG_FILENAME <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;baom.log&quot;</span>
+&nbsp;
+__logger <span style="color: #66cc66;">=</span> <span style="color: #008000;">None</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> initLogger<span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+    @brief Initialisation du logger de l'application.
+    @param path @c string chemin du fichier à générer.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">global</span> __logger
+    __logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    __logger.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">DEBUG</span><span style="color: black;">&#41;</span>
+    fileFormater <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">Formatter</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;%(asctime)s::%(levelname)s::%(message)s&quot;</span><span style="color: black;">&#41;</span>
+    fileHandler <span style="color: #66cc66;">=</span> handlers.<span style="color: black;">RotatingFileHandler</span><span style="color: black;">&#40;</span>cTools.<span style="color: black;">pathJoin</span><span style="color: black;">&#40;</span>path<span style="color: #66cc66;">,</span> LOG_FILENAME<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000000</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;utf-8&quot;</span><span style="color: black;">&#41;</span>
+    fileHandler.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">DEBUG</span><span style="color: black;">&#41;</span>
+    fileHandler.<span style="color: black;">setFormatter</span><span style="color: black;">&#40;</span>fileFormater<span style="color: black;">&#41;</span>
+    __logger.<span style="color: black;">addHandler</span><span style="color: black;">&#40;</span>fileHandler<span style="color: black;">&#41;</span>
+    terminalHandler <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">StreamHandler</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    terminalHandler.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">INFO</span><span style="color: black;">&#41;</span>
+    __logger.<span style="color: black;">addHandler</span><span style="color: black;">&#40;</span>terminalHandler<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> logDeco<span style="color: black;">&#40;</span>formatString<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> argList<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+    @brief Génère un décorateur effectuant un log de debug en début d'exécution.
+    @param formatString @c string - Chaîne de mise en forme du texte à logger.
+    @param argList [string] - Liste des arguments à logger.
+    @return @c function
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> decorator<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># Construction de la liste des arguments et de leur valeur par défaut</span>
+        <span style="color: #dc143c;">code</span> <span style="color: #66cc66;">=</span> func.__code__
+        defaults <span style="color: #66cc66;">=</span> func.__defaults__
+        funcArgs <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+        argDefaults <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> index <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">code</span>.<span style="color: black;">co_argcount</span><span style="color: black;">&#41;</span>:
+            funcArgs<span style="color: black;">&#91;</span><span style="color: #dc143c;">code</span>.<span style="color: black;">co_varnames</span><span style="color: black;">&#91;</span>index<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> index
+            <span style="color: #ff7700;font-weight:bold;">if</span> defaults <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+                defaultIndex <span style="color: #66cc66;">=</span> index - <span style="color: black;">&#40;</span><span style="color: #dc143c;">code</span>.<span style="color: black;">co_argcount</span> - <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>defaults<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">if</span> index &amp;gt<span style="color: #66cc66;">;=</span> <span style="color: #dc143c;">code</span>.<span style="color: black;">co_argcount</span> - <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>defaults<span style="color: black;">&#41;</span>:
+                    argDefaults<span style="color: black;">&#91;</span><span style="color: #dc143c;">code</span>.<span style="color: black;">co_varnames</span><span style="color: black;">&#91;</span>index<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> defaults<span style="color: black;">&#91;</span>defaultIndex<span style="color: black;">&#93;</span>
+        <span style="color: #66cc66;">@</span>functools.<span style="color: black;">wraps</span><span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">def</span> wrapped<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># Détermine s'il s'agit d'une méthode ou d'une fonction.</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>args<span style="color: black;">&#41;</span> &amp;gt<span style="color: #66cc66;">;</span> <span style="color: #ff4500;">0</span>:
+                <span style="color: #008000;">self</span> <span style="color: #66cc66;">=</span> args<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+                <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> func.__name__<span style="color: black;">&#41;</span>:
+                    className <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.__class__.__name__
+                <span style="color: #ff7700;font-weight:bold;">else</span>:
+                    className <span style="color: #66cc66;">=</span> <span style="color: #008000;">None</span>
+            <span style="color: #ff7700;font-weight:bold;">else</span>:
+                className <span style="color: #66cc66;">=</span> <span style="color: #008000;">None</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> argList <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">None</span>:
+                text <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;</span>
+            <span style="color: #ff7700;font-weight:bold;">else</span>:
+                argValues <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+                <span style="color: #ff7700;font-weight:bold;">for</span> arg <span style="color: #ff7700;font-weight:bold;">in</span> argList:
+                    index <span style="color: #66cc66;">=</span> funcArgs<span style="color: black;">&#91;</span>arg<span style="color: black;">&#93;</span>
+                    <span style="color: #ff7700;font-weight:bold;">if</span> index &amp;gt<span style="color: #66cc66;">;=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>args<span style="color: black;">&#41;</span>:
+                        <span style="color: #ff7700;font-weight:bold;">if</span> arg <span style="color: #ff7700;font-weight:bold;">in</span> kwargs:
+                            argValue <span style="color: #66cc66;">=</span> kwargs<span style="color: black;">&#91;</span>arg<span style="color: black;">&#93;</span>
+                        <span style="color: #ff7700;font-weight:bold;">else</span>:
+                            argValue <span style="color: #66cc66;">=</span> argDefaults<span style="color: black;">&#91;</span>arg<span style="color: black;">&#93;</span>
+                    <span style="color: #ff7700;font-weight:bold;">else</span>:
+                        argValue <span style="color: #66cc66;">=</span> args<span style="color: black;">&#91;</span>index<span style="color: black;">&#93;</span>
+                    argValues.<span style="color: black;">append</span><span style="color: black;">&#40;</span>argValue<span style="color: black;">&#41;</span>
+                text <span style="color: #66cc66;">=</span> formatString.<span style="color: black;">format</span><span style="color: black;">&#40;</span>*argValues<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> className <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">None</span>:
+                logText <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;{}::{}::{}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>func.__module__<span style="color: #66cc66;">,</span> func.__name__<span style="color: #66cc66;">,</span> text<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">else</span>:
+                logText <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;{}::{}::{}::{}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>func.__module__<span style="color: #66cc66;">,</span> className<span style="color: #66cc66;">,</span> func.__name__<span style="color: #66cc66;">,</span> text<span style="color: black;">&#41;</span>
+            __logger.<span style="color: black;">debug</span><span style="color: black;">&#40;</span>logText<span style="color: black;">&#41;</span>
+            data <span style="color: #66cc66;">=</span> func<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> data
+        <span style="color: #ff7700;font-weight:bold;">return</span> wrapped
+    <span style="color: #ff7700;font-weight:bold;">return</span> decorator</pre></td></tr></table></div>
+
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-7384">
+          
+            <article id="comment-7384" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-7384"><time datetime="2013-03-28T15:22:19+00:00">28/03/2013 at 15:22</time></a></header>  <section class="comment-content comment"><p>hello Xavier O: <a href="../template-de-demande-daide-en-informatique/index.html" rel="nofollow">http://sametmax.com/template-de-demande-daide-en-informatique/</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-7395">
+          
+            <article id="comment-7395" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bcc404e8ab0f0a708d5275aa69633d20?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Xavier O  </cite> <a class="comment-date" href="index.html#comment-7395"><time datetime="2013-03-28T20:52:29+00:00">28/03/2013 at 20:52</time></a></header>  <section class="comment-content comment"><p>Merci Sam, je vais éclaircir ça un peu.</p>
+<p><strong>Quel est mon objectif ?</strong><br />
+Je souhaite utiliser un décorateur pour tracer l&#8217;entrée dans certaines méthodes.<br />
+Je logge le nom de la méthode, son module et le nom de sa classe.</p>
+<p><strong>Qu’est-ce que j’ai essayé de faire ?</strong></p>
+<p>Je récupère le nom de la méthode et son module en utilisant les attributs __module__ et __name__ de la fonction.<br />
+Pour la classe, j&#8217;utilise la valeur du premier argument de la fonction qui contient l&#8217;instance de la classe.</p>
+<p>Voici une version simplifiée de ce que je fais :</p>
+<p>Le décorateur (decorateur.py) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> functools
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> decorer<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    module <span style="color: #66cc66;">=</span> func.__module__
+    name <span style="color: #66cc66;">=</span> func.__name__
+    <span style="color: #66cc66;">@</span>functools.<span style="color: black;">wraps</span><span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapped<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span> <span style="color: #66cc66;">=</span> args<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>module<span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.__class__.__name__<span style="color: black;">&#41;</span>
+        data <span style="color: #66cc66;">=</span> func<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> data
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapped</pre></td></tr></table></div>
+
+<p>La classe générique (skigen.py) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> decorateur
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Ski<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> nom<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.__nom <span style="color: #66cc66;">=</span> nom
+    <span style="color: #66cc66;">@</span>decorateur.<span style="color: black;">decorer</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> skier<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.__nom<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;fait du ski&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La classe spécifique (skispec.py) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> decorateur
+<span style="color: #ff7700;font-weight:bold;">import</span> skigen
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> SkiAlpin<span style="color: black;">&#40;</span>skigen.<span style="color: black;">Ski</span><span style="color: black;">&#41;</span>:
+    <span style="color: #66cc66;">@</span>decorateur.<span style="color: black;">decorer</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> skier<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">skier</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;alpin&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mon test :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> skigen
+<span style="color: #ff7700;font-weight:bold;">import</span> skispec
+&nbsp;
+ski <span style="color: #66cc66;">=</span> skigen.<span style="color: black;">Ski</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Toto&quot;</span><span style="color: black;">&#41;</span>
+ski.<span style="color: black;">skier</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+skiAlpin <span style="color: #66cc66;">=</span> skispec.<span style="color: black;">SkiAlpin</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Toto&quot;</span><span style="color: black;">&#41;</span>
+skiAlpin.<span style="color: black;">skier</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p><strong>Quels résultats ai-je obtenus ? </strong></p>
+<p><code><br />
+skigen skier Ski<br />
+Toto fait du ski<br />
+skispec skier SkiAlpin<br />
+skigen skier SkiAlpin<br />
+Toto fait du ski<br />
+alpin<br />
+</code></p>
+<p>Qu’est-ce que je pense que j’aurais dû obtenir au lieu de cela ? </p>
+<p><code><br />
+skigen skier Ski<br />
+Toto fait du ski<br />
+skispec skier SkiAlpin<br />
+skigen skier Ski<br />
+Toto fait du ski<br />
+alpin<br />
+</code></p>
+<p><strong>Quelle est ma situation ?</strong><br />
+J&#8217;utilise Python 3.2 sous Windows (pitié pas de tomate !).</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-7427">
+          
+            <article id="comment-7427" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-7427"><time datetime="2013-03-29T08:24:46+00:00">29/03/2013 at 08:24</time></a></header>  <section class="comment-content comment"><p>Le résultat que tu obtiens est tout à fait logique : tu récupères la classe du <code>self</code>, et c&#8217;est le même <code>self </code>qui est passé à la méthode, et à <code>super()</code>.</p>
+<p>Je suppose que tu veux la classe qui définit la méthode, auquel cas le module <code>inspect </code>devrait pouvoir aider. Pas testé, mais je te donne l&#8217;idée, de tête (je viens de me réveiller, donc à utiliser avec esprit critique) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">inspect</span> <span style="color: #dc143c;">inspect</span> getmro
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> get_defining_class<span style="color: black;">&#40;</span>method<span style="color: black;">&#41;</span>:
+   <span style="color: #808080; font-style: italic;"># ou method.__class__ en python 3 je crois</span>
+   <span style="color: #ff7700;font-weight:bold;">for</span> cls <span style="color: #ff7700;font-weight:bold;">in</span> getmro<span style="color: black;">&#40;</span>method.<span style="color: black;">im_class</span><span style="color: black;">&#41;</span>:
+     <span style="color: #ff7700;font-weight:bold;">if</span> method.__name__ <span style="color: #ff7700;font-weight:bold;">in</span> cls.<span style="color: #0000cd;">__dict__</span>: 
+         <span style="color: #ff7700;font-weight:bold;">return</span> cls
+   <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">None</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> decorer<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #66cc66;">@</span>functools.<span style="color: black;">wraps</span><span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapped<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># c'est moins performant de récup </span>
+        <span style="color: #808080; font-style: italic;"># les metadata ici mais ça évite</span>
+        <span style="color: #808080; font-style: italic;"># les potentiels erreurs de références</span>
+        module <span style="color: #66cc66;">=</span> func.__module__
+        name <span style="color: #66cc66;">=</span> func.__name__
+        cls <span style="color: #66cc66;">=</span> get_defining_class<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>module<span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> cls.__name__<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> func<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapped</pre></td></tr></table></div>
+
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-7439">
+          
+            <article id="comment-7439" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bcc404e8ab0f0a708d5275aa69633d20?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Xavier O  </cite> <a class="comment-date" href="index.html#comment-7439"><time datetime="2013-03-29T10:45:08+00:00">29/03/2013 at 10:45</time></a></header>  <section class="comment-content comment"><p>Merci beaucoup, mais cela ne fonctionne malheureusement pas.<br />
+Avec im_class :<br />
+<code><br />
+AttributeError: 'function' object has no attribute 'im_class'<br />
+</code><br />
+Avec __class__ :<br />
+<code><br />
+AttributeError: 'NoneType' object has no attribute '__name__'<br />
+</code><br />
+En fait func représente une fonction, il ne s&#8217;agit pas encore d&#8217;une méthode. Elle n&#8217;est pas encore &#8220;bindée&#8221;.<br />
+Du coup aucun lien direct avec la classe parente.<br />
+J&#8217;ai trouvée un algo qui devrait fonctionner, mais bon c&#8217;est tellement immonde que je ne me sens pas de le coder :<br />
+1) Lire le fichier contenant le code de la fonction.<br />
+2) Déterminer l&#8217;indentation utilisée.<br />
+3) Déterminer le niveau d&#8217;indentation de la déclaration de fonction.<br />
+4) Rechercher la déclaration de classe de niveau d&#8217;indentation N-1 avec le numéro de ligne le plus élevé tout en étant inférieur à celui de la déclaration de la fonction.<br />
+Beurk ! J&#8217;espère trouver mieux !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-7451">
+          
+            <article id="comment-7451" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-7451"><time datetime="2013-03-29T13:38:17+00:00">29/03/2013 at 13:38</time></a></header>  <section class="comment-content comment"><p>Je vois ce que tu veux dire. Je regarde ça demain soir des que j&#8217;ai acces à mon ordi car je suis toujours sur la route. En attendant je te recommande de poster ça sur le forum de l&#8217;afpy et stackoverflow car ce sont des sites plus adaptés pour s&#8217;entre aider que les comments du blog.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-7454">
+          
+            <article id="comment-7454" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bcc404e8ab0f0a708d5275aa69633d20?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Xavier O  </cite> <a class="comment-date" href="index.html#comment-7454"><time datetime="2013-03-29T13:53:33+00:00">29/03/2013 at 13:53</time></a></header>  <section class="comment-content comment"><p>J&#8217;ai trouvé une solution. Je met ça en forme et surtout je la documente avant de la poster, si ça vous intéresse bien entendu.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-7455">
+          
+            <article id="comment-7455" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-7455"><time datetime="2013-03-29T14:11:51+00:00">29/03/2013 at 14:11</time></a></header>  <section class="comment-content comment"><p>Si tu te sens chaud, tu peux carrément faire un article invité, et on le poste en créative common. Comme ça tout le monde en profite.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-8089">
+          
+            <article id="comment-8089" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/c6a988ee534b316b807d910ac2e545b0?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">djipey  </cite> <a class="comment-date" href="index.html#comment-8089"><time datetime="2013-04-15T21:58:31+00:00">15/04/2013 at 21:58</time></a></header>  <section class="comment-content comment"><p>Bonjour.</p>
+<p>Très bon article. Je me demandais, il y a moyen de rediriger aussi les exceptions levées dans le fichier de log ? Tout en les gardant sur la sortie normale aussi, ce serait cool.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8090">
+          
+            <article id="comment-8090" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-8090"><time datetime="2013-04-15T22:08:31+00:00">15/04/2013 at 22:08</time></a></header>  <section class="comment-content comment"><p>Oui, on peut attraper une exception comme ceci dans le décorateur:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span>:
+    <span style="color: #808080; font-style: italic;"># écrire dans le fichier de log</span>
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #808080; font-style: italic;"># relève l'exception en l'état</span></pre></td></tr></table></div>
+
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-8096">
+          
+            <article id="comment-8096" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/c6a988ee534b316b807d910ac2e545b0?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">djipey  </cite> <a class="comment-date" href="index.html#comment-8096"><time datetime="2013-04-16T08:14:23+00:00">16/04/2013 at 08:14</time></a></header>  <section class="comment-content comment"><p>Oui, ça j&#8217;ai vu, mais je parlais de quelque chose de plus général. Attraper une expression particulière je sais faire, mais les attraper toutes (haha..), et ce de manière automatique, est-ce que c&#8217;est possible ?</p>
+<p>En somme je voudrais garder une trace de toutes les exceptions dans le fichier de log.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-kontre odd alt thread-odd thread-alt depth-1" id="li-comment-8100">
+          
+            <article id="comment-8100" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/b93cc4fb6413bbe5c837530662bee9b4?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">kontre  </cite> <a class="comment-date" href="index.html#comment-8100"><time datetime="2013-04-16T10:56:43+00:00">16/04/2013 at 10:56</time></a></header>  <section class="comment-content comment"><p>Ben le code de Sam les attrappe toutes, et les loggues toutes, automatiquement. Teste, tu verras bien !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-8101">
+          
+            <article id="comment-8101" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/c6a988ee534b316b807d910ac2e545b0?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">djipey  </cite> <a class="comment-date" href="index.html#comment-8101"><time datetime="2013-04-16T11:55:57+00:00">16/04/2013 at 11:55</time></a></header>  <section class="comment-content comment"><p>Donc je n&#8217;ai pas compris son code..</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8131">
+          
+            <article id="comment-8131" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-8131"><time datetime="2013-04-17T15:06:18+00:00">17/04/2013 at 15:06</time></a></header>  <section class="comment-content comment"><p>Alors, tu as deux approches :</p>
+<p>&#8211; soit tu met tout ton code dans un grand try / except (si tu as un seul point d&#8217;entrée, c&#8217;est facile et propre), et tu peux utiliser mon code<br />
+&#8211; soit tu te hook sur le crash de la VM comme expliqué dans l&#8217;article <a href="../log-post-mortem-avec-python/index.html" rel="nofollow">http://sametmax.com/log-post-mortem-avec-python/</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-8136">
+          
+            <article id="comment-8136" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/c6a988ee534b316b807d910ac2e545b0?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">djipey  </cite> <a class="comment-date" href="index.html#comment-8136"><time datetime="2013-04-17T17:08:21+00:00">17/04/2013 at 17:08</time></a></header>  <section class="comment-content comment"><p>Voilà, c&#8217;est bien plus clair. L&#8217;option 2), je ne pense pas qu&#8217;elle soit applicable à mon cas. C&#8217;est un programme PyQt, et ça ne plante pas totalement. Ça lève des exceptions c&#8217;est sûr, principalement dans mes algos, mais ça ne plante pas.</p>
+<p>Du coup, je pense que ça, ça devrait marcher:</p>
+<p><code><br />
+def main():<br />
+    try:<br />
+        app = QtGui.QApplication(sys.argv)<br />
+        ex = Fenetre()<br />
+        sys.exit(app.exec_())<br />
+    except:<br />
+        # écrire dans le fichier de log<br />
+        raise # relève l'exception en l'état<br />
+</code></p>
+<p>C&#8217;est la fonction qui crée ma fenêtre. Par contre, je ne comprends pas ce qu&#8217;implique ta fonction &#8220;wrapper()&#8221; que tu donnes dans ton exemple plus haut. Ni comment tu peux récupérer l&#8217;exception pour l&#8217;écrire dans le log. Est-ce que tu sous-entends qu&#8217;il faut faire qqch comme :</p>
+<p><code><br />
+except Exception,e :<br />
+    log("Caught:", e)<br />
+</code></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-8147">
+          
+            <article id="comment-8147" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-8147"><time datetime="2013-04-17T20:22:45+00:00">17/04/2013 at 20:22</time></a></header>  <section class="comment-content comment"><p>Si tu cherches juste le message d&#8217;erreur, c&#8217;est tout ce dont tu as besoin (<code>str(e)</code> retourne le message), sinon, il faut ta tapper l&#8217;extraction de la stacktrace complète.</p>
+<p><code>wrapper()</code> fait référence à la fonction dans laquelle tu enrobes ton appel dans un décorateur. Si tu n&#8217;est pas à l&#8217;aise avec les décorateurs personnalisés, fais un petit tour sur <a href="../comprendre-les-decorateurs-python-pas-a-pas-partie-1.1.html" rel="nofollow">http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/</a>, j&#8217;y ai mis tout ce qu&#8217;il te faut.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-8946">
+          
+            <article id="comment-8946" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/312e00031bcf80bf523bf7704f1dd12b?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Luigi  </cite> <a class="comment-date" href="index.html#comment-8946"><time datetime="2013-05-17T09:11:54+00:00">17/05/2013 at 09:11</time></a></header>  <section class="comment-content comment"><p><span class="merci"></span>Petit coquille :</p>
+<p><code>Tesing foo</code></p>
+<p>devrait être <code>Testing foo</code></p>
+<p>Encore un grand merci pour ce super tuto !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-9426">
+          
+            <article id="comment-9426" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/e78fd560fdb27287f18a9c6d6adb7ac1?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.geotribu.net' rel='external nofollow' class='url'>Guts</a>  </cite> <a class="comment-date" href="index.html#comment-9426"><time datetime="2013-05-28T01:49:01+00:00">28/05/2013 at 01:49</time></a></header>  <section class="comment-content comment"><p>Salut,</p>
+<p>Un petit merci pour le code et l&#8217;explication de code : ça m&#8217;a permis d&#8217;ajouter facilement un log dans mon programme et pour un débutant c&#8217;est le genre de truc indispensable !</p>
+<p>Par contre je suis pas parvenu à faire écrire mon sous-module dans le même fichier log :( J&#8217;ai cherché du côté de la doc officielle mais c&#8217;est pas vraiment très bavard (<a href="http://docs.python.org/2/howto/logging.html#logging-from-multiple-modules" rel="nofollow">http://docs.python.org/2/howto/logging.html#logging-from-multiple-modules</a>) Si quelqu&#8217;un a un petit bout de code qui explique un peu le zafèr&#8230;</p>
+<p>Autre question, @Sam dans l&#8217;un de tes <a href="index.html#comment-6744" rel="nofollow">comments</a>, tu dis que le code est assez pourri vu du PEP8. Mais pour un module inclus dans la librairie standard ça la fout pas mal ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-9433">
+          
+            <article id="comment-9433" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-9433"><time datetime="2013-05-28T06:38:46+00:00">28/05/2013 at 06:38</time></a></header>  <section class="comment-content comment"><p>Pour écrire depuis un sous-module, c&#8217;est pareil que depuis le module principal. Il faut juste que le nom du log soit le même, ou un dérivé genre &#8220;module&#8221; => &#8220;module.sous&#8221;.</p>
+<p>Quand au PEP8, il a été écrit APRES ces libs, justement pour éviter que ça ne se reproduise.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-19612">
+          
+            <article id="comment-19612" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/aa3fbf033d64ff6d10f07d109eb4d521?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Seb  </cite> <a class="comment-date" href="index.html#comment-19612"><time datetime="2014-02-12T07:16:01+00:00">12/02/2014 at 07:16</time></a></header>  <section class="comment-content comment"><p>Salut,</p>
+<p>que penses-tu de Logbook comparé au module Logging ?<br />
+<a href="https://pypi.python.org/pypi/Logbook" rel="nofollow">https://pypi.python.org/pypi/Logbook</a></p>
+<p>Merci d&#8217;avance</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-19618">
+          
+            <article id="comment-19618" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-19618"><time datetime="2014-02-12T09:01:20+00:00">12/02/2014 at 09:01</time></a></header>  <section class="comment-content comment"><p>Mieux.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-147508">
+          
+            <article id="comment-147508" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/2818e30a65dcf43e6a32077df83bb6c6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">CaptainMurloc  </cite> <a class="comment-date" href="index.html#comment-147508"><time datetime="2014-10-28T15:04:01+00:00">28/10/2014 at 15:04</time></a></header>  <section class="comment-content comment"><p>Hello !</p>
+<p>Merci pour ce super article, cela m&#8217;aide beaucoup (moi qui débute totalement en python). Je n&#8217;ai d&#8217;ailleurs pas de grandes connaissances en objet car j&#8217;ai été jetée dedans (le python) pour mon apprentissage et n&#8217;ai pas réellement de bases.</p>
+<p><em>Voici donc ma demande :</em></p>
+<p>J&#8217;ai récupérer le code de la section &#8220;<em>Pour les gens pressés</em>&#8221; (je ne suis pas spécialement pressée, mais du temps gagné reste du temps gagné (Obvious)).</p>
+<p>Tu dis :</p>
+<blockquote><p>Donc, faites comme moi, mettez cette config dans un fichier à part, et pour chaque nouveau projet, copier le bêtement. Comme ça vous aurez en une seconde la possibilité de logger dans un fichier et sur la console avec une désactivation facile.&#8221;</p></blockquote>
+<p>J&#8217;ai trouvé ça cool, mais je ne sais pas réellement si ce que j&#8217;essaie de faire (ce que je pense avoir déduit de ce que tu as dit) est réellement faisable. En effet, je voudrai : (les noms sont totalement illustratifs)<br />
+&#8211; créer un fichier init_logger.py qui contiendrait le code que tu as posté<br />
+&#8211; appeler ce fichier depuis un autre, admettons add_logs.py, et écrire dans le fichier de logs créé (du coup par init_logger, donc activity.log) mais à partir de add_logs.py</p>
+<p>J&#8217;ai modifié ton code en créant juste une fonction qui contient le reste du code pour pouvoir l&#8217;appeler depuis add_logs.py<br />
+<code><br />
+def initialisation() :<br />
+    # création de l'objet logger qui va nous servir à écrire dans les logs<br />
+    logger = logging.getLogger()<br />
+    # on met le niveau du logger à DEBUG, comme ça il écrit tout<br />
+    [...]<br />
+</code></p>
+<p>A partir de là, j&#8217;ai donc fait l&#8217;import de init_logger dans add_logs.py et j&#8217;ai appelé la fonction initialisation().<br />
+Cela fonctionne correctement, je récupère bien<br />
+Hello<br />
+Testing foo</p>
+<p>Mais comme je dis plus tôt, je ne vois pas trop comment faire pour écrire dans le fichier de logs depuis add_logs.<br />
+Si cela n&#8217;est pas possible, soit. Mais comme je n&#8217;en suis pas sûre, je préfère demander ! :)</p>
+<p>J&#8217;espère tout de même que ce soit faisable (ce serait tellement plus propre ^^).<br />
+A bientôt !</p>
+<p>&#8211; CaptainMurloc</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-147541">
+          
+            <article id="comment-147541" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-147541"><time datetime="2014-10-29T07:17:30+00:00">29/10/2014 at 07:17</time></a></header>  <section class="comment-content comment"><p>Donne un nom à ton logger :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;trop_cool&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et dans un autre fichier, si tu utilise le même nom, tu auras le même logger, qui écrit dans le même fichier.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-147543">
+          
+            <article id="comment-147543" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/2818e30a65dcf43e6a32077df83bb6c6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">CaptainMurloc  </cite> <a class="comment-date" href="index.html#comment-147543"><time datetime="2014-10-29T08:41:30+00:00">29/10/2014 at 08:41</time></a></header>  <section class="comment-content comment"><p>Super !<br />
+Merci beaucoup. :)</p>
+<p>A bientôt ! ♥</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-157195">
+          
+            <article id="comment-157195" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/ff43a4896584486c362c5eca769952cf?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Fred  </cite> <a class="comment-date" href="index.html#comment-157195"><time datetime="2015-03-04T15:19:59+00:00">04/03/2015 at 15:19</time></a></header>  <section class="comment-content comment"><p>hello, très belle article.</p>
+<p>pouvez vous donner un exemple avec le SMTPHandler ?</p>
+<p>après plusieurs traitement ,</p>
+<p>le SMTPHandler va envoyer le rapport des traitements par mail</p>
+<p>Merci à vous</p>
+<p>cdt</p>
+<p>Fred</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-157616">
+          
+            <article id="comment-157616" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-157616"><time datetime="2015-03-12T15:40:55+00:00">12/03/2015 at 15:40</time></a></header>  <section class="comment-content comment"><p>Ca ressemble à ça (de tête) :</p>
+<pre><code>import logging
+logging.handlers
+
+log = logging.getLogger("mylogger")
+
+mailer = logging.handlers.SMTPHandler(mailhost='tonhost',
+                                fromaddr='ton_mail_denvoie',
+                                toaddrs=['liste', 'de', 'destinataires'],
+                                subject='Alerte rouge !',
+                                credentials=('username','password'),
+                                secure=None)
+mailer.setLevel(logging.ERROR)
+log.addHandler(mailer)
+</code></pre>
+<p>Et ça enverra un mail pour toutes les erreurs logguées sur ce logger.</p>
+<p>Par contre le handler par défaut ne permet pas l&#8217;utilisation de TLS, ce qui est bien relou. Et la méthode de contournement est, pour ainsi dire, hum&#8230; <a href="http://mynthon.net/howto/-/python/python%20-%20logging.SMTPHandler-how-to-use-gmail-smtp-server.txt" rel="nofollow">http://mynthon.net/howto/-/python/python%20-%20logging.SMTPHandler-how-to-use-gmail-smtp-server.txt</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-157620">
+          
+            <article id="comment-157620" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/ff43a4896584486c362c5eca769952cf?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Fred  </cite> <a class="comment-date" href="index.html#comment-157620"><time datetime="2015-03-12T15:48:04+00:00">12/03/2015 at 15:48</time></a></header>  <section class="comment-content comment"><p>Merci Sam ! c&#8217;est exactement ce que je cherchais :-D</p>
+<p>du très très bon boulot votre site !</p>
+<p>Et si j&#8217;ai besoin de poser une question qui n&#8217;a pas de billet sur votre site ?</p>
+<p>Merci à vous</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-159456">
+          
+            <article id="comment-159456" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/ff43a4896584486c362c5eca769952cf?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Fred  </cite> <a class="comment-date" href="index.html#comment-159456"><time datetime="2015-04-22T17:01:13+00:00">22/04/2015 at 17:01</time></a></header>  <section class="comment-content comment"><p>Hello, sorry , je reviens dessus :</p>
+<p>je te cite :&#8221;</p>
+<p>import logging</p>
+<p>logging.handlers</p>
+<p>log = logging.getLogger(&#8220;mylogger&#8221;)</p>
+<p>mailer = logging.handlers.SMTPHandler(mailhost=&#8217;tonhost&#8217;,</p>
+<p>fromaddr=&#8217;ton_mail_denvoie&#8217;,</p>
+<p>toaddrs=[&#8216;liste&#8217;, &#8216;de&#8217;, &#8216;destinataires&#8217;],</p>
+<p>subject=&#8217;Alerte rouge !&#8217;,</p>
+<p>credentials=(&#8216;username&#8217;,&#8217;password&#8217;),</p>
+<p>secure=None)</p>
+<p>mailer.setLevel(logging.ERROR)</p>
+<p>log.addHandler(mailer)</p>
+<p>&#8220;&#8221;</p>
+<p>c&#8217;est parfait.</p>
+<p>mais supposons que j&#8217;ai une classe A et un autre fichier  main.py</p>
+<p>j&#8217;ai des résultats d&#8217;instructions sur la classe A et je veux regrouper tous ces résultats et les envoyer par mail En Une Fois.</p>
+<p>dans la classe A :</p>
+<p>-&gt; j&#8217;ai une liste qui va append toutes les résultats des erreurs des instructions</p>
+<p>dans le main.py</p>
+<p>-&gt; j&#8217;appel la liste de la classe en paramètre:</p>
+<p>if any(&#8216;CRITICAL&#8217; in msg or &#8216;ERROR&#8217; in msg or &#8216;FAILURE&#8217; in msg for msg in A.ma_list):</p>
+<p>&#8230;.log.error(&#8216;&#092;n&#8217;.join(A.ma_list))</p>
+<p>Y a t-il moyen de faire autrement que de regrouper les résultats dans une liste pour les envoyer en un bloc ?</p>
+<p>Merci à toi.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-159467">
+          
+            <article id="comment-159467" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-159467"><time datetime="2015-04-22T20:46:52+00:00">22/04/2015 at 20:46</time></a></header>  <section class="comment-content comment"><p>Pose ta question sur IndedError, ça aura plus de visibilité.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+              </ul><!-- .commentlist -->
+            								<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a comment <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://sametmax.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-describedby="email-notes" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment-69005804924c5ba04" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true"></textarea><textarea name="comment" rows="1" cols="1" style="display:none"></textarea></p><input type="hidden" name="comment-replaced" value="true" />						<p class="form-allowed-tags" id="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;pre&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" class="submit" value="Post Comment" />
+							<input type='hidden' name='comment_post_ID' value='5267' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="1929765b84" /></p><script src="../index.html%3Flive-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p style="display:none;"><input type="text" name="nxts" value="1446910806" /><input type="text" name="nxts_signed" value="6ac71d14425f3d80d5a8db585f718ab027ee2b56" /><input type="text" name="60b0898998b38feb005f" value="1384821080ddbd3ad8d04e611" /><input type="text" name="3391944b2f16b5" value="" /></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="72"/></p>					</form>
+							</div><!-- #respond -->
+			</div><!-- #comments .comments-area -->
+
+
+<div class="ie-comment">
+Des questions Python sans rapport avec l'article ? Posez-les sur <a href="http://indexerror.net">IndexError</a>.
+
+</div>
+        
+          <hr class="featurette-divider __after_loop">
+          <nav id="nav-below" class="navigation" role="navigation">
+
+              <h3 class="assistive-text">
+                Post navigation              </h3>
+
+              <ul class="pager">
+                                  <li class="previous">
+                    <span class="nav-previous">
+                      <a href="../log-post-mortem-avec-python/index.html" rel="prev"><span class="meta-nav">&larr;</span> Log post mortem avec Python</a>                    </span>
+                  </li>
+                                                  <li class="next">
+                    <span class="nav-next">
+                        <a href="../et-le-bitcoin-est-toujours-la/index.html" rel="next">Et le Bitcoin est toujours là <span class="meta-nav">&rarr;</span></a>                    </span>
+                  </li>
+                              </ul>
+
+          </nav><!-- #nav-below .navigation -->
+
+        
+        
+                </div><!--.article-container -->
+
+                    
+        <div class="span3 right tc-sidebar">
+           <div id="right" class="widget-area" role="complementary">
+                                                      <aside id="text-9" class="widget widget_text">			<div class="textwidget"><p style="font-size:1.3em"><a href="../mais-ou-je-suis-tombee-la/index.html">Mais où je suis tombé(e) là ?</a></p></div>
+		</aside><aside id="text-7" class="widget widget_text">			<div class="textwidget"><img src="http://www.adobe.com/images/pdficon_small.png" width="16" height="16"/> <a href="http://pdfcrowd.com/url_to_pdf/">Télécharger cette page en PDF</a> </div>
+		</aside><aside id="text-4" class="widget widget_text">			<div class="textwidget"><br><br><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</aside><aside id="blog_subscription-4" class="widget jetpack_subscription_widget"><h3 class="widget-title"><label for="subscribe-field">Souscrire à nos conneries</label></h3>
+		<form action="index.html#" method="post" accept-charset="utf-8" id="subscribe-blog-blog_subscription-4">
+			<div id="subscribe-text"><p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p>
+</div><p>Join 646 other subscribers</p>
+
+			<p id="subscribe-email">
+				<label id="jetpack-subscribe-label" for="subscribe-field">
+					Email Address				</label>
+				<input type="email" name="email" value="Email Address" id="subscribe-field" placeholder="Email Address" />
+			</p>
+
+			<p id="subscribe-submit">
+				<input type="hidden" name="action" value="subscribe" />
+				<input type="hidden" name="source" value="http://sametmax.com/ecrire-des-logs-en-python/" />
+				<input type="hidden" name="sub-type" value="widget" />
+				<input type="hidden" name="redirect_fragment" value="blog_subscription-4" />
+								<input type="submit" value="J&#039;adhère, bon dieu !" name="jetpack_subscriptions_widget" />
+			</p>
+		</form>
+
+		<script>
+			( function( d ) {
+				if ( ( 'placeholder' in d.createElement( 'input' ) ) ) {
+					var label = d.getElementById( 'jetpack-subscribe-label' );
+ 					label.style.clip 	 = 'rect(1px, 1px, 1px, 1px)';
+ 					label.style.position = 'absolute';
+ 					label.style.height   = '1px';
+ 					label.style.width    = '1px';
+ 					label.style.overflow = 'hidden';
+				}
+			} ) ( document );
+		</script>
+
+		
+</aside><aside id="tag_cloud-3" class="widget widget_tag_cloud"><h3 class="widget-title">TagCloud</h3><div class="tagcloud"><a href='../tag/0bin/index.html' class='tag-link-148' title='9 topics' style='font-size: 8.8092485549133pt;'>0bin</a>
+<a href='../tag/angularjs/index.html' class='tag-link-443' title='9 topics' style='font-size: 8.8092485549133pt;'>angularjs</a>
+<a href='../tag/autobahn/index.html' class='tag-link-979' title='9 topics' style='font-size: 8.8092485549133pt;'>autobahn</a>
+<a href='../tag/bash/index.html' class='tag-link-14' title='16 topics' style='font-size: 10.670520231214pt;'>bash</a>
+<a href='../tag/bitcoin/index.html' class='tag-link-320' title='7 topics' style='font-size: 8pt;'>bitcoin</a>
+<a href='../tag/blog/index.html' class='tag-link-107' title='26 topics' style='font-size: 12.28901734104pt;'>blog</a>
+<a href='../tag/cache/index.html' class='tag-link-333' title='10 topics' style='font-size: 9.1329479768786pt;'>cache</a>
+<a href='../tag/comprehension-lists/index.html' class='tag-link-20' title='8 topics' style='font-size: 8.4046242774566pt;'>comprehension-lists</a>
+<a href='../tag/crossbar/index.html' class='tag-link-1046' title='8 topics' style='font-size: 8.4046242774566pt;'>crossbar</a>
+<a href='../tag/css/index.html' class='tag-link-188' title='9 topics' style='font-size: 8.8092485549133pt;'>css</a>
+<a href='../tag/cul-2/index.html' class='tag-link-33' title='11 topics' style='font-size: 9.4566473988439pt;'>cul</a>
+<a href='../tag/decorator/index.html' class='tag-link-265' title='7 topics' style='font-size: 8pt;'>decorator</a>
+<a href='../tag/django/index.html' class='tag-link-28' title='81 topics' style='font-size: 16.173410404624pt;'>django</a>
+<a href='../tag/don/index.html' class='tag-link-1210' title='10 topics' style='font-size: 9.1329479768786pt;'>don</a>
+<a href='../tag/encoding/index.html' class='tag-link-54' title='8 topics' style='font-size: 8.4046242774566pt;'>encoding</a>
+<a href='../tag/git/index.html' class='tag-link-18' title='34 topics' style='font-size: 13.179190751445pt;'>git</a>
+<a href='../tag/http/index.html' class='tag-link-204' title='13 topics' style='font-size: 10.023121387283pt;'>http</a>
+<a href='../tag/import/index.html' class='tag-link-215' title='9 topics' style='font-size: 8.8092485549133pt;'>import</a>
+<a href='../tag/ipython/index.html' class='tag-link-164' title='10 topics' style='font-size: 9.1329479768786pt;'>ipython</a>
+<a href='../tag/iterable/index.html' class='tag-link-217' title='14 topics' style='font-size: 10.265895953757pt;'>iterable</a>
+<a href='../tag/javascript/index.html' class='tag-link-96' title='44 topics' style='font-size: 14.06936416185pt;'>javascript</a>
+<a href='../tag/jquery/index.html' class='tag-link-112' title='8 topics' style='font-size: 8.4046242774566pt;'>jquery</a>
+<a href='../tag/lambda/index.html' class='tag-link-292' title='7 topics' style='font-size: 8pt;'>lambda</a>
+<a href='../tag/linux/index.html' class='tag-link-238' title='10 topics' style='font-size: 9.1329479768786pt;'>linux</a>
+<a href='../tag/meta/index.html' class='tag-link-102' title='127 topics' style='font-size: 17.791907514451pt;'>meta</a>
+<a href='../tag/mysql/index.html' class='tag-link-82' title='8 topics' style='font-size: 8.4046242774566pt;'>mysql</a>
+<a href='../tag/nginx/index.html' class='tag-link-183' title='14 topics' style='font-size: 10.265895953757pt;'>nginx</a>
+<a href='../tag/nsfw/index.html' class='tag-link-319' title='14 topics' style='font-size: 10.265895953757pt;'>nsfw</a>
+<a href='../tag/pip/index.html' class='tag-link-344' title='7 topics' style='font-size: 8pt;'>pip</a>
+<a href='../tag/poo/index.html' class='tag-link-549' title='14 topics' style='font-size: 10.265895953757pt;'>poo</a>
+<a href='../tag/python/index.html' class='tag-link-4' title='429 topics' style='font-size: 22pt;'>python</a>
+<a href='../tag/python-3/index.html' class='tag-link-365' title='8 topics' style='font-size: 8.4046242774566pt;'>python 3</a>
+<a href='../tag/redis/index.html' class='tag-link-196' title='10 topics' style='font-size: 9.1329479768786pt;'>redis</a>
+<a href='../tag/ruby/index.html' class='tag-link-325' title='8 topics' style='font-size: 8.4046242774566pt;'>ruby</a>
+<a href='../tag/server/index.html' class='tag-link-185' title='7 topics' style='font-size: 8pt;'>server</a>
+<a href='../tag/shell/index.html' class='tag-link-202' title='9 topics' style='font-size: 8.8092485549133pt;'>shell</a>
+<a href='../tag/ssh/index.html' class='tag-link-206' title='7 topics' style='font-size: 8pt;'>ssh</a>
+<a href='../tag/sublime-text/index.html' class='tag-link-76' title='9 topics' style='font-size: 8.8092485549133pt;'>sublime text</a>
+<a href='../tag/ubuntu/index.html' class='tag-link-255' title='15 topics' style='font-size: 10.42774566474pt;'>ubuntu</a>
+<a href='../tag/unicode/index.html' class='tag-link-53' title='7 topics' style='font-size: 8pt;'>unicode</a>
+<a href='../tag/unit-tests/index.html' class='tag-link-302' title='8 topics' style='font-size: 8.4046242774566pt;'>unit tests</a>
+<a href='../tag/unpacking/index.html' class='tag-link-180' title='8 topics' style='font-size: 8.4046242774566pt;'>unpacking</a>
+<a href='../tag/virtualenv/index.html' class='tag-link-259' title='8 topics' style='font-size: 8.4046242774566pt;'>virtualenv</a>
+<a href='../tag/wamp/index.html' class='tag-link-1039' title='14 topics' style='font-size: 10.265895953757pt;'>wamp</a>
+<a href='../tag/yield/index.html' class='tag-link-287' title='9 topics' style='font-size: 8.8092485549133pt;'>yield</a></div>
+</aside><aside id="text-5" class="widget widget_text"><h3 class="widget-title"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</aside><aside id="nav_menu-3" class="widget widget_nav_menu"><h3 class="widget-title">Nos projets</h3><div class="menu-nos-projets-container"><ul id="menu-nos-projets" class="menu"><li id="menu-item-15841" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15841"><a href="http://multiboards.net/">Multiboards &#8211; l&#8217;actu geek fr en une page</a></li>
+<li id="menu-item-15837" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15837"><a href="http://0bin.net">0bin &#8211; le pastebin chiffré</a></li>
+<li id="menu-item-15838" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15838"><a href="http://allthatcounts.net">All that counts &#8211; compteur pour jeux</a></li>
+<li id="menu-item-15839" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15839"><a href="https://github.com/sametmax/django-quicky">Django quicky &#8211; quick views for Django</a></li>
+<li id="menu-item-15840" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15840"><a href="https://github.com/sametmax/VizHash.js">VizHash.js &#8211; Hash visuels</a></li>
+<li id="menu-item-15842" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15842"><a href="https://github.com/sametmax/codes-des-articles">Code des articles du blog</a></li>
+</ul></div></aside>                                              </div><!-- #left or #right-->
+        </div><!--.tc-sidebar -->
+
+        
+        </div><!--.row -->
+    </div><!-- .container role: main -->
+
+    
+</div><!--#main-wrapper"-->
+
+		<!-- FOOTER -->
+		<footer id="footer" class="">
+		 					<div class="container footer-widgets ">
+					<div class="row widget-area" role="complementary">
+												
+							<div id="footer_one" class="span4">
+																
+										<aside id="nav_menu-2" class="widget widget_nav_menu"><h3 class="widget-title">Hors du blog</h3><div class="menu-bottom-menu-container"><ul id="menu-bottom-menu" class="menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Page de contact</a></li>
+<li id="menu-item-12230" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12230"><a href="http://twitter.com/sam_et_max">@sam_et_max sur tweeter</a></li>
+<li id="menu-item-12285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12285"><a href="http://bridge.suumitsu.eu/?action=display&#038;bridge=TwitterBridge&#038;u=sam_et_max&#038;format=AtomFormat">Nos tweets en RSS</a></li>
+<li id="menu-item-12231" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12231"><a href="https://github.com/sametmax/">Fork me, I&#8217;m famous (github)</a></li>
+</ul></div></aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_two" class="span4">
+																
+										<aside id="text-8" class="widget widget_text">			<div class="textwidget">Tous les textes de ce blog, sauf signalement contraire, sont sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</div>
+		</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_three" class="span4">
+																
+										<aside id="archives-2" class="widget widget_archive"><h3 class="widget-title">Toi aussi, trouve un article obsolète sur notre blog</h3>		<ul>
+	<li><a href='../2015/11/index.html'>November 2015</a>&nbsp;(5)</li>
+	<li><a href='../2015/10/index.html'>October 2015</a>&nbsp;(2)</li>
+	<li><a href='../2015/09/index.html'>September 2015</a>&nbsp;(6)</li>
+	<li><a href='../2015/08/index.html'>August 2015</a>&nbsp;(10)</li>
+	<li><a href='../2015/07/index.html'>July 2015</a>&nbsp;(18)</li>
+	<li><a href='../2015/06/index.html'>June 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/05/index.html'>May 2015</a>&nbsp;(12)</li>
+	<li><a href='../2015/04/index.html'>April 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/03/index.html'>March 2015</a>&nbsp;(8)</li>
+	<li><a href='../2015/02/index.html'>February 2015</a>&nbsp;(4)</li>
+	<li><a href='../2015/01/index.html'>January 2015</a>&nbsp;(21)</li>
+	<li><a href='../2014/12/index.html'>December 2014</a>&nbsp;(24)</li>
+	<li><a href='../2014/11/index.html'>November 2014</a>&nbsp;(6)</li>
+	<li><a href='../2014/10/index.html'>October 2014</a>&nbsp;(18)</li>
+	<li><a href='../2014/09/index.html'>September 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/08/index.html'>August 2014</a>&nbsp;(5)</li>
+	<li><a href='../2014/07/index.html'>July 2014</a>&nbsp;(11)</li>
+	<li><a href='../2014/06/index.html'>June 2014</a>&nbsp;(25)</li>
+	<li><a href='../2014/05/index.html'>May 2014</a>&nbsp;(14)</li>
+	<li><a href='../2014/04/index.html'>April 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/03/index.html'>March 2014</a>&nbsp;(23)</li>
+	<li><a href='../2014/02/index.html'>February 2014</a>&nbsp;(27)</li>
+	<li><a href='../2014/01/index.html'>January 2014</a>&nbsp;(17)</li>
+	<li><a href='../2013/12/index.html'>December 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/11/index.html'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+																	</div><!-- .row.widget-area -->
+				</div><!--.footer-widgets -->
+				    				 <div class="colophon">
+			 	<div class="container">
+			 		<div class="row-fluid">
+					    <div class="span4 social-block pull-left"><span class="tc-footer-social-links-wrapper" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></span></div><div class="span4 credits"><p>&middot; &copy; 2015 <a href="../index.html" title="Sam &amp; Max" rel="bookmark">Sam &amp; Max</a> &middot; Designed by <a href="http://themesandco.com/">Themes &amp; Co</a> &middot;</p></div><div class="span4 backtop"><p class="pull-right"><a class="back-to-top" href="index.html#">Back to top</a></p></div>	      			</div><!-- .row-fluid -->
+	      		</div><!-- .container -->
+	      	</div><!-- .colophon -->
+	    			</footer>
+			<div style="display:none">
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-437805955e9381e69429143c0fc40f6e">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-437805955e9381e69429143c0fc40f6e">
+	</div>
+	<div class="grofile-hash-map-fc32c6686686ecc595f05ad1885c2fb3">
+	</div>
+	<div class="grofile-hash-map-3482232b0f56c59cb4f3380415664312">
+	</div>
+	<div class="grofile-hash-map-3d961f728cc9bb37266d7f3b8aba3ba5">
+	</div>
+	<div class="grofile-hash-map-a0d8bc68f5928fa656a3f4d0b396ba98">
+	</div>
+	<div class="grofile-hash-map-502f55b818f01ac589d5708616e6bfd8">
+	</div>
+	<div class="grofile-hash-map-46e7f01f5cb79a23bf5dadd6025ab80b">
+	</div>
+	<div class="grofile-hash-map-9d9f72243b73cab98a82fa04f56e3438">
+	</div>
+	<div class="grofile-hash-map-79ca6e91d753fc936610d1a5ec7dc414">
+	</div>
+	<div class="grofile-hash-map-dd1892e541e59d322887158910a063cb">
+	</div>
+	<div class="grofile-hash-map-647dae215d91b81bb1b5da30d6990302">
+	</div>
+	<div class="grofile-hash-map-71171d6af3ad639298d3d29adda1b4aa">
+	</div>
+	<div class="grofile-hash-map-3412644f9501fa6cf9d87c2ef2865a8d">
+	</div>
+	<div class="grofile-hash-map-75be759a2751164a7cf44aeb38ef9b64">
+	</div>
+	<div class="grofile-hash-map-bcc404e8ab0f0a708d5275aa69633d20">
+	</div>
+	<div class="grofile-hash-map-c6a988ee534b316b807d910ac2e545b0">
+	</div>
+	<div class="grofile-hash-map-b93cc4fb6413bbe5c837530662bee9b4">
+	</div>
+	<div class="grofile-hash-map-312e00031bcf80bf523bf7704f1dd12b">
+	</div>
+	<div class="grofile-hash-map-e78fd560fdb27287f18a9c6d6adb7ac1">
+	</div>
+	<div class="grofile-hash-map-aa3fbf033d64ff6d10f07d109eb4d521">
+	</div>
+	<div class="grofile-hash-map-2818e30a65dcf43e6a32077df83bb6c6">
+	</div>
+	<div class="grofile-hash-map-ff43a4896584486c362c5eca769952cf">
+	</div>
+	</div>
+		<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-twitter' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-facebook' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+					<script type="text/javascript">
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/plusone.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script>
+				<div id="sharing_email" style="display: none;">
+		<form action="index.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email" value="" />
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email" value="" />
+
+			
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a href="index.html#cancel" class="sharing_cancel">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+					<script type="text/javascript">
+				// Pinterest shared resources
+				var s = document.createElement("script");
+				s.type = "text/javascript";
+				s.async = true;
+				s.src = window.location.protocol + "//assets.pinterest.com/js/pinit.js";
+				var x = document.getElementsByTagName("script")[0];
+				x.parentNode.insertBefore(s, x);
+				// if 'Pin it' button has 'counts' make container wider
+				jQuery(window).load( function(){ jQuery( 'li.share-pinterest a span:visible' ).closest( '.share-pinterest' ).width( '80px' ); } );
+			</script>
+		<script type="text/javascript" src="http://platform.tumblr.com/v1/share.js"></script>		<script>
+		// Don't use Pocket's default JS as it we need to force init new Pocket share buttons loaded via JS.
+		function jetpack_sharing_pocket_init() {
+			jQuery.getScript( 'https://widgets.getpocket.com/v1/j/btn.js?v=1' );
+		}
+		jQuery( document ).on( 'ready', jetpack_sharing_pocket_init );
+		jQuery( document.body ).on( 'post-load', jetpack_sharing_pocket_init );
+		</script>
+		<script type='text/javascript' src='../wp-content/plugins/akismet/_inc/form.js%3Fver=3.1.2'></script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js%3Fver=3.51.0-2014.06.20'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/sametmax.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=4.0.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var pollsL10n = {"ajax_url":"http:\/\/sametmax.com\/wp-admin\/admin-ajax.php","text_wait":"Your last request is still being processed. Please wait a while ...","text_valid":"Please choose a valid poll answer.","text_multiple":"Maximum number of choices allowed: ","show_loading":"1","show_fading":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/wp-polls/polls-js.js%3Fver=2.68'></script>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201545'></script>
+<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=2015Novaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=4.1'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/ui/core.min.js%3Fver=1.11.2'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/modernizr.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/retina.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.js%3Fver=20140920'></script>
+
+	<script src="http://stats.wp.com/e-201545.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:3.3',blog:'32490438',post:'5267',tz:'0'});
+	var load_cmc = function(){linktracker_init(32490438,5267,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script><div class="tc-btt-wrapper"><i class="btt-arrow" style="color:#394143"></i></div>	</body>
+	</html>

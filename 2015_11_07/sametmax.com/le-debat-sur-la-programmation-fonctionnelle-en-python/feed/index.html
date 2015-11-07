@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Le débat sur la programmation fonctionnelle en Python</title>
+	<atom:link href="http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160495</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sat, 09 May 2015 19:57:19 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160495</guid>
+		<description><![CDATA[&lt;p&gt;Le débat a repris sur python-ideas, avec la suggestion d&#039;utiliser @ pour faire de la composition de fonction : http://code.activestate.com/lists/python-ideas/33320/&lt;/p&gt;
+
+&lt;p&gt;Ca ne passera jamais sous cette forme, heureusement. Mais pour ceux qui veulent s&#039;y essayer, c&#039;est facile à implémenter:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+class pipe:
+    def __init__(self, data):
+        self.data = data
+    def __rshift__(self, other):
+        return piped(self, other)
+    def __iter__(self):
+        return iter(self.data)
+
+class piped(pipe):
+    def __init__(self, data, process):
+        self.data = data
+        self.process = process
+    def __iter__(self):
+        for x in self.data:
+            yield self.process(x)
+            
+res = pipe([&quot;1&quot;, &quot;2&quot;, &quot;3&quot;]) &gt;&gt; int &gt;&gt; (lambda x: x * 2) &gt;&gt; (lambda x: &quot;#%s&quot; % x)
+for x in res:
+    print(x)
+&lt;/pre&gt;
+
+&lt;p&gt;Perso, quand je vois ce genre de code, je pleure. Tout devient plus dur à debugger : pdb, la stack trace, les prints, tu peux tout te mettre au cul.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Le débat a repris sur python-ideas, avec la suggestion d&#8217;utiliser @ pour faire de la composition de fonction : <a href="http://code.activestate.com/lists/python-ideas/33320/" rel="nofollow">http://code.activestate.com/lists/python-ideas/33320/</a></p>
+<p>Ca ne passera jamais sous cette forme, heureusement. Mais pour ceux qui veulent s&#8217;y essayer, c&#8217;est facile à implémenter:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> pipe:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> data<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">data</span> <span style="color: #66cc66;">=</span> data
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__rshift__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> piped<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">data</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> piped<span style="color: black;">&#40;</span>pipe<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> data<span style="color: #66cc66;">,</span> process<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">data</span> <span style="color: #66cc66;">=</span> data
+        <span style="color: #008000;">self</span>.<span style="color: black;">process</span> <span style="color: #66cc66;">=</span> process
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">data</span>:
+            <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #008000;">self</span>.<span style="color: black;">process</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+&nbsp;
+res <span style="color: #66cc66;">=</span> pipe<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;1&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;2&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;3&quot;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;&gt;</span> <span style="color: #008000;">int</span> <span style="color: #66cc66;">&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: x * <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: #483d8b;">&quot;#%s&quot;</span> % x<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> res:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Perso, quand je vois ce genre de code, je pleure. Tout devient plus dur à debugger : pdb, la stack trace, les prints, tu peux tout te mettre au cul.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160464</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 08 May 2015 19:32:27 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160464</guid>
+		<description><![CDATA[&lt;p&gt;Je pense que si on a un background de maths et qu&#039;on fait de l&#039;algo, Haskell doit effectivement être très parlant, son expressivité étant optimisé pour ça.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Je pense que si on a un background de maths et qu&#8217;on fait de l&#8217;algo, Haskell doit effectivement être très parlant, son expressivité étant optimisé pour ça.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Noir</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160455</link>
+		<dc:creator><![CDATA[Noir]]></dc:creator>
+		<pubDate>Fri, 08 May 2015 11:31:19 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160455</guid>
+		<description><![CDATA[@Sam : hum alors... Je ne prononcerai pas sur la &quot;charge cognitive&quot; du japonais parce que je n&#039;y connais rien (à la charge cognitive, pas au japonais), mais pour l&#039;argument sur les stéréotypes... On m&#039;a appris quand j&#039;étais au lycée que la commedia dell&#039;arte était bien connue pour ses personnages volontairement stéréotypés, idem en France avec le théâtre de Molière, ou même dans certaines pièces de la Grèce antique (arrêtez-moi si je dis de la merde, mes cours de français commencent un peu à dater). Pourtant l&#039;italien et le grec (et le japonais si on enlève les caractères chinois), pour les rudiments que j&#039;en ai c&#039;est nettement plus facile à apprendre et à lire que le français. En bref, à mon sens, les onomatopées et les stéréotypes ce ne sont corrélées à la difficulté de la langue sous-jacente.
+
+Après je ne me positionne pas sur les la prolongation aux langages de prog, comme le dit Eric je trouve ça très subjectif; le sens de codes en Haskell/Ocaml m&#039;apparaissent beaucoup plus clairement que ceux en C ou même en Python (no joke), mais j&#039;ai bien vu que masse de gens qui ont publié ici ne sont pas de mon avis.
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam : hum alors&#8230; Je ne prononcerai pas sur la &#8220;charge cognitive&#8221; du japonais parce que je n&#8217;y connais rien (à la charge cognitive, pas au japonais), mais pour l&#8217;argument sur les stéréotypes&#8230; On m&#8217;a appris quand j&#8217;étais au lycée que la commedia dell&#8217;arte était bien connue pour ses personnages volontairement stéréotypés, idem en France avec le théâtre de Molière, ou même dans certaines pièces de la Grèce antique (arrêtez-moi si je dis de la merde, mes cours de français commencent un peu à dater). Pourtant l&#8217;italien et le grec (et le japonais si on enlève les caractères chinois), pour les rudiments que j&#8217;en ai c&#8217;est nettement plus facile à apprendre et à lire que le français. En bref, à mon sens, les onomatopées et les stéréotypes ce ne sont corrélées à la difficulté de la langue sous-jacente.</p>
+<p>Après je ne me positionne pas sur les la prolongation aux langages de prog, comme le dit Eric je trouve ça très subjectif; le sens de codes en Haskell/Ocaml m&#8217;apparaissent beaucoup plus clairement que ceux en C ou même en Python (no joke), mais j&#8217;ai bien vu que masse de gens qui ont publié ici ne sont pas de mon avis.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160452</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 08 May 2015 09:14:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160452</guid>
+		<description><![CDATA[&lt;blockquote&gt;
+  &lt;p&gt;@dineptus Bien sur qu’il faut une formation specifique, tout autant que pour lire du code python.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;J&#039;ai enseigné le PHP, le Java, le Python et le Javascript. J&#039;ai vu enseigné le VM, le lisp, l&#039;erlang et le C. Le temps et l&#039;effort de la formation est toujours bien plus faible en Python.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Est ce que ca veut dire que le japonais a une charge cognitive plus forte? Je ne pense pas, les japonais lisent aussi vite et sans efforts particuliers. La charge est juste repartie differement.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Oui, la charge cognitive est plus importante en japonais.&lt;/p&gt;
+
+&lt;p&gt;Ce n&#039;est pas un hasard si les japonais favorisent les personnages très stéréotypés, les expressions exagérées et les onomatopées dans les arts. Cela donne un contexte important pour la compréhension d&#039;un message.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Apres, je comprends mal cette peur de la recursion,&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Prend un sociologue, et apprends lui la programmation. Et tu comprendras.&lt;/p&gt;
+
+&lt;p&gt;Après, je ne retire en aucun cas les mérites des mécanismes des langages que tu cites. Je dis simplement qu&#039;ils se font au prix d&#039;autres qualités, et que souvent, je donne la priorité à ces dernières. Et Guido aussi.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<blockquote>
+<p>@dineptus Bien sur qu’il faut une formation specifique, tout autant que pour lire du code python.</p>
+</blockquote>
+<p>J&#8217;ai enseigné le PHP, le Java, le Python et le Javascript. J&#8217;ai vu enseigné le VM, le lisp, l&#8217;erlang et le C. Le temps et l&#8217;effort de la formation est toujours bien plus faible en Python.</p>
+<blockquote>
+<p>Est ce que ca veut dire que le japonais a une charge cognitive plus forte? Je ne pense pas, les japonais lisent aussi vite et sans efforts particuliers. La charge est juste repartie differement.</p>
+</blockquote>
+<p>Oui, la charge cognitive est plus importante en japonais.</p>
+<p>Ce n&#8217;est pas un hasard si les japonais favorisent les personnages très stéréotypés, les expressions exagérées et les onomatopées dans les arts. Cela donne un contexte important pour la compréhension d&#8217;un message.</p>
+<blockquote>
+<p>Apres, je comprends mal cette peur de la recursion,</p>
+</blockquote>
+<p>Prend un sociologue, et apprends lui la programmation. Et tu comprendras.</p>
+<p>Après, je ne retire en aucun cas les mérites des mécanismes des langages que tu cites. Je dis simplement qu&#8217;ils se font au prix d&#8217;autres qualités, et que souvent, je donne la priorité à ces dernières. Et Guido aussi.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Eric</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160447</link>
+		<dc:creator><![CDATA[Eric]]></dc:creator>
+		<pubDate>Fri, 08 May 2015 08:02:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160447</guid>
+		<description><![CDATA[&lt;blockquote&gt;Bravo, en un exemple tu viens de me faire passer l’envie de toucher à ce langage, c’est complètement illisible le deuxième exemple ! Il faut avoir une formation spécifique pour comprendre ce machin.&lt;/blockquote&gt;
+
+&lt;p&gt;@dineptus Bien sur qu&#039;il faut une formation specifique, tout autant que pour lire du code python.&lt;/p&gt;
+
+&lt;blockquote&gt;Les langages fonctionnels encourages un style où les instructions sont compressées et chaînées, où il y a moins de mot clés, et plus de symbole. Cela augmente ce qu’on appelle “la charge cognitive”, c’est à dire le nombre de cycle cpu que le cerveau doit consacrer, non pas à la tache de comprendre le sens du code, mais à décortiquer la structure.&lt;/blockquote&gt;
+
+&lt;p&gt;@Sam &quot;La charge cognitive&quot; est une notion tres relative.&lt;/p&gt;
+
+&lt;p&gt;Si l&#039;on compare par exemple l&#039;anglais et le japonais:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;26 lettres en anglais contre environ 2000 caracteres en japonais&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;des mots espaces en anglais, aucun espace en japonais&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Est ce que ca veut dire que le japonais a une charge cognitive plus forte? Je ne pense pas, les japonais lisent aussi vite et sans efforts particuliers. La charge est juste repartie differement.&lt;/p&gt;
+
+&lt;p&gt;Pour les langages fonctionnels je pense que c&#039;est un peu la meme idee, c&#039;est juste une facon differente d&#039;apprehender le code.&lt;/p&gt;
+
+&lt;p&gt;Apres, je comprends mal cette peur de la recursion, si la fonction est pure elle peut etre testee independament (et prouvee comme logiquement correcte avec un peu d&#039;effort). Et la plupart du temps une solution basee sur fold ou map suffisent.&lt;/p&gt;
+
+&lt;p&gt;Pour apporter deux trois choses au debats tests / typage:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Le typage statique et les monades dans haskell apportent une securite dans le code que peu d&#039;autres langages ont. Sur le sujet &lt;a href=&quot;https://vimeo.com/72870631&quot; rel=&quot;nofollow&quot;&gt;A Pragmatic Case for Static Typing with Brian Hurt&lt;/a&gt; est vraiment interessante.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Les langages fonctionels peuvent etre teste avec des tests de proprietes qui permettent de trouver des bugs plutot bien caches via generation de tests automatiques. Sur le sujet &lt;a href=&quot;http://www.infoq.com/presentations/Testing-for-the-Unexpected&quot; rel=&quot;nofollow&quot;&gt;Testing for the Unexpected&lt;/a&gt; de Ulf Wiger et &lt;a href=&quot;https://www.youtube.com/watch?v=zi0rHwfiX1Q&quot; rel=&quot;nofollow&quot;&gt;Testing the Hard Stuff and Staying Sane&lt;/a&gt; de John Hughes.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Elixir c&#039;est pas mal et ca apporte de vrais choses en plus a erlang comme une bonne gestion de l&#039;unicode et mix.&lt;/p&gt;
+
+&lt;p&gt;Dans un autre genre, il y a &lt;a href=&quot;http://elm-lang.org/&quot; rel=&quot;nofollow&quot;&gt;Elm&lt;/a&gt; qui est base sur haskell et qui permet de creer des applis web/js.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<blockquote><p>Bravo, en un exemple tu viens de me faire passer l’envie de toucher à ce langage, c’est complètement illisible le deuxième exemple ! Il faut avoir une formation spécifique pour comprendre ce machin.</p></blockquote>
+<p>@dineptus Bien sur qu&#8217;il faut une formation specifique, tout autant que pour lire du code python.</p>
+<blockquote><p>Les langages fonctionnels encourages un style où les instructions sont compressées et chaînées, où il y a moins de mot clés, et plus de symbole. Cela augmente ce qu’on appelle “la charge cognitive”, c’est à dire le nombre de cycle cpu que le cerveau doit consacrer, non pas à la tache de comprendre le sens du code, mais à décortiquer la structure.</p></blockquote>
+<p>@Sam &#8220;La charge cognitive&#8221; est une notion tres relative.</p>
+<p>Si l&#8217;on compare par exemple l&#8217;anglais et le japonais:</p>
+<ul>
+<li>
+<p>26 lettres en anglais contre environ 2000 caracteres en japonais</p>
+</li>
+<li>
+<p>des mots espaces en anglais, aucun espace en japonais</p>
+</li>
+</ul>
+<p>Est ce que ca veut dire que le japonais a une charge cognitive plus forte? Je ne pense pas, les japonais lisent aussi vite et sans efforts particuliers. La charge est juste repartie differement.</p>
+<p>Pour les langages fonctionnels je pense que c&#8217;est un peu la meme idee, c&#8217;est juste une facon differente d&#8217;apprehender le code.</p>
+<p>Apres, je comprends mal cette peur de la recursion, si la fonction est pure elle peut etre testee independament (et prouvee comme logiquement correcte avec un peu d&#8217;effort). Et la plupart du temps une solution basee sur fold ou map suffisent.</p>
+<p>Pour apporter deux trois choses au debats tests / typage:</p>
+<ul>
+<li>
+<p>Le typage statique et les monades dans haskell apportent une securite dans le code que peu d&#8217;autres langages ont. Sur le sujet <a href="https://vimeo.com/72870631" rel="nofollow">A Pragmatic Case for Static Typing with Brian Hurt</a> est vraiment interessante.</p>
+</li>
+<li>
+<p>Les langages fonctionels peuvent etre teste avec des tests de proprietes qui permettent de trouver des bugs plutot bien caches via generation de tests automatiques. Sur le sujet <a href="http://www.infoq.com/presentations/Testing-for-the-Unexpected" rel="nofollow">Testing for the Unexpected</a> de Ulf Wiger et <a href="https://www.youtube.com/watch?v=zi0rHwfiX1Q" rel="nofollow">Testing the Hard Stuff and Staying Sane</a> de John Hughes.</p>
+</li>
+</ul>
+<p>Elixir c&#8217;est pas mal et ca apporte de vrais choses en plus a erlang comme une bonne gestion de l&#8217;unicode et mix.</p>
+<p>Dans un autre genre, il y a <a href="http://elm-lang.org/" rel="nofollow">Elm</a> qui est base sur haskell et qui permet de creer des applis web/js.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: kontre</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160242</link>
+		<dc:creator><![CDATA[kontre]]></dc:creator>
+		<pubDate>Mon, 04 May 2015 18:43:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160242</guid>
+		<description><![CDATA[&lt;p&gt;@PeuLeuBeu Appelle-le comme tu veux, t&#039;auras au final pas le bon résultat et paf l&#039;avion au final ! Que ce soit de la belle programmation ou non :)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@PeuLeuBeu Appelle-le comme tu veux, t&#8217;auras au final pas le bon résultat et paf l&#8217;avion au final ! Que ce soit de la belle programmation ou non :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: N_Arno</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160234</link>
+		<dc:creator><![CDATA[N_Arno]]></dc:creator>
+		<pubDate>Mon, 04 May 2015 16:08:30 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160234</guid>
+		<description><![CDATA[Wow, je n&#039;entrerais pas dans le débat, mais wow. Un super article, que je vais faire lire. A pleins de gens. Continuez comme ça vous êtes formidables.
+
+Nb: Guido van Rossum. Sans V majuscule. Cf sa bio twitter.
+]]></description>
+		<content:encoded><![CDATA[<p>Wow, je n&#8217;entrerais pas dans le débat, mais wow. Un super article, que je vais faire lire. A pleins de gens. Continuez comme ça vous êtes formidables.</p>
+<p>Nb: Guido van Rossum. Sans V majuscule. Cf sa bio twitter.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: PeuLeuBeu</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160233</link>
+		<dc:creator><![CDATA[PeuLeuBeu]]></dc:creator>
+		<pubDate>Mon, 04 May 2015 15:47:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160233</guid>
+		<description><![CDATA[Bien sûr que ça m&#039;est déjà arrivé, et je suis d&#039;accord que c&#039;est le genre de truc qu&#039;on repère avec les tests. Un moins à la place d&#039;un plus, moralement je trouve que c&#039;est comme un 4 à la place d&#039;un 3 quelque part, c&#039;est à dire vraiment de l&#039;ajustement plutôt que de la structure de code.
+]]></description>
+		<content:encoded><![CDATA[<p>Bien sûr que ça m&#8217;est déjà arrivé, et je suis d&#8217;accord que c&#8217;est le genre de truc qu&#8217;on repère avec les tests. Un moins à la place d&#8217;un plus, moralement je trouve que c&#8217;est comme un 4 à la place d&#8217;un 3 quelque part, c&#8217;est à dire vraiment de l&#8217;ajustement plutôt que de la structure de code.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: kontre</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160215</link>
+		<dc:creator><![CDATA[kontre]]></dc:creator>
+		<pubDate>Mon, 04 May 2015 07:58:44 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160215</guid>
+		<description><![CDATA[&lt;p&gt;Vous avez quand même un peu remarqué qu&#039;on cherche la petite bête tout en étant tous d&#039;accord ?&lt;/p&gt;
+
+&lt;p&gt;@Noir: Le fait que le typage était seul me paraissait assez évident...&lt;/p&gt;
+
+&lt;p&gt;@PeuLeuBeu T&#039;as jamais eu de problème de signe dans tes programmes ? C&#039;est le genre de truc difficile à voir et où le typage ne t&#039;apporte rien (pour les petits malins, dans les calculs on utilise plus souvent des floats que des unsigned int), la seule vérification possible c&#039;est le test (ou la preuve formelle).&lt;/p&gt;
+
+&lt;p&gt;J&#039;ai regardé vite fait si ça se faisait le calcul numérique avec des langages fonctionnels (c&#039;est mon domaine, j&#039;y peux rien !). Il y a des librairies existantes en Haskell, OCaml et F#. J&#039;ai vu aussi que certains algos numériques simples ne s&#039;écrivent pas de manière optimale en FP. Par contre la lib FFTW (pour faire des FFTs ultra-rapides) utilise OCaml, tout n&#039;est pas perdu ! ;)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Vous avez quand même un peu remarqué qu&#8217;on cherche la petite bête tout en étant tous d&#8217;accord ?</p>
+<p>@Noir: Le fait que le typage était seul me paraissait assez évident&#8230;</p>
+<p>@PeuLeuBeu T&#8217;as jamais eu de problème de signe dans tes programmes ? C&#8217;est le genre de truc difficile à voir et où le typage ne t&#8217;apporte rien (pour les petits malins, dans les calculs on utilise plus souvent des floats que des unsigned int), la seule vérification possible c&#8217;est le test (ou la preuve formelle).</p>
+<p>J&#8217;ai regardé vite fait si ça se faisait le calcul numérique avec des langages fonctionnels (c&#8217;est mon domaine, j&#8217;y peux rien !). Il y a des librairies existantes en Haskell, OCaml et F#. J&#8217;ai vu aussi que certains algos numériques simples ne s&#8217;écrivent pas de manière optimale en FP. Par contre la lib FFTW (pour faire des FFTs ultra-rapides) utilise OCaml, tout n&#8217;est pas perdu ! ;)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: PeuLeuBeu</title>
+		<link>http://sametmax.com/le-debat-sur-la-programmation-fonctionnelle-en-python/#comment-160208</link>
+		<dc:creator><![CDATA[PeuLeuBeu]]></dc:creator>
+		<pubDate>Mon, 04 May 2015 05:43:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16141#comment-160208</guid>
+		<description><![CDATA[Bon, j&#039;ai légèrement l&#039;impression de me répéter mais à mon avis les tests et le typage c&#039;est pas pour les mêmes usages. Enfin pas pour vérifier les mêmes trucs quoi. Perso j&#039;ai l&#039;impression que les tests c&#039;est pour savoir comment bidouiller les &quot;valeurs&quot; au sein d&#039;un programme, genre comment régler les curseurs, alors que le typage permet de vérifier que la structure d&#039;un programme a un sens.
+
+Enfin dans mon expérience en OCaml, quand je code un truc qui ressemble à peu près à l&#039;algo que j&#039;ai en tête et que ça type, ben je suis à peu près sûr que le code est ok à réglages près.
+
+Bon, je sais pas si je m&#039;exprime bien, z&#039;avez qu&#039;à tous coder en Caml et vous verrez par vous-même bordel.
+]]></description>
+		<content:encoded><![CDATA[<p>Bon, j&#8217;ai légèrement l&#8217;impression de me répéter mais à mon avis les tests et le typage c&#8217;est pas pour les mêmes usages. Enfin pas pour vérifier les mêmes trucs quoi. Perso j&#8217;ai l&#8217;impression que les tests c&#8217;est pour savoir comment bidouiller les &#8220;valeurs&#8221; au sein d&#8217;un programme, genre comment régler les curseurs, alors que le typage permet de vérifier que la structure d&#8217;un programme a un sens.</p>
+<p>Enfin dans mon expérience en OCaml, quand je code un truc qui ressemble à peu près à l&#8217;algo que j&#8217;ai en tête et que ça type, ben je suis à peu près sûr que le code est ok à réglages près.</p>
+<p>Bon, je sais pas si je m&#8217;exprime bien, z&#8217;avez qu&#8217;à tous coder en Caml et vous verrez par vous-même bordel.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

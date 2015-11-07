@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; poulpe</title>
+	<atom:link href="http://sametmax.com/author/poulpe/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Les Greenlets c&#8217;est bon, c&#8217;est bio, mangez-en ! 3</title>
+		<link>http://sametmax.com/les-greenlets-cest-bon-cest-bio-mangez-en/</link>
+		<comments>http://sametmax.com/les-greenlets-cest-bon-cest-bio-mangez-en/#comments</comments>
+		<pubDate>Fri, 17 Aug 2012 23:42:00 +0000</pubDate>
+		<dc:creator><![CDATA[poulpe]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[greenlet]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[state machines]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1750</guid>
+		<description><![CDATA[Et même que ça sauve les bébés phoques. Si avec ça vous êtes pas convaincu je sais pas ce qu'il vous faut.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/poulpe/">poulpe</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<h2>Coroutines et Machines à états.</h2>
+<p>Quel est le rapport entre les coroutines et les machines à état me demanderez-vous (ou pas) ?<br />
+Et bieeeeen aucun, si ce n&#8217;est que vous pouvez déjà consulter deux articles sur ce site qui vous permettent d&#8217;en bricoler en python.<br />
+Mais bon, les <a href="http://sametmax.com/concurrence-sans-threads-en-python/">tournevis Playskool</a> et la <a href="http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/">colle UHU</a>, pour du vrai bricolage de grand, c&#8217;est rigolo mais c&#8217;est pas forcement très adapté. Je vais donc vous présenter le Black &amp; Decker de l&#8217;exécution concurrente, le Rubson de la State Machine : le module <a href="http://pypi.python.org/pypi/greenlet/">greenlet</a>.<br />
+Les greenlets c&#8217;est quoi ? C&#8217;est simplement un fork de l&#8217;interpréteur <a href="http://www.stackless.com/">Stackless</a> sous forme de module pour CPython. Ca permet de profiter de la quasi-totalité de Stackless sans mettre en péril l&#8217;environnement d&#8217;exécution et/ou le code existant.</p>
+<h2>Mais comment ça s&#8217;utilise alors ?</h2>
+<p>Tout d&#8217;abord :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> greenlet <span style="color: #ff7700;font-weight:bold;">import</span> greenlet</pre></td></tr></table></div>
+
+<p>Le principe de base c&#8217;est :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fun1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">42</span>
+    g2.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">44</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> fun2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">43</span>
+    g2.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">45</span>
+&nbsp;
+g1 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun1<span style="color: black;">&#41;</span>
+g2 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun2<span style="color: black;">&#41;</span>
+g1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Sortie écran :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">42</span>
+<span style="color: #ff4500;">43</span>
+<span style="color: #ff4500;">44</span></pre></td></tr></table></div>
+
+<p>Ca à l&#8217;air simple comme ça, mais on constate une petite chose : on n&#8217;affiche jamais 45. Pourquoi ? Et bien parce que quand une greenlet se termine, on ne retourne pas à l&#8217;appelant (puisque ce n&#8217;est pas réellement un appel) on retourne à la greenlet parente, qui est ici notre main.<br />
+En fait, les greenlets sont organisées en arbre, chaque greenlet possède un unique parent qui est lui est définit au moment de sa création. Les appels à « switch » permettent de sauter d&#8217;une greenlet à l&#8217;autre mais ils n&#8217;affectent pas l&#8217;organisation de l&#8217;arbre.<br />
+Heureusement, cet arbe n&#8217;est pas en lecture seule et on peut réorganiser les parents comme on veut (du moment qu&#8217;on ne crée pas de cycles) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">g1 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun1<span style="color: black;">&#41;</span>
+g2 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun2<span style="color: black;">&#41;</span>
+g1.<span style="color: black;">parent</span> <span style="color: #66cc66;">=</span> g2
+g1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Sortie écran :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">42</span>
+<span style="color: #ff4500;">43</span>
+<span style="color: #ff4500;">44</span>
+<span style="color: #ff4500;">45</span></pre></td></tr></table></div>
+
+<p>On est passé de ça :<br />
+<a href="http://sametmax.com/wp-content/uploads/2012/08/cas1.png" class="grouped_elements" rel="tc-fancybox-group1750"><img src="http://sametmax.com/wp-content/uploads/2012/08/cas1.png" alt="cas1" width="195" height="149" class="alignnone size-full wp-image-1753" /></a><br />
+à ça :<br />
+<a href="http://sametmax.com/wp-content/uploads/2012/08/cas2.png" class="grouped_elements" rel="tc-fancybox-group1750"><img src="http://sametmax.com/wp-content/uploads/2012/08/cas2.png" alt="cas2" width="101" height="205" class="alignnone size-full wp-image-1754" /></a></p>
+<h2>Et dans la vraie vie ?</h2>
+<p>« Oui parce que là, t&#8217;es mignon, mais ton exemple bidon ça me sert pas à grand chose. » Du coup on peut essayer de faire un truc utile et de mettre tout ça en forme pour une faire une super Machine à État Orientée Objet en Wolframite (la fameuse <a href="http://fuckyeahcatgifs.tumblr.com/">MeooW</a>). Au passage on va utiliser un peu d&#8217;héritage sur les greenlets et montrer que la fonction exécutable qu&#8217;on leur passe à la création dans le premier exemple est simplement affectée à la méthode run() de la greenlet.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">max_iter <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">5</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Etat1<span style="color: black;">&#40;</span>greenlet<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> iteration<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 1, Iteration : %s&quot;</span>%iteration
+            iteration <span style="color: #66cc66;">=</span> etat2.<span style="color: black;">switch</span><span style="color: black;">&#40;</span>iteration + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> iteration <span style="color: #66cc66;">&gt;</span> max_iter:
+                <span style="color: #ff7700;font-weight:bold;">return</span> iteration
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Etat2<span style="color: black;">&#40;</span>greenlet<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> iteration<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 2, Iteration : %s&quot;</span>%iteration
+            iteration <span style="color: #66cc66;">=</span> etat1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span>iteration + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> iteration <span style="color: #66cc66;">&gt;</span> max_iter:
+                <span style="color: #ff7700;font-weight:bold;">return</span> iteration
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> EtatFinal<span style="color: black;">&#40;</span>greenlet<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> iteration<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Monde de merde ! Iteration : %s&quot;</span>%iteration
+&nbsp;
+etat1 <span style="color: #66cc66;">=</span> Etat1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+etat2 <span style="color: #66cc66;">=</span> Etat2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+etat_final <span style="color: #66cc66;">=</span> EtatFinal<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+etat1.<span style="color: black;">parent</span> <span style="color: #66cc66;">=</span> etat_final
+etat2.<span style="color: black;">parent</span> <span style="color: #66cc66;">=</span> etat_final
+etat1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Sortie écran :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">Etat <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">2</span>
+Etat <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">3</span>
+Etat <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">4</span>
+Etat <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">5</span>
+Monde de merde <span style="color: #66cc66;">!</span> Iteration : <span style="color: #ff4500;">6</span></pre></td></tr></table></div>
+
+<p>On peut voir ici que la méthode switch permet de faire passe-plat pour des variables (de la même manière que <a href="http://sametmax.com/astuces-python-en-vrac/">yield retourne l&#8217;argument qu&#8217;on send()</a> à un itérateur).</p>
+<h2>Plus loin</h2>
+<p>Les greenlets permettent d&#8217;aller beaucoup plus loin que ça, notamment en travaillant sur le dynamisme de l&#8217;arbre. C&#8217;est très pratique pour faire de la gestion d’évènements. Attention tout de même car ça peut vite devenir un enfer à débugger (pas de stack, pas de chocolat).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-greenlets-cest-bon-cest-bio-mangez-en/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/phoque.png" length="112107" type="image/jpg" />	</item>
+		<item>
+		<title>Concurrence sans threads en python 10</title>
+		<link>http://sametmax.com/concurrence-sans-threads-en-python/</link>
+		<comments>http://sametmax.com/concurrence-sans-threads-en-python/#comments</comments>
+		<pubDate>Sat, 28 Jul 2012 00:51:37 +0000</pubDate>
+		<dc:creator><![CDATA[poulpe]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[thread]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1373</guid>
+		<description><![CDATA[Je parie que là, maintenant, vous êtes en train de ne pas vous demander "Comment pourrais-je exécuter des actions concurrente sans utiliser de threads en python ?". Et c'est bien dommage pour vous car la seule chose que j'ai à vous écrire c'est un début de réponse à cette question.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/poulpe/">poulpe</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Je parie que là, maintenant, vous êtes en train de ne pas vous demander &#8220;Comment pourrais-je exécuter des actions concurrente sans utiliser de threads en python ?&#8221;. Et c&#8217;est bien dommage pour vous car la seule chose que j&#8217;ai à vous écrire c&#8217;est un début de réponse à cette question.</p>
+<h2>Pourquoi faire ?</h2>
+<p>Ouep, les threads c&#8217;est pas toujours la joie. Au rayon des inconvénients, on retrouve souvent complexité de conception et de debuggage, librairies externes pas toujours thread safe, dégradation des perfs, aucun contrôle sur la granularité de l&#8217;exécution, risques liés aux locks pour toute la partie &#8220;Atomicité&#8221; etc.<br />
+Bon tout n&#8217;est quand même pas noir, et dans la majorité des cas, un petit coup de threads sera le plus pratique pour faire ce que vous voulez. Mais si votre besoin est vraiment particulier (ou que vous vous ennuyez beaucoup pendant les vacances) voici une solution assez élégante, qui vous laisse le contrôle absolu (MOUHAHAHA) et qui nécessite souvent peu de modifications de votre code existant.</p>
+<h2>Comment faire ?</h2>
+<p>Pour faire ça, on va utiliser les générateurs <a href="http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/">que vous connaissez bien</a>.<br />
+Quoi de mieux qu&#8217;un petit exemple pour commencer :</p>
+<ul>
+<li>Paul veut afficher de façon régulière le mot &#8220;Loutre&#8221;.</li>
+<li>Jacques, lui, voudrait afficher de la même façon le mot &#8220;Tarentule&#8221;.</li>
+<li>Un mec bizarre que personne ne connait désire écrire &#8220;Musaraigne&#8221;.</li>
+</ul>
+<p>Comme ils sont tous les trois très cons et qu&#8217;ils sont incapables de se mettre d&#8217;accord pour savoir qui commence, ils décident de faire ça tous en même temps. Problème, ils veulent tous afficher leur mot <strong>selon une temporisation bien précise</strong> sans se gêner les uns les autres.</p>
+<p>Voici donc la fonction que chacun de nos trois zoophiles veut utiliser. Vous remarquerez que le seul truc qu&#8217;elle possède de spécial, c&#8217;est le petit yield à la fin de chaque itération. C&#8217;est moi qui ai décidé de le rajouter arbitrairement à cet endroit (parce que c&#8217;est moi le chef). C&#8217;est en effet la seule modification à apporter à la fonction pour la rendre &#8220;éclatable&#8221;.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> afficher_un_truc_regulierement<span style="color: black;">&#40;</span>truc<span style="color: #66cc66;">,</span> delai<span style="color: #66cc66;">,</span> nombre<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;Affiche un &quot;truc&quot; tous les &quot;delais&quot; un certain &quot;nombre&quot; de fois&quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+    derniere_occur <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">time</span>.<span style="color: #dc143c;">time</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    num <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> num <span style="color: #66cc66;">&lt;</span> nombre:
+        maintenant <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">time</span>.<span style="color: #dc143c;">time</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> maintenant - derniere_occur <span style="color: #66cc66;">&gt;</span> delai:
+            derniere_occur <span style="color: #66cc66;">=</span> maintenant
+            <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>num<span style="color: black;">&#41;</span> + <span style="color: #483d8b;">&quot; : &quot;</span> + truc
+            num +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+        <span style="color: #ff7700;font-weight:bold;">yield</span>     <span style="color: #808080; font-style: italic;"># Je rajoute mon(mes) yield(s) où je veux.</span></pre></td></tr></table></div>
+
+<p>Le placement du yield est important, tous les traitements entre deux yields seront exécutés de façon atomique. Dans le reste de ce tuto, j’appellerai ce groupe de traitements atomique une granule (j&#8217;aime bien le mot).<br />
+Dès l&#8217;ajout du mot-clé yield dans le corps, notre fonction retourne un générateur au lieu de s&#8217;exécuter normalement.</p>
+<p>On crée ensuite une liste d&#8217;actions à effectuer de façon concurrente. Chaque action est un générateur retourné par l&#8217;appel à la fonction.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">liste_des_actions <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">#Paul :</span>
+liste_des_actions.<span style="color: black;">append</span><span style="color: black;">&#40;</span>afficher_un_truc_regulierement<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Loutre&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#Jacques :</span>
+liste_des_actions.<span style="color: black;">append</span><span style="color: black;">&#40;</span>afficher_un_truc_regulierement<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Tarentule&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#Le mec bizarre</span>
+liste_des_actions.<span style="color: black;">append</span><span style="color: black;">&#40;</span>afficher_un_truc_regulierement<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Musaraigne&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Voici enfin le mécanisme qui permet d&#8217;exécuter tout ce beau bordel. Il est assez générique et le code parle de lui même :)</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:     <span style="color: #808080; font-style: italic;"># Boucle infinie</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>liste_des_actions<span style="color: black;">&#41;</span>:     <span style="color: #808080; font-style: italic;"># Si il reste des actions</span>
+        <span style="color: #808080; font-style: italic;">#On itère sur une copie de la liste (avec [:])</span>
+        <span style="color: #808080; font-style: italic;">#pour pouvoir modifier la liste pendant la boucle</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> action <span style="color: #ff7700;font-weight:bold;">in</span> liste_des_actions<span style="color: black;">&#91;</span>:<span style="color: black;">&#93;</span>:
+            <span style="color: #ff7700;font-weight:bold;">try</span>:
+                action.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>     <span style="color: #808080; font-style: italic;"># On execute une granule</span>
+            <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">StopIteration</span>:
+                <span style="color: #808080; font-style: italic;">#Il n'y a plus de granule dans cette action</span>
+                <span style="color: #808080; font-style: italic;">#On enlève donc l'action de la liste</span>
+                liste_des_actions.<span style="color: black;">remove</span><span style="color: black;">&#40;</span>action<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #808080; font-style: italic;">#Plus aucune action, on finit la boucle infinie</span>
+        <span style="color: #ff7700;font-weight:bold;">break</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Tout est bien qui finit bien.&quot;</span></pre></td></tr></table></div>
+
+<p>Ici, l&#8217;exemple est simpliste mais on peut l&#8217;adapter à des fonctions beaucoup plus complexes et nombreuses, qui ne se présentent pas forcement sous forme de boucle.</p>
+<h2>Comment faire mieux ?</h2>
+<p>Je vous laisse avec une piste d&#8217;évolution possible qui est assez amusante à implémenter (on rigole avec ce qu&#8217;on peut, hein). On peut facilement imaginer un système de priorité dynamique entre les actions. En effet, ici, on ne yield aucune valeur, mais on peut décider d&#8217;utiliser le nombre X yieldé (et donc retourné par action.next()) pour sauter les X prochains appels à cette action, ce qui aura pour effet de réduire la priorité de celle-çi par rapport aux autres.</p>
+<p>Voilou, j&#8217;espère que vous n&#8217;utiliserez jamais ça dans du code collaboratif (ou alors si vous n&#8217;aimez pas vos collaborateurs à la limite) mais que le jour où vous aurez ce besoin particulier, vous saurez quoi faire.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/concurrence-sans-threads-en-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/calvin_surp.gif" length="1807" type="image/jpg" />	</item>
+	</channel>
+</rss>

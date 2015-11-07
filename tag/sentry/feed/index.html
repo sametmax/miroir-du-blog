@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; sentry</title>
+	<atom:link href="http://sametmax.com/tag/sentry/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Traquez les erreurs de vos apps Django avec Sentry 16</title>
+		<link>http://sametmax.com/traquez-les-erreurs-de-vos-apps-django-avec-sentry/</link>
+		<comments>http://sametmax.com/traquez-les-erreurs-de-vos-apps-django-avec-sentry/#comments</comments>
+		<pubDate>Wed, 26 Mar 2014 04:36:51 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[sentry]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9944</guid>
+		<description><![CDATA[Il est bon d'avoir en permanence un oeil sur les erreurs de vos sites (apps)  sans avoir à se farcir toutes les pages à la main. Sentry est un aggregateur d'evennements , il va traquer vos erreurs et vous sortir de jolis graphiques, traces etc.]]></description>
+				<content:encoded><![CDATA[<p>Tout foire tout le temps. Le site (ou app) sans erreur n&#8217;existe pas. Après chaque mise à jour on croise les doigts et on espère que tout va bien se passer.<br />
+Les plus courageux auront fait des <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/">tests unitaires</a> en amont qu&#8217;ils lanceront avant l&#8217;update, les autres comme moi vont commiter leurs changements et redémarrer le serveur prod. On est boucher de père en fils dans la famille&#8230;</p>
+<p>Avant toute chose Sentry qui avant était un projet Django serveur/client a depuis évolué et est devenu un serveur uniquement, laissant le choix du client suivant votre framework/language de travail. Sentry est disponible sur à peu près toutes les plateformes (Python, PHP, Ruby, JavaScript, Java, Node.js, iOS) et les frameworks Rails et Django. La <a href="http://sentry.readthedocs.org/en/latest/">documentation</a> est très fournie et le projet <a href="https://github.com/getsentry/sentry">très actif</a>.</p>
+<p>Dans le cas d&#8217;un site web en général on a tellement de pages qu&#8217;on ne peut pas prédire à l&#8217;avance ce qui va foirer ou pas (mais ça foire toujours, tout foire, etc&#8230;). Même si vous avez fait les tests unitaires vous aurez forcément oublié quelque chose.</p>
+<p>Cette page spéciale sur les nains obèses unijambistes scatophiles pour lesquels vous avez créé un tag unique et qui ne supporte pas que vous ayez changé votre mode de cache va lamentablement planter et vous priver de la fidélité de DSK sur votre site pour longtemps.</p>
+<p>Heureusement nous allons pouvoir logger toutes ces erreurs et avoir des jolis graphiques post-mortems. Bien évidement ça va vous faire du taf en plus bande de feignasses.</p>
+<p>Sentry vient en <a href="http://sentry.readthedocs.org/en/latest/quickstart/index.html#install-sentry">standalone</a> ou en version <a href="https://www.getsentry.com/pricing/">gratuite limitée</a>, hebergée par les créateurs.<br />
+J&#8217;ai voulu installer la standalone parceque je revenais de l&#8217;apéro et qu&#8217;au 8ème Ricard on veut tout faire soit-même mais la raison et 14heures de sommeil l&#8217;ont emporté, c&#8217;est à mon réveil que je me suis alors décidé à installer la version trial limitée à 7 jours de log et 2800 evenements loggés (qui au passage suffit sur un de nos plus gros sites).</p>
+<p><strong>la mise en place est vraiment des plus simples:<br />
+</strong></p>
+<p><a href="https://www.getsentry.com/register/">Créez un compte</a> et ensuite récupérez la clef API dans les préférences sur votre compte en ligne Sentry.</p>
+<p><strong>Du côté de votre projet Django:</strong></p>
+<p>Installez <a href="http://raven.readthedocs.org/en/latest/index.html">Raven</a>, qui est un client Python pour Sentry. Il va se charger de collecter vos erreurs et les transmettre à Sentry.</p>
+<p>Comme d&#8217;habitude une bonne PIP:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">  pip <span style="color: #c20cb9; font-weight: bold;">install</span> raven</pre></td></tr></table></div>
+
+<p>Dans le fichier <em>settings.py</em> de votre projet Django:</p>
+<p>Utilisez la clef Api fournie par Sentry (voir plus haut)</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># used for sentry login</span>
+RAVEN_CONFIG <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+    <span style="color: #483d8b;">'dsn'</span>: <span style="color: #483d8b;">'https://aboudouboudousplish:aboudouboudousplash@app.getsentry.com/1984'</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Vous pouvez faire un test pour voir si tout est bien configuré:</p>
+<p>Dans votre projet Django tapez</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">python manage.<span style="color: black;">py</span> raven <span style="color: #dc143c;">test</span></pre></td></tr></table></div>
+
+<p>Vous devriez recevoir un email de Sentry avec le récapitulatif du test raven.</p>
+<p><strong><br />
+L&#8217;interface Sentry:</strong></p>
+<div id="attachment_9947" style="width: 610px" class="wp-caption aligncenter"><img src="http://sametmax.com/wp-content/uploads/2014/03/group_list.png" alt="" title="La liste des évènements avec possibilité de filtres." width="600" class="wp-image-9947" /><p class="wp-caption-text">La liste des évènements avec possibilité de filtres.</p></div>
+<p>Sur le flux vous allez avoir la liste de tous les évènements loggés, vous pouvez les trier en choisissant parmi une pléthore d&#8217;options. Vous pouvez nettoyer ce flux en un seul clic (lors d&#8217;un redémarrage de serveur vous risquez d&#8217;avoir beaucoup d&#8217;erreurs qui n&#8217;en sont en fait pas, donc inutile de les traiter).</p>
+<div id="attachment_9949" style="width: 610px" class="wp-caption aligncenter"><img src="http://sametmax.com/wp-content/uploads/2014/03/event.png" alt="" title="L&#039;évènement en détail, une clarté qui donne envie d&#039;avoir des bugs ^^" width="600"  class="wp-image-9949" /><p class="wp-caption-text">L&#039;évènement en détail, une clarté qui donne envie d&#039;avoir des bugs ^^</p></div>
+<p>Chaque évènement du flux a une vue détail où vous allez pouvoir tracer le bug, c&#8217;est clair et plein d&#8217;informations (un peu comme les pages de debug Django). Il y a la possibilité d&#8217;ajouter des notes, de relancer la requête afin de vérifier la correction effectuée.</p>
+<p><strong><br />
+Le mode Team:</strong><br />
+Sentry vous permet de bosser en équipe, vous créez un projet, des utilisateurs et chacun peut monitorer, corriger des bugs etc (pas dispo dans la version trial). Vous pouvez aussi créer des groupes d&#8217;utilisateurs qui n&#8217;auront accès qu&#8217;à certains projets. Le côté équipe a bien été intégré. Vous saurez sur qui gueuler lorsque le bug aura été mal corrigé.</p>
+<p><strong>Conclusion:</strong><br />
+Monitorer ses apps est un vrai calvaire quand on n&#8217;a pas les bons outils ou que ces derniers sont chiants à installer/maintenir.<br />
+Sentry offre deux possibilités d&#8217;installation et leur mode trial vaut vraiment le coup (gratuit je le répète), les plus courageux se farciront l&#8217;install.<br />
+Pour la version standalone j&#8217;ai lu un peu partout qu&#8217;il était préférable de l&#8217;installer sur un serveur à part, à méditer avant de se lancer. Les logs sont en temps réél, vous n&#8217;avez pas à attendre le lendemain pour savoir ce qui a planté la veille, vous pouvez donc corriger vos bugs rapidement.</p>
+<p>Le plus gros problème de Sentry je pense c&#8217;est qu&#8217;on tombe accroc, je m&#8217;y rend désormais plusieurs fois par jour pour voir si il n&#8217;y a pas un petit bug à corriger :)</p>
+<p>PS: je cherche l&#8217;équivalent pour monitorer les serveurs, Munin est trop vieux et tous les autres outils que j&#8217;ai pu tester demandent à installer (entendez passer des heures à compiler) toute une machinerie. L&#8217;idéal serait des paquets à installer sur les serveurs à monitorer + service en ligne à la Sentry.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/traquez-les-erreurs-de-vos-apps-django-avec-sentry/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/qL1Bm.jpg" length="51868" type="image/jpg" />	</item>
+	</channel>
+</rss>

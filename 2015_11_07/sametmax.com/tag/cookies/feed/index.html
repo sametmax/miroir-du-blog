@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; cookies</title>
+	<atom:link href="http://sametmax.com/tag/cookies/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Django, une app à la fois : GET, POST et COOKIES 1</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois-get-post-et-cookies/</link>
+		<comments>http://sametmax.com/django-une-app-a-la-fois-get-post-et-cookies/#comments</comments>
+		<pubDate>Thu, 08 Aug 2013 10:31:26 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cookies]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[get]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[post]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7047</guid>
+		<description><![CDATA[Nouvel ajout au projet <a href="http://sametmax.com/django-une-app-a-la-fois/">Django, une app à la fois</a>, qui démontre comment récupérer les valeurs passées en GET, POST et cookies. Avec en prime comment setter la valeur d'un cookie.]]></description>
+				<content:encoded><![CDATA[<p>Nouvel ajout au projet <a href="http://sametmax.com/django-une-app-a-la-fois/">Django, une app à la fois</a>, qui démontre comment récupérer les valeurs passées en GET, POST et cookies. Avec en prime comment setter la valeur d&#8217;un cookie.</p>
+<p>Pour une fois, ça n&#8217;a pas été trop long. En même temps il n&#8217;y avait qu&#8217;une vue à faire.</p>
+<p>Chopez <a href="https://github.com/sametmax/Django--an-app-at-a-time">les sources</a> pendant que c&#8217;est encore chaud.</p>
+<p>P.S: les corrections (bug, orthographe, esthétique&#8230;) sont toujours les bienvenues, même si c&#8217;est quelque chose de tout petit, sur la version anglaise comme la version française. N&#8217;hésitez pas à faire un Pull Request sur Github.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/django-une-app-a-la-fois-get-post-et-cookies/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/HuhblZh.jpg" length="56547" type="image/jpg" />	</item>
+		<item>
+		<title>Cookies, sessions et redirections dans un middleware Django</title>
+		<link>http://sametmax.com/cookies-sessions-et-redirections-dans-un-middleware-django/</link>
+		<comments>http://sametmax.com/cookies-sessions-et-redirections-dans-un-middleware-django/#comments</comments>
+		<pubDate>Fri, 02 Nov 2012 18:31:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cookies]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2806</guid>
+		<description><![CDATA[En Django les sessions utilisent des cookies, et il n'y a pas de fallback possible sur un SESSION_ID  passé dans l'URL comme le fait par exemple PHP (il y a des apps pour ça, mais la pratique est considérée peu sécurisée de toute façon).
+
+Or, comme HTTP est stateless, les cookies sont échangés en permanence, on les reçoit par la requête, et on les envoit avec les réponses. Ajoutez à cela qu'un client peut choisir de désactiver le support de cookie, et vous avez là un merveilleux casse-tête.]]></description>
+				<content:encoded><![CDATA[<p>En Django les sessions utilisent des cookies, et il n&#8217;y a pas de fallback possible sur un SESSION_ID  passé dans l&#8217;URL comme le fait par exemple PHP (il y a des apps pour ça, mais la pratique est considérée peu sécurisée de toute façon).</p>
+<p>Or, comme HTTP est stateless, les cookies sont échangés en permanence, on les reçoit par la requête, et on les envoie avec les réponses. Ajoutez à cela qu&#8217;un client peut choisir de désactiver le support de cookie, et vous avez là un merveilleux casse-tête.</p>
+<p>Imaginez: vous vérifiez que l&#8217;utilisateur possède une valeur dans les cookies. Si ce n&#8217;est pas le cas, vous mettez la valeur dans le cookie et vous redirigez sur la page en cours. Ainsi, il retourne sur la même page, avec le cookie. Mais si il a les cookies désactivée, il va revenir sans le cookie, et vous allez le rediriger, encore, et encore.</p>
+<p>Et oui, on peut faire des boucles infinies avec HTTP !</p>
+<h2>Tester si les cookies sont disponibles</h2>
+<p>Le seul moyen de s&#8217;en sortir dans un site qui ne peut pas fonctionner sans cookie (ce qui est le cas de toute partie d&#8217;une site qui demande une authentification) est d&#8217;utiliser 3 vues.</p>
+<p>La vue normale qui demande une session, et donc un cookie.<br />
+La vue qui remplit la session avec les informations utiles (par exemple la vue d&#8217;authentification, ou autre).<br />
+La vue vers laquelle on renvoie si il n&#8217;y a pas de cookie (une page expliquant qu&#8217;il faut activer les cookies si on veut accéder à la partie authentifiée du site).</p>
+<p>Voilà à quoi ressemble le mécanisme dans sa plus simple expression:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">shortcuts</span> <span style="color: #ff7700;font-weight:bold;">import</span> redirect
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">http</span> <span style="color: #ff7700;font-weight:bold;">import</span> HttpResponse
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># '^nocookies/'</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> nocookies<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Page expliquant avec pédagogie que les cookies sont nécessaires
+        à l'accès à la partie authentifiée du site.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> HttpResponse<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Use cookies, you bastard'</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># '^setinfos/'</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> setinfos<span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> next<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Page qui vérifie si les cookies sont disponibles, et si oui, remplit
+        la session d'infos importantes, puis redirige vers la page précédente.
+&nbsp;
+        Si les cookies ne sont pas disponibles, on redirige vers la page
+        d'explication.
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On vérifie la présence du cookie de test</span>
+    <span style="color: #808080; font-style: italic;"># Il atteste que les cookies marchent</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> request.<span style="color: black;">session</span>.<span style="color: black;">test_cookie_worked</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/nocookies/'</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On nettoie le cookie de test, on va pas pourrir le navigateur du user :-)</span>
+    request.<span style="color: black;">session</span>.<span style="color: black;">delete_test_cookie</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># On met les infos en sessions</span>
+    request.<span style="color: black;">session</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'trucimportant'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'Super Important !'</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On redirige vers la page qui a redirigé vers cette page</span>
+    <span style="color: #808080; font-style: italic;"># Si la page précédente n'a pas précisé ou rediriger en querystring,</span>
+    <span style="color: #808080; font-style: italic;"># on redirige vers l’accueil</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span>request.<span style="color: black;">GET</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'next'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'/'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># /profile</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">profile</span><span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Page qui a besoin d'informations en session, et qui redirige vers
+        la page qui écrit ces infos en cas d'absence de celles-ci.
+    &quot;&quot;&quot;</span>
+&nbsp;
+    important <span style="color: #66cc66;">=</span> request.<span style="color: black;">session</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'trucimportant'</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">None</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> important:
+        <span style="color: #808080; font-style: italic;"># on met le cookie de test ici, car on veut vérifier sa présence</span>
+        <span style="color: #808080; font-style: italic;"># dans la prochaine vue</span>
+        request.<span style="color: black;">session</span>.<span style="color: black;">set_test_cookie</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># On redirige vers la vue qui met les infos dont on a besoin en session</span>
+        <span style="color: #808080; font-style: italic;"># en précisant vers où rediriger une fois les infos mises en place</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/setinfos/?next=%s'</span> % request.<span style="color: black;">get_full_path</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> HttpResponse<span style="color: black;">&#40;</span>important<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Pour la page pédagogique, ma technique favorite consiste à mettre une courte explication avec un lien vers <a href="http://support.google.com/accounts/bin/answer.py?hl=en&#038;answer=61416">la page que Google utilise</a> pour expliquer comment activer les cookies: cette page est à jour pour tous les browsers et est disponible dans de nombreuses langues (crédit à 37signals qui font ça pour le javascript). Je met aussi un lien vers la page qui set les infos en session avec l&#8217;URL de redirection en paramètre, car sinon l&#8217;utilisateur ne saura pas retourner à son point de départ. Le texte doit être court, clair, et pas perturbant.</p>
+<h2>Et dans un middleware&#8230;</h2>
+<p>Mais le plus fun, c&#8217;est quand on fait tout ça dans un middleware. Car on a pas le loisir d&#8217;avoir plusieurs vues avec lesquelles jouer. Que faire alors ? Et bien on va utiliser HTTP jusqu&#8217;au bout en stockant la sémantique dans les URLs, et en la récupérant directement dedans.</p>
+<p>C&#8217;est ce que je fais dans le middleware d&#8217;autologging de <a href="http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/">Django quicky</a>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> AutoLogNewUser<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+    CALLBACK <span style="color: #66cc66;">=</span> setting<span style="color: black;">&#40;</span><span style="color: #483d8b;">'AUTOLOGNEWUSER_CALLBAK'</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">None</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> process_request<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on arrive dans ce if seulement si on a détecté avant pas </span>
+        <span style="color: #808080; font-style: italic;"># de données dans la session et redirigé sur cette URL </span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #483d8b;">'django-quicky-test-cookie'</span> <span style="color: #ff7700;font-weight:bold;">in</span> request.<span style="color: black;">path</span>:
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># on check que le test cookie a marché, et sinon, on redirige</span>
+            <span style="color: #808080; font-style: italic;"># sur la page pédagogique</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> request.<span style="color: black;">session</span>.<span style="color: black;">test_cookie_worked</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+                <span style="color: #ff7700;font-weight:bold;">return</span> render<span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'django_quicky/no_cookies.html'</span><span style="color: #66cc66;">,</span>
+                              <span style="color: black;">&#123;</span><span style="color: #483d8b;">'next'</span>: request.<span style="color: black;">GET</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'next'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'/'</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+&nbsp;
+            request.<span style="color: black;">session</span>.<span style="color: black;">delete_test_cookie</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+            first_name <span style="color: #66cc66;">=</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>NameGenerator<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">title</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            username <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;%s%s&quot;</span> % <span style="color: black;">&#40;</span>first_name<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+            <span style="color: #dc143c;">user</span> <span style="color: #66cc66;">=</span> User.<span style="color: black;">objects</span>.<span style="color: black;">create</span><span style="color: black;">&#40;</span>username<span style="color: #66cc66;">=</span>username<span style="color: #66cc66;">,</span>
+                                       first_name<span style="color: #66cc66;">=</span>first_name<span style="color: black;">&#41;</span>
+            request.<span style="color: black;">session</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'django-quicky:user_id'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">user</span>.<span style="color: black;">pk</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># tout a bien marché, on redirige vers l'url précédente</span>
+            next <span style="color: #66cc66;">=</span> request.<span style="color: black;">GET</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'next'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'/'</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">CALLBACK</span>:
+                res <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">CALLBACK</span><span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span>res <span style="color: #ff7700;font-weight:bold;">or</span> next<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># ici is_authenticated() ne marche pas si pas de cookie</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> request.<span style="color: #dc143c;">user</span>.<span style="color: black;">is_authenticated</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+            user_id <span style="color: #66cc66;">=</span> request.<span style="color: black;">session</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'django-quicky:user_id'</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">None</span><span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># rien en session ? on redirige sur l'url test de cookie</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> user_id:
+&nbsp;
+                request.<span style="color: black;">session</span>.<span style="color: black;">set_test_cookie</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">return</span> redirect<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/django-quicky-test-cookie/?next=%s'</span> % request.<span style="color: black;">path</span><span style="color: black;">&#41;</span>
+&nbsp;
+            request.<span style="color: #dc143c;">user</span> <span style="color: #66cc66;">=</span> User.<span style="color: black;">objects</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>pk<span style="color: #66cc66;">=</span>user_id<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Et si on veut stocker tout ça dans des cookies, et pas en session ?</h2>
+<p>On est très tenté de faire un truc comme ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">request.<span style="color: black;">COOKIES</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'trucimportant'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'Super Important !'</span></pre></td></tr></table></div>
+
+<p>Mais ça ne peut plus marcher que de faire ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">request.<span style="color: black;">POST</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'trucimportant'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'Super Important !'</span></pre></td></tr></table></div>
+
+<p>En effet, les cookies sont justes des infos qu&#8217;on s&#8217;envoie. Il n&#8217;y a pas de lien entre ceux qu&#8217;on reçoit et ceux qu&#8217;on envoie, et là on écrit dans le dictionnaire de ceux qu&#8217;on reçoit.</p>
+<p>Donc pour envoyer un cookie, il faut le faire dans la réponse:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">response <span style="color: #66cc66;">=</span> render_to_response<span style="color: black;">&#40;</span>...<span style="color: black;">&#41;</span>
+response.<span style="color: black;">set_cookie</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;trucimportant&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Super Important !'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">return</span> response</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/cookies-sessions-et-redirections-dans-un-middleware-django/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/600-pony_cookies_3.jpg" length="150823" type="image/jpg" />	</item>
+	</channel>
+</rss>

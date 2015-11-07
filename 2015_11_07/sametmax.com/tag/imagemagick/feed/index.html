@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; imagemagick</title>
+	<atom:link href="http://sametmax.com/tag/imagemagick/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Pour vos thumbnails, ImageMagick à la rescousse 24</title>
+		<link>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/</link>
+		<comments>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/#comments</comments>
+		<pubDate>Sun, 01 Dec 2013 08:11:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[image]]></category>
+		<category><![CDATA[imagemagick]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[thumbnails]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8141</guid>
+		<description><![CDATA[<a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d'images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu'appeler la lib avec un bon subprocess était simplement plus rapide et donnait des résultats de meilleure qualité que d'utiliser PIL en Python ou GD en PHP.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://www.imagemagick.org/">ImageMagick</a> est la solution de manipulation d&#8217;images la plus souple et versatile à disposition. Après pas mal de tests, Max en avait conclu qu&#8217;appeler la lib avec un bon <a href="http://docs.python.org/2/library/subprocess.html">subprocess</a> était simplement plus rapide et donnait des résultats de meilleure qualité que d&#8217;utiliser PIL en Python ou GD en PHP.</p>
+<p>Et je peux vous dire qu&#8217;il en a fait des tests pour obtenir le thumbnail des nichons parfait. C&#8217;est un perfectionniste quand il s&#8217;agit des tétons.</p>
+<p>En général, on trouve ImageMagick dans les dépôts. Par exemple, sous debian :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> imagemagick</pre></td></tr></table></div>
+
+<p>Mais il n&#8217;est pas rare que Max compile la bête histoire d&#8217;avoir la même version partout :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">wget</span> http:<span style="color: #000000; font-weight: bold;">//</span>mirror.checkdomain.de<span style="color: #000000; font-weight: bold;">/</span>imagemagick<span style="color: #000000; font-weight: bold;">/</span>ImageMagick-6.8.7-<span style="color: #000000;">4</span>.tar.gz ; <span style="color: #c20cb9; font-weight: bold;">tar</span> <span style="color: #660033;">-xvf</span> ImageMagick-6.8.7-<span style="color: #000000;">4</span>.tar.gz ; <span style="color: #7a0874; font-weight: bold;">cd</span> ImageMagick-6.8.7-<span style="color: #000000;">4</span>
+.<span style="color: #000000; font-weight: bold;">/</span>configure
+<span style="color: #c20cb9; font-weight: bold;">make</span> <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> <span style="color: #c20cb9; font-weight: bold;">make</span> <span style="color: #c20cb9; font-weight: bold;">install</span>
+<span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>convert <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>convert
+<span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>identify <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>identify</pre></td></tr></table></div>
+
+<p>Après tout ça, vous aurez accès à plusieurs commandes, qui permettent des manipulations d&#8217;images diverses.</p>
+<p>Par exemple, <code>identify</code> permet de récupérer des informations sur l&#8217;image telles que le format, la profondeur des couleurs&#8230; Nous on l&#8217;utilise surtout pour récupérer la taille :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">identify <span style="color: #660033;">-format</span> <span style="color: #ff0000;">&quot;%[fx:w],%[fx:h]&quot;</span> <span style="color: #ff0000;">&quot;chemin/vers/image&quot;</span></pre></td></tr></table></div>
+
+<p>On peut utiliser un wrapper tel que <a href="http://docs.wand-py.org">wand</a> pour utiliser ça depuis Python. Mais il est très facile de se faire un wrapper vite fait à la main :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> envoy
+<span style="color: #ff7700;font-weight:bold;">from</span> minibelt <span style="color: #ff7700;font-weight:bold;">import</span> normalize
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ImageMagicError<span style="color: black;">&#40;</span><span style="color: #008000;">Exception</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> result<span style="color: #66cc66;">,</span> encoding<span style="color: black;">&#41;</span>:
+        msg <span style="color: #66cc66;">=</span> normalize<span style="color: black;">&#40;</span>result.<span style="color: black;">std_err</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span>encoding<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>ImageMagicError<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>msg<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> size<span style="color: black;">&#40;</span>img<span style="color: #66cc66;">,</span> encoding<span style="color: #66cc66;">=</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">encoding</span><span style="color: black;">&#41;</span>:
+    r <span style="color: #66cc66;">=</span> envoy.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'identify -format &quot;%[fx:w],%[fx:h]&quot; &quot;{}&quot;'</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>img<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> r.<span style="color: black;">status_code</span> <span style="color: #66cc66;">!=</span> <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> ImageMagicError<span style="color: black;">&#40;</span>r<span style="color: #66cc66;">,</span> encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    w<span style="color: #66cc66;">,</span> h <span style="color: #66cc66;">=</span> r.<span style="color: black;">std_out</span>.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">','</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>w<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>h<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Notez que j&#8217;utilise <a href="https://github.com/sametmax/minibelt">minibelt</a> et <a href="https://github.com/kennethreitz/envoy/">envoy</a> (un wrapper pour subprocess), car je suis une grosse feignasse.</p>
+<p>Pour faire un thumbnail, la recette est plus compliquée, car ImageMagick est à l&#8217;image, ce que Perl est à la programmation. There’s_more_than_one_way_to_do_it ©.</p>
+<p>Au final, celui qui nous a donné le meilleur résultat en qualité est cette suite d&#8217;arcanes secrètes transmise d&#8217;oreille de druide à oreille de druide :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">convert chemin<span style="color: #000000; font-weight: bold;">/</span>image<span style="color: #000000; font-weight: bold;">/</span>originale <span style="color: #660033;">-thumbnail</span> largeurxhauteur^ <span style="color: #660033;">-gravity</span> center <span style="color: #660033;">-extent</span> largeurxhauteur <span style="color: #660033;">-quality</span> <span style="color: #000000;">80</span> chemin<span style="color: #000000; font-weight: bold;">/</span>vers<span style="color: #000000; font-weight: bold;">/</span>resultat.jpg</pre></td></tr></table></div>
+
+<p>Ceci va redimensionner l&#8217;image en conservant le ratio, et si le résultat n&#8217;est pas adaptée aux dimensions finales, va en découper une partie tout en préservant le centre de l&#8217;image. La sortie sera un jpg avec un taux de qualité de 80%.</p>
+<p>Là encore, un petit wrapper ne fait pas de mal :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> thumb<span style="color: black;">&#40;</span>img<span style="color: #66cc66;">,</span> width<span style="color: #66cc66;">,</span> heigth<span style="color: #66cc66;">,</span> output<span style="color: #66cc66;">,</span> crop<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> encoding<span style="color: #66cc66;">=</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>.<span style="color: black;">encoding</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> crop:
+        <span style="color: #ff7700;font-weight:bold;">if</span> crop <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">True</span>:
+            crop <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'center'</span>
+        crop <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;-gravity {} -extent {}x{}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>crop<span style="color: #66cc66;">,</span> width<span style="color: #66cc66;">,</span> heigth<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        crop <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">''</span>
+&nbsp;
+    <span style="color: #dc143c;">cmd</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;convert {img} -thumbnail {width}x{heigth}^ {crop} -quality 80 {output}&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>
+          img<span style="color: #66cc66;">=</span>img<span style="color: #66cc66;">,</span> width<span style="color: #66cc66;">=</span>width<span style="color: #66cc66;">,</span> heigth<span style="color: #66cc66;">=</span>heigth<span style="color: #66cc66;">,</span> crop<span style="color: #66cc66;">=</span>crop<span style="color: #66cc66;">,</span> output<span style="color: #66cc66;">=</span>output<span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#41;</span>
+&nbsp;
+    r <span style="color: #66cc66;">=</span>  envoy.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">cmd</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> r.<span style="color: black;">status_code</span> <span style="color: #66cc66;">!=</span> <span style="color: #ff4500;">0</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> ImageMagicError<span style="color: black;">&#40;</span>r<span style="color: #66cc66;">,</span> encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> r</pre></td></tr></table></div>
+
+<p>Bref, ce genre de petit bricolage est loin d&#8217;être propre, mais il s&#8217;est montré fort robuste et efficace au fil des années. Quand on fait des dizaines de milliers de screenshots de films de cul tous les jours, c&#8217;est important :-)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pour-vos-thumbnails-imagemagick-a-la-rescousse/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/O0BuGUt.jpg" length="61903" type="image/jpg" />	</item>
+	</channel>
+</rss>

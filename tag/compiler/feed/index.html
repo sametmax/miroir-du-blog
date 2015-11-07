@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; compiler</title>
+	<atom:link href="http://sametmax.com/tag/compiler/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Embeder Python dans du C ou C++ 6</title>
+		<link>http://sametmax.com/embeder-python-dans-du-c-ou-c/</link>
+		<comments>http://sametmax.com/embeder-python-dans-du-c-ou-c/#comments</comments>
+		<pubDate>Wed, 14 Jan 2015 03:21:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[compiler]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15727</guid>
+		<description><![CDATA[L'implémentation de référence de Python est écrite en C, et son API est exposée et bien <a href="https://docs.python.org/2/c-api/">documentée</a>. Il est donc possible de créer des objets Python, charger un module Python ou exécuter une fonction Python depuis un code C et compiler tout ça.]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;implémentation de référence de Python est écrite en C, et son API est exposée et bien <a href="https://docs.python.org/2/c-api/">documentée</a>. Il est donc possible de créer des objets Python, charger un module Python ou exécuter une fonction Python depuis un code C/C++ et compiler tout ça.</p>
+<p>Mettons que j&#8217;ai dans un fichier <code>biblio.py</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> yolo<span style="color: black;">&#40;</span>arg<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> arg.<span style="color: black;">upper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' !!'</span></pre></td></tr></table></div>
+
+<p>Je peux écrire un fichier <code>prog.c</code> qui l&#8217;utilise :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="c" style="font-family:monospace;"><span style="color: #339933;">#include &lt;Python.h&gt;</span>
+&nbsp;
+<span style="color: #993333;">int</span> main <span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #666666; font-style: italic;">// PyObject est un wrapper Python autour des objets qu'on</span>
+    <span style="color: #666666; font-style: italic;">// va échanger enter le C et Python.</span>
+    PyObject <span style="color: #339933;">*</span>retour<span style="color: #339933;">,</span> <span style="color: #339933;">*</span>module<span style="color: #339933;">,</span> <span style="color: #339933;">*</span>fonction<span style="color: #339933;">,</span> <span style="color: #339933;">*</span>arguments<span style="color: #339933;">;</span>
+    <span style="color: #993333;">char</span> <span style="color: #339933;">*</span>resultat<span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// Initialisation de l'interpréteur. A cause du GIL, on ne peut</span>
+    <span style="color: #666666; font-style: italic;">// avoir qu'une instance de celui-ci à la fois.</span>
+    Py_Initialize<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>   
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// Import du script. </span>
+    PySys_SetPath<span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;.&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// Le dossier en cours n'est pas dans le PYTHON PATH</span>
+    module <span style="color: #339933;">=</span> PyImport_ImportModule<span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;biblio&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// Récupération de la fonction</span>
+    fonction <span style="color: #339933;">=</span> PyObject_GetAttrString<span style="color: #009900;">&#40;</span>module<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;yolo&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// Création d'un PyObject de type string. Py_BuildValue peut créer</span>
+    <span style="color: #666666; font-style: italic;">// tous les types de base Python. Voir :</span>
+    <span style="color: #666666; font-style: italic;">// https://docs.python.org/2/c-api/arg.html#c.Py_BuildValue</span>
+    arguments <span style="color: #339933;">=</span> Py_BuildValue<span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;(s)&quot;</span><span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;Leroy Jenkins&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// Appel de la fonction.</span>
+    retour <span style="color: #339933;">=</span> PyEval_CallObject<span style="color: #009900;">&#40;</span>fonction<span style="color: #339933;">,</span> arguments<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// Conversion du PyObject obtenu en string C</span>
+    PyArg_Parse<span style="color: #009900;">&#40;</span>retour<span style="color: #339933;">,</span> <span style="color: #ff0000;">&quot;s&quot;</span><span style="color: #339933;">,</span> <span style="color: #339933;">&amp;</span>resultat<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #000066;">printf</span><span style="color: #009900;">&#40;</span><span style="color: #ff0000;">&quot;Resultat: %s<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">,</span> resultat<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #666666; font-style: italic;">// On ferme cet interpréteur.</span>
+    Py_Finalize<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> 
+    <span style="color: #b1b100;">return</span> <span style="color: #0000dd;">0</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Là je mets du C, mais la seule vraie différence avec du C++, c&#8217;est qu&#8217;on aurait <code>cout</code> au lieu de <code>printf</code>.</p>
+<p>Pour compiler tout ça, il faut les headers Python et un compilateur. Sous Ubuntu, c&#8217;est un simple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> python-dev <span style="color: #c20cb9; font-weight: bold;">gcc</span></pre></td></tr></table></div>
+
+<p>Et on a tout nos <code>.h</code> dans /usr/include/python2.7. On gccise :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">gcc</span> -I<span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>include<span style="color: #000000; font-weight: bold;">/</span>python2.7 prog.c -lpython2.7 <span style="color: #660033;">-o</span> prog <span style="color: #660033;">-Wall</span>  <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> .<span style="color: #000000; font-weight: bold;">/</span>prog</pre></td></tr></table></div>
+
+<p>Même pas un warning, c&#8217;est beau.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>prog
+Resultat: LEROY JENKINS <span style="color: #000000; font-weight: bold;">!!</span></pre></td></tr></table></div>
+
+<p>C&#8217;est un exemple simple, mais comme vous le savez je suis une grosse burne en C, donc je ne pourrai pas porter l&#8217;expérience plus loin.</p>
+<p>Je ne le recommande pas pour rendre votre programme scriptable en Python. Il <a href="http://twistedmatrix.com/users/glyph/rant/extendit.html">vaut mieux</a> permettre à Python d&#8217;appeler votre code C dans ce cas. Des outils comme <a href="https://cffi.readthedocs.org/en/release-0.8/">cffi</a> rendent cela beaucoup plus facile et rentable que tout faire tout le taff à la main. D&#8217;ailleurs si quelqu&#8217;un est chaud pour faire un tuto sur cffi&#8230;</p>
+<p>Non, c&#8217;est plus dans le cas où vous avez un programme C, un programme Python, et votre programme C veut utiliser le programme Python sans avoir à tout réécrire. Ou pour le cas où vous avez décidé d&#8217;écrire une grosse partie de votre programme en Python pour profiter de sa productivité, mais que vous ne pouvez pas installer Python sur la machine sur laquelle vous aller installer le programme. Bon, y a <a href="https://github.com/pyinstaller/pyinstaller/wiki">PyInstaller</a> et <a href="http://nuitka.net/">Nuitka</a> pour ça également hein, donc tentez avant de tout embeder comme un bourrin.</p>
+<p>Ça reste intéressant de voir les entrailles de CPython et à quel point il joue bien avec les langages bas niveaux.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/embeder-python-dans-du-c-ou-c/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/tumblr_mv7qein3JN1r539hzo1_400.jpg" length="64870" type="image/jpg" />	</item>
+	</channel>
+</rss>

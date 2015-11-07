@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; nodejs</title>
+	<atom:link href="http://sametmax.com/tag/nodejs/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Quelle est la différence entre &#8220;bloquer&#8221; et &#8220;en cours d&#8217;exécution&#8221; ? 9</title>
+		<link>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/</link>
+		<comments>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/#comments</comments>
+		<pubDate>Tue, 09 Dec 2014 16:57:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[nodejs]]></category>
+		<category><![CDATA[non-blocking]]></category>
+		<category><![CDATA[tornado]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12766</guid>
+		<description><![CDATA[On vous dis qu'il faut faire attention en utilisant des technologies non bloquantes, car si on bloque dans la boucle d'événement, on bloque tout le programme, et on perd l’intérêt de l'outil.
+
+C'est vrai, mais que veut dire "bloquer" ?]]></description>
+				<content:encoded><![CDATA[<p>On vous dit qu&#8217;il faut faire attention en utilisant des technologies non bloquantes, car si on bloque dans la boucle d&#8217;événement, on bloque tout le programme, et on perd l’intérêt de l&#8217;outil.</p>
+<p>C&#8217;est vrai, mais que veut dire &#8220;bloquer&#8221; ?</p>
+<p>Car si je fais :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1000000</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mon programme va tourner longtemps, et la boucle d’événement va bloquer, n&#8217;est-ce pas ?</p>
+<p>En fait, &#8220;bloquer&#8221; est un abus de langage car il y a plusieurs raisons pour bloquer. Dans notre contexte, il faudrait dire &#8220;bloquer en attente d&#8217;une entrée ou d&#8217;une sortie&#8221;. D&#8217;où l&#8217;appellation &#8220;Aynschronous non blocking I/O&#8221; des technos types NodeJS, Twisted, Tornado, Gevent, etc.</p>
+<p>En effet, il faut distinguer deux causes d&#8217;attente à votre programme :</p>
+<ul>
+<li>Attendre que vos instructions se terminent. C&#8217;est être &#8220;en cours d&#8217;exécution&#8221;.</li>
+<li>Attendre qu&#8217;un événement extérieur (écrire sur le disque, lire une socket, un clic de souris) arrive à sa conclusion. C&#8217;est bloquer sur de l&#8217;I/O.</li>
+</ul>
+<p>Le premier cas est impossible à éviter. Tout au mieux pouvons-nous répartir la charge du programme sur plusieurs cœurs, processeurs voire machines. Le code devra toujours attendre qu&#8217;il se termine, mais ça ira plus vite.</p>
+<p>Dans le contexte de la programmation non bloquante telle qu&#8217;on vous en a parlé, on est donc dans le deuxième cas.</p>
+<p>Il ne s&#8217;agit alors pas de s&#8217;interdire de faire des boucles ou autre opération longue (ou plutôt, c&#8217;est un problème d&#8217;optimisation ordinaire qui n&#8217;a rien à voir avec le fait de bloquer), il s&#8217;agit de ne pas &#8220;attendre à ne rien faire&#8221; quand une opération extérieure est en cours.</p>
+<p>C&#8217;est ce que font naturellement NodeJS, Twisted, Tornado, Gevent &amp; Co. Quand on fait un échange HTTP, le bout de données part, puis le reste du code continue de tourner, passant à la tâche suivante, en attendant que le paquet traverse le réseau, atteigne l&#8217;autre machine, qui vous répond finalement. C&#8217;est ce temps, incompressible, sans contrôle de votre côté, durant lequel il ne faut pas bloquer. Le gain de perf est que votre programme ne se la touche pas pendant les temps d&#8217;attente, mais bien entendu que VOTRE, lui, code va prendre du temps et &#8220;bloquer&#8221; le processeur. Il faut bien qu&#8217;il s&#8217;exécute.</p>
+<p>Ce qu&#8217;on entend donc par &#8220;il ne faut pas faire d&#8217;opération bloquante dans un code qui est déjà non bloquant&#8221; c&#8217;est &#8220;il ne faut pas utiliser un outil à l&#8217;API bloquante au milieu d&#8217;autres outils non bloquants&#8221;.</p>
+<p>Par exemple, n&#8217;utilisez pas <a href="http://docs.python-requests.org/en/latest/">requests</a> avec Twisted, car requests est codé pour attendre sans rien faire jusqu’à obtenir une réponse à chaque requête, bloquant Twisted. Utilisez plutôt <a href="http://treq.readthedocs.org/en/latest/">treq</a>. C&#8217;est pareil pour la lecture d&#8217;un fichier, une requête de base de données, etc. Et il existe des boucles d&#8217;événements ailleurs que sur le serveur : une page Web possède sa propre boucle (c&#8217;est pour cela que tout JS est asynchrone), un toolkit GUI comme QT ou GTK aussi (c&#8217;est pour ça qu&#8217;ils utilisent la programmation événementielle), etc.</p>
+<p>Maintenant vous allez me dire : mais pourquoi bloquer alors ? Pourquoi ne pas toujours éviter de bloquer ?</p>
+<p>Et bien parce que si on ne bloque pas, on ne peut pas écrire un programme ligne à ligne. On est obligé d&#8217;adopter un style de programmation asynchrone puisqu&#8217;on ne sait pas quand le résultat de certaines lignes va arriver. Ça veut dire des callbacks, ou des futures, ou des coroutines, ou du message passing&#8230; Bref, un truc plus compliqué. Or, on n&#8217;a pas forcément besoin de ce niveau de performance. En fait, la grande majorité des programmes n&#8217;ont pas besoin de ce niveau de performance. Donc, on bloque en attendant, non pas Godot, mais l&#8217;I/O, parce que c&#8217;est plus simple à écrire. Pour pas se faire chier.</p>
+<p>Il y a bien des moyens de contourner ce problème : les threads, le multiprocessing, les coroutines, etc. Parfois même, on ignore le problème : bloquer quelques ms au milieu d&#8217;une boucle d’événements une fois par seconde n&#8217;est pas un drame. Une fois que j&#8217;ai fini le dossier sur les tests unitaires, je vous ferai un dossier sur la programmation non bloquante, avec aussi une esquisse de la parallélisation.</p>
+<p>En attendant, ne stressez pas parce que votre code &#8220;bloque&#8221; parce qu&#8217;il travaille longtemps, assurez-vous juste que les APIs que vous utilisez ne bloquent pas pendant l&#8217;I/O, et vous êtes ok.</p>
+<p>Et comment savoir ? Et bien si une donnée rentre ou sort de votre programme (ça ne fait pas partie du code source), c&#8217;est de l&#8217;I/O. Si votre code ressemble à ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">res <span style="color: #66cc66;">=</span> faire_operation_sur_IO<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+faire_un_truc_avec_le_res<span style="color: black;">&#40;</span>res<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Alors votre outil est bloquant, puisque qu&#8217;il compte sur le fait que la deuxième ligne sera exécutée à coup sûr quand la première sera terminée. Un outil non bloquant exigera quelque chose pour gérer le retour du résultat plus tard: un callback, une promesse, un <code>yield</code>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/12/nNFWiX7.jpg" length="24792" type="image/jpg" />	</item>
+		<item>
+		<title>Crossbar, le futur des applications Web Python ? 32</title>
+		<link>http://sametmax.com/crossbar-le-futur-des-applications-web-python/</link>
+		<comments>http://sametmax.com/crossbar-le-futur-des-applications-web-python/#comments</comments>
+		<pubDate>Sun, 25 May 2014 10:24:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[crossbar.io]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[nodejs]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+		<category><![CDATA[wamp]]></category>
+		<category><![CDATA[websocket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10329</guid>
+		<description><![CDATA[Je suis <a href="http://crossbar.io/">crossbar.io</a> depuis quelques temps maintenant, et je suis très, très étonné de ne pas plus en entendre parler dans la communauté Python.]]></description>
+				<content:encoded><![CDATA[<p>Je suis <a href="http://crossbar.io/">crossbar.io</a> depuis quelques temps maintenant, et je suis très, très étonné de ne pas plus en entendre parler dans la communauté Python.</p>
+<p>Bon, en fait, à moitié étonné.</p>
+<p>D&#8217;un côté, c&#8217;est une techno qui, à mon sens, représente ce vers quoi Python doit se diriger pour faire copain-copain avec Go/NodeJs et proposer une &#8220;killer feature&#8221; dans le monde des applications serveurs complexes.</p>
+<p>De l&#8217;autre, hum, leur page d&#8217;accueil explique à quoi ça sert de cette manière :</p>
+<blockquote><p>Crossbar.io is an application router which implements the Web Application Messaging Protocol (WAMP). WAMP provides asynchronous Remote Procedure Calls and Publish &amp; Subscribe (with <a title="WebSocket" href="http://fr.wikipedia.org/wiki/WebSocket" target="_blank">WebSocket</a> being one transport option) and allows to connect application components in distributed systems</p></blockquote>
+<p>Moui, moui, moui monseigneur, mais concrètement, là, hein, je peux faire quoi avec ?</p>
+<p>C&#8217;est toujours le problème avec les gens intelligents (hein Cortex ?) : ils font des trucs super cool, et personne ne comprend à quoi ça sert parce qu&#8217;il ne sont pas foutus de l&#8217;expliquer.</p>
+<p>Moi je suis un peu con, alors je vais profiter qu&#8217;on soit tous au même niveau pour vous faire passer le message.</p>
+<p>J&#8217;étais persuadé d&#8217;avoir mis la musique habituelle&#8230; Je la remets :</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/v3ckHzJgw4k?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Web Application Message Protocol</h2>
+<p>Je vous avais parlé d&#8217;<a href="http://sametmax.com/un-petit-gout-de-meteor-js-en-python/">autobahn</a> dernièrement, un client WAMP qui embarque aussi un routeur basique. Crossbar est la partie serveur, un routeur WAMP plus sérieux.</p>
+<p>Crossbar permet à tous les clients d&#8217;échanger des messages WAMP à travers lui. Bien entendu, un client WAMP peut parler au serveur Crossbar et inversement comme un client HTTP peut parler à un serveur Apache/Nginx et inversement. Mais plus que ça, <strong>les clients peuvent parler entre eux, de manière transparente et simple.</strong> Comme un client <a title="Advanced Message Queuing Protocol" href="http://fr.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol" target="_blank">AMQP</a> peut parler aux autres à travers un serveur <a title="RabbitMQ" href="http://en.wikipedia.org/wiki/RabbitMQ" target="_blank">RabbitMQ</a>.</p>
+<p>Cependant ça ne vous avance pas si vous ne savez pas ce qu&#8217;est WAMP ou à quoi ça sert. La charrue avec la peau de l&#8217;ours, tout ça.</p>
+<p>WAMP est un <a href="http://wamp.ws/spec/">protocole standardisé</a> pour échanger des messages entre deux systèmes. Ce n&#8217;est pas particulièrement lié à Python, on peut parler <strong>WAMP dans n&#8217;importe quel langage.</strong></p>
+<p>Il fonctionne en effet, principalement, au dessus de Websocket, donc <strong>on peut l&#8217;utiliser directement dans le navigateur</strong>, dans Firefox, Chrome, Opera, Safari et même IE10, via une lib Javascript. Qui est en fait juste un gros wrapper autour de l&#8217;API websocket standardisant la manière d&#8217;envoyer des données. Il n&#8217;y a rien de magique derrière, pas de formats compliqués, pas de binaire, c&#8217;est vraiment juste des appels websocket contenant des données formatées en JSON avec une certaine convention. <strong>En ce sens il fait penser à <a title="sockjs" href="http://fr.slideshare.net/ngocdaothanh/sockjs-intro" target="_blank">SockJS</a></strong> et (feu) socket.io.</p>
+<p>Seulement contrairement aux solutions type SocketJS, <strong>il n&#8217;est pas limité au navigateur</strong>. Il y a <a href="http://wamp.ws/implementations/">des libs</a> pour l&#8217;utiliser dans un code serveur Python, C++ ou NodeJS, dans une app Android et même directement depuis les entrailles de Nginx ou d&#8217;une base de données Oracle (en SQL) avec certains routeurs.</p>
+<div id="attachment_10340" style="width: 567px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/general1.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10340" title="Comme HTTP, WAMP est juste un moyen de faire parvenir des données d'un point A à un point B. Mais contrairement à HTTP, WAMP permet aux clients de parler entre eux, et pas juste au serveur." src="http://sametmax.com/wp-content/uploads/2014/05/general.png" alt="Schéma général du fonctionnement de WAMP" width="557" height="538" /></a><p class="wp-caption-text">Comme HTTP, WAMP est juste un moyen de faire parvenir des données d&#8217;un point A à un point B. Mais contrairement à HTTP, WAMP permet aux clients de parler entre eux, et pas juste au serveur.</p></div>
+<p><strong>Comprenez bien, ça veut dire qu&#8217;on peut envoyer et recevoir des données arbitraires, en temps réel, entre tous ces systèmes, sans se prendre la tête, et de manière transparente.</strong></p>
+<p>WAMP c&#8217;est donc comme, mais mieux que :</p>
+<ul>
+<li>des requêtes HTTP, car c&#8217;est du push, asynchrone et temps réel;</li>
+<li>des requêtes websocket via SocketJS car c&#8217;est un standard, qui fonctionne SUR et ENTRE plusieurs services côté serveurs malgré les différents langages;</li>
+<li>des messages AMQP car ça marche dans le navigateur et ça se configure facilement.</li>
+</ul>
+<p>Bien utilisé, Crossbar permet d&#8217;amener Python dans la cour de frameworks &#8220;temps réel&#8221; novateurs comme <a title="Meteor" href="http://fr.wikipedia.org/wiki/Meteor_(framework)" target="_blank">MeteorJS</a>, et potentiellement les dépasser.</p>
+<p>Car WAMP permet de faire deux choses. Simplement. Et bien.</p>
+<h3>1 &#8211; Du PUB/SUB</h3>
+<p>Donc de dire dans son code &#8220;appelle cette fonction quand cet événement arrive&#8221;. <strong>C&#8217;est comme les signaux de Django ou QT, mais ça marche à travers le réseau.</strong> On le fait souvent avec Redis ces temps-ci. Avec WAMP et Javascript, ça donne :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #006600; font-style: italic;">// connection au routeur WAMP (par exemple, crossbar.io)</span>
+ab.<span style="color: #660066;">connect</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;ws://localhost:9000&quot;</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #006600; font-style: italic;">// je m'inscris à un événement</span>
+    session.<span style="color: #660066;">subscribe</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'un_evenement_qui_vous_plait'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>topic<span style="color: #339933;">,</span> evt<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+        <span style="color: #006600; font-style: italic;">// faire un truc avec les données reçues</span>
+        <span style="color: #006600; font-style: italic;">// à chaque fois que l'événement est envoyé</span>
+        <span style="color: #006600; font-style: italic;">// par exemple mettre la page à jour</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<div id="attachment_10343" style="width: 571px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/sub.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10343" title="Des client SUBscribe à un événément. Un événément est un nom arbitrairement choisit par le programmeur, et qu'il va déclencher lui-même quand il pense qu'il se passe quelque chose d'important auquel il faut que le reste du signal réagisse. " src="http://sametmax.com/wp-content/uploads/2014/05/sub.png" alt="Schéma de fonctionnement du subscribe de WAMP" width="561" height="572" /></a><p class="wp-caption-text">Des client SUBscribe à un événément. Un événément est un nom arbitrairement choisit par le programmeur, et qu&#8217;il va déclencher lui-même quand il pense qu&#8217;il se passe quelque chose d&#8217;important auquel il faut que le reste du signal réagisse.</p></div>
+<p>Et ailleurs, dans une autre partie du fichier, ou même sur un autre navigateur Web :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">ab.<span style="color: #660066;">connect</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;ws://localhost:9000&quot;</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #006600; font-style: italic;">// création d'un événement auquel on attache des données</span>
+    session.<span style="color: #660066;">publish</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'un_evenement_qui_vous_plait'</span><span style="color: #339933;">,</span> <span style="color: #009900;">&#91;</span><span style="color: #3366CC;">'des données'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<div id="attachment_10344" style="width: 565px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/pub.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10344" title="Le programmeur décide que quelque chose d'important arrive (création d'un contenu, login d'un utilisateur, notification), et PUBlish l'événement" src="http://sametmax.com/wp-content/uploads/2014/05/pub.png" alt="Schéma de fonctionnement de PUB avec WAMP" width="555" height="452" /></a><p class="wp-caption-text">Le programmeur décide que quelque chose d&#8217;important arrive (création d&#8217;un contenu, login d&#8217;un utilisateur, notification), et PUBlish l&#8217;événement</p></div>
+<p>Et oui, c&#8217;est tout. On se connecte à crossbar, et on discute. La fonction du <code>subscribe</code> sera alors appelée avec les données du <code>publish</code>. Même si il y a 3000 km entre les deux codes. Même si le code A est sur un navigateur et le B sur un autre, ou sur un serveur NodeJS, ou une app Android.</p>
+<p>Ce qui fait peur au début, c&#8217;est qu&#8217;il y a TROP de flexibilité :</p>
+<ul>
+<li>Je dois attendre quoi comme événements ?</li>
+<li>Qu&#8217;est-ce que je passe comme données ?</li>
+<li>Est-ce que c&#8217;est rapide ? Léger ?</li>
+</ul>
+<p>Mais en fait c&#8217;est super simple : un événement c&#8217;est juste une action de votre application comme un élément (un post, un commentaire, un utilisateur&#8230;) ajouté, supprimé ou modifié. Finalement c&#8217;est le bon vieux <a title="CRUD" href="http://fr.wikipedia.org/wiki/CRUD" target="_blank">CRUD</a>, mais en temps réel, et en push, au lieu du pull. Vous choisissez un nom qui représente cette action, vous attachez des données à ce nom, voilà, c&#8217;est un événement que tous les abonnés peuvent recevoir.</p>
+<p>Avec un bonus : ça marche sur le serveur aussi ! Votre code Python reçoit &#8220;ajouter un commentaire&#8221; comme événement ? Il peut ajouter le commentaire en base de données, envoyer un message à un service de cache ou à un autre site en NodeJS pour le mettre à jour, renvoyer un événement pour mettre à jour les pages Web et l&#8217;app Android, etc.</p>
+<p>On peut passer n&#8217;importe quelles données qui peut se JSONiser. En gros n&#8217;importe quoi qu&#8217;on enverrait via HTTP. Donc des données très structurées, imbriquées et complexes comme des données géographiques, ou très simples comme des notifications</p>
+<p><strong>Avec PUB / SUB, WAMP remplace tout ce qu&#8217;on ferait normalement avec des appels AJAX dans le browser, et tout ce qu&#8217;on ferait avec des files de message côté serveur. </strong>Plus puissant encore, il permet de relier ces deux mondes.</p>
+<p>Et même si on atteint pas les perfs de <a title="ZeroMQ" href="http://en.wikipedia.org/wiki/%C3%98MQ" target="_blank">ZeroMQ</a> (qui n&#8217;a pas de serveur central), c&#8217;est très <a href="https://into.aalto.fi/download/attachments/12324178/Huang_Fuguo_thesis_2.pdf?version=1&amp;modificationDate=1383290628000">performant et léger</a>.</p>
+<h3>2 &#8211; Du RPC</h3>
+<p>Appeler une fonction située ailleurs que dans son code. C&#8217;est vieux comme le monde (si vous avez des souvenirs douloureux de CORBA et SOAP, levez la main), et c&#8217;est extrêmement pratique. Pour faire simple, continuons avec un exemple en Javascript, mais rappelez-vous que ça marche pareil en C++ ou Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">ab.<span style="color: #660066;">connect</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;ws://localhost:9000&quot;</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+   <span style="color: #000066; font-weight: bold;">function</span> une_fonction<span style="color: #009900;">&#40;</span>a<span style="color: #339933;">,</span> b<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+      <span style="color: #000066; font-weight: bold;">return</span> a <span style="color: #339933;">+</span> b<span style="color: #339933;">;</span>
+   <span style="color: #009900;">&#125;</span>
+   <span style="color: #006600; font-style: italic;">// on déclare que cette fonction est appelable à distance</span>
+   session.<span style="color: #660066;">register</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'une_fonction'</span><span style="color: #339933;">,</span> une_fonction<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<div id="attachment_10347" style="width: 575px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/register1.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class=" wp-image-10347" title="RPC marche à l'envers de PUB/SUB. Un client expose du code, et un autre demande explicitement qu'il soit exécuté." src="http://sametmax.com/wp-content/uploads/2014/05/register.png" alt="Schéma expliquant register avec WAMP" width="565" height="470" /></a><p class="wp-caption-text">RPC marche à l&#8217;envers de PUB/SUB. Un client expose du code, et un autre demande explicitement qu&#8217;il soit exécuté.</p></div>
+<p>Côté appelant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">ab.<span style="color: #660066;">connect</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">&quot;ws://localhost:9000&quot;</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #006600; font-style: italic;">// on appelle la fonction à distance, on récupère une</span>
+    <span style="color: #006600; font-style: italic;">// promise qui nous permet de travailler sur le résultat</span>
+   session.<span style="color: #660066;">call</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'une_fonction'</span><span style="color: #339933;">,</span> <span style="color: #CC0000;">2</span><span style="color: #339933;">,</span> <span style="color: #CC0000;">3</span><span style="color: #009900;">&#41;</span>.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span>
+      <span style="color: #000066; font-weight: bold;">function</span> <span style="color: #009900;">&#40;</span>res<span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+         console.<span style="color: #660066;">log</span><span style="color: #009900;">&#40;</span>res<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+      <span style="color: #009900;">&#125;</span>
+   <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<div id="attachment_10348" style="width: 552px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/call.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10348" title="Contrairement à PUB/SUB, RPC ne concerne que deux clients à la fois. Mais ça reste asynchrone. Le client demandeur n'attend pas le résultat de l'appel de la fonction. Il est signalé par le serveur quand il est prêt." src="http://sametmax.com/wp-content/uploads/2014/05/call.png" alt="Schéma expliquant CALL en WAMP" width="542" height="548" /></a><p class="wp-caption-text">Contrairement à PUB/SUB, RPC ne concerne que deux clients à la fois. Mais ça reste asynchrone. Le client demandeur n&#8217;attend pas le résultat de l&#8217;appel de la fonction. Il est signalé par le serveur quand il est prêt.</p></div>
+<p>Pareil que pour le PUB/SUB, les gens ont du mal à voir l&#8217;utilité à cause du trop de flexibilité que ça apporte. Imaginez que votre projet soit maintenant éclaté en de nombreux petits services qui tournent et qui sont indépendants :</p>
+<ul>
+<li>Un service pour le site Web.</li>
+<li>Un service d&#8217;authentification.</li>
+<li>Un service pour l&#8217;API.</li>
+<li>Un service pour les tâches longues.</li>
+<li>Un service de monitoring et administration technique.</li>
+</ul>
+<p>Tous ces services peuvent ainsi communiquer entre eux via RPC, mais n&#8217;ont pas besoin d&#8217;être dans le même processus. On peut profiter pleinement de tous les cœurs de sa machine, on peut même les mettre sur des serveurs séparés.</p>
+<p>Mieux, avoir un service bloquant ne pénalise pas tout le système. En effet, un problème avec les systèmes asynchrones en Python est que beaucoup de libs sont encore bloquantes (typiquement les ORMs). <strong>Avec ce genre d&#8217;architecture, on peut créer un service qui ne fait que les appels bloquant et laisser les autres services non bloquant l&#8217;appeler de manière asynchrone.</strong> Pendant qu&#8217;il bloque, le reste du système peut traiter d&#8217;autres requêtes.</p>
+<h2>Crossbar, plus qu&#8217;un routeur WAMP</h2>
+<p>L&#8217;idée des concepteurs de crossbar est de permettre de créer des systèmes avec des services composables qui communiquent entre eux plutôt que tout dans un gros processus central. Ils ne se sont donc pas arrêtés au routing.</p>
+<p>Crossar est également un gestionnaire de processus, comme <a href="https://pypi.python.org/pypi/supervisor/3.0">supervisor</a> ou, plus légitimement, <a href="https://pypi.python.org/pypi/circus/0.11.1">circus</a> (Tarek, fait une pause, vient ici !) et sa communication ZeroMQ.</p>
+<p>Il se configure avec un simple fichier JSON, et on peut y définir des classes Python qui seront lancées dans un processus séparé et pourront discuter avec les autres clients via WAMP :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #009900;">&#123;</span>
+   <span style="color: #3366CC;">&quot;processes&quot;</span><span style="color: #339933;">:</span> <span style="color: #009900;">&#91;</span>
+      <span style="color: #009900;">&#123;</span> <span style="color: #006600; font-style: italic;">// premier processus</span>
+         <span style="color: #3366CC;">&quot;type&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;worker&quot;</span><span style="color: #339933;">,</span>
+         <span style="color: #3366CC;">&quot;modules&quot;</span><span style="color: #339933;">:</span> <span style="color: #009900;">&#91;</span>
+            <span style="color: #009900;">&#123;</span>
+               un_worker.<span style="color: #660066;">Classe</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+            <span style="color: #009900;">&#123;</span>
+               un_autre_worker.<span style="color: #660066;">Classe</span>
+            <span style="color: #009900;">&#125;</span>
+         <span style="color: #009900;">&#93;</span>
+      <span style="color: #009900;">&#125;</span><span style="color: #339933;">,</span>
+      <span style="color: #009900;">&#123;</span>  <span style="color: #006600; font-style: italic;">// second processus</span>
+         <span style="color: #3366CC;">&quot;type&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;worker&quot;</span><span style="color: #339933;">,</span>
+         <span style="color: #3366CC;">&quot;modules&quot;</span><span style="color: #339933;">:</span> <span style="color: #009900;">&#91;</span>
+            <span style="color: #009900;">&#123;</span>
+               un_autre_worker_dans_un_autre_process.<span style="color: #660066;">Classe</span>
+            <span style="color: #009900;">&#125;</span>
+         <span style="color: #009900;">&#93;</span>
+      <span style="color: #009900;">&#125;</span>
+   <span style="color: #009900;">&#93;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Mais si ça ne suffit pas, on peut également lancer des programmes extérieurs non Python dont crossbar va gérer le cycle de vie :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #009900;">&#123;</span>
+   <span style="color: #3366CC;">&quot;processes&quot;</span><span style="color: #339933;">:</span> <span style="color: #009900;">&#91;</span>
+      <span style="color: #009900;">&#123;</span>
+         <span style="color: #3366CC;">&quot;type&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;guest&quot;</span><span style="color: #339933;">,</span>
+         <span style="color: #3366CC;">&quot;executable&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;/usr/bin/node&quot;</span><span style="color: #339933;">,</span>
+         <span style="color: #3366CC;">&quot;arguments&quot;</span><span style="color: #339933;">:</span> <span style="color: #009900;">&#91;</span><span style="color: #3366CC;">&quot;votre_script.js&quot;</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span>
+         <span style="color: #3366CC;">&quot;stdout&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;log&quot;</span>
+      <span style="color: #009900;">&#125;</span>
+   <span style="color: #009900;">&#93;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Vous avez donc ainsi les deux atouts pour avoir <strong>une architecture découplée, scalable, exploitant plusieurs cœurs, et compensant en partie les bibliothèques bloquantes</strong> :</p>
+<ul>
+<li>Un protocole flexible, simple, qui permet à tout le monde se parler entre eux (WAMP).</li>
+<li>Une API qui permet soit de réagir à un changement (PUB/SUB), soit de demander une action (RPC).</li>
+<li>Un programme qui gère cette communication, et le cycle de vie des composants qui parlent entre eux.</li>
+</ul>
+<h2>Cas concret</h2>
+<p>WAMP est typiquement le genre de techno qui ne permet PAS de faire quelque chose qu&#8217;on ne faisait pas avant. Ce n&#8217;est pas nouveau.</p>
+<p>En revanche, WAMP permet de le faire mieux et plus facilement.</p>
+<p>Prenez le cas d&#8217;un utilisateur qui se connecte sur un forum. Il va sur un formulaire, il poste ses identifiants, ça recharge la page, il est connecté. Si les autres utilisateurs rechargent leurs pages, ils verront un utilisateur de plus connecté.</p>
+<p>Si on veut rendre ça plus dynamique, il faut utiliser de l&#8217;AJAX, et si on veut avoir une mise à jour presque en temps réel, il faut faire des requêtes Ajax régulières. Ce qui est assez bancal et demande beaucoup de travail manuel.</p>
+<p>Certains sites modernes utilisent Websocket, et des serveurs asynchrones comme NodeJS, et un routeur PUB/SUB comme Redis, pour faire cela de manière rapide et plus facile. L&#8217;application est très réactive. Mais le système est hétéroclite. Et si on veut envoyer des messages entre des composants serveurs, ça demande encore quelque chose de différent.</p>
+<p>WAMP unifie tout ça. Un coup de RPC pour le login pour effectuer l&#8217;action:</p>
+<div id="attachment_10351" style="width: 552px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/rpc_concret.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10351" title="Notez que le RPC marche de n'importe quel client à n'importe quel client. Il n'y a pas de sens obligatoire. Le login est un exemple simple mais on peut faire des choses bien plus complexes." src="http://sametmax.com/wp-content/uploads/2014/05/rpc_concret.png" alt="Schéma d'un exemple concret de RPC WAMP" width="542" height="592" /></a><p class="wp-caption-text">Notez que le RPC marche de n&#8217;importe quel client à n&#8217;importe quel client. Il n&#8217;y a pas de sens obligatoire. Le login est un exemple simple mais on peut faire des choses bien plus complexes.</p></div>
+<p>Et un coup de PUB/SUB pour prévenir tout le monde que quelque chose s&#8217;est passé :</p>
+<div id="attachment_10352" style="width: 549px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/05/pub_sub_concret.png" class="grouped_elements" rel="tc-fancybox-group10329"><img class="size-full wp-image-10352" title="Je n'ai mis que des clients légers ici, mais je vous rappelle qu'un client peut être un serveur NodeJS, une base de données, un code C++..." src="http://sametmax.com/wp-content/uploads/2014/05/pub_sub_concret.png" alt="Schéma d'exemple concret de PUB/SUB avec WAMP" width="539" height="626" /></a><p class="wp-caption-text">Je n&#8217;ai mis que des clients légers ici, mais je vous rappelle qu&#8217;un client peut être un serveur NodeJS, une base de données, un code C++&#8230;</p></div>
+<p>Bien entendu, on pourrait faire ça avec les technos existantes. C&#8217;est juste moins pratique.</p>
+<p>Notez également que Crossbar encourage à avoir un service qui ne se charge que du login, sans avoir à faire une usine à gaz pour cela. Si demain votre service de login a besoin d&#8217;être sur un coeur/serveur/une VM séparé pour des raisons de perfs ou de sécurité, c&#8217;est possible. Crossbar encourage ce genre de design.</p>
+<h2>Voici où est le piège</h2>
+<p>Car évidement, il y en a toujours un, putain de métier à la con.</p>
+<p><strong>Et c&#8217;est la jeunesse du projet.</strong></p>
+<p>Le projet est stable, le code marche, et les sources sont propres.</p>
+<p>Mais la doc, mon dieu la doc&#8230; Les exemples sont pas à jour, il y a deux versions qui se battent en duel, on sait pas trop quelle partie sert à quoi.</p>
+<p>Et comme tout projet jeune, l&#8217;API n&#8217;a pas été assez étudiée. Or la partie Python est basée sur Twisted, sans polish. Twisted, c&#8217;est puissant, c&#8217;est solide, et c&#8217;est aussi une API dégueulasse.</p>
+<p>Un exemple ? Comment écouter un événement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Des imports légers</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> twisted.<span style="color: black;">python</span> <span style="color: #ff7700;font-weight:bold;">import</span> log
+<span style="color: #ff7700;font-weight:bold;">from</span> twisted.<span style="color: black;">internet</span>.<span style="color: black;">defer</span> <span style="color: #ff7700;font-weight:bold;">import</span> inlineCallbacks
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">twisted</span>.<span style="color: black;">wamp</span> <span style="color: #ff7700;font-weight:bold;">import</span> ApplicationSession
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">twisted</span>.<span style="color: black;">wamp</span> <span style="color: #ff7700;font-weight:bold;">import</span> ApplicationRunner
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Une bonne classe bien subtile pour copier Java</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> ListenForEvent<span style="color: black;">&#40;</span>ApplicationSession<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Deux méthodes de boiler plate obligatoires</span>
+    <span style="color: #808080; font-style: italic;"># et parfaitement soulantes pour l'utilisateur</span>
+    <span style="color: #808080; font-style: italic;"># final. Cachez moi ça bordel !</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> config<span style="color: black;">&#41;</span>:
+        ApplicationSession.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">config</span> <span style="color: #66cc66;">=</span> config
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> onConnect<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">config</span>.<span style="color: black;">realm</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Bon, on se décide, soit on fait une classe avec des noms</span>
+    <span style="color: #808080; font-style: italic;"># de méthode conventionnés, soit on met des décorateurs, </span>
+    <span style="color: #808080; font-style: italic;"># mais pas les deux, pitié !</span>
+    <span style="color: #66cc66;">@</span>inlineCallbacks
+    <span style="color: #ff7700;font-weight:bold;">def</span> onJoin<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> details<span style="color: black;">&#41;</span>:
+        callback <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> x: log.<span style="color: black;">msg</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Received event %s&quot;</span> % x<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #008000;">self</span>.<span style="color: black;">subscribe</span><span style="color: black;">&#40;</span>callback<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'un_evenement'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Python doit lancer explicitement un event loop.</span>
+<span style="color: #808080; font-style: italic;"># Ca pourrait (devrait) aussi être embeded dans une</span>
+<span style="color: #808080; font-style: italic;"># sousclasse de ApplicationSession.</span>
+<span style="color: #808080; font-style: italic;"># /me prend un colt. BANG !</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+   runner <span style="color: #66cc66;">=</span> ApplicationRunner<span style="color: black;">&#40;</span>endpoint<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;tcp:127.0.0.1:8080&quot;</span><span style="color: #66cc66;">,</span>
+                              url<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;ws://localhost:8080/ws&quot;</span><span style="color: #66cc66;">,</span>
+                              realm<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;realm1&quot;</span><span style="color: black;">&#41;</span>
+   runner.<span style="color: black;">run</span><span style="color: black;">&#40;</span>ListenForEvent<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est la raison pour laquelle je vous ai montré le code JS et pas Python pour vous vendre le truc. Sur sametmax.com, on aura tout vu :(</p>
+<p>Voilà à quoi devrait ressembler le code Python si l&#8217;API était mature :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">app</span> <span style="color: #ff7700;font-weight:bold;">import</span> App
+&nbsp;
+app <span style="color: #66cc66;">=</span> App<span style="color: black;">&#40;</span>url<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;ws://localhost:8080/ws&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>event<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;un_evenement&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> handle<span style="color: black;">&#40;</span>details<span style="color: black;">&#41;</span>:
+    app.<span style="color: black;">log</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Received event %s&quot;</span> % x<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+   app.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Chose que je vais proposer sur <a href="https://groups.google.com/forum/#!forum/autobahnws">la mailing list</a> (ils sont réactifs et sympas, vive les allemands !) dans pas longtemps. Et si ils n&#8217;ont pas le temps de le faire, il est possible que je m&#8217;y colle. Ca me fait mal aux yeux.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/crossbar-le-futur-des-applications-web-python/feed/</wfw:commentRss>
+		<slash:comments>32</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/05/GVHFg8t.jpg" length="39594" type="image/jpg" />	</item>
+		<item>
+		<title>Envie de meurtre 42</title>
+		<link>http://sametmax.com/envie-de-meurtre/</link>
+		<comments>http://sametmax.com/envie-de-meurtre/#comments</comments>
+		<pubDate>Fri, 19 Jul 2013 09:55:57 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[nodejs]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6725</guid>
+		<description><![CDATA[Oui, je tapes beaucoup sur nodejs et la communauté javascript en général. Mais ils le méritent, Putain !
+]]></description>
+				<content:encoded><![CDATA[<p>Oui, je tape beaucoup sur nodejs et la communauté javascript en général. Mais ils le méritent, bordel !</p>
+<p>Je tombe sur un projet OpenSource qui est sorti en janvier dernier. Ils vendent leur popote &#8220;As A Service&#8221;, donc a priori, on pourrait se dire qu&#8217;ils voudraient qu&#8217;on les prennent au sérieux.</p>
+<p>Ils fournissent un serveur pour se faire la main en local avant de taper dans leur API payante. Cool. Merci.</p>
+<p>D&#8217;abord, il faut évidement passer par l&#8217;installation de node et tout le bordel. Bon, admettons. Même si Python est installé par défaut, il faut bien installer <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>.</p>
+<p>Mais ensuite, au lancement du serveur, rien. Il reste là, silencieusement. Pas de mode verbose, un mode debug qui ne fait absolument rien.</p>
+<p>Mon code client se connecte, et puis nada. Silence radio sur leur lib client et serveur. Vide intersidéral.</p>
+<p>La doc est succincte (3 pages) et rien qui ne parle du problème. Question sur la mailling list. Pas de réponse.</p>
+<p>A ce stade j&#8217;en ai déjà ras le cul. Les libs node qui marchent pas et qui en plus veulent pas mettre un putain de message d&#8217;erreur, y en a déjà un paquet. C&#8217;est une épidémie dans cette communauté.</p>
+<p>Mais je retrousse mes manches, et je vais voir dans le code source.</p>
+<p>Et là, je tombe sur 400 lignes de ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">    <span style="color: #000066; font-weight: bold;">var</span> client<span style="color: #339933;">;</span>
+    <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span>self._clients<span style="color: #009900;">&#91;</span>key<span style="color: #009900;">&#93;</span> <span style="color: #339933;">||</span> <span style="color: #339933;">!</span><span style="color: #009900;">&#40;</span>client <span style="color: #339933;">=</span> self._clients<span style="color: #009900;">&#91;</span>key<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#91;</span>id<span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+      <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>req.<span style="color: #660066;">params</span>.<span style="color: #660066;">retry</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        res.<span style="color: #660066;">send</span><span style="color: #009900;">&#40;</span><span style="color: #CC0000;">401</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+      <span style="color: #009900;">&#125;</span> <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #006600; font-style: italic;">// Retry this request</span>
+        req.<span style="color: #660066;">params</span>.<span style="color: #660066;">retry</span> <span style="color: #339933;">=</span> <span style="color: #003366; font-weight: bold;">true</span><span style="color: #339933;">;</span>
+        setTimeout<span style="color: #009900;">&#40;</span>handle<span style="color: #339933;">,</span> <span style="color: #CC0000;">25</span><span style="color: #339933;">,</span> req<span style="color: #339933;">,</span> res<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+      <span style="color: #009900;">&#125;</span>
+      <span style="color: #000066; font-weight: bold;">return</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est un appel au génocide, un style de coding comme ça ! Sérieusement, déjà Javascript est un langage moche, avec un scoping de merde, du nesting en pagaille et tout un tas de pièges qui fait que le code est dur à lire et à comprendre.</p>
+<p>Mais là, vous imaginez la concentration qu&#8217;il faut pour lire ces 10 putains de lignes ? Et les remettre dans le contexte du script complet (qui au passage est commenté comme un diabétique sucre son café).</p>
+<p>C&#8217;est trop dur de ne pas pondre des trucs innommables comme <code>!(client = self._clients[key][id])</code> ? Un ligne de plus a taper. Trop difficile de mettre des noms de variables complets ? <code>id</code>, mais id de quoi connard ? Je remonte tout le script pour m&#8217;en souvenir ? Et pourquoi tu assignes <code>client = self._clients</code>  si c&#8217;est pour ne pas t&#8217;en servir ? Et puis un double if imbriqué suivi d&#8217;un appel récursif asynchrone, c&#8217;est tellement fun pour suivre le workflow ! </p>
+<p>400 lignes comme ça, après le dîner, ça fout la chiasse. Alors oui, c&#8217;est de l&#8217;open source, faut pas faire le difficile, etc.</p>
+<p>Mais bordel, qu&#8217;on ne vienne pas me dire que c&#8217;est l&#8217;avenir. Les ex-script kiddies d&#8217;hier, codeurs PHP et VB, commencent à peine à écrire du code propre. Et là grosso modo on va se taper la vague des intégrateurs Web qui se mettent à coder parce que c&#8217;est du JS comme dans le navigateur ?</p>
+<p>GGGGGGGGGGGGRRRRRRRRRRRRRRRRRRRRRRRR !</p>
+<p>Je devrais faire une émission style &#8220;joueur du grenier&#8221;, mais pour le code pourri.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/envie-de-meurtre/feed/</wfw:commentRss>
+		<slash:comments>42</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/07/be5gI.jpg" length="55910" type="image/jpg" />	</item>
+		<item>
+		<title>Non, nodejs n&#8217;est pas mature 25</title>
+		<link>http://sametmax.com/non-nodejs-nest-pas-mature/</link>
+		<comments>http://sametmax.com/non-nodejs-nest-pas-mature/#comments</comments>
+		<pubDate>Mon, 14 May 2012 13:34:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[nodejs]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=608</guid>
+		<description><![CDATA[La maturité d'un projet ne se juge pas seulement par le code source lui-même, il se mesure aussi à tout l'écosystème et à la communauté.]]></description>
+				<content:encoded><![CDATA[<p>La maturité d&#8217;un projet ne se juge pas seulement par le code source lui-même, <strong>il se mesure aussi à tout l&#8217;écosystème et à la communauté</strong>.</p>
+<p>Un jour je me suis retrouvé à devoir choisir, sans m&#8217;y connaitre vraiment, entre apprendre Python ou Ruby. La raison pour laquelle j&#8217;ai choisi Python n&#8217;a rien de profondément philosophique: ça marchait.</p>
+<p>A l&#8217;époque, et c&#8217;est encore dans une moindre mesure le cas aujourd&#8217;hui, l&#8217;écosystème Ruby était bancale:</p>
+<ul>
+<li>installation de gem qui foire une fois sur deux;</li>
+<li>projets sans tests (oui, on est mal placé&#8230;) ni documentation;</li>
+<li>environnement isolé très compliqué à mettre en oeuvre.</li>
+</ul>
+<p>C&#8217;est éxactement ce que je ressens aujourd&#8217;hui à propos de <a href="http://nodejs.org/">NodeJS</a>. Un de mes amis prosélyte quand il s&#8217;agit de ce projet m&#8217;assurait que c&#8217;était <a href="https://github.com/joyent/node">le repo le plus suivit sur github</a>, qu&#8217;il y avait maintenant moulte ORM, frameworks, et tout ce qu&#8217;il fallait pour développer.</p>
+<h2>Et c&#8217;est vrai, Node avance très vite. Trop vite.</h2>
+<p>Emporté par l&#8217;élan de l&#8217;enthousiasme, les amateurs de la techno ventent les (réels) mérites de la bête:</p>
+<ul>
+<li>performances époustouflantes;</li>
+<li>websocket ou fallback les doigts dans le nez;</li>
+<li>un seul langage côté serveur et client;</li>
+<li>une communauté de passionés hyper compétents et productifs;</li>
+<li>et pleins de vrais projets en prod pour le prouver.</li>
+</ul>
+<p>Sur le papier c&#8217;est cool, mais en pratique, voici ce qu&#8217;on a oublié de vous dire:</p>
+<ul>
+<li>les packages ont un goût de pas fini: doc fébrile, -h qui fait planter le programme, erreurs de locale impossible à résoudre, etc.</li>
+<li>il y a 100 initiatives pour tacler le même problème. Pour l&#8217;instant pas de clair gagnant pour les libs les plus importantes. La pérénité de vos dépendances se joue à pile ou face.</li>
+<li>toutes les libs sont en travaux. C&#8217;est la seule chose qu&#8217;on trouve toujours dans la doc: <em>version beta, l&#8217;API va changer, tout va pêter, vous êtes prévenus</em>.</li>
+<li>un seul langage, mais <a href="http://sametmax.com/un-gros-troll-de-plus-sur-javacscript/">c&#8217;est du JS</a>. Syntaxe de merde, gestion de scope tout pourri, passage des arguments à la walou et nested callbacks en pagaille. Si bien que les projets JS les plus connus (hors jQuery et cie) sont <a href="http://coffeescript.org/">coffeescript</a> et les libs qui <a href="http://stackoverflow.com/a/4289363/9951">inlinent les appels asynchrones</a>. Ça me fait penser à Microsoft qui vente les qualités de son défragmenteur alors que la concurrence ont des FS qui ne fragmentent pas.</li>
+<li>les debug toolbars, les ORM, les générateurs de formulaires, les libs d&#8217;i18n, bref, tous ces trucs qui vous rendent 10 fois plus productifs sont loin d&#8217;offrir l&#8217;équivalence en terme de features ou de facilité de mise en oeuvre.</li>
+<li>la seule bonne source d&#8217;infos <strong>à jour</strong> sur NodeJS c&#8217;est stackoverflow&#8230; Hum&#8230; Oh certes, vous avez des docs de références au poil sur plein de sites, mais en 5 minutes, vous allez tomber sur le cas de programmation réel qui n&#8217;est décrit nul part.</li>
+<li>vous avez du mal à trouver un dev Python ou Ruby ? Essayer de trouver un dev NodeJS. Et pour la formation, bonne chance. Ca ne demande pas du tout le même niveau de compétences. La bonne nouvelle : si un mec sait s&#8217;en servir, vous êtes à peu prêt sur qu&#8217;il est bon.</li>
+</ul>
+<p>Ça me rappelle le buzz qu&#8217;il y avait eu autour de <a href="http://twistedmatrix.com/trac/">Python Twisted</a>. Travailler en asynchrone est tellement difficile pour le programmeur lambda que quand j&#8217;ai passé un entretien d&#8217;embauche chez <a href="http://www.jamendo.com/">Jamendo</a>, <strong>le mec voulait me recruter rien que parceque je savais à quoi ça servait</strong>. Du coup, les alternatives sont encensées, mais vous trouvez vraiment les <a href="http://pypi.python.org/pypi/greenlet">greenlets</a> si simple ?</p>
+<p>Je crois fermement que NodeJS va s&#8217;imposer dans le développement Web (merde, encore un truc à apprendre) car, avouons le, ça déchire sa génitrice. Mais ne vous faites pas avoir par les barbus betaddict qui prêchent la dernière update de la bonne parole, si vous mettez les mains dedans, vous allez en chier.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/non-nodejs-nest-pas-mature/feed/</wfw:commentRss>
+		<slash:comments>25</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/oscar_pistorius_nike.jpg" length="10916" type="image/jpg" />	</item>
+	</channel>
+</rss>

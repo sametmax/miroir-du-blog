@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; base</title>
+	<atom:link href="http://sametmax.com/tag/base/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>D&#8217;une base à l&#8217;autre en Python 3</title>
+		<link>http://sametmax.com/dune-base-a-lautre-en-python/</link>
+		<comments>http://sametmax.com/dune-base-a-lautre-en-python/#comments</comments>
+		<pubDate>Wed, 25 Jun 2014 13:19:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[base]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10327</guid>
+		<description><![CDATA[Il arrive parfois qu'on ait besoin d'une base personalisée...]]></description>
+				<content:encoded><![CDATA[<p>Je vous avais parlé <a href="http://sametmax.com/la-fin-du-mystere-du-binaire-nananere/">des bases</a> dans l&#8217;article sur le binaire. En informatique, on utilise essentiellement la base 10, évidement, mais aussi 2, 8, 16 et 64. Des puissances de 2, quoi.</p>
+<p>Cependant, il arrive parfois qu&#8217;on ait besoin d&#8217;une base personalisée. En effet, une base n&#8217;étant qu&#8217;une notation, on peut en créer une de toutes pièces. C&#8217;est parfois très utile :</p>
+<ul>
+<li>Besoin de limiter au maximum le nombre de caractères pour représenter une donnée. Si la base 64 ne suffit pas, on créera des bases 70, voire plus si on a accès à un charset large.</li>
+<li>On est limité dans les caractères qu&#8217;on peut utiliser. Typiquement dans certains formulaires de mots de passe, on a le droit qu&#8217;à <code>-_</code>, des lettres et des chiffres.</li>
+<li>On souhaite limiter les caractères à utiliser. Ça m&#8217;est arrivé en travaillant sur un système à base de SMS. Les ID devaient éviter de contenir tous les caractères comme <code>1, l, 0, O, S, 5, Z, 2</code> car trop faciles à confondre sur un nokia 3310.</li>
+</ul>
+<p>Mais la plupart des outils ne permettent pas de choisir la base de représentation des données qu&#8217;ils génèrent. Pour cette raison, il peut être pratique d&#8217;implémenter une petit convertisseur d&#8217;une base à l&#8217;autre.</p>
+<p>Voici un objet Python qui permet de convertir une string d&#8217;une base custom en entier en base 10, et inversement.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Il est possible de passer de n'importe quelle base à</span>
+<span style="color: #808080; font-style: italic;"># une autre directement, mais utiliser la base 10,</span>
+<span style="color: #808080; font-style: italic;"># comme pivot, est ce qu'il y a de plus facile </span>
+<span style="color: #808080; font-style: italic;"># à coder</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> BaseConverter:
+&nbsp;
+   <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> symboles<span style="color: black;">&#41;</span>:
+      <span style="color: #008000;">self</span>.<span style="color: black;">symboles</span> <span style="color: #66cc66;">=</span> symboles
+      <span style="color: #008000;">self</span>.<span style="color: black;">sym2val</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>l: i <span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> l <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>symboles<span style="color: black;">&#41;</span><span style="color: black;">&#125;</span>
+      <span style="color: #008000;">self</span>.<span style="color: black;">val2sym</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">dict</span><span style="color: black;">&#40;</span><span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>symboles<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+   <span style="color: #ff7700;font-weight:bold;">def</span> to_base_10<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">string</span><span style="color: black;">&#41;</span>:
+       i <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+       base <span style="color: #66cc66;">=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">sym2val</span><span style="color: black;">&#41;</span>
+       <span style="color: #808080; font-style: italic;"># On part de la gauche vers la droite,</span>
+       <span style="color: #808080; font-style: italic;"># donc on commence avec les valeurs les plus</span>
+       <span style="color: #808080; font-style: italic;"># grosses.</span>
+       <span style="color: #808080; font-style: italic;"># Pour chaque symbole, on ajoute la valeur</span>
+       <span style="color: #808080; font-style: italic;"># de celui-ci (donnée par la table) et</span>
+       <span style="color: #808080; font-style: italic;"># avec facteur lié à sa position.</span>
+       <span style="color: #ff7700;font-weight:bold;">for</span> c <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">string</span>:
+           i *<span style="color: #66cc66;">=</span> base
+           i +<span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">sym2val</span><span style="color: black;">&#91;</span>c<span style="color: black;">&#93;</span>
+       <span style="color: #ff7700;font-weight:bold;">return</span> i
+&nbsp;
+   <span style="color: #ff7700;font-weight:bold;">def</span> from_base_10<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> number<span style="color: black;">&#41;</span>:
+       <span style="color: #483d8b;">&quot;&quot;&quot; Convert from a base 10 to the custom base&quot;&quot;&quot;</span>
+       <span style="color: #dc143c;">array</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+       base <span style="color: #66cc66;">=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">val2sym</span><span style="color: black;">&#41;</span>
+       <span style="color: #808080; font-style: italic;"># Division euclidienne en boucle jusqu'à ce que le</span>
+       <span style="color: #808080; font-style: italic;"># reste soit égal à zero.</span>
+       <span style="color: #ff7700;font-weight:bold;">while</span> number:
+           number<span style="color: #66cc66;">,</span> value <span style="color: #66cc66;">=</span> <span style="color: #008000;">divmod</span><span style="color: black;">&#40;</span>number<span style="color: #66cc66;">,</span> base<span style="color: black;">&#41;</span>
+           <span style="color: #808080; font-style: italic;"># Le résultat est l'index du symbole.</span>
+           <span style="color: #808080; font-style: italic;"># On le place le plus à gauche, chaque</span>
+           <span style="color: #808080; font-style: italic;"># symbole ayant une valeur plus grande</span>
+           <span style="color: #808080; font-style: italic;"># que le précédent.</span>
+           <span style="color: #dc143c;">array</span>.<span style="color: black;">insert</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">val2sym</span><span style="color: black;">&#91;</span>value<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+       <span style="color: #808080; font-style: italic;"># Ne pas oublier le zéro</span>
+       <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">array</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #008000;">self</span>.<span style="color: black;">symboles</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Maintenant imaginez la génération d&#8217;un UUID qui doit seulement contenir certains caractères ou avoir une certaine taille. Par exemple, votre client vous demande des ID en <a href="http://www.crockford.com/wrmg/base32.html">base 32 de Crockford</a>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">uuid <span style="color: #66cc66;">=</span> uuid.<span style="color: black;">uuid4</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>uid<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 50ab7fa9-9643-4aad-be84-548405abea08</span>
+CROCKFORD_B32 <span style="color: #66cc66;">=</span> BaseConverter<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;0123456789abcdefghjkmnpqrstvwxyz&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>CROCKFORD_B32.<span style="color: black;">from_base_10</span><span style="color: black;">&#40;</span>uid.<span style="color: #008000;">int</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 2gndztk5j39apvx12mgg2tqtg8</span></pre></td></tr></table></div>
+
+<p>Bon, évidément, pour toutes les bases ordinaires, <code>int(string, base)</code> fait ça très bien.</p>
+<p>On peut aller plus loin et faire une seule partie de l&#8217;ID dans une base, et l&#8217;autre dans une autre base, pour des raisons de lisibilité. Le cas d&#8217;école étant les plaques d&#8217;immatriculation ou les numéros de vol.</p>
+<p>Une fois, on m&#8217;a demandé de faire une URL de type :</p>
+<p><code>/ressource/id/</code></p>
+<p>Mais l&#8217;id devait être facile à recopier à la main. Le client a opté pour une notation de type &#8220;AAA111&#8243;, 3 lettres, puis 3 chiffres.</p>
+<p>Vu qu&#8217;il fallait l&#8217;implémenter en Lua embed dans nginx, la solution la plus simple a été adoptée :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="ini" style="font-family:monospace;">location ~ <span style="color: #933;">&quot;^/([0-9A-Fa-f]{3}[0-9]{3})$&quot;</span> <span style="">&#123;</span>
+   set $short_id $1<span style="color: #666666; font-style: italic;">;</span>
+   content_by_lua '
+       local redirect_url <span style="color: #000066; font-weight:bold;">=</span> <span style="color: #933;">&quot;http://site.com/ressource/&quot;</span> .. string.sub<span style="">&#40;</span>ngx.var.short_id, -<span style="">3</span><span style="">&#41;</span> + tonumber<span style="">&#40;</span>string.sub<span style="">&#40;</span>ngx.var.short_id,<span style="">0</span>,<span style="">3</span><span style="">&#41;</span>, <span style="">16</span> <span style="">&#41;</span> * <span style="">1000</span>
+       return ngx.redirect<span style="">&#40;</span>redirect_url..<span style="color: #933;">&quot;/&quot;</span><span style="">&#41;</span>
+   '<span style="color: #666666; font-style: italic;">;</span>
+<span style="">&#125;</span></pre></td></tr></table></div>
+
+<p>En gros, on prend les 3 premiers caractères, on les traite comme de l&#8217;hexa, puis on multiplie par 999, et on additionne les 3 derniers chiffres. Cela convertit le truc en base 10.</p>
+<p>L&#8217;URL est très lisible, et facile à dicter ou recopier à la main :</p>
+<p><code>http://site.com/ressource/FAC101</code></p>
+<p>Bien entendu, on peut se retrouver avec des chiffres au début puisque c&#8217;est de l&#8217;hexa, et avoir une URL de type <code>345823</code>, mais ça a été accepté.</p>
+<p>Au maximum on ne peut gérer que 4 millions d&#8217;ID. Or le site n&#8217;en avait pas accumulé plus de 350 000 en 7 ans, et à moins que le trafic explose soudainement (auquel cas il aura le budget pour me payer pour changer l&#8217;algo:)), ça devrait tenir 80 ans.</p>
+<p>Je vais sans doute ajouter ce code à <a href="https://github.com/sametmax/Bat-belt/tree/master/batbelt">Batbelt</a> du coup.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/juin/base.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/dune-base-a-lautre-en-python/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/base.jpg" length="81558" type="image/jpg" />	</item>
+	</channel>
+</rss>

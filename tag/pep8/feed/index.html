@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; pep8</title>
+	<atom:link href="http://sametmax.com/tag/pep8/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Reformater son code avec yapf 16</title>
+		<link>http://sametmax.com/reformater-son-code-avec-yapf/</link>
+		<comments>http://sametmax.com/reformater-son-code-avec-yapf/#comments</comments>
+		<pubDate>Wed, 08 Apr 2015 08:47:21 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pep8]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yapf]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16039</guid>
+		<description><![CDATA[En ce moment un outil fait son petit buzz sur hackernews, mais je n'en avais pas parlé jusqu'ici car il n'était pas encore uploadé sur pypi. C'est chose faite]]></description>
+				<content:encoded><![CDATA[<p>En ce moment un outil fait son petit buzz sur hackernews, mais je n&#8217;en avais pas parlé jusqu&#8217;ici car il n&#8217;était pas encore uploadé sur pypi. C&#8217;est chose faite :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> yapf</pre></td></tr></table></div>
+
+<p>Yapf est un reformateur de code, vous lui filez un fichier (ou un dossier à parcourir récursivement), et il reformate le code pour qu&#8217;il soit plus lisible, et plus proche du <a href="http://sametmax.com/le-pep8-en-resume/">PEP8</a>.</p>
+<p>On en parle en ce moment car le code appartient à Google et que le projet est comparé à <a href="http://golang.org/cmd/gofmt/">gofmt</a> le formatteur intégré à la stack Goland dont les Golois nous ventent les mérites avec moult regards condescendant vers tous les autres langages depuis qu&#8217;ils l&#8217;ont.</p>
+<p>Yapf est loin des features de gofmt pour le moment, mais c&#8217;est cool d&#8217;avoir un point de départ, car c&#8217;est vrai que ça manquait. Non pas que ça n&#8217;existait pas déjà, mais les tentatives précédentes n&#8217;avaient soulevé aucun enthousiasme, et donc pas beaucoup de contrib. Il a fallut, comme d&#8217;hab, qu&#8217;un concours de celui qui a la plus grosse motive tout ça à coup d&#8217;éGOs, si vous voyez ce que je veux dire. On a bien eu pip intégré à Python parce que les codeurs JS se foutaient de notre gueule avec npm installé par défaut. </p>
+<p>Bref, pour le moment yapf s&#8217;occupe surtout des espaces et de l&#8217;indentation, mais il le fait bien.</p>
+<p>Soit le programme suivant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: black;">&#40;</span>unicode_literals<span style="color: #66cc66;">,</span> absolute_import<span style="color: #66cc66;">,</span> print_function<span style="color: #66cc66;">,</span>
+    division<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> yolo<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span>b <span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span> :
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: black;">&#40;</span> <span style="color: #483d8b;">&quot;Ca fait mal aux yeux hein ?&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        a<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> a<span style="color: #66cc66;">==</span>b :
+            <span style="color: #ff7700;font-weight:bold;">return</span><span style="color: black;">&#40;</span>b<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">True</span> <span style="color: #ff7700;font-weight:bold;">and</span>      <span style="color: #008000;">False</span>:<span style="color: #808080; font-style: italic;"># c'est chiant n'est-il pas ?</span>
+          <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;bob&quot;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+    WOLOLO <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+        <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">11</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: black;">&#93;</span>
+    <span style="color: black;">&#125;</span>
+&nbsp;
+    OYOOYO <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+        <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">11</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: black;">&#93;</span>
+    <span style="color: black;">&#125;</span>  <span style="color: #808080; font-style: italic;"># yapf: disable</span></pre></td></tr></table></div>
+
+<p>Un petit coup de :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">yapf programme.py</pre></td></tr></table></div>
+
+<p>Et pouf, il vous sort :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: black;">&#40;</span>unicode_literals<span style="color: #66cc66;">,</span> absolute_import<span style="color: #66cc66;">,</span> print_function<span style="color: #66cc66;">,</span>
+                        division<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> yolo<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+  <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Ca fait mal aux yeux hein ?&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+  a <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+&nbsp;
+  <span style="color: #ff7700;font-weight:bold;">if</span> a <span style="color: #66cc66;">==</span> b:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>b<span style="color: black;">&#41;</span>
+&nbsp;
+  <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">True</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">False</span>:  <span style="color: #808080; font-style: italic;"># c'est chiant n'est-il pas ?</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;bob&quot;</span>
+&nbsp;
+&nbsp;
+WOLOLO <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">11</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span>
+&nbsp;
+OYOOYO <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+    <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">11</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">12</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#125;</span>  <span style="color: #808080; font-style: italic;"># yapf: disable</span></pre></td></tr></table></div>
+
+<p>Yapf existe en ligne de commande, mais peut être utilisé comme une lib. En prime, avec <code>-i</code>, il peut modifier le fichier sur place au lieu de juste faire l&#8217;output dans le terminal.</p>
+<p>J&#8217;espère vraiment qu&#8217;il va gagner en traction histoire de pouvoir mettre ça dans tous mes hook git et oublier une bonne fois pour toute les guéguerres de formatage, on a d&#8217;autres chattes à coder.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/reformater-son-code-avec-yapf/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/04/jz6TReG.jpg" length="569329" type="image/jpg" />	</item>
+		<item>
+		<title>Bien nommer ses variables en Python 28</title>
+		<link>http://sametmax.com/bien-nommer-ses-variables-en-python/</link>
+		<comments>http://sametmax.com/bien-nommer-ses-variables-en-python/#comments</comments>
+		<pubDate>Thu, 09 Oct 2014 09:42:31 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[convention]]></category>
+		<category><![CDATA[nommage]]></category>
+		<category><![CDATA[pep8]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[variable]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12376</guid>
+		<description><![CDATA[<blockquote>There are only two hard things in Computer Science: cache invalidation and naming things.</blockquote>
+
+<em>Phil Karlton</em>]]></description>
+				<content:encoded><![CDATA[<blockquote><p>There are only two hard things in Computer Science: cache invalidation and naming things.</p></blockquote>
+<p><em>Phil Karlton</em></p>
+<p>Utiliser des bons noms est le geste de documentation le plus important d&#8217;un code. Je ne parle pas de bien formater le nom des variables. Pour ça, il y a le PEP8 et ce qu&#8217;il recommande tient en 3 lignes :</p>
+<ul>
+<li>Le nom des classes en CamelCase</li>
+<li>Les (pseudo) constantes en UPPER_CASE</li>
+<li>Le reste en snake_case</li>
+</ul>
+<p>C&#8217;est tout.</p>
+<p>Non, je parle de choisir un nom adapté et descriptif.</p>
+<p>Le post est long, et vous savez que quand le post est long, je vous mets une musique d&#8217;attente.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/4TV_128Fz2g?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Explicit is better than implicit</h2>
+<p>En Python, il n&#8217;y a pas de déclaration de type. Le nom d&#8217;une variable a donc d&#8217;autant plus d&#8217;importance pour expliquer ce qu&#8217;il y a dedans.</p>
+<p>Prenez cet exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">best <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> k<span style="color: #66cc66;">,</span> v <span style="color: #ff7700;font-weight:bold;">in</span> data.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> v &amp;gt<span style="color: #66cc66;">;</span> top:
+        best.<span style="color: black;">append</span><span style="color: black;">&#40;</span>k<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Quand on lit ce bout de code, on se demande :</p>
+<ul>
+<li>Best ? Mais best en quoi ?</li>
+<li>Que contient data ?</li>
+<li>Quel est la nature de top ?</li>
+</ul>
+<p>Maintenant, avec des noms explicites :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">best_players <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> player<span style="color: #66cc66;">,</span> score <span style="color: #ff7700;font-weight:bold;">in</span> data.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> score &amp;gt<span style="color: #66cc66;">;</span> top_score :
+        best_players.<span style="color: black;">append</span><span style="color: black;">&#40;</span>player<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On comprend tout de suite de quoi il est question. L&#8217;algo n&#8217;a pas changé, seul le nommage a changé.</p>
+<p>Et si on passe à une écriture plus compacte, le gain est encore plus net :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">best <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>k <span style="color: #ff7700;font-weight:bold;">for</span> k<span style="color: #66cc66;">,</span> v <span style="color: #ff7700;font-weight:bold;">in</span> data.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> k &amp;gt<span style="color: #66cc66;">;</span> top<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>VS</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">best_players <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>player <span style="color: #ff7700;font-weight:bold;">for</span> player<span style="color: #66cc66;">,</span> score <span style="color: #ff7700;font-weight:bold;">in</span> data.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> score &amp;gt<span style="color: #66cc66;">;</span> top_score<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Parfois, on veut la concision, mais faute de nommage, on doit se retourner vers les commentaires :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Get players with the best scores</span>
+best <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>k <span style="color: #ff7700;font-weight:bold;">for</span> k<span style="color: #66cc66;">,</span> v <span style="color: #ff7700;font-weight:bold;">in</span> data.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> k &amp;gt<span style="color: #66cc66;">;</span> top<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Néanmoins, si on doit faire le choix entre commenter et bien nommer, le nommage doit avoir priorité. Le commentaire est important, mais c&#8217;est le dernier recours d&#8217;un code qui n&#8217;est pas explicite. Avoir un code clair doit être l&#8217;objectif premier. Ensuite, seulement, on le commente (abondamment toutefois, faut pas être radin).</p>
+<p>Si vous avez suivi, je nomme mes variables en fonction de leur nature, pas leur type. On peut utiliser les règles de l&#8217;orthographe pour encore plus de précision, par exemple le pluriel.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">fruits <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;kiwi&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;banane&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'poire'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> fruit <span style="color: #ff7700;font-weight:bold;">in</span> fruits:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>fruit<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>J&#8217;utilise le pluriel pour une liste de données, qui va donc potentiellement contenir plusieurs fruits. Mais j&#8217;utilise un singulier dans la boucle pour le fruit en court.</p>
+<p>L&#8217;utilisation d&#8217;adjectifs est aussi bienvenue :</p>
+<p><code>fruits</code> peut devenir, après un traitement <code>filtered_fruits</code>, indiquant que la liste a subi un filtrage. Les mots en &#8220;ed&#8221; en anglais aident beaucoup à la qualification.</p>
+<p>On évite au maximum les variables courtes. Certains cas sont néanmoins tolérés. Le premier est l&#8217;utilisation de <code>i</code>, <code>x</code>, <code>y</code>et <code>z</code> pour des indices.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> fruit <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>fruits<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire un truc</span></pre></td></tr></table></div>
+
+<p>Les indices sont quelque chose de tellement courant en informatique qu&#8217;on ne va pas se gaver à l&#8217;appeler &#8220;indice&#8221; à chaque fois.</p>
+<p>Le second est dans le cadre scientifique. On a souvent des variables pour un algo, des coordonnées, des valeurs géométriques ou mathématiques, qui n&#8217;ont pas de dénomination. Dans ce cas, inutile d&#8217;essayer d&#8217;inventer une nomenclature tordue. Exemple typique, <a href="http://equi4.com/md5/pymd5.py">l&#8217;algo pour pondre un MD5</a>. Mais il faut compenser par des commentaires, sinon on s&#8217;y perd.</p>
+<p>Il ne faut pas avoir peur des noms longs. Si, j&#8217;ai un jeu de données, que je filtre plusieurs fois, il est de bon ton de distinguer les différents jeux avec des noms détaillés :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">sample <span style="color: #66cc66;">=</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>
+squares <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>x * x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> sample<span style="color: black;">&#93;</span>
+even_squares <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> squares <span style="color: #ff7700;font-weight:bold;">if</span> x % <span style="color: #ff4500;">2</span> <span style="color: #66cc66;">==</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+even_squares_tail <span style="color: #66cc66;">=</span> even_squares<span style="color: black;">&#91;</span>-<span style="color: #ff4500;">3</span>:<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Faire des noms de plus de 10 caractères n&#8217;est pas sale. On est pas sur un tableau des scores d&#8217;une borne d&#8217;arcade des années 80.</p>
+<p>J&#8217;utilise bien entendu des noms en anglais, ce qui est toujours préférable, mais si vous devez en mettre en fr, évitez à tout prix les accents malgré la possibilité de les utiliser en Python 3.</p>
+<h2>Conventions</h2>
+<p>Il existe quelques noms qui sont toujours utilisés de la même façon en Python.</p>
+<p><code>self</code> et <code>cls</code> sont les plus connus, en j&#8217;en parle déjà dans <a href="https://duckduckgo.com/l/?kh=-1&amp;uddg=http%3A%2F%2Fsametmax.com%2Fle-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1">le dossier sur la POO</a>.</p>
+<p>Il y a <code>args</code> et <code>kwargs</code>, qu&#8217;on utilise avec l&#8217;opérateur splat, dont je parle <a href="https://duckduckgo.com/l/?kh=-1&amp;uddg=http%3A%2F%2Fsametmax.com%2Foperateur-splat-ou-etoile-en-python%2F">ici</a>.</p>
+<p>Et puis il y en a de plus discrets.</p>
+<p><code>_</code> est utilisé pour une variable qu&#8217;on ignore. Certaines opérations, comme l&#8217;unpacking, supposent la création de plusieurs variables. Si on n&#8217;est pas intéressé par l&#8217;une d&#8217;elles, on peut le signaler. Par exemple, l&#8217;ORM django permet d&#8217;obtenir un objet, et si il n&#8217;existe pas, de le créer. Cette fonction retourne un tuble (objet, bool), l&#8217;élément indiquant si l&#8217;objet a été créé ou non. Si cette information nous intéresse :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #dc143c;">user</span><span style="color: #66cc66;">,</span> created <span style="color: #66cc66;">=</span> User.<span style="color: black;">objects</span>.<span style="color: black;">get_or_create</span><span style="color: black;">&#40;</span>username<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;sam&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si cette information ne nous intéresse pas :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #dc143c;">user</span><span style="color: #66cc66;">,</span> _ <span style="color: #66cc66;">=</span> User.<span style="color: black;">objects</span>.<span style="color: black;">get_or_create</span><span style="color: black;">&#40;</span>username<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;sam&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ainsi le lecteur saura qu&#8217;il peut ignorer cette variable quand il parcourt le code.</p>
+<p>Il y a aussi les alias. On ne peut pas utiliser certains noms comme <code>list</code> ou <code>id</code> qui sont des fonctions existantes en Python.</p>
+<p>On s&#8217;arrange généralement en trouvant un synonyme, mais si ce n&#8217;est pas pratique, on change une lettre. <code>list</code> devient <code>lst</code> (rappelez vous que <code>list</code> est un nom déjà assez pourri, nommez plutôt le contenu), <code>class</code> devient <code>klass</code>, <code>dict</code> devient <code>dct</code>, etc.</p>
+<p>Si on ne peut pas le faire, la convention est de rajouter un underscore à la fin du nom : <code>id</code> devient <code>id_</code>, <code>max</code> devient <code>max_</code>&#8230; Mais faites l&#8217;effort, avant, de chercher un synonyme. Je vois trop souvent des <code>from_</code>/<code>to</code> alors que certains contextes permettent parfaitement de les nommer <code>start</code>/<code>end</code> ou <code>source</code>/<code>destination</code>.</p>
+<p>A ne pas confondre avec l&#8217;underscore AVANT le nom, qui est une convention pour dire qu&#8217;une variable ne fait pas partie de l&#8217;API publique.</p>
+<p>Ce sont des béquilles, le choix d&#8217;un nom judicieux et clair est toujours préférable, mais ce sont des béquilles utiles.</p>
+<h2>Savoir quand nommer</h2>
+<p>Au-delà de donner un bon nom, il y a le fait de choisir quand il faut nommer, et quand il faut éviter de le faire.</p>
+<p>Si seul le résultat final d&#8217;un traitement m&#8217;intéresse, alors, il vaut mieux utiliser une seule variable et mettre le nouveau résultat dedans à chaque fois :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">fstab <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>line.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> line <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> line<span style="color: black;">&#93;</span>
+fstab <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>line.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> line <span style="color: #ff7700;font-weight:bold;">in</span> fstab <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> line.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'#'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+fstab <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>line.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> line <span style="color: #ff7700;font-weight:bold;">in</span> fstab<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>il faut aussi savoir quand ne pas du tout créer une variable :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">row <span style="color: #66cc66;">=</span> line.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> col <span style="color: #ff7700;font-weight:bold;">in</span> row:
+    <span style="color: #808080; font-style: italic;"># do something</span></pre></td></tr></table></div>
+
+<p>ici, la variable intermédiaire est inutile :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> col <span style="color: #ff7700;font-weight:bold;">in</span> line.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># do something</span></pre></td></tr></table></div>
+
+<p>L&#8217;inverse est aussi vrai :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> col <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#91;</span><span style="color: #008000;">int</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> line.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>:
+    <span style="color: #808080; font-style: italic;"># do something</span></pre></td></tr></table></div>
+
+<p>La ligne devient beaucoup trop complexe, et ajouter une variable intermédiaire avec un bon nom va améliorer la lisibilité du programme :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">numeric_col <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #008000;">int</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> line.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> col <span style="color: #ff7700;font-weight:bold;">in</span> numeric_col:
+    <span style="color: #808080; font-style: italic;"># do something</span></pre></td></tr></table></div>
+
+<p>On pourrait croire que je précise le type ici en utilisant &#8220;numeric&#8221;, mais je n&#8217;ai pas utilisé integer ou float. J&#8217;ai précisé la nature : des colonnes numériques. Il se trouve que pour des données aussi brutes, la nature se rapproche du type.</p>
+<p>Si vous êtes du genre à utiliser des <a href="https://duckduckgo.com/l/?kh=-1&amp;uddg=http%3A%2F%2Fsametmax.com%2Ffonctions-anonymes-en-python-ou-lambda%2F">lambdas</a>, cela s&#8217;applique aussi à vous.</p>
+<p>Pour quelque chose de simple, une lambda inline est très lisible :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> score: score<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mais pour quelque chose de complexe, une fonction complète est bien plus adaptée :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> calculate_rank<span style="color: black;">&#40;</span>score<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">sum</span><span style="color: black;">&#40;</span>goals <span style="color: #ff7700;font-weight:bold;">for</span> sort<span style="color: #66cc66;">,</span> goal <span style="color: #ff7700;font-weight:bold;">in</span> score<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">if</span> sort <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'A'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span>calculate_rank<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Plutôt qu&#8217;un horrible :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: #008000;">sum</span><span style="color: black;">&#40;</span>g <span style="color: #ff7700;font-weight:bold;">for</span> s<span style="color: #66cc66;">,</span> g <span style="color: #ff7700;font-weight:bold;">in</span> x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">if</span> s <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'A'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Pourquoi je parle de lambda alors qu&#8217;on est sur du nommage ? Parce qu&#8217;une lambda est anonyme, alors qu&#8217;une fonction normale a un nom. Et ce nom exprime l&#8217;action de la fonction. Il documente.</p>
+<h2>Habitudes stylistiques</h2>
+<p>Ces règles là ne sont pas officielles, mais j&#8217;ai pu les constater dans nombre de bons codes.</p>
+<p>La nom d&#8217;une fonction/méthode est aussi important, sinon plus, que le nom d&#8217;une variable. Il n&#8217;est pas rare que j&#8217;écrive des fonctions avec des noms bien dodus comme :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get_last_downloaded_shemale_vids<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si on oublie la docstring, on a déjà une bonne idée de ce que cette fonction fait. Cela n&#8217;empêche pas de docstringuer quand même pour annoncer des subtilités sur les types, les potentiels side effects, des choses à savoir sur le temps d&#8217;exécution, le format, les perfs, etc.</p>
+<p>Mais il arrive souvent qu&#8217;une fonction ne fasse pas quelque chose d&#8217;aussi concret. Prenez par exemple une fonction dont le but est de sluggifier les strings d&#8217;une list.</p>
+<p>Si la fonction transforme la liste, on va utiliser un verbe dans le nom :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">slugify_items<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si par contre la fonction retourne une liste avec les éléments modifiés, on va utiliser le participe passé :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">data <span style="color: #66cc66;">=</span> slugified_items<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est subtil, mais la sémantique est différente. Dans le premier cas, on s&#8217;attend à un effet de bord. Dans le second cas, on s&#8217;attend à une nouvelle liste, ou comme souvent en Python, à un <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">générateur</a>.</p>
+<p>Quand on a affaire à une méthode en Python, on utilise rarement le préfixe <code>get_</code>. Personnellement je l&#8217;utilise parfois pour des actions complexes, ou des méthodes de classe.</p>
+<p>Mais généralement, on préférera utiliser directement le nom de ce qu&#8217;on veut récupérer. Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">comments <span style="color: #66cc66;">=</span> blog_post.<span style="color: black;">get_comments</span><span style="color: black;">&#40;</span>spam<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># NON</span>
+comments <span style="color: #66cc66;">=</span> blog_post.<span style="color: black;">comments</span><span style="color: black;">&#40;</span>spam<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># Oui</span></pre></td></tr></table></div>
+
+<p>Si on n&#8217;a pas besoin de passer de paramètre, alors une <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-2/">property</a> est plus appropriée :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">comments <span style="color: #66cc66;">=</span> blog_post.<span style="color: black;">comments</span> <span style="color: #808080; font-style: italic;"># Ouiiiiiiiiiiiiiii</span></pre></td></tr></table></div>
+
+<p>J&#8217;en profite pour faire remarquer qu&#8217;il est très classe de prononcer plusieurs fois très vite &#8220;sans paramètre, une propriété est plus appropriée&#8221;.</p>
+<p>Enfin, il arrive qu&#8217;on ait besoin de spécifier des rôles techniques et des interactions entre plusieurs bouts de code : hiérarchie, composition, dépendances, etc. Ce sont les choses les plus compliquées à comprendre quand on lit du code : voir le tableau au complet, ce qui lie les différents blocs.</p>
+<p>Il ne faut pas hésiter à nommer ses éléments pour cela. Apprendre le nom des design patterns aide beaucoup, mais même si on n&#8217;est pas top moumoute niveau vocabulaire, on peut faire des choses aussi simple que :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> BaseAuthenticator<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;">#...</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> PwdAuthenticator<span style="color: black;">&#40;</span>BaseAuthenticator<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;">#...</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> KeyAuthenticator<span style="color: black;">&#40;</span>BaseAuthenticator<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;">#...</span></pre></td></tr></table></div>
+
+<p>Si vous lisez <code>BaseAuthentificator</code>, vous n&#8217;avez pas besoin de voir qu&#8217;elle est parente d&#8217;autres classes plus bas pour savoir que ce n&#8217;est probablement pas une classe instanciable, mais sans doute une classe interface ou une classe abstraite. De quoi se faciliter une lecture en diagonale.</p>
+<h2>FAIL</h2>
+<p>Voici quelques exemples de noms qui ratent complètement l&#8217;objectif de documentation :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> do_query_database<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> query_database<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span>
+    do_query_database<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># ...</span></pre></td></tr></table></div>
+
+<p>J&#8217;en croise dans le code source de Django, et ça me fait hurler. Sérieux ça veut dire quoi ? Qu&#8217;est-ce qui a été extrait ? Dans quel but ? On a plus de question APRÈS avoir lu le nom qu&#8217;avant, c&#8217;est encore pire qu&#8217;un mauvais nom, c&#8217;est un nom méchant.</p>
+<p>Dans ce cas, il faut essayer d&#8217;expliquer au maximum ce que l&#8217;appendice &#8211; qui va me faire choper une péritonite &#8211; que vous avez mis de côté fait :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> excute_and_send_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> query_database<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span>
+    excute_and_send_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># ...</span></pre></td></tr></table></div>
+
+<p>Un truc également exaspérant, c&#8217;est l&#8217;usage d&#8217;un vocabulaire ambigu :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> make_best_player_list<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span></pre></td></tr></table></div>
+
+<p>On sait ce que ça fait, ça fabrique une liste des meilleurs joueurs. Le contexte nous permet d&#8217;évaluer le résultat le plus probable. Maintenant un cas beaucoup moins clair :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> make_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span></pre></td></tr></table></div>
+
+<p>Ca envoie la requête, ça construit la requête ou les deux ? <code>Make</code> est un mot qui peut vouloir dire fabriquer ou exécuter. Ici il vaut mieux utiliser un vocabulaire plus explicite comme :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> build_sql_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span></pre></td></tr></table></div>
+
+<p>ou</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> send_db_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ...</span></pre></td></tr></table></div>
+
+<p>Là on sait qui fait quoi. Quitte à faire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> db_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    build_sql_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    send_db_query<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et oui, diviser le travail en plusieurs sous unités bien nommées, puis les regrouper dans un bloc plus général est aussi une forme de documentation. Créer des fonctions n&#8217;est pas qu&#8217;une question de maintenance ou de perf.</p>
+<p>Savoir bien nommer les choses vient avec de l’entraînement. Au début, il faut prendre le temps de le faire. Il faut s&#8217;arrêter, et se mettre à la place d&#8217;un autre dev qui n&#8217;a pas encore eu son café.</p>
+<p>Allez, détendez-vous, ce blog est plein de code qui ne suit pas les conseils de cet article. Faites juste au mieux ok ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/bien-nommer-ses-variables-en-python/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/0VhvbuF.gif" length="61326" type="image/jpg" />	</item>
+		<item>
+		<title>Le PEP8, en résumé 15</title>
+		<link>http://sametmax.com/le-pep8-en-resume/</link>
+		<comments>http://sametmax.com/le-pep8-en-resume/#comments</comments>
+		<pubDate>Thu, 26 Dec 2013 19:15:10 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pep8]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8514</guid>
+		<description><![CDATA[Internet, c'est la culture du TL;DR, donc plutôt je vais faire une petite synthèse des trucs les plus importants du <a href="http://www.python.org/dev/peps/pep-0008/#names-to-avoid">PEP8</a>, comme ça si vous avez la flemme de le lire, au moins vous aurez l'essentiel. ]]></description>
+				<content:encoded><![CDATA[<p>Internet, c&#8217;est la culture du TL;DR, donc plutôt je vais faire une petite synthèse des trucs les plus importants du <a href="http://www.python.org/dev/peps/pep-0008/#names-to-avoid">PEP8</a>, comme ça si vous avez la flemme de le lire, au moins vous aurez l&#8217;essentiel. </p>
+<p>Ce texte liste les règles stylistiques recommandées, invitant toute la communauté Python à écrire un code de la même façon.</p>
+<p>Je vais également y ajouter des éléments de style qui ne sont pas dedans, mais que j&#8217;ai pu constater comme étant les choix les plus courants dans les sources que j&#8217;ai pu lire.</p>
+<h2>Espaces</h2>
+<p>Les opérateurs doivent être entourés d&#8217;espaces.</p>
+<p>Il faut faire ceci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">variable <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'valeur'</span>
+&nbsp;
+ceci <span style="color: #66cc66;">==</span> cela
+&nbsp;
+<span style="color: #ff4500;">1</span> + <span style="color: #ff4500;">2</span></pre></td></tr></table></div>
+
+<p>Et non:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">variable<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'valeur'</span>
+&nbsp;
+ceci<span style="color: #66cc66;">==</span>cela
+&nbsp;
+<span style="color: #ff4500;">1</span>+<span style="color: #ff4500;">2</span></pre></td></tr></table></div>
+
+<p>Il y a deux exceptions notables.</p>
+<p>La première étant qu&#8217;on groupe les opérateurs mathématiques ayant la priorité la plus haute pour distinguer les groupes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">a <span style="color: #66cc66;">=</span> x*<span style="color: #ff4500;">2</span> - <span style="color: #ff4500;">1</span>
+b <span style="color: #66cc66;">=</span> x*x + y*y
+c <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>a+b<span style="color: black;">&#41;</span> * <span style="color: black;">&#40;</span>a-b<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La seconde est le signe <code>=</code> dans la déclaration d&#8217;arguments et le passage de paramètres :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction<span style="color: black;">&#40;</span>arg<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'valeur'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;">#  ça c'est ok</span>
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+resultat <span style="color: #66cc66;">=</span> fonction<span style="color: black;">&#40;</span>arg<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'valeur'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;">#  ça aussi</span></pre></td></tr></table></div>
+
+<p>On ne met pas d&#8217;espace à l&#8217;intérieur des parenthèses, crochets ou accolades.</p>
+<p>Oui :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">2</span> * <span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span> + <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction<span style="color: black;">&#40;</span>arg<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'valeur'</span><span style="color: black;">&#41;</span>:
+&nbsp;
+<span style="color: black;">&#123;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>: x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span>
+&nbsp;
+val <span style="color: #66cc66;">=</span> dico<span style="color: black;">&#91;</span><span style="color: #483d8b;">'key'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Non :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">2</span> * <span style="color: black;">&#40;</span> <span style="color: #ff4500;">3</span> + <span style="color: #ff4500;">4</span> <span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction<span style="color: black;">&#40;</span> arg<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'valeur'</span> <span style="color: black;">&#41;</span>:
+&nbsp;
+<span style="color: black;">&#123;</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>: x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span> <span style="color: black;">&#125;</span>
+&nbsp;
+val <span style="color: #66cc66;">=</span> dico<span style="color: black;">&#91;</span> <span style="color: #483d8b;">'key'</span> <span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>On ne met pas d&#8217;espace avant les deux points et les virgules, mais après oui.</p>
+<p>Oui :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction<span style="color: black;">&#40;</span>arg1<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'valeur'</span><span style="color: #66cc66;">,</span> arg2<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+&nbsp;
+dico <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Non :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction<span style="color: black;">&#40;</span>arg<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'valeur'</span> <span style="color: #66cc66;">,</span> arg2<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span> :
+&nbsp;
+dico <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span> : <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<h2>Lignes</h2>
+<p>Une ligne doit se limiter à 79 charactères. Cette limite, héritée des écrans touts petits, est toujours en vigeur car il est plus facile de scanner un code sur une courte colonne qu&#8217;en faisant des aller-retours constant.</p>
+<p>Si une ligne est trop longue, il existe plusieurs manières de la racourcir :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">foo <span style="color: #66cc66;">=</span> la_chose_au_nom_si_long_quelle_ne_tient_pas_sur<span style="color: black;">&#40;</span>
+          une<span style="color: #66cc66;">,</span> 
+          carte<span style="color: #66cc66;">,</span> 
+          de<span style="color: #66cc66;">,</span> 
+          munchkin<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ici l&#8217;indentation entre le nom de la fonction et des paramètres est légèrement différente pour mettre en avant la distinction.</p>
+<p>Une variante :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">foo <span style="color: #66cc66;">=</span> la_chose_au_nom_si_long_quelle<span style="color: black;">&#40;</span>ne<span style="color: #66cc66;">,</span> tient<span style="color: #66cc66;">,</span> pas<span style="color: #66cc66;">,</span> sur<span style="color: #66cc66;">,</span> carte 
+                                     une<span style="color: #66cc66;">,</span> de<span style="color: #66cc66;">,</span> munchkin<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si c&#8217;est un appel chainé, on peut utiliser <code>\</code> pour mettre à la ligne :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">queryset <span style="color: #66cc66;">=</span> ModelDjangoALaNoix.<span style="color: black;">objects</span>\
+                             .<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>banzai<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>\
+                             .<span style="color: black;">exclude</span><span style="color: black;">&#40;</span>chawarma<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si c&#8217;est une structure de données, on peut se la jouer langage fonctionel de la vibes du flex :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">chiffres <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>
+    <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span>
+    <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#93;</span>
+&nbsp;
+contacts <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+    <span style="color: #483d8b;">'Cleo'</span>: <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'Ramses'</span>: <span style="color: black;">&#40;</span>
+        <span style="color: black;">&#40;</span><span style="color: #483d8b;">'maman'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'0248163264'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#40;</span><span style="color: #483d8b;">'papa'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'01234567890'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#40;</span><span style="color: #483d8b;">'mamie'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'55555555'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#40;</span><span style="color: #483d8b;">'momie'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'066642424269'</span><span style="color: black;">&#41;</span>
+    <span style="color: black;">&#41;</span>
+<span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Séparer les fonctions et les classes à la racine d&#8217;un module par 2 lignes vides. Les méthodes par 1 ligne vide. Parfois je triche et je fais 3 et 2 au lieu de 2 et 1. </p>
+<p>Les imports de plusieurs modules doivent être sur plusieurs lignes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span></pre></td></tr></table></div>
+
+<p>Et non :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">os</span></pre></td></tr></table></div>
+
+<p>Bien sûr, ce n&#8217;est pas valable pour <code>from x import z</code>.</p>
+<p>Souvenez-vous qu&#8217;on peut utiliser les parenthèses pour diviser de longues lignes. Par exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> minibelt <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: black;">&#40;</span>dmerge<span style="color: #66cc66;">,</span> get<span style="color: #66cc66;">,</span> iget<span style="color: #66cc66;">,</span> normalize<span style="color: #66cc66;">,</span> 
+                      chunks<span style="color: #66cc66;">,</span> window<span style="color: #66cc66;">,</span> skip_duplicates<span style="color: #66cc66;">,</span> flatten<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Idem pour les chaînes très longues :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">s <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Les chaînes Python sont automatiquement&quot;</span>
+     <span style="color: #483d8b;">&quot;concaténées par la VM si elles sont &quot;</span>
+     <span style="color: #483d8b;">&quot;uniquement séparées par des espaces &quot;</span>
+     <span style="color: #483d8b;">&quot;ou sauts de lignes.&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Pour en revenir aux lignes d&#8217;import, on doit les ordonner ainsi :</p>
+<ul>
+<li>Import de module > import du contenu du module</li>
+<li>Import de la lib standard > import de libs tierces parties > import de votre projet</li>
+</ul>
+<p>Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>  <span style="color: #808080; font-style: italic;"># import module de la lib standard</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span> <span style="color: #808080; font-style: italic;"># on groupe car même type </span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">itertools</span> <span style="color: #ff7700;font-weight:bold;">import</span> islice  <span style="color: #808080; font-style: italic;"># import du contenu du module</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> namedtuple <span style="color: #808080; font-style: italic;"># import groupe car même type</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> requests <span style="color: #808080; font-style: italic;"># import lib tierce partie</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> arrow <span style="color: #808080; font-style: italic;"># on groupe car même type</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">conf</span> <span style="color: #ff7700;font-weight:bold;">import</span> settings <span style="color: #808080; font-style: italic;"># tierce partie, contenu du module</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">shortcuts</span> <span style="color: #ff7700;font-weight:bold;">import</span> redirect <span style="color: #808080; font-style: italic;"># on groupe car même type</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> mon_projet.<span style="color: black;">mon_module</span> <span style="color: #ff7700;font-weight:bold;">import</span> ma_bite <span style="color: #808080; font-style: italic;"># mon projet</span></pre></td></tr></table></div>
+
+<h2>Format du fichier</h2>
+<p>Indentation : 4 espaces. Pas de tab. C&#8217;est tout. Ce n&#8217;est pas du PEP8, c&#8217;est juste que les codes qui utilisent les tabs sont en (très très très très très très très très) grande minorité dans la communauté Python. Donc faites pas chier. Sinon on vous attend à la sortie de l&#8217;école. Tous.</p>
+<p>Encoding : UTF8 ou ASCII (ce qui est de l&#8217;UTF8 de toute façon).</p>
+<h2>Docstrings</h2>
+<p>(c.f. <a href="http://www.python.org/dev/peps/pep-0257/">PEP257</a>)</p>
+<p>On utilise toujours des triples quotes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction_avec_docstring_courte<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;Résumé en une ligne.&quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Si la docstring est longue (elle peut être très très très longue si vous le souhaitez) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;Résumé en une ligne suivi d'une line vide.
+&nbsp;
+    Description longue de la fonction qui 
+    se termine par une ligne vide puis une
+    triple quotes sur sa propre ligne.
+&nbsp;
+    &quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<h2>Noms de variables</h2>
+<p>Lettres seules, en minuscule : pour les boucles et les indices.</p>
+<p>Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+&nbsp;
+i <span style="color: #66cc66;">=</span> get_index<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> + <span style="color: #ff4500;">12</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>ma_liste<span style="color: black;">&#91;</span>i<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Lettres minuscules + underscores : pour les modules, variables, fonctions et méthodes.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">une_variable <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">10</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> une_fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">locals</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> UneClasse:
+    <span style="color: #ff7700;font-weight:bold;">def</span> une_methode_comme_une_autre<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">globals</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Lettres majuscules + underscores : pour les (pseudo) constantes.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">MAX_SIZE <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">100000</span>  <span style="color: #808080; font-style: italic;"># à mettre après les imports</span></pre></td></tr></table></div>
+
+<p>Camel case : nom de classe.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> CeciEstUneClasse:
+    <span style="color: #ff7700;font-weight:bold;">def</span> methodiquement<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Si le nom contient un acronyme, on fait une entorse à la règle :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> HTMLParserCQFDDDTCCMB:
+    <span style="color: #ff7700;font-weight:bold;">def</span> methodiquement<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>On n&#8217;utilise PAS le mixedCase.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-pep8-en-resume/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/LJXGkc9.jpg" length="48321" type="image/jpg" />	</item>
+		<item>
+		<title>Obfuscating Python 16</title>
+		<link>http://sametmax.com/obfuscating-python/</link>
+		<comments>http://sametmax.com/obfuscating-python/#comments</comments>
+		<pubDate>Fri, 05 Apr 2013 13:55:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[offuscation]]></category>
+		<category><![CDATA[pep8]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4381</guid>
+		<description><![CDATA[Python est un langage qu'il est difficile de rendre illisible. Difficile, mais pas impossible.]]></description>
+				<content:encoded><![CDATA[<p>Python est un langage qu&#8217;il est difficile de rendre illisible. Difficile, mais pas impossible.</p>
+<p>D&#8217;abord, les techniques habituelles de substitutions de lettres par leurs codes ASCII sont toujours valables. Le fameux easter egg <code>import this</code> en fait d&#8217;ailleurs usage;  si vous ouvrez le fichier dont le chemin est contenu dans <code>this.__file__</code>, vous trouverez :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">s <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;&quot;Gur Mra bs Clguba, ol Gvz Crgref
+&nbsp;
+Ornhgvshy vf orggre guna htyl.
+Rkcyvpvg vf orggre guna vzcyvpvg.
+Fvzcyr vf orggre guna pbzcyrk.
+Pbzcyrk vf orggre guna pbzcyvpngrq.
+Syng vf orggre guna arfgrq.
+Fcnefr vf orggre guna qrafr.
+Ernqnovyvgl pbhagf.
+Fcrpvny pnfrf nera'g fcrpvny rabhtu gb oernx gur ehyrf.
+Nygubhtu cenpgvpnyvgl orngf chevgl.
+Reebef fubhyq arire cnff fvyragyl.
+Hayrff rkcyvpvgyl fvyraprq.
+Va gur snpr bs nzovthvgl, ershfr gur grzcgngvba gb thrff.
+Gurer fubhyq or bar-- naq cersrenoyl bayl bar --boivbhf jnl gb qb vg.
+Nygubhtu gung jnl znl abg or boivbhf ng svefg hayrff lbh'er Qhgpu.
+Abj vf orggre guna arire.
+Nygubhtu arire vf bsgra orggre guna *evtug* abj.
+Vs gur vzcyrzragngvba vf uneq gb rkcynva, vg'f n onq vqrn.
+Vs gur vzcyrzragngvba vf rnfl gb rkcynva, vg znl or n tbbq vqrn.
+Anzrfcnprf ner bar ubaxvat terng vqrn -- yrg'f qb zber bs gubfr!&quot;&quot;&quot;</span>
+&nbsp;
+d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> c <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">65</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">26</span><span style="color: black;">&#41;</span>:
+        d<span style="color: black;">&#91;</span><span style="color: #008000;">chr</span><span style="color: black;">&#40;</span>i+c<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">chr</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>i+<span style="color: #ff4500;">13</span><span style="color: black;">&#41;</span> % <span style="color: #ff4500;">26</span> + c<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>d.<span style="color: black;">get</span><span style="color: black;">&#40;</span>c<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> c <span style="color: #ff7700;font-weight:bold;">in</span> s<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ensuite, il y a le fait qu&#8217;il est possible de spécifier (en Python 2.7, mais plus Python 3), l&#8217;encoding du module en ROT13, base64 ou même zip. Au lieux de mettre <code> # -*- coding: utf8 -*-</code>, vous pouvez faire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: rot13 -*-</span>
+&nbsp;
+cevag h<span style="color: #483d8b;">'Fnz rg Znk, cnepr dhr obver frhy rfg zbvaf qebyr dhr pbqre n cyhfvrhef'</span></pre></td></tr></table></div>
+
+<p>Mais au dela de ces petites astuces, il y a bien entendu la véritable offuscation, celle qui utilise des imbrications d&#8217;instructions capilotractées avec de multiples niveaux de nesting dans des onliners qui s&#8217;étendent sur des kilomètres en incluant des noms de variables alambiqués le tout organisé dans des structures syntaxiques volontairement obscures en détournant des capacités du langage pour en faire une indigeste bouillie immonde dont la lecture provoquera des saignement durant la phrase de vomi. Comme cette phrase.</p>
+<p>Généralement ça passe par un usage massif des features que Guido déteste comme les lambdas ou les <code>;</code>.</p>
+<p>Il y a <a href="http://docs.python.org/2/faq/programming.html#is-it-possible-to-write-obfuscated-one-liners-in-python">les classiques</a> onliners à base de map / reduce, par exemples les 1000 premiers nombres &#8230; premiers :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">filter</span><span style="color: black;">&#40;</span><span style="color: #008000;">None</span><span style="color: #66cc66;">,</span><span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> y:y*<span style="color: #008000;">reduce</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span>y:x*y<span style="color: #66cc66;">!=</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span>y<span style="color: #66cc66;">=</span>y:y%x<span style="color: #66cc66;">,</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #008000;">int</span><span style="color: black;">&#40;</span><span style="color: #008000;">pow</span><span style="color: black;">&#40;</span>y<span style="color: #66cc66;">,</span><span style="color: #ff4500;">0.5</span><span style="color: black;">&#41;</span>+<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ensuite il y a ceux qui aiment se la jouer &#8220;mes variables ont des noms de code Fortran&#8221; :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> Ru<span style="color: #66cc66;">,</span>Ro<span style="color: #66cc66;">,</span>Iu<span style="color: #66cc66;">,</span>Io<span style="color: #66cc66;">,</span>IM<span style="color: #66cc66;">,</span>Sx<span style="color: #66cc66;">,</span>Sy:<span style="color: #008000;">reduce</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span>y:x+y<span style="color: #66cc66;">,</span><span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> y<span style="color: #66cc66;">,</span>
+Iu<span style="color: #66cc66;">=</span>Iu<span style="color: #66cc66;">,</span>Io<span style="color: #66cc66;">=</span>Io<span style="color: #66cc66;">,</span>Ru<span style="color: #66cc66;">=</span>Ru<span style="color: #66cc66;">,</span>Ro<span style="color: #66cc66;">=</span>Ro<span style="color: #66cc66;">,</span>Sy<span style="color: #66cc66;">=</span>Sy<span style="color: #66cc66;">,</span>L<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> yc<span style="color: #66cc66;">,</span>Iu<span style="color: #66cc66;">=</span>Iu<span style="color: #66cc66;">,</span>Io<span style="color: #66cc66;">=</span>Io<span style="color: #66cc66;">,</span>Ru<span style="color: #66cc66;">=</span>Ru<span style="color: #66cc66;">,</span>Ro<span style="color: #66cc66;">=</span>Ro<span style="color: #66cc66;">,</span>i<span style="color: #66cc66;">=</span>IM<span style="color: #66cc66;">,</span>
+Sx<span style="color: #66cc66;">=</span>Sx<span style="color: #66cc66;">,</span>Sy<span style="color: #66cc66;">=</span>Sy:<span style="color: #008000;">reduce</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span>y:x+y<span style="color: #66cc66;">,</span><span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span>xc<span style="color: #66cc66;">=</span>Ru<span style="color: #66cc66;">,</span>yc<span style="color: #66cc66;">=</span>yc<span style="color: #66cc66;">,</span>Ru<span style="color: #66cc66;">=</span>Ru<span style="color: #66cc66;">,</span>Ro<span style="color: #66cc66;">=</span>Ro<span style="color: #66cc66;">,</span>
+i<span style="color: #66cc66;">=</span>i<span style="color: #66cc66;">,</span>Sx<span style="color: #66cc66;">=</span>Sx<span style="color: #66cc66;">,</span>F<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> xc<span style="color: #66cc66;">,</span>yc<span style="color: #66cc66;">,</span>x<span style="color: #66cc66;">,</span>y<span style="color: #66cc66;">,</span>k<span style="color: #66cc66;">,</span>f<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> xc<span style="color: #66cc66;">,</span>yc<span style="color: #66cc66;">,</span>x<span style="color: #66cc66;">,</span>y<span style="color: #66cc66;">,</span>k<span style="color: #66cc66;">,</span>f:<span style="color: black;">&#40;</span>k<span style="color: #66cc66;">&lt;=</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: black;">&#40;</span>x*x+y*y
+<span style="color: #66cc66;">&gt;=</span><span style="color: #ff4500;">4.0</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #ff4500;">1</span>+f<span style="color: black;">&#40;</span>xc<span style="color: #66cc66;">,</span>yc<span style="color: #66cc66;">,</span>x*x-y*y+xc<span style="color: #66cc66;">,</span><span style="color: #ff4500;">2.0</span>*x*y+yc<span style="color: #66cc66;">,</span>k-<span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span>f<span style="color: black;">&#41;</span>:f<span style="color: black;">&#40;</span>xc<span style="color: #66cc66;">,</span>yc<span style="color: #66cc66;">,</span>x<span style="color: #66cc66;">,</span>y<span style="color: #66cc66;">,</span>k<span style="color: #66cc66;">,</span>f<span style="color: black;">&#41;</span>:<span style="color: #008000;">chr</span><span style="color: black;">&#40;</span>
+<span style="color: #ff4500;">64</span>+F<span style="color: black;">&#40;</span>Ru+x*<span style="color: black;">&#40;</span>Ro-Ru<span style="color: black;">&#41;</span>/Sx<span style="color: #66cc66;">,</span>yc<span style="color: #66cc66;">,</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span>i<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span>Sx<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:L<span style="color: black;">&#40;</span>Iu+y*<span style="color: black;">&#40;</span>Io-Iu<span style="color: black;">&#41;</span>/Sy<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span>Sy
+<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span>-<span style="color: #ff4500;">2.1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0.7</span><span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">1.2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1.2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">30</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">80</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">24</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui va afficher cette belle composition de Mandelbrot (si votre terminal fait 80 colonnes de large) :</p>
+<div id="attachment_5606" style="width: 529px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2013/04/Espace-de-travail-1_004.jpg" class="grouped_elements" rel="tc-fancybox-group4381"><img class=" wp-image-5606 " title="La génération procédurale : ou comment faire de Zolies choZes avec 1ko de code." src="http://sametmax.com/wp-content/uploads/2013/04/Espace-de-travail-1_004.jpg" alt="Mandelbrot dans un terminal" width="519" height="337" /></a><p class="wp-caption-text">La génération procédurale : ou comment faire de Zolies choZes avec 1ko de code.</p></div>
+<p>D&#8217;ailleurs, pour l&#8217;offuscation, on adore les trucs de maths parce que ça donne l&#8217;air intelligent et compliqué, et Mandelbrot est un truc très prisé puisqu&#8217;avec peu de lignes on peut outputer du Dali Période Guimauve automatiquement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">_                                      <span style="color: #66cc66;">=</span>   <span style="color: black;">&#40;</span>
+                                        <span style="color: #ff4500;">255</span><span style="color: #66cc66;">,</span>
+                                      <span style="color: #ff7700;font-weight:bold;">lambda</span>
+                               V       <span style="color: #66cc66;">,</span>B<span style="color: #66cc66;">,</span>c
+                             :c   <span style="color: #ff7700;font-weight:bold;">and</span> Y<span style="color: black;">&#40;</span>V*V+B<span style="color: #66cc66;">,</span>B<span style="color: #66cc66;">,</span>  c
+                               -<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: #ff7700;font-weight:bold;">if</span><span style="color: black;">&#40;</span><span style="color: #008000;">abs</span><span style="color: black;">&#40;</span>V<span style="color: black;">&#41;</span><span style="color: #66cc66;">&lt;</span><span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span><span style="color: #ff7700;font-weight:bold;">else</span>
+               <span style="color: black;">&#40;</span>              <span style="color: #ff4500;">2</span>+c-<span style="color: #ff4500;">4</span>*<span style="color: #008000;">abs</span><span style="color: black;">&#40;</span>V<span style="color: black;">&#41;</span>**-<span style="color: #ff4500;">0.4</span><span style="color: black;">&#41;</span>/i
+                 <span style="color: black;">&#41;</span>  <span style="color: #66cc66;">;</span>v<span style="color: #66cc66;">,</span>      x<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1500</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">1000</span><span style="color: #66cc66;">;</span>C<span style="color: #66cc66;">=</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span>v*x
+                  <span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span><span style="color: #ff7700;font-weight:bold;">import</span>  <span style="color: #dc143c;">struct</span><span style="color: #66cc66;">;</span>P<span style="color: #66cc66;">=</span><span style="color: #dc143c;">struct</span>.<span style="color: black;">pack</span><span style="color: #66cc66;">;</span>M<span style="color: #66cc66;">,</span>\
+            j  <span style="color: #66cc66;">=</span><span style="color: #483d8b;">'&lt;QIIHHHH'</span><span style="color: #66cc66;">,</span><span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'M.bmp'</span><span style="color: #66cc66;">,</span><span style="color: #483d8b;">'wb'</span><span style="color: black;">&#41;</span>.<span style="color: black;">write</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> X <span style="color: #ff7700;font-weight:bold;">in</span> j<span style="color: black;">&#40;</span><span style="color: #483d8b;">'BM'</span>+P<span style="color: black;">&#40;</span>M<span style="color: #66cc66;">,</span>v*x*<span style="color: #ff4500;">3</span>+<span style="color: #ff4500;">26</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">26</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">12</span><span style="color: #66cc66;">,</span>v<span style="color: #66cc66;">,</span>x<span style="color: #66cc66;">,</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">24</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #ff7700;font-weight:bold;">or</span> C:
+            i  <span style="color: #66cc66;">,</span>Y<span style="color: #66cc66;">=</span>_<span style="color: #66cc66;">;</span>j<span style="color: black;">&#40;</span>P<span style="color: black;">&#40;</span><span style="color: #483d8b;">'BBB'</span><span style="color: #66cc66;">,</span>*<span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> T:<span style="color: black;">&#40;</span>T*<span style="color: #ff4500;">80</span>+T**<span style="color: #ff4500;">9</span>
+                  *i-<span style="color: #ff4500;">950</span>*T  **<span style="color: #ff4500;">99</span><span style="color: #66cc66;">,</span>T*<span style="color: #ff4500;">70</span>-<span style="color: #ff4500;">880</span>*T**<span style="color: #ff4500;">18</span>+<span style="color: #ff4500;">701</span>*
+                 T  **<span style="color: #ff4500;">9</span>     <span style="color: #66cc66;">,</span>T*i**<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span>-T**<span style="color: #ff4500;">45</span>*<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span><span style="color: #008000;">sum</span><span style="color: black;">&#40;</span>
+               <span style="color: black;">&#91;</span>              Y<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span><span style="color: black;">&#40;</span>A%<span style="color: #ff4500;">3</span>/<span style="color: #ff4500;">3</span>.+X%v+<span style="color: black;">&#40;</span>X/v+
+                               A/<span style="color: #ff4500;">3</span>/<span style="color: #ff4500;">3</span>.-x/<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>/1j<span style="color: black;">&#41;</span>*<span style="color: #ff4500;">2.5</span>
+                             /x   -<span style="color: #ff4500;">2.7</span><span style="color: #66cc66;">,</span>i<span style="color: black;">&#41;</span>**<span style="color: #ff4500;">2</span> <span style="color: #ff7700;font-weight:bold;">for</span>  \
+                               A       <span style="color: #ff7700;font-weight:bold;">in</span> C
+                                      <span style="color: black;">&#91;</span>:<span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+                                        /<span style="color: #ff4500;">9</span><span style="color: black;">&#41;</span>
+                                       <span style="color: black;">&#41;</span>   <span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Notez cette fois que le code, en plus d&#8217;être particulièrement imbuvable, a été gentiment indenté pour ressembler à la figure qu&#8217;il va lui même pondre dans le fichier <em>M.bmp</em> que voici :</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2013/04/mandelbrot.bmp" class="grouped_elements" rel="tc-fancybox-group4381"><img src="http://sametmax.com/wp-content/uploads/2013/04/mandelbrot.bmp" alt="" title="En plus un set de Mandelbrot, c&#039;est indépendant de la résolution. On peut en pondre de taille arbitraire. C&#039;est trop cool, comme de l&#039;argent infini mais pour des images qui servent à rien." class="aligncenter size-full wp-image-5607" /></a></p>
+<p>Mais bien entendu il y a des gens qui arrivent à faire des trucs moches sans entrainement. Par exemple des codeurs JS qui vous font ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #483d8b;">&quot;longue chaine&quot;</span>.<span style="color: black;">find</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chaine'</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">!=</span> -<span style="color: #ff4500;">1</span>:</pre></td></tr></table></div>
+
+<p>Au lieu de :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #483d8b;">'chaine'</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #483d8b;">'longue chaine'</span>:</pre></td></tr></table></div>
+
+<p>Ou alors les programmeurs C qui font :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>ma_list<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> ma_list<span style="color: black;">&#91;</span>x<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Alors qu&#8217;on a :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> ma_list:
+    <span style="color: #ff7700;font-weight:bold;">print</span> x</pre></td></tr></table></div>
+
+<p>Et au besoin:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>ma_list<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> i<span style="color: #66cc66;">,</span> x</pre></td></tr></table></div>
+
+<p>Et à peu près la moitié des programmeurs d&#8217;autres langages qui font :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">if</span> truc <span style="color: #66cc66;">==</span> <span style="color: #008000;">True</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>ma_list<span style="color: black;">&#41;</span>:</pre></td></tr></table></div>
+
+<p>Alors que:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">if</span> truc:
+     <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> ma_list:</pre></td></tr></table></div>
+
+<p>Marche très bien.</p>
+<p>Je vous passe les <strong>isintance()</strong> que nous font les programmeurs Java, les check au lieu des gestions des exceptions et les gens qui écrivent les variables en camelCase. <a href="http://python.lycee.free.fr/blog/?p=199">Des gens très compétents font du code horrible</a>.</p>
+<p>Certains trouvent que le créateur du langage a été un nazi pour avoir forcé les gens à utiliser l&#8217;indentation et les sauts de ligne ou pour avoir limité les lambdas. Quand je lis le code de certains, j&#8217;ai tendance au contraire à trouver la politique actuelle proche de l&#8217;anarchisme hippie. Interdisons les tabs. Les &#8220;;&#8221; plus de 3 fois d&#8217;affilé. Les nombres de saut de ligne qui ne sont pas standard face au PEP8. En fait faisons des syntax errors sur le PEP8. Et les syntaxes errors déclencheront des chocs électriques via le clavier.</p>
+<p>Et on enverra tous ceux qui sont pas d&#8217;accord dans des camps d’entraînement pour qu&#8217;ils puissent tous se concentrer un peu plus sur leur code.</p>
+<p>Sinon à quoi ça sert d&#8217;être un BDFL ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/obfuscating-python/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/jn49d.jpg" length="144623" type="image/jpg" />	</item>
+		<item>
+		<title>TypeError: Error when calling the metaclass bases function() argument 1 must be code, not str 7</title>
+		<link>http://sametmax.com/typeerror-error-when-calling-the-metaclass-bases-function-argument-1-must-be-code-not-str/</link>
+		<comments>http://sametmax.com/typeerror-error-when-calling-the-metaclass-bases-function-argument-1-must-be-code-not-str/#comments</comments>
+		<pubDate>Wed, 16 Jan 2013 12:16:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[error]]></category>
+		<category><![CDATA[exception]]></category>
+		<category><![CDATA[heritage]]></category>
+		<category><![CDATA[pep8]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4150</guid>
+		<description><![CDATA[Cette erreur est souvent déclenchée quand on essaye d'hériter d'une fonction au lieu d'une classe. Cela peut arriver par erreur avec des fonctions qui sont nommées en CamelCase, en dépit du PEP8.]]></description>
+				<content:encoded><![CDATA[<p>Cette erreur est souvent déclenchée quand on essaye d&#8217;hériter d&#8217;une fonction au lieu d&#8217;une classe. Cela peut arriver par erreur avec des fonctions qui sont nommées en CamelCase, en dépit du PEP8.</p>
+<p>Par exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Truc<span style="color: black;">&#40;</span><span style="color: #dc143c;">threading</span>.<span style="color: black;">Condition</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Machine<span style="color: black;">&#40;</span><span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Lèveront l&#8217;exception :</p>
+<pre>TypeError: Error when calling the metaclass bases 
+    function() argument 1 must be code, not str</pre>
+<p>Car:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">threading</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">tempfile</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">threading</span>.<span style="color: black;">Condition</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'function'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'function'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Malgré leurs noms en majuscule.</p>
+<p>Le message d&#8217;erreur est lui-même complètement obscure. Bref, le genre de truc qui est 100% lié à des erreurs d&#8217;autres personnes que vous aller payer par une après-midi de debug si on ne vous donne pas la solution. </p>
+<p>Mais bon, la queue de celui qui n&#8217;a jamais pourri l&#8217;après-midi d&#8217;un autre codeur avec son travail merdique jette le premier parpaing.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/typeerror-error-when-calling-the-metaclass-bases-function-argument-1-must-be-code-not-str/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/errormessagesrk3.png" length="424492" type="image/jpg" />	</item>
+	</channel>
+</rss>

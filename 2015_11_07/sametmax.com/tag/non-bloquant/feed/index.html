@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; non-bloquant</title>
+	<atom:link href="http://sametmax.com/tag/non-bloquant/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Utiliser requests de manière non bloquante facilement 12</title>
+		<link>http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/</link>
+		<comments>http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/#comments</comments>
+		<pubDate>Wed, 21 Jan 2015 07:17:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[non-bloquant]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[requests]]></category>
+		<category><![CDATA[thread]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15797</guid>
+		<description><![CDATA[En attendant le dossier sur la programmation non bloquante, voici une petite lib qui résout un cas décole : faire une requête HTTP sans bloquer avec une jolie API, en pur Python.]]></description>
+				<content:encoded><![CDATA[<p>En attendant le dossier sur la programmation non bloquante, voici une petite lib qui résout un cas d&#8217;école : faire une requête HTTP sans bloquer avec une jolie API, en pur Python.</p>
+<p>Pour ça, on dégaine <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> et installe <a href="https://pypi.python.org/pypi/requests-futures/0.9.0">requests-futures</a>, un plugin pour la célèbre lib <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">requests</a> qui fonctionne avec Python 2 et 3 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> requests-futures</pre></td></tr></table></div>
+
+<p>requests-futures va créer pour vous une pool de workers (2 par défaut) et quand vous faites une requête, la lib vous retourne un objet <a href="http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/">future</a> qui vous permet d&#8217;attacher un <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a>.</p>
+<p>Fiou, le nombre de liens référant à d&#8217;autres articles du blog est en train d&#8217;exploser.</p>
+<p>Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> requests_futures.<span style="color: black;">sessions</span> <span style="color: #ff7700;font-weight:bold;">import</span> FuturesSession
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Cette session est notre point d'entrée, c'est elle</span>
+<span style="color: #808080; font-style: italic;"># qui gère nos workers. Faites help(FuturesSession)</span>
+<span style="color: #808080; font-style: italic;"># pour voir ses paramètres.</span>
+session <span style="color: #66cc66;">=</span> FuturesSession<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Les URLs sur lesquelles on va faire</span>
+<span style="color: #808080; font-style: italic;"># nos requêtes</span>
+URLs <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>
+    <span style="color: #483d8b;">&quot;http://sametmax.com&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://sebsauvage.net&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://indexerror.net&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://afpy.org&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://0bin.net&quot;</span>
+<span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Notre callback qui sera appelé quand une </span>
+<span style="color: #808080; font-style: italic;"># des requêtes sera terminée. Il reçoit</span>
+<span style="color: #808080; font-style: italic;"># l'objet future pour seul paramètre</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> faire_un_truc_avec_le_resultat<span style="color: black;">&#40;</span>future<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># On est juste intéressé par le résutlat, qui</span>
+    <span style="color: #808080; font-style: italic;"># est un objet response typique de la lib</span>
+    <span style="color: #808080; font-style: italic;"># request</span>
+    response <span style="color: #66cc66;">=</span> future.<span style="color: black;">result</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>response.<span style="color: black;">url</span><span style="color: #66cc66;">,</span> response.<span style="color: black;">status_code</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On traite chaque URL. Comme on a 2 workers,</span>
+<span style="color: #808080; font-style: italic;"># on pourra traiter au mieux 2 URLs en parallèle,</span>
+<span style="color: #808080; font-style: italic;"># mais toujours sans bloquer le programme</span>
+<span style="color: #808080; font-style: italic;"># principal</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> URLs:
+    <span style="color: #808080; font-style: italic;"># On fait notre requête GET</span>
+    future <span style="color: #66cc66;">=</span> session.<span style="color: black;">get</span><span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># On rajoute le callback à appeler quand</span>
+    <span style="color: #808080; font-style: italic;"># le résultat de la requête arrive.</span>
+    <span style="color: #808080; font-style: italic;"># La flemme de faire la gestion des erreurs.</span>
+    future.<span style="color: black;">add_done_callback</span><span style="color: black;">&#40;</span>faire_un_truc_avec_le_resultat<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Juste pour montrer que c'est bien non bloquant</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+    <span style="color: #dc143c;">time</span>.<span style="color: black;">sleep</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Output :</p>
+<pre>0
+1
+(u'http://sebsauvage.net/', 200)
+(u'http://sametmax.com/', 200)
+2
+(u'http://indexerror.net/', 200)
+(u'http://0bin.net/', 200)
+(u'http://www.afpy.org/', 200)
+3
+4
+5
+6
+7
+8
+9</pre>
+<p>On remerciera turgon37 pour <a href="http://indexerror.net/357/comment-passer-une-valeur-entre-threads">sa question</a> sur IndexError qui m&#8217;a amené à écrire cet article.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/images.jpeg" length="12961" type="image/jpg" />	</item>
+	</channel>
+</rss>

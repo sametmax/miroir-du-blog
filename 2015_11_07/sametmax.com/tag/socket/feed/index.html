@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; socket</title>
+	<atom:link href="http://sametmax.com/tag/socket/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Socket en Python 2</title>
+		<link>http://sametmax.com/socket-en-python/</link>
+		<comments>http://sametmax.com/socket-en-python/#comments</comments>
+		<pubDate>Sat, 11 May 2013 17:54:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[socket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5809</guid>
+		<description><![CDATA[Python est un langage de haut niveau, ce qui fait qu'on a rarement besoin de taper directement dans les interface de couches basses comme les sockets : on utilise des abtractions comme urllib et consort. 
+
+Même quand on doit communique directement des paquets de données, on préférera utiliser des solutions comme <a href="http://www.zeromq.org/bindings:python">zeroMQ</a>, bien plus fiables et faciles à mettre en œuvre. 
+
+Cela étant dit, pour la culture G, ça ne fait pas de mal d'avoir un petit hello world des sockets en Python.
+]]></description>
+				<content:encoded><![CDATA[<p>Python est un langage de haut niveau, ce qui fait qu&#8217;on a rarement besoin de taper directement dans les interface de couches basses comme les sockets : on utilise des abstractions comme urllib et consort. </p>
+<p>Même quand on doit communiquer directement des paquets de données, on préférera utiliser des solutions comme <a href="http://www.zeromq.org/bindings:python">ZeroMQ</a>, bien plus fiables et faciles à mettre en œuvre. </p>
+<p>Cela étant dit, pour la culture G, ça ne fait pas de mal d&#8217;avoir un petit hello world des sockets en Python.</p>
+<p>Client :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">socket</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># cette fonction n'est pas très performante puisqu'elle</span>
+<span style="color: #808080; font-style: italic;"># ouvre et ferme la socket pour chaque message,</span>
+<span style="color: #808080; font-style: italic;"># mais vous voyez le principe.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> envoyer_message<span style="color: black;">&#40;</span>ip<span style="color: #66cc66;">,</span> port<span style="color: #66cc66;">,</span> message<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on ouvre une socket TCP / IP, en IP V4</span>
+    <span style="color: #808080; font-style: italic;"># la doc contient une liste de constantes avec</span>
+    <span style="color: #808080; font-style: italic;"># les protocoles de base supportés</span>
+    <span style="color: #808080; font-style: italic;"># (http://docs.python.org/2/library/socket.html)</span>
+    <span style="color: #808080; font-style: italic;"># on peut aussi ouvrir des sockets unix, des datagrames...</span>
+    sock <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">socket</span>.<span style="color: #dc143c;">socket</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">socket</span>.<span style="color: black;">AF_INET</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">socket</span>.<span style="color: black;">SOCK_STREAM</span><span style="color: black;">&#41;</span>
+    sock.<span style="color: black;">connect</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>ip<span style="color: #66cc66;">,</span> port<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #808080; font-style: italic;"># on broadcast le message</span>
+        sock.<span style="color: black;">sendall</span><span style="color: black;">&#40;</span>message<span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># et on lit la réponse cash pistache</span>
+        <span style="color: #808080; font-style: italic;"># Tout ça est synchrone, car si on veut</span>
+        <span style="color: #808080; font-style: italic;"># faire de l'asynchrone, l'exemple serait</span>
+        <span style="color: #808080; font-style: italic;"># vachement moins simple</span>
+        response <span style="color: #66cc66;">=</span> sock.<span style="color: black;">recv</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1024</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Received: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>response<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">Exception</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Impossible de se connecter au serveur: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>e<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        <span style="color: #808080; font-style: italic;"># toujours fermer sa socket, même si dans notre cas</span>
+        <span style="color: #808080; font-style: italic;"># on a pas besoin de la fermer pour chaque message</span>
+        <span style="color: #808080; font-style: italic;"># On pourrait aussi utiliser le context manager closing()</span>
+        <span style="color: #808080; font-style: italic;"># pour cette tâche</span>
+        sock.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># petit test qui envoit trois messages</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+&nbsp;
+    ip<span style="color: #66cc66;">,</span> port <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;127.0.0.1&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7777</span>
+&nbsp;
+    envoyer_message<span style="color: black;">&#40;</span>ip<span style="color: #66cc66;">,</span> port<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Hello World 1&quot;</span><span style="color: black;">&#41;</span>
+    envoyer_message<span style="color: black;">&#40;</span>ip<span style="color: #66cc66;">,</span> port<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Hello World 2&quot;</span><span style="color: black;">&#41;</span>
+    envoyer_message<span style="color: black;">&#40;</span>ip<span style="color: #66cc66;">,</span> port<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Hello World 3&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Serveur:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">threading</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">SocketServer</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Python vient avec ses serveurs socket tout prêts.</span>
+<span style="color: #808080; font-style: italic;"># Tout ce qu'il y a faire c'est créer une classe </span>
+<span style="color: #808080; font-style: italic;"># de handler, c'est à dire l'objet qui va s'occuper</span>
+<span style="color: #808080; font-style: italic;"># des messages quand ils arrivent. On hérite du </span>
+<span style="color: #808080; font-style: italic;"># handler de la lib standard, et on redéfinit juste</span>
+<span style="color: #808080; font-style: italic;"># handle() qui est la méthode qui va être appelée</span>
+<span style="color: #808080; font-style: italic;"># à chaque message.</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> RequestHandler<span style="color: black;">&#40;</span><span style="color: #dc143c;">SocketServer</span>.<span style="color: black;">BaseRequestHandler</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> handle<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># on récupère des requêtes, et on répond avec</span>
+        <span style="color: #808080; font-style: italic;"># exactement le même message + un timestamp</span>
+        data <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">request</span>.<span style="color: black;">recv</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1024</span><span style="color: black;">&#41;</span>
+        now <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">strftime</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%Y-%m-%d %H:%M:%S.%f'</span><span style="color: black;">&#41;</span>
+        response <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;{}: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>now<span style="color: #66cc66;">,</span> data<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">request</span>.<span style="color: black;">sendall</span><span style="color: black;">&#40;</span>response<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Pour le serveur, pas grand chose à faire à part le définir</span>
+<span style="color: #808080; font-style: italic;"># Ici je fais un serveur threadé pour le Lulz car ça</span>
+<span style="color: #808080; font-style: italic;"># ne sert pas à grand chose pour un client avec 3 messages</span>
+<span style="color: #808080; font-style: italic;"># synchrones</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> ThreadedTCPServer<span style="color: black;">&#40;</span><span style="color: #dc143c;">SocketServer</span>.<span style="color: black;">ThreadingMixIn</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">SocketServer</span>.<span style="color: black;">TCPServer</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on instancie notre server et on lui passe le gestionnaire de</span>
+    <span style="color: #808080; font-style: italic;"># requêtes</span>
+    server <span style="color: #66cc66;">=</span> ThreadedTCPServer<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'127.0.0.1'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7777</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> RequestHandler<span style="color: black;">&#41;</span>
+    ip<span style="color: #66cc66;">,</span> port <span style="color: #66cc66;">=</span> server.<span style="color: black;">server_address</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on start le thread pour le serveur et on le daemonise</span>
+    server_thread <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">threading</span>.<span style="color: black;">Thread</span><span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>server.<span style="color: black;">serve_forever</span><span style="color: black;">&#41;</span>
+&nbsp;
+    server_thread.<span style="color: black;">daemon</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+    server_thread.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># si on appuie sur &quot;enter&quot;, raw_input() s'arrête et le serveur</span>
+    <span style="color: #808080; font-style: italic;"># est stoppé</span>
+    <span style="color: #008000;">raw_input</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Hit enter to stop the server&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    server.<span style="color: black;">shutdown</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Je suis d&#8217;un niveau pathétique en réseau, alors je vous pond ça vraiment pour le plaisir de partager mes moments bac à sable. Il y a peu de chance que ça vous serve, mais qui sait ?</p>
+<p>P.S: je ne suis pas sur mon OS, donc je mettrai les outputs et le code en ligne plus tard.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/socket-en-python/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/yAfv2Yz.jpg" length="37808" type="image/jpg" />	</item>
+	</channel>
+</rss>

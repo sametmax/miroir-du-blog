@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; pub/sub</title>
+	<atom:link href="http://sametmax.com/tag/pubsub/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Redis : pourquoi et comment ? 23</title>
+		<link>http://sametmax.com/redis-pourquoi-et-comment/</link>
+		<comments>http://sametmax.com/redis-pourquoi-et-comment/#comments</comments>
+		<pubDate>Tue, 14 Oct 2014 11:31:17 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[hash]]></category>
+		<category><![CDATA[hyperloglog]]></category>
+		<category><![CDATA[list]]></category>
+		<category><![CDATA[pub/sub]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[redis]]></category>
+		<category><![CDATA[set]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12279</guid>
+		<description><![CDATA[Redis fait partie de ces technologies tellement utiles et simples à mettre en oeuvre qu'il est facile d'oublier toutes les personnes qui ne savent toujours pas ce que c'est. D'autant plus qu'on l'associe avec beaucoup d'étiquettes : cache, queues, pub/sub, base de données, nosql... Et qu'est-ce que Redis comparé à Memcache, MongoDB, MySQL, RabbitMQ, des technos qui n'ont rien à voir et auxquelles on le compare ?
+
+Bref, c'est pas clair tout ça.]]></description>
+				<content:encoded><![CDATA[<p>Redis fait partie de ces technologies tellement utiles et simples à mettre en oeuvre qu&#8217;il est facile d&#8217;oublier toutes les personnes qui ne savent toujours pas ce que c&#8217;est. D&#8217;autant plus qu&#8217;on l&#8217;associe avec beaucoup d&#8217;étiquettes : cache, queues, pub/sub, base de données, nosql&#8230; Et qu&#8217;est-ce que Redis comparé à Memcache, MongoDB, MySQL, RabbitMQ, des technos qui n&#8217;ont rien à voir et auxquelles on le compare ?</p>
+<p>Bref, c&#8217;est pas clair tout ça.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/6VAkOhXIsI0?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Hello redis</h2>
+<h3>D&#8217;abord, installer le bouzin. </h3>
+<p>Si vous êtes sous Linux, Redis est dans votre gestionnaire de paquets. Par exemple, sous Ubuntu :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> redis-server</pre></td></tr></table></div>
+
+<p>Pour Mac, via macport :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> port <span style="color: #c20cb9; font-weight: bold;">install</span> redis
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> port load redis</pre></td></tr></table></div>
+
+<p>Je crois que <code>brew install redis</code> marche aussi pour les amateurs de homebrew.</p>
+<p>Pour Windows, il y a un exe à télécharger <a href="https://github.com/MSOpenTech/redis/blob/2.8/bin/release/redis-2.8.17.zip">ici</a>.</p>
+<p>Mais le plus fun avec redis, c&#8217;est que même quand il y a pas de binaire, c&#8217;est le truc le plus facile du monde <a href="https://github.com/MSOpenTech/redis/blob/2.8/bin/release/redis-2.8.17.zip">à compiler.</a> Et Dieu sait que je hais la compilation, donc quand je vous dis que c&#8217;est simple, c&#8217;est que c&#8217;est mega, ultra, simple.</p>
+<h3>Ensuite lui faire dire bonjour.</h3>
+<p>Utiliser Redis se fait à base de commandes, dont <a href="http://redis.io/commands">la liste est sur le site officiel</a>. On peut envoyer ces commandes depuis n&#8217;importe quel langage, mais Redis fournit un shell qui permet de rentrer ces commandes directement:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ redis-cli <span style="color: #666666; font-style: italic;"># lancer le shell redis</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span>  ECHO <span style="color: #ff0000;">&quot;Hello&quot;</span>
+<span style="color: #ff0000;">&quot;Hello&quot;</span></pre></td></tr></table></div>
+
+<h2>Redis comme base de données clés/valeurs expirables</h2>
+<p>L&#8217;usage de base de Redis, c&#8217;est de stocker des valeurs associées à des clés. Le serveur Redis est comme un gigantesque Hash Map, dictionnaire Python, object Javascript, Array associatif en PHP&#8230; En premier lieu, donc, on utilise Redis pour stocker des choses ainsi :</p>
+<pre>"cle1" => valeur1
+"cle2" => valeur2
+etc</pre>
+<p>La clé doit être une chaîne de caractères, de préférence ASCII. La valeur peut être n&#8217;importe quoi, vraiment, mais généralement c&#8217;est un gros bloc de texte, un entier ou un blob binaire.</p>
+<p>Ca s&#8217;utilise avec les commandes <code>SET</code> et <code>GET</code>, qui peuvent, comme toutes les commandes, être tapées dans le shell de Redis :</p>
+<pre>127.0.0.1:6379> GET une_cle
+(nil)
+127.0.0.1:6379> SET une_cle "Une valeur"
+OK
+127.0.0.1:6379> GET une_cle
+"Une valeur"
+127.0.0.1:6379> SET une_cle 780708
+OK
+127.0.0.1:6379> GET une_cle
+"780708"</pre>
+<p>Ce genre d&#8217;usage est surtout sollicité pour stocker des paramètres de configurations ou des compteurs.</p>
+<p>En effet, la plupart des opérations sur les clés sont atomiques, rendant ce genre d&#8217;usage idéal. On peut même incrémenter ou décrémenter une valeur avec <code>INCR</code> et <code>DECR</code> atomiquement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> INCR une_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">780709</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> INCR une_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">780710</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> DECR une_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">780709</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span></pre></td></tr></table></div>
+
+<p>Vous allez me dire, mais quel intérêt ? Je peux déjà faire ça avec une variable. Certes, mais Redis est accessible depuis n&#8217;importe quel programme de votre serveur. Vous pouvez donc facilement partager des valeurs entre vos processus. Par exemple, avec Django, on a souvent plusieurs workers WSGI, et Redis permet donc de partager des informations entre ces workers. Pour cette raison, on peut utiliser Redis pour créer un <a href="https://github.com/antirez/redlock-rb">lock partagé</a>.</p>
+<p>Ainsi, un paramètre dynamique peut être changé et lu depuis tous les process de votre projet en utilisant Redis, et la valeur sera garantie d&#8217;être à jour. On peut bien entendu faire ça avec une base de données ordinaire, mais Redis a un plus : la performance.</p>
+<p>En effet, Redis est par défaut configuré pour garder toutes les données de sa base en mémoire vive. Pour cette raison, il est très, très rapide, supportant 100000 lectures/écritures par seconde. Si vous comptez le nombre de visiteurs en ligne pour l&#8217;afficher sur chaque page, votre base de données vous dira merci de plutôt demander à Redis.</p>
+<p>Plus encore, les clés peuvent expirer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> SET une_autre_cle <span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+OK
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> EXPIRE une_autre_cle <span style="color: #000000;">5</span> <span style="color: #666666; font-style: italic;"># cette clé expire dans 5 secondes</span>
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>integer<span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #000000;">1</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #ff0000;">&quot;Tu ne le sais pas mais tu es deja mort&quot;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>nil<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+127.0.0.1:<span style="color: #000000;">6379</span><span style="color: #000000; font-weight: bold;">&gt;</span> GET une_autre_cle
+<span style="color: #7a0874; font-weight: bold;">&#40;</span>nil<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></td></tr></table></div>
+
+<p>La limite en taille de ce qu&#8217;on peut stocker par couple est <a href="http://sametmax.com/les-limites-theoriques-de-redis/">assez large</a>.</p>
+<p>On peut également utiliser <code>EXPIREAT</code> et un timestamp unique si on a une date en tête.</p>
+<p>Cette caractéristique le rend similaire à Memcache, qui est basé sur des clés/valeurs en mémoire qui peuvent expirer. Et comme Memcache, cela fait de Redis un outil idéal pour gérer du cache : faites une opération longue, stockez-là avec une clé, mettez lui une date d&#8217;expiration et pouf, vous avez une valeur cachée globale à votre app.</p>
+<p>Redis a néanmoins 3 différences majeures qui le sépare de Memcache :</p>
+<ul>
+<li>Redis sauvegarde régulièrement toutes les données sur le disque. Si vous rebootez le serveur, vous perdez au pire, quelques secondes de données. Avec Memcache, vous perdez tout.</li>
+<li>Memcache possède des fonctionalités de clusterisation que n&#8217;a pas encore Redis, bien que ce soit actuellement en beta.</li>
+<li>Redis peut faire bien plus que du stockage clé/valeur.</li>
+</ul>
+<h2>Redis comme base NoSQL zarbie</h2>
+<p>Redis n&#8217;a pas besoin d&#8217;un schéma particulier à définir pour pouvoir sauvegarder ses données, mais n&#8217;est pas pour autant limité à une forme d&#8217;organisation basique. En fait, des types très proches de ceux qu&#8217;on trouve dans le langage Python sont disponibles pour stocker internalement les données, et ils sont <a href="http://redis.io/topics/data-types-intro">décrits dans son excellente doc</a>.</p>
+<h3>Liste</h3>
+<p>Une <a href="http://redis.io/commands#list">liste</a> est juste une collection ordonnée d&#8217;éléments. On utilise toujours la logique de clé, mais au lieu d&#8217;une valeur, on a une séquence d&#8217;éléments.</p>
+<p>Cela permet d&#8217;avoir :</p>
+<pre>cle => [
+	valeur1,
+	valeur2,
+	...
+]</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> lpush batman na
+(integer) 1
+127.0.0.1:6379> lpush batman na
+(integer) 2
+127.0.0.1:6379> lpush batman na
+(integer) 3
+127.0.0.1:6379> lpush batman na
+(integer) 4
+127.0.0.1:6379> lpush batman na
+(integer) 5
+127.0.0.1:6379> lpush batman na
+(integer) 6
+127.0.0.1:6379> llen batman
+(integer) 6
+127.0.0.1:6379> LINDEX batman 3
+"na"
+127.0.0.1:6379> LINDEX batman 10
+(nil)
+127.0.0.1:6379> LRANGE batman 0 -1 # du début au dernier élément
+1) "na"
+2) "na"
+3) "na"
+4) "na"
+5) "na"
+6) "na"
+127.0.0.1:6379> LRANGE batman 2 3
+1) "na"
+2) "na"
+127.0.0.1:6379></pre>
+<p>On peut faire toutes les opérations qu&#8217;on a l&#8217;habitude de faire sur des listes : récupérer un élément, en ajouter un, en retirer un, faire du LIFO, du FIFO, du pipo, etc.</p>
+<p>Utile pour créer des files d&#8217;attente, des journaux d&#8217;évènements (pensez jeux vidéos) ou plus simplement une valeur de config plus complexe qu&#8217;une entrée.</p>
+<h3>Hash</h3>
+<p><a href="http://redis.io/commands#hash">Le Hash</a> se comporte comme un Hash Map, dictionnaire Python, object Javascript, Array associatif en PHP&#8230; Bref, comme Redis lui-même en fait, mais sans expiration de clé. Cela permet d&#8217;avoir :</p>
+<pre>cle => {
+	cle : valeur,
+	cle : valeur,
+}</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> HSET scores titi 1
+(integer) 1
+127.0.0.1:6379> HSET scores grosminet 0
+(integer) 1
+127.0.0.1:6379> HSET scores tom 0
+(integer) 1
+127.0.0.1:6379> HSET scores jerry 1
+(integer) 1
+127.0.0.1:6379> HGET scores jerry
+"1"
+127.0.0.1:6379> HGETALL scores
+1) "titi"
+2) "1"
+3) "grosminet"
+4) "0"
+5) "tom"
+6) "0"
+7) "jerry"
+8) "1"
+127.0.0.1:6379></pre>
+<p>Notez encore une fois qu&#8217;il n&#8217;est pas utile de vérifier que la clé existe avant de rajouter une valeur dans le hash, bien qu&#8217;il y ait une commande pour le faire. Si on essaye de récupérer une clé qui n&#8217;existe pas, Redis retourne <code>nil</code>.</p>
+<p>Le hash est fort pratique pour toute forme de compteurs groupés, ou juste pour mettre en cache des relations. Redis n&#8217;ayant pas de <code>JOIN</code>, on utilise parfois un hash pour faire le lien entre deux listes par exemple.</p>
+<h3>Set</h3>
+<p>Comme les sets en Python, le <a href="http://redis.io/commands#set">set</a> est une collection NON ordonnée d&#8217;éléments uniques. Il ne peut pas y avoir de doublons dans un set, et vérifier si un élément fait partie d&#8217;un set est une opération très rapide. Ils permettent aussi de faire des opérations ensemblistes de manière performante, par exemple vérifier quels éléments d&#8217;un set sont ou non dans un autre set.</p>
+<pre>cle => { valeur1, valeur2, ...}</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> SADD ip 192.168.1.1
+(integer) 1
+127.0.0.1:6379> SADD ip 192.168.1.1 # ajouter 2x le même ne fait rien
+(integer) 0
+127.0.0.1:6379> SADD ip 192.168.1.1
+(integer) 0
+127.0.0.1:6379> SADD ip 192.168.1.2
+(integer) 1
+127.0.0.1:6379> SADD ip 192.168.1.3
+(integer) 1
+127.0.0.1:6379> SCARD ip
+(integer) 3
+127.0.0.1:6379> SMEMBERS ip
+1) "192.168.1.2"
+2) "192.168.1.1"
+3) "192.168.1.3"
+127.0.0.1:6379> SADD ip:banned 192.168.1.3 # le ":" est une séparateur courant pour les clés
+(integer) 1
+127.0.0.1:6379> SADD ip:banned 192.168.1.10 # ip:banned est un AUTRE set
+(integer) 1
+127.0.0.1:6379> SINTER ip ip:banned # trouver les IP qui sont dans les 2 sets
+1) "192.168.1.3"</pre>
+<p>On va utiliser les sets pour éviter les doublons (tirage au sort par exemple) ou pour vérifier facilement une appartenance (notion de groupes, de permissions, etc.).</p>
+<p>Le set possède une variante, le <a href="http://redis.io/commands#sorted_set">set ordonné</a>, qui associe à chaque élément du set un score. On peut changer ce score, l&#8217;incrémenter ou le décrémenter atomiquement, avoir deux scores égaux&#8230; Et au final, récupérer le set dans l&#8217;ordre ascendant ou descendant des scores. </p>
+<pre>cle => { valeur1 (1), valeur2 (3), ...}</pre>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> zadd participants 1 staline
+(integer) 1
+127.0.0.1:6379> zadd participants 1 hitler
+(integer) 1
+127.0.0.1:6379> zadd participants 2 "pol pot"
+(integer) 1
+127.0.0.1:6379> zadd participants 1999 "rainbow dash"
+(integer) 1
+127.0.0.1:6379> zrange participants 0 - 1
+(error) ERR value is not an integer or out of range
+127.0.0.1:6379> zrange participants 0 -1 
+1) "hitler"
+2) "staline"
+3) "pol pot"
+4) "rainbow dash"
+127.0.0.1:6379> zrange participants 0 -1 withscores
+1) "hitler"
+2) "1"
+3) "staline"
+4) "1"
+5) "pol pot"
+6) "2"
+7) "rainbow dash"
+8) "1999"
+</pre>
+<h3>HyperLogLog</h3>
+<p>J&#8217;ai déjà parlé de l&#8217;HyperLogLog <a href="http://sametmax.com/le-compteur-mal-connu-lhyperloglog/">ici</a> et <a href="http://redis.io/commands#hyperloglog">celui de Redis</a> fonctionne pareil. Cette structure de données permettra de faire des compteurs d&#8217;éléments uniques, comme par exemple un compteur de visiteurs ou de gens connectés, qui soit approximatif (+ ou &#8211; 1%) mais prenne une taille fixe en mémoire.</p>
+<p>Dans le shell :</p>
+<pre>127.0.0.1:6379> PFADD connectes toto
+(integer) 1
+127.0.0.1:6379> PFADD connectes toto
+(integer) 0
+127.0.0.1:6379> PFADD connectes toto
+(integer) 0
+127.0.0.1:6379> PFADD connectes tata
+(integer) 1
+127.0.0.1:6379> PFADD connectes titi
+(integer) 1
+127.0.0.1:6379> PFADD connectes tutu
+(integer) 1
+127.0.0.1:6379> PFADD connectes tutu
+(integer) 0
+127.0.0.1:6379> PFADD connectes tutu
+(integer) 0
+127.0.0.1:6379> PFADD connectes tete
+(integer) 1
+127.0.0.1:6379> PFADD connectes bob
+(integer) 1
+127.0.0.1:6379> PFcount connectes
+(integer) 6
+127.0.0.1:6379>
+</pre>
+<h2>Redis comme super pote de Python</h2>
+<p>Vu que Redis est simple à installer et à configurer, c&#8217;est un outil qu&#8217;on dégaine facilement, même pour un petit script, pas forcément pour une grosse app Web. Par exemple, je fais une analyse de mon serveur, plutôt que de stocker le résultat dans un fichier, je peux mettre tout ça dans Redis, c&#8217;est tellement pratique.</p>
+<p>D&#8217;abord, la <a href="https://pypi.python.org/pypi/redis/">lib</a> pour communiquer avec Redis est à un <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> du clavier :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> redis</pre></td></tr></table></div>
+
+<p>Ensuite, si vous utilisez le client <code>StrictRedis</code>, l&#8217;API est exactement la même que les commandes du shell :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> redis
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r <span style="color: #66cc66;">=</span> redis.<span style="color: black;">StrictRedis</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r.<span style="color: black;">hgetall</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'scores'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span>b<span style="color: #483d8b;">'titi'</span>: b<span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> b<span style="color: #483d8b;">'tom'</span>: b<span style="color: #483d8b;">'0'</span><span style="color: #66cc66;">,</span> b<span style="color: #483d8b;">'jerry'</span>: b<span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> b<span style="color: #483d8b;">'grosminet'</span>: b<span style="color: #483d8b;">'0'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Il existe aussi des drivers asynchrones pour tornado, twisted et asyncio.</p>
+<h2>Redis comme message broker</h2>
+<p>J&#8217;aime le <a href="http://redis.io/commands#pubsub">pub/sub</a>, je pense qu&#8217;après mon <a href="http://sametmax.com/introduction-a-wamp-en-python/">enthousiasme</a> pour WAMP.ws, c&#8217;est clair.</p>
+<p>Redis met à disposition des primitives pour créer des files d&#8217;attente de messages et les lire, comme une version simplifiée de RabbitMQ ou Crossbar.io. Pour que ce soit intéressant, il nous faut deux process. D&#8217;abord un shell Python qui écoute les messages arrivant sur la file &#8220;sametmax&#8221; :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> redis
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> r <span style="color: #66cc66;">=</span> redis.<span style="color: black;">StrictRedis</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> listener <span style="color: #66cc66;">=</span> r.<span style="color: black;">pubsub</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> listener.<span style="color: black;">subscribe</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'sametmax'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> item <span style="color: #ff7700;font-weight:bold;">in</span> listener.<span style="color: black;">listen</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>item<span style="color: black;">&#41;</span>
+...</pre></td></tr></table></div>
+
+<p>Le code va bloquer, et affichera quelque chose à chaque fois qu&#8217;il reçoit un message.</p>
+<p>Du coup si je fais ceci dans le shell Redis :</p>
+<pre>127.0.0.1:6379> publish sametmax yolo
+(integer) 1
+127.0.0.1:6379> publish sametmax carpediem
+(integer) 1
+127.0.0.1:6379> publish sametmax wololo
+(integer) 1
+127.0.0.1:6379> publish sametmax2 oyooyo
+(integer) 0
+127.0.0.1:6379></pre>
+<p>Mon shell python va afficher :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'subscribe'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'message'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: b<span style="color: #483d8b;">'yolo'</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'message'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: b<span style="color: #483d8b;">'carpediem'</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'type'</span>: <span style="color: #483d8b;">'message'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pattern'</span>: <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'channel'</span>: b<span style="color: #483d8b;">'sametmax'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'data'</span>: b<span style="color: #483d8b;">'wololo'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Il n&#8217;a pas affiché <code>oyooyo</code> puisque c&#8217;est sur une autre channel.</p>
+<p>C&#8217;est une méthode assez simple de faire du pub/sub. C&#8217;est bas niveau, il n&#8217;y a pas de RPC, il faut boucler à la main et créer soit-même la mécanique pour arrêter d&#8217;écouter ou faire du multitask, mais c&#8217;est facile pour débuter. Pour cette raison, plein de gens utilisent une solution bricolée là-dessus pour faire du pub/sub.</p>
+<h2>Et donc</h2>
+<p>Non seulement Redis est facile à installer, simple à utiliser et performant, mais en plus il est accessible depuis de nombreux langages. Ajoutez à cela ses très nombreuses fonctionnalités, et vous avez là un système qui est installé par défaut sur la plupart de mes serveurs. Par ailleurs, suivez <a href="http://antirez.com/latest/0">le blog de l&#8217;auteur</a>, ce mec est un génie. Il écrit pas souvent, mais quand il écrit, c&#8217;est passionant, et humble. C&#8217;est beau.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/redis-pourquoi-et-comment/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/BkUjyyCCQAA3i_T.jpg-medium.jpg" length="41148" type="image/jpg" />	</item>
+		<item>
+		<title>Encore une raison d&#8217;aimer WAMP 9</title>
+		<link>http://sametmax.com/encore-une-raison-daimer-wamp/</link>
+		<comments>http://sametmax.com/encore-une-raison-daimer-wamp/#comments</comments>
+		<pubDate>Sun, 15 Jun 2014 05:24:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pub/sub]]></category>
+		<category><![CDATA[rpc]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10530</guid>
+		<description><![CDATA[RPC et Pub/Sub sont des modes de communications dont on a besoin tous les jours.]]></description>
+				<content:encoded><![CDATA[<p>RPC et Pub/Sub sont des modes de communications dont on a besoin tous les jours.</p>
+<p>La preuve en est que :</p>
+<ul>
+<li>On utilise massivement HTTP, qui n&#8217;est jamais qu&#8217;un RPC du pauvre.</li>
+<li>La plupart des frameworks expose un modèle d’évènements, slots ou de signaux, ce qui n&#8217;est jamais qu&#8217;un Pub/Sub mais uniquement en local.</li>
+</ul>
+<p>En fait, on les utilise, mais en bricolé, et limité. On s&#8217;en tient à ça parce que ça marche facilement et partout. Jusqu&#8217;ici, l&#8217;alternative, c&#8217;était la solution propre type SOAP, CORBA, etc., qui est ni simple, ni fun à utiliser. Massivement chiant serait plutôt le bon terme, en fait.</p>
+<p>Mais ça n&#8217;a pas empêché les gens de tenter de faire leurs propres solutions :</p>
+<ul>
+<li><a href="https://t.co/aSFkhCYVCG">GO</a></li>
+<li><a href="https://github.com/capaj/socket.io-rpc">JS</a></li>
+<li><a href="http://pubsub.sourceforge.net/installation.html#system-requirements">Python</a></li>
+<li><a href="http://www.rabbitmq.com/tutorials/tutorial-six-ruby.html">Ruby</a></li>
+<li><a href="http://support.microsoft.com/kb/833401">Exchange</a></li>
+<li><a href="http://docs.closure-library.googlecode.com/git/class_goog_pubsub_PubSub.html">Clojure</a></li>
+</ul>
+<p>Si vous avez suivi le compte twitter, vous avez du voir que j&#8217;en trouve régulièrement.</p>
+<p>Bien entendu, aucun de ces projets n&#8217;implémente à la fois RPC _et_ Pub/Sub. Aucun ne se base sur un standard. Et aucun ne permet à plusieurs langages / stack technos de parler entre eux.</p>
+<p><a href="http://sametmax.com/crossbar-le-futur-des-applications-web-python/">WAMP</a> résout tout ça, en permettant RPC et Pub/Sub, en temps réel, à travers le réseau, entre composants hétérogènes, le tout basé sur un standard.</p>
+<p>Au passage, l&#8217;API flaskesque a été acceptée par l&#8217;équipe de Tavendo, et on a une branche qui est bien avancée sur le sujet. Après je m&#8217;attaquerai à faire un bon gros tuto sur la question.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/encore-une-raison-daimer-wamp/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/WT2mmOJ.gif" length="436124" type="image/jpg" />	</item>
+		<item>
+		<title>Un petit goût de meteor.js en Python 30</title>
+		<link>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/</link>
+		<comments>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/#comments</comments>
+		<pubDate>Thu, 06 Mar 2014 10:37:34 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[meteojs]]></category>
+		<category><![CDATA[pub/sub]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[websocket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9703</guid>
+		<description><![CDATA[Depuis quelques temps, un standard est en train d'émerger autour du RPC et PUB/SUB entre navigateurs et serveurs : <a href="http://wamp.ws/">WAMP</a>. Il existe du coup des implémentations du protocole en plusieurs langages, donc une en Python avec <a href="http://autobahn.ws/python/">autobahn</a>.]]></description>
+				<content:encoded><![CDATA[<p>Je n&#8217;ai jamais caché ma jalousie envers les codeurs Javascript sous <a href="https://www.meteor.com/">meteor.js</a>. C&#8217;est à mon sens la techno la plus révolutionnaire en matière de dev Web depuis l&#8217;invention des frameworks HTTP.</p>
+<p>Ca permet notamment de faire du PUB/SUB entre le navigateur et le serveur. C&#8217;est à dire qu&#8217;un navigateur déclenche un événement, le serveur le reçoit, et tous les browsers abonnés le reçoivent aussi. Du coup, on modifie une page, toutes les autres pages sont modifiées en temps réel.</p>
+<p>Dommage que ce soit codé dans un langage pourri.</p>
+<p>Heureusement depuis quelques temps, un standard est en train d&#8217;émerger autour du RPC et PUB/SUB entre navigateurs et serveurs : <a href="http://wamp.ws/">WAMP</a>. Il existe du coup des implémentations du protocole en plusieurs langages, donc une en Python avec <a href="http://autobahn.ws/python/">autobahn</a>.</p>
+<p>Ca s&#8217;utilise ainsi : <code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install autobahn</code>.</p>
+<p>Puis, un petit coup de Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> twisted.<span style="color: black;">python</span> <span style="color: #ff7700;font-weight:bold;">import</span> log
+<span style="color: #ff7700;font-weight:bold;">from</span> twisted.<span style="color: black;">internet</span> <span style="color: #ff7700;font-weight:bold;">import</span> reactor
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">twisted</span>.<span style="color: black;">websocket</span> <span style="color: #ff7700;font-weight:bold;">import</span> listenWS
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">wamp1</span>.<span style="color: black;">protocol</span> <span style="color: #ff7700;font-weight:bold;">import</span> WampServerFactory<span style="color: #66cc66;">,</span> WampServerProtocol
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> MyPubSubServerProtocol<span style="color: black;">&#40;</span>WampServerProtocol<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> onSessionOpen<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># On choisit un namespace pour enregistrer ses events PUB/SUB</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">registerForPubSub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;http://example.com/events/bam&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+   <span style="color: #808080; font-style: italic;"># on lance notre serveur avec moult verbosité</span>
+   log.<span style="color: black;">startLogging</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span><span style="color: black;">&#41;</span>
+   wampFactory <span style="color: #66cc66;">=</span> WampServerFactory<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;ws://127.0.0.1:9000&quot;</span><span style="color: #66cc66;">,</span> debugWamp<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+   wampFactory.<span style="color: black;">protocol</span> <span style="color: #66cc66;">=</span> MyPubSubServerProtocol
+   listenWS<span style="color: black;">&#40;</span>wampFactory<span style="color: black;">&#41;</span>
+   reactor.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On lance le serveur directement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python votre_script.py</pre></td></tr></table></div>
+
+<p>Côté client (pas besoin de serveur, on peut l&#8217;ouvrir dans le browser cash pistache) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;script src=&quot;http://code.jquery.com/jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://raw.github.com/tavendo/AutobahnPython/master/examples/twisted/wamp1/pubsub/simple/example1/autobahn.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+&nbsp;
+    $(function(){
+        ab.connect(&quot;ws://localhost:9000&quot;, function(session) {
+&nbsp;
+            $('#foo').click(function(){
+                // au clic sur le bouton, on envoit un evenement BAM
+                session.publish('http://example.com/events/bam', ['bam']);
+&nbsp;
+                // On ajoute bam à la liste en local car le publisher ne
+                // reçoit pas ses propres events
+                $('#doh').append('&lt;li&gt;bam&lt;/li&gt;');
+            });
+&nbsp;
+            session.subscribe('http://example.com/events/bam', function(topic, evt){
+                // on s'inscrit pour recevoir l'event quand il est
+                // déclenché. Ceci marchera dans tout autre tab que celui
+                // qui a déclenché l'event
+                $('#doh').append('&lt;li&gt;bam&lt;/li&gt;');
+            });
+        })
+&nbsp;
+    });
+&nbsp;
+    &lt;/script&gt;
+&nbsp;
+&lt;/head&gt;
+&nbsp;
+&lt;body&gt;
+&nbsp;
+&lt;!-- Notre liste qui va se remplir de bam ! --&gt;
+&lt;ul id=&quot;doh&quot;&gt;&lt;/ul&gt;
+&lt;button id=&quot;foo&quot; value=&quot;Bam&quot;&gt;Bam&lt;/button&gt;
+&nbsp;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table></div>
+
+<p>Ce qui ce passe, c&#8217;est que quand j&#8217;appuie sur le bouton &#8220;Bam&#8221;, ça envoit un événement Bam au serveur via Websocket, qui propage l&#8217;événement à tous les clients. Donc tous les tabs ouverts sur cette page récupèrent l&#8217;événement et peuvent y réagir. Ici, les deux pages sont mises à jour en simultané. </p>
+<div id="attachment_9705" style="width: 610px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/03/out.gif" class="grouped_elements" rel="tc-fancybox-group9703"><img src="http://sametmax.com/wp-content/uploads/2014/03/out.gif" alt="Mise à jour de deux pages web en simultané avec autobahn" title="Chez moi ça marche" width="600" height="160" class="size-full wp-image-9705" /></a><p class="wp-caption-text">Chez moi ça marche</p></div>
+<p>Bien entendu, ceci est un exemple très basique fait pour vous donner un avant goût de la techno. D&#8217;ailleurs, meteor.js, c&#8217;est bien plus que du PUB/SUB. Il y a de la gestion de la deco, la synchro de la base côté client, le hot push de code, etc. Ils ont fait un vrai travail de fond sur les problématiques concrètes. </p>
+<p>Donc on en est encore loin, surtout que même leur techno est toujours expérimentale. Mais on a enfin de quoi rattraper le temps perdu. Et avec asyncio, îl n&#8217;y aura même pas besoin de dépendre de twisted pour ce faire. 2014 va être trop fun !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/out.gif" length="52202" type="image/jpg" />	</item>
+	</channel>
+</rss>

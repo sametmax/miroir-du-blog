@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; dublon</title>
+	<atom:link href="http://sametmax.com/tag/dublon/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>S&#8217;affranchir des doublons d&#8217;un itérable en Python 9</title>
+		<link>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/</link>
+		<comments>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/#comments</comments>
+		<pubDate>Tue, 20 Aug 2013 10:10:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dublon]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7143</guid>
+		<description><![CDATA[Supprimer ou ignorer les doublons d'un itérable tel qu'une liste ou un array est un challenge dans tous les langages.]]></description>
+				<content:encoded><![CDATA[<p>Supprimer ou ignorer les doublons d&#8217;un itérable tel qu&#8217;une liste ou un array est un challenge dans tous les langages. Il faut se poser les questions suivantes :</p>
+<ul>
+<li>Qu&#8217;est-ce qu&#8217;un doublon ?</li>
+<li>Quels types d&#8217;itérables traite-t-on ?</li>
+<li>Quel est la taille de l&#8217;itérable ?</li>
+<li>Et niveau perfs ?</li>
+</ul>
+<p>En Python, on a des structures de données qui suppriment automatiquement les doublons : les sets et les dictionnaires. Mais elles ne conservent pas l&#8217;ordre des élements.</p>
+<p>Il y a aussi le fait qu&#8217;un itérable en Python peut avoir une taille inconnue, ou infinie.</p>
+<p>Le post est long, donc&#8230;</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/HsX4M-by5OY" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<h2>Solution 1 : générateur et hashing</h2>
+<p>En utilisant conjointement les générateurs, les sets et une petite injection de dépendance, on peut trouver un compromis entre flexibilité et performances :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> skip_duplicates<span style="color: black;">&#40;</span>iterable<span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: x<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on va mettre l’empreinte unique de chaque élément dans ce set</span>
+    fingerprints <span style="color: #66cc66;">=</span> <span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> iterable:
+        <span style="color: #808080; font-style: italic;"># chaque élement voit son emprunte calculée. Par défaut l’empreinte</span>
+        <span style="color: #808080; font-style: italic;"># est l'élément lui même, ce qui fait qu'il n'y a pas besoin de</span>
+        <span style="color: #808080; font-style: italic;"># spécifier 'key' pour des primitives comme les ints ou les strings.</span>
+        fingerprint <span style="color: #66cc66;">=</span> key<span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On vérifie que l'empreinte est dans la liste des empreintes  des</span>
+        <span style="color: #808080; font-style: italic;"># éléments précédents. Si ce n'est pas le cas, on yield l'élément, et on</span>
+        <span style="color: #808080; font-style: italic;"># rajoute sont empreinte ans la liste de ceux trouvés, donc il ne sera</span>
+        <span style="color: #808080; font-style: italic;"># pas yieldé si on ne le yieldera pas une seconde fois si on le</span>
+        <span style="color: #808080; font-style: italic;"># rencontre à nouveau</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> fingerprint <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> fingerprints:
+            <span style="color: #ff7700;font-weight:bold;">yield</span> x
+            fingerprints.<span style="color: black;">add</span><span style="color: black;">&#40;</span>fingerprint<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La fonction s&#8217;appelle <code>skip_duplicates</code> car c&#8217;est ce qu&#8217;elle fait. Elle ne retire pas vraiment les doublons, elle produit un flux de d&#8217;éléments qui ne comporte pas de doublons en ignorant tout doublons présent dans l&#8217;itérable initial.</p>
+<p>Cette approche a plusieurs avantages :</p>
+<ul>
+<li>Les doublons sont bien retirés, et l&#8217;ordre est conservé.</li>
+<li>La complexité est de 0(n).</li>
+<li>L&#8217;utilisateur peut choisir ce qui fait qu&#8217;un élément est unique : un attribut, un sous-élément, l&#8217;affichage sous forme de string&#8230;</li>
+<li>C&#8217;est un générateur, est cela fonctionne donc avec des itérables de toute taille, même inconnue ou infinie.</li>
+</ul>
+<p>Il faut néanmoins que l&#8217;ensemble des éléments uniques tiennent au moins une fois en mémoire en plus de l&#8217;itérable initial, et potentiellement d&#8217;un stockage à la sortie du générateur. On fait donc un trade-off sur la mémoire.</p>
+<p>Comme la valeur de <code>key</code> par défaut est une valeur saine, ça fonctionne comme on s&#8217;y attend pour les cas simples :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span> <span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: #483d8b;">'fjsqlkdmfjsklqmdfjdmsl'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'j'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'s'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'q'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'l'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'k'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'d'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'m'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Pourvoir spécifier &#8216;key&#8217; permet de faire des choix dans ce qu&#8217;est un doublon :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'3'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'3'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'1'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'3'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Et si on s&#8217;attaque à des cas plus complexes, le fonction vous force à préciser votre pensée :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+... <span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-20-ed44f170c634&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-18-42dbb94f03f8&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> skip_duplicates
+    <span style="color: #ff7700;font-weight:bold;">if</span> fingerprint <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> fingerprints:
+<span style="color: #008000;">TypeError</span>: unhashable <span style="color: #008000;">type</span>: <span style="color: #483d8b;">'list'</span></pre></td></tr></table></div>
+
+<p>En effet les listes ne sont pas des types hashables en Python, on ne peut donc pas les stocker dans un <code>set</code>.</p>
+<p>Mais on peut caster la liste, et faire ainsi le choix de savoir sur quel critère on base notre égalité. Par exemle, considère-t-on que deux itérables ayant le même contenu sont égaux, où alors doivent-ils avoir le même type ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: black;">&#40;</span><span style="color: #008000;">type</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Nous utilisons le fait que :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">==</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">==</span> <span style="color: black;">&#40;</span><span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span></pre></td></tr></table></div>
+
+<p>Puisque :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'list'</span><span style="color: #66cc66;">&gt;,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'tuple'</span><span style="color: #66cc66;">&gt;,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Dans le cas où nous ne sommes pas capables de déterminer ce qu&#8217;est un doublon, la fonction ne retire simplement rien :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Test<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> foo<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">foo</span> <span style="color: #66cc66;">=</span> foo
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__repr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;Test('%s')&quot;</span> % <span style="color: #008000;">self</span>.<span style="color: black;">foo</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'other'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'other'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Mais permet encore une fois de faire le choix de quoi retirer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>skip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'other'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: x.<span style="color: black;">foo</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'other'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Ce principe de la fonction <code>key</code>, on le retrouve dans <code>sorted()</code>, donc les habitués seront déjà à l&#8217;aise. Et j&#8217;aime beaucoup ce pattern, car il est très puissant. On peut avoir la fonction <code>key</code> qui renvoit des choses très simples :</p>
+<ul>
+<li>Un attribut.</li>
+<li>Un element (<code>x[2]</code>, <code>x['cle']</code>&#8230;)</li>
+<li>Une version castée avec <code>int()</code>, <code>str()</code>, <code>tuple()</code>, etc</li>
+</ul>
+<p>Mais on peut aussi faire des choses très complexes. En effet, rien ne nous oblige à utiliser une lambda, on peut mettre une fonction complète et lui faire retourner :</p>
+<ul>
+<li>Un hash md5.</li>
+<li>Une entrée en base de données.</li>
+<li>Un nouvel objet customisé.</li>
+<li>Un tuple de tuples d&#8217;objets custos avec des dictionnaires en attributs&#8230;</li>
+<li>Le contenu d&#8217;un fichier.</li>
+</ul>
+<p>Python sait naturellement comparer tout ça.</p>
+<p>Notez que nous trichons un peu, puisque nous retirons les doublons en nous basant sur un <code>set</code> qui va calculer un hash de l&#8217;objet, et pas véritablement vérifier l&#8217;égalité. La fonction en fonctionnera donc pas si l&#8217;utilisateur définie <code>__eq__</code> et s&#8217;attend à ce que les doublons soient retirés. Ce qui nous amène à &#8230;</p>
+<h2>Solution 2 : iterateur et comparaison</h2>
+<p>Pour ce genre de chose, un autre algo, qui ne fontionerait que sur les itérables de taille finie, et qui serait bien plus lent (complexité n log(n)), peut être utilisé :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> strip_duplicates<span style="color: black;">&#40;</span>iterable<span style="color: #66cc66;">,</span> equals<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span> y: x <span style="color: #66cc66;">==</span> y<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On transforme l'itérable en iterateur sur lui même, cela va nous</span>
+    <span style="color: #808080; font-style: italic;"># permettre d'appeler next() dessus et récupérer le premier élément,</span>
+    <span style="color: #808080; font-style: italic;"># même sur un objet non indexable (sur lequel on ne peut utiliser [0])</span>
+    iterable <span style="color: #66cc66;">=</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>iterable<span style="color: black;">&#41;</span>
+&nbsp;
+    res <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+    <span style="color: #808080; font-style: italic;"># Une petite boucle infinie est nécessaire car la boucle 'for' ne nous</span>
+    <span style="color: #808080; font-style: italic;"># permet pas de récupérer le premier élément indépendamment des autres,</span>
+    <span style="color: #808080; font-style: italic;"># et la boucle 'while' attend une condition de sortie, ce que nous n'avons</span>
+    <span style="color: #808080; font-style: italic;"># pas forcément (il n'est pas possible de vérifier le nombre d'éléments</span>
+    <span style="color: #808080; font-style: italic;"># restant dans un générateur).</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on récupère le premier élément de l'iterable restant, si il n'y en</span>
+        <span style="color: #808080; font-style: italic;"># a plus, on sort de la boucle.</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            elem <span style="color: #66cc66;">=</span> next<span style="color: black;">&#40;</span>iterable<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">StopIteration</span>:
+            <span style="color: #ff7700;font-weight:bold;">break</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Le premier élément est ajouté au résultat sans doublons. Maintenant</span>
+        <span style="color: #808080; font-style: italic;"># on va recréer l'itérable, mais en retirant tout ce qui était égal</span>
+        <span style="color: #808080; font-style: italic;"># au premier élément. Notez que 'être égal' est une condition modifiable</span>
+        <span style="color: #808080; font-style: italic;"># en passant une fonction en paramètre, comme l'était 'key' précédemment.</span>
+        res.<span style="color: black;">append</span><span style="color: black;">&#40;</span>elem<span style="color: black;">&#41;</span>
+&nbsp;
+        iterable <span style="color: #66cc66;">=</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> iterable <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> equals<span style="color: black;">&#40;</span>elem<span style="color: #66cc66;">,</span> x<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> res</pre></td></tr></table></div>
+
+<p>La fonction s&#8217;appelle <code>strip_duplicates</code> car elle produit une nouvelle liste, mais sans les éléments indésirables, comme le fait <code>strip()</code> sur une chaîne (produit une nouvelle chaîne, sans les éléments indésirables).</p>
+<p>Ce type de fonction peut être utile dans plusieurs cas :</p>
+<ul>
+<li>On a pas envie de se poser la question de savoir si nos types à comparer sont hashable ou pas, et on est prêt à payer un peu de CPU pour cela.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une égalité, par exemple sur l&#8217;existence de la méthode <code>__eq__</code>.</li>
+<li>On a besoin de retirer les doublons sur la base d&#8217;une logique complexe qui dépend du contexte.</li>
+</ul>
+<p>A première vu cela fonctionne presque de la même manière que <code>skip_duplicates</code>, mais en retournant une liste plutôt qu&#8217;un générateur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> strip_duplicates<span style="color: black;">&#40;</span><span style="color: #483d8b;">'fdjqkslfjdmkfdsqjkfmjqsdmlkfjqslkmfjsdklfl'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'d'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'j'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'q'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'k'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'s'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'l'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'m'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Mais déjà il n&#8217;y a pas à se soucier de savoir si une structure de données est hashable :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> strip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Même si on garde la même flexibilité, bien que la fonction à passer ait une signature légèrement différente :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> strip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span> y: <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span> <span style="color: #66cc66;">==</span> <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>y<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Le plus interessant reste que cela fonctionne sur l&#8217;égalité, et donc cela marche d&#8217;office avec les objets qui déclarent <code>__eq__</code> ce qui est le cas dans de nombreuses libs, comme les ORM :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Test<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> foo<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">foo</span> <span style="color: #66cc66;">=</span> foo
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__repr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;Test('%s')&quot;</span> % <span style="color: #008000;">self</span>.<span style="color: black;">foo</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__eq__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">foo</span> <span style="color: #66cc66;">==</span> other.<span style="color: black;">foo</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> strip_duplicates<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'other'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Test<span style="color: black;">&#40;</span><span style="color: #483d8b;">'other'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Dans certains cas, notamment dans le cas où le point de comparaison est un object non hashable de très grosse taille (par exemple un dico très long), on peut espérer aussi pas mal économiser en mémoire. Mais on est qu&#8217;en est-il des besoins en mémoire et en CPU ?</p>
+<h2>Solution 3 : retirer les doublons, in place</h2>
+<p>Enfin, pour ceux qui ont de grosses contraintes de mémoire et qui veulent un algo rapide au prix de la flexibilité du code, voici une solution qui oblige à travailler sur des listes et à modifier la liste sur place :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> remove_duplicates<span style="color: black;">&#40;</span>lst<span style="color: #66cc66;">,</span> equals<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x<span style="color: #66cc66;">,</span> y: x <span style="color: #66cc66;">==</span> y<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Normalement en Python on adore le duck typing, mais là cet algo suppose</span>
+    <span style="color: #808080; font-style: italic;"># l'usage d'une liste, donc on met un gardefou.</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span>lst<span style="color: #66cc66;">,</span> <span style="color: #008000;">list</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">TypeError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'This function works only with lists.'</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># là on est sur quelque chose qui ressemble vachement plus à du code C ^^</span>
+    i1 <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+    l <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>lst<span style="color: black;">&#41;</span> - <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on itère mécaniquement sur la liste, à l'ancienne, avec nos petites</span>
+    <span style="color: #808080; font-style: italic;"># mains potelées.</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> i1 <span style="color: #66cc66;">&lt;</span> l:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on récupère chaque élément de la liste, sauf le dernier</span>
+        elem <span style="color: #66cc66;">=</span> lst<span style="color: black;">&#91;</span>i1<span style="color: black;">&#93;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on le compare à l'élément suivant, et chaque élément après</span>
+        <span style="color: #808080; font-style: italic;"># l'élément suivant</span>
+        i2 <span style="color: #66cc66;">=</span> i1 + <span style="color: #ff4500;">1</span>
+        <span style="color: #ff7700;font-weight:bold;">while</span> i2 <span style="color: #66cc66;">&lt;=</span> l:
+            <span style="color: #808080; font-style: italic;"># en cas d'égalité, on retire l'élément de la liste, et on</span>
+            <span style="color: #808080; font-style: italic;"># décrément la longueur de la liste ainsi amputée</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> equals<span style="color: black;">&#40;</span>elem<span style="color: #66cc66;">,</span> lst<span style="color: black;">&#91;</span>i2<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+                <span style="color: #ff7700;font-weight:bold;">del</span> lst<span style="color: black;">&#91;</span>i2<span style="color: black;">&#93;</span>
+                l -<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+            i2 +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+&nbsp;
+        i1 +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> lst</pre></td></tr></table></div>
+
+<p>Et là on est bien dans de la modification sur place :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> lst <span style="color: #66cc66;">=</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fjdsklmqfjskdfjmld'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> lst
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'j'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'d'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'s'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'k'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'l'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'m'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'q'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'j'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'s'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'k'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'d'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'j'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'m'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'l'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'d'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> remove_duplicates<span style="color: black;">&#40;</span>lst<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'j'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'d'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'s'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'k'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'l'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'m'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'q'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> lst
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'j'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'d'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'s'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'k'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'l'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'m'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'q'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>La fonction s&#8217;appelle cette fois bien <code>remove_duplicates</code> puisque c&#8217;est ce qu&#8217;elle fait : retirer les doublons de la liste originale.</p>
+<h2>Et maintenant, c&#8217;est l&#8217;heure du benchmark à deux balles !</h2>
+<p>skip_duplicates :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">setup <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;&quot;
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string
+lst = list(string.ascii_letters * 100)&quot;&quot;&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">timeit</span>.<span style="color: #dc143c;">timeit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'list(skip_duplicates(lst))'</span><span style="color: #66cc66;">,</span> setup<span style="color: #66cc66;">=</span>setup<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0.9810519218444824</span></pre></td></tr></table></div>
+
+<p>strip_duplicates :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> setup <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;&quot;
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+&nbsp;
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+&nbsp;
+    return res
+&nbsp;
+import string
+lst = list(string.ascii_letters * 100)&quot;&quot;&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">timeit</span>.<span style="color: #dc143c;">timeit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'list(strip_duplicates(lst))'</span><span style="color: #66cc66;">,</span> setup<span style="color: #66cc66;">=</span>setup<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">41.462974071502686</span></pre></td></tr></table></div>
+
+<p>remove_duplicates :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">setup <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;&quot;
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 &lt; l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 &lt;= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+&nbsp;
+import string
+lst = list(string.ascii_letters * 100)&quot;&quot;&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">timeit</span>.<span style="color: #dc143c;">timeit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'list(remove_duplicates(lst))'</span><span style="color: #66cc66;">,</span> setup<span style="color: #66cc66;">=</span>setup<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0.37493896484375</span></pre></td></tr></table></div>
+
+<p>Sans surprise, la version inplace est la plus rapide puisque la plus restrictive. En second vient notre strip_duplicates, beaucoup fois plus lente. Et en dernier, 50 fois plus lente, le compromis entre les deux : souple, consomme moins de mémoire que skip, mais plus que remove.</p>
+<p>Mais ce n&#8217;est pas très juste pour strip, puisque que skip n&#8217;a pas à faire un gros travail de conversion. Essayons avec des clés plus grosses :</p>
+<p>skip_duplicates :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">setup <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;&quot;
+def skip_duplicates(iterable, key=lambda x: x):
+        fingerprints = set()
+        for x in iterable:
+                fingerprint = key(x)
+                if fingerprint not in fingerprints:
+                        yield x
+                        fingerprints.add(fingerprint)
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))&quot;&quot;&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">timeit</span>.<span style="color: #dc143c;">timeit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'list(skip_duplicates(lst, lambda x: tuple(x)))'</span><span style="color: #66cc66;">,</span> setup<span style="color: #66cc66;">=</span>setup<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">15.516181945800781</span></pre></td></tr></table></div>
+
+<p>strip_duplicates :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> setup <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;&quot;
+def strip_duplicates(iterable, equals=lambda x, y: x == y):
+    iterable = iter(iterable)
+    res = []
+    while True:
+        try:
+            elem = next(iterable)
+        except StopIteration:
+            break
+        res.append(elem)
+&nbsp;
+        iterable = iter([x for x in iterable if not equals(elem, x)])
+&nbsp;
+    return res
+&nbsp;
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))&quot;&quot;&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">timeit</span>.<span style="color: #dc143c;">timeit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'list(strip_duplicates(lst))'</span><span style="color: #66cc66;">,</span> setup<span style="color: #66cc66;">=</span>setup<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">22.047110080718994</span></pre></td></tr></table></div>
+
+<p>remove_duplicates :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">setup <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;&quot;
+def remove_duplicates(lst, equals=lambda x, y: x == y):
+    if not isinstance(lst, list):
+        raise TypeError('This function works only with lists.')
+    i1 = 0
+    l = (len(lst) - 1)
+    while i1 &lt; l:
+        elem = lst[i1]
+        i2 = i1 + 1
+        while i2 &lt;= l:
+            if equals(elem, lst[i2]):
+                del lst[i2]
+                l -= 1
+            i2 += 1
+        i1 += 1
+    return lst
+&nbsp;
+import string, random
+lst = [list(string.ascii_letters * 100) for x in xrange(100)]
+for x in lst:
+    x.pop(random.randint(0, len(x) - 1))&quot;&quot;&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">timeit</span>.<span style="color: #dc143c;">timeit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'list(remove_duplicates(lst))'</span><span style="color: #66cc66;">,</span> setup<span style="color: #66cc66;">=</span>setup<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">14.763166904449463</span></pre></td></tr></table></div>
+
+<p>Comme souvent les résultats sont contre untuitifs, car bien que remove garde son avance, elle s&#8217;est largement réduite. A l&#8217;inverse, skip n&#8217;est pas tant à la ramasse que ça, et strip reste le plus lent.</p>
+<p>Il faudrait aussi mesurer la consommation mémoire, je suis certain que ce serait interessant.</p>
+<p>Bon, il est temps de mettre tout ça dans <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/saffranchir-des-doublons-dun-iterable-en-python/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/NFDSpXq.gif" length="464024" type="image/jpg" />	</item>
+	</channel>
+</rss>

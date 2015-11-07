@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; ifconfig</title>
+	<atom:link href="http://sametmax.com/tag/ifconfig/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>You are deprecated 18</title>
+		<link>http://sametmax.com/you-are-deprecated/</link>
+		<comments>http://sametmax.com/you-are-deprecated/#comments</comments>
+		<pubDate>Mon, 18 Nov 2013 08:20:47 +0000</pubDate>
+		<dc:creator><![CDATA[Toniob]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[ifconfig]]></category>
+		<category><![CDATA[ip]]></category>
+		<category><![CDATA[route]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7985</guid>
+		<description><![CDATA[Oh oui, je sais ce que vous allez me dire, et vous avez parfaitement raison. Oui, il m'arrive d'être un peut obtus sur certaines choses, surtout quand il s'agit d'un domaine que je connais. Bref, aujourd'hui nous allons parler de ifconfig et de route.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/toniob/">Toniob</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Oh oui, je sais ce que vous allez me dire, et vous avez parfaitement raison. Oui, il m&#8217;arrive d&#8217;être un peu obtus sur certaines choses, surtout quand il s&#8217;agit d&#8217;un domaine que je connais. Bref, aujourd&#8217;hui nous allons parler de ifconfig et de route.</p>
+<p>Soyons clair tout de suite : arrêtez d&#8217;utiliser ces merdes, elles sont dépréciées depuis longtemps ! Je sais comment sont les informaticiens de manière générale, et les administrateurs systèmes en particulier. Il est difficile de changer leurs habitudes. Mais si on vous proposait Scarlett Johansson, vous resteriez fidèle à Régine ou Jonathan Rhys Meyers si vous aviez Mickey Rourke ? Je vois à vos yeux lubriques que vous m&#8217;avez saisi. Alors c&#8217;est parti.</p>
+<div id="attachment_7987" style="width: 490px" class="wp-caption alignnone"><a href="http://sametmax.com/you-are-deprecated/ifconfig-deprecated/" rel="attachment wp-att-7987"><img src="http://sametmax.com/wp-content/uploads/2013/11/ifconfig-deprecated.jpg" class="grouped_elements" rel="tc-fancybox-group7985" alt="" title="ifconfig-deprecated" width="480" height="288" class="size-full wp-image-7987" /></a><p class="wp-caption-text">- ifconfig ? - ouiiiii ** tum tum tum tum **</p></div>
+<p><strong>Les interfaces</strong></p>
+<p>Utilisez la commande ip, c&#8217;est un ordre. Elle remplacera avantageusement ifconfig. Dans la suite de ce billet, je mettrai des exemples de commandes avec ifconfig et leur équivalent avec ip. Commençons avec du simple, afficher la liste des interfaces disponibles :</p>
+<p><code>
+<pre># ifconfig -a
+eth0      Link encap:Ethernet  HWaddr 00:90:f5:ee:62:31  
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 lg file transmission:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interruption:20 Mémoire:f7e00000-f7e20000
+
+lo        Link encap:Boucle locale  
+          inet adr:127.0.0.1  Masque:255.0.0.0
+          adr inet6: ::1/128 Scope:Hôte
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:12 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:12 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 lg file transmission:0 
+          RX bytes:720 (720.0 B)  TX bytes:720 (720.0 B)
+$ ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default 
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT group default qlen 1000
+    link/ether 00:90:f5:ee:62:31 brd ff:ff:ff:ff:ff:ff</pre>
+<p></code></p>
+<p>Vous voyez, pour le moment ce n&#8217;est pas si compliqué, vous économisez même de précieuses lettres. Vous constatez que la sortie est différente, mais vous y trouverez globalement les mêmes informations. C&#8217;est une question d&#8217;habitude. Personnellement, ça m&#8217;a pris un peu de temps, mais je ne reviendrais en arrière pour rien au monde.</p>
+<p>On va maintenant assigner une adresse ip. Bon, j&#8217;avoue, c&#8217;est un peu plus long cette fois avec la commande ip :</p>
+<p><code>
+<pre># ifconfig eth0 192.168.1.1/24
+# ip addr add 192.168.1.1/24 dev eth0</pre>
+<p></code></p>
+<p>Et si maintenant nous ajoutions une adresse ipv4 ? Sauf qu&#8217;avec ifconfig, ce n&#8217;est pas possible, on ne peut le faire qu&#8217;avec ip :</p>
+<p><code>
+<pre># ip addr add 192.168.1.2/32 dev eth0</pre>
+<p></code></p>
+<p>Si on affiche la configuration de l&#8217;interface réseau :</p>
+<p><code>
+<pre># ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 00:90:f5:ee:62:31  
+          inet adr:192.168.1.1  Bcast:0.0.0.0  Masque:255.255.255.0
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 lg file transmission:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+          Interruption:20 Mémoire:f7e00000-f7e20000 
+$ ip addr show eth0
+2: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+    link/ether 00:90:f5:ee:62:31 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.1/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet 192.168.1.2/32 scope global eth0
+       valid_lft forever preferred_lft forever</pre>
+<p></code></p>
+<p>Et oui, rien du côté de ifconfig. Il ne voit pas que l&#8217;interface dispose de deux adresses différentes. Alors qu&#8217;il fallait utiliser des alias d&#8217;interface avec ifconfig, plus de souci de ce côté là avec ip. Voici maintenant quelques exemples d&#8217;autres commandes pouvant être utiles :</p>
+<p><code>
+<pre># ifconfig eth0 mtu 9000
+# ip link set eth0 mtu 9000</pre>
+<p></code></p>
+<p><code>
+<pre># ifconfig eth0 up
+# ip link set eth0 up</pre>
+<p></code></p>
+<p><strong>Les routes</strong></p>
+<p>Passons maintenant aux routes. Si vous utilisez ifconfig, vous vous servez aussi probablement de route. C&#8217;est fini les conneries maintenant ! Commençons par les afficher :</p>
+<p><code>
+<pre># route -n
+Table de routage IP du noyau
+Destination     Passerelle      Genmask         Indic Metric Ref    Use Iface
+192.168.1.0     0.0.0.0         255.255.255.0   U     0      0        0 eth0
+$ ip route
+192.168.1.0/24 dev eth0  proto kernel  scope link  src 192.168.1.1</pre>
+<p></code></p>
+<p>Oui, la sortie est moins verbeuse par défaut. Ça devrait vous plaire pour vos scripts shell. Ajoutons maintenant une route par défaut :</p>
+<p><code>
+<pre># route add default gw 192.168.1.254
+# ip route add defaut via 192.168.1.254</pre>
+<p></code></p>
+<p>Et si on regarde le résultat de la commande ip route maintenant :</p>
+<p><code>
+<pre>$ ip route
+default via 192.168.1.254 dev eth0 
+192.168.1.0/24 dev eth0  proto kernel  scope link  src 192.168.1.1</pre>
+<p></code></p>
+<p>Contrairement à route, ip route génère une sortie qui peut être copiée / collée dans un ip route add. Pratique pour dupliquer une conf sur un autre serveur. Pour ajouter une route vers un hôte ou un réseau en particulier :</p>
+<p><code>
+<pre># route add -net 192.168.2.0 netmask 255.255.255.0 gw 192.168.1.253
+# ip route add 192.168.2.0/24 via 192.168.1.253</pre>
+<p></code></p>
+<p>C&#8217;est une affaire de goût, mais je préfère largement la syntaxe de ip à celle de route.</p>
+<p><strong>Conclusion</strong></p>
+<p>Voilà cette petite introduction à la commande ip est terminée. Essayez de remplacer ifconfig dans vos usages au quotidien. Ça prend un peu de temps pour s&#8217;y faire, mais la syntaxe plus claire et les fonctionnalités disponibles permettent vite d&#8217;être plus rapide dans la configuration réseau d&#8217;une machine. Les exemples que j&#8217;ai donnés dans cet article devraient être suffisants pour 90% des usages. Si vous cherchez à vouloir en faire plus, il suffit d&#8217;ajouter l&#8217;option help à votre ligne de commande pour avoir des informations. Plus pratique que d&#8217;avoir à taper dans le man sans arrêt.</p>
+<p>Si cet article vous plaît (merci de me faire des commentaires élogieux, c&#8217;est mon premier ici), j&#8217;essaierai de vous faire découvrir un peu plus la stack réseau sous Linux. Si les vlans sont connus, les bondings un peu moins, je pense que les macvtaps sont un mystère pour la plupart d&#8217;entre vous. Et tout se fait avec l&#8217;aide d&#8217;ip en plus, que demande le peuple ?</p>
+<p>Et si la conf réseau ça vous saoule, je trouverai à m&#8217;énerver sur d&#8217;autres choses (le larousse n&#8217;a qu&#8217;à bien se tenir).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/you-are-deprecated/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/terminator_02_connor.jpg" length="27630" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; croissance</title>
+	<atom:link href="http://sametmax.com/tag/croissance/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>La théorie de la salle de bain et (un tout petit peu de) Python 61</title>
+		<link>http://sametmax.com/la-theorie-de-la-salle-de-bain-et-un-tout-petit-peu-de-python/</link>
+		<comments>http://sametmax.com/la-theorie-de-la-salle-de-bain-et-un-tout-petit-peu-de-python/#comments</comments>
+		<pubDate>Sun, 23 Sep 2012 20:12:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[croissance]]></category>
+		<category><![CDATA[démographie]]></category>
+		<category><![CDATA[économie]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2258</guid>
+		<description><![CDATA[Il y a quelques jours, j'ai tweeté <a href="http://www.youtube.com/watch?v=F-QA2rkpBSY&#038;feature=list_other&#038;playnext=1&#038;list=SP6A1FD147A45EF50D">une vidéo d'une heure de mauvaise qualité où l'on voyait un vieillard parler en anglais de la fonction exponentielle</a>.
+
+Le tweet n'a pas eu de succès. Je me demande bien pourquoi :-)]]></description>
+				<content:encoded><![CDATA[<p>Il y a quelques jours, j&#8217;ai tweeté <a href="http://www.youtube.com/watch?v=F-QA2rkpBSY&#038;feature=list_other&#038;playnext=1&#038;list=SP6A1FD147A45EF50D">une vidéo d&#8217;une heure de mauvaise qualité où l&#8217;on voyait un vieillard parler en anglais de la fonction exponentielle</a>.</p>
+<p>Le tweet n&#8217;a pas eu de succès. Je me demande bien pourquoi :-)</p>
+<p>C&#8217;est extrêmement fâcheux car cette vidéo est d&#8217;une importance capitale.</p>
+<p>En effet, cette petite conf, plus que de maths, parle surtout d&#8217;économie, d&#8217;écologie, de démographie, de la survie de l&#8217;espèce humaine, de sa bêtise, et tout ça avec humour. On en a bien besoin.</p>
+<p>J&#8217;ai donc décider de résumer cette vidéo ici, en français, et de mettre un peu de Python dedans pour le lulz.</p>
+<h2>La fonction exponentielle, dans votre vie de tous les jours</h2>
+<p>Quand vous lisez un truc comme ça dans la presse :</p>
+<blockquote><p>Le prix de l&#8217;essence a augmenté de 3 % par an.</p></blockquote>
+<p>Vous vous dites &#8220;oh, bah ça va&#8221;</p>
+<p>Et puis l&#8217;année suivante:</p>
+<blockquote><p>Le prix de l&#8217;essence a doublé depuis les années 90.</p></blockquote>
+<p>Et là vous criez &#8220;tous des bâtards, sauf papa parce qu&#8217;il est chauve&#8221;.</p>
+<p>Vous aurait-on menti les années précédentes ? Nein. C&#8217;est toute la beauté de la croissance continue, un phénomène mathématique facile à étudier.</p>
+<p>Par contre, je sais pas pour vous, mais moi les logs, les e de truc et les epsilons de machin, ça me parle moyen. Alors si on faisait un peu de bruteforce ? Les matheux me pardonneront mes approximations, l&#8217;idée est ici plus importante que la précision des chiffres puisque je suis un charlot.</p>
+<p>Prenons une valeur arbitraire, un pourcentage de croissance par an, et regardons combien d&#8217;années ça prend pour doubler:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> calculer_temps_de_doublement<span style="color: black;">&#40;</span>pourcent<span style="color: #66cc66;">,</span> valeur<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000000</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    double_de_la_valeur <span style="color: #66cc66;">=</span> valeur * <span style="color: #ff4500;">2</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> valeur <span style="color: #66cc66;">&lt;</span> double_de_la_valeur:
+        valeur +<span style="color: #66cc66;">=</span> valeur * pourcent / <span style="color: #ff4500;">100</span>
+        <span style="color: #ff7700;font-weight:bold;">yield</span> valeur</pre></td></tr></table></div>
+
+<p>(Pour ceux qui découvrent le mot clé yield, <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">c&#8217;est par ici</a>)</p>
+<p>Voyons ce que ça donne si on gardait constante la croissance actuelle de la population mondiale:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># croissance de la population mondiale</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>calculer_temps_de_doublement<span style="color: black;">&#40;</span><span style="color: #ff4500;">1.7</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> i<span style="color: #66cc66;">,</span> x
+&nbsp;
+<span style="color: #ff4500;">0</span> <span style="color: #ff4500;">1017000.0</span>
+<span style="color: #ff4500;">1</span> <span style="color: #ff4500;">1034289.0</span>
+<span style="color: #ff4500;">2</span> <span style="color: #ff4500;">1051871.913</span>
+<span style="color: #ff4500;">3</span> <span style="color: #ff4500;">1069753.73552</span>
+...
+<span style="color: #ff4500;">39</span> <span style="color: #ff4500;">1962628.57148</span>
+<span style="color: #ff4500;">40</span> <span style="color: #ff4500;">1995993.25719</span>
+<span style="color: #ff4500;">41</span> <span style="color: #ff4500;">2029925.14256</span></pre></td></tr></table></div>
+
+<p>Il faut 41 ans pour que ça double. En clair, un minuscule pour-cent virgule sept, et le nombre d&#8217;abrutis sur la Terre double avant que vous ayez atteint la moitié de votre vie.</p>
+<p>Voyons la même chose avec la consommation du pétrole:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># croissance de consommation du pétrole</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>calculer_temps_de_doublement<span style="color: black;">&#40;</span><span style="color: #ff4500;">3.4</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> i<span style="color: #66cc66;">,</span> x
+&nbsp;
+<span style="color: #ff4500;">0</span> <span style="color: #ff4500;">1034000.0</span>
+<span style="color: #ff4500;">1</span> <span style="color: #ff4500;">1069156.0</span>
+<span style="color: #ff4500;">2</span> <span style="color: #ff4500;">1105507.304</span>
+<span style="color: #ff4500;">3</span> <span style="color: #ff4500;">1143094.55234</span>
+...
+<span style="color: #ff4500;">18</span> <span style="color: #ff4500;">1887514.23841</span>
+<span style="color: #ff4500;">19</span> <span style="color: #ff4500;">1951689.72251</span>
+<span style="color: #ff4500;">20</span> <span style="color: #ff4500;">2018047.17308</span></pre></td></tr></table></div>
+
+<p>A votre majorité, la consommation du pétrole de l&#8217;humanité aurait donc doublé. Évidement, ce n&#8217;est vrai que si cette augmentation reste constante, on peut imaginer que notre consommation diminue avec le temps. Jusqu&#8217;ici, la consommation n&#8217;a pas juste augmenté, notre croissance de consommation a presque toujours augmenté. Avec un milliard de chinois et d&#8217;indiens ça va pas s&#8217;arrêter car:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># test avec la croissance chinoise de 2008</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>calculer_temps_de_doublement<span style="color: black;">&#40;</span><span style="color: #ff4500;">9.8</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> i<span style="color: #66cc66;">,</span> x
+&nbsp;
+<span style="color: #ff4500;">0</span> <span style="color: #ff4500;">1098000.0</span>
+<span style="color: #ff4500;">1</span> <span style="color: #ff4500;">1205604.0</span>
+<span style="color: #ff4500;">2</span> <span style="color: #ff4500;">1323753.192</span>
+<span style="color: #ff4500;">3</span> <span style="color: #ff4500;">1453481.00482</span>
+<span style="color: #ff4500;">4</span> <span style="color: #ff4500;">1595922.14329</span>
+<span style="color: #ff4500;">5</span> <span style="color: #ff4500;">1752322.51333</span>
+<span style="color: #ff4500;">6</span> <span style="color: #ff4500;">1924050.11964</span>
+<span style="color: #ff4500;">7</span> <span style="color: #ff4500;">2112607.03136</span></pre></td></tr></table></div>
+
+<p>En 7 ans, la production de richesse des bridés doublerait.</p>
+<p>Mais bon, l&#8217;idée n&#8217;est pas encore de débattre, juste de vous montrer un truc: un petit pourcentage, et ça double vite, très vite. Quand vous lisez dans la presse une croissance constante en pour-cent, il faut tout de suite s&#8217;arrêter et réfléchir: qu&#8217;est-ce que ça représente vraiment ?</p>
+<p><strong>Qu&#8217;est-ce que ça représente à l&#8217;échelle d&#8217;une vie ?</strong></p>
+<p>Je prends une valeurs arbitraire, je rajoute un pourcentage de croissance par an, et ce, tous les ans pendant 70 ans:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> nombre_de_multiplications_en_une_vie<span style="color: black;">&#40;</span>pourcent<span style="color: #66cc66;">,</span> duree_de_vie<span style="color: #66cc66;">=</span><span style="color: #ff4500;">70</span><span style="color: #66cc66;">,</span> valeur<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000000</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    valeur_de_depart <span style="color: #66cc66;">=</span> valeur
+    <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span>duree_de_vie<span style="color: black;">&#41;</span>:
+        valeur +<span style="color: #66cc66;">=</span> valeur * pourcent / <span style="color: #ff4500;">100</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> x<span style="color: #66cc66;">,</span> valeur
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> valeur / valeur_de_depart</pre></td></tr></table></div>
+
+<p>4 %, en une vie ça multiplie par&#8230;</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">nombre_de_multiplications_en_une_vie<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0</span> <span style="color: #ff4500;">1040000</span>
+<span style="color: #ff4500;">1</span> <span style="color: #ff4500;">1081600</span>
+<span style="color: #ff4500;">2</span> <span style="color: #ff4500;">1124864</span>
+<span style="color: #ff4500;">3</span> <span style="color: #ff4500;">1169858</span>
+...
+<span style="color: #ff4500;">68</span> <span style="color: #ff4500;">14972576</span>
+<span style="color: #ff4500;">69</span> <span style="color: #ff4500;">15571479</span>
+<span style="color: #ff4500;">15</span></pre></td></tr></table></div>
+
+<p>15 fois la valeur. </p>
+<p>7% ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">nombre_de_multiplications_en_une_vie<span style="color: black;">&#40;</span><span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0</span> <span style="color: #ff4500;">1070000</span>
+<span style="color: #ff4500;">1</span> <span style="color: #ff4500;">1144900</span>
+<span style="color: #ff4500;">2</span> <span style="color: #ff4500;">1225043</span>
+<span style="color: #ff4500;">3</span> <span style="color: #ff4500;">1310796</span>
+...
+<span style="color: #ff4500;">67</span> <span style="color: #ff4500;">99562171</span>
+<span style="color: #ff4500;">68</span> <span style="color: #ff4500;">106531522</span>
+<span style="color: #ff4500;">69</span> <span style="color: #ff4500;">113988728</span>
+<span style="color: #ff4500;">113</span></pre></td></tr></table></div>
+
+<p>Vos enfants se retrouvent avec le phénomène multiplié par 100.</p>
+<p>Donc, quand on vous parle de développement durable, et qu&#8217;on vous parle de garder la croissance de quelque chose, n&#8217;importe quelle chose, avec un certain seuil en pour-cent, on vous parle en fait juste d&#8217;une croissance normale, massive. Un truc qui va être énormément multiplié. Et très vite.</p>
+<p>C&#8217;est ce qu&#8217;on appelle une croissance exponentielle.</p>
+<h2>Ok, mais pourquoi tu nous dis ça ?</h2>
+<p>Je reprends l&#8217;analogie de notre vieux Albert Bartlett, qui ressemble à l&#8217;<a href="http://www.google.fr/search?source=hp&#038;q=nenuphare%20surface&#038;meta=&#038;aq=f&#038;aqi=g10&#038;aql=&#038;oq=&#038;gs_rfai=#hl=fr&#038;sclient=psy-ab&#038;q=enigme+nenuphare&#038;oq=enigme+nenuphare&#038;gs_l=serp.3..0j0i10i30j0i30l2.1947.3337.1.3455.9.5.0.4.4.0.254.805.0j4j1.5.0...0.0...1c.1.a77dpF0I4NU&#038;pbx=1&#038;bav=on.2,or.r_gc.r_pw.r_qf.&#038;fp=888c038e854cfa89&#038;biw=1861&#038;bih=955">énigme des nénuphars</a>.</p>
+<p>Vous avez vu qu&#8217;avec un petit pour-cent, une croissance constante fait très vite doubler une quantité. Qu&#8217;est-ce qui se passe quand on suit l&#8217;évolution de ces doublements ?</p>
+<p>Imaginez: une hypothétique bactérie (sous stéroïdes :-)) se divise toutes les secondes, doublant donc sa population chaque seconde.</p>
+<p>A 11H, la <a href="https://fr.wikipedia.org/wiki/Bo%C3%AEte_de_Petri">boîte de Pétri</a> dans laquelle vous avez mis la bactérie contient une bactérie. A midi, la boîte est pleine.</p>
+<p>Voilà ce que ça donne:</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://www.slideshare.net/slideshow/embed_code/14411917" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" class="iframe-class"></iframe>
+
+<p>Maintenant la question piège, à quelle heure reste-t-il la moitié de l&#8217;espace dans la boîte ?</p>
+<p>Réponse en slides:</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://fr.slideshare.net/slideshow/embed_code/14412173" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" class="iframe-class"></iframe>
+
+<p>En clair, jusqu&#8217;à la dernière minute, nos chères bactéries ont encore l&#8217;impression qu&#8217;il y a encore plein d&#8217;espace.</p>
+<p>Le cas des bactéries est un exemple typique de croissance dans un système fermé: il y a une ressource limitée, ici l&#8217;espace.</p>
+<p>Le système fermé dans notre cas, vous l&#8217;avez compris, c&#8217;est la Terre. Pour la ressource limitée, prenez celle que vous voulez: l&#8217;air pur, l&#8217;eau potable, l&#8217;espace, le pétrole, la bouffe, le métal, etc. Toutes ces ressources sont limitées, et nous les consommons de manière croissante.</p>
+<p>Mais vous allez me dire : &#8220;arrête, y en a encore plein&#8221;. Là on en est pas à la moitié. Et il y les progrès scientifiques. Et les alternatives.</p>
+<p>Mais voilà l&#8217;astuce, jusqu&#8217;à quelle heure on a l&#8217;impression qu&#8217;on en a &#8220;encore plein&#8221; ? C&#8217;est ce qui est magnifique avec la croissance exponentielle, ça augmente très vite&#8230;</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://www.slideshare.net/slideshow/embed_code/14412017" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" class="iframe-class"></iframe>
+
+<p>Voilà pourquoi vous entendez plein de gens criez &#8220;attention, on va manquer de (insérer ici une ressource limitée)&#8221;. Et c&#8217;est surtout pour ça que les mecs qui vous disent &#8220;mais nan, on en a encore plein, et on peut encore en découvrir plein, et il y a le progrès, les alternatives, on a de la marge&#8221; n&#8217;ont rien compris au film. </p>
+<p>La quantité n&#8217;a AUCUNE importance, <strong>l&#8217;important c&#8217;est qu&#8217;elle est limitée, et qu&#8217;on en consomme toujours plus</strong>. L&#8217;important c&#8217;est que cette croissance ne nous permet pas d&#8217;évaluer sereinement le temps de freinage avant de heurter le mur.</p>
+<p>Particulièrement parce que la croissance exponentielle possède une autre caractéristique très intéressante, à chaque fois qu&#8217;on passe le temps de doublement, <strong>la quantité consommée est égale à tout ce qui a été consommé depuis le début</strong>. Tout. A chaque fois, on consomme plus que tout l&#8217;historique:</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://fr.slideshare.net/slideshow/embed_code/14412074" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" class="iframe-class"></iframe>
+
+<p>Du coup, supposons que nos bactéries fassent comme nous, et décident de continuer leur croissance, et de la compenser par de nouvelles découvertes. Des bactéries géniales, genre prix Nobel chez les monocellulaires, font une découverte incroyable.</p>
+<p>3 autres boîtes de Pétri ! </p>
+<p>3 fois plus que ce qui a toujours été consommé, depuis le début de leur existence. C&#8217;est énorme, c&#8217;est comme si on découvrait soudainement que le schiste pouvait en fait nous filer du pétrole. C&#8217;est gigantesque. 3 fois ce qu&#8217;on a fait depuis le début de la consommation. Ça laisse voir venir non ?</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://www.slideshare.net/slideshow/embed_code/14412038" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" class="iframe-class"></iframe>
+
+<p>Voilà, à 12h02, il n&#8217;y a plus rien.</p>
+<p>Albert Bartlett pense que pour l&#8217;humanité et le pétrole, il est actuellement 11h58. Mais même si il se trompe, comme toutes les personnes qui ont annoncé la fin du pétrole avant lui, il ne peut pas se tromper sur le principe: la ressource est limitée, et nous la consommons exponentiellement.</p>
+<p>Enfin notre cher pépé malin nous rappelle que les solutions posent aussi souvent des problèmes, particulièrement celles qui consistent à essayer de nous maintenir dans notre système de croissance.</p>
+<p>Personnellement, je prendrais juste un exemple: les énergies alternatives. Qu&#8217;on s&#8217;y intéresse est une très bonne chose, mais leur existence ne résout pas le problème, elles sont l&#8217;équivalente de la découverte d&#8217;une nouvelle boîte de Pétri !</p>
+<p> Elles sont comme les autres, on peut les produire en quantité limité, même celles dites &#8220;renouvellables&#8221;. En effet, les installations et la maintenance pour la production de ces énergies consomment d&#8217;autres ressources: espace, énergie, métal, main d’œuvre qualifiée et bouffe de la main d’œuvre, etc. Sans compter que le pétrole, ce n&#8217;est pas que pour l&#8217;énergie, mais aussi pour la chimie: agriculture, médecine, vêtement, informatique&#8230; On est pas prêt de s&#8217;en passer.</p>
+<p>Et rien n&#8217;est gratuit.</p>
+<p>Rappel : la quantité disponible n&#8217;a aucune importance. L&#8217;important c&#8217;est qu&#8217;il y a une limite, aussi grande soit-elle, et qu&#8217;on accélère notre consommation.</p>
+<h2>Démographie, consommation et démocratie</h2>
+<p>Évidement, il y a le problème de consommation. On bouffe trop, on utilise trop la voiture, on jette trop, etc.</p>
+<p>Mais si on était un village de Provence, ça n&#8217;aurait aucune importance.</p>
+<p>L&#8217;important, c&#8217;est qu&#8217;on est nombreux, et que ça continue d&#8217;augmenter. Qu&#8217;être humain, c&#8217;est essayer de garantir que tous le monde ait les mêmes droits, les mêmes libertés, et les mêmes chances. </p>
+<p>Ce n&#8217;est pas possible avec une population qui se compte en milliard. Et surtout, qui continue de croître (et de consommer), de manière exponentielle.</p>
+<p>La surpopulation est un problème majeur. La surconsommation est un problème majeur.</p>
+<p>Notre société porte aux nues ceux qui font des enfants, c&#8217;est sacré. Et notre société produit des enfants qui vont faire la queue pendant 48H pour acheter l&#8217;iPhone 5. </p>
+<p>Exponentiellement. Dans un système fermé.</p>
+<p>Mais plus grave que cela, la surpopulation ne permet pas l&#8217;existence de la démocratie.</p>
+<p>La vidéo offre une très belle citation de <a href="https://fr.wikipedia.org/wiki/Isaac_Asimov">Isaac Asimov</a>, que je vais paraphraser ici:</p>
+<blockquote><p>J&#8217;ai une théorie sur les salles de bain.</p>
+<p>Quand vous avez un appartement avec 2 personnes et 2 salles de bains, tout le monde peut profiter des salles de bains, y faire ce qu&#8217;il veut, tout le temps qu&#8217;il veut, au moment qu&#8217;il veut. Et tout le monde peut croire dans &#8220;le droit à la salle de bain&#8221;. D&#8217;ailleurs, il est clair que ça devrait être écrit dans la constitution.</p>
+<p>Quand vous avez 20 personnes dans l&#8217;appartement, même dans le cas improbable où tout le monde croit dans le droit à la salle de bain, et même si c&#8217;est écrit dans la constitution, une telle chose ne peut exister. Il faut instaurer des horaires. Des tours. Il faut frapper à la porte et dire &#8220;t&#8217;as bientôt fini ?&#8221;. Il y aura des meilleurs horaires pour certains, et des abus.</p>
+<p>La démocratie ne peut pas survivre à la surpopulation. La dignité humaine ne peut pas survivre à la surpopulation. Le confort et la décence ne peuvent pas survivre la surpopulation. Plus on ajoute de personnes sur Terre, plus la valeur de la vie, non seulement diminue, mais disparaît. Cela n&#8217;a aucune importance si une personne meurt, plus il y a de gens, moins l&#8217;individu compte.</p>
+</blockquote>
+<p>Rappelez-vous, si vous sentez qu&#8217;on en est encore loin, qu&#8217;à 11h55, il reste 97% de la boîte de Pétri. </p>
+<h2>La bonne nouvelle et la moins bonne</h2>
+<p>Tous les systèmes tendent vers l&#8217;équilibre. Il n&#8217;y a rien à faire, ça se fait tout seul. Ca veut dire &#8211; bonne nouvelle ! &#8211; que tous nos problèmes de consommation de ressources vont se régler tout seuls. On va consommer moins automatiquement. Avoir une population qui va baisser, automatiquement.</p>
+<p>La mauvaise nouvelle, c&#8217;est qu&#8217;il est toujours plus facile de détruire que de construire, de mettre le bordel que d&#8217;organiser, de consommer que de produire. </p>
+<p>Du coup, il n&#8217;y a pas de solution rapide à un problème que nous avons mis des siècles à installer.</p>
+<p>Ainsi, rien ne dit que si on mettait une solution en place maintenant, ce serait elle qui ferait tendre notre système vers l&#8217;équilibre.</p>
+<p>Vous ne suivez pas ?</p>
+<p>Le système va s&#8217;équilibrer, c&#8217;est une certitude. La question, la question VRAIMENT importante, c&#8217;est <strong>comment</strong>.</p>
+<p>Prenez la surpopulation par exemple, voici deux colonnes, l&#8217;une implique que la population continue d&#8217;augmenter, l&#8217;autre va freiner ou compenser cette augmentation:</p>
+<p style="text-align: center;"><a href="http://sametmax.com/wp-content/uploads/2012/09/croissance1.png" class="grouped_elements" rel="tc-fancybox-group2258"><img class="aligncenter  wp-image-2261" src="http://sametmax.com/wp-content/uploads/2012/09/croissance1.png" alt="Colonne de gauche: croissance. Colonne de droite: décroissance" width="508" height="381" /></a></p>
+<p>Vous sentez comme certains items sont plus agréables que d&#8217;autres ?</p>
+<p>Voilà le truc, le système va s&#8217;équilibrer automatiquement, et dans notre cas, il va s&#8217;équilibrer en diminuant notre nombre, car nous sommes en croissance constante dans un système fermé.</p>
+<p>Donc, la nature va prendre des trucs dans la colonne de droite et les mettre en œuvre jusqu&#8217;à ce que le système s&#8217;équilibre.</p>
+<p>Ce n&#8217;est pas une prophétie divine, ce n&#8217;est pas magique, ce n&#8217;est pas une prédiction de médium, c&#8217;est juste un fait simple de la vie.</p>
+<p>On ne peut pas savoir ce qui sera utilisé dans la colonne de droite. L&#8217;Inde qui va faire la guerre à ses voisins car elle manque d&#8217;eau ? La Chine qui va détruire l&#8217;économie en consommant tout le fer, provocant une récession mondiale et la famine ? Monsanto / Fukushima / le réchauffement climatique qui va nous faire dégénérer ? Le monde entier qui soudainement fait moins de bébés, naturellement ?</p>
+<p>On ne peut pas non plus savoir quand ça va arriver. Dans 2 ans ? dans 120 ans ? La précision, c&#8217;est pour les astrologues.</p>
+<p>On sait juste que ça va arriver.</p>
+<p>En gros, notre problématique, c&#8217;est de choisir le truc le moins désagréable de la colonne de droite et de l&#8217;appliquer rapidement et efficacement avant que les autres items soient utilisés pour nous. Parce qu&#8217;il est clair que personne ne veut mettre le holà sur la colonne de gauche.</p>
+<p>Ce n&#8217;est pas pour ça qu&#8217;il faut arrêter le progrès scientifique, cracher sur le pétrole et le nucléaire ou castrer tout le monde. </p>
+<p>Mais ne rien faire, c&#8217;est aberrant</p>
+<h2>En plus d&#8217;apprendre Python, qu&#8217;est-ce que je peux faire d&#8217;utile ?</h2>
+<p>Envisager de ne pas faire des enfants, voir d&#8217;en adopter. Ou au minimum arrêter de se comporter comme un extrémiste religieux qui fait la promotion du Dieu Procréation comme à peu prêt tout le monde actuellement. C&#8217;est grave.</p>
+<p>Acheter moins. Réparer. Faire avec moins. Faire sans. Ne pas faire.</p>
+<p>Ne pas avoir de voiture. Ne pas changer tous les jours de t-shirt. Ne pas acheter le dernier gadget.</p>
+<p>Acheter d&#8217;occasion. Donner. Libérer de l&#8217;espace chez soi, et du temps dans sa vie.</p>
+<p>Prendre le vélo. Marcher. Acheter local. Et moins.</p>
+<p>Réfléchir, éteindre la télé, lire, parler à ses amis face à face.</p>
+<p>Cuisiner.</p>
+<p>On ne doit pas viser moins de croissance. On doit viser la décroissance. </p>
+<p>Gagner moins d&#8217;argent, faire moins de choses. Avoir une économie qui ne soit pas basée sur le plus.</p>
+<p>Vendre moins.</p>
+<p>Ce n&#8217;est pas l&#8217;austérité. Ce n&#8217;est pas vivre comme un homme des cavernes. Ça ne veut pas dire vivre moins. C&#8217;est juste ne pas être un parasite suicidaire.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-theorie-de-la-salle-de-bain-et-un-tout-petit-peu-de-python/feed/</wfw:commentRss>
+		<slash:comments>61</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/scientist-approved-futurama.png" length="33871" type="image/jpg" />	</item>
+	</channel>
+</rss>

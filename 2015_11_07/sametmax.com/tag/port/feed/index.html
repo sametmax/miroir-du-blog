@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; port</title>
+	<atom:link href="http://sametmax.com/tag/port/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Écouter sur le port 80 sans être root 16</title>
+		<link>http://sametmax.com/ecouter-sur-le-port-80-sans-etre-root/</link>
+		<comments>http://sametmax.com/ecouter-sur-le-port-80-sans-etre-root/#comments</comments>
+		<pubDate>Wed, 28 Jan 2015 13:47:08 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[port]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[reseau]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15817</guid>
+		<description><![CDATA[Sous beaucoup d'OS, tous les ports d'un nombre inférieur à 1024 ne peuvent pas être utilisés par des serveurs sans avoir les privilèges administrateurs. Néanmoins, on a pas vraiment envie que son app bricolée un lendemain de cuite soit lancée en root, pour que la moindre faille de sécurité donne l'accès total à son système.]]></description>
+				<content:encoded><![CDATA[<p>Sous beaucoup d&#8217;OS, tous les ports d&#8217;un nombre inférieur à 1024 ne peuvent pas être utilisés par des processus sans avoir les privilèges administrateurs. Néanmoins, on a pas vraiment envie que son app bricolée un lendemain de cuite soit lancée en root, pour que la moindre faille de sécurité donne l&#8217;accès total à son système.</p>
+<p>Beaucoup de logiciels se lancent en root, et relâchent leurs privilèges a posteriori. C&#8217;est ce que faisait Apache a une époque (peut être le fait-il toujours, j&#8217;ai pas cheché). Nginx lui, lance un processus racine en root, et spawn des enfants avec un utilisateur normal. </p>
+<p>Mais nous, on a pas la foi de se faire chier à faire ça, donc généralement, on met nginx en front et il gère ça pour nous. </p>
+<p>Sauf que, parfois, on a pas envie de mettre 40 couches devant notre app. Par exemple, si on utilise crossbar.io (ouai, j&#8217;ai encore réussi à le placer \o/), le logiciel est clairement capable d&#8217;être en front tout seul. </p>
+<p>Bonne nouvelle, sur les Linux modernes, les exécutables peuvent avoir des <a href="http://linux.die.net/man/7/capabilities">permissions</a> avancées, comme &#8220;pourvoir changer l&#8217;horloge système&#8221; ou &#8220;empêcher la mise en veille&#8221;. Ces permissions sont changeables avec l&#8217;outil <code>setcap</code>.</p>
+<p>Sous Ubuntu, ça s&#8217;installe avec :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> libcap2-bin</pre></td></tr></table></div>
+
+<p>Puis on choisit l&#8217;exécutable à qui on veut donner nos nouvelles permissions. Dans mon cas, le Python du virtualenv de mon projet :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ pew workon super_projet
+$ which python
+/home/sam/.<span style="color: black;">local</span>/share/virtualenvs/super_projet/bin/python</pre></td></tr></table></div>
+
+<p>Je check si il a pas déjà des permissions (normalement non) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ sudo getcap `which python`</pre></td></tr></table></div>
+
+<p>Nada. Good.</p>
+<p>Un petit coup de <code>man setcap</code> nous liste les permissions utilisables, et on peut voire que <code>CAP_NET_BIND_SERVICE</code> est la permission qui permet d&#8217;autoriser un exécutable à binder n&#8217;importe quel port. </p>
+<p>On rajoute les permissions :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> setcap <span style="color: #007800;">cap_net_bind_service</span>=+ep <span style="color: #000000; font-weight: bold;">`</span><span style="color: #c20cb9; font-weight: bold;">which</span> python<span style="color: #000000; font-weight: bold;">`</span></pre></td></tr></table></div>
+
+<p>On check que les permissions ont bien été ajoutées :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ sudo getcap `which python`
+/home/sam/.<span style="color: black;">local</span>/share/virtualenvs/super_projet/bin/python <span style="color: #66cc66;">=</span> cap_net_bind_service+eip</pre></td></tr></table></div>
+
+<p>On a rajouté avec le <code>+</code> la permission <code>cap_net_bind_service</code> pour les cas <code>e</code> et <code>p</code> qui correspondent aux premières lettres de ces définitions :</p>
+<pre>
+Permitted (formerly known as forced):
+    These capabilities are automatically permitted to the thread, regardless of the thread's inheritable capabilities. 
+
+Inheritable (formerly known as allowed):
+    This set is ANDed with the thread's inheritable set to determine which inheritable capabilities are enabled in the permitted set of the thread after the execve(2). 
+
+Effective:
+    This is not a set, but rather just a single bit. If this bit is set, then during an execve(2) all of the new permitted capabilities for the thread are also raised in the effective set. If this bit is not set, then after an execve(2), none of the new permitted capabilities is in the new effective set.
+</pre>
+<p>Et je n&#8217;ai absolument rien compris à celles-ci, je sais juste que ça marche.</p>
+<p>Voilà, maintenant tout ce que vous lancez avec le Python de ce virtualenv peut se binder au port 80.</p>
+<p>Si vous n&#8217;aimez pas l&#8217;idée de donner cette permission à tout un Python, il existe une alternative : rediriger tout ce qui rentre sur le port 80 vers un autre port. </p>
+<p>Pour ça on peut utiliser un autre soft :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> socat</pre></td></tr></table></div>
+
+<p>Par exemple, balancer tout le trafic du port <code>80</code> vers le port <code>8080</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">socat tcp-listen:<span style="color: #000000;">80</span>,fork,reuseaddr tcp:localhost:<span style="color: #000000;">8080</span></pre></td></tr></table></div>
+
+<p>Et pouf, votre appli qui écoute sur le port <code>8080</code> reçoit le trafic du port <code>80</code>.</p>
+<p>C&#8217;est plus simple, mais il faut le faire pour chaque port, et s&#8217;assurer que la commande est bien lancée au démarrage du serveur.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ecouter-sur-le-port-80-sans-etre-root/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/5448b43a23db2b0525bdf2f2fe7f80a1.png" length="150421" type="image/jpg" />	</item>
+		<item>
+		<title>Savoir quels programmes écoutent sur quels ports de votre serveur avec Netstat  8</title>
+		<link>http://sametmax.com/savoir-quels-programmes-ecoutent-sur-quels-ports-de-votre-serveur-avec-netstat/</link>
+		<comments>http://sametmax.com/savoir-quels-programmes-ecoutent-sur-quels-ports-de-votre-serveur-avec-netstat/#comments</comments>
+		<pubDate>Fri, 18 May 2012 17:21:03 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[listen]]></category>
+		<category><![CDATA[netstat]]></category>
+		<category><![CDATA[port]]></category>
+		<category><![CDATA[tcp]]></category>
+		<category><![CDATA[udp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=633</guid>
+		<description><![CDATA[Il peut être pratique d'avoir cette information dans certains cas, ça évite de se demande pourquoi on arrive pas à lancer Apache alors que Nginx écoute sur le même port. etc...
+]]></description>
+				<content:encoded><![CDATA[<p>Comme je teste pas mal d&#8217;applications je me retrouve souvent à avoir nginx, apache, cherokee installés sur la même machine, or des fois j&#8217;oublie sur quels ports ils écoutent et m&#8217;étonne de ne pouvoir lancer ma nouvelle config nginx toute fraîche alors que l&#8217;un des deux autres écoute sur le même port.</p>
+<p>Heureusement la plupart des applications vous préviennent que quelqu&#8217;un est déjà sur ce port, oui mais qui ?</p>
+<p><strong>Pour avoir un rapide coup d&#8217;oeil sur les ports utilisés faites:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">netstat</span> <span style="color: #660033;">-ntpul</span>
+&nbsp;
+Active Internet connections <span style="color: #7a0874; font-weight: bold;">&#40;</span>only servers<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID<span style="color: #000000; font-weight: bold;">/</span>Program name
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> 0.0.0.0:<span style="color: #000000;">80</span>                  0.0.0.0:<span style="color: #000000; font-weight: bold;">*</span>                   LISTEN      <span style="color: #000000;">26586</span><span style="color: #000000; font-weight: bold;">/</span>lighttpd
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> 0.0.0.0:<span style="color: #000000;">22</span>                  0.0.0.0:<span style="color: #000000; font-weight: bold;">*</span>                   LISTEN      <span style="color: #000000;">30945</span><span style="color: #000000; font-weight: bold;">/</span>sshd
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> 127.0.0.1:<span style="color: #000000;">199</span>               0.0.0.0:<span style="color: #000000; font-weight: bold;">*</span>                   LISTEN      <span style="color: #000000;">715</span><span style="color: #000000; font-weight: bold;">/</span>snmpd
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> 88.234.212.132:<span style="color: #000000;">3306</span>         0.0.0.0:<span style="color: #000000; font-weight: bold;">*</span>                   LISTEN      <span style="color: #000000;">15186</span><span style="color: #000000; font-weight: bold;">/</span>mysqld
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> 127.0.0.1:<span style="color: #000000;">6379</span>              0.0.0.0:<span style="color: #000000; font-weight: bold;">*</span>                   LISTEN      <span style="color: #000000;">31841</span><span style="color: #000000; font-weight: bold;">/</span>redis-server
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> :::<span style="color: #000000;">8080</span>                     :::<span style="color: #000000; font-weight: bold;">*</span>                        LISTEN      <span style="color: #000000;">6951</span><span style="color: #000000; font-weight: bold;">/</span>java
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> :::<span style="color: #000000;">8181</span>                     :::<span style="color: #000000; font-weight: bold;">*</span>                        LISTEN      <span style="color: #000000;">29022</span><span style="color: #000000; font-weight: bold;">/</span>cherokee-work
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> :::<span style="color: #000000;">22</span>                       :::<span style="color: #000000; font-weight: bold;">*</span>                        LISTEN      <span style="color: #000000;">30945</span><span style="color: #000000; font-weight: bold;">/</span>sshd
+tcp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> :::<span style="color: #000000;">3399</span>                     :::<span style="color: #000000; font-weight: bold;">*</span>                        LISTEN      <span style="color: #000000;">11438</span><span style="color: #000000; font-weight: bold;">/</span><span style="color: #7a0874; font-weight: bold;">&#40;</span>squid<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+udp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> 0.0.0.0:<span style="color: #000000;">161</span>                 0.0.0.0:<span style="color: #000000; font-weight: bold;">*</span>                               <span style="color: #000000;">715</span><span style="color: #000000; font-weight: bold;">/</span>snmpd
+udp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> 0.0.0.0:<span style="color: #000000;">50931</span>               0.0.0.0:<span style="color: #000000; font-weight: bold;">*</span>                               <span style="color: #000000;">11438</span><span style="color: #000000; font-weight: bold;">/</span><span style="color: #7a0874; font-weight: bold;">&#40;</span>squid<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+udp        <span style="color: #000000;">0</span>      <span style="color: #000000;">0</span> :::<span style="color: #000000;">43815</span>                    :::<span style="color: #000000; font-weight: bold;">*</span>                                    <span style="color: #000000;">11438</span><span style="color: #000000; font-weight: bold;">/</span><span style="color: #7a0874; font-weight: bold;">&#40;</span>squid<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></td></tr></table></div>
+
+<p><strong>les options:</strong></p>
+<p>-n, &#8211;numeric</p>
+<p>affiche les adresses en format numérique au lieu d&#8217;essayer de déterminer le nom symbolique d&#8217;hôte, de port ou d&#8217;utilisateur.</p>
+<p>-p, &#8211;programs</p>
+<p>affiche le nom et le PID des processus propriétaires de chaque socket décrite. Vous devez être le propriétaire d&#8217;un processus pour visualiser les sockets qui lui appartiennent ou être l&#8217;utilisateur root pour disposer de toutes les informations.</p>
+<p>-l, &#8211;listening</p>
+<p>Affiche les sockets en écoute</p>
+<p>-t</p>
+<p>Affiche les connexion TCP</p>
+<p>-u</p>
+<p>Affiche les connexion UDP</p>
+<p><strong>EDIT: On me signale un super moyen mémotechnique de retenir un panel d&#8217;options (merci Gardouille): </strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">netstat</span> <span style="color: #660033;">-lapute</span></pre></td></tr></table></div>
+
+<p>A vous Cognack-Jay</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/savoir-quels-programmes-ecoutent-sur-quels-ports-de-votre-serveur-avec-netstat/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/listening-at-the-door-dont-get-scammed.jpg" length="115465" type="image/jpg" />	</item>
+	</channel>
+</rss>

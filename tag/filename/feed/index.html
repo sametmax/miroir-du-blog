@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; filename</title>
+	<atom:link href="http://sametmax.com/tag/filename/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Petit snippet pour obtenir un nom de fichier unique en Python 10</title>
+		<link>http://sametmax.com/petit-snippet-pour-obtenir-un-nom-de-fichier-unique-en-python/</link>
+		<comments>http://sametmax.com/petit-snippet-pour-obtenir-un-nom-de-fichier-unique-en-python/#comments</comments>
+		<pubDate>Mon, 24 Feb 2014 12:03:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[filename]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9228</guid>
+		<description><![CDATA[Bidouillerie du jour, bonjour.
+]]></description>
+				<content:encoded><![CDATA[<p>Bidouillerie du jour, bonjour.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> get_unique_path<span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># si le nom de fichier existe, on en cherche un autre</span>
+    <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">exists</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># on vire l'extension</span>
+        base<span style="color: #66cc66;">,</span> ext <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">splitext</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #808080; font-style: italic;"># on extrait le compteur si il existe</span>
+            base<span style="color: #66cc66;">,</span> counter<span style="color: #66cc66;">,</span> _ <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">&quot; <span style="color: #000099; font-weight: bold;">\(</span>(<span style="color: #000099; font-weight: bold;">\d</span>+)<span style="color: #000099; font-weight: bold;">\)</span>$&quot;</span><span style="color: #66cc66;">,</span> base<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">ValueError</span>:
+            counter <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on reconstruit le path</span>
+        path <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;%s (%s)%s&quot;</span> % <span style="color: black;">&#40;</span>base<span style="color: #66cc66;">,</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>counter<span style="color: black;">&#41;</span> + <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> ext<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> path</pre></td></tr></table></div>
+
+<p>Le plus gros de l&#8217;astuce est dans :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">base<span style="color: #66cc66;">,</span> counter<span style="color: #66cc66;">,</span> _ <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">&quot; <span style="color: #000099; font-weight: bold;">\(</span>(<span style="color: #000099; font-weight: bold;">\d</span>+)<span style="color: #000099; font-weight: bold;">\)</span>$&quot;</span><span style="color: #66cc66;">,</span> base<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p><code> \((\d+)\)$</code> va matcher &#8216;espace(un nombre)&#8217; à la fin d&#8217;une chaîne et <code>r.split</code> va retourner soit <code>['le chemin complet']</code> si il n&#8217;y a pas de compteur, soit <code>['base', 'compteur', '']</code> si il y en a un.</p>
+<p>Du coup on <a href="http://sametmax.com/tag/unpacking/">unpack</a> tout ça, <code>_</code> étant utilisé pour signaler une variable inutilisée par convention et on a notre compteur, prêt à être incrémenté.</p>
+<p>A l&#8217;usage, ça donne ça dans ipython :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>rm /tmp/<span style="color: #dc143c;">test</span>*
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.txt'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test.txt'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.txt'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test.txt'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>touch /tmp/<span style="color: #dc143c;">test</span>.<span style="color: black;">txt</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.txt'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test (1).txt'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>touch <span style="color: #483d8b;">&quot;/tmp/test (1).txt&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.txt'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test (2).txt'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test (101).txt'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test (101).txt'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>touch <span style="color: #483d8b;">'/tmp/test (101).txt'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test (101).txt'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test (102).txt'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>touch /tmp/<span style="color: #dc143c;">test</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test (1)'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/.test'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/.test'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>touch <span style="color: #483d8b;">&quot;/tmp/.test&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/.test'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/.test (1)'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.path.text'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test.path.text'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>touch <span style="color: #483d8b;">'/tmp/test.path.text'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.path.text'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test.path (1).text'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.path (1)(1) (1).text'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test.path (1)(1) (1).text'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">!</span>touch <span style="color: #483d8b;">'/tmp/test.path (1)(1) (1).text'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_unique_path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test.path (1)(1) (1).text'</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'/tmp/test.path (1)(1) (2).text'</span></pre></td></tr></table></div>
+
+<p>Bien entendu, si vos fichiers ne seront jamais visibles par l&#8217;utilisateur, il vaut mieux se simplifier la vie et utiliser <a href="http://sametmax.com/quest-ce-quun-uuid-et-a-quoi-ca-sert/">uuid.uuid4()</a>.</p>
+<p>Je pense qu&#8217;après le dossier sur les tests unitaires, je ferai un dossier regex. Aux alentours de 2018.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/petit-snippet-pour-obtenir-un-nom-de-fichier-unique-en-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; imports</title>
+	<atom:link href="http://sametmax.com/tag/imports/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Nouveau fichier de start up Python 10</title>
+		<link>http://sametmax.com/nouveau-fichier-de-start-up-python/</link>
+		<comments>http://sametmax.com/nouveau-fichier-de-start-up-python/#comments</comments>
+		<pubDate>Sat, 20 Jun 2015 18:20:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[imports]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16407</guid>
+		<description><![CDATA[Régulièrement je passe un coup de poussière sur mes outils, et aujourd'hui c'est le tour du script de start up.]]></description>
+				<content:encoded><![CDATA[<p>Régulièrement je passe un coup de dépoussiérage sur mes outils, et aujourd&#8217;hui c&#8217;est le tour du script de start up.</p>
+<p>Pour ceux qui ne se souviennent pas, on peut utiliser la variable d&#8217;environnement <a href="http://sametmax.com/variables-denvironnement-utilisees-par-python/">PYTHONSTARTUP</a> pour choisir un script de démarrage pour le shell.</p>
+<p>Ca attend un chemin absolu vers un fichier Python, et donc sous Mac et Linux, on met dans son <code>.bashrc</code> ou équivalent :</p>
+<p><code>export PYTHONSTARTUP=/chemin/vers/son/script.py</code></p>
+<p>Sous Windows, on ouvre une console et on fait :</p>
+<p><code>SETX PYTHONSTARTUP c:\chemin\vers\son\script.py</code></p>
+<p>Et dedans on peut mettre tout le code Python qu&#8217;on veut, ça sera lancé automatiquement quand on démarre le shell, mais PAS quand on lance un script Python.</p>
+<p>Le script est exécuté dans l&#8217;espace de nom du shell, donc tous les imports du script sont mis à la disposition du shell. Du coup, pour moi il contient :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># faut que ça marche pareil en P2 et P3</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals<span style="color: #66cc66;">,</span> print_function<span style="color: #66cc66;">,</span> absolute_import
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Les imports des modules de la libs standars que j'utilise le plus</span>
+<span style="color: #808080; font-style: italic;"># car à force çe me gave de les réimporter moi-même à chaque session</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> json
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">csv</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> hashlib
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">tempfile</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">shelve</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">atexit</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">subprocess</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">glob</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">glob</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> uuid <span style="color: #ff7700;font-weight:bold;">import</span> uuid4
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">pprint</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">pprint</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on shadow le open() builtin histoire d'avoir toujours le</span>
+<span style="color: #808080; font-style: italic;"># paramètre encoding</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">codecs</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #008000;">open</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">itertools</span> <span style="color: #ff7700;font-weight:bold;">import</span> *
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> *
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span><span style="color: #66cc66;">,</span> timedelta
+&nbsp;
+<span style="color: #808080; font-style: italic;"># imports d'outils tierces parties que j'utilise souvent mais qui pourraient ne</span>
+<span style="color: #808080; font-style: italic;"># pas être installés</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> arrow
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">ImportError</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> requests
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">ImportError</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">from</span> path <span style="color: #ff7700;font-weight:bold;">import</span> path
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">ImportError</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">from</span> minibelt <span style="color: #ff7700;font-weight:bold;">import</span> *
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">ImportError</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># activation d'autocompletion si ce n'est pas déjà le cas, notamment sous</span>
+<span style="color: #808080; font-style: italic;"># des vieux shell Python ordinnaire</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">rlcompleter</span>
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">readline</span>
+    <span style="color: #dc143c;">readline</span>.<span style="color: black;">parse_and_bind</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;tab: complete&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">ImportError</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># si on est dans un virtual env</span>
+env <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">environ</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'VIRTUAL_ENV'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> env:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># afficher le nom de l'env dans le prompt (marche pas dans ipython qui</span>
+    <span style="color: #808080; font-style: italic;"># a sa propre config pour ça)</span>
+    env_name <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">basename</span><span style="color: black;">&#40;</span>env<span style="color: black;">&#41;</span>
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">ps1</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'(%s) %s '</span> % <span style="color: black;">&#40;</span>env_name<span style="color: #66cc66;">,</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ps1'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'&gt;&gt;&gt;'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># affichage une fois des modules installés avec pip pour qu'on sache</span>
+    <span style="color: #808080; font-style: italic;"># ce qu'on a a dispo dans cet env</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>Virtualenv '{}' contains:<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>env_name<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #dc143c;">cmd</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">check_output</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>env + <span style="color: #483d8b;">&quot;/bin/pip&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;freeze&quot;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+                                  stderr<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">STDOUT</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #dc143c;">cmd</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">cmd</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+    <span style="color: #dc143c;">cmd</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">cmd</span>.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>
+    p <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: #008000;">compile</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'(^.*<span style="color: #000099; font-weight: bold;">\:</span><span style="color: #000099; font-weight: bold;">\s</span>)|((#|@).*$)|(==.*$)'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;'&quot;</span> + <span style="color: #483d8b;">&quot;', '&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">basename</span><span style="color: black;">&#40;</span>p.<span style="color: black;">sub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: #66cc66;">,</span> f<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> f <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">cmd</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">&quot;'<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># alias pour printer rapidement</span>
+p <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">print</span>
+pp <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">pprint</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># avoir toujours un dossier temporaire près à l'usage</span>
+TEMP_DIR <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempdir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pythontemp'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #dc143c;">os</span>.<span style="color: black;">makedirs</span><span style="color: black;">&#40;</span>TEMP_DIR<span style="color: black;">&#41;</span>
+    TEMP_DIR <span style="color: #66cc66;">=</span> path<span style="color: black;">&#40;</span>TEMP_DIR<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># si possible un objet path</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">Exception</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># avoir un dico persistant pour garder des objets entre deux sessions. Pratique quand</span>
+<span style="color: #808080; font-style: italic;"># on a un gros array numpy qu'on n'a pas envie de se faire chier à se recréer</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Store<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> filename<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">object</span>.<span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'DICT'</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">shelve</span>.<span style="color: black;">DbfilenameShelf</span><span style="color: black;">&#40;</span>filename<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># cleaning the dict on the way out</span>
+        <span style="color: #dc143c;">atexit</span>.<span style="color: black;">register</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>._clean<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> name <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;DICT&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'_clean'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">try</span>:
+                <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">DICT</span><span style="color: black;">&#91;</span>name<span style="color: black;">&#93;</span>
+            <span style="color: #ff7700;font-weight:bold;">except</span>:
+                <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">None</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">object</span>.<span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> name <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;DICT&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'_clean'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;'%s' is a reserved name for this store&quot;</span> % name<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">DICT</span><span style="color: black;">&#91;</span>name<span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> value
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> _clean<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">DICT</span>.<span style="color: black;">sync</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">DICT</span>.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ainsi on peut faire store.foo = 'bar' et récupérer store.foo à la session</span>
+<span style="color: #808080; font-style: italic;"># suivante. Moi je store tout dans un truc temporaire mais si vous voulez</span>
+<span style="color: #808080; font-style: italic;"># garder la persistance entre deux reboots, il suffit de choisir un autre</span>
+<span style="color: #808080; font-style: italic;"># dossier. </span>
+python_version <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;py%s&quot;</span> % <span style="color: #dc143c;">sys</span>.<span style="color: black;">version_info</span>.<span style="color: black;">major</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    store <span style="color: #66cc66;">=</span> Store<span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>TEMP_DIR<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'store.%s.db'</span><span style="color: black;">&#41;</span> % python_version<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>/!<span style="color: #000099; font-weight: bold;">\ </span>Un session utilisant le store existe déjà. On ne peut pas partager un store.'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Il est un peu relou puisqu&#8217;il faut qu&#8217;il marche pour P2 et P3&#8230;</p>
+<p>Je me demande si je devrais pas faire un repo pour ce genre de truc.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nouveau-fichier-de-start-up-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/06/UEuE8u41.jpg" length="117105" type="image/jpg" />	</item>
+	</channel>
+</rss>

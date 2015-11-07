@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; connerie</title>
+	<atom:link href="http://sametmax.com/tag/connerie/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Comment figer son app hors ligne pour plus d&#8217;un mois 9</title>
+		<link>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/</link>
+		<comments>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/#comments</comments>
+		<pubDate>Fri, 25 Apr 2014 09:35:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[connerie]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[manifest]]></category>
+		<category><![CDATA[nginx]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10076</guid>
+		<description><![CDATA[Bravo Sam.]]></description>
+				<content:encoded><![CDATA[<p>Je sers <a href="http://allthatcounts.net/">All That Counts</a> avec nginx, et le fichier de config est super simple :</p>
+<pre>server {
+        listen       80;
+        server_name allthatcounts.net;
+
+        error_log  /var/log/nginx/error_allthatcounts.log;
+        access_log  /var/log/nginx/access_allthatcounts.log;
+
+        location / {
+            root /home/allthatcounts/www/;
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            gzip_buffers 16 8k;
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+            expires modified +90d;
+        }
+}</pre>
+<p>En gros c&#8217;est juste du log et servir les fichiers statiques compressés avec gzip. Il n&#8217;y a rien de plus à faire parce qu&#8217;il n&#8217;y a pas de backend. Simple. Efficace.</p>
+<p>La couille c&#8217;est que c&#8217;est un copier / coller d&#8217;un autre projet que j&#8217;ai fais sans trop réfléchir, et quand j&#8217;ai mis en prod de nouvelles modifications sur le serveurs, mon Firefox me les affichait pas. Pourtant j&#8217;avais bien modifié le manifeste, donc il aurait du tout recharcher&#8230;</p>
+<p>Sauf que, con de ma race, j&#8217;ai copié la ligne :</p>
+<pre>expires modified +90d;</pre>
+<p>Qui dit techniquement, met en cache tous les fichiers statiques pour 90 jours. Donc aussi le manifeste. Du coup, toutes les personnes qui ont visité le site ne verront aucune mise à jour pour un bon mois et demi.</p>
+<p>Bravo Sam.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/joker.gif" length="247256" type="image/jpg" />	</item>
+	</channel>
+</rss>

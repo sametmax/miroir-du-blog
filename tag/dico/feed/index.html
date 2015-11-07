@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; dico</title>
+	<atom:link href="http://sametmax.com/tag/dico/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Chercher dans plusieurs dicts à la fois avec ChainMap 14</title>
+		<link>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/</link>
+		<comments>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/#comments</comments>
+		<pubDate>Fri, 11 Jul 2014 08:09:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11382</guid>
+		<description><![CDATA[Depuis Python 3.3 existe un nouvel outil pour travailler avec les dicos et j'étais complètement passé à côté : <a href="https://docs.python.org/3.3/library/collections.html#collections.ChainMap">ChainMap</a>.]]></description>
+				<content:encoded><![CDATA[<p>Depuis Python 3.3 existe un nouvel outil pour travailler avec les dicos et j&#8217;étais complètement passé à côté : <a href="https://docs.python.org/3.3/library/collections.html#collections.ChainMap">ChainMap</a>.</p>
+<p>Il permet de créer un objet qui se comporte comme un <a href="http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/">dict</a>, mais qui va chercher dans plusieurs dictionnaires.</p>
+<p>Un exemple sera plus clair.</p>
+<p>Imaginez que vous ayez un système de configuration avec des valeurs par défaut :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">default_config <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'DEBUG'</span>: <span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'HOST'</span>: <span style="color: #483d8b;">'localhost'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'PORT'</span>: <span style="color: #ff4500;">8080</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Puis votre utilisateur peut fournir un fichier de configuration <code>settings.py</code> qui contient :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">DEBUG <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+PORT <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">8000</span></pre></td></tr></table></div>
+
+<p>Et avec un peu de parsing, vous le récupérez sous forme de dico :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> settings
+user_config <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>k: v <span style="color: #ff7700;font-weight:bold;">for</span> k<span style="color: #66cc66;">,</span> v <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">vars</span><span style="color: black;">&#40;</span>settings<span style="color: black;">&#41;</span>.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> k.<span style="color: black;">isupper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span>
+<span style="color: #808080; font-style: italic;">## {'DEBUG': True, 'PORT': 8000}</span></pre></td></tr></table></div>
+
+<p>Puis l&#8217;utilisateur peut passer la config via la ligne de commande, et une fois il fait :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">--host 0.0.0.0</pre></td></tr></table></div>
+
+<p>Et vous récupérez la config :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">cmd_config <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;HOST&quot;</span>: <span style="color: #483d8b;">&quot;0.0.0.0&quot;</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Maintenant il faut prendre tout ça en compte. La ligne de commande écrase le fichier de config qui écrase les valeurs par défaut :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">conf <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+conf.<span style="color: black;">update</span><span style="color: black;">&#40;</span>default_config<span style="color: black;">&#41;</span>
+conf.<span style="color: black;">update</span><span style="color: black;">&#40;</span>user_config<span style="color: black;">&#41;</span>
+conf.<span style="color: black;">update</span><span style="color: black;">&#40;</span>cmd_config<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>conf<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># configuration finale</span>
+<span style="color: #808080; font-style: italic;">## {'DEBUG': True, 'HOST': '0.0.0.0', 'PORT': 8000}</span></pre></td></tr></table></div>
+
+<p>Ça va marcher, mais ça a plusieurs défauts : </p>
+<ul>
+<li>Si vos dicos sont très grands, vous prenez encore plus de place en mémoire.</li>
+<li>Si vous modifiez <code>conf</code>, impossible de savoir quelle était sa valeur initiale.</li>
+<li>Si vous modifiez <code>user_config</code>, il faut tout refusionner. Mais si vous avez modifié <code>conf</code> entre temps, comment vous assurer que vous n&#8217;allez pas écraser ces modifications ?</li>
+<li>Si vous voulez temporairement faire une modification à conf, il faut de nouveau créer un dico en plus avec tout dedans.</li>
+</ul>
+<p>ChainMap résout ce problème en cherchant une clé dans une liste de dicos sous-jacent, mais en appliquant les modifications uniquement sur le premier dico.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> ChainMap
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> conf <span style="color: #66cc66;">=</span> ChainMap<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: #808080; font-style: italic;"># &lt;- ce mapping sera le seul modifié</span>
+                    <span style="color: #808080; font-style: italic;"># les clés seront cherchées dans cet ordre :</span>
+                    cmd_config<span style="color: #66cc66;">,</span> 
+                    user_config<span style="color: #66cc66;">,</span> 
+                    default_config<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> conf<span style="color: black;">&#91;</span><span style="color: #483d8b;">'HOST'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'0.0.0.0'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> conf<span style="color: black;">&#91;</span><span style="color: #483d8b;">'DEBUG'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> conf<span style="color: black;">&#91;</span><span style="color: #483d8b;">'PORT'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">8000</span></pre></td></tr></table></div>
+
+<p>Les dicos sont ici stockés par référence, ça ne prend pas de mémoire en plus, et si on modifie un dico :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">user_config<span style="color: black;">&#91;</span><span style="color: #483d8b;">'DEBUG'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">False</span></pre></td></tr></table></div>
+
+<p>Alors c&#8217;est reflété par <code>ChainMap</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> conf<span style="color: black;">&#91;</span><span style="color: #483d8b;">'DEBUG'</span><span style="color: black;">&#93;</span>
+<span style="color: #008000;">False</span></pre></td></tr></table></div>
+
+<p>Si on fait une modification, seul le dico le plus haut dans la chaine (ici notre dico vide), est modifié :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> conf<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;PORT&quot;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">7777</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> conf
+ChainMap<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'PORT'</span>: <span style="color: #ff4500;">7777</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'HOST'</span>: <span style="color: #483d8b;">'0.0.0.0'</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'DEBUG'</span>: <span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'PORT'</span>: <span style="color: #ff4500;">8000</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'DEBUG'</span>: <span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'HOST'</span>: <span style="color: #483d8b;">'localhost'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'PORT'</span>: <span style="color: #ff4500;">8080</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et si on a besoin d&#8217;un contexte temporaire, on peut créer un enfant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> sub_conf <span style="color: #66cc66;">=</span> conf.<span style="color: black;">new_child</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sub_conf
+ChainMap<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'PORT'</span>: <span style="color: #ff4500;">7777</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'HOST'</span>: <span style="color: #483d8b;">'0.0.0.0'</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'DEBUG'</span>: <span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'PORT'</span>: <span style="color: #ff4500;">8000</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'DEBUG'</span>: <span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'HOST'</span>: <span style="color: #483d8b;">'localhost'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'PORT'</span>: <span style="color: #ff4500;">8080</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Cela crée un nouveau ChainMap, avec un dico vide en haut de la chaîne, qui permet donc de travailler temporairement avec de nouvelles valeurs, sans toucher au ChainMap d&#8217;origine. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/chercher-dans-plusieurs-dicts-a-la-fois-avec-chainmap/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/07/tumblr_n5nx1iJWNQ1r539hzo1_500.jpg" length="184953" type="image/jpg" />	</item>
+		<item>
+		<title>Aller plus loin avec les hash maps en Python 21</title>
+		<link>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/</link>
+		<comments>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/#comments</comments>
+		<pubDate>Mon, 30 Jun 2014 03:28:26 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dico]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[dictionnaire]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11217</guid>
+		<description><![CDATA[Les hash map sont souvent sous-utilisés, surtout par les personnes venant d'un autre langage avec implémentation vraiment batardes du concept. Les array en PHP et les objet en Javascript étant parmi les pires exemples.]]></description>
+				<content:encoded><![CDATA[<p>Les hash map sont souvent sous-utilisés, surtout par les personnes venant d&#8217;un autre langage avec implémentation vraiment batarde du concept. Les arrays en PHP et les objets en Javascript étant parmi les pires exemples.</p>
+<p>Le point d&#8217;entrée pour les hash maps en Python, c&#8217;est le dictionnaire. Et la plupart des gens ont pigé le principe de l&#8217;association clé / valeur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'cle'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'valeur'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'cle'</span><span style="color: black;">&#93;</span>
+<span style="color: #483d8b;">'valeur'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'pas cle'</span><span style="color: black;">&#93;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-12-eed7cf6f5344&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'pas cle'</span><span style="color: black;">&#93;</span>
+<span style="color: #008000;">KeyError</span>: <span style="color: #483d8b;">'pas cle'</span></pre></td></tr></table></div>
+
+<p>L’intérêt du dictionnaire étant qu&#8217;accéder à une clé est très rapide (c&#8217;est <a href="http://sametmax.com/complexite-algorithmique-pourquoi-tant-de-n/">une opération O(1)</a>), tout comme vérifier qu&#8217;une clé est présente dans le dico :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'cle'</span> <span style="color: #ff7700;font-weight:bold;">in</span> d
+<span style="color: #008000;">True</span></pre></td></tr></table></div>
+
+<p>Mais généralement les gens s&#8217;arrêtent là.</p>
+<h2>Itération</h2>
+<p>Parfois, ils vont plus loin, et tentent l&#8217;itération dessus :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> scores <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;Joe&quot;</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Jonh&quot;</span>: <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Jack&quot;</span>: <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Jenny&quot;</span>: <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Jeanne&quot;</span>: <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;July&quot;</span>: <span style="color: #ff4500;">3</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> score <span style="color: #ff7700;font-weight:bold;">in</span> scores:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>score<span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Jenny</span>
+Jack
+Joe
+July
+Jonh
+Jeanne</pre></td></tr></table></div>
+
+<p>Ils s’aperçoivent qu&#8217;on peut uniquement récupérer les clés, et essayent de faire ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> nom <span style="color: #ff7700;font-weight:bold;">in</span> scores:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> scores<span style="color: black;">&#91;</span>nom<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Jenny</span> <span style="color: #ff4500;">7</span>
+Jack <span style="color: #ff4500;">3</span>
+Joe <span style="color: #ff4500;">1</span>
+July <span style="color: #ff4500;">3</span>
+Jonh <span style="color: #ff4500;">5</span>
+Jeanne <span style="color: #ff4500;">0</span></pre></td></tr></table></div>
+
+<p>Rapidement ils sont corrigés par quelques collègues qui leur expliquent qu&#8217;on peut faire ceci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> nom<span style="color: #66cc66;">,</span> score <span style="color: #ff7700;font-weight:bold;">in</span> scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> score<span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Jenny</span> <span style="color: #ff4500;">7</span>
+Jack <span style="color: #ff4500;">3</span>
+Joe <span style="color: #ff4500;">1</span>
+July <span style="color: #ff4500;">3</span>
+Jonh <span style="color: #ff4500;">5</span>
+Jeanne <span style="color: #ff4500;">0</span></pre></td></tr></table></div>
+
+<p>Sans vraiment expliquer pourquoi. Si vous êtes curieux, cela marche grâce à l&#8217;<a href="http://sametmax.com/tag/unpacking/">unpacking</a>.</p>
+<p>Ensuite ils vont chercher à afficher des choses dans l&#8217;ordre, mais un dictionnaire n&#8217;est pas ordonné. Là commencent les embrouilles : dans l&#8217;ordre des clés, des valeurs ou dans l&#8217;ordre d&#8217;insertion ?</p>
+<p>Dans l&#8217;ordre des clés ou des valeurs, il faut se taper le <a href="http://sametmax.com/ordonner-en-python/">tri</a> à chaque fois :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> nom<span style="color: #66cc66;">,</span> score <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> score<span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Jack</span> <span style="color: #ff4500;">3</span>
+Jeanne <span style="color: #ff4500;">0</span>
+Jenny <span style="color: #ff4500;">7</span>
+Joe <span style="color: #ff4500;">1</span>
+Jonh <span style="color: #ff4500;">5</span>
+July <span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> nom<span style="color: #66cc66;">,</span> score <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> score<span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Jeanne</span> <span style="color: #ff4500;">0</span>
+Joe <span style="color: #ff4500;">1</span>
+Jack <span style="color: #ff4500;">3</span>
+July <span style="color: #ff4500;">3</span>
+Jonh <span style="color: #ff4500;">5</span>
+Jenny <span style="color: #ff4500;">7</span></pre></td></tr></table></div>
+
+<p>Dans l&#8217;ordre d&#8217;insertion par contre, ce n&#8217;est pas possible avec le dictionnaire. Mais voilà l&#8217;astuce : le hash map en Python, ce n&#8217;est pas QUE le type <code>dict</code>.</p>
+<p>Pour ce problème, on peut utiliser <code>collections.OrderedDict</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> OrderedDict
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> OrderedDict<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Jeanne'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Jack'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'July'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">6</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> nom<span style="color: #66cc66;">,</span> score <span style="color: #ff7700;font-weight:bold;">in</span> d.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> score<span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Jeanne</span> <span style="color: #ff4500;">3</span>
+Jack <span style="color: #ff4500;">2</span>
+July <span style="color: #ff4500;">6</span></pre></td></tr></table></div>
+
+<p>Après il y a le rare problème, mais tout de même existant, de la très très grosse structure de données que l&#8217;on veut itérer dans l&#8217;ordre de clés :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10000000</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">random</span>.<span style="color: black;">shuffle</span><span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si on fait un sort dessus, ça prend plusieurs secondes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">sort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Imaginez avec un dico qui contient un million de clés sous forme de texte. La lecture dans l&#8217;ordre sera très, très lente. Parfois ce n&#8217;est pas grave, et parfois c&#8217;est très emmerdant.</p>
+<p>La stdlib de Python ne permet pas de répondre à ce problème facilement. On pourrait bricoler quelque chose avec <a href="http://sametmax.com/heapq-le-module-python-incompris/">heapq</a>, mais franchement, c&#8217;est se casser la tête pour rien.</p>
+<p>Le plus simple est d&#8217;utiliser une lib externe, par exemple l&#8217;excellente <a href="https://github.com/grantjenks/sorted_containers">sorted_container</a>, qui en plus d&#8217;être très rapide, est en pur Python. Du coup, un peu de <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> :</p>
+<p><code>pip install sortedcontainer</code></p>
+<p>Et on est bon.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> sortedcontainers <span style="color: #ff7700;font-weight:bold;">import</span> SortedDict
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> SortedDict<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Joe'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Jeanne'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">6</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'July'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'John'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> nom<span style="color: #66cc66;">,</span> score <span style="color: #ff7700;font-weight:bold;">in</span> d.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> score<span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Jeanne</span> <span style="color: #ff4500;">6</span>
+Joe <span style="color: #ff4500;">1</span>
+John <span style="color: #ff4500;">3</span>
+July <span style="color: #ff4500;">3</span></pre></td></tr></table></div>
+
+<p>SortedDict s&#8217;assure que le dictionnaire reste ordonné à chaque insertion d&#8217;un élément, et ainsi, vous évite de devoir faire un tri tout à la fin.</p>
+<h2>Initialisation</h2>
+<p>La plupart du temps, on utilise la notation littérale. Mais le constructeur <code>dict</code> trouve son utilité dans le fait qu&#8217;il accepte un itérable de tuples en paramètre :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">dict</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;b&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>La plupart du temps, les gens n&#8217;en voient pas l&#8217;utilité. Mais il faut se rappeler que tout le langage Python est organisé autour de l&#8217;itération. Je ne cesse de le répéter, en Python, l&#8217;itération est tout.</p>
+<p>De fait, cette particularité du constructeur du dico vous permet de créer des dictionnaires à partir de structures existantes inattendues&#8230;</p>
+<p>Prendre deux séquences et les pairer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> personnes <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Joe'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'John'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Jean-Michel'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">34</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">zip</span><span style="color: black;">&#40;</span>personnes<span style="color: #66cc66;">,</span> scores<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Joe'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'John'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Jean-michel'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">34</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">dict</span><span style="color: black;">&#40;</span><span style="color: #008000;">zip</span><span style="color: black;">&#40;</span>personnes<span style="color: #66cc66;">,</span> scores<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'Jean-michel'</span>: <span style="color: #ff4500;">34</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'John'</span>: <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Joe'</span>: <span style="color: #ff4500;">4</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Pairer les deux derniers champs du résultat d&#8217;une commande :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">subprocess</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> df <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">check_output</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'df'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>df<span style="color: black;">&#41;</span>
+Sys. <span style="color: black;">de</span> fichiers       blocks de 1K  Utilisé Disponible Uti% Monté sur
+/dev/sda7                   <span style="color: #ff4500;">7972000</span>  <span style="color: #ff4500;">6614840</span>     <span style="color: #ff4500;">929156</span>  <span style="color: #ff4500;">88</span>% /
+none                              <span style="color: #ff4500;">4</span>        <span style="color: #ff4500;">0</span>          <span style="color: #ff4500;">4</span>   <span style="color: #ff4500;">0</span>% /<span style="color: #dc143c;">sys</span>/fs/cgroup
+udev                        <span style="color: #ff4500;">1968688</span>        <span style="color: #ff4500;">4</span>    <span style="color: #ff4500;">1968684</span>   <span style="color: #ff4500;">1</span>% /dev
+tmpfs                        <span style="color: #ff4500;">395896</span>     <span style="color: #ff4500;">1112</span>     <span style="color: #ff4500;">394784</span>   <span style="color: #ff4500;">1</span>% /run
+none                           <span style="color: #ff4500;">5120</span>        <span style="color: #ff4500;">0</span>       <span style="color: #ff4500;">5120</span>   <span style="color: #ff4500;">0</span>% /run/lock
+none                        <span style="color: #ff4500;">1979472</span>      <span style="color: #ff4500;">160</span>    <span style="color: #ff4500;">1979312</span>   <span style="color: #ff4500;">1</span>% /run/shm
+none                         <span style="color: #ff4500;">102400</span>       <span style="color: #ff4500;">44</span>     <span style="color: #ff4500;">102356</span>   <span style="color: #ff4500;">1</span>% /run/<span style="color: #dc143c;">user</span>
+/dev/sda5                  <span style="color: #ff4500;">65438480</span> <span style="color: #ff4500;">57693436</span>    <span style="color: #ff4500;">4397852</span>  <span style="color: #ff4500;">93</span>% /media/sam/
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">dict</span><span style="color: black;">&#40;</span>l.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span>-<span style="color: #ff4500;">2</span>:<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> l <span style="color: #ff7700;font-weight:bold;">in</span>  <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>df.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span>:<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">if</span> l<span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'31%'</span>: <span style="color: #483d8b;">'/media/truecrypt1'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'1%'</span>: <span style="color: #483d8b;">'/run/user'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'93%'</span>: <span style="color: #483d8b;">'/media/sam'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'88%'</span>: <span style="color: #483d8b;">'/'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'0%'</span>: <span style="color: #483d8b;">'/run/lock'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Depuis Python 2.7, cette fonctionnalité est partiellement phagocytée par la syntaxe pour <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">les intentions</a> sur les dicos :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">pprint</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">pprint</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">pprint</span><span style="color: black;">&#40;</span> <span style="color: black;">&#123;</span>line: num <span style="color: #ff7700;font-weight:bold;">for</span> num<span style="color: #66cc66;">,</span> line <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'#<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'# / was on /dev/sda7 during installation<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">8</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'# /etc/fstab: static file system information.<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">&quot;# Use 'blkid' to print the universally unique identifier for a<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>: <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'# device; this may be used with UUID= as a more robust way to name devices<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'# swap was on /dev/sda6 during installation<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'# that works even if disks are added and removed. See fstab(5).<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'UUID=4c0455fb-ff57-466a-8d1f-22b575129f4f none            swap    sw              0       0<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">11</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'UUID=4f560031-1058-4eb6-a51e-b7991dfc6db7 /               ext4    errors=remount-ro 0       1<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">9</span><span style="color: #66cc66;">,</span>
+ <span style="color: #483d8b;">'UUID=b27f7e93-60c0-4efa-bfae-5ac21a8f4e3c /media/sam ext4 auto,user,rw,exec 0 0<span style="color: #000099; font-weight: bold;">\n</span>'</span>: <span style="color: #ff4500;">12</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Cela dit, on n&#8217;a pas toujours besoin de clés ET de valeurs pour créer un dictionnaire. Ainsi, si on a une liste de n&#8217;clés qu&#8217;on veut toutes initialiser à la même valeur, la très peu connue méthode <code>fromkeys</code> nous rendra bien service :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> personnes <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Joe'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'John'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Jean-michel'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">dict</span>.<span style="color: black;">fromkeys</span><span style="color: black;">&#40;</span>personnes<span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'Jean-michel'</span>: <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'John'</span>: <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Joe'</span>: <span style="color: #ff4500;">0</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>De même, on peut ne pas vouloir initialiser un dico, mais vouloir une valeur par défaut pour toutes les clés.  <code>collections.defaultdict</code> est fait pour ça. En plus, les valeurs peuvent être dynamiques :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> defaultdict
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores <span style="color: #66cc66;">=</span> defaultdict<span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span>: <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Joe'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Joe'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Joe'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores<span style="color: black;">&#91;</span><span style="color: #483d8b;">'July'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> naissances <span style="color: #66cc66;">=</span> defaultdict<span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">utcnow</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> naissances<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Joe'</span><span style="color: black;">&#93;</span>
+<span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2014</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">29</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">58</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">11</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">412202</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Enfin, je sais que tous les tutos du monde en Python utilisent le dictionnaire pour montrer une forme ou une aute de compteur. Mais si vous avez VRAIMENT besoin d&#8217;un compteur, utilisez <code>collections.Counter</code> qui est un objet avec l&#8217;interface d&#8217;un dictionnaire mais avec tout ce qu&#8217;il faut pour compter :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> Counter
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c <span style="color: #66cc66;">=</span> Counter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'abbbac'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># comptage automatique</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c
+Counter<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'b'</span>: <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span>: <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c<span style="color: black;">&#91;</span><span style="color: #483d8b;">'c'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c<span style="color: black;">&#91;</span><span style="color: #483d8b;">'d'</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># pas de KeyError</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c<span style="color: black;">&#91;</span><span style="color: #483d8b;">'z'</span><span style="color: black;">&#93;</span> +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span> <span style="color: #808080; font-style: italic;"># pas de KeyError</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c<span style="color: black;">&#91;</span><span style="color: #483d8b;">'z'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> c.<span style="color: black;">most_common</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># et en bonus</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'b'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<h2>Clé en main</h2>
+<p>Récupérer une clé si on ne sait pas si elle est présente est une opération courante, et la documentation montre généralement ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+   val <span style="color: #66cc66;">=</span> dico<span style="color: black;">&#91;</span><span style="color: #483d8b;">'cle'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">KeyError</span>:
+   val <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'valeur par defaut'</span></pre></td></tr></table></div>
+
+<p>Bien que ce soit parfaitement valide, c&#8217;est généralement se faire chier pour rien puisqu&#8217;on peut faire ça en une ligne :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">   val <span style="color: #66cc66;">=</span> dico.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'cle'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'valeur par defaut'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Néanmoins la méthode <code>get()</code> est très connue. Moins connue est la méthode <code>setdefault</code>. En effet, parfois on veut faire plutôt ceci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+   val <span style="color: #66cc66;">=</span> dico<span style="color: black;">&#91;</span><span style="color: #483d8b;">'cle'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">KeyError</span>:
+   dico<span style="color: black;">&#91;</span><span style="color: #483d8b;">'cle'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'valeur par defaut'</span>
+   val <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'valeur par defaut'</span></pre></td></tr></table></div>
+
+<p>Et ça peut également se faire en une ligne :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">   val <span style="color: #66cc66;">=</span> dico.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'cle'</span><span style="color: #66cc66;">,</span> valeur par defaut<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>J&#8217;aimerais aussi en profiter pour rappeler que les clés des dicos peuvent être n&#8217;importe quel objet hashable, pas juste une string ou un int. Notamment, <a href="http://sametmax.com/de-linteret-des-tuples-comme-cle-de-dictionnaire/">les tuples sont des clés valides</a>, et comme l&#8217;opérateur tuple <a href="http://sametmax.com/10-trucs-que-je-deteste-en-python/">est la virgule et non la parenthèse</a>, cette syntaxe est parfaitement valide :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'tresor'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'mine'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d
+<span style="color: black;">&#123;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>: <span style="color: #483d8b;">'tresor'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>: <span style="color: #483d8b;">'mine'</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #483d8b;">'mine'</span></pre></td></tr></table></div>
+
+<p>Parmi les objets utilisables comme clés :</p>
+<ul>
+<li>Les frozenset.</li>
+<li>Les <a href="http://sametmax.com/le-namedtuple-la-structure-mal-aimee/">namedtuples</a></li>
+<li>Les instances de <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">vos classes</a></li>
+</ul>
+<p>Si vous avez un doute, il est facile de savoir si un objet est hashable ou pas :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">collections</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">collections</span>.<span style="color: black;">Hashable</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">collections</span>.<span style="color: black;">Hashable</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">True</span></pre></td></tr></table></div>
+
+<h2>Mon dico à moi, c&#8217;est le meilleur</h2>
+<p>On peut tout à fait hériter du type dictionnaire pour obtenir un type qui a des fonctionnalités que le type original n&#8217;a pas :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> MonDico<span style="color: black;">&#40;</span><span style="color: #008000;">dict</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__add__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+...         <span style="color: #dc143c;">new</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+...         <span style="color: #dc143c;">new</span>.<span style="color: black;">update</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>
+...         <span style="color: #dc143c;">new</span>.<span style="color: black;">update</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span>
+...         <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #dc143c;">new</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d1 <span style="color: #66cc66;">=</span> MonDico<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">=</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d2 <span style="color: #66cc66;">=</span> MonDico<span style="color: black;">&#40;</span>b<span style="color: #66cc66;">=</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> c<span style="color: #66cc66;">=</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d1 + d2
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span>: <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span>: <span style="color: #ff4500;">3</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Mais c&#8217;est assez rare. La plupart du temps on veut plutôt rajouter des fonctionnalités de conteneur à un type existant. Dans ce cas, les <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-6/">méthodes magiques</a> viennent à la rescousse. Par exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Phrase<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+   <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">string</span><span style="color: black;">&#41;</span>:
+      <span style="color: #008000;">self</span>.<span style="color: black;">words</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">string</span>.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+   <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> word<span style="color: black;">&#41;</span>:
+      <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#91;</span>i <span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> w <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">words</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">if</span> w <span style="color: #66cc66;">==</span> word<span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> p <span style="color: #66cc66;">=</span> Phrase<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Une petite puce pique plus qu'une grosse puce ne pique&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> p<span style="color: black;">&#91;</span><span style="color: #483d8b;">'petite'</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> p<span style="color: black;">&#91;</span><span style="color: #483d8b;">'puce'</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Hey oui, les hash maps en Python, c&#8217;est un sujet qui peut aller très, très loin. C&#8217;est ce qui est merveilleux avec ce langage, on peut rapidement programmer en effleurant juste la surface, sans se noyer. Et si on a besoin d&#8217;aller plus loin, des profondeurs abyssales de features nous attendent.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/aller-plus-loin-avec-les-hash-maps-en-python/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+		</item>
+	</channel>
+</rss>

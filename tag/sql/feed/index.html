@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; sql</title>
+	<atom:link href="http://sametmax.com/tag/sql/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Automatiser un peu plus SQLAlchemy declarative 3</title>
+		<link>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/</link>
+		<comments>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/#comments</comments>
+		<pubDate>Wed, 29 Oct 2014 12:34:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[declarative]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sql]]></category>
+		<category><![CDATA[sqlalchemy]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12584</guid>
+		<description><![CDATA[Avec l'intégration de l'interface déclarative d'SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM.]]></description>
+				<content:encoded><![CDATA[<p>Avec l&#8217;intégration de l&#8217;interface déclarative d&#8217;SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM. En effet, par défaut, SQLA vous oblige à spécifier le nom de la table et l&#8217;attribut ID pour chaque classe :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy <span style="color: #ff7700;font-weight:bold;">import</span> Column<span style="color: #66cc66;">,</span> Integer<span style="color: #66cc66;">,</span> String
+<span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy.<span style="color: black;">ext</span>.<span style="color: black;">declarative</span> <span style="color: #ff7700;font-weight:bold;">import</span> declarative_base
+<span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy <span style="color: #ff7700;font-weight:bold;">import</span> create_engine
+&nbsp;
+Base <span style="color: #66cc66;">=</span> declarative_base<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Person<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># explicit is better than... fuck it !</span>
+    __tablename__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'person'</span> 
+    <span style="color: #008000;">id</span> <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>Integer<span style="color: #66cc66;">,</span> primary_key<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Animal<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    __tablename__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'animal'</span>
+    <span style="color: #008000;">id</span> <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>Integer<span style="color: #66cc66;">,</span> primary_key<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># Paie ton DRY</span>
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+&nbsp;
+engine <span style="color: #66cc66;">=</span> create_engine<span style="color: black;">&#40;</span><span style="color: #483d8b;">'sqlite:///db.db.db...db'</span><span style="color: black;">&#41;</span>
+Base.<span style="color: black;">metadata</span>.<span style="color: black;">create_all</span><span style="color: black;">&#40;</span>engine<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>SQLA est très flexible, et il existe des tas de raisons pour vouloir un PK ou un nom de table custo. Mais dans beaucoup de projets, le nom de la table peut être le nom de la classe, et la PK peut être un ID auto incrémenté.</p>
+<p>Heureusement, la lib vous permet de customiser absolument tout, même la manière dont on doit la customiser. Si c&#8217;est pas méta, tout ça&#8230;</p>
+<p>Bref, on peut créer sa propre base déclarative qui va faire tout ça pour nous :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy.<span style="color: black;">ext</span>.<span style="color: black;">declarative</span> <span style="color: #ff7700;font-weight:bold;">import</span> as_declarative<span style="color: #66cc66;">,</span> declared_attr
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ceci sera le parent de tout nos objets</span>
+<span style="color: #66cc66;">@</span>as_declarative<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Base<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Vu qu'on a pas vraiment envie de se réécrire la</span>
+    <span style="color: #808080; font-style: italic;"># métaclasse, SQLA nous file ce gentil décorateur </span>
+    <span style="color: #808080; font-style: italic;"># pour déclarer des attributs qui ne sont pas des </span>
+    <span style="color: #808080; font-style: italic;"># champs</span>
+    <span style="color: #66cc66;">@</span>declared_attr
+    <span style="color: #ff7700;font-weight:bold;">def</span> __tablename__<span style="color: black;">&#40;</span>cls<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># le nom de la table est le nom de la classe</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> cls.__name__.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># L'id c'est la vie</span>
+    <span style="color: #008000;">id</span> <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>Integer<span style="color: #66cc66;">,</span> primary_key<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Person<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Animal<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Evidemment il faut que vous soyez certains d&#8217;éviter les conflits liés à cette décision, mais c&#8217;est quand même vachement pratique.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/Bruce-Lee-Simplicity-is-the-key-2-brilliance.jpg" length="72605" type="image/jpg" />	</item>
+		<item>
+		<title>Le pandas c&#8217;est bon, mangez en 7</title>
+		<link>http://sametmax.com/le-pandas-cest-bon-mangez-en/</link>
+		<comments>http://sametmax.com/le-pandas-cest-bon-mangez-en/#comments</comments>
+		<pubDate>Sat, 10 May 2014 06:30:35 +0000</pubDate>
+		<dc:creator><![CDATA[joshuafr]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[data]]></category>
+		<category><![CDATA[numpy]]></category>
+		<category><![CDATA[pandas]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[r]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10113</guid>
+		<description><![CDATA[Bonjour à tous, jeunes tailleurs de bambou, suite à un article d'introduction à numpy par le grand maître Sam <a href="http://sametmax.com/les-bases-de-numpy/" title="Les bases de Numpy" target="_blank">Les bases de Numpy</a>, je m'en vais vous présenter une lib qui roxx du poney dans le calcul numérique : <a href="http://pandas.pydata.org/" title="Pandas" target="_blank">Pandas</a>.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/joshuafr/">joshuafr</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Bonjour à tous, jeunes tailleurs de bambou, suite à un article d&#8217;introduction à numpy par le grand maître Sam <a href="http://sametmax.com/les-bases-de-numpy/" title="Les bases de Numpy" target="_blank">Les bases de Numpy</a>, je m&#8217;en vais vous présenter une lib qui roxx du poney dans le calcul numérique : <a href="http://pandas.pydata.org/" title="Pandas" target="_blank">Pandas</a>.</p>
+<p>Pour faire simple, Pandas apporte à Python la possibilité de manipuler de grands volumes de données structurées de manière simple et intuitive, chose qui faisait défaut jusqu&#8217;ici. Il y a bien eu quelques tentatives comme <a href="https://pypi.python.org/pypi/la">larry</a>, mais rien n&#8217;avait jamais pu égaler les fonctionnalités du langage R. Aujourd&#8217;hui Pandas y arrive en fournissant notamment le célèbre type <strong>dataframe</strong> de R, avec en prime tout un tas d&#8217;outils pour agréger, combiner, transformer des données, et tout ça sans se casser le cul. Que du bonheur!</p>
+<p>Donc pour commencer, on installe le bousin par un simple : <code>pip install pandas</code> qui va si vous ne l&#8217;avez pas déjà fait, aussi télécharger/compiler/installer tout un tas de librairies dont numpy. Je vous conseille aussi d&#8217;utiliser <a href="http://ipython.org/">ipython</a> afin d&#8217;avoir une meilleure interaction avec les libs, notamment avec <a href="http://matplotlib.org/">matplotlib</a> en utilisant le switch <code>ipython --pylab</code> afin d&#8217;avoir directement les graphiques en mode interactif, ainsi que toute la bibliothèque numpy directement importée (en interne, ipython fera un <code>import numpy as np</code>).<br />
+On appelle la bête d&#8217;un simple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>: <span style="color: #ff7700;font-weight:bold;">import</span> pandas <span style="color: #ff7700;font-weight:bold;">as</span> pd</pre></td></tr></table></div>
+
+<p>Oui je sais, la grande classe&#8230;</p>
+<h2>Tout est Series</h2>
+<p>Le type de base en Pandas est la Series. On peut le voir comme un tableau de données à une dimension:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>: pd.<span style="color: black;">Series</span><span style="color: black;">&#40;</span>np.<span style="color: black;">arange</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>: 
+<span style="color: #ff4500;">0</span>    <span style="color: #ff4500;">1</span>
+<span style="color: #ff4500;">1</span>    <span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">2</span>    <span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">3</span>    <span style="color: #ff4500;">4</span>
+dtype: int64</pre></td></tr></table></div>
+
+<p>La colonne de gauche représente l&#8217;index de la Series, normalement unique pour chaque entrée. La colonne de droite correspond à nos valeurs sur lesquelles nous voulons travailler.<br />
+L&#8217;index n&#8217;est pas forcément une suite d&#8217;entiers, et la Series peut être nommée:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>: s<span style="color: #66cc66;">=</span>pd.<span style="color: black;">Series</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">3.14</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">1e6</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> index<span style="color: #66cc66;">=</span><span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'abcd'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'ma_series'</span><span style="color: black;">&#41;</span>
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>: s
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>: 
+a          <span style="color: #ff4500;">1.00</span>
+b          <span style="color: #ff4500;">2.00</span>
+c          <span style="color: #ff4500;">3.14</span>
+d    <span style="color: #ff4500;">1000000.00</span>
+Name: ma_series<span style="color: #66cc66;">,</span> dtype: float64</pre></td></tr></table></div>
+
+<p>A noter qu&#8217;un type-casting est systématiquement appliqué afin d&#8217;avoir un tableau de type uniforme (ici le data-type est du float64) qui peut être modifié (dans une certaine mesure) via <code>Series.astype</code>.</p>
+<p>Le slicing c&#8217;est comme du fisting avec une bonne dose de vaseline, ça glisse tout seul:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>: s<span style="color: black;">&#91;</span><span style="color: #483d8b;">'b'</span>:<span style="color: #483d8b;">'d'</span><span style="color: black;">&#93;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>: 
+b          <span style="color: #ff4500;">2.00</span>
+c          <span style="color: #ff4500;">3.14</span>
+d    <span style="color: #ff4500;">1000000.00</span>
+Name: ma_series<span style="color: #66cc66;">,</span> dtype: float64</pre></td></tr></table></div>
+
+<p>Et oui, la sélection par indexation se fait sur&#8230; l&#8217;index de la Series. Ainsi s[&#8216;a&#8217;] renverra la ligne dont l&#8217;index est &#8216;a&#8217;, mais Pandas est assez intelligent pour reconnaître si on lui demande de nous renvoyer des valeurs suivant l&#8217;ordonnancement du tableau de valeurs (comme numpy). Ainsi s[0] renverra la première valeur du tableau, qui ici est égale à s[&#8216;a&#8217;].<br />
+Là où ça peut poser problème c&#8217;est quand notre index est une suite d&#8217;entiers, comme par exemple avec <code>x=pd.Series(np.arange(1,5), index=np.arange(1,5))</code>. Si vous demandez <code>x[1]</code>, Pandas ne retrouve pas ses petits et vous retournera une zolie <code>KeyError</code>. Pour ces cas ambigus, il existe l&#8217;indexation stricte sur le nom de index de la Series via <code>x.loc[nom_d'index]</code>, et l&#8217;indexation stricte sur le numéro d&#8217;ordre dans le tableau via <code>x.iloc[numéro_d'ordre]</code>. Essayez <code>x.loc[0]</code> et <code>x.iloc[0]</code> pour vous rendre compte de la différence.<br />
+Comme pour les préliminaires où il est bon de tâter un peu de tout avec de pénétrer dans le vif du sujet, laissons pour le moment l&#8217;indexation sur laquelle nous reviendrons plus tard, pour regarder d&#8217;un peu plus près comment faire joujou avec nos valeurs.</p>
+<p>Un peu à la manière des arrays de numpy, on peut appliquer des fonctions mathématiques directement sur la Serie, ou passer par des fonctions raccourcis:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span>: s.<span style="color: #008000;">sum</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span>: <span style="color: #ff4500;">1000006.14</span></pre></td></tr></table></div>
+
+<p>Ce qui revient au même que de faire <code>np.sum(s)</code> (rappelez vous, ipython avec &#8211;pylab a importé numpy dans la variable np).</p>
+<p>La fonction <code>describe</code> est bien utile pour avoir un aperçu rapide de ce à quoi on a affaire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span>: s.<span style="color: black;">describe</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span>: 
+count          <span style="color: #ff4500;">4.000000</span>
+mean      <span style="color: #ff4500;">250001.535000</span>
+std       <span style="color: #ff4500;">499998.976667</span>
+<span style="color: #008000;">min</span>            <span style="color: #ff4500;">1.000000</span>
+<span style="color: #ff4500;">25</span>%            <span style="color: #ff4500;">1.750000</span>
+<span style="color: #ff4500;">50</span>%            <span style="color: #ff4500;">2.570000</span>
+<span style="color: #ff4500;">75</span>%       <span style="color: #ff4500;">250002.355000</span>
+<span style="color: #008000;">max</span>      <span style="color: #ff4500;">1000000.000000</span>
+Name: ma_series<span style="color: #66cc66;">,</span> dtype: float64</pre></td></tr></table></div>
+
+<p>ce qui donne le nombre de données, la moyenne globale, la déviation standard, le minimum, les quartiles et le maximum de la Serie. </p>
+<p>Le truc à retenir est que c&#8217;est l&#8217;index qui est primordial dans un grand nombre d&#8217;opérations. Ainsi si l&#8217;on veut additionner 2 Series ensemble, il faut que leurs index soient alignés :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>: s2<span style="color: #66cc66;">=</span>pd.<span style="color: black;">Series</span><span style="color: black;">&#40;</span>np.<span style="color: #dc143c;">random</span>.<span style="color: black;">rand</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> index<span style="color: #66cc66;">=</span><span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'cdef'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'autre_serie'</span><span style="color: black;">&#41;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>: s+s2
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>: 
+a               NaN
+b               NaN
+c          <span style="color: #ff4500;">4.021591</span>
+d    <span style="color: #ff4500;">1000000.401511</span>
+e               NaN
+f               NaN
+dtype: float64</pre></td></tr></table></div>
+
+<p>Ici, seuls les index &#8216;c&#8217; et &#8216;d&#8217; étaient présents dans les 2 Series, Pandas effectuant avant l&#8217;opération d&#8217;addition une union basée sur l&#8217;index. Les autres entrées sont marquées en <code>NaN</code>, soit Not a Number. Une possibilité pour contrer ce phénomène et de dire à Pandas de remplacer les résultats manquants lors de l&#8217;union par 0:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#93;</span>: s.<span style="color: black;">add</span><span style="color: black;">&#40;</span>s2<span style="color: #66cc66;">,</span> fill_value<span style="color: #66cc66;">=</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#93;</span>: 
+a          <span style="color: #ff4500;">1.000000</span>
+b          <span style="color: #ff4500;">2.000000</span>
+c          <span style="color: #ff4500;">4.021591</span>
+d    <span style="color: #ff4500;">1000000.401511</span>
+e          <span style="color: #ff4500;">0.563508</span>
+f          <span style="color: #ff4500;">0.655915</span>
+Name: ma_series<span style="color: #66cc66;">,</span> dtype: float64</pre></td></tr></table></div>
+
+<p>Mais si ce sont uniquement les valeurs qui nous intéressent, et non les indexations, il est possible de les supprimer:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">11</span><span style="color: black;">&#93;</span>: s.<span style="color: black;">reset_index</span><span style="color: black;">&#40;</span>drop<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>+s2.<span style="color: black;">reset_index</span><span style="color: black;">&#40;</span>drop<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">11</span><span style="color: black;">&#93;</span>: 
+<span style="color: #ff4500;">0</span>          <span style="color: #ff4500;">1.881591</span>
+<span style="color: #ff4500;">1</span>          <span style="color: #ff4500;">2.401511</span>
+<span style="color: #ff4500;">2</span>          <span style="color: #ff4500;">3.703508</span>
+<span style="color: #ff4500;">3</span>    <span style="color: #ff4500;">1000000.655915</span>
+dtype: float64</pre></td></tr></table></div>
+
+<p>Oh joie, oh bonheur, je peux faire ce que je veux avec mes cheveux, enfin mes données&#8230;</p>
+<h2>Et PAN! dans ta frame</h2>
+<p>La DataFrame est l&#8217;extension en 2 dimensions des Series. Elle peut être vue comme un empilement de Series dont les index sont partagés (et donc intrinsèquement alignés), ou comme dans un tableur où les index sont les numéros de lignes et les noms des Series les noms des colonnes. Je ne vais pas décrire toutes les manières de créer une DataFrame, sachez juste qu&#8217;on peut les obtenir à partir de dictionnaires, de liste de liste ou de liste de Series, d&#8217;arrays ou de records numpy, de fichier excel ou csv et même depuis des bases de données, de fichier JSON ou HTML, et depuis le presse-papiers.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">14</span><span style="color: black;">&#93;</span>: genre<span style="color: #66cc66;">=</span><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'femme'</span><span style="color: #66cc66;">,</span><span style="color: #483d8b;">'homme'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span>x<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> np.<span style="color: #dc143c;">random</span>.<span style="color: black;">random_integers</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">15</span><span style="color: black;">&#93;</span>: lateral<span style="color: #66cc66;">=</span><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'droite'</span><span style="color: #66cc66;">,</span><span style="color: #483d8b;">'gauche'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span>x<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> np.<span style="color: #dc143c;">random</span>.<span style="color: black;">random_integers</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">16</span><span style="color: black;">&#93;</span>: age<span style="color: #66cc66;">=</span>np.<span style="color: #dc143c;">random</span>.<span style="color: black;">random_integers</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">100</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">17</span><span style="color: black;">&#93;</span>: df<span style="color: #66cc66;">=</span>pd.<span style="color: black;">DataFrame</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'Genre'</span>:genre<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Lateral'</span>:lateral<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Age'</span>:age<span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">18</span><span style="color: black;">&#93;</span>: df
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">18</span><span style="color: black;">&#93;</span>: 
+    Age  Genre Lateral
+<span style="color: #ff4500;">0</span>    <span style="color: #ff4500;">69</span>  femme  droite
+<span style="color: #ff4500;">1</span>    <span style="color: #ff4500;">46</span>  homme  droite
+<span style="color: #ff4500;">2</span>    <span style="color: #ff4500;">89</span>  homme  droite
+<span style="color: #ff4500;">3</span>    <span style="color: #ff4500;">14</span>  homme  droite
+<span style="color: #ff4500;">4</span>    <span style="color: #ff4500;">74</span>  homme  droite
+<span style="color: #ff4500;">5</span>     <span style="color: #ff4500;">5</span>  femme  gauche
+<span style="color: #ff4500;">6</span>    <span style="color: #ff4500;">66</span>  femme  droite
+<span style="color: #ff4500;">7</span>    <span style="color: #ff4500;">73</span>  homme  gauche
+<span style="color: #ff4500;">8</span>    <span style="color: #ff4500;">99</span>  homme  gauche
+<span style="color: #ff4500;">9</span>    <span style="color: #ff4500;">17</span>  homme  gauche
+    ...    ...     ...
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">100</span> rows x <span style="color: #ff4500;">3</span> columns<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>L&#8217;affichage par défaut depuis la version 0.13 est en mode &#8216;truncate&#8217; où la fin de la DataFrame est tronquée suivant la hauteur de votre terminal, mais ça peut se changer via les divers paramètres à regarder sous <code>pd.options.display</code>.</p>
+<p>Là donc nous avons une DataFrame de 3 colonnes (plus un index), chaque colonne étant en réalité une Serie :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">20</span><span style="color: black;">&#93;</span>: <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>df<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Age'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">20</span><span style="color: black;">&#93;</span>: pandas.<span style="color: black;">core</span>.<span style="color: black;">series</span>.<span style="color: black;">Series</span></pre></td></tr></table></div>
+
+<p>La sélection peut se faire de plusieurs manières, à chacun de choisir sa préférée (moi c&#8217;est Dafnée avec ses gros nénés). Ainsi pour avoir les 3 premières lignes des âges</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">21</span><span style="color: black;">&#93;</span>: df<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Age'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">21</span><span style="color: black;">&#93;</span>: 
+<span style="color: #ff4500;">0</span>    <span style="color: #ff4500;">69</span>
+<span style="color: #ff4500;">1</span>    <span style="color: #ff4500;">46</span>
+<span style="color: #ff4500;">2</span>    <span style="color: #ff4500;">89</span>
+Name: Age<span style="color: #66cc66;">,</span> dtype: int64
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">22</span><span style="color: black;">&#93;</span>: df<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'Age'</span><span style="color: black;">&#93;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">22</span><span style="color: black;">&#93;</span>: 
+<span style="color: #ff4500;">0</span>    <span style="color: #ff4500;">69</span>
+<span style="color: #ff4500;">1</span>    <span style="color: #ff4500;">46</span>
+<span style="color: #ff4500;">2</span>    <span style="color: #ff4500;">89</span>
+Name: Age<span style="color: #66cc66;">,</span> dtype: int64
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">23</span><span style="color: black;">&#93;</span>: df.<span style="color: black;">Age</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">23</span><span style="color: black;">&#93;</span>: 
+<span style="color: #ff4500;">0</span>    <span style="color: #ff4500;">69</span>
+<span style="color: #ff4500;">1</span>    <span style="color: #ff4500;">46</span>
+<span style="color: #ff4500;">2</span>    <span style="color: #ff4500;">89</span>
+Name: Age<span style="color: #66cc66;">,</span> dtype: int64
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">24</span><span style="color: black;">&#93;</span>: df.<span style="color: black;">loc</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span>:<span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Age'</span><span style="color: black;">&#93;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">24</span><span style="color: black;">&#93;</span>: 
+<span style="color: #ff4500;">0</span>    <span style="color: #ff4500;">69</span>
+<span style="color: #ff4500;">1</span>    <span style="color: #ff4500;">46</span>
+<span style="color: #ff4500;">2</span>    <span style="color: #ff4500;">89</span>
+<span style="color: #ff4500;">3</span>    <span style="color: #ff4500;">14</span>
+Name: Age<span style="color: #66cc66;">,</span> dtype: int64</pre></td></tr></table></div>
+
+<p>et oui, les noms de colonnes peuvent aussi être utilisés comme des attributs de la DataFrame. Pratique (qu&#8217;on n&#8217;attend pas).</p>
+<p>L&#8217;une des forces de Pandas est de nous proposer tout un tas de solutions pour répondre à des questions existentielles tel que &#8220;quel est l&#8217;âge moyen par genre et par latéralité?&#8221;. Comme en SQL où la réponse sortirait du fondement d&#8217;une clause GROUP BY et d&#8217;une fonction d’agrégation, il en va de même ici :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">25</span><span style="color: black;">&#93;</span>: df.<span style="color: black;">groupby</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'Genre'</span><span style="color: #66cc66;">,</span><span style="color: #483d8b;">'Lateral'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">aggregate</span><span style="color: black;">&#40;</span>np.<span style="color: black;">mean</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">25</span><span style="color: black;">&#93;</span>: 
+                     Age
+Genre Lateral           
+femme droite   <span style="color: #ff4500;">45.476190</span>
+      gauche   <span style="color: #ff4500;">49.208333</span>
+homme droite   <span style="color: #ff4500;">41.571429</span>
+      gauche   <span style="color: #ff4500;">55.823529</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>OMG! c&#8217;est quoi c&#8217;t&#8217;index de malade? Un <strong>MultiIndex</strong> jeune padawan, qui te permettra d&#8217;organiser tes données par catégorie/niveau, et d&#8217;y accèder par le paramètre <code>level</code> dans pas mal de fonctions, mais ça je te laisse le découvrir par toi-même. Je ne vais pas non plus m&#8217;étendre plus sur toutes les possibilités offertes par les DataFrame, il y a tellement à dire qu&#8217;il faudrait plusieurs articles pour en faire le tour. Juste conclusionner sur la facilité d&#8217;intégration Pandas/matplotlib en vous disant que les Series et DataFrame ont une fonction <code>plot</code> permettant directement de visualiser les données, et ça, c&#8217;est juste jouissif.</p>
+<h2>Datetime dans les index</h2>
+<p>Je vous avez dit qu&#8217;on reviendrait sur les indexes, et là c&#8217;est pour rentrer dans le lourd (mais non pas toi Carlos). Pandas donc supporte l&#8217;indexation sur les dates, en reprenant et en élargissant les possibilités offertes par feu le module <a href="http://pytseries.sourceforge.net/">scikits.timeseries</a>.<br />
+Prenons l&#8217;exemple de données (complètement bidons) fournies par un capteur à intervalle régulier sur un pas de temps horaire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">26</span><span style="color: black;">&#93;</span>: dtindex<span style="color: #66cc66;">=</span>pd.<span style="color: black;">date_range</span><span style="color: black;">&#40;</span>start<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'2014-04-28 00:00'</span><span style="color: #66cc66;">,</span> periods<span style="color: #66cc66;">=</span><span style="color: #ff4500;">96</span><span style="color: #66cc66;">,</span> freq<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'H'</span><span style="color: black;">&#41;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">27</span><span style="color: black;">&#93;</span>: data<span style="color: #66cc66;">=</span>np.<span style="color: #dc143c;">random</span>.<span style="color: black;">random_sample</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">96</span><span style="color: black;">&#41;</span>*<span style="color: #ff4500;">50</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">28</span><span style="color: black;">&#93;</span>: df<span style="color: #66cc66;">=</span>pd.<span style="color: black;">DataFrame</span><span style="color: black;">&#40;</span>data<span style="color: #66cc66;">,</span> index<span style="color: #66cc66;">=</span>dtindex<span style="color: #66cc66;">,</span> columns<span style="color: #66cc66;">=</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'mesure'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">29</span><span style="color: black;">&#93;</span>: df.<span style="color: black;">head</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">29</span><span style="color: black;">&#93;</span>: 
+                        mesure
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">02</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">7.534761</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">03</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">39.416415</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">04</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">44.213409</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">30</span><span style="color: black;">&#93;</span>: df.<span style="color: black;">tail</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">30</span><span style="color: black;">&#93;</span>: 
+                        mesure
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">05</span>-<span style="color: #ff4500;">01</span> <span style="color: #ff4500;">19</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">25.291453</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">05</span>-<span style="color: #ff4500;">01</span> <span style="color: #ff4500;">20</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">26.520291</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">05</span>-<span style="color: #ff4500;">01</span> <span style="color: #ff4500;">21</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">33.459766</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">05</span>-<span style="color: #ff4500;">01</span> <span style="color: #ff4500;">22</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">44.521813</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">05</span>-<span style="color: #ff4500;">01</span> <span style="color: #ff4500;">23</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">28.486003</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p><code>dtindex</code> est un <strong>DatetimeIndex</strong> initialisé au 28 avril 2014 à 0 heure comportant 96 périodes de fréquence horaire, soit 4 jours. La fonction <code>date_range</code> peut aussi prendre en arguments des objets datetime purs au lieu de chaine de caractère (manquerait plus que ça&#8230;), et le nombre de périodes peut être remplacé par une date de fin.<br />
+Si l&#8217;on veut calculer, disons le maximum (horaire) par jour, rien de plus simple, il suffit de &#8220;resampler&#8221; en données journalières (&#8216;D&#8217; pour Day) et de dire comment aggréger le tout:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">31</span><span style="color: black;">&#93;</span>: df.<span style="color: black;">resample</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'D'</span><span style="color: #66cc66;">,</span> how<span style="color: #66cc66;">=</span>np.<span style="color: #008000;">max</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">31</span><span style="color: black;">&#93;</span>: 
+               mesure
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span>  <span style="color: #ff4500;">26.298282</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">29</span>  <span style="color: #ff4500;">28.385418</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">30</span>  <span style="color: #ff4500;">26.723353</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">05</span>-<span style="color: #ff4500;">01</span>  <span style="color: #ff4500;">24.106092</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Mais on peut aussi convertir en données quart-horaire (upsampling) en remplissant les données manquantes par celles de l&#8217;heure fixe:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">32</span><span style="color: black;">&#93;</span>:  df<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>.<span style="color: black;">resample</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'15min'</span><span style="color: #66cc66;">,</span> fill_method<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'ffill'</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">32</span><span style="color: black;">&#93;</span>: 
+                        mesure
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">02</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">7.534761</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Cependant, Pandas propose aussi d&#8217;autres possibilités non dépendantes des DatetimeIndex mais qu&#8217;il est bon de connaître, notamment celle pour remplacer les données manquantes avec <code>fillna</code> ou celle pour interpoler entre les données valides avec <code>interpolate</code></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: black;">&#93;</span>:  df<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>.<span style="color: black;">resample</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'15min'</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: black;">&#93;</span>: 
+                        mesure
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>        NaN
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>        NaN
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>        NaN
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>        NaN
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>        NaN
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>        NaN
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">02</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">7.534761</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">53</span><span style="color: black;">&#93;</span>:  df<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>.<span style="color: black;">resample</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'15min'</span><span style="color: black;">&#41;</span>.<span style="color: black;">fillna</span><span style="color: black;">&#40;</span>df.<span style="color: black;">mean</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">53</span><span style="color: black;">&#93;</span>: 
+                        mesure
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">26.378286</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">26.378286</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">26.378286</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">26.378286</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">26.378286</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">26.378286</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">02</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">7.534761</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">54</span><span style="color: black;">&#93;</span>:  df<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>.<span style="color: black;">resample</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'15min'</span><span style="color: black;">&#41;</span>.<span style="color: black;">interpolate</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">54</span><span style="color: black;">&#93;</span>: 
+                        mesure
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">49.253929</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">37.418016</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">25.582104</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>  <span style="color: #ff4500;">13.746192</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">1.910280</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">15</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">3.316400</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">30</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">4.722520</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">01</span>:<span style="color: #ff4500;">45</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">6.128641</span>
+<span style="color: #ff4500;">2014</span>-<span style="color: #ff4500;">04</span>-<span style="color: #ff4500;">28</span> <span style="color: #ff4500;">02</span>:<span style="color: #ff4500;">00</span>:<span style="color: #ff4500;">00</span>   <span style="color: #ff4500;">7.534761</span>
+&nbsp;
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span> rows x <span style="color: #ff4500;">1</span> columns<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Voilà, j&#8217;espère que vous aurez plaisir à travailler avec cette librairie, il manquait vraiment un outil de cette trempe en Python pour l&#8217;analyse de données et je pense qu&#8217;on n&#8217;a plus trop grand chose à envier maintenant par rapport à des langages spécilisés. Je n&#8217;ai pas parlé de <code>Panel</code> qui est le passage à la troisième dimension, ni des possibilités d&#8217;export, notamment la <code>df.to_html</code> que je vous laisse le soin de découvrir.</p>
+<p>A plus, et amusez vous bien avec votre bambou.</p>
+<p>\o/</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-pandas-cest-bon-mangez-en/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/05/post-16916-Panda-Deal-With-It-b3do.gif" length="277789" type="image/jpg" />	</item>
+		<item>
+		<title>NoSQL : arrêtons de dire n&#8217;importe quoi 39</title>
+		<link>http://sametmax.com/nosql-arretons-de-dire-nimporte-quoi/</link>
+		<comments>http://sametmax.com/nosql-arretons-de-dire-nimporte-quoi/#comments</comments>
+		<pubDate>Sat, 22 Mar 2014 10:26:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cassandra]]></category>
+		<category><![CDATA[couchdb]]></category>
+		<category><![CDATA[elastic search]]></category>
+		<category><![CDATA[memecache]]></category>
+		<category><![CDATA[mongodb]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[nosql]]></category>
+		<category><![CDATA[postgre]]></category>
+		<category><![CDATA[redis]]></category>
+		<category><![CDATA[riak]]></category>
+		<category><![CDATA[solr]]></category>
+		<category><![CDATA[sql]]></category>
+		<category><![CDATA[sqlite]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9844</guid>
+		<description><![CDATA[J'ai regardé le mouvement NoSQL évoluer au fil des années. On y retrouve à peu prêt tout ce qui fait l'informatique depuis que le monde IT est monde : brillance et troll, hype et génie, utile et gadget, buzz et fact, sam et max, etc.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai regardé le mouvement NoSQL évoluer au fil des années. On y retrouve à peu près tout ce qui fait l&#8217;informatique depuis que le monde IT est monde : brillance et troll, hype et génie, utile et gadget, buzz et fact, sam et max, etc.</p>
+<p>De plus on peut mettre n&#8217;importe quoi sous le label NoSQL, et du coup ça a été fait. En fait un fichier est déjà une base de données NoSQL :)</p>
+<p>Mais rant mise à part, des projets comme redis, riak, elastic search ou mongodb changent vraiment la donne.</p>
+<p>Malheureusement, tout comme d&#8217;autres technos du moment (prog asychrone, tout-http, pre-processeurs, generateurs&#8230;), les gens ont tendance à l&#8217;utiliser comme la barre de fer, la silver bullet, le passe-partout, le tournevis sonique, bref, le truc à tout faire.</p>
+<p>L&#8217;adage populaire dit &#8220;quand on a un bon marteau, tous les problèmes ressemblent à des clous&#8221;. Or, je constate qu&#8217;au dessus de ça, les dev appliquent aussi souvent le dicton préféré d&#8217;un de mes colocs : &#8220;arrête de taper si fort, prend un plus gros marteau&#8221;. </p>
+<p>Ca donne du NoSQL utilisé partout, pour tout, brandi comme LA solution, vendu à des débutants comme une panacée de traitement d&#8217;informations. Zob, vous vous doutez bien que ça pose problème, non ?</p>
+<h2>Anti-fact 1 : NoSql, c&#8217;est plus facile pour démarrer</h2>
+<p>Il n&#8217;existe pas à l&#8217;heure actuelle de base NoSQL embarquée qui arrive à la cheville de SQLite : ça marche partout, dans tous les langages, sans rien à avoir installer ou configurer pour la plupart des langages.</p>
+<p>Dès que vous demandez à un débutant d&#8217;installer un truc, vous rajoutez une barrière d&#8217;entrée énorme.</p>
+<p>De plus, il y a beaucoup, beaucoup, beaucoup plus d&#8217;hébergeurs qui fournissent du SQL que du NoSQL en solution par défaut. Et comme toute les technos legacy, il y a 100 fois plus de doc.</p>
+<p>Enfin, il y a la fameuse question du &#8220;quoi&#8221; ? Quel système allez-vous installer ? Couch ? Casssandra ? Mongo ? On parle de NoSQL, ou de schemaless ? C&#8217;est pas la même chose ? Memcache et Redis, c&#8217;est que pour le cache ? Elastic Search, c&#8217;est que pour la recherche de texte ? Les données géographiques, je les mets dans quoi, mongo ou un GIS spécialisé ? Attends, j&#8217;ai entendu parler d&#8217;une super bdd de graph&#8230;</p>
+<p>L&#8217;abondance de solutions, le manque de recul et les informations contradictoires disponibles rendent non seulement le choix difficile, mais en plus hasardeux. Car contrairement au monde du SQL, se gourrer en NoSQL peut vous pourir toute votre archi.</p>
+<p>Souvenez-vous qu&#8217;il est beaucoup plus difficile de migrer son système de base de données NoSQL d&#8217;une solution à une autre car il n&#8217;y a pas ce petit détail en commun entre les produits : le SQL justement.</p>
+<h2>Anti-fact 2 : Avec NoSql, pas besoin de réfléchir à son modèle de données</h2>
+<p>Je crois que c&#8217;est ce qui me fait le plus grincer des dents. Les gens qui disent qu&#8217;on peut tout mettre dedans, hop, et on verra plus tard. J&#8217;ai vu les pires modèles de données possibles stockés en MongoDb ou Redis, parceque les gars qui avaient travaillé dessus avait juste dumpé leurs données sans réfléchir.</p>
+<p>Une base NoSQL ne vous oblige pas à formaliser votre schéma, mais ça ne veut CERTAINEMENT PAS dire qu&#8217;il ne faut pas le faire. L&#8217;auteur de Redis a très bien <a rhef="http://oldblog.antirez.com/post/reply-open-minded-reader.html">expliqué le problème</a> (je graisse pour donner une effet dramatique et puissant au message) :</p>
+<blockquote><p>Redis is not the kind of system where you can insert data and then argue about how to fetch those data in creative ways. Not at all, the whole idea of its data model, and part of the fact that it will be so fast to retrieve your data, is that <strong>you need to think in terms of organising your data for fetching</strong>. You need to design with the query patterns in mind.</p></blockquote>
+<p>C&#8217;est vrai pour tout système dans lequel on met ses données, SQL, NoSQL, fichier, mémoire, le tiroir de votre bureau&#8230;</p>
+<p>Il faut penser au type des données, leurs formats, les relations entre les éléments, comment et à quelle fréquence vous allez les écrire, les lire, garantir la consistence de leurs relations et leur fraicheur (ou pas d&#8217;ailleurs, mais il faut en faire le choix). Les bases SQL sont contraignantes parce qu&#8217;elles vous obligent à penser, dès le début, en ces termes.</p>
+<p>C&#8217;est vrai, vous êtes de grandes personnes, a priori vous savez ce que vous faites, vous n&#8217;avez pas besoin qu&#8217;on vous FORCE à le faire. C&#8217;est pour ça que j&#8217;aime le typage dynamique. Je ne veux pas que tu me demandes mes papiers pour déclarer une variable, je sais ce que je fais.</p>
+<p>Seulement <strong>il faut le faire</strong>, et ce n&#8217;est souvent pas fait. Pire, le modèle n&#8217;est généralement jamais formalisé NULLE PART. Un schéma, c&#8217;est une doc. Sans doc, le coût d&#8217;entrée dans votre projet est élevé, sa maintenance est galère, le potentiel de bug lors de l&#8217;évolution est plus grand. Mais une doc c&#8217;est chiant à écrire et à tenir à jour.</p>
+<p>C&#8217;est un des intéressants effets secondaires des ORMs : les classes de définition sont le modèle documenté dans sa structure, ses relations, ses limites, ses contraintes, ses tests et vérifications, etc. La doc par le code, j&#8217;adore.</p>
+<h2>Anti-fact 3 : NoSql, c&#8217;est plus performant</h2>
+<p>A chaque fois qu&#8217;on lit &#8220;x est plus performant que z&#8221;, il faut faire une pause et réfléchir deux minutes. Généralement il y a un piège.</p>
+<p>Les performances, ça dépend toujours du contexte. Par exemple, Redis est plus performant à la lecture et l&#8217;écriture, mais les données doivent tenir en RAM, sinon ça bouffe sur la mémoire virtuelle. Autre chose, Redis est très lent à démarrer sur des gros jeux de données (ça peut aller à plusieurs minutes si vous avez des Go). MongoDB doit normalement pouvoir tenir une augmentation de charge de manière prédictive en rajoutant des noeuds. Mais sur un seul noeud, c&#8217;est toujours moins performant qu&#8217;un PostGres. Et 0.01 % des sites ont besoin de plus d&#8217;un serveur.</p>
+<p>Par ailleurs, les performances sont très dépendantes de l&#8217;anti-fact 2. Il faut créer les bons index, avoir un cache correctement ajusté, faire des requêtes intelligentes. Pour tous les systèmes.</p>
+<p>Bref, encore une fois, NoSQL n&#8217;est pas une techno magique. Il est contre-productif, et j&#8217;ai envie de dire même irrespectueux envers ses collègues, de la vendre comme telle.</p>
+<h2>Anti-fact 4 : NoSQL remplace le SQL</h2>
+<p>Tweeter tourne sur MySQL ET Memcache.</p>
+<p>Stackoverflow utiliser SQL Server 2008 ET Redis.</p>
+<p>Il y a carrément des sites qui <a href="http://www.plotprojects.com/why-we-use-postgresql-and-slick/">utilisent PostGres et MongoDb en parallèle</a>. En fait, il y a <a href="http://www.infoq.com/news/2013/02/MoSQL">des outils</a> pour les faire collaborer. </p>
+<p>Nous sur notre plus gros site on utilise Redis pour les sessions, les compteurs, les crawlers, les queues et passer des données entre process. <strong>Pas juste pour le cache.</strong> On utilise PostGres pour les données complexes avec des queries lourdes. Et on utilise Solr pour le moteur de recherche. </p>
+<p>Les bases NoSQL sont des nouveaux outils, qui sont mieux adaptés à CERTAINS usages ou à CERTAINS contextes. Pas tout, tout le temps, partout. C&#8217;est un outil en plus, pas un obligatoire remplaçant.</p>
+<p>Par ailleurs, on peut utiliser PostGres comme une base de données <a href="http://thebuild.com/presentations/pg-as-nosql-pgday-fosdem-2013.pdf">clé-valeur</a> ou <a href="http://www.reddit.com/comments/1q3skb">JSON</a>, on peut mettre SQLite complètement en mémoire vive, on peut utiliser MySQL comme un moteur de recherche de texte&#8230; Multiplier les points of failures dans une archi n&#8217;est pas toujours une bonne idée. Ces outils qu&#8217;on considère comme de l&#8217;histoire ancienne ont beaucoup plus de ressource que vous ne l&#8217;imaginez. Ils sont ultra performants. Des années et des années d&#8217;optimisation.</p>
+<p>Le monde de la tech n&#8217;est jamais lisse. Jamais.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/nosql-arretons-de-dire-nimporte-quoi/feed/</wfw:commentRss>
+		<slash:comments>39</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n2sg6nrtxX1r539hzo1_500.jpg" length="80694" type="image/jpg" />	</item>
+		<item>
+		<title>MySQL: créer un utilisateur avec une base de données à son nom sur laquelle il a tous les droits 11</title>
+		<link>http://sametmax.com/mysql-creer-un-utilisateur-avec-une-table-a-son-nom-sur-laquelle-il-a-tous-les-droits/</link>
+		<comments>http://sametmax.com/mysql-creer-un-utilisateur-avec-une-table-a-son-nom-sur-laquelle-il-a-tous-les-droits/#comments</comments>
+		<pubDate>Mon, 15 Oct 2012 15:07:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2575</guid>
+		<description><![CDATA[Le truc classique, qu'on fait tout le temps, et qu'on oublie toujours comment on a fait la dernière fois.]]></description>
+				<content:encoded><![CDATA[<p>Le truc classique, qu&#8217;on fait tout le temps, et qu&#8217;on oublie toujours comment on a fait la dernière fois.</p>
+<p>Vu qu&#8217;on a pas toujours PhpMyAdmin installé&#8230;</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="sql" style="font-family:monospace;"><span style="color: #993333; font-weight: bold;">CREATE</span> <span style="color: #993333; font-weight: bold;">DATABASE</span> nom_db;
+<span style="color: #993333; font-weight: bold;">GRANT</span> <span style="color: #993333; font-weight: bold;">ALL</span> PRIVILEGES <span style="color: #993333; font-weight: bold;">ON</span> nom_db<span style="color: #66cc66;">.*</span> <span style="color: #993333; font-weight: bold;">TO</span> <span style="color: #ff0000;">&quot;nom_utilisateur&quot;</span>@<span style="color: #ff0000;">&quot;localhost&quot;</span> <span style="color: #993333; font-weight: bold;">IDENTIFIED</span> <span style="color: #993333; font-weight: bold;">BY</span> <span style="color: #ff0000;">'mot_de_passe'</span>;
+<span style="color: #993333; font-weight: bold;">FLUSH</span> PRIVILEGES;</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mysql-creer-un-utilisateur-avec-une-table-a-son-nom-sur-laquelle-il-a-tous-les-droits/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/xkcd.png" length="9340" type="image/jpg" />	</item>
+		<item>
+		<title>Log des requêtes SQL faites par l&#8217;ORM Django en temps réel</title>
+		<link>http://sametmax.com/log-des-requetes-sql-faites-par-lorm-django-en-temps-reel/</link>
+		<comments>http://sametmax.com/log-des-requetes-sql-faites-par-lorm-django-en-temps-reel/#comments</comments>
+		<pubDate>Fri, 16 Mar 2012 17:30:01 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[log]]></category>
+		<category><![CDATA[orm]]></category>
+		<category><![CDATA[sql]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=262</guid>
+		<description><![CDATA[Il existe une solution plus simple que  la <code>django-debug-toolbar</code> ou <code>connection.queries</code> pour suivre les requêtes SQL de l'ORM Django.]]></description>
+				<content:encoded><![CDATA[<p>Même en recherchant sur les sites spécialisés en anglais, je tombe toujours sur des solutions basées sur la <a href="https://github.com/django-debug-toolbar/django-debug-toolbar">django-debug-toolbar</a>, l&#8217;affichage de <a href="https://docs.djangoproject.com/en/dev/faq/models/#how-can-i-see-the-raw-sql-queries-django-is-running">connection.queries</a> ou l&#8217;usage de <a href="https://github.com/dcramer/django-devserver">devserver</a>. Ça a son utilité (surtout la fabuleuse <code>django-debug-toolbar</code>), mais c&#8217;est compliqué, long à mettre en oeuvre, et pas très pratique. </p>
+<p>Il y a beaucoup plus simple, et le plus beau, c&#8217;est que Django le propose en natif.</p>
+<p>Par default, Django loggue toutes les requêtes SQL dans <em>django.db.backends</em> si <code>DEBUG = True</code>. Il suffit donc de configurer le logger, dans votre <em>settings.py</em>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">tempfile</span>
+&nbsp;
+LOGGING <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+    <span style="color: #483d8b;">'version'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'disable_existing_loggers'</span>: <span style="color: #008000;">False</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'formatters'</span>: <span style="color: black;">&#123;</span>
+        <span style="color: #483d8b;">'verbose'</span>: <span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'format'</span>: <span style="color: #483d8b;">'%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'</span>
+        <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'simple'</span>: <span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'format'</span>: <span style="color: #483d8b;">'%(levelname)s %(message)s'</span>
+        <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'handlers'</span>: <span style="color: black;">&#123;</span>
+        <span style="color: #483d8b;">'tempfile'</span>: <span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'level'</span>: <span style="color: #483d8b;">'DEBUG'</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'class'</span>: <span style="color: #483d8b;">'logging.handlers.RotatingFileHandler'</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'formatter'</span>: <span style="color: #483d8b;">'verbose'</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'filename'</span>: <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">tempfile</span>.<span style="color: black;">gettempdir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'django-debug.log'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'console'</span>:<span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'level'</span>:<span style="color: #483d8b;">'DEBUG'</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'class'</span>:<span style="color: #483d8b;">'logging.StreamHandler'</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'formatter'</span>: <span style="color: #483d8b;">'simple'</span>
+        <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'loggers'</span>: <span style="color: black;">&#123;</span>
+        <span style="color: #483d8b;">'django.db.backends'</span>: <span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'handlers'</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'console'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'tempfile'</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'level'</span>: <span style="color: #483d8b;">'DEBUG'</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'propagate'</span>: <span style="color: #008000;">True</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Lancez <code>./manage.py shell</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>: m <span style="color: #66cc66;">=</span> Table.<span style="color: black;">objects</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>title__isnull<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+&nbsp;
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>: m
+DEBUG <span style="color: black;">&#40;</span><span style="color: #ff4500;">0.018</span><span style="color: black;">&#41;</span> SELECT <span style="color: #483d8b;">&quot;table&quot;</span>.<span style="color: #483d8b;">&quot;id&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;table&quot;</span>.<span style="color: #483d8b;">&quot;title&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;table&quot;</span>.<span style="color: #483d8b;">&quot;original_title&quot;</span> FROM <span style="color: #483d8b;">&quot;table&quot;</span> WHERE <span style="color: #483d8b;">&quot;table&quot;</span>.<span style="color: #483d8b;">&quot;title&quot;</span> IS NOT NULL LIMIT <span style="color: #ff4500;">21</span><span style="color: #66cc66;">;</span> args<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>: <span style="color: black;">&#91;</span><span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #66cc66;">&lt;</span> Table <span style="color: #008000;">object</span> <span style="color: #66cc66;">&gt;,</span> <span style="color: #483d8b;">'...(remaining elements truncated)...'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Une version plus verbeuse sera aussi logguée dans un fichier temporaire. Par exemple, sous Linux il sera dans <code>/tmp/django-debug.log</code>.</p>
+<p>Toutes les requêtes faites par le site Web seront également affichées dans le terminal sur lequel tourne le serveur, et dans le fichier temporaire. </p>
+<p>Une fois que vous maitrisez le concept, je vous recommande plutot de mettre le logger <em>django.db.backends</em> dans votre <em>local_settings.py</em>, histoire d&#8217;éviter de l&#8217;avoir en prod :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">LOGGING<span style="color: black;">&#91;</span><span style="color: #483d8b;">'loggers'</span><span style="color: black;">&#93;</span>.<span style="color: black;">update</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span>
+        <span style="color: #483d8b;">'django.db.backends'</span>: <span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'handlers'</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'console'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'tempfile'</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'level'</span>: <span style="color: #483d8b;">'DEBUG'</span><span style="color: #66cc66;">,</span>
+            <span style="color: #483d8b;">'propagate'</span>: <span style="color: #008000;">True</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#125;</span>
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Autre bénéfice, il suffit de commenter cette partie quand on ne souhaite plus afficher autant d&#8217;informations.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/log-des-requetes-sql-faites-par-lorm-django-en-temps-reel/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/03/lumber_from_log_lg.jpg" length="460459" type="image/jpg" />	</item>
+	</channel>
+</rss>

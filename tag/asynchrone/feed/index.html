@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; asynchrone</title>
+	<atom:link href="http://sametmax.com/tag/asynchrone/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Utiliser requests de manière non bloquante facilement 12</title>
+		<link>http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/</link>
+		<comments>http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/#comments</comments>
+		<pubDate>Wed, 21 Jan 2015 07:17:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[non-bloquant]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[requests]]></category>
+		<category><![CDATA[thread]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15797</guid>
+		<description><![CDATA[En attendant le dossier sur la programmation non bloquante, voici une petite lib qui résout un cas décole : faire une requête HTTP sans bloquer avec une jolie API, en pur Python.]]></description>
+				<content:encoded><![CDATA[<p>En attendant le dossier sur la programmation non bloquante, voici une petite lib qui résout un cas d&#8217;école : faire une requête HTTP sans bloquer avec une jolie API, en pur Python.</p>
+<p>Pour ça, on dégaine <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> et installe <a href="https://pypi.python.org/pypi/requests-futures/0.9.0">requests-futures</a>, un plugin pour la célèbre lib <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">requests</a> qui fonctionne avec Python 2 et 3 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> requests-futures</pre></td></tr></table></div>
+
+<p>requests-futures va créer pour vous une pool de workers (2 par défaut) et quand vous faites une requête, la lib vous retourne un objet <a href="http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/">future</a> qui vous permet d&#8217;attacher un <a href="http://sametmax.com/quest-ce-quun-callback/">callback</a>.</p>
+<p>Fiou, le nombre de liens référant à d&#8217;autres articles du blog est en train d&#8217;exploser.</p>
+<p>Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> requests_futures.<span style="color: black;">sessions</span> <span style="color: #ff7700;font-weight:bold;">import</span> FuturesSession
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Cette session est notre point d'entrée, c'est elle</span>
+<span style="color: #808080; font-style: italic;"># qui gère nos workers. Faites help(FuturesSession)</span>
+<span style="color: #808080; font-style: italic;"># pour voir ses paramètres.</span>
+session <span style="color: #66cc66;">=</span> FuturesSession<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Les URLs sur lesquelles on va faire</span>
+<span style="color: #808080; font-style: italic;"># nos requêtes</span>
+URLs <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>
+    <span style="color: #483d8b;">&quot;http://sametmax.com&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://sebsauvage.net&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://indexerror.net&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://afpy.org&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;http://0bin.net&quot;</span>
+<span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Notre callback qui sera appelé quand une </span>
+<span style="color: #808080; font-style: italic;"># des requêtes sera terminée. Il reçoit</span>
+<span style="color: #808080; font-style: italic;"># l'objet future pour seul paramètre</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> faire_un_truc_avec_le_resultat<span style="color: black;">&#40;</span>future<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># On est juste intéressé par le résutlat, qui</span>
+    <span style="color: #808080; font-style: italic;"># est un objet response typique de la lib</span>
+    <span style="color: #808080; font-style: italic;"># request</span>
+    response <span style="color: #66cc66;">=</span> future.<span style="color: black;">result</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>response.<span style="color: black;">url</span><span style="color: #66cc66;">,</span> response.<span style="color: black;">status_code</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On traite chaque URL. Comme on a 2 workers,</span>
+<span style="color: #808080; font-style: italic;"># on pourra traiter au mieux 2 URLs en parallèle,</span>
+<span style="color: #808080; font-style: italic;"># mais toujours sans bloquer le programme</span>
+<span style="color: #808080; font-style: italic;"># principal</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> URLs:
+    <span style="color: #808080; font-style: italic;"># On fait notre requête GET</span>
+    future <span style="color: #66cc66;">=</span> session.<span style="color: black;">get</span><span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># On rajoute le callback à appeler quand</span>
+    <span style="color: #808080; font-style: italic;"># le résultat de la requête arrive.</span>
+    <span style="color: #808080; font-style: italic;"># La flemme de faire la gestion des erreurs.</span>
+    future.<span style="color: black;">add_done_callback</span><span style="color: black;">&#40;</span>faire_un_truc_avec_le_resultat<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Juste pour montrer que c'est bien non bloquant</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span>
+    <span style="color: #dc143c;">time</span>.<span style="color: black;">sleep</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Output :</p>
+<pre>0
+1
+(u'http://sebsauvage.net/', 200)
+(u'http://sametmax.com/', 200)
+2
+(u'http://indexerror.net/', 200)
+(u'http://0bin.net/', 200)
+(u'http://www.afpy.org/', 200)
+3
+4
+5
+6
+7
+8
+9</pre>
+<p>On remerciera turgon37 pour <a href="http://indexerror.net/357/comment-passer-une-valeur-entre-threads">sa question</a> sur IndexError qui m&#8217;a amené à écrire cet article.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/utiliser-requests-de-maniere-non-bloquante-facilement/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/images.jpeg" length="12961" type="image/jpg" />	</item>
+		<item>
+		<title>Quelle est la différence entre &#8220;bloquer&#8221; et &#8220;en cours d&#8217;exécution&#8221; ? 9</title>
+		<link>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/</link>
+		<comments>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/#comments</comments>
+		<pubDate>Tue, 09 Dec 2014 16:57:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[nodejs]]></category>
+		<category><![CDATA[non-blocking]]></category>
+		<category><![CDATA[tornado]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12766</guid>
+		<description><![CDATA[On vous dis qu'il faut faire attention en utilisant des technologies non bloquantes, car si on bloque dans la boucle d'événement, on bloque tout le programme, et on perd l’intérêt de l'outil.
+
+C'est vrai, mais que veut dire "bloquer" ?]]></description>
+				<content:encoded><![CDATA[<p>On vous dit qu&#8217;il faut faire attention en utilisant des technologies non bloquantes, car si on bloque dans la boucle d&#8217;événement, on bloque tout le programme, et on perd l’intérêt de l&#8217;outil.</p>
+<p>C&#8217;est vrai, mais que veut dire &#8220;bloquer&#8221; ?</p>
+<p>Car si je fais :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1000000</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mon programme va tourner longtemps, et la boucle d’événement va bloquer, n&#8217;est-ce pas ?</p>
+<p>En fait, &#8220;bloquer&#8221; est un abus de langage car il y a plusieurs raisons pour bloquer. Dans notre contexte, il faudrait dire &#8220;bloquer en attente d&#8217;une entrée ou d&#8217;une sortie&#8221;. D&#8217;où l&#8217;appellation &#8220;Aynschronous non blocking I/O&#8221; des technos types NodeJS, Twisted, Tornado, Gevent, etc.</p>
+<p>En effet, il faut distinguer deux causes d&#8217;attente à votre programme :</p>
+<ul>
+<li>Attendre que vos instructions se terminent. C&#8217;est être &#8220;en cours d&#8217;exécution&#8221;.</li>
+<li>Attendre qu&#8217;un événement extérieur (écrire sur le disque, lire une socket, un clic de souris) arrive à sa conclusion. C&#8217;est bloquer sur de l&#8217;I/O.</li>
+</ul>
+<p>Le premier cas est impossible à éviter. Tout au mieux pouvons-nous répartir la charge du programme sur plusieurs cœurs, processeurs voire machines. Le code devra toujours attendre qu&#8217;il se termine, mais ça ira plus vite.</p>
+<p>Dans le contexte de la programmation non bloquante telle qu&#8217;on vous en a parlé, on est donc dans le deuxième cas.</p>
+<p>Il ne s&#8217;agit alors pas de s&#8217;interdire de faire des boucles ou autre opération longue (ou plutôt, c&#8217;est un problème d&#8217;optimisation ordinaire qui n&#8217;a rien à voir avec le fait de bloquer), il s&#8217;agit de ne pas &#8220;attendre à ne rien faire&#8221; quand une opération extérieure est en cours.</p>
+<p>C&#8217;est ce que font naturellement NodeJS, Twisted, Tornado, Gevent &amp; Co. Quand on fait un échange HTTP, le bout de données part, puis le reste du code continue de tourner, passant à la tâche suivante, en attendant que le paquet traverse le réseau, atteigne l&#8217;autre machine, qui vous répond finalement. C&#8217;est ce temps, incompressible, sans contrôle de votre côté, durant lequel il ne faut pas bloquer. Le gain de perf est que votre programme ne se la touche pas pendant les temps d&#8217;attente, mais bien entendu que VOTRE, lui, code va prendre du temps et &#8220;bloquer&#8221; le processeur. Il faut bien qu&#8217;il s&#8217;exécute.</p>
+<p>Ce qu&#8217;on entend donc par &#8220;il ne faut pas faire d&#8217;opération bloquante dans un code qui est déjà non bloquant&#8221; c&#8217;est &#8220;il ne faut pas utiliser un outil à l&#8217;API bloquante au milieu d&#8217;autres outils non bloquants&#8221;.</p>
+<p>Par exemple, n&#8217;utilisez pas <a href="http://docs.python-requests.org/en/latest/">requests</a> avec Twisted, car requests est codé pour attendre sans rien faire jusqu’à obtenir une réponse à chaque requête, bloquant Twisted. Utilisez plutôt <a href="http://treq.readthedocs.org/en/latest/">treq</a>. C&#8217;est pareil pour la lecture d&#8217;un fichier, une requête de base de données, etc. Et il existe des boucles d&#8217;événements ailleurs que sur le serveur : une page Web possède sa propre boucle (c&#8217;est pour cela que tout JS est asynchrone), un toolkit GUI comme QT ou GTK aussi (c&#8217;est pour ça qu&#8217;ils utilisent la programmation événementielle), etc.</p>
+<p>Maintenant vous allez me dire : mais pourquoi bloquer alors ? Pourquoi ne pas toujours éviter de bloquer ?</p>
+<p>Et bien parce que si on ne bloque pas, on ne peut pas écrire un programme ligne à ligne. On est obligé d&#8217;adopter un style de programmation asynchrone puisqu&#8217;on ne sait pas quand le résultat de certaines lignes va arriver. Ça veut dire des callbacks, ou des futures, ou des coroutines, ou du message passing&#8230; Bref, un truc plus compliqué. Or, on n&#8217;a pas forcément besoin de ce niveau de performance. En fait, la grande majorité des programmes n&#8217;ont pas besoin de ce niveau de performance. Donc, on bloque en attendant, non pas Godot, mais l&#8217;I/O, parce que c&#8217;est plus simple à écrire. Pour pas se faire chier.</p>
+<p>Il y a bien des moyens de contourner ce problème : les threads, le multiprocessing, les coroutines, etc. Parfois même, on ignore le problème : bloquer quelques ms au milieu d&#8217;une boucle d’événements une fois par seconde n&#8217;est pas un drame. Une fois que j&#8217;ai fini le dossier sur les tests unitaires, je vous ferai un dossier sur la programmation non bloquante, avec aussi une esquisse de la parallélisation.</p>
+<p>En attendant, ne stressez pas parce que votre code &#8220;bloque&#8221; parce qu&#8217;il travaille longtemps, assurez-vous juste que les APIs que vous utilisez ne bloquent pas pendant l&#8217;I/O, et vous êtes ok.</p>
+<p>Et comment savoir ? Et bien si une donnée rentre ou sort de votre programme (ça ne fait pas partie du code source), c&#8217;est de l&#8217;I/O. Si votre code ressemble à ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">res <span style="color: #66cc66;">=</span> faire_operation_sur_IO<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+faire_un_truc_avec_le_res<span style="color: black;">&#40;</span>res<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Alors votre outil est bloquant, puisque qu&#8217;il compte sur le fait que la deuxième ligne sera exécutée à coup sûr quand la première sera terminée. Un outil non bloquant exigera quelque chose pour gérer le retour du résultat plus tard: un callback, une promesse, un <code>yield</code>&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quelle-est-la-difference-entre-bloquer-et-en-cours-dexecution/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/12/nNFWiX7.jpg" length="24792" type="image/jpg" />	</item>
+		<item>
+		<title>Deferred, Future et Promise : le pourquoi, le comment, et quand est-ce qu&#8217;on mange 18</title>
+		<link>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/</link>
+		<comments>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/#comments</comments>
+		<pubDate>Wed, 04 Jun 2014 13:19:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[deferred]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[promise]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10418</guid>
+		<description><![CDATA[Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s'exécuter dans un ordre. Elles sont dépendantes les unes des autres.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez plongé dans le monde de la programmation asynchrone non bloquante, vous avez du vous heurter aux <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>. Si ce n&#8217;est pas le cas, aller lire l&#8217;article, et faites vos armes sur jQuery, je vais m&#8217;en servir en exemple.</p>
+<p>Signalement de rigueur que l&#8217;article est long :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/E8b4xYbEugo" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Un callback, ça va.</p>
+<p>Deux callbacks, pour un seul appel, ça commence à être chiant, mais c&#8217;est compréhensible.</p>
+<p>Quand les callbacks appellent eux aussi des callbacks, ça donne des codes imbitables :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  $.<span style="color: #660066;">post</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/auth/token'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+    saveToken<span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/sessions/last'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>session.<span style="color: #660066;">device</span> <span style="color: #339933;">!=</span> currentDevice<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+        $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/session/ '</span> <span style="color: #339933;">+</span> session.<span style="color: #660066;">id</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/context'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>context<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          loadContext<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+            startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+              initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+          <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#125;</span>
+      <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+        startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+      <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#41;</span>
+  <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Il y a pire que de lire ce code : le modifier ! Retirez un bloc, pour voir. Oh, et histoire de vous faire partager l&#8217;expérience complète, j&#8217;ai volontairement déplacé l&#8217;indentation d&#8217;une parenthèse et de deux brackets.</p>
+<p>Or les codes asynchrones ont besoin de callback afin d’enchainer certaines opérations dans le bon ordre, sinon on ne peut pas récupérer le résultat d&#8217;une fonction et l&#8217;utiliser dans une autre, puisqu&#8217;on ne sait pas quand l&#8217;opération se termine.</p>
+<p>Dans notre exemple, <code>$.post</code> et <code>$.get</code> font des requêtes POST et GET, et comme on ne sait pas quand le serveur va répondre, il faut mettre un callback pour gérer la réponse quand elle arrive. C&#8217;est plus performant que de bloquer jusqu&#8217;à ce que la première requête soit terminée car pendant ce temps, notre programme peut faire autre chose. Mais c&#8217;est aussi super relou à écrire et comprendre.</p>
+<p>Entrent en jeu les promesses (promises). Ou les deferred. Ou les futures.</p>
+<p>Typiquement, on retrouve des deferreds dans <a href="https://twistedmatrix.com/trac/">Twisted</a>, des promises pour <a href="http://api.jquery.com/jquery.ajax/">l&#8217;AJAX avec jQuery,</a> des futures pour <a href="http://docs.python.org/3.4/library/asyncio-protocol.html">asyncio</a>&#8230; Mais il y en a un peu partout de nos jours, et une lib peut utiliser plusieurs de ces concepts.</p>
+<p>En fait c&#8217;est la même chose, un nom différent donné au même concept, par des gens qui l&#8217;ont réinventé dans leur coin. Les puristes vous diront qu&#8217;il y a des différences dans l&#8217;implémentation, ou alors que la promesse est l&#8217;interface tandis que le deferred est l&#8217;objet retourné, bla, bla, bla.</p>
+<p>Fuck it, on va considérer que c&#8217;est tout pareil.</p>
+<p>Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s&#8217;exécuter dans un ordre car elles sont dépendantes les unes des autres.</p>
+<p>Il y a d&#8217;autres moyens de gérer le problème de l&#8217;asynchrone: des événements, des queues, etc. L&#8217;avantage des promesses c&#8217;est que c&#8217;est assez simple, et ça marche là où on utilisait des callbacks avant, donc on a pu les rajouter aux libs qui étaient blindées de callbacks.</p>
+<h2>Le principe</h2>
+<p>La promesse est un moyen de dire que certaines fonctions, bien que non bloquantes et asynchrones, sont liées entre elles, et doivent s&#8217;exécuter les unes à la suite des autres. Cela permet de donner un ordre d&#8217;exécution à un groupe de fonctions, et surtout, que chaque fonction puisse accéder au résultat de la fonction précédente. Tout ceci sans bloquer le reste du système asynchrone.</p>
+<p>En résumé, <strong>cela donne un gout de programmation synchrone, à quelque chose qui ne l&#8217;est pas.</strong></p>
+<p>Cela se passe ainsi :</p>
+<ul>
+<li>La fonction asynchrone retourne un objet immédiatement : la promesse.</li>
+<li>On ne passe pas de callback à la fonction. On rajoute un callback à la promesse.</li>
+<li>Le callback prend en paramètre le résultat de la fonction asynchrone.</li>
+<li>Le callback retourne le résultat de son traitement.</li>
+<li>On peut rajouter autant de callbacks qu&#8217;on veut à la promesse, chacun devant accepter le résultat du callback précédent et retourner son propre résultat.</li>
+<li>Si un des callbacks retourne une promesse, elle est fusionnée avec la promesse initiale, et c&#8217;est son résultat que le prochain callback va récupérer</li>
+</ul>
+<p>Voilà un exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #006600; font-style: italic;">// $.get est asynchrone. On a pas le résultat tout de suite, mais en attendant</span>
+<span style="color: #006600; font-style: italic;">// on a une promesse tout de suite.</span>
+<span style="color: #000066; font-weight: bold;">var</span> $promesse <span style="color: #339933;">=</span> $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/truc/machin'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// premier callback. Il sera appelé quand $.get aura récupéré son</span>
+<span style="color: #006600; font-style: italic;">// résultat</span>
+$promesse.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc avec le résultat</span>
+  <span style="color: #006600; font-style: italic;">// puis on retourne le nouveau résultat</span>
+  <span style="color: #000066; font-weight: bold;">return</span> nouveau_resultat<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// deuxième callback. Il sera appelé quand le premier callback</span>
+<span style="color: #006600; font-style: italic;">// aura retourné son résultat.</span>
+$promesse.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>nouveau_resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Notez bien que c&#8217;est TRES différent de ça (en Python):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">resultat <span style="color: #66cc66;">=</span> request.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/truc/marchin'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>:
+  <span style="color: #808080; font-style: italic;"># faire un truc</span>
+  <span style="color: #ff7700;font-weight:bold;">return</span> nouveau_resultat
+nouveau_resultat <span style="color: #66cc66;">=</span> function<span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> autre_function<span style="color: black;">&#40;</span>nouveau_resultat<span style="color: black;">&#41;</span>:
+  <span style="color: #808080; font-style: italic;"># faire un truc</span>
+autre_function<span style="color: black;">&#40;</span>nouveau_resultat<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En Python, le code est bloquant par défaut. Ça va marcher, mais pendant que le code attend la réponse du serveur, votre ordinateur est en pause et ne travaille pas.</p>
+<h2>Un plus beau code</h2>
+<p>On se retrouve avec un code asynchrone, mais qui s&#8217;exécute dans l&#8217;ordre de lecture. Et comme on peut chainer les <code>then()</code> et donc ne pas réécrire <code>$promesse</code> à chaque fois, on obtient quelque chose de beaucoup plus lisible :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/truc/machin'</span><span style="color: #009900;">&#41;</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+  <span style="color: #000066; font-weight: bold;">return</span> nouveau_resultat<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>nouveau_resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Si on reprend notre premier exemple, ça donne ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// create new token</span>
+$.<span style="color: #660066;">post</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/auth/token'</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// then save token and get last session</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  saveToken<span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+  <span style="color: #000066; font-weight: bold;">return</span> $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/sessions/last'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// then init session</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>session.<span style="color: #660066;">device</span> <span style="color: #339933;">!=</span> currentDevice<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+&nbsp;
+    $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/session/ '</span> <span style="color: #339933;">+</span> session.<span style="color: #660066;">id</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/context'</span><span style="color: #009900;">&#41;</span>
+    .<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>context<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      loadContext<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+        startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+      <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+  <span style="color: #009900;">&#125;</span>
+  <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+    startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+  <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Tout ça s’exécute de manière non bloquante (d&#8217;autres fonctions ailleurs dans le programme peuvent s&#8217;exécuter pendant qu&#8217;on attend la réponse du serveur), mais dans l&#8217;ordre de lecture, donc on comprend bien ce qui se passe. Si on veut retirer un bloc, c&#8217;est beaucoup plus facile.</p>
+<h2>Comment ça marche à l&#8217;intérieur ?</h2>
+<p>Histoire d&#8217;avoir une idée de comment une promise marche, on va faire une implémentation, simpliste et naïve, mais compréhensible, d&#8217;une promesse en Python. Pour rendre l&#8217;API un peu sympa,je vais utiliser <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs.</a></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Promise:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># La promesse contient une liste de callbacks, donc une liste de fonctions.</span>
+    <span style="color: #808080; font-style: italic;"># Pas le résultat des fonctions, mais bien les fonctions elles mêmes,</span>
+    <span style="color: #808080; font-style: italic;"># puisque les fonctions sont manipulables en Python.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Point d'entrée pour ajouter un callback à la promesse</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> then<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> callback<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>callback<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Cette méthode est celle qui sera appelée par le code asynchrone</span>
+    <span style="color: #808080; font-style: italic;"># quand il reçoit son résultat.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> resolve<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> resultat<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Ici, on obtient le résultat du code asycnhrone, donc on boucle</span>
+        <span style="color: #808080; font-style: italic;"># sur les callbacks pour les appeler</span>
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>:
+            <span style="color: #808080; font-style: italic;"># On retire le premier callback de la liste, et on l'appelle</span>
+            <span style="color: #808080; font-style: italic;"># avec le résultat</span>
+            resultat <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># Si le resultat est une promesse, on dit à cette nouvelle promesse</span>
+            <span style="color: #808080; font-style: italic;"># de nous rappeler quand elle a reçu ses résultats à elle avant</span>
+            <span style="color: #808080; font-style: italic;"># d'aller le reste de nos callbacks à nous : on fusionne les deux</span>
+            <span style="color: #808080; font-style: italic;"># promesses :</span>
+            <span style="color: #808080; font-style: italic;"># Promesse 1</span>
+            <span style="color: #808080; font-style: italic;">#  - callback1</span>
+            <span style="color: #808080; font-style: italic;">#  - callback2</span>
+            <span style="color: #808080; font-style: italic;">#  - Promesse 2</span>
+            <span style="color: #808080; font-style: italic;">#      * callback 1</span>
+            <span style="color: #808080; font-style: italic;">#      * callback 2</span>
+            <span style="color: #808080; font-style: italic;">#  - callback 3</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span>resultat<span style="color: #66cc66;">,</span> Promise<span style="color: black;">&#41;</span>:
+                resultat.<span style="color: black;">then</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">resolve</span><span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">break</span></pre></td></tr></table></div>
+
+<p>Maintenant, créons un code asynchrone:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">threading</span> <span style="color: #ff7700;font-weight:bold;">import</span> Timer
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func1<span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># On dit complètement artificiellement d'afficher le résultat</span>
+    <span style="color: #808080; font-style: italic;"># de la fonction dans 3 secondes, sans bloquer histoire d'avoir</span>
+    <span style="color: #808080; font-style: italic;"># un peu de nonbloquitude dans notre code et justifier l'asynchrone.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> callback1<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func2<span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Le même, mais pour 2 secondes</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> callback2<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Deux fonctions normales</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func3<span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func4<span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et si on les enchaines...</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Je commence'</span><span style="color: black;">&#41;</span>
+func1<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Juste après'</span><span style="color: black;">&#41;</span>
+func2<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+func3<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+func4<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># ... le résultat est bien désordonné :</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Je commence</span>
+<span style="color: #808080; font-style: italic;">## Juste après</span>
+<span style="color: #808080; font-style: italic;">## 3</span>
+<span style="color: #808080; font-style: italic;">## 4</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 1</span></pre></td></tr></table></div>
+
+<p>Parfois c&#8217;est ce que l&#8217;on veut, que les choses s’exécutent dans le désordre, sans bloquer.</p>
+<p>Mais quand on a des fonctions qui dépendent les unes des autres, au milieu d&#8217;un code asynchrone, on veut qu&#8217;elles se transmettent le résultat les unes aux autres au bon moment. Pour cela, utilisons notre promesse :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">threading</span> <span style="color: #ff7700;font-weight:bold;">import</span> Timer
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># La mise en place de promesses suppose que le code </span>
+<span style="color: #808080; font-style: italic;"># écrit en fasse explicitement usage. Notre code est</span>
+<span style="color: #808080; font-style: italic;"># définitivement lié à cette manière de faire.</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func1<span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Notre fonction doit créer la promesse et la retourner</span>
+    p <span style="color: #66cc66;">=</span> Promise<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># Dans le callback, elle doit dire quand la promesse est tenue</span>
+        p.<span style="color: black;">resolve</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> callback1<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> p
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On lance la première fonction.</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Je commence'</span><span style="color: black;">&#41;</span>
+promise <span style="color: #66cc66;">=</span> func1<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Juste après'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On ajoute des callbacks à notre promesse.</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func2<span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>:
+    p <span style="color: #66cc66;">=</span> Promise<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># Pour justifier l’enchainement des fonctions, on fait en sorte que</span>
+        <span style="color: #808080; font-style: italic;"># chaque fonction attend le résultat de la précédente, et</span>
+        <span style="color: #808080; font-style: italic;"># l'incrémente de 1.</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v2 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+        p.<span style="color: black;">resolve</span><span style="color: black;">&#40;</span>v2 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> callback2<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># Ce callback retourne lui-même une promesse, qui sera fusionnée</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> p
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ces callbacks ne retournent pas de promesses, et seront chainés</span>
+<span style="color: #808080; font-style: italic;"># normalement</span>
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func3<span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v3 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> v3 + <span style="color: #ff4500;">1</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func4<span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v4 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Nos fonctions s'exécutent dans le bon ordre, mais bien de manière</span>
+<span style="color: #808080; font-style: italic;"># asynchrone par rapport au reste du programme.</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Je commence</span>
+<span style="color: #808080; font-style: italic;">## Juste après</span>
+<span style="color: #808080; font-style: italic;">## 1</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 3</span>
+<span style="color: #808080; font-style: italic;">## 4</span></pre></td></tr></table></div>
+
+<p>Notez bien :</p>
+<ul>
+<li>Le résultat &#8220;1&#8221; n&#8217;apparait que trois secondes après &#8220;Juste après&#8221;. Les fonctions sont donc bien non bloquantes.</li>
+<li>Le resultat &#8220;2&#8221; apparait deux secondes après &#8220;1&#8221;: c&#8217;est aussi asynchrone, MAIS, n&#8217;est lancé que quand la première fonction a terminé son travail.</li>
+<li>La deuxième fonction retourne une promesse, qui est fusionnée: tous ses callbacks vont s&#8217;exécuter en file avant que <code>func3</code> soit lancé. </li>
+</ul>
+<p>Évidement, n&#8217;utilisez pas cette implémentation de promise à la maison, c&#8217;est pédagogique. Ça ne gère pas les erreurs, ni le cas où le callback est enregistré après l&#8217;arrivée du résultat, et tout un tas d&#8217;autres cas tordus.</p>
+<h2>Syntaxe alternative</h2>
+<p>En Python, beaucoup de frameworks ont une approche plus agréable pour gérer les promesses à grand coup de <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Twisted fait ça avec son <code>@inlineCallback</code>, <code>asyncio</code> avec <code>@coroutine</code>. C&#8217;est juste du sucre syntaxique pour vous rendre la vie plus facile.</p>
+<p>Il s&#8217;agit de transformer une fonction en générateur, et à chaque fois qu&#8217;on appelle <code>yield</code> sur une promesse, elle est fusionnée avec la précédente. Ça donne presque l&#8217;impression d&#8217;écrire un code bloquant normal :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># un appel de fonction asyncrone typique de twisted</span>
+<span style="color: #66cc66;">@</span>inlineCallback
+<span style="color: #ff7700;font-weight:bold;">def</span> une_fonction<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>:
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func1<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func2<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func3<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+&nbsp;
+une_fonction<span style="color: black;">&#40;</span>truc<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Les fonctions 1, 2 et 3 vont ainsi être appelées de manière asynchrone par rapport au reste du programme, mais bien s’enchainer les unes à la suite des autres.</p>
+<p>Ouai, tout ce bordel parce que l&#8217;asynchrone, c&#8217;est dur, donc on essaye de le faire ressembler à du code synchrone, qui lui est facile.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/D8GwE.png" length="222229" type="image/jpg" />	</item>
+		<item>
+		<title>En attendant asyncio 15</title>
+		<link>http://sametmax.com/en-attendant-asyncio/</link>
+		<comments>http://sametmax.com/en-attendant-asyncio/#comments</comments>
+		<pubDate>Fri, 17 Jan 2014 14:09:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8781</guid>
+		<description><![CDATA[La programmation asynchrone arrive en force avec la version 3.4, mais celle-ci n'est pas encore en version stable. En attendant, Python 3 possède déjà de quoi faire de la programmation asynchrone, et même parallèle, avec une bien plus grande facilité qu'en Python 2.]]></description>
+				<content:encoded><![CDATA[<p>La programmation asynchrone arrive en force avec la version 3.4, mais celle-ci n&#8217;est pas encore en version stable. En attendant, Python 3 possède déjà de quoi faire de la programmation asynchrone, et même parallèle, avec une bien plus grande facilité qu&#8217;en Python 2.</p>
+<p>Si vous avez oublié le principe ou l’intérêt de la programmation asynchrone, <a href="http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/">il y a un article pour ça</a> ©.</p>
+<p>Pour montrer l’intérêt de la chose, nous allons utiliser un bout de code pour télécharger le code HTML de pages Web.</p>
+<h2>Sans programmation asynchrone</h2>
+<p>Le code est simple et sans chichi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">urllib</span>.<span style="color: black;">request</span> <span style="color: #ff7700;font-weight:bold;">import</span> urlopen
+&nbsp;
+start_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+URLS <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'http://sebsauvage.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://github.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://sametmax.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://duckduckgo.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://0bin.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://bitstamp.net/'</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> URLS:
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #808080; font-style: italic;"># j'ignore volontairement toute gestion d'erreur évoluée</span>
+        result <span style="color: #66cc66;">=</span> urlopen<span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s page: %s bytes'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>result<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">Exception</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s generated an exception: %s'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> e<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+elsapsed_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - start_time
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Elapsed time: %ss&quot;</span> % elsapsed_time.<span style="color: black;">total_seconds</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui nous donne:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python sans_future.py
+http:<span style="color: #000000; font-weight: bold;">//</span>sebsauvage.net<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">9036</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>github.com<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">12582</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>sametmax.com<span style="color: #000000; font-weight: bold;">/</span> generated an exception: HTTP Error <span style="color: #000000;">502</span>: Bad Gateway
+http:<span style="color: #000000; font-weight: bold;">//</span>duckduckgo.com<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">8826</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>0bin.net<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">5551</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>bitstamp.net<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">51996</span> bytes
+Elapsed time: 25.536095s</pre></td></tr></table></div>
+
+<p>Erreur 500 sur S&#038;M&#8230; Mon script qui se fout de ma gueule en plus&#8230;</p>
+<h2>Avec programmation asynchrone</h2>
+<p>On utilise le module <a href="http://docs.python.org/3.2/library/concurrent.futures.html">future</a>, qui, comme sont nom l&#8217;indique, implémente des outils pour manipuler des &#8220;futures&#8221; en Python. Il inclut notamment un context manager pour créer, lancer et arrêter des workers automatiquement, et leur envoyer des tâches, puis récupérer les résultats de ces tâches sous forme de &#8220;futures&#8221;.</p>
+<p>Pour rappel, une &#8220;future&#8221; est juste un objet qui représente le résultat d&#8217;une opération asynchrone (puisqu&#8217;on ne sait pas quand elle se termine). Cet objet contient des méthodes pour vérifier si le résultat est disponible à un instant t, et obtenir ce résultat si c&#8217;est le cas.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> concurrent.<span style="color: black;">futures</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">urllib</span>.<span style="color: black;">request</span> <span style="color: #ff7700;font-weight:bold;">import</span> urlopen
+<span style="color: #ff7700;font-weight:bold;">from</span> concurrent.<span style="color: black;">futures</span> <span style="color: #ff7700;font-weight:bold;">import</span> ProcessPoolExecutor<span style="color: #66cc66;">,</span> as_completed
+&nbsp;
+start_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+URLS <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'http://sebsauvage.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://github.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://sametmax.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://duckduckgo.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://0bin.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://bitstamp.net/'</span><span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> load_url<span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Le callback que vont appeler les workers pour télécharger le contenu
+        d'un site. On peut appeler cela une 'tâche'
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> urlopen<span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Un pool executor est un context manager qui va automatiquement créer des</span>
+<span style="color: #808080; font-style: italic;"># processus Python séparés et répartir les tâches qu'on va lui envoyer entre</span>
+<span style="color: #808080; font-style: italic;"># ces processus (appelés workers, ici on en utilise 5).</span>
+<span style="color: #ff7700;font-weight:bold;">with</span> ProcessPoolExecutor<span style="color: black;">&#40;</span>max_workers<span style="color: #66cc66;">=</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On e.submit() envoie les tâches à l'executor qui les dispatch aux</span>
+    <span style="color: #808080; font-style: italic;"># workers. Ces derniers appelleront &quot;load_url(url)&quot;. &quot;e.submit()&quot; retourne</span>
+    <span style="color: #808080; font-style: italic;"># une structure de données appelées &quot;future&quot;, qui représente  un accès au</span>
+    <span style="color: #808080; font-style: italic;"># résultat asynchrone, qu'il soit résolu ou non.</span>
+    futures_and_url <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>e.<span style="color: black;">submit</span><span style="color: black;">&#40;</span>load_url<span style="color: #66cc66;">,</span> url<span style="color: black;">&#41;</span>: url <span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> URLS<span style="color: black;">&#125;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># &quot;as_completed()&quot; prend un iterable de future, et retourne un générateur</span>
+    <span style="color: #808080; font-style: italic;"># qui itère sur les futures au fur et à mesures que celles</span>
+    <span style="color: #808080; font-style: italic;"># ci sont résolues. Les premiers résultats sont donc les premiers arrivés,</span>
+    <span style="color: #808080; font-style: italic;"># donc on récupère le contenu des sites qui ont été les premiers à répondre</span>
+    <span style="color: #808080; font-style: italic;"># en premier, et non dans l'ordre des URLS.</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> future <span style="color: #ff7700;font-weight:bold;">in</span> as_completed<span style="color: black;">&#40;</span>futures_and_url<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Une future est hashable, et peut donc être une clé de dictionnaire.</span>
+        <span style="color: #808080; font-style: italic;"># On s'en sert ici pour récupérer l'URL correspondant à cette future.</span>
+        url <span style="color: #66cc66;">=</span> futures_and_url<span style="color: black;">&#91;</span>future<span style="color: black;">&#93;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On affiche le résultats contenu des sites si les futures le contienne.</span>
+        <span style="color: #808080; font-style: italic;"># Si elles contiennent une exception, on affiche l'exception.</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> future.<span style="color: black;">exception</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s generated an exception: %s'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> future.<span style="color: black;">exception</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s page: %s bytes'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>future.<span style="color: black;">result</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+elsapsed_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - start_time
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Elapsed time: %ss&quot;</span> % elsapsed_time.<span style="color: black;">total_seconds</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et c&#8217;est quand même vachement plus rapide :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">python3 avec_future.<span style="color: black;">py</span> <span style="color: #808080; font-style: italic;"># notez qu'on utilise Python 3 cette fois</span>
+http://duckduckgo.<span style="color: black;">com</span>/ page: <span style="color: #ff4500;">8826</span> <span style="color: #dc143c;">bytes</span>
+http://sebsauvage.<span style="color: black;">net</span>/ page: <span style="color: #ff4500;">9036</span> <span style="color: #dc143c;">bytes</span>
+http://github.<span style="color: black;">com</span>/ page: <span style="color: #ff4500;">12582</span> <span style="color: #dc143c;">bytes</span>
+http://sametmax.<span style="color: black;">com</span>/ page: <span style="color: #ff4500;">50998</span> <span style="color: #dc143c;">bytes</span>
+http://0bin.<span style="color: black;">net</span>/ page: <span style="color: #ff4500;">5551</span> <span style="color: #dc143c;">bytes</span>
+http://bitstamp.<span style="color: black;">net</span>/ page: <span style="color: #ff4500;">52001</span> <span style="color: #dc143c;">bytes</span>
+Elapsed <span style="color: #dc143c;">time</span>: 3.480596s</pre></td></tr></table></div>
+
+<p>Même si vous retirez les commentaires, le code est encore très verbeux, ce qui explique pourquoi j&#8217;attends avec impatience <a href="http://www.python.org/dev/peps/pep-3156/">asyncio</a> qui, grâce à <code>yield from</code>, va intégrer l&#8217;asynchrone de manière plus naturelle au langage.</p>
+<p>Mais ça reste beaucoup plus simple que de créer son process à la main, créer une queue, envoyer les tâches dans la queue, s&#8217;assurer que le process est arrêté, gérer les erreurs et le clean up, etc.</p>
+<p>Notez qu&#8217;on peut remplacer <code>ProcessPoolExecutor</code> par <code>ThreadPoolExecutor</code> si vous n&#8217;avez pas besoin d&#8217;un process séparé mais juste de l&#8217;IO non bloquant.</p>
+<hr />
+<p>Télécharger le code de larticle : <a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/avec_future.py">avec future</a> / <a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/sans_future.py">sans future</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-attendant-asyncio/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/IMG_7832.jpg" length="84993" type="image/jpg" />	</item>
+		<item>
+		<title>La différence entre la programmation asynchrone, parallèle et concurrente 27</title>
+		<link>http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/</link>
+		<comments>http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/#comments</comments>
+		<pubDate>Wed, 09 Oct 2013 22:08:13 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[conccurence]]></category>
+		<category><![CDATA[erlang]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[multiprocessing]]></category>
+		<category><![CDATA[parallèle]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[thread]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7378</guid>
+		<description><![CDATA[On parle un peu partout de programmation non blocante ces temps-ci. NoSQL a remis le map/reduce au goût du jour, et PAF, on vous sort le mot clé parallélisation pour vous en vendre une tetrachiée. Les partisants de NodeJS vont crier "asynchrone", parce que c'est ce que Javascript sait faire de mieux. Et on on murmure dans les coins que la rubustesse d'Erlang tient dans ses acteurs qui travaillent de manière concurrente dans la VM.
+
+Ok, donc tout ça, ça à l'air de faire la même chose, c'est à dire de faire plusieurs choses en même temps, sans bloquer.
+
+Donc c'est pareil ?]]></description>
+				<content:encoded><![CDATA[<p>On parle un peu partout de programmation non bloquante ces temps-ci. NoSQL a remis le map/reduce au goût du jour, et PAF, on vous sort le mot clé parallélisation pour vous en vendre une tetrachiée. Les partisants de NodeJS vont crier &#8220;asynchrone&#8221;, parce que c&#8217;est ce que Javascript sait faire de mieux. Et on murmure dans les coins que la robustesse d&#8217;Erlang tient dans ses acteurs qui travaillent de manière concurrente dans la VM.</p>
+<p>Ok, donc tout ça, ça à l&#8217;air de faire la même chose, c&#8217;est à dire de faire plusieurs choses en même temps, sans bloquer.</p>
+<p>Donc c&#8217;est pareil ?</p>
+<p>Non. En fait c&#8217;est une question de point de vue : non bloquant dans quel contexte ?</p>
+<h2>Si c&#8217;est l&#8217;IO, c&#8217;est asynchrone</h2>
+<p>Pour rappel, l&#8217;IO (Input/Ouput), c&#8217;est toute activité qui implique que des données entrent et sortent de votre programme : saisie utilisateur, print sur un terminal, lecture sur une socket, écriture sur le disque, etc. Une opération I/O a plusieurs caractéristiques :</p>
+<ul>
+<li>Le temps que prend l&#8217;opération n&#8217;est pas dépendant du CPU : la vitesse du disque, la latence du réseau, le nombre d&#8217;heures de sommeil du sysadmin sont les facteurs qui vont déterminer quand l&#8217;opération va prendre fin.</li>
+<li>Le corollaire, c&#8217;est qu&#8217;on ne peut pas prédire quand l&#8217;opération va prendre fin depuis le programme.</li>
+<li>Sur les services avec beaucoup d&#8217;I/O (serveurs Web, bases de données, crawlers, scripts de déploiement, etc), c&#8217;est l&#8217;I/O qui généralement prend le plus de temps dans l&#8217;exécution du programme. L&#8217;optimisation de ces opérations va donc l&#8217;accélérer bien plus que de changer votre algo.</li>
+</ul>
+<p>La plupart des programmes bloquent quand ils effectuent une opération I/O. Par exemple, si vous faites ceci en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">urllib2</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># télécharge et affiche le contenu de la page d'acceuil de sam et max</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">urllib2</span>.<span style="color: black;">urlopen</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'http://sametmax.com'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Coucou&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La ligne <code>print("Coucou")</code> ne s&#8217;exécutera pas tant que la ligne précédente n&#8217;aura pas terminé de s&#8217;exécuter. Dans ce cas ce n&#8217;est pas très grâve, mais dans ce cas là :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">urllib2</span>
+&nbsp;
+&nbsp;
+mille_urls <span style="color: #66cc66;">=</span> obtenir_liste_de_mille_urls<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+contenu <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># télécharge et sauvegarde dans une liste</span>
+<span style="color: #808080; font-style: italic;"># le contenu de chacune des 1000 urls</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> mille_urls:
+	contenu.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">urllib2</span>.<span style="color: black;">urlopen</span><span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Chaque url est téléchargée une par une, et comme Internet, c&#8217;est vachement lent (300 ms X 1000, ça fait 5 minutes, mine de rien), votre programme va prendre un temps fou. Et pour rien en plus, car votre programme va passer la majeure partie du temps à ne rien faire ! En effet, 99% du temps de votre programme est passé à attendre qu&#8217;Internet réponde, pendant que votre CPU se touche les noix.</p>
+<p>La programmation asynchrone est une réponse à cela : au lieu d&#8217;attendre que se finissent les entrées et les sorties, le programme continue de fonctionner. </p>
+<p>Une autre problématique se pose alors : comment obtenir le résultat de l&#8217;opération d&#8217;I/O, puisqu&#8217;on ne sait pas quand il va arriver et qu&#8217;on attend pas qu&#8217;il arrive ?</p>
+<p>C&#8217;est là que les systèmes synchrones font un peu de magie. En vérité, une partie du programme attend, mais discrètement, en arrière plan, au niveau de ce qu&#8217;on appelle une boucle d&#8217;événements (&#8220;events loop&#8221;), c&#8217;est à dire une boucle infinie qui check régulièrement si une opération I/O ne s&#8217;est pas terminée. </p>
+<p>Cette boucle est invisible pour vous, votre programme continue de tourner. Mais si une opération I/O envoie des données, alors l&#8217;events loop va réagir.</p>
+<p>Ca a l&#8217;air compliqué, mais en fait, c&#8217;est, la plupart du temps, juste une histoire de callback (si la notion vous échappe, je vous renvois à <a href="http://sametmax.com/quest-ce-quun-callback/">l&#8217;article dédié</a>&#8230;). Par exemple en Javascript :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">var mille_urls <span style="color: #66cc66;">=</span> obtenir_liste_de_mille_urls<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+var contenu <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># notre callback qui va permettre d'ajouter </span>
+<span style="color: #808080; font-style: italic;"># le contenu téléchargé à notre liste</span>
+var callback <span style="color: #66cc66;">=</span> function<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span> <span style="color: black;">&#123;</span> 
+      contenu.<span style="color: black;">push</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+<span style="color: black;">&#125;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Bon, j'utilise jquery pour simplifier le code...</span>
+<span style="color: #808080; font-style: italic;"># On boucle sur les milles URL</span>
+$.<span style="color: black;">each</span><span style="color: black;">&#40;</span>mille_urls<span style="color: #66cc66;">,</span> function<span style="color: black;">&#40;</span>index<span style="color: #66cc66;">,</span> url<span style="color: black;">&#41;</span> <span style="color: black;">&#123;</span>
+  <span style="color: #808080; font-style: italic;"># On télécharge le contenu, MAIS comme</span>
+  <span style="color: #808080; font-style: italic;"># $.get est naturellement non blocante,</span>
+  <span style="color: #808080; font-style: italic;"># elle ne va pas attendre qu'internet </span>
+  <span style="color: #808080; font-style: italic;"># réponde pour continuer la boucle, et</span>
+  <span style="color: #808080; font-style: italic;"># donc on pourra attendre plusieurs réponses</span>
+  <span style="color: #808080; font-style: italic;"># en même temps. Pour avoir le résultat de </span>
+  <span style="color: #808080; font-style: italic;"># chaque réponse, on passe un callback qui </span>
+  <span style="color: #808080; font-style: italic;"># va être appelé quand la réponse arrive.</span>
+  $.<span style="color: black;">get</span><span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> callback<span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+<span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span></pre></td></tr></table></div>
+
+<p>Comprenez bien la subtilité : à tout moment, il n&#8217;y a qu&#8217;UN SEUL process javascript qui s&#8217;éxécute. Il n&#8217;y a pas deux traitements, pas de threads, pas de processus parallèles, rien de tout ça. Simplement, Javascript n&#8217;attend pas la réponse de sa requête pour faire la requête suivante, il continu sur sa lancée, et donc <strong>peut optimiser les temps d&#8217;attente en attendant plusieurs choses en même temps</strong>.</p>
+<p>Javascript utilise massivement des API asynchrones, c&#8217;est au cœur du langage, il n&#8217;y a aucun effort à faire pour cela. A l&#8217;inverse, Python est synchrone par nature, et il faut vraiment se faire chier pour obtenir un algo asynchrone. Ceci changera avec Python 3.4 qui accueillera <a href="https://code.google.com/p/tulip/">tulip</a> dans la stdlib, afin de se moderniser sur ce point. En attendant, si vous voulez faire de l&#8217;asynchrone en Python, vous pouvez voir du côté de <a href="http://www.gevent.org/">gevent</a>, <a href="https://github.com/saucelabs/monocle">monocle</a> ou <a href="http://www.tornadoweb.org/en/stable/">Tornado</a>. L&#8217;alternative est d&#8217;utiliser des <a href="http://docs.python.org/2/library/thread.html">threads</a> ou des <a href="http://docs.python.org/2/library/multiprocessing.html?highlight=multiprocessing#multiprocessing">processus séparés</a>, ce qui ne demande rien à installer, mais est un peu verbeux, et est moins performant.</p>
+<p>Souvenez-vous que l&#8217;I/O, c&#8217;est toute entrée et sortie du programme. Un clic sur un bouton, c&#8217;est une entrée, mettre à jour un élément du DOM dans le navigateur, c&#8217;est une sortie. La programmation asynchrone est donc importante pour la réactivité des programmes.</p>
+<h2>Si un algorithme peut répartir son travail en plusieurs bouts, c&#8217;est parallèle</h2>
+<p>Par exemple, vous avez 1000 images en haute définition à traiter : il faut les redimensionner, les mettre en noir et blanc et ajouter une ombre sur les bords. Là, la partie de votre programme qui prend le plus de temps, c&#8217;est le traitement des images, pas l&#8217;I/O, et donc c&#8217;est le CPU. Par exemple, en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> image <span style="color: #ff7700;font-weight:bold;">in</span> obtenir_liste_images<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	data <span style="color: #66cc66;">=</span> lire_image<span style="color: black;">&#40;</span>image<span style="color: black;">&#41;</span> 
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># gros du travail</span>
+	redimensioner<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	mettre_en_noir_et_blanc<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	ajouter_ombre<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	ecrire_image<span style="color: black;">&#40;</span>data<span style="color: #66cc66;">,</span> image<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si vous avez plusieurs ordinateurs, une manière de paralléliser le travail est de mettre 500 images sur l&#8217;un, et 500 images sur l&#8217;autre, et de lancer le script sur chaque ordi.</p>
+<p>Si vous avez plusieurs processeurs dans votre ordi (ce qui est le cas de tous les ordis modernes, et plus seulement les super-calculateurs comme il y a 10 ans), vous pouvez aussi paralléliser le travail sur une seule machine : chaque processeur va s&#8217;occuper d&#8217;une partie du taf.</p>
+<p>Bien entendu, vous pouvez lancer le script 2 fois, mais cela ne marche que sur des travaux simples comme celui là. Et ça suppose que vous connaissez le nombre de CPU que vous voulez faire travailler à l&#8217;avance.</p>
+<p> Une manière de faire plus propre est d&#8217;utiliser des threads ou des processus séparés. En Python, le thread ne servirait à rien, car on se heurterait au GIL, le fameux global interpréteur lock, qui fait qu&#8217;une VM n&#8217;utilise qu&#8217;un processeur, quoi qu&#8217;il arrive. Les threads ne sont donc utiles (en Python), que pour l&#8217;I/O. Par contre on peut utiliser <a href="http://sametmax.com/remplacer-les-threads-avec-le-module-multiprocessing-en-python/">plusieurs processus</a> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> multiprocessing <span style="color: #ff7700;font-weight:bold;">import</span> Process
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> traiter_les_images<span style="color: black;">&#40;</span>debut<span style="color: #66cc66;">,</span> fin<span style="color: black;">&#41;</span>:
+&nbsp;
+ <span style="color: #ff7700;font-weight:bold;">for</span> image <span style="color: #ff7700;font-weight:bold;">in</span> obtenir_liste_images<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span>debut<span style="color: #66cc66;">,</span> fin<span style="color: black;">&#93;</span>:
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	data <span style="color: #66cc66;">=</span> lire_image<span style="color: black;">&#40;</span>image<span style="color: black;">&#41;</span> 
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># gros du travail</span>
+	redimensioner<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	mettre_en_noir_et_blanc<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	ajouter_ombre<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	ecrire_image<span style="color: black;">&#40;</span>data<span style="color: #66cc66;">,</span> image<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On crée deux processus, un pour traiter les 500 premières images,</span>
+<span style="color: #808080; font-style: italic;"># un pour traiter les images de 500 à 1000</span>
+p1 <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>traiter_les_images<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">500</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+p2 <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>traiter_les_images<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">500</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># On les démarre, ils se séparent alors du programme pour</span>
+<span style="color: #808080; font-style: italic;"># devenir indépendant</span>
+p1.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+p2.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># on dit au programme d'attendre la fin des deux processus</span>
+<span style="color: #808080; font-style: italic;"># CE programme bloque ici, mais les deux processus, eux,</span>
+<span style="color: #808080; font-style: italic;"># ne bloquent pas.</span>
+p1.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+p2.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Dans cet exemple, il y a TROIS processus : votre programme Python, et les deux processus qui vont traiter les photos, qui consistent ni plus ni moins en la fonction <code>traiter_les_images()</code> qui a maintenant un process pour elle toute seule.</p>
+<p>La plupart des langages ont ce genre de mécanisme pour faire du travail en parallèle. Java utilise les threads par exemple. Javascript utilise les Web Workers.</p>
+<p>Nous traitons des données de plus en plus massives (jeux vidéos, encoding divx, retouche d&#8217;images, montage de sons&#8230;), et maîtriser la parallélisation permet donc d&#8217;optimiser les ressources de nos machines modernes afin d&#8217;être toujours plus efficace.</p>
+<h2>Si il y a plusieurs entités indépendantes, c&#8217;est concurrent</h2>
+<p>Si vous avez un serveur et un client, c&#8217;est de la programmation concurrente. Si vous avez un module qui s&#8217;occupe des I/O utilisateurs, un qui s&#8217;occupe de la base de données et un qui surveille le comportement de l&#8217;OS, dans des processus séparés, et qui communiquent entre eux, c&#8217;est de la programmation concurrente.</p>
+<p>La programmation concurrente suppose que chaque acteur de votre système est indépendant et possède son propre état. Idéalement, les acteurs sont capables de communiquer entre eux. Généralement, ils partagent une ressource à laquelle ils doivent accéder, par exemple un fichier de log. Et c&#8217;est là qu&#8217;il faut faire attention : certaines ressources ne sont pas faites pour êtres utilisées en même temps par plusieurs process. C&#8217;est pour ça qu&#8217;on parle d&#8217;accès concurrent comme d&#8217;un gros problème en informatique.</p>
+<p>Un exemple de programmation concurrente en Python serait d&#8217;avoir un process qui regarde régulièrement si il y a des mails, et les sauvegarde. Si il reçoit un message suspect, il envoie le message à un autre process, un anti-virus, qui en plus de surveiller l&#8217;ordi, peut désinfecter le mail. Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> multiprocessing <span style="color: #ff7700;font-weight:bold;">import</span> Process<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">Queue</span>
+&nbsp;
+entree_traiteur_de_mail <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">Queue</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+entree_anti_virus <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">Queue</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> traiter_les_mails<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># Les processus qui tournent continuellement</span>
+	<span style="color: #808080; font-style: italic;"># en arrière plan sont juste boucle infinie</span>
+	<span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+		mail <span style="color: #66cc66;">=</span> obtenir_mail<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+		<span style="color: #808080; font-style: italic;"># Si un mail est suspect, on l'envoie</span>
+		<span style="color: #808080; font-style: italic;"># au processus de l'anti-virus, </span>
+		<span style="color: #808080; font-style: italic;"># et on attend qu'il nous le renvoie</span>
+		<span style="color: #808080; font-style: italic;"># tout propres.</span>
+		<span style="color: #808080; font-style: italic;"># Les deux processus sont indépendant,</span>
+		<span style="color: #808080; font-style: italic;"># ils fonctionnent l'un sans l'autre et</span>
+		<span style="color: #808080; font-style: italic;"># ne sont pas dans la même VM.</span>
+		<span style="color: #ff7700;font-weight:bold;">if</span> mail_est_suspect<span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>:
+			entree_anti_virus.<span style="color: black;">put</span><span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+			mail <span style="color: #66cc66;">=</span> entree_traiteur_de_mail.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+		sauvegarder_mail<span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> anti_virus<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+	<span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+		<span style="color: #808080; font-style: italic;"># L'anti-virus vérifie périodiquement </span>
+		<span style="color: #808080; font-style: italic;"># s'il n'a pas un mail à nettoyer,</span>
+		<span style="color: #808080; font-style: italic;"># mais n'attend que 0.01 seconde, et si</span>
+		<span style="color: #808080; font-style: italic;"># rien ne se présente, continue son </span>
+		<span style="color: #808080; font-style: italic;"># travail.</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+        	<span style="color: #808080; font-style: italic;"># Si il y a un mail à désinfecter,</span>
+        	<span style="color: #808080; font-style: italic;"># il le nettoie, et le renvoie</span>
+        	<span style="color: #808080; font-style: italic;"># au processus de traitement de mails.</span>
+            mail <span style="color: #66cc66;">=</span> entree_anti_virus.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0.01</span><span style="color: black;">&#41;</span>
+            desinfecter_mail<span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+            entree_traiteur_de_mail.<span style="color: black;">put</span><span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> TimeoutError:
+            <span style="color: #ff7700;font-weight:bold;">pass</span>
+        <span style="color: #808080; font-style: italic;"># L'anti-virus ne fait pas que desinfecter </span>
+        <span style="color: #808080; font-style: italic;"># les mails, il a d'autres tâches à lui</span>
+        verifier_virus_sur_system<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On lance les process. La plupart du temps, il n'y a </span>
+<span style="color: #808080; font-style: italic;"># pas de mail suspect, et donc les deux processus</span>
+<span style="color: #808080; font-style: italic;"># n'en bloquent pas. En cas de mail suspect ils bloquent</span>
+<span style="color: #808080; font-style: italic;"># le temps d'échanger le mail entre eux.</span>
+process_traitement_mail <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>traiter_les_mails<span style="color: black;">&#41;</span>
+process_anti_virus <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>anti_virus<span style="color: black;">&#41;</span>
+process_anti_virus.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+process_traitement_mail.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+process_anti_virus.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+process_traitement_mail.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La programmation concurrente est donc une question d&#8217;architecture : vous êtes en concurrence ou non si vous décidez de répartir votre code entre plusieurs acteurs indépendant ou non. Les acteurs peuvent avoir des tâches distinctes, et ne pas se bloquer, mais communiquer sur les tâches communes. L&#8217;avantage de la programmation concurrente, c&#8217;est sa robustesse : si un process plante, le reste de votre programme continue de fonctionner. C&#8217;est pour cette raison qu&#8217;Erlang, un langage connu pour créer des systèmes increvables, base toute sa philosophie là dessus : un programme Erlang est composé de milliers d&#8217;acteurs communiquant entre eux par messages.</p>
+<h2>Hey, mais, attends là !</h2>
+<blockquote><p>Ton exemple de programmation parallèle, c&#8217;est aussi une exécution concurrente. Et puis si on fait pleins de processus, pour faire la même tâche d&#8217;I/O, ils ne se bloquent pas entre eux, donc c&#8217;est non bloquant sur l&#8217;I/O, c&#8217;est asynchrone !</p></blockquote>
+<p>Allez-vous me dire, fort intelligement. Car nous avons des lecteurs intelligents.</p>
+<p>Hé oui, effectivement, ce sont des notions qui se chevauchent. Comme je vous l&#8217;ai dit, c&#8217;est une question de point de vue. Si on se place du point de vue de l&#8217;algo, on peut paralléliser le traitement, ou non. Et il y a plusieurs manières de paralléliser. Si on se place du point de vue de l&#8217;I/O, on peut bloquer ou non, et alors on est dans de l&#8217;asynchrone. Si on se place du point de vue des acteurs, on peut en avoir plusieurs indépendants ou non, alors on est en concurrence.</p>
+<p>En fait, même plusieurs acteurs qui communiquent entre eux sont considérés comme étant chacun en train de faire de l&#8217;I/O, avec les autres&#8230;</p>
+<p>Bref, ces 3 termes, c&#8217;est de la sémantiques. Au final, ce qui importe, c&#8217;est que vous compreniez les enjeux qu&#8217;il y a derrière pour écrire un programme qui fasse son boulot comme il faut, et finisse en temps et en heure.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/cock-block.jpg" length="9784" type="image/jpg" />	</item>
+	</channel>
+</rss>

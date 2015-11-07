@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; multiprocessing</title>
+	<atom:link href="http://sametmax.com/tag/multiprocessing/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Python a le don d&#8217;Ubiquité : Multiprocessing 7</title>
+		<link>http://sametmax.com/python-ubiuite-multiprocessing/</link>
+		<comments>http://sametmax.com/python-ubiuite-multiprocessing/#comments</comments>
+		<pubDate>Sun, 02 Feb 2014 16:41:23 +0000</pubDate>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[multiprocessing]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8939</guid>
+		<description><![CDATA[Ceci est un post invité de Foxmask posté sous licence creative common 3.0 unported. Tout récemment j&#8217;ai voulu donner un coup de fouet à mon script de traitement de Trigger Happy (que je fais tourner sur ma &#8220;raspberry pi&#8221; parce que chuis un w4rl0rdZ:P) que j&#8217;estimais être trop long dans ses traitements de données. Actuellement [&#8230;]]]></description>
+				<content:encoded><![CDATA[<blockquote><p>Ceci est un post invité de <a href="http://sametmax.com/author/foxmask" target="_blank">Foxmask </a>posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">creative common 3.0 unported</a>.</p></blockquote>
+<p>Tout récemment j&#8217;ai voulu donner un coup de fouet à mon <a href="https://github.com/foxmask/django-th/blob/d91e443795429c85decf0ccf5e1f8470df7d11c4/fire.py">script de traitement</a> de <a href="http://www.foxmask.info/tag/triggerhappy/">Trigger Happy</a> (que je fais tourner sur ma &#8220;raspberry pi&#8221; parce que chuis un w4rl0rdZ:P) que j&#8217;estimais être trop long dans ses traitements de données.</p>
+<p>Actuellement avec <a href="https://pypi.python.org/pypi/django_th/">Trigger Happy</a>, j&#8217;ai 30 sources de données (essentiellement des flux rss), que je parcours, et quand un nouvel item arrive, je l&#8217;envoi à pétaouchnock (Evernote ;) Le tout prend <strong>7min</strong>, soit 14secondes par source. La loose totale.</p>
+<p>Voici le corps du délit :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+&nbsp;
+<span style="color: #dc143c;">os</span>.<span style="color: black;">environ</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;django_th.settings&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django_th.<span style="color: black;">services</span> <span style="color: #ff7700;font-weight:bold;">import</span> default_provider
+<span style="color: #ff7700;font-weight:bold;">from</span> django_th.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> TriggerService
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">utils</span>.<span style="color: black;">log</span> <span style="color: #ff7700;font-weight:bold;">import</span> getLogger
+&nbsp;
+<span style="color: #808080; font-style: italic;"># create logger</span>
+logger <span style="color: #66cc66;">=</span> getLogger<span style="color: black;">&#40;</span><span style="color: #483d8b;">'django_th.trigger_happy'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> go<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        run the main process
+    &quot;&quot;&quot;</span>
+    trigger <span style="color: #66cc66;">=</span> TriggerService.<span style="color: black;">objects</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>status<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> trigger:
+        <span style="color: #ff7700;font-weight:bold;">for</span> service <span style="color: #ff7700;font-weight:bold;">in</span> trigger:
+<span style="color: black;">&#91;</span>...<span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;No trigger set by any user&quot;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> main<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    default_provider.<span style="color: black;">load_services</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># let's go</span>
+    go<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+&nbsp;
+    main<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mais avant que je ne me penche sur le code du script pour l&#8217;améliorer, je me suis dit que plutôt que de chercher à corriger un problème, autant chercher la source de celui-ci d&#8217;abord (normal hein).</p>
+<p>Un HTOP m&#8217;a révélé :</p>
+<ol>
+<li>que le CPU était à 100% tout le temps, que le script tourne ou pas</li>
+<li>quye la raison était double : rabittmq et celery&#8230; </li>
+</ol>
+<p>Une fois shootés ces derniers, tout va pour le mieux :P<br />
+Je ne dis pas que ceux ci sont de la merde, mais que, pour mon cas, la crontab se suffit à elle-même.</p>
+<p>Donc une fois désinstallés c&#8217;est 2 (sur)consommateurs de ressources, je relance le script pour tomber à un temps de traitement à <strong>5mn</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="shell" style="font-family:monospace;">2014-02-02 14:40:51,693 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Sam et Max nothing new
+2014-02-02 14:40:53,865 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News de Numerama nothing new
+2014-02-02 14:40:56,013 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de La Ferme du Web nothing new
+2014-02-02 14:41:01,005 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - flux de Paulds nothing new
+2014-02-02 14:41:20,098 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux d'un Odieux Connard nothing new
+2014-02-02 14:41:22,142 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Strict minimum nothing new
+2014-02-02 14:41:25,868 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Humeurs Illustrées nothing new
+2014-02-02 14:41:33,497 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux du Journalisme Total nothing new
+2014-02-02 14:41:35,658 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Kernel Panic nothing new
+2014-02-02 14:41:44,897 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de AngularJS nothing new
+2014-02-02 14:41:49,016 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Odeon nothing new
+2014-02-02 14:41:54,186 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Nicolargo nothing new
+2014-02-02 14:42:12,525 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de JEEK nothing new
+2014-02-02 14:42:21,349 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Recher nothing new
+2014-02-02 14:42:31,266 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Un blog d'adminsys Libres nothing new
+2014-02-02 14:42:35,824 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - flux de Le bloc-notes de Gee nothing new
+2014-02-02 14:42:36,647 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de mere code (atom) nothing new
+2014-02-02 14:42:39,616 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Alex Mac Caw nothing new
+2014-02-02 14:42:42,985 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Yearofmoo Articles nothing new
+2014-02-02 14:43:42,732 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Novapost nothing new
+2014-02-02 14:43:46,722 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Les Numériques nothing new
+2014-02-02 14:43:58,303 INFO fire 5142 date 2014-02-02 13:00:00 &gt;= date triggered 2014-02-02 09:02:36 title Test du Quechua Phone 5, le smartphone des montagnards ?
+2014-02-02 14:44:08,010 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Frandroid = 1 new data
+2014-02-02 14:44:17,624 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de TechCrunch Mobile nothing new
+2014-02-02 14:44:20,339 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux Django annonces nothing new
+2014-02-02 14:44:20,744 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - La Hyène - Python nothing new
+2014-02-02 14:44:24,237 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News de PCInpact nothing new
+2014-02-02 14:44:29,055 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - PointGPhone nothing new
+2014-02-02 14:44:31,299 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - HumanCoders Python nothing new
+2014-02-02 14:44:52,751 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - HauteFeuille Lab (python) nothing new
+2014-02-02 14:44:58,850 INFO fire 5142 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Python Plone Planet nothing new</pre></td></tr></table></div>
+
+<p>Comme je suis un éternel insatisfait de bibi, j&#8217;ai cherché <a href="http://sametmax.com/remplacer-les-threads-avec-le-module-multiprocessing-en-python/">des moyens</a> <a href="http://www.hautefeuille.eu/python-parallelism-multiprocessing.html">un peu partout</a>, jusqu&#8217;à ce que Sam me souffle une suggestion ;)</p>
+<p>A présent donc <a href="https://github.com/foxmask/django-th/blob/master/fire.py">une version modifiée pour exploiter le multiprocessing</a> est la suivante :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+<span style="color: #dc143c;">os</span>.<span style="color: black;">environ</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;th.settings&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> django_th.<span style="color: black;">services</span> <span style="color: #ff7700;font-weight:bold;">import</span> default_provider
+<span style="color: #ff7700;font-weight:bold;">from</span> django_th.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> TriggerService
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">utils</span>.<span style="color: black;">log</span> <span style="color: #ff7700;font-weight:bold;">import</span> getLogger
+&nbsp;
+<span style="color: #808080; font-style: italic;"># create logger</span>
+logger <span style="color: #66cc66;">=</span> getLogger<span style="color: black;">&#40;</span><span style="color: #483d8b;">'django_th.trigger_happy'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> go<span style="color: black;">&#40;</span>service<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        run the main process
+    &quot;&quot;&quot;</span>
+    <span style="color: black;">&#91;</span>...<span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> main<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    default_provider.<span style="color: black;">load_services</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># let's go</span>
+    trigger <span style="color: #66cc66;">=</span> TriggerService.<span style="color: black;">objects</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>status<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> trigger:
+        <span style="color: #ff7700;font-weight:bold;">from</span> multiprocessing <span style="color: #ff7700;font-weight:bold;">import</span> Pool
+        pool <span style="color: #66cc66;">=</span> Pool<span style="color: black;">&#40;</span>processes<span style="color: #66cc66;">=</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>
+        result <span style="color: #66cc66;">=</span> pool.<span style="color: #008000;">map</span><span style="color: black;">&#40;</span>go<span style="color: #66cc66;">,</span> trigger<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;No trigger set by any user&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+&nbsp;
+    main<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>fait tomber le temps de traitement à &#8230; <strong>1min</strong> &#8230;:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="shell" style="font-family:monospace;">$ date &amp;&amp; ./fire.sh &amp;&amp; date 
+dimanche 2 février 2014, 14:58:38 (UTC+0100)
+2014-02-02 14:58:48,221 INFO fire 5334 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de La Ferme du Web nothing new
+2014-02-02 14:58:48,243 INFO fire 5336 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Humeurs Illustrées nothing new
+2014-02-02 14:58:48,256 INFO fire 5337 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Kernel Panic nothing new
+2014-02-02 14:58:48,283 INFO fire 5333 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Sam et Max nothing new
+2014-02-02 14:58:48,907 INFO fire 5335 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux d'un Odieux Connard nothing new
+2014-02-02 14:58:49,267 INFO fire 5334 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - flux de Paulds nothing new
+2014-02-02 14:58:49,446 INFO fire 5336 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux du Journalisme Total nothing new
+2014-02-02 14:58:49,713 INFO fire 5333 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News de Numerama nothing new
+2014-02-02 14:58:49,847 INFO fire 5335 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Strict minimum nothing new
+2014-02-02 14:58:50,209 INFO fire 5334 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Odeon nothing new
+2014-02-02 14:58:50,353 INFO fire 5337 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de AngularJS nothing new
+2014-02-02 14:58:50,830 INFO fire 5333 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Un blog d'adminsys Libres nothing new
+2014-02-02 14:58:51,338 INFO fire 5336 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de JEEK nothing new
+2014-02-02 14:58:51,396 INFO fire 5334 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Nicolargo nothing new
+2014-02-02 14:58:51,476 INFO fire 5337 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Yearofmoo Articles nothing new
+2014-02-02 14:58:51,735 INFO fire 5333 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - flux de Le bloc-notes de Gee nothing new
+2014-02-02 14:58:52,148 INFO fire 5335 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de mere code (atom) nothing new
+2014-02-02 14:58:52,640 INFO fire 5336 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Recher nothing new
+2014-02-02 14:58:52,971 INFO fire 5335 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Alex Mac Caw nothing new
+2014-02-02 14:58:53,416 INFO fire 5334 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Les Numériques nothing new
+2014-02-02 14:58:53,474 INFO fire 5333 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de TechCrunch Mobile nothing new
+2014-02-02 14:58:53,870 INFO fire 5337 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Novapost nothing new
+2014-02-02 14:58:54,072 INFO fire 5335 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - PointGPhone nothing new
+2014-02-02 14:58:54,316 INFO fire 5333 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux Django annonces nothing new
+2014-02-02 14:58:54,853 INFO fire 5336 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - La Hyène - Python nothing new
+2014-02-02 14:58:55,111 INFO fire 5335 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - HumanCoders Python nothing new
+2014-02-02 14:58:55,222 INFO fire 5334 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News Frandroid nothing new
+2014-02-02 14:58:55,380 INFO fire 5337 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - HauteFeuille Lab (python) nothing new
+2014-02-02 14:58:55,696 INFO fire 5336 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - News de PCInpact nothing new
+2014-02-02 14:59:02,214 INFO fire 5337 user: foxmask - provider: ServiceRss - consummer: ServiceEvernote - Flux de Python Plone Planet nothing new
+dimanche 2 février 2014, 14:59:02 (UTC+0100)</pre></td></tr></table></div>
+
+<p>Comme on l&#8217;aura remarqué la différence entre les 2 versions est l&#8217;appel fait à a fonction go </p>
+<p>avant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> main<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    default_provider.<span style="color: black;">load_services</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># let's go</span>
+    go<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>après :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> main<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    default_provider.<span style="color: black;">load_services</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># let's go</span>
+    trigger <span style="color: #66cc66;">=</span> TriggerService.<span style="color: black;">objects</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>status<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> trigger:
+        <span style="color: #ff7700;font-weight:bold;">from</span> multiprocessing <span style="color: #ff7700;font-weight:bold;">import</span> Pool
+        pool <span style="color: #66cc66;">=</span> Pool<span style="color: black;">&#40;</span>processes<span style="color: #66cc66;">=</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>
+        result <span style="color: #66cc66;">=</span> pool.<span style="color: #008000;">map</span><span style="color: black;">&#40;</span>go<span style="color: #66cc66;">,</span> trigger<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;No trigger set by any user&quot;</span></pre></td></tr></table></div>
+
+<p>du coup l&#8217;appel de la fonction &#8220;go&#8221; implique de changer sa signature en lui filant comme <a href="http://sametmax.com/la-difference-entre-parametres-et-arguments/">argument</a> &#8220;trigger&#8221; (le QuerySet de l&#8217;appli Django)</p>
+<p>A présent donc <strong>pool.map</strong> fait l&#8217;itération des données trouvées dans le modele <strong>TriggerService</strong> et exécute tout le tintouin. *<:o)</p>
+<p>ps : @Sam : chose promise chose dûe ;)</p>
+<p><strong>edit:</strong> apres de moult nouveaux essais sur le sujet, seul SQLite supporte cette façon de faire. MySQL, PostgreSQL non. La faute au multiprocessing, qui m&#8217;a-t-on confirmé de ci de là ne convient pas du tout pour gérer des connexions aux bases.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/python-ubiuite-multiprocessing/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/02/le-petit-serpent-albinos-a-deux-tetes-credit-photo-sunshine-serpents_35781_w250.jpg" length="16901" type="image/jpg" />	</item>
+		<item>
+		<title>La différence entre la programmation asynchrone, parallèle et concurrente 27</title>
+		<link>http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/</link>
+		<comments>http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/#comments</comments>
+		<pubDate>Wed, 09 Oct 2013 22:08:13 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[conccurence]]></category>
+		<category><![CDATA[erlang]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[multiprocessing]]></category>
+		<category><![CDATA[parallèle]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[thread]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7378</guid>
+		<description><![CDATA[On parle un peu partout de programmation non blocante ces temps-ci. NoSQL a remis le map/reduce au goût du jour, et PAF, on vous sort le mot clé parallélisation pour vous en vendre une tetrachiée. Les partisants de NodeJS vont crier "asynchrone", parce que c'est ce que Javascript sait faire de mieux. Et on on murmure dans les coins que la rubustesse d'Erlang tient dans ses acteurs qui travaillent de manière concurrente dans la VM.
+
+Ok, donc tout ça, ça à l'air de faire la même chose, c'est à dire de faire plusieurs choses en même temps, sans bloquer.
+
+Donc c'est pareil ?]]></description>
+				<content:encoded><![CDATA[<p>On parle un peu partout de programmation non bloquante ces temps-ci. NoSQL a remis le map/reduce au goût du jour, et PAF, on vous sort le mot clé parallélisation pour vous en vendre une tetrachiée. Les partisants de NodeJS vont crier &#8220;asynchrone&#8221;, parce que c&#8217;est ce que Javascript sait faire de mieux. Et on murmure dans les coins que la robustesse d&#8217;Erlang tient dans ses acteurs qui travaillent de manière concurrente dans la VM.</p>
+<p>Ok, donc tout ça, ça à l&#8217;air de faire la même chose, c&#8217;est à dire de faire plusieurs choses en même temps, sans bloquer.</p>
+<p>Donc c&#8217;est pareil ?</p>
+<p>Non. En fait c&#8217;est une question de point de vue : non bloquant dans quel contexte ?</p>
+<h2>Si c&#8217;est l&#8217;IO, c&#8217;est asynchrone</h2>
+<p>Pour rappel, l&#8217;IO (Input/Ouput), c&#8217;est toute activité qui implique que des données entrent et sortent de votre programme : saisie utilisateur, print sur un terminal, lecture sur une socket, écriture sur le disque, etc. Une opération I/O a plusieurs caractéristiques :</p>
+<ul>
+<li>Le temps que prend l&#8217;opération n&#8217;est pas dépendant du CPU : la vitesse du disque, la latence du réseau, le nombre d&#8217;heures de sommeil du sysadmin sont les facteurs qui vont déterminer quand l&#8217;opération va prendre fin.</li>
+<li>Le corollaire, c&#8217;est qu&#8217;on ne peut pas prédire quand l&#8217;opération va prendre fin depuis le programme.</li>
+<li>Sur les services avec beaucoup d&#8217;I/O (serveurs Web, bases de données, crawlers, scripts de déploiement, etc), c&#8217;est l&#8217;I/O qui généralement prend le plus de temps dans l&#8217;exécution du programme. L&#8217;optimisation de ces opérations va donc l&#8217;accélérer bien plus que de changer votre algo.</li>
+</ul>
+<p>La plupart des programmes bloquent quand ils effectuent une opération I/O. Par exemple, si vous faites ceci en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">urllib2</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># télécharge et affiche le contenu de la page d'acceuil de sam et max</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">urllib2</span>.<span style="color: black;">urlopen</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'http://sametmax.com'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Coucou&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La ligne <code>print("Coucou")</code> ne s&#8217;exécutera pas tant que la ligne précédente n&#8217;aura pas terminé de s&#8217;exécuter. Dans ce cas ce n&#8217;est pas très grâve, mais dans ce cas là :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">urllib2</span>
+&nbsp;
+&nbsp;
+mille_urls <span style="color: #66cc66;">=</span> obtenir_liste_de_mille_urls<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+contenu <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># télécharge et sauvegarde dans une liste</span>
+<span style="color: #808080; font-style: italic;"># le contenu de chacune des 1000 urls</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> mille_urls:
+	contenu.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">urllib2</span>.<span style="color: black;">urlopen</span><span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Chaque url est téléchargée une par une, et comme Internet, c&#8217;est vachement lent (300 ms X 1000, ça fait 5 minutes, mine de rien), votre programme va prendre un temps fou. Et pour rien en plus, car votre programme va passer la majeure partie du temps à ne rien faire ! En effet, 99% du temps de votre programme est passé à attendre qu&#8217;Internet réponde, pendant que votre CPU se touche les noix.</p>
+<p>La programmation asynchrone est une réponse à cela : au lieu d&#8217;attendre que se finissent les entrées et les sorties, le programme continue de fonctionner. </p>
+<p>Une autre problématique se pose alors : comment obtenir le résultat de l&#8217;opération d&#8217;I/O, puisqu&#8217;on ne sait pas quand il va arriver et qu&#8217;on attend pas qu&#8217;il arrive ?</p>
+<p>C&#8217;est là que les systèmes synchrones font un peu de magie. En vérité, une partie du programme attend, mais discrètement, en arrière plan, au niveau de ce qu&#8217;on appelle une boucle d&#8217;événements (&#8220;events loop&#8221;), c&#8217;est à dire une boucle infinie qui check régulièrement si une opération I/O ne s&#8217;est pas terminée. </p>
+<p>Cette boucle est invisible pour vous, votre programme continue de tourner. Mais si une opération I/O envoie des données, alors l&#8217;events loop va réagir.</p>
+<p>Ca a l&#8217;air compliqué, mais en fait, c&#8217;est, la plupart du temps, juste une histoire de callback (si la notion vous échappe, je vous renvois à <a href="http://sametmax.com/quest-ce-quun-callback/">l&#8217;article dédié</a>&#8230;). Par exemple en Javascript :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">var mille_urls <span style="color: #66cc66;">=</span> obtenir_liste_de_mille_urls<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+var contenu <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># notre callback qui va permettre d'ajouter </span>
+<span style="color: #808080; font-style: italic;"># le contenu téléchargé à notre liste</span>
+var callback <span style="color: #66cc66;">=</span> function<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span> <span style="color: black;">&#123;</span> 
+      contenu.<span style="color: black;">push</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+<span style="color: black;">&#125;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Bon, j'utilise jquery pour simplifier le code...</span>
+<span style="color: #808080; font-style: italic;"># On boucle sur les milles URL</span>
+$.<span style="color: black;">each</span><span style="color: black;">&#40;</span>mille_urls<span style="color: #66cc66;">,</span> function<span style="color: black;">&#40;</span>index<span style="color: #66cc66;">,</span> url<span style="color: black;">&#41;</span> <span style="color: black;">&#123;</span>
+  <span style="color: #808080; font-style: italic;"># On télécharge le contenu, MAIS comme</span>
+  <span style="color: #808080; font-style: italic;"># $.get est naturellement non blocante,</span>
+  <span style="color: #808080; font-style: italic;"># elle ne va pas attendre qu'internet </span>
+  <span style="color: #808080; font-style: italic;"># réponde pour continuer la boucle, et</span>
+  <span style="color: #808080; font-style: italic;"># donc on pourra attendre plusieurs réponses</span>
+  <span style="color: #808080; font-style: italic;"># en même temps. Pour avoir le résultat de </span>
+  <span style="color: #808080; font-style: italic;"># chaque réponse, on passe un callback qui </span>
+  <span style="color: #808080; font-style: italic;"># va être appelé quand la réponse arrive.</span>
+  $.<span style="color: black;">get</span><span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> callback<span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+<span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span></pre></td></tr></table></div>
+
+<p>Comprenez bien la subtilité : à tout moment, il n&#8217;y a qu&#8217;UN SEUL process javascript qui s&#8217;éxécute. Il n&#8217;y a pas deux traitements, pas de threads, pas de processus parallèles, rien de tout ça. Simplement, Javascript n&#8217;attend pas la réponse de sa requête pour faire la requête suivante, il continu sur sa lancée, et donc <strong>peut optimiser les temps d&#8217;attente en attendant plusieurs choses en même temps</strong>.</p>
+<p>Javascript utilise massivement des API asynchrones, c&#8217;est au cœur du langage, il n&#8217;y a aucun effort à faire pour cela. A l&#8217;inverse, Python est synchrone par nature, et il faut vraiment se faire chier pour obtenir un algo asynchrone. Ceci changera avec Python 3.4 qui accueillera <a href="https://code.google.com/p/tulip/">tulip</a> dans la stdlib, afin de se moderniser sur ce point. En attendant, si vous voulez faire de l&#8217;asynchrone en Python, vous pouvez voir du côté de <a href="http://www.gevent.org/">gevent</a>, <a href="https://github.com/saucelabs/monocle">monocle</a> ou <a href="http://www.tornadoweb.org/en/stable/">Tornado</a>. L&#8217;alternative est d&#8217;utiliser des <a href="http://docs.python.org/2/library/thread.html">threads</a> ou des <a href="http://docs.python.org/2/library/multiprocessing.html?highlight=multiprocessing#multiprocessing">processus séparés</a>, ce qui ne demande rien à installer, mais est un peu verbeux, et est moins performant.</p>
+<p>Souvenez-vous que l&#8217;I/O, c&#8217;est toute entrée et sortie du programme. Un clic sur un bouton, c&#8217;est une entrée, mettre à jour un élément du DOM dans le navigateur, c&#8217;est une sortie. La programmation asynchrone est donc importante pour la réactivité des programmes.</p>
+<h2>Si un algorithme peut répartir son travail en plusieurs bouts, c&#8217;est parallèle</h2>
+<p>Par exemple, vous avez 1000 images en haute définition à traiter : il faut les redimensionner, les mettre en noir et blanc et ajouter une ombre sur les bords. Là, la partie de votre programme qui prend le plus de temps, c&#8217;est le traitement des images, pas l&#8217;I/O, et donc c&#8217;est le CPU. Par exemple, en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> image <span style="color: #ff7700;font-weight:bold;">in</span> obtenir_liste_images<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	data <span style="color: #66cc66;">=</span> lire_image<span style="color: black;">&#40;</span>image<span style="color: black;">&#41;</span> 
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># gros du travail</span>
+	redimensioner<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	mettre_en_noir_et_blanc<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	ajouter_ombre<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	ecrire_image<span style="color: black;">&#40;</span>data<span style="color: #66cc66;">,</span> image<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si vous avez plusieurs ordinateurs, une manière de paralléliser le travail est de mettre 500 images sur l&#8217;un, et 500 images sur l&#8217;autre, et de lancer le script sur chaque ordi.</p>
+<p>Si vous avez plusieurs processeurs dans votre ordi (ce qui est le cas de tous les ordis modernes, et plus seulement les super-calculateurs comme il y a 10 ans), vous pouvez aussi paralléliser le travail sur une seule machine : chaque processeur va s&#8217;occuper d&#8217;une partie du taf.</p>
+<p>Bien entendu, vous pouvez lancer le script 2 fois, mais cela ne marche que sur des travaux simples comme celui là. Et ça suppose que vous connaissez le nombre de CPU que vous voulez faire travailler à l&#8217;avance.</p>
+<p> Une manière de faire plus propre est d&#8217;utiliser des threads ou des processus séparés. En Python, le thread ne servirait à rien, car on se heurterait au GIL, le fameux global interpréteur lock, qui fait qu&#8217;une VM n&#8217;utilise qu&#8217;un processeur, quoi qu&#8217;il arrive. Les threads ne sont donc utiles (en Python), que pour l&#8217;I/O. Par contre on peut utiliser <a href="http://sametmax.com/remplacer-les-threads-avec-le-module-multiprocessing-en-python/">plusieurs processus</a> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> multiprocessing <span style="color: #ff7700;font-weight:bold;">import</span> Process
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> traiter_les_images<span style="color: black;">&#40;</span>debut<span style="color: #66cc66;">,</span> fin<span style="color: black;">&#41;</span>:
+&nbsp;
+ <span style="color: #ff7700;font-weight:bold;">for</span> image <span style="color: #ff7700;font-weight:bold;">in</span> obtenir_liste_images<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span>debut<span style="color: #66cc66;">,</span> fin<span style="color: black;">&#93;</span>:
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	data <span style="color: #66cc66;">=</span> lire_image<span style="color: black;">&#40;</span>image<span style="color: black;">&#41;</span> 
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># gros du travail</span>
+	redimensioner<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	mettre_en_noir_et_blanc<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+	ajouter_ombre<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># I/O</span>
+	ecrire_image<span style="color: black;">&#40;</span>data<span style="color: #66cc66;">,</span> image<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On crée deux processus, un pour traiter les 500 premières images,</span>
+<span style="color: #808080; font-style: italic;"># un pour traiter les images de 500 à 1000</span>
+p1 <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>traiter_les_images<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">500</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+p2 <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>traiter_les_images<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">500</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1000</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># On les démarre, ils se séparent alors du programme pour</span>
+<span style="color: #808080; font-style: italic;"># devenir indépendant</span>
+p1.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+p2.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># on dit au programme d'attendre la fin des deux processus</span>
+<span style="color: #808080; font-style: italic;"># CE programme bloque ici, mais les deux processus, eux,</span>
+<span style="color: #808080; font-style: italic;"># ne bloquent pas.</span>
+p1.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+p2.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Dans cet exemple, il y a TROIS processus : votre programme Python, et les deux processus qui vont traiter les photos, qui consistent ni plus ni moins en la fonction <code>traiter_les_images()</code> qui a maintenant un process pour elle toute seule.</p>
+<p>La plupart des langages ont ce genre de mécanisme pour faire du travail en parallèle. Java utilise les threads par exemple. Javascript utilise les Web Workers.</p>
+<p>Nous traitons des données de plus en plus massives (jeux vidéos, encoding divx, retouche d&#8217;images, montage de sons&#8230;), et maîtriser la parallélisation permet donc d&#8217;optimiser les ressources de nos machines modernes afin d&#8217;être toujours plus efficace.</p>
+<h2>Si il y a plusieurs entités indépendantes, c&#8217;est concurrent</h2>
+<p>Si vous avez un serveur et un client, c&#8217;est de la programmation concurrente. Si vous avez un module qui s&#8217;occupe des I/O utilisateurs, un qui s&#8217;occupe de la base de données et un qui surveille le comportement de l&#8217;OS, dans des processus séparés, et qui communiquent entre eux, c&#8217;est de la programmation concurrente.</p>
+<p>La programmation concurrente suppose que chaque acteur de votre système est indépendant et possède son propre état. Idéalement, les acteurs sont capables de communiquer entre eux. Généralement, ils partagent une ressource à laquelle ils doivent accéder, par exemple un fichier de log. Et c&#8217;est là qu&#8217;il faut faire attention : certaines ressources ne sont pas faites pour êtres utilisées en même temps par plusieurs process. C&#8217;est pour ça qu&#8217;on parle d&#8217;accès concurrent comme d&#8217;un gros problème en informatique.</p>
+<p>Un exemple de programmation concurrente en Python serait d&#8217;avoir un process qui regarde régulièrement si il y a des mails, et les sauvegarde. Si il reçoit un message suspect, il envoie le message à un autre process, un anti-virus, qui en plus de surveiller l&#8217;ordi, peut désinfecter le mail. Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> multiprocessing <span style="color: #ff7700;font-weight:bold;">import</span> Process<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">Queue</span>
+&nbsp;
+entree_traiteur_de_mail <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">Queue</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+entree_anti_virus <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">Queue</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> traiter_les_mails<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+	<span style="color: #808080; font-style: italic;"># Les processus qui tournent continuellement</span>
+	<span style="color: #808080; font-style: italic;"># en arrière plan sont juste boucle infinie</span>
+	<span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+		mail <span style="color: #66cc66;">=</span> obtenir_mail<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+		<span style="color: #808080; font-style: italic;"># Si un mail est suspect, on l'envoie</span>
+		<span style="color: #808080; font-style: italic;"># au processus de l'anti-virus, </span>
+		<span style="color: #808080; font-style: italic;"># et on attend qu'il nous le renvoie</span>
+		<span style="color: #808080; font-style: italic;"># tout propres.</span>
+		<span style="color: #808080; font-style: italic;"># Les deux processus sont indépendant,</span>
+		<span style="color: #808080; font-style: italic;"># ils fonctionnent l'un sans l'autre et</span>
+		<span style="color: #808080; font-style: italic;"># ne sont pas dans la même VM.</span>
+		<span style="color: #ff7700;font-weight:bold;">if</span> mail_est_suspect<span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>:
+			entree_anti_virus.<span style="color: black;">put</span><span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+			mail <span style="color: #66cc66;">=</span> entree_traiteur_de_mail.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+		sauvegarder_mail<span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> anti_virus<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+	<span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+		<span style="color: #808080; font-style: italic;"># L'anti-virus vérifie périodiquement </span>
+		<span style="color: #808080; font-style: italic;"># s'il n'a pas un mail à nettoyer,</span>
+		<span style="color: #808080; font-style: italic;"># mais n'attend que 0.01 seconde, et si</span>
+		<span style="color: #808080; font-style: italic;"># rien ne se présente, continue son </span>
+		<span style="color: #808080; font-style: italic;"># travail.</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+        	<span style="color: #808080; font-style: italic;"># Si il y a un mail à désinfecter,</span>
+        	<span style="color: #808080; font-style: italic;"># il le nettoie, et le renvoie</span>
+        	<span style="color: #808080; font-style: italic;"># au processus de traitement de mails.</span>
+            mail <span style="color: #66cc66;">=</span> entree_anti_virus.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0.01</span><span style="color: black;">&#41;</span>
+            desinfecter_mail<span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+            entree_traiteur_de_mail.<span style="color: black;">put</span><span style="color: black;">&#40;</span>mail<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> TimeoutError:
+            <span style="color: #ff7700;font-weight:bold;">pass</span>
+        <span style="color: #808080; font-style: italic;"># L'anti-virus ne fait pas que desinfecter </span>
+        <span style="color: #808080; font-style: italic;"># les mails, il a d'autres tâches à lui</span>
+        verifier_virus_sur_system<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On lance les process. La plupart du temps, il n'y a </span>
+<span style="color: #808080; font-style: italic;"># pas de mail suspect, et donc les deux processus</span>
+<span style="color: #808080; font-style: italic;"># n'en bloquent pas. En cas de mail suspect ils bloquent</span>
+<span style="color: #808080; font-style: italic;"># le temps d'échanger le mail entre eux.</span>
+process_traitement_mail <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>traiter_les_mails<span style="color: black;">&#41;</span>
+process_anti_virus <span style="color: #66cc66;">=</span> Process<span style="color: black;">&#40;</span>target<span style="color: #66cc66;">=</span>anti_virus<span style="color: black;">&#41;</span>
+process_anti_virus.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+process_traitement_mail.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+process_anti_virus.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+process_traitement_mail.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La programmation concurrente est donc une question d&#8217;architecture : vous êtes en concurrence ou non si vous décidez de répartir votre code entre plusieurs acteurs indépendant ou non. Les acteurs peuvent avoir des tâches distinctes, et ne pas se bloquer, mais communiquer sur les tâches communes. L&#8217;avantage de la programmation concurrente, c&#8217;est sa robustesse : si un process plante, le reste de votre programme continue de fonctionner. C&#8217;est pour cette raison qu&#8217;Erlang, un langage connu pour créer des systèmes increvables, base toute sa philosophie là dessus : un programme Erlang est composé de milliers d&#8217;acteurs communiquant entre eux par messages.</p>
+<h2>Hey, mais, attends là !</h2>
+<blockquote><p>Ton exemple de programmation parallèle, c&#8217;est aussi une exécution concurrente. Et puis si on fait pleins de processus, pour faire la même tâche d&#8217;I/O, ils ne se bloquent pas entre eux, donc c&#8217;est non bloquant sur l&#8217;I/O, c&#8217;est asynchrone !</p></blockquote>
+<p>Allez-vous me dire, fort intelligement. Car nous avons des lecteurs intelligents.</p>
+<p>Hé oui, effectivement, ce sont des notions qui se chevauchent. Comme je vous l&#8217;ai dit, c&#8217;est une question de point de vue. Si on se place du point de vue de l&#8217;algo, on peut paralléliser le traitement, ou non. Et il y a plusieurs manières de paralléliser. Si on se place du point de vue de l&#8217;I/O, on peut bloquer ou non, et alors on est dans de l&#8217;asynchrone. Si on se place du point de vue des acteurs, on peut en avoir plusieurs indépendants ou non, alors on est en concurrence.</p>
+<p>En fait, même plusieurs acteurs qui communiquent entre eux sont considérés comme étant chacun en train de faire de l&#8217;I/O, avec les autres&#8230;</p>
+<p>Bref, ces 3 termes, c&#8217;est de la sémantiques. Au final, ce qui importe, c&#8217;est que vous compreniez les enjeux qu&#8217;il y a derrière pour écrire un programme qui fasse son boulot comme il faut, et finisse en temps et en heure.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/cock-block.jpg" length="9784" type="image/jpg" />	</item>
+	</channel>
+</rss>

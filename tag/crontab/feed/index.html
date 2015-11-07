@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; crontab</title>
+	<atom:link href="http://sametmax.com/tag/crontab/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Variable d&#8217;environnement PATH et crontab 5</title>
+		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/</link>
+		<comments>http://sametmax.com/variable-denvironnement-path-et-crontab/#comments</comments>
+		<pubDate>Fri, 26 Oct 2012 06:55:35 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[crontab]]></category>
+		<category><![CDATA[env]]></category>
+		<category><![CDATA[path]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2741</guid>
+		<description><![CDATA[crontab peut réserver des suprises si on oublie de bien déclarer tous les repertoires dans le PATH...]]></description>
+				<content:encoded><![CDATA[<p>Si vous utilisez crontab pour vos tâche, faites attention à un détail : le PATH.</p>
+<p>il y a un fichier de conf que j&#8217;ai pas réussi à faire fonctionner dans /etc/crontab, si vous y arrivez tant mieux sinon éditez votre cron de la sorte:</p>
+<p><strong>1. Version avec PATH défini par tâche:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">30</span> <span style="color: #ff4500;">23</span> * * * PATH<span style="color: #66cc66;">=</span>$PATH:/usr/local/bin &amp;&amp; export PATH &amp;&amp; python /home/penetrator/script.<span style="color: black;">py</span></pre></td></tr></table></div>
+
+<p><strong>2. Version avec variables définies en haut du fichier cron:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Env</span>
+SHELL<span style="color: #66cc66;">=</span>/bin/bash
+HOME<span style="color: #66cc66;">=</span>/home/prod
+PATH<span style="color: #66cc66;">=</span>/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Cmd cron</span>
+<span style="color: #ff4500;">30</span> <span style="color: #ff4500;">23</span> * * * python /home/penetrator/script.<span style="color: black;">py</span></pre></td></tr></table></div>
+
+<p><em>$PATH=PATH:/usr/local/bin &#038;&#038; export PATH</em>  va rajouter /usr/local/bin dans le PATH.<br />
+Ayant installé et compilé un programme dans <em>/usr/local/bin</em> et l&#8217;utilisant dans script.py, il faut que son chemin soit dans le PATH.</p>
+<p><strong>Pour avoir des infos sur l&#8217;env de votre cron:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">* * * * * PATH<span style="color: #66cc66;">=</span>$PATH:/usr/local/bin &amp;&amp; export PATH &amp;&amp; env <span style="color: #66cc66;">&gt;</span> /tmp/cronenv</pre></td></tr></table></div>
+
+<p>faites un <em>tail -f /tmp/cronenv </em>pour voir si votre PATH est bien déclaré.</p>
+<p>ça peut éviter quelques heures à s&#8217;arracher les cheveux pour le debug d&#8217;un script&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/variable-denvironnement-path-et-crontab/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/homer-wall-clock.jpeg" length="44157" type="image/jpg" />	</item>
+	</channel>
+</rss>

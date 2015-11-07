@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; python 2</title>
+	<atom:link href="http://sametmax.com/tag/python-2/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Gérer plusieurs versions de Python avec &#8220;py&#8221; sous Windows 7</title>
+		<link>http://sametmax.com/gerer-plusieurs-versions-de-python-avec-py-sous-windows/</link>
+		<comments>http://sametmax.com/gerer-plusieurs-versions-de-python-avec-py-sous-windows/#comments</comments>
+		<pubDate>Sat, 10 Jan 2015 09:10:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[py]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 2]]></category>
+		<category><![CDATA[python 3]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15699</guid>
+		<description><![CDATA[Il est courant de vouloir installer plusieurs versions de Python. Pour faire des tests, pour s'assurer que son code est portable, pour utiliser des libs qui marchent uniquement sur une des versions, etc.
+
+Or, depuis la version 3.3, l'installeur de Python installe la commande <a href="https://docs.python.org/3/using/windows.html#launcher">py</a> sous Windows, qui permet de choisir quelle version de Python on lance.]]></description>
+				<content:encoded><![CDATA[<p>Il est courant de vouloir installer plusieurs versions de Python. Pour faire des tests, pour s&#8217;assurer que son code est portable, pour utiliser des libs qui marchent uniquement sur une des versions, etc.</p>
+<p>Sous Linux, c&#8217;est facile : chaque interpretteur est préfixé. Par exemple, sous Ubuntu, si je veux utiliser Python 3.4, je l&#8217;installe :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> python3.4</pre></td></tr></table></div>
+
+<p>Et si je lance <code>python</code>, ça me lance la 2.7 car c&#8217;est celle de base. Mais si je lance <code>python3.4</code>, ça me lance bien la 3.4. </p>
+<p>Au final, on finit par utiliser des <a href="virtuels">environnements virtuels</a> qui isolent des versions de Python particulières. Mais ça ne retire pas l&#8217;envie de pouvoir choisir sa version de Python au niveau du système, ce qui reste difficile à faire sous Windows.</p>
+<p>Or, depuis la version 3.3, l&#8217;installeur pour cet OS de Python installe la commande <a href="https://docs.python.org/3/using/windows.html#launcher">py</a>, qui permet de choisir quelle version de Python on lance.</p>
+<h2>Dans un terminal</h2>
+<p>Si dans une console vous faites :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py</pre></td></tr></table></div>
+
+<p>Il lancera le shell de votre installation Python 2.x la plus récente.</p>
+<p>Si vous faites :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py script.py</pre></td></tr></table></div>
+
+<p>Il exécutera le script avec votre installation Python 2.x la plus récente.</p>
+<p>Mais vous pouvez passez un flag <code>-version</code> pour forcer une version de Python. Lancer le shell Python avec la 3.3 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py -<span style="color: #000000;">3.3</span></pre></td></tr></table></div>
+
+<p>Lancer un script avec la 3.4 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py -<span style="color: #000000;">3.4</span> script.py</pre></td></tr></table></div>
+
+<p>Cela suppose que vous avez la 3.3 et la 3.4, installés, évidement.</p>
+<p>La syntaxe est surprenante. J&#8217;aurais pensé qu&#8217;ils mettraient un truc du genre <code>py -i 3.4</code> mais non, c&#8217;est direct <code>-numero</code>.</p>
+<p>La commande <code>py</code> accepte aussi les paramètres qu&#8217;on passerait normalement à la commande <code>python</code>, et notament l&#8217;option <code>-m module</code>, qui permet de lancer un module en particulier. </p>
+<p>C&#8217;est pratique pour lancer <code>ipython</code> ou <code>pip</code> avec une version particulière. Par exemple pour installer <a href="https://github.com/tavendo/AutobahnPython/">autobahn</a> uniquement pour la version 3.4 et donc utiliser <code>asyncio</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py -<span style="color: #000000;">3.4</span> <span style="color: #660033;">-m</span> pip <span style="color: #c20cb9; font-weight: bold;">install</span> autobahn</pre></td></tr></table></div>
+
+<h2>Bang !</h2>
+<p>La commande <code>py</code> reconnait également la ligne <em>shebang</em>, cette syntaxe unix qui dit quel interpretteur utiliser. Si vous mettez sur la première ligne de votre script :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#! python3.4</span></pre></td></tr></table></div>
+
+<p>Alors :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py script.py</pre></td></tr></table></div>
+
+<p>Invoquera python 3.4.</p>
+<p>La commande est capable de se débrouiller avec les chemins Unix, afin de garder la portabilité. Donc si vous faites :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#! /usr/bin/env python2.7</span></pre></td></tr></table></div>
+
+<p>Alors :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py script.py</pre></td></tr></table></div>
+
+<p>Va ignorer le debut de la ligne, et prendre l&#8217;installation locale de Python 2.7 pour lancer le script.</p>
+<h2>On click</h2>
+<p>Si vous installez la version Python 3.3 ou 3.4 en premier, les fichiers <code>.py</code> seront associés à la commande <code>py</code>. Donc si vous cliquez sur un script Python avec une ligne shebang, la bonne version sera lancée.</p>
+<p>Mais si vous avez installé Python 2.x avant, il est possible que vos fichiers <code>.py</code> soient encore associés directement à la commande <code>python</code> ordinnaire.</p>
+<p>Pour changer cela, faites un clic droit sur un fichier <code>.py</code>, modifiez le programme qui ouvre ce fichier et faites le pointer sur <code>"C:\Windows\py.exe"</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/gerer-plusieurs-versions-de-python-avec-py-sous-windows/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/UrBfT5U.jpg" length="469292" type="image/jpg" />	</item>
+		<item>
+		<title>Ca y est, on peut coder en Python 3 38</title>
+		<link>http://sametmax.com/ca-y-est-on-peut-coder-en-python-3/</link>
+		<comments>http://sametmax.com/ca-y-est-on-peut-coder-en-python-3/#comments</comments>
+		<pubDate>Mon, 17 Mar 2014 11:29:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bonheur]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 2]]></category>
+		<category><![CDATA[python 3]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9790</guid>
+		<description><![CDATA[La 3.3 et la 3.4 viennent avec tout un tas des goodies super green.</strong>
+
+Voici tout ce dont vous pouvez profiter avec Python 3 que vous ne pouvez pas faire avec Python 2.]]></description>
+				<content:encoded><![CDATA[<p><a href="https://www.python.org/download/releases/3.4.0/">Python 3.4 vient de sortir</a>, et avec cette release, je peux enfin recommander aux gens de se mettre à Python 3 plutôt que Python 2. Tout simplement parce que maintenant, en plus d&#8217;avoir énormément de <a href="http://python3wos.appspot.com/">libs qui ont migré</a>, on a l&#8217;expérience de la bestiole. C&#8217;est stable, les perfs sont bonnes, la conversion de code d&#8217;une version à l&#8217;autre est bien documentée et maitrisée.</p>
+<p><strong>Et surtout, la 3.3 et la 3.4 viennent avec tout un tas des goodies super green.</strong></p>
+<p>Voici tout ce dont vous pouvez profiter avec Python 3 que vous ne pouvez pas faire avec Python 2.</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/ILObfEzX92k" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<h2>Des classes classes</h2>
+<p>Les classes sont des new type classes en Python 3. Pas besoin d&#8217;hériter d&#8217;<code>object</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Au revoir !</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> TouteMoche<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Bonjour !</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> PropreEtNette:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Les metaclasses ne se définissent plus comme un attribut spécial :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Au revoir !</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> TouteMoche<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #0000cd;">__metaclass__</span> <span style="color: #66cc66;">=</span> UnTruc
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Bonjour !</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> PropreEtNette<span style="color: black;">&#40;</span>metaclass<span style="color: #66cc66;">=</span>Untruc<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<h2>Super Super()</h2>
+<p>Franchement, qui se souvient de la syntaxe pour appeler proprement la méthode parente d&#8217;une classe ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Au revoir !</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> FranchementHein<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>FranchementHein<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Bonjour !</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> FranchementHein:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Meta meta programmation</h2>
+<p>Le module <a href="http://docs.python.org/3/library/inspect.html?highlight=signature#inspect.signature">inspect</a> permet maintenant de récupérer des infos très très précises sur la signature des fonctions :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">    <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">inspect</span> <span style="color: #ff7700;font-weight:bold;">import</span> signature
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> *<span style="color: #66cc66;">,</span> b:<span style="color: #008000;">int</span><span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+    ...     <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> sig <span style="color: #66cc66;">=</span> signature<span style="color: black;">&#40;</span>foo<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>sig<span style="color: black;">&#41;</span>
+    <span style="color: #483d8b;">'(a, *, b:int, **kwargs)'</span>
+&nbsp;
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>sig.<span style="color: black;">parameters</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+    <span style="color: #483d8b;">'b:int'</span>
+&nbsp;
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> sig.<span style="color: black;">parameters</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span>.<span style="color: black;">annotation</span>
+    <span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'int'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Et comme vous pouvez le voir, les <a href="http://sametmax.com/les-annotations-en-python-3/">annotations</a> sont de la partie.</p>
+<p>Les classes ont également un nouvel attribut <a href="http://www.python.org/dev/peps/pep-3155/#proposal">__qualname__</a>, qui, comme on peut s&#8217;y attendre, est le qualified name de la classe :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> C:
+...   <span style="color: #ff7700;font-weight:bold;">def</span> f<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">pass</span>
+...   <span style="color: #ff7700;font-weight:bold;">class</span> D:
+...     <span style="color: #ff7700;font-weight:bold;">def</span> g<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #ff7700;font-weight:bold;">pass</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> C.__qualname__
+<span style="color: #483d8b;">'C'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> C.<span style="color: black;">f</span>.__qualname__
+<span style="color: #483d8b;">'C.f'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> C.<span style="color: black;">D</span>.__qualname__
+<span style="color: #483d8b;">'C.D'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> C.<span style="color: black;">D</span>.<span style="color: black;">g</span>.__qualname__
+<span style="color: #483d8b;">'C.D.g'</span></pre></td></tr></table></div>
+
+<p>Ca marche aussi pour les fonctions.</p>
+<p>Enfin pour les gars qui sont vraiment tordus, on a une nouvelle méthode pour les metaclasses, <a href="http://www.python.org/dev/peps/pep-0447/">__locallookup__</a>, qui permet d&#8217;influencer le <a href="http://python-history.blogspot.fr/2010/06/method-resolution-order.html">MRO</a> à la volée.</p>
+<h2>Un yield qui yield</h2>
+<p>Bon, mon titre ne veut rien dire, c&#8217;était pour la continuité.</p>
+<p><code>yield</code> a maintenant un petit frère, <code>yield from</code>, qui permet de déléguer l&#8217;itération à un itérable sous jacent :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> generateur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #483d8b;">&quot;123&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;7&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;8&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;9&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> generateur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## 1</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 3</span>
+<span style="color: #808080; font-style: italic;">## 4</span>
+<span style="color: #808080; font-style: italic;">## 5</span>
+<span style="color: #808080; font-style: italic;">## 6</span>
+<span style="color: #808080; font-style: italic;">## 7</span>
+<span style="color: #808080; font-style: italic;">## 8</span>
+<span style="color: #808080; font-style: italic;">## 9</span></pre></td></tr></table></div>
+
+<p>Là ce n&#8217;est pas très utile, mais sur des générateurs complexes, c&#8217;est sympa. Surtout que <code>yield from</code> passe aussi les valeur avec <code>send()</code>, fait remonter les exceptions proprement et est détecté par les events loops du module asyncio, dont on parlera plus tard.</p>
+<h2>Batteries included, with charger</h2>
+<p><a href="http://sametmax.com/votre-python-aime-les-pip/">Pip</a> et <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenv</a> sont livrés avec la 3.4 ! Rien de plus à faire, rien à installer ! Enfin !</p>
+<p>Malheureusement pas virtualenv wrapper, mais c&#8217;est déjà pas mal.</p>
+<p>Un nouveau format, le <a href="http://pythonwheels.com/">wheel</a>, permet de faire des paquets binaires qui n&#8217;auront pas besoin d&#8217;être compilés sur la machine cible. Ca veut dire bientôt du numpy / scipy sans avoir à compiler quoi que ce soit. C&#8217;est un remplacement du <em>egg</em> plus simple et sans les problèmes de compatibilités. Il ne vise pas la distribution de projets Python standalones, comme le <em>egg</em> qui a notamment eu le problème de vouloir tout faire en même temps.</p>
+<p>Pour ce dernier, le <a href="http://www.python.org/dev/peps/pep-0441/">pyz</a> est en discussion.</p>
+<p>Enfin les scripts Python supportent maintenant <a href="http://www.python.org/dev/peps/pep-0397/">l&#8217;équivalent du shebang, mais sous Windows</a>. Ceci vient avec l&#8217;introduction de la commande <code>py</code> qui permet de lancer toutes les commandes Python (<code>pip</code>, <code>venv</code>, etc.) pour une version de Python installée spécifique.</p>
+<p>Ah, non, pas &#8220;enfin&#8221;, j&#8217;ai oublié un truc :</p>
+<p><code>python -X faulthandler votre_script.py</code> vous permet maintenant d&#8217;obtenir une stacktrace sur les scripts utilisant <code>ctypes</code> \o/. Et le module <a href="http://docs.python.org/3.4/library/tracemalloc.html">tracemalloc</a> permet d&#8217;enquêter sur l&#8217;allocation mémoire.</p>
+<h2>Tout un tas de trucs que les codeurs Java vont adorer</h2>
+<p>Il y a des <a href="http://docs.python.org/3.4/library/enum.html">Enums</a>, et ça vient sous toutes les formes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> enum <span style="color: #ff7700;font-weight:bold;">import</span> Enum<span style="color: #66cc66;">,</span> IntEnum
+&nbsp;
+<span style="color: #808080; font-style: italic;"># La version de feignasse :</span>
+Animal <span style="color: #66cc66;">=</span> Enum<span style="color: black;">&#40;</span><span style="color: #483d8b;">'ant bee cat dog'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># La version 'anal retentive'</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Animal<span style="color: black;">&#40;</span>IntEnum<span style="color: black;">&#41;</span>:
+     ant <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+     bee <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">2</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et tout ce qu'il faut entre les deux pour les centristes</span></pre></td></tr></table></div>
+
+<p>Pour les nostalgiques de l&#8217;overloading, on peut maintenant spécifier que le code d&#8217;une fonction est différent selon le type des arguments qui lui sont passés :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> singledispatch
+&nbsp;
+<span style="color: #66cc66;">@</span>singledispatch
+<span style="color: #ff7700;font-weight:bold;">def</span> fun<span style="color: black;">&#40;</span>arg<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Comportement par défaut, teddy'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>fun.<span style="color: black;">register</span><span style="color: black;">&#40;</span><span style="color: #008000;">int</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>arg<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Tu m'as passé un int, jonhy !&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Cacatoes:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>fun.<span style="color: black;">register</span><span style="color: black;">&#40;</span>Cacatoes<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>arg<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Tu m'as passé un Cacatoes, billy !&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+fun<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Do'</span><span style="color: black;">&#41;</span>
+fun<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+fun<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+fun<span style="color: black;">&#40;</span>Cacatoes<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Comportement par défaut, teddy</span>
+<span style="color: #808080; font-style: italic;">## Comportement par défaut, teddy</span>
+<span style="color: #808080; font-style: italic;">## Tu m'as passé un int, jonhy !</span>
+<span style="color: #808080; font-style: italic;">## Tu m'as passé un Cacatoes, billy !</span></pre></td></tr></table></div>
+
+<p>Et puis le module <a href="http://docs.python.org/2/library/abc.html?highlight=abc#abc">abc</a> pour faire des classes abstraites, même si ça a été backporté en Python 2.7, donc un peu hors sujet.</p>
+<h2>Les built-in ont un peu changé</h2>
+<p>Pour le texte, c&#8217;est de l&#8217;unicode partout, avec utf8 par défaut pour les conversions. Ca veut dire plus de <code>u</code> devant les chaînes de caractère, plus de déclaration de l&#8217;encoding en haut des fichiers de code. Moins de <code>decode</code> / <code>encode</code>.</p>
+<p>Mais ça veut dire aussi que <code>open</code> a besoin obligatoirement d&#8217;un paramètre <code>encoding</code>, dont la valeur par défaut est bien entendu <code>utf8</code>.</p>
+<p>Attention cependant, le built-in <code>bytes</code> n&#8217;est pas l&#8217;exacte équivalent du type <code>str</code> en Python 2 puisqu&#8217;il ne possède plus certaines méthodes de manipulation de texte comme <code>replace</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;Trololo&quot;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'o'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'Tralala'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> b<span style="color: #483d8b;">&quot;Trololo&quot;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'o'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-5-f7e93d6f629e&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    b<span style="color: #483d8b;">&quot;Trololo&quot;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'o'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: expected an <span style="color: #008000;">object</span> <span style="color: #ff7700;font-weight:bold;">with</span> the buffer interface</pre></td></tr></table></div>
+
+<p>C&#8217;est un peu chiant quand on manipule des protocoles binaires, et les mecs de mercurial ont un peu gueulé. Donc il est possible que ça change. J&#8217;ai mis beaucoup de fois le mot &#8220;peu&#8221; dans cet article, ce qui est stylistiquement très laid. Mais je suis trop paresseux pour éditer cet article qui fait maintenant 3 km.</p>
+<p>Pour les nombres, on n&#8217;a plus à se soucier du type <code>long</code>, qui n&#8217;existe plus. <code>/</code> est maintenant la division ordinaire et <code>//</code> la division entière.</p>
+<p>Pour les fonctions built-in, pas mal de changements avec bien entendu, <code>print()</code> qui devient une fonction, mais aussi toute ce qui est <code>zip</code>, <code>map</code>, etc, qui retournent des générateurs au lieu de listes, tout comme <code>dict.items</code> et consorts. Ah oui, et <code>import</code> est maintenant absolu par défaut.</p>
+<h2>Quelques libs en plus</h2>
+<p>Marre du module <code>os</code> ? <a href="http://docs.python.org/3.4/library/pathlib.html?highlight=pathlib#module-pathlib">pathlib</code> permet de donner un petit goût d&#8217;objet à vos manipulations de FS, comme <a href="https://github.com/jaraco/path.py">path.py</a>. Ca reste moins bien, mais c&#8217;est mieux que rien.</p>
+<p>Raz-le bol de recoder la fonction moyenne, médiane, etc ? Le module <a href="http://docs.python.org/3.4/library/statistics.html?highlight=statistics#module-statistics">statistics</a> a été ajouté pour ça.</p>
+<p>Enfin, le fameux module <a href="http://docs.python.org/3/library/unittest.mock.html#module-unittest.mock">mock</a>, qui permet de simuler tout un tas de trucs sans tout casser :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> mock <span style="color: #ff7700;font-weight:bold;">import</span> patch
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">with</span> patch.<span style="color: #008000;">object</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'listdir'</span><span style="color: #66cc66;">,</span> return_value<span style="color: #66cc66;">=</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'file2.txt'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'file2.text'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">listdir</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'file2.txt'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'file2.text'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">listdir</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/'</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span>:<span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'environment'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'hosts.allow'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<h2>Tout est bien rangé</h2>
+<p>Les fichiers bytecode Python sont maintenant tous groupés dans un dossier appelé <em>__pycache__</em>. Finis les <em>.pyc</em> qui trainent partout. Et en plus prefixés de l&#8217;architecture avec laquelle ils ont été générés. Toujours utile.</p>
+<p>En prime pas mal de noms ont été normalisés : tous les modules sont maintenant en minuscule, tous les modules liés à IO sont groupés dans le module <code>io</code>, <code>urllib</code> 1 et 2 ont été mergés, et l&#8217;arborescence des exceptions pour les erreurs d&#8217;IO a maintenant beaucoup plus de sens :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Au revoir !</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">errno</span> <span style="color: #ff7700;font-weight:bold;">import</span> ENOENT<span style="color: #66cc66;">,</span> EACCES<span style="color: #66cc66;">,</span> EPERM
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;document.txt&quot;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+        content <span style="color: #66cc66;">=</span> f.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IOError</span> <span style="color: #ff7700;font-weight:bold;">as</span> err:
+    <span style="color: #ff7700;font-weight:bold;">if</span> err.<span style="color: #dc143c;">errno</span> <span style="color: #66cc66;">==</span> ENOENT:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;document.txt file is missing&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">elif</span> err.<span style="color: #dc143c;">errno</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#40;</span>EACCES<span style="color: #66cc66;">,</span> EPERM<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;You are not allowed to read document.txt&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Bonjour !</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;document.txt&quot;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+        content <span style="color: #66cc66;">=</span> f.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> FileNotFoundError:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;document.txt file is missing&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> PermissionError:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;You are not allowed to read document.txt&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Asyncio, la prog asynchrone rebootée</h2>
+<p>Une des raisons pour laquelle je tape sur javascript aussi fort, c&#8217;est aussi la jalousie. Ils ont tous les derniers joujoux asynchrones hi-tech, meh !</p>
+<p>Avec Python on était obligé d&#8217;installer tornado ou twisted pour ça, et c&#8217;était un peu dommage :)</p>
+<p>Avec la 3.4, la prog asynchrone fait peau neauve (adieu l&#8217;horrible module <a href="http://docs.python.org/2/library/asyncore.html">asyncore</a>) et propose de la prog asynchrone plus simple, plus légère, plus facilement intégrable : <a href="http://legacy.python.org/dev/peps/pep-3156/">asyncio</a>.</p>
+<p>Si vous lisez ce PEP, ça ne va pas vous parler, alors je vais potasser tout ça et faire un petit article.</p>
+<p>Mon seul regret avec asyncio, c&#8217;est que c&#8217;est un module uniquement bas niveau, alors que tulip, le prototype de la lib, contenait des mobiles haut niveau comme par exemple <a href="https://code.google.com/p/tulip/source/browse/tests/http_client_test.py?r=593a96f529b800fb0a67098c0f3bd7ce197c2205">un client http bien foutu</a>. Du coup ça a donné <a href="http://sametmax.com/en-attendant-asyncio/#comment-19108">ce genre de discussion</a> sur le blog, avec des gens qui ne comprenaient pas que je m&#8217;attendais à un peu de haut niveau et eux qui ne voyaient que le bas, et donc s&#8217;attardaient sur de la sémentique d&#8217;implémentation de la prog non blocante.</p>
+<h2>En conclusion</h2>
+<p>Le code Python 3 est plus court, plus cohérent, avec moins de surprises, moins de dépendances externes et plus de flexibilité. Des comportements par défaut sains un peu partout, des outils en plus, et comme d&#8217;habitude vous n&#8217;en utiliserez pas la moitié tellement il y a à faire.</p>
+<p>Python 3.4 est vraiment un très bon cru, honnêtement, avec toutes ces améliorations, le langage parvient à se maintenir au niveau des petits jeunes et de leur hype, sans sacrifier sa solidité et sa cohérence.</p>
+<p>C&#8217;est pour ça qu&#8217;on a attendu 5 ans. C&#8217;est pour ça que la migration a été lente et prudente.</p>
+<p>Parce que la communauté Python fait vraiment les choses bien.</p>
+<p>Les exemples du blogs seront donc à partir de maintenant en Python 3.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ca-y-est-on-peut-coder-en-python-3/feed/</wfw:commentRss>
+		<slash:comments>38</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/doodle_snake_4___classy_gavin_by_riku_paradise_finder-d5s9eaa.png" length="125362" type="image/jpg" />	</item>
+	</channel>
+</rss>

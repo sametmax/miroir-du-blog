@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; slug</title>
+	<atom:link href="http://sametmax.com/tag/slug/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Slug d&#8217;une chaîne de caractères non ASCII avec Django et unidecode 3</title>
+		<link>http://sametmax.com/slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode/</link>
+		<comments>http://sametmax.com/slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode/#comments</comments>
+		<pubDate>Tue, 27 Mar 2012 18:39:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[slug]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=296</guid>
+		<description><![CDATA[Slugify ne fonctionne pas comme prévu avec des caractères unicode, mais, une fois n'est pas coutume, il existe une solution magique.]]></description>
+				<content:encoded><![CDATA[<p>Une slug est une chaîne de caractère ASCII en minuscule, sans espace, ponctuation, ni caractères spéciaux, qu&#8217;on utilise souvent dans les URLs ou les noms de ficher pour en simplifier l&#8217;analyse informatique.</p>
+<p>Par exemple, le titre de cet article est <em>Slug d&#8217;une chaîne de caractères non ASCII avec Django et unidecode</em>, mais si vous regardez dans la barre d&#8217;adresse de votre navigateur, vous remarquerez qu&#8217;on le retrouve sous la forme <em>slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode</em>. C&#8217;est le slug du titre de l&#8217;article.</p>
+<p>Django possède un filter <code>slugify</code> et un <code>SlugField</code> qui sont censés nous faciliter la vie quand on a besoin de générer un slug :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> slugify<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Slug d'une chaîne de caractères non ASCII avec Django et unidecode&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> u<span style="color: #483d8b;">'slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode'</span></pre></td></tr></table></div>
+
+<p>Sous le capot, ça utilise le module standard <code>unicodedata</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;éêèçàùï&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'eeecaui'</span></pre></td></tr></table></div>
+
+<p>Problème, <code>unicodedata</code> ne fonctionne qu&#8217;avec des caractères dérivés de l&#8217;alphabet latin. Essayez avec du chinois ou de l&#8217;arabe, ça ne marche pas. Petit exemple avec du Hongrois et son alphabet cyrillique :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Сайн уу&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">' '</span></pre></td></tr></table></div>
+
+<p>Il existe deux solutions. La première est <a href="https://github.com/mozilla/unicode-slugify">proposée par Mozilla</a> : elle retourne un slug unicode, et présuppose que vous voulez créer des urls unicodes.</p>
+<p>La seconde, qui nous intéresse, est une tout petite library pip installable : <a href="http://pypi.python.org/pypi/Unidecode/">unidecode</a>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;北亰&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'Bei Jing '</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Сайн уу&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'Sain uu'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;éùïàô&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'euiao'</span></pre></td></tr></table></div>
+
+<p>Du coup, pour le slugify :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: black;">&#93;</span>: slugify<span style="color: black;">&#40;</span>unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Сайн уу&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: black;">&#93;</span>: u<span style="color: #483d8b;">'sain-uu'</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/03/Mslug103.png" length="21561" type="image/jpg" />	</item>
+	</channel>
+</rss>

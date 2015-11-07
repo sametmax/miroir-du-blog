@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; modération</title>
+	<atom:link href="http://sametmax.com/tag/moderation/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Filtrer les propos pornos avec Python</title>
+		<link>http://sametmax.com/filtrer-les-propos-pornos-avec-python/</link>
+		<comments>http://sametmax.com/filtrer-les-propos-pornos-avec-python/#comments</comments>
+		<pubDate>Sun, 26 Feb 2012 19:06:47 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Cul]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[modération]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=206</guid>
+		<description><![CDATA[Tous les ans, on croise des tentatives desespérées de nettoyer les messages des chats, fora et commentaires de blog automatiquement. Objectif: filtrer les gros mots.
+]]></description>
+				<content:encoded><![CDATA[<p>Tous les ans, on croise des tentatives desespérées de nettoyer les messages des chats, fora et commentaires de blog automatiquement. Objectif: filtrer les gros mots.</p>
+<p>La solution commence le plus souvent par quelque chose qui ressemble à ceci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> strip_bad_words<span style="color: black;">&#40;</span>text<span style="color: #66cc66;">,</span> replace_text<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'***'</span><span style="color: #66cc66;">,</span> 
+                    words<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fuck'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'fucking'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'dick'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ass'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'tit'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'anus'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">sub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'(?i)[^<span style="color: #000099; font-weight: bold;">\s</span>]*(%s)[^<span style="color: #000099; font-weight: bold;">\s</span>]*'</span> % <span style="color: #483d8b;">'|'</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>words<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> 
+                  replace_text<span style="color: #66cc66;">,</span> text<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et cela s&#8217;utilise comme ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> strip_bad_words<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Suck my dick'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'Suck my ***'</span></pre></td></tr></table></div>
+
+<p>C&#8217;est là que le fun commence.</p>
+<p>Prenons l&#8217;exemple d&#8217;un forum d&#8217;un MMORPG aux USA. Vous voulez que la communauté reste cordiale, vous implémentez donc la solution ci-dessus.</p>
+<p>Mais très vite les utilisateurs se plaignent: si ils parlent de l&#8217;artefact <q>glass</q> ou de la classe <q>assassin</q> ou tout autre mot qui contient <q>ass</q>, c&#8217;est filtré. Idem pour <q>Uranus</q> ou <q>Manuscript</q> qui contiennent du coup <q>anus</q>. </p>
+<p>Mais vous n&#8217;êtes pas tombé de la dernière pluie, vous vous dites <q>je sais, je vais bloquer uniquement les mots entiers entourés d&#8217;espaces</q>. Mais c&#8217;est oublier que le language humain est une vaste blague qui contient des choses merveilleuses comme :</p>
+<p>&#8211; des noms de gens (DICK Tracy) ;<br />
+&#8211; des <a href="http://en.wikipedia.org/wiki/Great_Tit">noms d&#8217;animaux</a> (génial non ?) ;<br />
+&#8211; des noms de lieux. Tu habites où ? <a href="http://en.wikipedia.org/wiki/Fucking,_Austria">Euhhh&#8230;.</a> </p>
+<p>Je prends un exemple en anglais parce que je travaille beaucoup avec cette langue, mais c&#8217;est vrai dans toutes les langues : il y a des perles comme le <q>Rio Culo Seco</q> à Panama (le fleuve cul sec) pour les espagnols ou les villages <q>Viols le fort</q>, <q>Gland</q> ou encore <q>Branlette</q> pour les français.</p>
+<p>Ce ne sont que des exemples pris à la va-vite. Croyez moi, il y a des centaines de cas tordus, et avec quelques milliers de messages par jour, on tombe dessus très vite, et très souvent.</p>
+<p>Mais vous êtes un Dieu de l&#8217;analyse linguistique, et vous décidez que vous allez créer des pondérations pour décider contextuellement si il faut remplacer un mot ou pas.</p>
+<p>Mouarf.</p>
+<p>Les humains sont des créatures géniales, dotées du pouvoir de l&#8217;imagination et ils ont créé des trucs qui n&#8217;ont ni queue ni tête, impossible à analyser. Par exemple l&#8217;<a href="http://gatherer.wizards.com/pages/card/Details.aspx?multiverseid=74327">Heroic Fantasy</a>. Et là, bonne chance pour vous dépatouiller avec les noms de nains et d&#8217;elfes qui s&#8217;embrouillent poliment.</p>
+<p>Mais le pire, c&#8217;est que de toute façon votre filtre sera contourné dans la journée. </p>
+<p>Je joue à Starcraft 2 de temps à autres, et Blizzard, qu&#8217;on ne peut pas vraiment qualifier d&#8217;incompétent, a implémenté un filtre à obscénités. Résultat : plus personne n&#8217;écrit <q>fuck you</q>, mais les logs des chats sont peuplés de  <q>FU</q>, <q>F uck you</q>, <q>F. you</q>, <q>fyou</q>, etc.</p>
+<p>Le plus marrant, c&#8217;est que ces versions courtes seront <a href="https://encrypted.google.com/search?hl=en&#038;q=f.%20you">parfaitement comprises par Google</a>, donc si vous vouliez éviter l&#8217;indexation, c&#8217;est mort.</p>
+<p>Enfin il faut tenir la liste à jour, et les langages, <a href="http://us.battle.net/wow/en/forum/topic/3881711506?page=1">ça évolue</a>.</p>
+<p>Il n&#8217;y a aucune bonne solution à ce problème. La modération humaine a un coût très élevé, et possède ses propres problématiques. Et le point Godwin n&#8217;est jamais loin.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/filtrer-les-propos-pornos-avec-python/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/02/11BTF.jpg" length="64325" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; repos</title>
+	<atom:link href="http://sametmax.com/tag/repos/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Premiers pas avec GIT 3</title>
+		<link>http://sametmax.com/premiers-pas-avec-git/</link>
+		<comments>http://sametmax.com/premiers-pas-avec-git/#comments</comments>
+		<pubDate>Thu, 12 Apr 2012 18:24:27 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bare]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[repos]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=353</guid>
+		<description><![CDATA[Je hais git mais il devient vite indispensable... Un rapide présentation de comment mettre en place un petit système git.]]></description>
+				<content:encoded><![CDATA[<p>Git est horrible, une torture à utiliser quand on débute. Rien de clair, tout dans le flou, mais quand on commence à l&#8217;assimiler on ne peut plus s&#8217;en passer. Je vais essayer de rapidement expliquer comment mettre en place un système git.</p>
+<p>Pour info, git sert à cloner votre espace de travail (site ou autre) et à travailler dessus depuis plusieurs ordinateurs ou si vous travaillez à plusieurs sur un projet.</p>
+<p>Installez git pour commencer, je vous laisse chercher sur Google. Pour Fedora, c&#8217;est : yum install git-core</p>
+<p>On pose les bases :</p>
+<p>Pour un site &#8220;patcholle&#8221;<br />
+Mon serveur : A<br />
+Mon ordi : B<br />
+Le repos (là où seront stockés les changement sur vos fichiers) : A1</p>
+<p>En général, je mets le repos sur le serveur où se trouve le site (d&#8217;où A1).</p>
+<p>Sur A1 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">mkdir</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>repos<span style="color: #000000; font-weight: bold;">/</span>patcholle
+<span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>repos<span style="color: #000000; font-weight: bold;">/</span>patcholle
+<span style="color: #c20cb9; font-weight: bold;">git init</span> <span style="color: #660033;">--bare</span></pre></td></tr></table></div>
+
+<p>sur A :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">mkdir</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>patcholle.com
+<span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>patcholle.com
+<span style="color: #c20cb9; font-weight: bold;">git init</span>
+<span style="color: #c20cb9; font-weight: bold;">git remote</span> add origin <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>repos<span style="color: #000000; font-weight: bold;">/</span>pacholle</pre></td></tr></table></div>
+
+<p>sur B :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">mkdir</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>work<span style="color: #000000; font-weight: bold;">/</span>patcholle.com
+<span style="color: #c20cb9; font-weight: bold;">git init</span>
+<span style="color: #c20cb9; font-weight: bold;">git remote</span> add origin monuser<span style="color: #000000; font-weight: bold;">@</span>monsite.com:<span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>repos<span style="color: #000000; font-weight: bold;">/</span>patcholle</pre></td></tr></table></div>
+
+<p>Dans l&#8217;exemple donné, je travaille sur mon site dans /home/work/patcholle.com. Je vais envoyer sur le repos mon travail de l&#8217;ordi (B).</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>work<span style="color: #000000; font-weight: bold;">/</span>patcholle.com<span style="color: #000000; font-weight: bold;">/</span>
+<span style="color: #c20cb9; font-weight: bold;">git add</span> .
+<span style="color: #c20cb9; font-weight: bold;">git commit</span> <span style="color: #660033;">-m</span> <span style="color: #ff0000;">'init site'</span>
+<span style="color: #c20cb9; font-weight: bold;">git push</span> origin master</pre></td></tr></table></div>
+
+<p>Ensuite, sur le serveur (A), je vais rappatrier les modifs faites sur l&#8217;ordi que j&#8217;ai pushé (envoyé) sur le repos (A1).</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>patcholle.com
+<span style="color: #c20cb9; font-weight: bold;">git pull</span> origin master</pre></td></tr></table></div>
+
+<p>Ça va pas plus loin pour que ça fonctionne de base. Pour aller plus au fond des choses, je vous conseille d&#8217;aller voir &#8216;branch&#8217; et &#8216;stash&#8217; sur le site de git.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/premiers-pas-avec-git/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/04/first-steps-logo-md.png" length="11384" type="image/jpg" />	</item>
+	</channel>
+</rss>

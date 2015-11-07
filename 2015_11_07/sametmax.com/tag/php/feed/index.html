@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; php</title>
+	<atom:link href="http://sametmax.com/tag/php/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Qu&#8217;est-ce que MVC et à quoi ça sert ? 23</title>
+		<link>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Tue, 10 Dec 2013 08:39:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[csv]]></category>
+		<category><![CDATA[mvc]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7440</guid>
+		<description><![CDATA[MVC, pour "Modèle, Vue, Contrôleur", est le nom donné à une manière d'organiser son code. C'est une façon d'appliquer le principe de séparation des responsabilités, en l’occurrence celles du traitement de l'information et de sa mise en forme.
+
+Une fois n'est pas coutume je vais donner un exemple en Python <strong>et PHP</strong>, car c'est une question qui hante les codeurs de ce langage. En effet on leur rabâche qu'il faut utiliser MVC, que tel framework est MVC, que leur code à eux ne l'est pas, etc. Sans que nul part, évidement, on ne donne une explication correcte de la notion.]]></description>
+				<content:encoded><![CDATA[<p>MVC, pour &#8220;Modèle, Vue, Contrôleur&#8221;, est le nom donné à une manière d&#8217;organiser son code. C&#8217;est une façon d&#8217;appliquer le principe de séparation des responsabilités, en l’occurrence celles du traitement de l&#8217;information et de sa mise en forme.</p>
+<p>Une fois n&#8217;est pas coutume je vais donner un exemple en Python <strong>et PHP</strong>, car c&#8217;est une question qui hante les codeurs de ce langage. En effet on leur rabâche qu&#8217;il faut utiliser MVC, que tel framework est MVC, que leur code à eux ne l&#8217;est pas, etc. Sans que nulle part, évidement, on ne donne une explication correcte de la notion.</p>
+<p>Long article, petite musique.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/E-lPrWLzGSM?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<p><em>(piqué à What the cut :-))</em></p>
+<h2>Principe de base</h2>
+<p>Il n&#8217;y a pas de Tables De La Loi qui disent ce qu&#8217;est le MVC, il y a donc autant de manières de le faire que de programmes. En fait, c&#8217;est un simple principe d&#8217;organisation de code, et il y en a d&#8217;<a href="http://cirw.in//blog/time-to-move-on.html">autres</a>. Mais généralement, c&#8217;est basé sur la répartition suivante :</p>
+<ul>
+<li>Une part du code gère l&#8217;affichage. C&#8217;est la partie &#8220;Vue&#8221;.</li>
+<li>Une part du code gère la manipulation des données. C&#8217;est la partie &#8220;Modèle&#8221;.</li>
+<li>Tout le reste. L&#8217;espèce de merdier qu&#8217;on va mettre en place pour faire marcher le programme, c&#8217;est le contrôleur. Souvent, c&#8217;est le code qui réagit à l&#8217;action de l&#8217;utilisateur, mais pas seulement.</li>
+</ul>
+<p>MVC est typiquement quelque chose d&#8217;abstrait qu&#8217;on ne peut pas comprendre avec une explication seule. Passons donc rapidement à un exemple.</p>
+<p>Imaginons que l&#8217;on ait des tas de fichiers CSV ainsi faits :</p>
+<pre>"Jeu";"Nombre de joueurs Max";"Support"
+"Secret of Mana";"3";"Super Nintendo"
+"Bomberman";"8";"Super Nintendo"
+"Mario Kart";"4";"Nintendo 64"
+"Age of Empire 2";"8";"PC"</pre>
+<p>Et que nous voulions un programme qui fasse un rapport sur le CSV, affichant :</p>
+<pre>Nombre de jeux analysés : 10
+
+Détails
+--------
+
+Support: Super Nintendo
+Nombre de jeux : 2
+Nombre de joueurs max : 8
+
+Support: Nintendo 64
+Nombre de jeux : 1
+Nombre de joueurs max : 4
+
+etc</pre>
+<p>Il y a de nombreuses manières de coder ce programme. Si on le fait en suivant le principe du modèle MVC, on va faire 3 fichiers : un pour le modèle, un pour la vue, et un pour le contrôleur. On peut avoir plus ou moins de 3 fichiers, j&#8217;ai choisi 3 fichiers pour bien illustrer le principe de séparation des responsabilités.</p>
+<h3>Le modèle</h3>
+<p>Le modèle manipule la donnée. Dans un site Web, le modèle est souvent le code qui permet de faire de requêtes à la base de données. Dans notre cas, c&#8217;est le code qui va manipuler le CSV. Encore une fois, il n&#8217;y a pas de définition divine de ce qu&#8217;est un modèle, ceci n&#8217;est qu&#8217;un exemple de ce que cela PEUT être. C&#8217;est le choix du dev.</p>
+<p><em>modele.py</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals<span style="color: #66cc66;">,</span> absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">csv</span> <span style="color: #ff7700;font-weight:bold;">import</span> DictReader
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> OrderedDict
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Modele<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">csv</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">total_jeux</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">supports</span> <span style="color: #66cc66;">=</span> OrderedDict<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">csv</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+            <span style="color: #808080; font-style: italic;"># on parse le csv</span>
+            <span style="color: #ff7700;font-weight:bold;">for</span> data <span style="color: #ff7700;font-weight:bold;">in</span> DictReader<span style="color: black;">&#40;</span>f<span style="color: #66cc66;">,</span> delimiter<span style="color: #66cc66;">=</span>b<span style="color: #483d8b;">';'</span><span style="color: #66cc66;">,</span> quotechar<span style="color: #66cc66;">=</span>b<span style="color: #483d8b;">'&quot;'</span><span style="color: black;">&#41;</span>:
+                <span style="color: #808080; font-style: italic;"># on calcule les stats pour que ligne du csv</span>
+                support <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">supports</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Support'</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+                support<span style="color: black;">&#91;</span><span style="color: #483d8b;">'nombre_de_jeux'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> support.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nombre_de_jeux'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span> + <span style="color: #ff4500;">1</span>
+                <span style="color: #008000;">self</span>.<span style="color: black;">total_jeux</span> +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+                <span style="color: #ff7700;font-weight:bold;">if</span> support.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'joueurs_max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;</span> data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Nombre de joueurs Max'</span><span style="color: black;">&#93;</span>:
+                    support<span style="color: black;">&#91;</span><span style="color: #483d8b;">'joueurs_max'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Nombre de joueurs Max'</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># goodies pour pouvoir itérer sur le modèle</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">supports</span>.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ca s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> modele <span style="color: #66cc66;">=</span> Modele<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Bureau/jeux.csv&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> modele.<span style="color: black;">total_jeux</span>
+<span style="color: #ff4500;">4</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> support<span style="color: #66cc66;">,</span> data <span style="color: #ff7700;font-weight:bold;">in</span> modele:
+    <span style="color: #ff7700;font-weight:bold;">print</span> support
+    <span style="color: #ff7700;font-weight:bold;">print</span> data
+...
+<span style="color: black;">Super</span> Nintendo
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'8'</span><span style="color: black;">&#125;</span>
+Nintendo <span style="color: #ff4500;">64</span>
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'4'</span><span style="color: black;">&#125;</span>
+PC
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'8'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>On voit ici le principe : le modèle ne fait que manipuler la donnée, et rien d&#8217;autre. Il extrait, regroupe, calcule, raffine, et donne une belle interface propre pour que le reste du programme puisse utiliser le résultat sans avoir à connaitre les détails du traitement.</p>
+<h3>La vue</h3>
+<p>La vue, c&#8217;est de la présentation. C&#8217;est comment on veut que la donnée soit présentée à l&#8217;utilisateur. Ça peut être le code qui pond du HTML ou produit un CSV, ou fait configurer de jolis boutons dans une UI.</p>
+<p>Dans notre cas, c&#8217;est le code qui va formater le texte pour la console.</p>
+<p>On veut un truc comme ça :</p>
+<pre>
+Nombre de jeux analysés : 10
+
+Détails
+--------
+
+Support: Super Nintendo
+Nombre de jeux : 2
+Nombre de joueurs max : 8
+
+Support: Nintendo 64
+Nombre de jeux : 1
+Nombre de joueurs max : 4</pre>
+<p>Normalement, on voudrait un template. Mais on a pas de langage de template qui accepte les boucles dans la lib standard, alors on va faire comme la norme WSGI et retourner un générateur de strings.</p>
+<p><em>vue.py</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals<span style="color: #66cc66;">,</span> absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> rapport<span style="color: black;">&#40;</span>modele<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># affichage de l'en-tête</span>
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Nombre de jeux analysés : {total_jeux}<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+           <span style="color: #483d8b;">&quot;Détails<span style="color: #000099; font-weight: bold;">\n</span>--------<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>total_jeux<span style="color: #66cc66;">=</span>modele.<span style="color: black;">total_jeux</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># affichage des stats pour chaque console</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> support<span style="color: #66cc66;">,</span> data <span style="color: #ff7700;font-weight:bold;">in</span> modele:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Support: {support}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+               <span style="color: #483d8b;">&quot;Nombre de jeux : {nombre_de_jeux}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+               <span style="color: #483d8b;">&quot;Nombre de joueurs max : {joueurs_max}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>
+               support<span style="color: #66cc66;">=</span>support<span style="color: #66cc66;">,</span> **data<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et ça s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> m <span style="color: #66cc66;">=</span> Modele<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Bureau/jeux.csv&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>rapport<span style="color: black;">&#40;</span>m<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'Nombre de jeux analys<span style="color: #000099; font-weight: bold;">\x</span>e9s : 4<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\n</span>D<span style="color: #000099; font-weight: bold;">\x</span>e9tails<span style="color: #000099; font-weight: bold;">\n</span>--------<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'Support: Super Nintendo<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 2<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 8<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'Support: Nintendo 64<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 1<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 4<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'Support: PC<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 1<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 8<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Encore une fois, ceci n&#8217;est pas LA manière de faire une vue. Ceci est UNE manière de faire une vue. Le but de la vue est de contenir le code qui se charge de formater la donnée pour l&#8217;utilisateur. </p>
+<p>Il est plus courant d&#8217;utiliser un template pour cela, c&#8217;est à dire une sorte lib de texte à trou à remplir plus tard avec le modèle. C&#8217;est plus facile et flexible qu&#8217;une fonction. Il y a des tas de <a href="https://wiki.python.org/moin/Templating">libs de templates en Python</a>. Je ferai sans doute un article dessus un jour. Si vous voulez un truc simple et rapide, utilisez <a href="http://www.joonis.de/en/code/templite">templite</a> : rien besoin d&#8217;installer, ça tient dans un fichier. Si vous voulez le truc le plus standard possible, utiliser <a href="http://jinja.pocoo.org/docs/">jinja2</a>, c&#8217;est plus ou moins la lib la plus connue actuellement.</p>
+<h3>Le contrôleur</h3>
+<p>Le contrôleur, c&#8217;est tout le reste. Essayer de définir le contrôleur est généralement voué à l&#8217;échec, tant sa nature change d&#8217;une application à l&#8217;autre. Certains disent que c&#8217;est le code glue qui permet de lier le modèle et la vue. D&#8217;autres qu&#8217;il contient la logique de flux du programme. Personnellement, je vous invite à vous fier à la définition &#8220;c&#8217;est tout le reste&#8221;. Avec l&#8217;expérience, vous en viendrez à faire des modèles et des vues de plus en plus adaptées, et la partie contrôleur découlera d&#8217;elle-même.</p>
+<p>De toute façon, aucun MVC n&#8217;est parfait, et un peu de vue dégouline parfois sur le contrôleur, un peu de contrôleur coule dans le modèle, ou inversement. Il ne sert à rien d&#8217;être un nazi du MVC, c&#8217;est une bonne pratique, pas un dogme religieux.</p>
+<p>Dans notre cas le programme a besoin d&#8217;un code qui :</p>
+<ul>
+<li>Importe notre vue et notre modèle.</li>
+<li>Prend en paramètre le fichier CSV via la ligne de commande.</li>
+<li>Mélange tout ça pour afficher le résultat dans la console.</li>
+</ul>
+<p>Le contrôleur est par ailleurs le point d&#8217;entrée d&#8217;un programme. Et ce sera essentiellement ça, le contrôleur de notre programme : un point d&#8217;entrée.</p>
+<p><em>controlleur.py</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals<span style="color: #66cc66;">,</span> absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> vue <span style="color: #ff7700;font-weight:bold;">import</span> rapport
+<span style="color: #ff7700;font-weight:bold;">from</span> modele <span style="color: #ff7700;font-weight:bold;">import</span> Modele
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on prend le csv en paramètre du script</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    f <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">sys</span>.<span style="color: black;">argv</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IndexError</span>:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Veuillez passer le chemin d'un fichier CSV en paramètre.&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on vérifie que le csv existe</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>f<span style="color: black;">&#41;</span>:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Le fichier '%s' n'existe pas&quot;</span> % f<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on analyse le CSV et on affiche le rapport</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> texte <span style="color: #ff7700;font-weight:bold;">in</span> rapport<span style="color: black;">&#40;</span>Modele<span style="color: black;">&#40;</span>f<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> texte</pre></td></tr></table></div>
+
+<h3>Résultat final</h3>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ python controlleur.<span style="color: black;">py</span> jeux.<span style="color: #dc143c;">csv</span>
+Nombre de jeux analysés : <span style="color: #ff4500;">4</span>
+&nbsp;
+Détails
+--------
+&nbsp;
+Support: Super Nintendo
+Nombre de jeux : <span style="color: #ff4500;">2</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">8</span>
+&nbsp;
+Support: Nintendo <span style="color: #ff4500;">64</span>
+Nombre de jeux : <span style="color: #ff4500;">1</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">4</span>
+&nbsp;
+Support: PC
+Nombre de jeux : <span style="color: #ff4500;">1</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">8</span></pre></td></tr></table></div>
+
+<p>Vous pouvez <a href="https://github.com/sametmax/codes-des-articles/tree/master/2013/decembre">télécharger le code Python de cet article</a>.</p>
+<h2>Exemple en PHP</h2>
+<p>Le PHP a eu beaucoup de succès du fait de la facilité avec laquelle on pouvait coder un site Web, en mélangeant code et HTML. Malheureusement cela a donné lieu à des codes très sales, où on trouvait les requêtes SQL à côté de l&#8217;affichage d&#8217;un tableau, l&#8217;analyse des paramètres <code>$_GET</code> à deux pas de la vérification du mot de passe.</p>
+<p>MVC a été une réponse à cela.</p>
+<p>Un modèle MVC propre sera généralement très riche et complexe, mais il est possible de bricoler un site en MVC basique à la main sans trop de problème. Je ne vous recommande pas d&#8217;utiliser ce code en prod, mais c&#8217;est un bon début pour comprendre comment ça marche. Une fois que vous serez à l&#8217;aise avec l&#8217;idée, n&#8217;hésitez pas à coder le votre sur un petit projet, puis à tester un framework. <a href="http://symfony.com/">Symfony</a>, par exemple, est une valeur sûre en PHP.</p>
+<p>Admettons que notre site ait deux pages : <em>accueil</em> et <em>liste des utilisateurs</em>.</p>
+<p>L&#8217;accueil dit juste bonjour, la liste affiche tous les utilisateurs du site Web. Passionnant.</p>
+<h3>Le modèle</h3>
+<p>L&#8217;idée est de mettre toutes les requêtes SQL au même endroit.</p>
+<p>Les vieux routards du PHP m&#8217;excuseront, mais je n&#8217;ai plus codé dans ce langage depuis des années, donc mon style va dater un peu :-) Et honnêtement tous ces points-virgules, ces dollars et ces brackets dans tous les sens, sans compter la flèche comme caractère de look up, ça me perturbe grandement.</p>
+<p><em>modele.php</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>
+&nbsp;
+<span style="color: #000088;">$con</span> <span style="color: #339933;">=</span> <span style="color: #990000;">mysqli_connect</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;127.0.0.1&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'root'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'admin123'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'ma_db'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">class</span> User <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$name</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$age</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">function</span> __construct<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$age</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$name</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">age</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$age</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    static <span style="color: #000000; font-weight: bold;">function</span> liste<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+&nbsp;
+        <span style="color: #000088;">$users</span> <span style="color: #339933;">=</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #000088;">$query</span> <span style="color: #339933;">=</span>  <span style="color: #990000;">mysqli_query</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$con</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'SELECT * FROM `user`'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$row</span> <span style="color: #339933;">=</span> <span style="color: #990000;">mysql_fetch_assoc</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$query</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#123;</span>
+            <span style="color: #000088;">$users</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> User<span style="color: #009900;">&#40;</span><span style="color: #000088;">$row</span><span style="color: #009900;">&#91;</span><span style="color: #cc66cc;">0</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$row</span><span style="color: #009900;">&#91;</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+&nbsp;
+        <span style="color: #b1b100;">return</span> users<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Et ça s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000088;">$users</span> <span style="color: #339933;">=</span> User<span style="color: #339933;">-&gt;</span><span style="color: #004000;">liste</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$users</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$user</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$user</span><span style="color: #339933;">.</span>name <span style="color: #339933;">.</span> <span style="color: #0000ff;">'('</span> <span style="color: #339933;">.</span> <span style="color: #000088;">$users</span><span style="color: #339933;">.</span>age<span style="color: #339933;">.</span> <span style="color: #0000ff;">'ans)'</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Ce qui affiche tous les noms et les ages des utilisateurs.</p>
+<p>Bien, on a isolé l&#8217;accès aux données, maintenant on va isoler la mise en forme.</p>
+<h3>La vue</h3>
+<p>Ou plutôt, les vues, puisqu&#8217;on a deux pages, et donc deux vues.</p>
+<p>Vous ne le savez peut être pas, mais PHP vient avec une <a href="http://www.php.net/manual/fr/control-structures.alternative-syntax.php">syntaxe alternativ</a>e spécialement conçue pour être utilisée dans le HTML. Elle est similaire à la syntaxe originale, mais les blocs sont ouverts avec <code>:</code> au lieux de <code>{</code> et fermés par <code>endinstruction</code>. Les variables sont affichées avec <<code>?=$nom_de_variable?></code>.</p>
+<p>Par exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">if</span> <span style="color: #000088;">$truc</span><span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+    &lt;p&gt;
+        <span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$machin</span><span style="color: #000000; font-weight: bold;">?&gt;</span>
+    &lt;/p&gt;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">endif</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span></pre></td></tr></table></div>
+
+<p>Cette syntaxe permet de bien séparer le texte du code PHP, et donc sera utilisée pour la vue.</p>
+<p><em>accueil.php</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #339933;">&lt;</span>html<span style="color: #339933;">&gt;&lt;</span>body<span style="color: #339933;">&gt;&lt;</span>h1<span style="color: #339933;">&gt;</span>Bonjour<span style="color: #339933;">&lt;/</span>h1<span style="color: #339933;">&gt;&lt;/</span>body<span style="color: #339933;">&gt;&lt;/</span>html<span style="color: #339933;">&gt;</span></pre></td></tr></table></div>
+
+<p><em>liste_utilisateurs.php</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;">&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Utilisateurs&lt;/h1&gt;
+&nbsp;
+        &lt;ul&gt;http://www.php.net/manual/fr/control-structures.alternative-syntax.php
+            <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">foreach</span> <span style="color: #000088;">$users</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$user</span><span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+                &lt;li&gt;<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$user</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span><span style="color: #000000; font-weight: bold;">?&gt;</span> (<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$user</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">age</span><span style="color: #000000; font-weight: bold;">?&gt;</span> ans)&lt;/li&gt;
+            <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">endforeach</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+        &lt;/ul&gt;
+&nbsp;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table></div>
+
+<p>Et voilà, on a deux pages, et la deuxième affiche notre liste d&#8217;utilisateur. Vous remarquerez qu&#8217;il n&#8217;y a pas de requête ou de logique de choix de page, pas d&#8217;accès à <code>mysql_*</code> ou à <code>$_GET</code> dans ce code. Que de l&#8217;affichage.</p>
+<h3>Le contrôleur</h3>
+<p>Puisque le contrôleur, c&#8217;est le reste, ce sera à la fois notre point d&#8217;entrée, notre code glue et notre routing.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;">&nbsp;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+&nbsp;
+<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'page'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'page'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">==</span> <span style="color: #0000ff;">'liste'</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'modele.php'</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'liste_utilisateurs.php'</span>
+<span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'accueil.php'</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Et c&#8217;est tout.</p>
+<p>Si l&#8217;utilisateur va sur l&#8217;adresse <em>monsite.com/</em>, il va arriver sur l&#8217;accueil, si il va sur <em>monsite.com/?page=liste</em>, il va atterrir sur la liste des utilisateurs.</p>
+<p>Si on veut changer le look de la page, on modifie la vue. Si on veut changer de base de source de données (et lire par exemple depuis un fichier), on change le modèle. Si on veut rajouter des pages, on change le contrôleur. L&#8217;avantage de la séparation des responsabilités, c&#8217;est la facilité de lecture et donc de maintenance et d&#8217;évolution.</p>
+<p>J&#8217;insiste sur le fait que c&#8217;est un exemple pédagogique, et pas quelque chose à utiliser en prod (par exemple à cause des URLs très moches). Mais il va vous permettre de coder votre premier site en MVC, et plus tard, aller vers des versions plus sérieuses.</p>
+<p>L&#8217;important, c&#8217;est la séparation donnée / formatage / reste du code.</p>
+<h2>MVC dans la vraie vie vivante</h2>
+<p>Créer un modèle MVC à la main propre et efficace, c&#8217;est énormément de taff. C&#8217;est pour cela qu&#8217;on utilise des outils tout fait comme des frameworks Web ou des libs graphiques (Qt, wxWidget et Gtk ont toutes des outils MVC, ex : Qt possède <a href="http://en.wikipedia.org/wiki/QML">QML</a>, un dialecte type CSS pour manipuler des vues).</p>
+<p>Un modèle MVC simple, mais propre, est celui du micro-framework Web Python <a href="http://bottlepy.org">bottle</a>, dont Max vous avait parlé <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">ici</a>. Lisez l&#8217;article, et revenez à ce paragraphe, et vous comprendrez que :</p>
+<ul>
+<li>La vue, c&#8217;est le template.</li>
+<li>Le modèle n&#8217;est inclus dans bottle, il faut le faire à la main ou utiliser quelque chose comme un ORM (<a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">peewee</a> est très bien adapté).</li>
+<li>Le contrôleur, ce sont les fonctions qu&#8217;on trouve sous les décorateurs <code>@url</code>.</li>
+</ul>
+<p>Comme je l&#8217;ai dit précédemment, il y a de nombreuses manières de séparer le contenu de sa présentation.</p>
+<p>Django par exemple n&#8217;utilise pas un modèle MVC au sens traditionnel, mais plutôt du MVT (Modèle &#8211; Vue &#8211; Template). Ce qu&#8217;il appelle les vues sont en fait ce qu&#8217;on appelle le contrôleur dans bottle : les fonctions qui mélangent les données avec le template. Django propose par contre un ORM, qui est bel est bien un système de modèle très élaboré.</p>
+<p>C&#8217;est une question de sémantique, et au final, qu&#8217;importe le flacon, pourvu qu&#8217;on ait l&#8217;ivresse.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/65XmWyF.jpg" length="75561" type="image/jpg" />	</item>
+		<item>
+		<title>Le choix d&#8217;un langage influence le fun de votre carrière 32</title>
+		<link>http://sametmax.com/le-choix-dun-langage-influence-le-fun-de-votre-carriere/</link>
+		<comments>http://sametmax.com/le-choix-dun-langage-influence-le-fun-de-votre-carriere/#comments</comments>
+		<pubDate>Tue, 14 May 2013 09:47:04 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[java]]></category>
+		<category><![CDATA[list]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ruby]]></category>
+		<category><![CDATA[scala]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6095</guid>
+		<description><![CDATA[Les langages de programmation sont censés être des technologies neutres, mais comme toute chose utilisée dans le monde réel pour des usages concrets et nombreux, l'humain finit par leur donner une orientation, une préférence.]]></description>
+				<content:encoded><![CDATA[<p>Les langages de programmation sont censés être des technologies neutres, mais comme toute chose utilisée dans le monde réel pour des usages concrets et nombreux, l&#8217;humain finit par leur donner une orientation, une préférence.</p>
+<p>De fait, chaque langage finit par être plus utilisé dans certains types de métiers ou d&#8217;activités, pour certains types de projets, dans certains environnements. Plus important encore, un langage appelle d&#8217;autres outils, et un certain type de collègue, et même si, comme d&#8217;habitude, la généralisation est un piège à con, il y a bien des stéréotypes visibles qui se dégagent.</p>
+<p>Ainsi, Java et PHP sont des langages pour lesquels il est très facile de trouver du travail. Il y a une telle base de code là dehors qu&#8217;il y a des annonces partout, et tout le temps. En revanche, les environnements Java sont généralement très très lourds à manipuler. Pas en terme de performance (Java est aujourd&#8217;hui très rapide), mais en terme de charge de travail : énormément de configuration, beaucoup d&#8217;abstractions et de design pattern imbriqués, des APIs et des formats très verbeux&#8230;</p>
+<p>Travailler dans un monde Java, c&#8217;est généralement travailler à un rythme lent, plus souvent dans des grosses boîtes, pour des systèmes assez larges avec un grosse inertie. Ne vous attendez pas à des Java-party avec vos collègues après le boulot.</p>
+<p>PHP, c&#8217;est la même chose, avec des projets et composants plus simples (dans des entreprises de toutes tailles), et souvent bien plus dégueulasses. Non pas qu&#8217;on ne puisse pas écrire du PHP propre, mais 15 ans de PHP codé à l&#8217;arrache ne s&#8217;effacent pas avec quelques années de Symfony, et autre cakePHP. Du coup on hérite souvent d&#8217;un projet moche comme ta mère. </p>
+<p>Bref, Java et PHP vous garantissent un job, mais les projets sont rarement marrants, et l&#8217;ambiance au taff sera pas pumped up. Par contre il y a de la doc et des tutos, même si généralement ceux pour PHP sont de meilleure qualité que pour Java (qui peuvent être assez indigestes).</p>
+<p>Il y a une alternative intermédiaire : le C#. Beau langage, beaux outils, c&#8217;est propre sans être trop lourd, et la base de code est pas à vomir. Mais on reste dans le corporate, et la plupart du temps, sur du 98% Microsoft ou affiliés. </p>
+<p>Après vous avez des langages spécialisés comme Erlang, Scala, Lisp. Là, trouver du taff sera généralement un challenge. Ce n&#8217;est pas le genre de truc qu&#8217;on voit partout. Et le niveau sera difficile : un débutant peut arriver avec la bite et le couteau dans un projet PHP, mais si vous vous pointez avec 3 mois d&#8217;expérience sur une gateway jabber haute tolérance, le bidouillage ça va pas le faire. </p>
+<p>Ce sont des langages qu&#8217;il faut choisir si on aime le taff de haut niveau, la débrouillardise et les solutions intelligentes. En général les missions sont super intéressantes, mais la reconversion est dure. Par contre, vous rencontrerez des collègues qui valent le détour.</p>
+<p>Puis il y a les langages de bas niveau, type C/C++. Aujourd&#8217;hui, c&#8217;est massivement des missions scientifiques ou de l&#8217;embarqué : analyse d&#8217;image, cartes électroniques, petites machines, etc. Il y a encore des trucs pas cool genre Windev (j&#8217;ai un pote coincé là dedans, c&#8217;est triste, fuyez ces annonces), mais ce n&#8217;est plus la majorité. Ces langages, c&#8217;est une question de tempérament. Est-ce que vous aimez la minutie ? L&#8217;efficacité des algos ? Le travail sous contrainte technique ? Si oui, alors ce genre de taff peut être très sympa. Sinon, choisissez un langage plus dynamique.</p>
+<p>Ensuite il y a les langages de niches : Cobol, Power Builder, etc. Là c&#8217;est généralement des projets de merde très bien payés. Plus personne ne veut coder avec ces trucs, mais ça coûte trop cher à changer. Les jeunes sont acceptés, les formations offertes, le salaire de début de carrière est bon, mais par contre, le code est un truc de mémé. C&#8217;est pas mal pour commencer une carrière et se faire un peu de thune, mais faut savoir en sortir, et ça ne donne pas de bonnes habitudes en prog.</p>
+<p>Et pour finir il y des langages dit &#8220;modernes&#8221; (ce qui est un abus&#8230; de langage, car ils ne datent pas d&#8217;hier) comme Python, Ruby ou Javascript. Le côté &#8220;moderne&#8221; vient surtout du fait qu&#8217;ils sont maintenant très adaptés à des projets modernes, où la souplesse de développement a priorité sur le reste des caractéristiques. Choisissez ces langages si vous visez des missions, principalement Web, sur des produits récents. Ce sont les communautés les plus sympas et dynamiques, ça brasse pas mal dans le milieu et c&#8217;est assez jeune. Mais un grand nombre de start up, donc il faut pas chercher la sécurité de l&#8217;emploi.</p>
+<p>Une petite parenthèse pour Python tout de même : il n&#8217;est pas autant limité au Web et on le voit aussi beaucoup dans le secteur scientifique et bancaire. C&#8217;est sa versatilité et la facilité de reconversion qu&#8217;il offre qui me fait dire que c&#8217;est un très bon choix comme premier langage. Mais. Car il y a un &#8220;mais&#8221;. Trouver une offre Python sera plus difficile qu&#8217;une offre Ruby, et BEAUCOUP plus difficile qu&#8217;une offre PHP ou Java. Après perso je n&#8217;ai jamais connu le chômage.</p>
+<p>Warning ! Il faut faire gaffe à se lancer dans le dev Web. C&#8217;est très tentant, mais contrairement aux autres carrières, ça veut dire <a href="http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/">une courbe d&#8217;apprentissage beaucoup plus longue</a>. Vous ne pouvez pas juste apprendre votre langage, ses libs et son env et vous vendre comme &#8220;expert&#8221;.</p>
+<p>J&#8217;ai laissé pas mal de truc de côté, comme l&#8217;objective C, Haskell, Smalltalk, le Bash, Perl et <a href="http://99-bottles-of-beer.net">quelques milliers d&#8217;autres langages</a>. On ne peut pas tout faire, et je voudrais surtout peindre un tableau global du marché. En me relisant, je me dis que c&#8217;est bourré d&#8217;idées reçues, qu&#8217;il y a plein d&#8217;exceptions, etc. Mais je pense que les infos données peuvent permettre à des gens qui se posent la question de l&#8217;orientation de prendre une décision moins mauvaise que &#8220;je lance un D20 et on verra bien&#8221;.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-choix-dun-langage-influence-le-fun-de-votre-carriere/feed/</wfw:commentRss>
+		<slash:comments>32</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/m6UwO0w.jpg" length="28964" type="image/jpg" />	</item>
+		<item>
+		<title>Python, Ruby et PHP sont lents 30</title>
+		<link>http://sametmax.com/python-ruby-et-php-sont-lents/</link>
+		<comments>http://sametmax.com/python-ruby-et-php-sont-lents/#comments</comments>
+		<pubDate>Tue, 30 Oct 2012 16:44:54 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[performance]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ruby]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2787</guid>
+		<description><![CDATA["Cay de la merde je préfère les langages plus bas niveaux, python c'est lent."]]></description>
+				<content:encoded><![CDATA[<p>Ce matin je lançais ma petit recherche <a href="https://twitter.com/search/realtime?q=%28python+OR+django+OR+git+OR+%23python+OR+%23django+OR+%23git%29+lang%3Afr&amp;src=savs">Python/Django/Git</a> habituelle sur Twitter pour voir ce qui s&#8217;y tramait, quand je suis tombé sur plusieurs tweets qui m&#8217;ont fait tiquer.</p>
+<p>Il y en a un qui résume très bien l&#8217;idée:</p>
+<blockquote><p>Cay de la merde je préfère les langages plus bas niveau, Python c&#8217;est lent.</p></blockquote>
+<p>C&#8217;est un argument que je lis souvent, et qui est aussi utilisé contre Ruby ou PHP.</p>
+<p>Si j&#8217;ai la personne en face de moi, généralement la question qui suit est:</p>
+<blockquote><p>Ouai je comprends. C&#8217;est quoi ta contrainte ? Tu dois exécuter quel calcul sous quelle limite de temps ?</p></blockquote>
+<p>Il n&#8217;y a jamais aucune réponse autre qu&#8217;un bafouillement, car une personne qui a une réelle contrainte de temps d&#8217;exécution ne sort pas ce genre d&#8217;ânerie: il utilise le bon outil pour le bon travail selon des metrics précises, pas selon le nom du langage.</p>
+<p>Ceux qui trollent, généralement des étudiants en informatique qui n&#8217;ont encore jamais codé d&#8217;utile de leur vie (je l&#8217;ai fait, donc je +1, d&#8217;ailleurs parfois je le fais toujours :-p), ont entendu / lu que Python, Ruby et PHP étaient lents, et donc les rejette car ils ne correspondent pas à l&#8217;idée qu&#8217;il se fait de la programmation, encore naissante dans sa tête.</p>
+<p>La vérité est que les personnes qui ont des contraintes de temps d&#8217;éxécution auquel langage X, n&#8217;importe quel langage, ne peut pas répondre, font partie des 0.00000001 de la population des programmeurs: le plus souvent dans l&#8217;embarqué (voiture, satellite, microchips, etc) et les systèmes temps réels (navigation, chaîne de productions, bourse d&#8217;échange&#8230;). Pour les autres, nous, quasiment tous, les problèmes de performances se joueront sur l&#8217;algo, les libs, les serveurs Web et BDD, le caching, etc. On peut programmer en Basic ou en <a href="http://www.gotopp.org/index.html.fr">GOTO++</a>, ça ne change rien.</p>
+<blockquote><p>Languages, libraries and frameworks don&#8217;t scale. Architectures do.</p></blockquote>
+<p><a href="http://en.wikipedia.org/wiki/Cal_Henderson"><cite>Cal Henderson </cite></a></p>
+<p>Dans certains cas, par exemple le calcul scientifique, les interfaces graphiques ou les jeux videos, la rapidité est importante, et on le sait sans même mesurer. Mais ces problèmes-là sont résolus depuis longtemps: il existe des bindings en C extrêmement rapides qui permettent de coder dans son langage interprété favori tout en bénéficiant d&#8217;algos Speedy Gonzalez sous le capot.</p>
+<p>Par ailleurs, ça a déjà été dit 1000 fois, mais ça ne fait pas de mal de le répéter:</p>
+<p><strong>Le salaire du développeur et l&#8217;impact commercial de la lenteur d&#8217;un développement coûtent immensément plus cher qu&#8217;un ordinateur plus puissant</strong>. Qui d&#8217;ailleurs ne coûtera plus rien dans 6 mois.</p>
+<p>Alors OK, ce n&#8217;est pas une invitation à coder avec ses pieds sous prétexte qu&#8217;on la puissance à disposition (ce qui se fait malheureusement de plus en plus).</p>
+<p>Mais choisissez une techno parce que vous êtes productif avec, pas pour ses performances. Sauf si vous avez des mesures chiffrées qui s&#8217;imposent à vous. Auquel cas vous n&#8217;avez de toute façon pas besoin de lire cet article, vous êtes plus compétent que moi.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/python-ruby-et-php-sont-lents/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/th2.jpeg" length="8971" type="image/jpg" />	</item>
+		<item>
+		<title>Déterrer le cadavre d&#8217;un troll : Non, PHP n&#8217;est pas simple 28</title>
+		<link>http://sametmax.com/deterer-le-cadavre-dun-troll-non-php-nest-pas-simple/</link>
+		<comments>http://sametmax.com/deterer-le-cadavre-dun-troll-non-php-nest-pas-simple/#comments</comments>
+		<pubDate>Sat, 28 Jul 2012 14:18:19 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[troll]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1132</guid>
+		<description><![CDATA[J'ai passé des années à coder en PHP. J'ai vu du code très propre faire des choses très belles. <strong>Ce n'est pas grâce au langage, mais en dépit de lui.</strong>]]></description>
+				<content:encoded><![CDATA[<p>Sujet <a href="http://www.steike.com/code/php-must-die/">traité</a> <a href="http://keithdevens.com/weblog/archive/2003/Aug/13/HATE-PHP">100</a> <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">fois</a> mais c&#8217;est à vocation thérapeuthique.</p>
+<p>Quand on demande pourquoi je préfère Python à PHP, je réponds souvent que Python est beaucoup plus simple à utiliser. C&#8217;est généralement le moment où tout le monde me répond que PHP est justement un langage qui a eu du succès parcequ&#8217;il était simple.</p>
+<p><a href="https://www.youtube.com/watch?v=07IQcxW7dg4">Faux</a>. </p>
+<p>PHP a eu du succès parcequ&#8217;il a une excellente doc, des tutoriaux partout sur le net, et une méthode de déploiement facile proposée pour la plupart des hébergeurs.</p>
+<p>Le code lui-même, n&#8217;est pas simple du tout. Prenez par exemple la fonction de base pour ouvrir un fichier, <code>fopen()</code>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #339933;">@</span><span style="color: #990000;">fopen</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'http://example.com/not-existing-file'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'r'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Savez vous ce que ce code va faire ?</p>
+<p>Si PHP a été compilé avec <code>--disable-url-fopen-wrapper</code>, ça ne marchera pas. &#8220;Ne marchera pas&#8221; veut-il dire retourner <code>null</code> ou lever une exception ? Aucune idée, la doc ne le dit pas. De toute façon cette option est retirée avec PHP 5.2.5, et nous sommes en PHP 5.3.10 sur la plupart des distribs. Sauf sur la plupart des hébergeurs&#8230;</p>
+<p>Si <code>allow_url_fopen</code> est désactivé dans <code>php.ini</code>, ça ne marchera pas non plus. Aucune idée de pourquoi.</p>
+<p>Grâve à ce merveilleux &#8220;@&#8221;, le warning en cas de fichier n&#8217;existant pas ne sera pas affiché pas vrai ?</p>
+<p>Sauf bien sur si <code>scream.enabled</code> est activé dans le <code>php.ini</code> ou manuellement avec <code>ini_set</code>.</p>
+<p>A condition que le niveau <code>error_reporting</code> soit ajusté en conséquence.</p>
+<p>Mais alors sa sortie dépend du paramètre <code>display_errors</code>, lui même activable dans le <code>php.ini</code> ou par <code>ini_set</code>.</p>
+<p>Et si par un hasard incroyable vous savez tout cela, savez-vous comment est configuré votre hébergeur ?</p>
+<h2>
+This is going to be legend&#8230;</h2>
+<p>Après il est vrai que l&#8217;écosystème de Python, lui, possède une richesse qui le rend complexe. et le déploiement n&#8217;est pas aussi simple qu&#8217;avec PHP. D&#8217;ailleurs, <strong>je ne prétend pas qu&#8217;on ne puisse pas coder d&#8217;excellents produits avec PHP</strong>. Mais ce n&#8217;est pas grâce à la prétendue simplicité du langage (Ruby et même Javascript sont plus simples).</p>
+<p>Le Web utilise par exemple massivement le JSON. Mais saviez-vous que json_decode retourne <code>null</code> en cas d&#8217;erreur de décodage ? Ce qui est aussi une valeur de retour de décoage de JSON valide, vous forçant donc à a vérifier <code>json_last_error</code> à chaque appel.</p>
+<p>Je vous passe l&#8217;habituelle critique de la surabondance de fonctions PHP pour faire des choses similaires, mais avec des noms complètement à l&#8217;arrache (chercher du texte: <code>ereg</code>, <code>eregi</code>, <code>mb_ereg</code>, <code>mb_eregi</code>, <code>preg_match</code>, <code>strstr</code>, <code>strchr</code>, <code>stristr</code>, <code>strrchr</code>, <code>strpos</code>, <code>stripos</code>, <code>strrpos</code>, <code>strripos</code>, <code>mb_strpos</code>, <code>mb_strrpos</code>) ainsi que de l&#8217;inutilité totale du signe <code>==</code> (<code>"foo" == true</code>, et <code>"foo" == 0</code> mais <code>true != 0</code>). </p>
+<p>Par contre, quelqu&#8217;un pourrait m&#8217;expliquer pourquoi les noms des variables sont sensibles à la casse, mais PAS ceux des fonctions et classes ?</p>
+<p>Et vous voulez vérifier qu&#8217;une variable est vide ou n&#8217;existe pas ? <code>empty()</code> est là pour ça ! Sauf que <code>empty($var)</code> marche, mais <code>empty($var1 || $var2)</code> lève une exception.</p>
+<h2>&#8230;wait for it&#8230;<br />
+</h2>
+<p>En parlant d&#8217;exception, amusons nous un peu avec la gestions des erreurs:</p>
+<ul>
+<li>la généricité c&#8217;est pas pour demain: <code>curl_error</code>, <code>json_last_error</code>, <code>openssl_error_string</code>, <code>imap_errors</code>, <code>mysql_error</code>, <code>xml_get_error_code</code>, <code>bzerror</code>, <code>date_get_last_errors</code>&#8230;</li>
+<li>on autorise à rendre les erreurs silencieuses avec &#8216;@&#8217; (wtf ?)</li>
+<li>pas de stack trace. Un bug ? Démerde toi. Le langage est en typage faible, tu vas t&#8217;amuser !</li>
+<li><code>::</code> est nommé <code>T_PAAMAYIM_NEKUDOTAYIM</code> et <code><<</code>, <code>T_SL</code>, et la première fois qu'on le voit dans un message d'erreur, ça fait tout drôle. Il vaut mieux ne pas être déconnecté.</li>
+<li><code>E_ALL</code> inclue toutes les catégories d'erreur. Sauf <code>E_STRICT</code>. Quelqu'un sait à quoi sert <code>E_STRICT</code> ?</li>
+<li>on a pas le droit de lever une exception dans <code>__toString</code> ! Si on le fait, PHP balance une erreur fatale, et ...</li>
+<li>... les erreurs fatales ne peuvent pas être gérées dans un <code>try/catch</code>. Et de toute façon il n'y a pas de clause <code>finally</code>.
+</li>
+</ul>
+<p>Et quand PHP évolue, au lieu de corriger ce bordel, on rajoute une couche !</p>
+<p>Par exemple, PHP est faiblement typé. Sauf qu'on peut maintenant forcer le type des paramètres d'une fonction en donnant ce qu'on appelle des <a href="http://fr.php.net/manual/en/language.oop5.typehinting.php">type hints</a>. Sauf qu'on qu'on ne peut pas choisir "string" ou "int" ni aucun type de base pour cela. Sauf que les fontions de les bibliothèques standards elles, le font sans problème. Il faut donc utiliser une classe que l'on fait soit même. Sauf que les "type hints" acceptent une classe <strong>non déclarée</strong> comme type (faute de frappe mon ami...). Sauf que dans ce cas on ne peut passer aucun argument à la fonction. Absolument aucun.</p>
+<p>Par contre, mettre des arguments nommés pour les fonctions, ça, on ne le rajoute pas. <a href="http://www.php.net/~derick/meeting-notes.html#named-parameters">Ca rendrait le code plus bordélique</a>, et il faut garder le langage simple. C'est d'ailleurs, j'en suis certain, au nom de cette simplicité que <code>mktime</code> a pour ordre d'arguments: heure, minute, seconde, mois, jour, année.</p>
+<h2>... dary !</h2>
+<p>Heureusement il y a des fonctions cachées qui font que PHP est vraiment un langage pour faciliter la vie du débutant:</p>
+<p><code>preg_replace</code> avec le flag <code>/e</code> prend la chaine, effectue le remplacement, et ensuite fait un <code>eval()</code> dessus !</p>
+<p><code>scandir</code> retourne une liste de fichiers dans un dossier, mais pas dans l'ordre du dossier. Non, ce serait pas fun. Il les retourne dans l'ordre alphabetique, ou l'inverse si on lui passe un argument. Ce qui est logique, puisque PHP est bien connu pour manque de fontions de tris: <code>array_multisort</code>, <code>arsort</code>, <code>asort</code>, <code>ksort</code>, <code>krsort</code>, <code>natsort</code>, <code>natcasesort</code>, <code>sort</code>, <code>rsort</code>, <code>uasort</code>, <code>uksort</code>, <code>usort</code>.</p>
+<p><code>parse_str</code> ne parse pas une chaîne, mais une "query string". Qu'il dump ensuite dans l'espace de nom local. A moins qu'on lui passe un array à populer. Mais dans tous les cas la fonction ne retourne rien.</p>
+<p><code>gzgetss</code> parse les lignes d'un fichier *.gz et en retire les ligne HTML. Indispensable dans la vie de tous les jours, ça valait le coup d'en faire une fonction built-in. Hier encore je me demandais comme j'aillais rajouter cette opération à toutes mes vues Django.</p>
+<p><code>php_uname</code> retourne l'OS courrant, mais en cas d'échec, il retourne silencieusement l'OS sur lequel il a été compilé.</p>
+<p>Et les arrays... Cette structure de donnée magique qu'on aime tant quand on commence à programmer. Ca fait tout, tout je vous dis !</p>
+<p>Les arrays sont une combinaisons de lists, ordered hashes, ordered sets et sparse lists. Là ou c'est amusant, c'est quand on tente de les comparer:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #990000;">array_diff</span><span style="color: #009900;">&#40;</span><span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;marc&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">12</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">&quot;alice&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">23</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+           <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;marc&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">23</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">&quot;alice&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">12</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Quel comportement vérifier, celui d'une liste, d'un set ou d'un mapping ?</p>
+<p>Ici la réponse est un set, ce qui fait que les deux arrays sont considérés comme égaux.</p>
+<p>Par contre:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;foo&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">&quot;bar&quot;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;bar&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">&quot;foo&quot;</span><span style="color: #009900;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;foo&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">1</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">&quot;bar&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">2</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">==</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;bar&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">2</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">&quot;foo&quot;</span> <span style="color: #339933;">=&gt;</span> <span style="color: #cc66cc;">1</span><span style="color: #009900;">&#41;</span></pre></td></tr></table></div>
+
+<p>Tient, tant qu'on est dans la prédictibilité de comportement. Puisque PHP est un langage simple, quelqu'un peut me prédire ce que ça fait ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;">php <span style="color: #339933;">&gt;</span> <span style="color: #000088;">$a</span> <span style="color: #339933;">=</span> <span style="color: #009900; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+php <span style="color: #339933;">&gt;</span> <span style="color: #000088;">$a</span><span style="color: #339933;">++;</span>
+php <span style="color: #339933;">&gt;</span> <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$a</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Non ?</p>
+<p>Ben ça a affiche <code>1</code>. Si, si.</p>
+<p>Mais comme on aime bien la congruence chez Zend:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;">php <span style="color: #339933;">&gt;</span> <span style="color: #000088;">$a</span> <span style="color: #339933;">=</span> <span style="color: #009900; font-weight: bold;">null</span><span style="color: #339933;">;</span>
+php <span style="color: #339933;">&gt;</span> <span style="color: #000088;">$a</span><span style="color: #339933;">--;</span>
+php <span style="color: #339933;">&gt;</span> <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$a</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Ça n'affiche rien.</p>
+<p>Et pour finir sur une petite note de sécurité spécial noob: include accepte une url en paramètre.</p>
+<p>J'ai passé des années à coder en PHP. J'ai vu du code très propre faire des choses très belles. <strong>Ce n'est pas grâce au langage, mais en dépit de lui.</strong></p>
+<p>Je suis heureux que le langage ai eu un tel succès. Il a permis au Web de devenir ce qu'il est. Il est temps maintenant de passer à autre chose.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deterer-le-cadavre-dun-troll-non-php-nest-pas-simple/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/evil_treasure_trolls.jpg" length="30344" type="image/jpg" />	</item>
+		<item>
+		<title>WordPress, je te hais 4</title>
+		<link>http://sametmax.com/wordpress-je-te-hais/</link>
+		<comments>http://sametmax.com/wordpress-je-te-hais/#comments</comments>
+		<pubDate>Wed, 18 Jul 2012 16:29:31 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[wordpress]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1203</guid>
+		<description><![CDATA[Cherchant à rendre le formulaire commentaires de Sam et Max plus ergonomique, j'ai jeté un coup d'oeil sur le template lié.]]></description>
+				<content:encoded><![CDATA[<p>Cherchant à rendre le formulaire commentaires de Sam et Max plus ergonomique, j&#8217;ai jeté un coup d&#8217;oeil sur le template lié.</p>
+<p>L&#8217;intégralité du code qui génère le formulaire pourri que vous voyez sous l&#8217;article est ici:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'open'</span> <span style="color: #339933;">==</span> <span style="color: #000088;">$post</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">comment_status</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+        <span style="color: #000000; font-weight: bold;">&lt;?php</span> comment_form<span style="color: #009900;">&#40;</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'label_submit'</span> <span style="color: #339933;">=&gt;</span> esc_attr__<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Submit Comment'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'Minimal'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'title_reply'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'&lt;span&gt;'</span> <span style="color: #339933;">.</span> esc_attr__<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Leave a Reply'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'Minimal'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/span&gt;'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'title_reply_to'</span> <span style="color: #339933;">=&gt;</span> esc_attr__<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Leave a Reply to %s'</span> <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">else</span><span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">endif</span><span style="color: #339933;">;</span> <span style="color: #666666; font-style: italic;">// if you delete this the sky will fall on your head ?&gt;</span>
+<span style="color: #339933;">&lt;/</span>div<span style="color: #339933;">&gt;</span> <span style="color: #339933;">&lt;!--</span> <span style="color: #990000;">end</span> comment<span style="color: #339933;">-</span>section <span style="color: #339933;">--&gt;</span></pre></td></tr></table></div>
+
+<p>Je vous passe le commentaire amical qui stipule &#8220;<q>si vous supprimez ceci le ciel vous tombera sur la tête</q>&#8221; et toute remarque désobligeante sur le formatage absolument bordélique de l&#8217;intégralité du fichier.</p>
+<p>Non, je reste optimise, je vois un <code>comment_form</code> qui encapsule la génération du formulaire. Peut être une API propre ? J&#8217;ai bon espoir (mais le fait que ce soit une fonction et non une classe aurait du me mettre la puce à l&#8217;oreille).</p>
+<p>Je trouve un <a href="http://www.1stwebdesigner.com/wordpress/comment-form-customization/">très bon article</a> qui explique où on trouve ce merveilleux <code>comment_form</code> (ben oui parceque les includes et autoloads en PHP c&#8217;est pas vraiment le truc le plus top pour retrouver la chaîne de dépendances). Et là, je n&#8217;ai rien supprimé, mais le ciel m&#8217;est quand même tombé sur la gueule. Et toute la couche d&#8217;ozone avec.</p>
+<p>La valeur par défaut d&#8217;UN des paramètres de la fonction qui génère le formulaire, c&#8217;est ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #000088;">$defaults</span> <span style="color: #339933;">=</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'fields'</span> <span style="color: #339933;">=&gt;</span> apply_filters<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'comment_form_default_fields'</span><span style="color: #339933;">,</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span>
+    <span style="color: #0000ff;">'author'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'&lt;p class=&quot;comment-form-author&quot;&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;label for=&quot;author&quot;&gt;'</span> <span style="color: #339933;">.</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Name'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/label&gt; '</span> <span style="color: #339933;">.</span>
+                <span style="color: #009900;">&#40;</span> <span style="color: #000088;">$req</span> ? <span style="color: #0000ff;">'&lt;span class=&quot;required&quot;&gt;*&lt;/span&gt;'</span> <span style="color: #339933;">:</span> <span style="color: #0000ff;">''</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;input id=&quot;author&quot; name=&quot;author&quot; type=&quot;text&quot; value=&quot;'</span> <span style="color: #339933;">.</span>
+                esc_attr<span style="color: #009900;">&#40;</span> <span style="color: #000088;">$commenter</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'comment_author'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&quot; size=&quot;30&quot; tabindex=&quot;1&quot;'</span> <span style="color: #339933;">.</span> <span style="color: #000088;">$aria_req</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">' /&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;/p&gt;&lt;!-- #form-section-author .form-section --&gt;'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'email'</span>  <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'&lt;p class=&quot;comment-form-email&quot;&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;label for=&quot;email&quot;&gt;'</span> <span style="color: #339933;">.</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Email'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/label&gt; '</span> <span style="color: #339933;">.</span>
+                <span style="color: #009900;">&#40;</span> <span style="color: #000088;">$req</span> ? <span style="color: #0000ff;">'&lt;span class=&quot;required&quot;&gt;*&lt;/span&gt;'</span> <span style="color: #339933;">:</span> <span style="color: #0000ff;">''</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;input id=&quot;email&quot; name=&quot;email&quot; type=&quot;text&quot; value=&quot;'</span> <span style="color: #339933;">.</span> esc_attr<span style="color: #009900;">&#40;</span>  <span style="color: #000088;">$commenter</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'comment_author_email'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&quot; size=&quot;30&quot; tabindex=&quot;2&quot;'</span> <span style="color: #339933;">.</span> <span style="color: #000088;">$aria_req</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">' /&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;/p&gt;&lt;!-- #form-section-email .form-section --&gt;'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'url'</span>    <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'
+&lt;p class=&quot;comment-form-url&quot;&gt;'</span> <span style="color: #339933;">.&lt;/</span>p<span style="color: #339933;">&gt;</span>
+&nbsp;
+                <span style="color: #0000ff;">'&lt;label for=&quot;url&quot;&gt;'</span> <span style="color: #339933;">.</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Website'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/label&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;input id=&quot;url&quot; name=&quot;url&quot; type=&quot;text&quot; value=&quot;'</span> <span style="color: #339933;">.</span> esc_attr<span style="color: #009900;">&#40;</span> <span style="color: #000088;">$commenter</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'comment_author_url'</span><span style="color: #009900;">&#93;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&quot; size=&quot;30&quot; tabindex=&quot;3&quot; /&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'
+&nbsp;
+&lt;!-- #&lt;span class=&quot;hiddenSpellError&quot; pre=&quot;&quot;&gt;form-section-url&lt;/span&gt; .form-section --&gt;'</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'comment_field'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'&lt;p class=&quot;comment-form-comment&quot;&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;label for=&quot;comment&quot;&gt;'</span> <span style="color: #339933;">.</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Comment'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/label&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;textarea id=&quot;comment&quot; name=&quot;comment&quot; cols=&quot;45&quot; rows=&quot;8&quot; tabindex=&quot;4&quot; aria-required=&quot;true&quot;&gt;&lt;/textarea&gt;'</span> <span style="color: #339933;">.</span>
+                <span style="color: #0000ff;">'&lt;/p&gt;&lt;!-- #form-section-comment .form-section --&gt;'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'must_log_in'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'
+&lt;p class=&quot;must-log-in&quot;&gt;'</span> <span style="color: #339933;">.</span>  <span style="color: #990000;">sprintf</span><span style="color: #009900;">&#40;</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'You must be &lt;a href=&quot;%s&quot;&gt;logged in&lt;/a&gt; to post a comment.'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> wp_login_url<span style="color: #009900;">&#40;</span> apply_filters<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'the_permalink'</span><span style="color: #339933;">,</span> get_permalink<span style="color: #009900;">&#40;</span> <span style="color: #000088;">$post_id</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/p&gt;
+&nbsp;
+'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'logged_in_as'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'
+&lt;p class=&quot;logged-in-as&quot;&gt;'</span> <span style="color: #339933;">.</span> <span style="color: #990000;">sprintf</span><span style="color: #009900;">&#40;</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Logged in as &lt;a href=&quot;%s&quot;&gt;%s&lt;/a&gt;. &lt;a title=&quot;Log out of this account&quot; href=&quot;%s&quot;&gt;Log out?&lt;/a&gt;&lt;/p&gt;
+&nbsp;
+'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> admin_url<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'profile.php'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$user_identity</span><span style="color: #339933;">,</span> wp_logout_url<span style="color: #009900;">&#40;</span> apply_filters<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'the_permalink'</span><span style="color: #339933;">,</span> get_permalink<span style="color: #009900;">&#40;</span> <span style="color: #000088;">$post_id</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'comment_notes_before'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'&lt;p class=&quot;comment-notes&quot;&gt;'</span> <span style="color: #339933;">.</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Your email is &lt;em&gt;never&lt;/em&gt; published nor shared.'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #009900;">&#40;</span> <span style="color: #000088;">$req</span> ? __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">' Required fields are marked &lt;span class=&quot;required&quot;&gt;*&lt;/span&gt;'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">:</span> <span style="color: #0000ff;">''</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/p&gt;'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'comment_notes_after'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'&lt;dl class=&quot;form-allowed-tags&quot;&gt;&lt;dt&gt;'</span> <span style="color: #339933;">.</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'You may use these &lt;abbr title=&quot;HyperText Markup Language&quot;&gt;HTML&lt;/abbr&gt; tags and attributes:'</span> <span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/dt&gt; &lt;dd&gt;&lt;code&gt;'</span> <span style="color: #339933;">.</span> allowed_tags<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">.</span> <span style="color: #0000ff;">'&lt;/code&gt;&lt;/dd&gt;'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'id_form'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'commentform'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'id_submit'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'submit'</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'title_reply'</span> <span style="color: #339933;">=&gt;</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Leave a Reply'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'title_reply_to'</span> <span style="color: #339933;">=&gt;</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Leave a Reply to %s'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'cancel_reply_link'</span> <span style="color: #339933;">=&gt;</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Cancel reply'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+    <span style="color: #0000ff;">'label_submit'</span> <span style="color: #339933;">=&gt;</span> __<span style="color: #009900;">&#40;</span> <span style="color: #0000ff;">'Post Comment'</span> <span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span>
+<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span></pre></td></tr></table></div>
+
+<p>Je ne sais pas ce qui me rend le plus malade.</p>
+<p>L&#8217;absence totale de la notion de template ?</p>
+<p>Le fait qu&#8217;on passe l&#8217;intégralité du code HTML en PARAMETRE à une fonction qui est censée générer le formulaire ?</p>
+<p>Le fait que le code est absolument inmodifiable car c&#8217;est un mélange de concaténations, d&#8217;arrays et d&#8217;appels à gettext ?</p>
+<p>Je voulais juste modifier le HTML du formulaire de comments bordel !</p>
+<p>BANG !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/wordpress-je-te-hais/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/suicide.jpg" length="" type="image/jpg" />	</item>
+		<item>
+		<title>MD5 en Bash, PHP, Python et Javascript 6</title>
+		<link>http://sametmax.com/md5-en-bash-php-python-et-javascript/</link>
+		<comments>http://sametmax.com/md5-en-bash-php-python-et-javascript/#comments</comments>
+		<pubDate>Mon, 18 Jun 2012 17:33:17 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[md5]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=936</guid>
+		<description><![CDATA[Bien que pour tout ce qui touche à la sécurité (comme les mots de passe ou les signatures) il vaille mieux préférer des fonctions plus sécurisées comme SHA-2, MD5 reste très pratique pour vérifier l'intégrité d'un fichier ou pour éviter les doublons.]]></description>
+				<content:encoded><![CDATA[<p>Bien que pour tout ce qui touche à la sécurité (comme les mots de passe ou les signatures) il vaille mieux préférer des fonctions plus sécurisées comme SHA-2, <a href="https://fr.wikipedia.org/wiki/Md5">MD5</a> reste très pratique pour vérifier l&#8217;intégrité d&#8217;un fichier ou pour éviter les doublons.</p>
+<h2>Bash</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #660033;">-n</span> <span style="color: #ff0000;">&quot;chaine à hasher&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> md5sum</pre></td></tr></table></div>
+
+<p>(N&#8217;oubliez pas <code>-n</code> sinon vous aurez un saut de ligne ajouté à la chaîne.)</p>
+<p>ou</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">md5sum <span style="color: #000000; font-weight: bold;">/</span>fichier<span style="color: #000000; font-weight: bold;">/</span>a<span style="color: #000000; font-weight: bold;">/</span>hasher</pre></td></tr></table></div>
+
+<h2>Python</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> hashlib
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> hashlib.<span style="color: #dc143c;">md5</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chaine à hasher'</span><span style="color: black;">&#41;</span>.<span style="color: black;">hexdigest</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>ou</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> hashlib
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> hashlib.<span style="color: #dc143c;">md5</span><span style="color: black;">&#40;</span><span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;/fichier/a/hasher&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: black;">hexdigest</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La lib <code>hashlib</code> contient également des fonctions pour les hashs sha1, sha224, sha256, sha384 et sha512.</p>
+<h2>PHP</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #b1b100;">echo</span> <span style="color: #990000;">md5</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;chaine a hasher&quot;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>ou</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #b1b100;">echo</span> <span style="color: #990000;">md5</span><span style="color: #009900;">&#40;</span><span style="color: #990000;">fread</span><span style="color: #009900;">&#40;</span><span style="color: #990000;">fopen</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/fichier/a/hasher'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'r'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">,</span> TAILLE_DU_FICHIER<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>A noter que l&#8217;encodage du terminal et code jouent sur le résultat. Rappelez-vous aussi que PHP et Python n&#8217;utilisent pas UTF-8 par défaut.</p>
+<h2>Javascript</h2>
+<p>Il n&#8217;existe pas de fonction cross-browser qui permette de récuperer le hash MD5 d&#8217;une chaîne, mais on peut utiliser des bibliothèques externes. La plus connue est celle de <a href="http://pajhome.org.uk/crypt/md5 ">Paul Johnston</a> que nous utilisons pour créer les hashs visuels de <a href="http://sametmax.com/vizhash-js-notre-implementation-libre-de-hash-visuel-utilisant-html5-canvas/">Vizhash.js</a>, et donc dans <a href="http://sametmax.com/0bin-implementation-python-de-zerobin-pastebin-chiffre-cote-client/">0bin</a>.</p>
+<p>On insère le code:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="hrml" style="font-family:monospace;">&lt;script type=&quot;text/javascript&quot; src=&quot;md5.js&quot;&gt;&lt;/script&gt;</pre></td></tr></table></div>
+
+<p>Puis:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">alert<span style="color: #009900;">&#40;</span>hex_md5<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'chaine a hasher'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Comme Javascript n&#8217;a pas normalement accès au système de fichiers, il n&#8217;y a pas de version qui permette de calculer la somme de contrôle d&#8217;un fichier directement.</p>
+<p><strong>UPDATE</strong> après commantaires:</p>
+<p>Pour éviter les problèmes liés à l&#8217;encoding, il vaut mieux ouvrir le fichier en mode binaire: <code>fopen('fichier', rb')</code> et <code>open('fichier', 'rb')</code> en PHP et Python.</p>
+<p>Pour PHP, peut utiliser directement md5_<code>file</code> pour calculer le MD5 d&#8217;un fichier. </p>
+<p>Pour Python, dans le cas de gros fichiers, utiliser read() charde tout le contenu en mémoire. On peut éviter ça en utilisant une approche par morceaux, telle que:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">hash</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">md5</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichier'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+    <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #dc143c;">chunk</span> <span style="color: #ff7700;font-weight:bold;">in</span> f.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">500</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">hash</span>.<span style="color: black;">update</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">chunk</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">hash</span>.<span style="color: black;">hexdigest</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/md5-en-bash-php-python-et-javascript/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/2737.jpg" length="96251" type="image/jpg" />	</item>
+	</channel>
+</rss>

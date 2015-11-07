@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; setup.py</title>
+	<atom:link href="http://sametmax.com/tag/setup-py/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Travailler sur une lib externe à votre projet proprement en Python 11</title>
+		<link>http://sametmax.com/travailler-sur-une-lib-externe-a-votre-projet-proprement-en-python/</link>
+		<comments>http://sametmax.com/travailler-sur-une-lib-externe-a-votre-projet-proprement-en-python/#comments</comments>
+		<pubDate>Mon, 06 Oct 2014 12:53:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[packaging]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[setup.py]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12269</guid>
+		<description><![CDATA[Quand on a une lib externe en dépendance à son projet, on veut être capable l'importer MAIS pouvoir en modifier le code.]]></description>
+				<content:encoded><![CDATA[<p>Quand on a une lib externe en dépendance à son projet, on veut être capable de l&#8217;importer MAIS pouvoir en modifier le code.</p>
+<p>L&#8217;installer avec <code>pip</code> ou python <code>setup.py install</code> va copier le code dans le dossier <code>site-packages</code> et ce n&#8217;est pas ce que l&#8217;on veut car ça oblige à refaire l&#8217;installation à chaque modif.</p>
+<p>Le mettre dans un dossier &#8220;libs&#8221; qu&#8217;on ajoute au <code>PYTHON PATH</code> ou pire, ajouter chaque dépendance au <code>PYTHON PATH</code> n&#8217;est pas une solution qu&#8217;on est fier d&#8217;exhiber au hackerspace du coin.</p>
+<p>On s&#8217;en remet donc généralement à un symlink, sans savoir qu&#8217;il existe en fait un outil fait pour ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python setup.py develop</pre></td></tr></table></div>
+
+<p>Cette commande va ajouter des entrées spéciales dans des fichiers placés dans <code>site-packages</code> qui vont vous permettre d&#8217;utiliser votre lib comme si elle était installée. Mais en vérité il va chercher le code dans votre dossier de dev, donc si vous modifiez le code, vous avez toujours la version de votre lib la plus fraîche.</p>
+<p>Une fois qu&#8217;on a une lib stable, on peut retirer ce lien avec :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python setup.py develop <span style="color: #660033;">--uninstall</span></pre></td></tr></table></div>
+
+<p>Et installer la lib normalement.</p>
+<p>Notez que tout ceci ne fonctionne que si le <code>setup.py</code> utilise <code>setuptools</code> et non <code>distutils</code> qui provoque l&#8217;erreur <em>error: invalid command &#8216;develop&#8217;</em>.</p>
+<p>Comme <code>setuptools</code> inclut maintenant le meilleur de <code>distutils</code>, on peut remplacer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">distutils</span>.<span style="color: black;">core</span> <span style="color: #ff7700;font-weight:bold;">import</span> setup</pre></td></tr></table></div>
+
+<p>Par :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> setuptools <span style="color: #ff7700;font-weight:bold;">import</span> setup</pre></td></tr></table></div>
+
+<p>Sans soucis.</p>
+<p><code>pip</code> vient lui aussi avec un outil pour ça en la forme du flag <code>-e</code> qui fait exactement la même chose. Exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">-e</span> <span style="color: #000000; font-weight: bold;">/</span>chemin<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>vers<span style="color: #000000; font-weight: bold;">/</span>projet</pre></td></tr></table></div>
+
+<p>Cela fonctionne comme pour <code>python setup.py develop --uninstall</code> mais on bénéficie de tous les goodies de <code>pip</code> en prime.</p>
+<p>Néanmoins, <code>pip</code> pousse plus loin l&#8217;automatisation. Si vous faites <code>pip install -e</code> sur un repo distant, il va également cloner pour vous le code.</p>
+<p>Ex :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">-e</span> <span style="color: #c20cb9; font-weight: bold;">git</span>+https:<span style="color: #000000; font-weight: bold;">//</span><span style="color: #c20cb9; font-weight: bold;">git</span><span style="color: #000000; font-weight: bold;">@</span>github.com<span style="color: #000000; font-weight: bold;">/</span>sametmax<span style="color: #000000; font-weight: bold;">/</span>minibelt.git<span style="color: #666666; font-style: italic;">#egg=minibelt</span></pre></td></tr></table></div>
+
+<p>Et on retrouvera un clone du projet dans <code>/chemin/vers/virtualenv/src/</code> qui sera importable, modifiable et pushable. Le résultat est automatisable, puisque <code>pip freeze</code> le prend en compte:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ pip freeze
+<span style="color: #007800;">argparse</span>==1.2.1
+<span style="color: #660033;">-e</span> <span style="color: #c20cb9; font-weight: bold;">git</span>+https:<span style="color: #000000; font-weight: bold;">//</span><span style="color: #c20cb9; font-weight: bold;">git</span><span style="color: #000000; font-weight: bold;">@</span>github.com<span style="color: #000000; font-weight: bold;">/</span>sametmax<span style="color: #000000; font-weight: bold;">/</span>minibelt.git<span style="color: #000000; font-weight: bold;">@</span>b898155b40d7de73cc404db7d274128f2b2fc330<span style="color: #666666; font-style: italic;">#egg=minibelt-master</span>
+<span style="color: #007800;">wsgiref</span>==0.1.2</pre></td></tr></table></div>
+
+<p>L&#8217;URL est assez bâtarde à trouver par contre, car elle doit toujours finir par <code>#egg=nom-du-projet</code> et commencer par un double protocole, celui du VCS et celui du transport.</p>
+<p>P.S: j&#8217;ai remis la coloration syntaxique et les iframes (donc la musique). J&#8217;aime bien ce thème là, mais le header chie sa mère. Est-ce que vous l&#8217;aimez suffisamment pour que je me casse le cul à le réparer ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/travailler-sur-une-lib-externe-a-votre-projet-proprement-en-python/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/Ot05Z77.gif" length="463277" type="image/jpg" />	</item>
+	</channel>
+</rss>

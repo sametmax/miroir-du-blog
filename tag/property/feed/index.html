@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; property</title>
+	<atom:link href="http://sametmax.com/tag/property/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Ecrire un code pour les autres en Python 10</title>
+		<link>http://sametmax.com/ecrire-un-code-pour-les-autres-en-python/</link>
+		<comments>http://sametmax.com/ecrire-un-code-pour-les-autres-en-python/#comments</comments>
+		<pubDate>Sat, 17 Aug 2013 13:15:07 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[context manager]]></category>
+		<category><![CDATA[poo]]></category>
+		<category><![CDATA[property]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7122</guid>
+		<description><![CDATA[Cet article s'adresse à des développeurs qui commencent à être bien dans leurs chaussettes en Python et qui se sentent de relever le défi d'écrire du code pour d'autres personnes.
+]]></description>
+				<content:encoded><![CDATA[<p>Cet article s&#8217;adresse à des développeurs qui commencent à être bien dans leurs chaussettes en Python et qui se sentent de relever le défi d&#8217;écrire du code pour d&#8217;autres personnes.</p>
+<p>Car quand vous allez publier du code, un script, une lib voire, Dieu ait pitié de vous, un framework, les gens qui vont les utiliser vont avoir des besoins auxquels vous n&#8217;aviez pas pensé. Or, ils ne voudront pas modifier votre code. L&#8217;interêt d&#8217;utiliser le code d&#8217;un autre, c&#8217;est justement de s&#8217;éviter la maintenance. Ils voudront aussi prendre en main rapidement votre outil pour faire des choses simples sans avoir à tout comprendre.</p>
+<p>Ainsi, il va vous falloir intégrer divers moyens d&#8217;étendre les fonctionnalités de votre code, afin que les autres dev puissent l&#8217;utiliser dans le cadre de leurs besoins.</p>
+<p>Nous allons donc construire un projet bidon : une barre de progression en ASCII dont la sortie va ressembler à ceci :</p>
+<p>Starting [=========================================     ] 93%</p>
+<p>L&#8217;idée est de pouvoir l&#8217;utiliser ainsi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">    <span style="color: #ff7700;font-weight:bold;">with</span> ProgressBar<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> pb:
+        <span style="color: #ff7700;font-weight:bold;">for</span> progres <span style="color: #ff7700;font-weight:bold;">in</span> faire_un_truc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+            pb.<span style="color: black;">progress</span> <span style="color: #66cc66;">=</span> progres</pre></td></tr></table></div>
+
+<p>Nous allons le proposer ce projet sous forme de classe importable, et nous allons voir plusieurs manières de rendre ce code facile à prendre en main, configurable et extensible :</p>
+<ul>
+<li>Paramètres, avec un ordre intelligent et des valeurs par défaut saines.</li>
+<li>Templating de l&#8217;ouput.</li>
+<li>Methodes pouvant être écrasée par héritage.</li>
+<li>Getter and setter (ici via des propriétés)</li>
+<li>Exposition intelligente des attributs de la classe.</li>
+<li>Callbacks et passage réfléchi de paramètres à ceux-ci.</li>
+</ul>
+<p>J&#8217;aurais pu ajouter l&#8217;injection de dépendance, mais j&#8217;ai déjà traité ce sujet dans un autre article, et je ne voulais pas charger celui-ci. Il est déjà bien gras.</p>
+<p>J&#8217;ai aussi volontairement omis la docstring et les comments. Écrire une bonne doc est un article à part entière.</p>
+<p>Pré-requis : être parfaitement à l&#8217;aise avec le <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">POO</a> et les références, comprendre le principe des context managers, avoir pigé les <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>.</p>
+<p>Et roulez jeunesse !</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/zoF7qxapnSA" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> io <span style="color: #ff7700;font-weight:bold;">import</span> IOBase
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On hérite d'IOBase pour permettre le détournement de stdout. Voir plus bas.</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> ProgressBar<span style="color: black;">&#40;</span>IOBase<span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On met les paramètres par ordre de fréquence d'utilisation. Il est</span>
+    <span style="color: #808080; font-style: italic;"># plus probable que les programmeurs changent le total que la sortie</span>
+    <span style="color: #808080; font-style: italic;"># du programme.</span>
+    <span style="color: #808080; font-style: italic;"># Mettre des valeurs par défaut saines permet à l'utilisateur de faire</span>
+    <span style="color: #808080; font-style: italic;"># des essais sans trop regarder la doc. Par ailleurs, des valeurs par</span>
+    <span style="color: #808080; font-style: italic;"># défaut servent de documentation en soit, et apparaitront si help()</span>
+    <span style="color: #808080; font-style: italic;"># est appelé.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> total<span style="color: #66cc66;">=</span><span style="color: #ff4500;">100</span><span style="color: #66cc66;">,</span>  percent_per_sign<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span>
+                 progress_sign<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'='</span><span style="color: #66cc66;">,</span> callbacks<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+                 template<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'Starting [{bar}] {progress}%'</span><span style="color: #66cc66;">,</span>
+                 output<span style="color: #66cc66;">=</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span><span style="color: #66cc66;">,</span> intercept_stdout<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Par défaut le total est 100, afin que l'utilisateur passe un</span>
+        <span style="color: #808080; font-style: italic;"># pourcentage, ce qui est le plus naturel. Néanmoins, si il souhaite</span>
+        <span style="color: #808080; font-style: italic;"># s'affranchir de calculs, on lui permet de passer une autre valeur</span>
+        <span style="color: #808080; font-style: italic;"># qui sera ramenée à un pourcentage automatiquement à l'affichage</span>
+        <span style="color: #808080; font-style: italic;"># de toute façon.</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">total</span> <span style="color: #66cc66;">=</span> total
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Customisation de base : changer le symbole de progrès. Par défaut</span>
+        <span style="color: #808080; font-style: italic;"># un égal, mais certains aiment les ., les - ou autre.</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">progress_sign</span> <span style="color: #66cc66;">=</span> progress_sign
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Idem, si la personne veut une barre plus ou moins longue.</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">percent_per_sign</span> <span style="color: #66cc66;">=</span> percent_per_sign
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># la longueur de la barre de progression</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">bar_len</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">100</span> / percent_per_sign * <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>progress_sign<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Le formatage de la progress bar se fait à l'aide d'une chaîne</span>
+        <span style="color: #808080; font-style: italic;"># ordinaire qui sert de template (avec le langage de formatage de Python)</span>
+        <span style="color: #808080; font-style: italic;"># et peut facilement être changée pour obtenir plus de contrôle</span>
+        <span style="color: #808080; font-style: italic;"># sur l'aspect de la bar.</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">template</span> <span style="color: #66cc66;">=</span> template
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On peut aussi passer un tuple de fonctions qui permettent de réagir</span>
+        <span style="color: #808080; font-style: italic;"># à chaque fois que le progrès change. On utilise nous-même notre</span>
+        <span style="color: #808080; font-style: italic;"># système de callback pour que la methode print_progress() soit</span>
+        <span style="color: #808080; font-style: italic;"># appelée à chaque fois, mettant à jour l'affichage de la bar.</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span> <span style="color: #66cc66;">=</span> callbacks + <span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">print_progress</span><span style="color: #66cc66;">,</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Initialisation de 3 variables à vide. 'buffer' va contenir</span>
+        <span style="color: #808080; font-style: italic;"># tout ce qui va être écrit avec write() pour éviter de perturber</span>
+        <span style="color: #808080; font-style: italic;"># l'affichage de la bar, et '_progress' va contenir le progrès, mais</span>
+        <span style="color: #808080; font-style: italic;"># le '_' signale que c'est une variable à usage interne. Nous allons</span>
+        <span style="color: #808080; font-style: italic;"># en effet l'enrober dans une propriété. Enfin cursor_shift est</span>
+        <span style="color: #808080; font-style: italic;"># le nombre de caractères à effacer pour redessiner la bar à chaque</span>
+        <span style="color: #808080; font-style: italic;"># mise à jour.</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">buffer</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">''</span>
+        <span style="color: #008000;">self</span>._progress <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">cursor_shift</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Par défaut, on s'attend à ce que l'utilisateur affiche cette</span>
+        <span style="color: #808080; font-style: italic;"># bar directement dans le terminal, sur la sortie standard. Mais</span>
+        <span style="color: #808080; font-style: italic;"># il peut vouloir déporter l'affichage ailleurs (par exemple stderr).</span>
+        <span style="color: #808080; font-style: italic;"># Pour cette raison, on permet de passer le stream sur lequel</span>
+        <span style="color: #808080; font-style: italic;"># l'utilisateur va écrire, même si par défaut on prend sys.stdout,</span>
+        <span style="color: #808080; font-style: italic;"># donc la sortie standard.</span>
+        <span style="color: #808080; font-style: italic;"># Si l'utilisateur ne souhaite rien de tout cela, il peut également</span>
+        <span style="color: #808080; font-style: italic;"># retirer 'self.print_progress' de la liste des callbacks puisque</span>
+        <span style="color: #808080; font-style: italic;"># l'attribut est public.</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">out</span> <span style="color: #66cc66;">=</span> output
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Comme on utilise la sortie standard par défaut, la barre peut</span>
+        <span style="color: #808080; font-style: italic;"># facilement être cassée par un autre code écrivant aussi sur la sortie</span>
+        <span style="color: #808080; font-style: italic;"># standard. Puisqu'un débutant ne comprendra pas rour se suite ce qui se</span>
+        <span style="color: #808080; font-style: italic;"># passe, par défaut on va intercepter stdout et mettre tout ce qui est</span>
+        <span style="color: #808080; font-style: italic;"># écrit dessus dans un buffer. Si jamais il y a des prints fait durant</span>
+        <span style="color: #808080; font-style: italic;"># l'affichage, il seront cachés, et stockés. Ce comportement n'est pas</span>
+        <span style="color: #808080; font-style: italic;"># forcément désirable, et peut donc être désactivé par un paramètre pour</span>
+        <span style="color: #808080; font-style: italic;"># l'utilisateur qui sait ce qu'il fait notamment dans le cadre</span>
+        <span style="color: #808080; font-style: italic;"># d'utilisation des threads.</span>
+        <span style="color: #008000;">self</span>._intercept_stdout <span style="color: #66cc66;">=</span> intercept_stdout <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">self</span>.<span style="color: black;">out</span> <span style="color: #66cc66;">==</span> <span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>._intercept_stdout:
+            <span style="color: #808080; font-style: italic;"># L'interception de la sortie standard se fait en remplaçant</span>
+            <span style="color: #808080; font-style: italic;"># sys.stdout par soi-même. C'est pour cette raison que ProgressBar</span>
+            <span style="color: #808080; font-style: italic;"># hérite de IOBase. En effet, de cette manière, on possède</span>
+            <span style="color: #808080; font-style: italic;"># l'interface d'un objet stream et tout écriture sur 'self' semblera</span>
+            <span style="color: #808080; font-style: italic;"># fonctionner comme sur sys.stdout. Cela permet de faire des prints</span>
+            <span style="color: #808080; font-style: italic;"># ou de lancer un shell et d'utiliser la barre, bien que</span>
+            <span style="color: #808080; font-style: italic;"># dans un shell cela monopolisera le prompt.</span>
+            <span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Afficher la barre à la création de l'objet retire de la flexibilité à</span>
+    <span style="color: #808080; font-style: italic;"># l'utilisateur qui peut vouloir le créer d'un côté, le stocker, et</span>
+    <span style="color: #808080; font-style: italic;"># démarrer l'affichage plus tard. L'affichage est donc conditionné</span>
+    <span style="color: #808080; font-style: italic;"># par cette méthode.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> show<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        bar <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">out</span>.<span style="color: black;">write</span><span style="color: black;">&#40;</span>bar<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">cursor_shift</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>bar<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Comme le plus souvent on voudra tout de même afficher la barre juste après</span>
+    <span style="color: #808080; font-style: italic;"># la création, on transforme cette classe en context manager. Pour cela on</span>
+    <span style="color: #808080; font-style: italic;"># créer un alias de la method show() qu'on appelle __enter__, puisque tout</span>
+    <span style="color: #808080; font-style: italic;"># objet qui a une méthode nommée __enter__ peut être utilisé comme context</span>
+    <span style="color: #808080; font-style: italic;"># manager. Si vous ne vous souvenez pas de ce que c'est, il y a un article</span>
+    <span style="color: #808080; font-style: italic;"># sur le blog à ce sujet. Mais en résumé, ce sont les objets utilisables</span>
+    <span style="color: #808080; font-style: italic;"># avec &quot;with&quot;.</span>
+    <span style="color: #808080; font-style: italic;"># Notez qu'on ne fait pas __enter__ = show, ce qui serait un moyen plus</span>
+    <span style="color: #808080; font-style: italic;"># court d'aliaser, car il empêcherait __enter__ d'appeler le bon show()</span>
+    <span style="color: #808080; font-style: italic;"># en cas d'héritage, si show() est écrasé.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __enter__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">show</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Une petit méthode de nettoyage, qui ici va simplement remettre sys.stdout</span>
+    <span style="color: #808080; font-style: italic;"># à sa place.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> stop<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>._intercept_stdout:
+            <span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">out</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Même topo, on alias stop en __exit__ pour avoir la sortie du context</span>
+    <span style="color: #808080; font-style: italic;"># manager. On a pas appelé directement ces méthodes __enter__ et __exit__</span>
+    <span style="color: #808080; font-style: italic;"># car l'utilisateur peut vouloir les appeler manuellement.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __exit__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">stop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Une simple propriété qui donne accès au progres en lecture...</span>
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> progress<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._progress
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ... et en écriture. La différence étant qu'à l'écriture, on vérifie</span>
+    <span style="color: #808080; font-style: italic;"># que la valeur est bien comprise entre 0 et le total. On appelle aussi</span>
+    <span style="color: #808080; font-style: italic;"># les callbacks, et donc l'affichage se mettra à jour.</span>
+    <span style="color: #66cc66;">@</span>progress.<span style="color: black;">setter</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> progress<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff4500;">0</span> <span style="color: #66cc66;">&lt;=</span> value <span style="color: #66cc66;">&lt;=</span> <span style="color: #008000;">self</span>.<span style="color: black;">total</span>:
+            <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;'value' is %s and should be set between 0 &quot;</span>
+                             <span style="color: #483d8b;">&quot;and 'total' (%s)&quot;</span> % <span style="color: black;">&#40;</span>value<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">total</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On le fait avant car les callbacks doivent être appelés</span>
+        <span style="color: #808080; font-style: italic;"># avec un état propre.</span>
+        previous_progress <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>._progress
+        <span style="color: #008000;">self</span>._progress <span style="color: #66cc66;">=</span> value
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Ce que l'on va passer en paramètres aux callbacks est un choix</span>
+        <span style="color: #808080; font-style: italic;"># important. Déjà en premier paramètre, on passe self. Ainsi le callback</span>
+        <span style="color: #808080; font-style: italic;"># aura accès à presque tout, et on est certain qu'il ne se trouvera</span>
+        <span style="color: #808080; font-style: italic;"># pas dépourvu d'informations. Ensuite on passe le progrès. Normalement</span>
+        <span style="color: #808080; font-style: italic;"># il peut le récupérer à travers self.progress, mais comme on sait</span>
+        <span style="color: #808080; font-style: italic;"># que c'est une information très utilisée, on la passe par politesse,</span>
+        <span style="color: #808080; font-style: italic;"># pour faciliter la vie de l'utilisateur. Enfin, une information qu'il</span>
+        <span style="color: #808080; font-style: italic;"># ne pourrait pas avoir autrement est le progrès précédent. Bien que</span>
+        <span style="color: #808080; font-style: italic;"># nous ne l'utilisons pas dans notre callback, on peut imaginer que</span>
+        <span style="color: #808080; font-style: italic;"># c'est le genre d'info qui peut être utile, et qui ne peut être trouvée</span>
+        <span style="color: #808080; font-style: italic;"># dans self.</span>
+        <span style="color: #ff7700;font-weight:bold;">for</span> callback <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>:
+            callback<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>._progress<span style="color: #66cc66;">,</span> previous_progress<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Si on arrive au bout, on appelle stop() automatiquement. Stop()</span>
+        <span style="color: #808080; font-style: italic;"># étant idempotente, ce n'est pas grave si elle est appelée plusieurs</span>
+        <span style="color: #808080; font-style: italic;"># fois.</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> value <span style="color: #66cc66;">==</span> <span style="color: #008000;">self</span>.<span style="color: black;">total</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">stop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Un cas intéressant : pourquoi on ne fait pas self.template directement au</span>
+    <span style="color: #808080; font-style: italic;"># lieu de créer une property à vide ? Tout simplement parce qu'un template</span>
+    <span style="color: #808080; font-style: italic;"># est typiquement quelque chose que quelqu'un peut vouloir créer</span>
+    <span style="color: #808080; font-style: italic;"># dynamiquement (par exemple pour y ajouter une notion de temps qui passe).</span>
+    <span style="color: #808080; font-style: italic;"># Donc, on propose de passer le template en paramètre  dans __init__ car la</span>
+    <span style="color: #808080; font-style: italic;"># plupart du temps, c'est juste ce qu'on voudra faire : un simple changement</span>
+    <span style="color: #808080; font-style: italic;"># cosmétique statique. Mais afin de permettre plus d'extensibilité, on en</span>
+    <span style="color: #808080; font-style: italic;"># fait une propriété, qui, comme toute méthode, peut être écrasée avec de</span>
+    <span style="color: #808080; font-style: italic;"># l'héritage et permettrait à l'utilisateur de vraiment personnaliser son</span>
+    <span style="color: #808080; font-style: italic;"># affichage de manière poussée.</span>
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> template<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._template
+&nbsp;
+    <span style="color: #66cc66;">@</span>template.<span style="color: black;">setter</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> template<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._template <span style="color: #66cc66;">=</span> value
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># C'est cette méthode qui est appelée si on a détourné sys.stdout quand</span>
+    <span style="color: #808080; font-style: italic;"># l'utilisateur va faire un print. Elle doit s'appeler write(), car c'est</span>
+    <span style="color: #808080; font-style: italic;"># l'interface connue des objets stream. Grosso modo, on va juste</span>
+    <span style="color: #808080; font-style: italic;"># tout stocker dans une variable plutôt que d'afficher quoique ce soit</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> write<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">buffer</span> +<span style="color: #66cc66;">=</span> value
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Pour une progrès donné, retourne la barre de progrès sous forme de</span>
+    <span style="color: #808080; font-style: italic;"># string ASCII. Elle est mise à part car elle peut ainsi être facilement</span>
+    <span style="color: #808080; font-style: italic;"># utilisée dans un callback.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> format<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> progress<span style="color: #66cc66;">=</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>:
+        progress <span style="color: #66cc66;">=</span> progress * <span style="color: #ff4500;">100</span> / <span style="color: #008000;">self</span>.<span style="color: black;">total</span>
+        bar <span style="color: #66cc66;">=</span> progress / <span style="color: #008000;">self</span>.<span style="color: black;">percent_per_sign</span> * <span style="color: #008000;">self</span>.<span style="color: black;">progress_sign</span>
+        bar +<span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">bar_len</span> - <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>bar<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> * <span style="color: #483d8b;">' '</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">template</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>bar<span style="color: #66cc66;">=</span>bar<span style="color: #66cc66;">,</span> progress<span style="color: #66cc66;">=</span>progress<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Notre callback que l'on utilise pour afficher la barre. C'est une méthode</span>
+    <span style="color: #808080; font-style: italic;"># statique car cela nous permet de nous mettre dans les conditions exacte</span>
+    <span style="color: #808080; font-style: italic;"># d'un callback d'un utilisateur, qui ne sera qu'une fonction, sans self.</span>
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">staticmethod</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> print_progress<span style="color: black;">&#40;</span>progress_bar<span style="color: #66cc66;">,</span> progress<span style="color: #66cc66;">,</span> previous_progress<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># '\b' permet de reculer le curseur dans le terminal, ce qui va</span>
+        <span style="color: #808080; font-style: italic;"># nous permettre de réécrire par dessus l'ancienne bar, et la mettre</span>
+        <span style="color: #808080; font-style: italic;"># à jour. Si vous tenez à faire un display multi ligne, sachez que '\b'</span>
+        <span style="color: #808080; font-style: italic;"># ne permet pas de reculer sur un saut de ligne, pour ça il faut</span>
+        <span style="color: #808080; font-style: italic;"># utiliser '\033[1A'</span>
+        progress_bar.<span style="color: black;">out</span>.<span style="color: black;">write</span><span style="color: black;">&#40;</span>progress_bar.<span style="color: black;">cursor_shift</span> * <span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\b</span>'</span><span style="color: black;">&#41;</span>
+        bar <span style="color: #66cc66;">=</span> progress_bar.<span style="color: black;">format</span><span style="color: black;">&#40;</span>progress<span style="color: black;">&#41;</span>
+        progress_bar.<span style="color: black;">out</span>.<span style="color: black;">write</span><span style="color: black;">&#40;</span>bar<span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># flush est nécessaire pour vider le buffer et obtenir un affichage</span>
+        <span style="color: #808080; font-style: italic;"># immédiat quand on écrit en direct sur un stream.</span>
+        progress_bar.<span style="color: black;">out</span>.<span style="color: black;">flush</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># on met à jour l'avancement du curseur, qui nous permettra de reculer</span>
+        <span style="color: #808080; font-style: italic;"># d'autant au prochain print_progress()</span>
+        progress_bar.<span style="color: black;">cursor_shift</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>bar<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># voici une utilisation standard de la barre :</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+&nbsp;
+    total <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1000</span>
+    <span style="color: #808080; font-style: italic;"># L'utilisation du context manager permet de ne pas se soucier d'appeler</span>
+    <span style="color: #808080; font-style: italic;"># show() ou stop() et autre détails d'implémentation.</span>
+    <span style="color: #808080; font-style: italic;"># On note aussi qu'avoir des valeurs par défaut pour l'initialisation de la</span>
+    <span style="color: #808080; font-style: italic;"># barre la rend très facile à utiliser sans trop se prendre la tête, et</span>
+    <span style="color: #808080; font-style: italic;"># ce malgré un code derrière assez complexe. On aurait même pu se passer</span>
+    <span style="color: #808080; font-style: italic;"># de &quot;total&quot;.</span>
+    <span style="color: #ff7700;font-weight:bold;">with</span> ProgressBar<span style="color: black;">&#40;</span>total<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> pb:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span>total<span style="color: black;">&#41;</span>:
+            <span style="color: #dc143c;">time</span>.<span style="color: black;">sleep</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0.001</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># on voir l'interêt d'utiliser une property ici, ça rend la mise</span>
+            <span style="color: #808080; font-style: italic;"># à jour du progrès très simple</span>
+            pb.<span style="color: black;">progress</span> <span style="color: #66cc66;">=</span> i
+            <span style="color: #ff7700;font-weight:bold;">if</span> i <span style="color: #66cc66;">==</span> total / <span style="color: #ff4500;">2</span>:
+                <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>Half the work already !&quot;</span><span style="color: black;">&#41;</span>
+                half <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> i <span style="color: #66cc66;">==</span> total * <span style="color: #ff4500;">0.7</span>:
+                <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Almost done&quot;</span><span style="color: black;">&#41;</span>
+                almost <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+&nbsp;
+        pb.<span style="color: black;">progress</span> <span style="color: #66cc66;">=</span> total
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On peut afficher tout ce qui a été printé durant la progression de la</span>
+    <span style="color: #808080; font-style: italic;"># barre si besoin.</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>pb.<span style="color: black;">buffer</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Et une utilisation custo où on compte les secondes depuis le départ</span>
+    <span style="color: #808080; font-style: italic;"># et on les affiches dans le template</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">class</span> MaProgressBar<span style="color: black;">&#40;</span>ProgressBar<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">def</span> show<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">start</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>MaProgressBar<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">show</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Comme on a template en tant que méthode, on peut l'overrider et</span>
+        <span style="color: #808080; font-style: italic;"># obtenir un comportement</span>
+        <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+        <span style="color: #ff7700;font-weight:bold;">def</span> template<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+            seconds <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - <span style="color: #008000;">self</span>.<span style="color: black;">start</span><span style="color: black;">&#41;</span>.<span style="color: black;">seconds</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">'{bar} (running for %s seconds)'</span> % seconds
+&nbsp;
+        <span style="color: #66cc66;">@</span>template.<span style="color: black;">setter</span>
+        <span style="color: #ff7700;font-weight:bold;">def</span> template<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Notre système de callback va se trouver utile :</span>
+    <span style="color: #808080; font-style: italic;"># on met un callback de plus qui va écrire dans un fichier (mais</span>
+    <span style="color: #808080; font-style: italic;"># il pourrait faire n'importe quoi, envoyer un post sur un site Web,</span>
+    <span style="color: #808080; font-style: italic;"># un mail, formatter le disque...)</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> update_progress<span style="color: black;">&#40;</span>progress_bar<span style="color: #66cc66;">,</span> progress<span style="color: #66cc66;">,</span> previous_progress<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/progress.log'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'w'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> log:
+            log.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span>progress<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On change aussi le signe de progrès pour quelque chose de plus pro</span>
+    pb <span style="color: #66cc66;">=</span> MaProgressBar<span style="color: black;">&#40;</span>progress_sign<span style="color: #66cc66;">=</span><span style="color: #483d8b;">':-) '</span><span style="color: #66cc66;">,</span> percent_per_sign<span style="color: #66cc66;">=</span><span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span>
+                       callbacks<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span>update_progress<span style="color: #66cc66;">,</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Au besoin, on peut passer à l'affichage en manuel.</span>
+    pb.<span style="color: black;">show</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span>:
+        <span style="color: #dc143c;">time</span>.<span style="color: black;">sleep</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">.1</span><span style="color: black;">&#41;</span>
+        pb.<span style="color: black;">progress</span> <span style="color: #66cc66;">=</span> i
+&nbsp;
+    pb.<span style="color: black;">progress</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">100</span>
+&nbsp;
+    pb.<span style="color: black;">stop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/aout/progress_bar.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ecrire-un-code-pour-les-autres-en-python/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/PagndOb.gif" length="32768" type="image/jpg" />	</item>
+	</channel>
+</rss>

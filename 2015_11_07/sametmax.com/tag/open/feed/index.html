@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; open</title>
+	<atom:link href="http://sametmax.com/tag/open/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Ouvrir un fichier avec le bon programme en Python 16</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/</link>
+		<comments>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comments</comments>
+		<pubDate>Thu, 17 Oct 2013 10:09:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[open]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7469</guid>
+		<description><![CDATA[Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander "ouvrir le type de fichier par défaut". Par exemple, moi, si on je demande d'ouvrir un fichier vidéo, je m'attend à ce que VLC soit lancé.
+
+Voilà comment faire ça en Python.]]></description>
+				<content:encoded><![CDATA[<p>Votre logiciel doit permettre d&#8217;ouvrir un fichier avec un programme externe. Oui mais lequel ?</p>
+<p>Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander &#8220;ouvrir le prog pour ce type de fichier par défaut&#8221;. Par exemple, moi, si je demande d&#8217;ouvrir un fichier vidéo, je m&#8217;attend à ce que VLC soit lancé.</p>
+<p>Voilà comment faire ça en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">subprocess</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> run_file<span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Pas de EAFP cette fois puisqu'on est dans un process externe,</span>
+    <span style="color: #808080; font-style: italic;"># on ne peut pas gérer l'exception aussi facilement, donc on fait</span>
+    <span style="color: #808080; font-style: italic;"># des checks essentiels avant.</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Vérifier que le fichier existe</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">exists</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'No such file: %s'</span> % path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On a accès en lecture ?</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'access'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">access</span><span style="color: black;">&#40;</span>path<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">R_OK</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cannot access file: %s'</span> % path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Lancer le bon programme pour le bon OS :</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'startfile'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Windows</span>
+        <span style="color: #808080; font-style: italic;"># Startfile est très limité sous Windows, on ne pourra pas savoir</span>
+        <span style="color: #808080; font-style: italic;"># si il y a eu une erreu</span>
+        proc <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">startfile</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span>.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'linux'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Linux:</span>
+        proc <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'xdg-open'</span><span style="color: #66cc66;">,</span> path<span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> 
+                                 <span style="color: #808080; font-style: italic;"># on capture stdin et out pour rendre le </span>
+                                 <span style="color: #808080; font-style: italic;"># tout non bloquant</span>
+                                 stdout<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: #66cc66;">,</span> stderr<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span> <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'darwin'</span>: <span style="color: #808080; font-style: italic;"># Mac:</span>
+        proc <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'open'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'--'</span><span style="color: #66cc66;">,</span> path<span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> 
+                                stdout<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: #66cc66;">,</span> stderr<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span>
+            <span style="color: #483d8b;">&quot;Your `%s` isn't a supported operatin system`.&quot;</span> % <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Proc sera toujours None sous Windows. Sous les autres OS, il permet de</span>
+    <span style="color: #808080; font-style: italic;"># récupérer le status code du programme, and lire / ecrire sur stdin et out</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> proc</pre></td></tr></table></div>
+
+<p>C&#8217;était le petit snippet sympas du jour !</p>
+<p>P.S : si quelqu&#8217;un utilise <del>BDSM</del> BSD ou Solaris, je veux bien qu&#8217;il complète le snippet.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/qzb7emC.jpg" length="54438" type="image/jpg" />	</item>
+	</channel>
+</rss>

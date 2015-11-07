@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; easy_install</title>
+	<atom:link href="http://sametmax.com/tag/easy_install/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Votre Python aime les pip 30</title>
+		<link>http://sametmax.com/votre-python-aime-les-pip/</link>
+		<comments>http://sametmax.com/votre-python-aime-les-pip/#comments</comments>
+		<pubDate>Sat, 08 Sep 2012 13:42:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[easy_install]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[github]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[pypi]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[setuptools]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2014</guid>
+		<description><![CDATA[<code>Pip install</code> par-ci, <code>pip install</code> par là. "Pour installer cette lib, il vous suffit de faire pip install".
+
+Mais merde, c'est quoi <code>pip</code> ?]]></description>
+				<content:encoded><![CDATA[<p><strong>A partir des versions 2.7.9 et et 3.4, pip est fournit automatiquement avec Python. Si c&#8217;est votre cas, vous pouvez sauter la partie installation et aller directement à la partie usage de cet article.</strong></p>
+<p><code>Pip install</code> par-ci, <code>pip install</code> par là. &#8220;Pour installer cette lib, il vous suffit de faire pip install&#8221;.</p>
+<p>Mais merde, c&#8217;est quoi <code>pip</code> ?</p>
+<h2>Python et les libs externes</h2>
+<p>La beauté avec Python, c&#8217;est qu&#8217;on peut prendre une lib, la balancer dans le répertoire courant, et l&#8217;importer. Rien à faire, ça marche tout seul.</p>
+<p>Mais.</p>
+<p>Car oui, il y a toujours un mais (souvent après le mois de mars).</p>
+<p>Quand il faut mettre à jour ses libs, c&#8217;est chiant. Quand il faut recréer un environnement complet en prod, c&#8217;est chiant. Quand il faut trouver la dernière version, avec le bon site Web, et le lien de téléchargement, c&#8217;est chiant. Quand on veut installer une lib automatiquement, vous l&#8217;avez deviné, c&#8217;est chiant.</p>
+<p>Mais surtout, quand on a une lib qui a des parties en C à compiler comme les libs de crypto, d&#8217;accès à la base de données, de traitement XML, de parsing ou de sérialisation, de calculs scientifiques, etc. ça ne marche tout simplement pas.</p>
+<p>Là, il y a deux écoles. Les mecs qui utilisent les packages *.exe ou *.deb precompilés et qui se retrouvent avec d&#8217;autres problèmes.</p>
+<p>Et les mecs qui utilisent setuptools (et qui se retrouvent avec encore d&#8217;autres problèmes, mais c&#8217;est mieux parce que je le dis).</p>
+<h2>Setuptools, la solution de skippy à tous vos soucis</h2>
+<p>setuptools est une lib et un outil de distribution de code Python, et elle permet notament d&#8217;installer des libs externes automatiquement en les téléchargeant depuis le grand InterBoule.</p>
+<p>Comme <code>gem install</code> sous ruby, <code>npm</code> pour NodeJs, Python possède sa commande d&#8217;installation appelée <code>easy_install</code>, qui va piocher dans le site Web <a href="http://pypi.python.org/pypi">pypi.python.org</a>, un équivalent de <a href="http://www.cpan.org/">Cpan</a> de Perl ou des <a href="http://pear.php.net/channels/">channels pear</a> pour PHP.</p>
+<p>Bien entendu, ça serait trop simple sinon, Python ne vient pas par défaut installé avec cet outil pourtant indispensable.</p>
+<p>Sous Ubuntu c&#8217;est facile:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> python-setuptools</pre></td></tr></table></div>
+
+<p>Et il existe un paquet similaire sur toutes les distribs.</p>
+<p>Sous windows, c&#8217;est <a href="http://pypi.python.org/pypi/setuptools#downloads">un exe</a> à installer. Choisissez la bonne version selon votre version de Python (<code>python --version</code>). Généralement, la 2.7. </p>
+<p>Sous mac, il faut télécharger <a href="http://pypi.python.org/pypi/setuptools#downloads">l&#8217;egg correspondant à sa version</a> puis:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sh</span> setuptools-votre_version.egg <span style="color: #660033;">--prefix</span>=~</pre></td></tr></table></div>
+
+<p>Et vous avez alors accès à la commande magique, <code>easy_install</code>. Par exemple, pour installer Django:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">easy_install <span style="color: #660033;">--user</span> django</pre></td></tr></table></div>
+
+<p>(ou <code>easy_install django</code> en mode administrateur &#8211; ou avec <code>sudo</code> &#8211; pour l&#8217;installer pour tout le système et pas juste l&#8217;utilisateur courant)</p>
+<p>Il faut bien entendu être connecté à internet pour que ça marche. Notez par ailleurs que la recherche est insensible à la casse, et que tout underscore sera automatiquement remplacé par un tiret.</p>
+<p>Sous Windows, si la commande n&#8217;est pas trouvée, il vous faudra rajouter le répertoire qui contient la commande <code>easy_install</code> (le plus souvent <em>C:\Python27\Scripts</em>) à la main dans le <a href="http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/">PATH</a>.</p>
+<h2>Vous avez <code>easy_install</code> ? Oubliez-le !</h2>
+<p>Vous n&#8217;utiliserez normalement <code>easy_install</code> que pour une seule chose: installer <code>pip</code>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">easy_install <span style="color: #660033;">--user</span> pip</pre></td></tr></table></div>
+
+<p><code>pip</code> est un <code>easy_install</code> en plus court à taper, plus puissant, plus souple, plus mieux.</p>
+<p>Il s&#8217;utilise comme <code>easy_install</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">--user</span> bottle</pre></td></tr></table></div>
+
+<p>(ou <code>sudo pip install bottle</code>, ou en root, mais je sauterai ce genre de détails pour la suite)</p>
+<p>Grâce à <code>pip</code>, vous allez avoir accès à des milliers de libs Python en quelques frappes, et donc pouvoir beaucoup plus facilement expérimenter avec des nouveaux bidules.</p>
+<p>Mais <code>pip</code> va plus loin qu&#8217;<code>easy_install</code>, et permet carrément de gérer toutes les dépendances de son projet.</p>
+<h2>Ce que fait <code>pip</code> que <code>easy_install</code> ne fait pas</h2>
+<p>Déjà, <code>pip</code> télécharge toutes les dépendances avant de lancer l&#8217;installation, ce qui évite une installation partielle.</p>
+<p>Mais surtout, <code>pip</code> ajoute des opérations qu&#8217;on pourrait attendre de base, notamment, la désinstallation :-)</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip uninstall bottle</pre></td></tr></table></div>
+
+<p>Évidement, on peut choisir d&#8217;installer une version particulière:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #007800;">bottle</span>==<span style="color: #000000;">0.9</span></pre></td></tr></table></div>
+
+<p>Et mettre à jour une lib à la dernière version :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> bottle <span style="color: #660033;">--upgrade</span></pre></td></tr></table></div>
+
+<p>Ou downgrader vers une version précédente:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #007800;">bottle</span>==<span style="color: #000000;">0.9</span> <span style="color: #660033;">--upgrade</span></pre></td></tr></table></div>
+
+<p>Cependant, le plus intéressant avec <code>pip</code>, c&#8217;est sa capacité à recréer tout un environnement de développement en une commande:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ pip freeze
+<span style="color: #007800;">Axiom</span>==0.6.0
+<span style="color: #007800;">BeautifulSoup</span>==3.2.0
+<span style="color: #007800;">Brlapi</span>==0.5.6
+<span style="color: #007800;">BzrTools</span>==2.5.0
+<span style="color: #007800;">CherryPy</span>==3.2.2
+<span style="color: #007800;">Coherence</span>==0.6.6.2
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>...<span style="color: #7a0874; font-weight: bold;">&#93;</span></pre></td></tr></table></div>
+
+<p><code>pip freeze</code> liste toutes les librairies installées et leurs versions. On peut ensuite les réinstaller sur une autre machine facilement:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip freeze <span style="color: #000000; font-weight: bold;">&gt;</span> requirements.txt</pre></td></tr></table></div>
+
+<p>Et sur l&#8217;autre machine:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">-r</span> requirements.txt</pre></td></tr></table></div>
+
+<p>On est garanti d&#8217;avoir les mêmes libs, avec les mêmes versions. Ca marche de la même manière sous tous les OS, et comme des milliers de libs ne sont pas disponibles en paquets *.deb, *.rpm ou *.exe, c&#8217;est extrêmement pratique.</p>
+<p>Si vous vous attendez à être privé de connexion internet ou juste pour accélérer le procédé, <code>pip</code> permet de créer un bundle, c&#8217;est à dire un gros zip qui contient toutes les dépendances et qui peut être installé indépendamment :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip bundle nom_du_projet.pybundle <span style="color: #660033;">-r</span> requirements.txt</pre></td></tr></table></div>
+
+<p>Et sur l&#8217;autre machine:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> nom_du_projet.pybundle</pre></td></tr></table></div>
+
+<h2>Quelques astuces pour être productif avec <code>pip</code></h2>
+<p>Si vous installez beaucoup de fois les mêmes paquets, par exemple dans de nombreux <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenvs</a> j&#8217;installe toujours ipython + ipdb + requests + clize + peewee, les télécharger à chaque fois est une perte de temps. On peut demander à <code>pip</code> de mettre en cache les paquets déjà installés, pour de futures installations:</p>
+<p><code>export PIP_DOWNLOAD_CACHE='~/.pip/cache';</code> dans le <em>.bashrc</em></p>
+<p>Pour les windowsiens, je ne sais pas du tout où mettre ça&#8230;</p>
+<p>Sachez cependant que le cache ne dispense pas d&#8217;être connecté à Internet.</p>
+<p>Si une bibliothèque n&#8217;est pas encore sur pypi, <code>pip</code> est capable, pourvu que le code source vienne avec un fichier <em>setup.py</em>, de l&#8217;installer depuis un fichier local, une URL, ou même un simple repo git. Donc si vous trouvez une lib chouette sur github, on peut l&#8217;installer ainsi:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #c20cb9; font-weight: bold;">git</span>+git:<span style="color: #000000; font-weight: bold;">//</span>github.com<span style="color: #000000; font-weight: bold;">/</span>sametmax<span style="color: #000000; font-weight: bold;">/</span>0bin.git</pre></td></tr></table></div>
+
+<p>Et elle sera même référencée par le <code>pip freeze</code> !</p>
+<p>Remarquez qu&#8217;il faut avoir Git installé, et que le protocole doit être changé pour <em>git+git</em>.</p>
+<p>Parfois, pypi est indisponible: un problème sur le site, un problème de dns, un problème de votre FAI&#8230; Dans ce cas là on est un peu désemparé. Heureusement, <code>pip</code> permet aussi de faire un fallback sur des miroirs:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">--use-mirrors</span> requests</pre></td></tr></table></div>
+
+<p>Dans ce cas pip essayera de trouver le paquet sur une liste de sites miroirs de pypi qu&#8217;il possède en interne. Il va les essayer un par un jusqu&#8217;à en trouver un de disponible.</p>
+<p>Dans le cas les plus extrêmes, certains vont jusqu&#8217;à créer leur propre miroir en local. Mais c&#8217;est un article à part entière.</p>
+<h2>Installer des bibliothèques avec des extensions en C</h2>
+<p>Les bibliothèques avec des extensions en C sont très courantes dans les domaines qui ont besoin de performances: drivers de base de données (m<code>ysql-python</code>), calculs scientifiques (<code>numpy</code>), parsing (<code>lxml</code>), cryptographie (<code>pycrypto</code>), etc.</p>
+<p>Pip ne fonctionnera que partiellement pour installer ces libs: il devra en effet lancer la compilation de l&#8217;extension. Bien que le processus soit automatique et bien fait, il arrive souvent qu&#8217;il manque des dépendances.</p>
+<p>Pour ce genre de lib, soit vous utilisez un paquet tout fait (*.deb, *.exe, *.rpm, etc.), soit vous tentez d&#8217;installer les dépendances.</p>
+<p>La première chose à faire, c&#8217;est installer les headers de Python. Sous Ubuntu, c&#8217;est:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">sudo apt-get install python-dev</pre></td></tr></table></div>
+
+<p>(et sous CentOs, c&#8217;est un <code>yum install python-devel</code>. Pour Mac, aucune idée.)</p>
+<p>Ensuite, on lance l&#8217;installation une fois de la lib, et on voit ce qui plante, pour installer les dépendances en conséquence. Par exemple, <code>lxml</code> a besoin des headers de <code>libxml2</code> et <code>libxslt1</code>. Donc on va installer <code>libxml2-dev</code> et <code>libxslt1-dev</code>. Pour <code>python-mysql</code>, il va falloir installer <code>libmysqlclient-dev</code>.</p>
+<p>Quand on est une grosse feignasse, mais que l&#8217;on a quand même envie d&#8217;installer la lib avec <code>pip</code> (typiquement, dans le cas d&#8217;un virtualenv). on peut faire le compromis de l&#8217;installer sur le système avec un paquet, et ensuite de l&#8217;installer avec <code>pip</code>. Ca évite de faire la chasse aux dépendances, mais ça fait double installation.</p>
+<p>Enfin, il y a des libs qui ne s&#8217;installeront jamais avec <code>pip</code>. Par exemple, un mastodonte genre <code>PyQT</code>. Oubliez, c&#8217;est tout.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/votre-python-aime-les-pip/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/4_original.jpg" length="85720" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; postgres</title>
+	<atom:link href="http://sametmax.com/tag/postgres/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>La stack techno qu&#8217;on utilise pour faire un site Web, et pourquoi 29</title>
+		<link>http://sametmax.com/la-stack-techno-quon-utilise-pour-faire-un-site-web-et-pourquoi/</link>
+		<comments>http://sametmax.com/la-stack-techno-quon-utilise-pour-faire-un-site-web-et-pourquoi/#comments</comments>
+		<pubDate>Mon, 11 Nov 2013 06:40:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[celery]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[fabric]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[nosql]]></category>
+		<category><![CDATA[postgres]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[redis]]></category>
+		<category><![CDATA[vm]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7648</guid>
+		<description><![CDATA[Une stack techno n'est pas une référence. Il n'y a pas de combo absolu qui rox absolument tout, c'est une question de contexte technique, financier, humain...
+
+Mais c'est vrai que ça aide bien d'avoir sous les yeux les pratiques des autres.]]></description>
+				<content:encoded><![CDATA[<p>Une stack techno n&#8217;est pas une référence. Il n&#8217;y a pas de combo absolu qui rox absolument tout, c&#8217;est une question de contexte technique, financier, humain&#8230;</p>
+<p>Mais c&#8217;est vrai que ça aide bien d&#8217;avoir sous les yeux les pratiques des autres.</p>
+<p>Je ne vais pas expliquer pourquoi Python, <a href="http://sametmax.com/10-raisons-pour-lesquelles-je-suis-toujours-marie-a-python/">je l&#8217;ai déjà fait</a>.</p>
+<p>Commençons plutôt par la partie purement Web, pour laquelle on utilise Django, le framework Web Python.</p>
+<p>Max et moi avons tout deux fait du PHP avant, j&#8217;ai tâté des frameworks internes, du Symfony et plus tard du Zope. J&#8217;ai regardé du côté de Pyramid et de ses prédécesseurs, et Django est celui qui me plaît le plus. J&#8217;ai juste un peu forcé la main à Max :-)</p>
+<p>Car oui, le framework a été avant tout un choix de goût.</p>
+<p>Ce n&#8217;est pas un choix de performances : le framework n&#8217;a aucun impact dessus. Aucun. Les architectures ont un impact. Le framework, non. Votre bottleneck sera sur les IO, pas sur le CPU. Le choix de technos asynchrones peut avoir un impact, mais ce n&#8217;est pas une question de framework. Tornado, Twisted ou NodeJS, on s&#8217;en fout. </p>
+<p>Donc Django, essentiellement parce qu&#8217;il me plait. Et il me plaît pour ces raisons :</p>
+<ul>
+<li>Il y a un bon équilibre entre découplage et intégration. En général c&#8217;est soit très découplé et mal intégré, soit très bien intégré et très couplé.</li>
+<li>C&#8217;est bien foutu et bien documenté. Et c&#8217;est stable. Vraiment très stable. Les core devs sont hyper sérieux.</li>
+<li>C&#8217;est très versatile et ça peut faire plein de trucs out of the box, petits comme gros.</li>
+<li>C&#8217;est assez facile à apprendre. Ça reste un framework, donc ce n&#8217;est pas la plus simple des démarches, mais dans le royaume des frameworks de cette taille, ça reste vraiment le plus simple.</li>
+<li>La communauté est fantastique : il y a des centaines d&#8217;apps qui couvrent pratiquement tous les besoins.</li>
+<li>Et bien entendu, c&#8217;est en Python.</li>
+</ul>
+<p>En terme de base de données, on a fait du MySQL pendant longtemps. Ça a plutôt bien marché. Maintenant je commence mes nouveaux projets avec PostGres, qui est plus solide. Parfois je fais juste du Sqlite, parce que ça suffit.</p>
+<p>Pas de NoSQL. Après plusieurs expériences avec MongoDB et CouchDB, je n&#8217;ai pas été convaincu que les bénéfices dépassaient le coût. Il faudrait un article complet là-dessus (qu&#8217;on m&#8217;a d&#8217;ailleurs demandé).</p>
+<p>Question OS. c&#8217;est du CentOS avec Max (il a plus l&#8217;habitude) ou du Ubuntu Server pour mes autres projets. Je reste sur les LTS. Ce n&#8217;est pas un choix très réfléchi, c&#8217;est surtout par habitude.</p>
+<p>Pas de machine virtuelle. On a essayé, sans y trouver un grand intérêt :</p>
+<ul>
+<li>Il faut quand même faire des scripts de migration, donc autant s&#8217;en servir pour le déploiement.</li>
+<li>On perd en perfs.</li>
+<li>Les erreurs liées au mal-fonctionnement d&#8217;une VM sont absolument indébuggables.</li>
+<li>Si on ne fait pas la VM soit-même, il faut mettre ses couilles dans les mains d&#8217;un prestataire de service. J&#8217;ai horreur de ça.</li>
+<li>Trouver des gens avec la compétence pour gérer une VM, c&#8217;est difficile. Un script de déploiement, c&#8217;est du code que tout dev saura déjà lire. Par extension ça veut dire que je m&#8217;y replonge facilement des semaines plus tard.</li>
+</ul>
+<p>Et donc pour le déploiement, j&#8217;utilise <a href="http://sametmax.com/travailler-moins-pour-gagner-plus-en-15-minutes-avec-python-fabric/">fabric</a>, avec <a href="https://github.com/ronnix/fabtools/">fabtools</a>.</p>
+<p>Ce n&#8217;est pas la solution la plus efficace, d&#8217;autant que ça limite à Python 2.7, mais c&#8217;est la plus simple. C&#8217;est juste du code Python. N&#8217;importe qui peut comprendre le déploiement en 15 minutes. Ça se modifie vite, s&#8217;adapte facilement. </p>
+<p>Il faut comprendre qu&#8217;on a jamais plus d&#8217;une dizaine de serveurs pour un projet, ces choix sont donc faits en fonction de cela. Il va sans dire que si vous gérez un parc de centaines de machines, ça ne sera pas du tout le même choix technique. Peut être que Chef ou des VM seront alors carrément plus intéressants. Peut être que le NoSQL et sa capacité au scaling sera bien plus rentable.</p>
+<p>Il ne s&#8217;agit pas de décrier les technos que nous n&#8217;utilisons pas. Il s&#8217;agit juste de dire, voilà les choix que nous avons faits, dans tel contexte, pour telles (bonnes ou mauvaises) raisons.</p>
+<p>Durant les dernières années, on a ajouté <a href="http://redis.io/">Redis</a> à notre stack. C&#8217;est un outil fantastique qui sert à tout : de la base de données pour les trucs simples (il y a des fois ou un schéma est overkill) à la solution de caching. C&#8217;est ce qu&#8217;on a de plus proche du NoSQL.</p>
+<p>L&#8217;outil est tellement simple à installer (vraiment le degré zero de la maintenance, c&#8217;est beau) et à utiliser que ça ne vaut juste pas le coup de s&#8217;en priver. </p>
+<p>Du coup, plus de memcache. Toutes les grosses requêtes sont sauvegardées dans Redis, dès qu&#8217;on fait un script qui a besoin de persistance temporaire, Redis, pour communiquer entre plusieurs process, Redis, pour toutes les opérations qui ont besoin de grosses perfs comme les stats, Redis. Vive Redis.</p>
+<p>D&#8217;ailleurs on utilise Redis aussi comme broker pour notre gestionnaire de queues et de taches : <a href="sametmax.com/files-de-taches-et-taches-recurrentes-avec-celery/">celery</a>. Si vous pythonez, je vous recommande chaudement celery pour toutes les tâches en background, les crawlers, les chaînes de process, etc.</p>
+<p>On a aussi du moteur de recherche. Là on tape dans du <a href="http://lucene.apache.org/solr/">Solr</a> (avec <a href="http://haystacksearch.org/">haystack</a>). C&#8217;est très puissant, en tout cas syntaxiquement car ça ne fait pas de sémantique. Ne vous attendez donc pas à rattraper Google. Mais c&#8217;est aussi méga chiant à configurer et très lourd. Je pense qu&#8217;un jour on va migrer sur <a href="http://www.elasticsearch.org/">ElasticSearch</a>, mais c&#8217;est pas la priorité. Don&#8217;t fix what ain&#8217;t broken.</p>
+<p>Devant tout ça on a <a href="http://nginx.org/">Nginx</a>. Comme beaucoup on a fait Apache => Cherokee => lighttp => nginx. Et franchement, je ne reviendrai jamais en arrière : plus léger, plus rapide, plus facile à installer et à configurer, plus versatile. Nginx fait tout, et mieux. </p>
+<p>En proxy on a du <a href="http://gunicorn.org/">gunicorn</a>. Parce qu&#8217;on avait la flemme de configurer uwsgi et qu&#8217;on a pris l&#8217;habitude.</p>
+<p>Après on utilise plein de libs, de petits outils, etc. Mais ça c&#8217;est le gros de notre archi.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-stack-techno-quon-utilise-pour-faire-un-site-web-et-pourquoi/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/nZ9b9.jpg" length="67160" type="image/jpg" />	</item>
+	</channel>
+</rss>

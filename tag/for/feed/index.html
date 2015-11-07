@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; for</title>
+	<atom:link href="http://sametmax.com/tag/for/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Une boucle while de moins 5</title>
+		<link>http://sametmax.com/une-boucle-while-de-moins/</link>
+		<comments>http://sametmax.com/une-boucle-while-de-moins/#comments</comments>
+		<pubDate>Tue, 23 Jun 2015 10:04:55 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[for]]></category>
+		<category><![CDATA[iter]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[while]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16427</guid>
+		<description><![CDATA[Si vous devez retenir un truc de la partie Python de ce blog, c'est qu'en Python, l'itération est tout.]]></description>
+				<content:encoded><![CDATA[<p>Si vous devez retenir un truc de la partie Python de ce blog, c&#8217;est qu&#8217;en Python, l&#8217;itération est tout.</p>
+<p>Du coup, on utilise pas beaucoup <code>while</code>, à part dans quelques cas particuliers.</p>
+<p>Le cas d&#8217;école, c&#8217;est la lecture d&#8217;un fichier octet par octet.</p>
+<p>Imaginez, vous créez un petit array de float écrits en 64 bits :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> numpy <span style="color: #ff7700;font-weight:bold;">as</span> np
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a <span style="color: #66cc66;">=</span> np.<span style="color: black;">sin</span><span style="color: black;">&#40;</span>np.<span style="color: black;">linspace</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2.0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3.0</span><span style="color: #66cc66;">,</span> num<span style="color: #66cc66;">=</span><span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a.<span style="color: black;">dtype</span>
+dtype<span style="color: black;">&#40;</span><span style="color: #483d8b;">'float64'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Vous sauvegardez tout ça dans un fichier :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> a.<span style="color: black;">tofile</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/data'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si vous voulez lire le fichier <strong>hors de numpy</strong>, il faut le charger float par float, donc le lire 64 bits par 64 bits soit par groupes de 8 octets.</p>
+<p>La méthode canonique :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/data'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'rb'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+    <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+        nombre <span style="color: #66cc66;">=</span> f.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> nombre:
+            <span style="color: #ff7700;font-weight:bold;">break</span>
+        <span style="color: #808080; font-style: italic;"># faire un truc avec le nombre</span></pre></td></tr></table></div>
+
+<p>Mais il existe une autre manière de faire cela, moins connue : utiliser <code>iter()</code>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/data'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'rb'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+    <span style="color: #ff7700;font-weight:bold;">for</span> nombre <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span>: f.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">8</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> b<span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># faire un truc avec nombre</span></pre></td></tr></table></div>
+
+<p>Cela marche car <code>iter()</code>, parmi ses nombreuses fonctionnalités, accepte un <a href="http://sametmax.com/les-trucmuchables-en-python/">callable</a> en paramètre (ici notre <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>), et va l&#8217;appeler jusqu&#8217;à ce que celui-ci retourne une valeur dite &#8220;sentinelle&#8221; (ici notre second paramètre).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/une-boucle-while-de-moins/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/06/GgghUeo.jpg" length="232071" type="image/jpg" />	</item>
+		<item>
+		<title>Sortir de plusieurs boucles for imbriquées en Python 9</title>
+		<link>http://sametmax.com/sortir-de-plusieurs-boucles-for-imbriquees-en-python/</link>
+		<comments>http://sametmax.com/sortir-de-plusieurs-boucles-for-imbriquees-en-python/#comments</comments>
+		<pubDate>Tue, 01 Jan 2013 19:27:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[context manager]]></category>
+		<category><![CDATA[for]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3962</guid>
+		<description><![CDATA[Le mot clé <code>break</code> permet de sortir d'une boucle <code>for</code> abruptement. Mais une seule. Parfois on a 3, 4 boucles imbriquées, et on aimerait tellement sortir de toutes d'un coup.
+
+Ce que je vais vous montrer est mal. Mais c'est tellement bon.]]></description>
+				<content:encoded><![CDATA[<p>Le mot clé <code>break</code> permet de sortir d&#8217;une boucle <code>for</code> abruptement. Mais une seule. Parfois on a 3, 4 boucles imbriquées, et on aimerait tellement sortir de toutes d&#8217;un coup.</p>
+<p>Ce que je vais vous montrer est mal. Mais c&#8217;est tellement bon.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># on fait une exception qui hérite de StopIteration car c'est ce qui est utilisé</span>
+<span style="color: #808080; font-style: italic;"># de toute façon pour arrêter une boucle</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> MultiStopIteration<span style="color: black;">&#40;</span><span style="color: #008000;">StopIteration</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># la classe est capable de se lever elle même comme exception</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> throw<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">self</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">@</span>contextmanager
+<span style="color: #ff7700;font-weight:bold;">def</span> multibreak<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># le seul boulot de notre context manager c'est de donne le moyen de lever</span>
+    <span style="color: #808080; font-style: italic;"># l'exception tout en l'attrapant</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> MultiStopIteration<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">throw</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> MultiStopIteration:
+        <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>En gros on se créé un petit <a href="http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/">context manager</a>, dont le seul but est de créer une exception qui va remonter en pêtant toutes les boucles. Je vous avais dit que c&#8217;était mal</p>
+<p>Ca s&#8217;utilise comme ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">with</span> multibreak<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> stop:
+...     <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">for</span> z <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>:
+...             <span style="color: #ff7700;font-weight:bold;">for</span> w <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>:
+...                 <span style="color: #ff7700;font-weight:bold;">print</span> w
+...                 <span style="color: #ff7700;font-weight:bold;">if</span> x * z * w <span style="color: #66cc66;">==</span> <span style="color: #ff4500;">2</span> * <span style="color: #ff4500;">2</span> * <span style="color: #ff4500;">2</span>:
+...                     <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'stop'</span>
+...                     <span style="color: black;">stop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># appel MultiStopIteration().throw()</span>
+...
+<span style="color: #ff4500;">1</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #ff4500;">2</span>
+stop</pre></td></tr></table></div>
+
+<p>Je vous avais dit que ça serait bon.</p>
+<p>A part le fait que ce n&#8217;est pas très rapide au moment du bubbling de l&#8217;exception sur 3 blocks, il n&#8217;y a aucun danger ou side-effect. On triche en fait à peine, car <a href="http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/">le mécanisme interne des boucles en Python utilise de toute façon déjà une exception</a> (StopIteration) pour dire à une boucle quand s&#8217;arrêter.</p>
+<p>Bref, encore une victoire de connard.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/sortir-de-plusieurs-boucles-for-imbriquees-en-python/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/2320485189_1.jpg" length="68692" type="image/jpg" />	</item>
+		<item>
+		<title>Dis papa, dis papa, dis-moi, dis-moi. Comment c&#8217;est fait dans une boucle for ? 14</title>
+		<link>http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/</link>
+		<comments>http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/#comments</comments>
+		<pubDate>Mon, 31 Dec 2012 16:10:08 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[for]]></category>
+		<category><![CDATA[iterable]]></category>
+		<category><![CDATA[iterator]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3953</guid>
+		<description><![CDATA[Dis papa, dis papa, dis-moi, dis-moi. Comment c'est fait dans une boucle for ?
+]]></description>
+				<content:encoded><![CDATA[<p>Dis papa, dis papa, dis-moi, dis-moi. Comment c&#8217;est fait dans une boucle <code>for</code> ?</p>
+<p>C&#8217;est pas compliquéééééééééééé, j&#8217;vais tout t&#8217;expliquuuuuerrrrrrrrrr.</p>
+<p>C´est le p´tit zinzin qui passe par ici:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> MonIterable<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># faisons notre propre itérable</span>
+...
+...     <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #008000;">self</span>.<span style="color: black;">values</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+...
+...     <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># ('for' appelle __iter__ automatiquement)</span>
+...         <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span> <span style="color: #808080; font-style: italic;"># __iter__ doit renvoyer un iterateur, ici nous-même</span>
+...
+...     <span style="color: #ff7700;font-weight:bold;">def</span> next<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># chaque tour de boucle, for appelle next()</span>
+...         <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">values</span>: <span style="color: #808080; font-style: italic;"># qui retourne une des valeus de self.values</span>
+...             <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">values</span>.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># en l'enlevant de la liste initiale</span>
+...         <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">StopIteration</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># si il y en a plus, il dit stop !</span>
+...</pre></td></tr></table></div>
+
+<p>Et qui va toucher le p´tit machinnnnnnnnnnnnnnnnnnnnnnnnn !</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> MonIterable<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># ceci appelle next() jusqu'à StopIteration</span>
+...    <span style="color: #ff7700;font-weight:bold;">print</span> x
+<span style="color: #ff4500;">2</span>
+<span style="color: #ff4500;">1</span></pre></td></tr></table></div>
+
+<p>Et le p´tit machin qui repasse par là:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur <span style="color: #66cc66;">=</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>MonIterable<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># Voilà ce que ça donne à la main</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># l'exception: mécanisme naturel de Python pour stopper une boucle !</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;pyshell#9&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;&lt;pyshell#9&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">14</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> next
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">StopIteration</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">StopIteration</span></pre></td></tr></table></div>
+
+<p>Et qui fait marcher ce p´tit zinzinnnnnnnnnnnnn !</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur <span style="color: #66cc66;">=</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># c'est pareil pour tous les iterables</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un iterateur est juste un truc avec une méthode next()</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># next() doit retourner la prochain valeur de l'iterable</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un itérateur itère donc sur un iterable</span>
+<span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># jusqu'à la fin, où il lève StopIteratino</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-19-6c9f9efdd35c&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    iterateur.<span style="color: black;">next</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">StopIteration</span></pre></td></tr></table></div>
+
+<p>Ah bon ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/dis-papa-dis-papa-dis-moi-dis-moi-comment-cest-fait-dans-une-boucle-for/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/henri-des1.jpg" length="22377" type="image/jpg" />	</item>
+	</channel>
+</rss>

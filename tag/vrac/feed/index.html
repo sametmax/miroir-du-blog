@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; vrac</title>
+	<atom:link href="http://sametmax.com/tag/vrac/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Vrac Python (encore) 5</title>
+		<link>http://sametmax.com/vrac-python-encore/</link>
+		<comments>http://sametmax.com/vrac-python-encore/#comments</comments>
+		<pubDate>Mon, 30 Mar 2015 19:01:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[vrac]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16009</guid>
+		<description><![CDATA[Les billets en vrac sont au blogging ce que les pattes de fond de frigo sont à la cuisine: le dernier recours en cas de manque de ressources ou d'inspiration.
+
+Mais bizarrement, c'est aussi quelque chose qui plait beaucoup. C'est d'ailleurs les posts que je préférais sur le standblog, ou les trucs qui énervaient sebsauvage avant qu'il shaarlise tout ça.
+
+Bref, quelques trucs en Python qui peuvent être passés sous le radar.]]></description>
+				<content:encoded><![CDATA[<p>Les billets en vrac sont au blogging ce que les pâtes de fond de frigo sont à la cuisine: le dernier recours en cas de manque de ressources ou d&#8217;inspiration.</p>
+<p>Mais bizarrement, c&#8217;est aussi quelque chose qui plait beaucoup. C&#8217;est d&#8217;ailleurs les posts que je préférais sur le standblog, ou les trucs qui énervaient sebsauvage avant qu&#8217;il shaarlise tout ça.</p>
+<p>Bref, quelques trucs en Python qui peuvent être passés sous le radar.</p>
+<h2>Min et Max ont un param &#8220;key&#8221;</h2>
+<p>Si vous avez lu <a href="http://sametmax.com/ordonner-en-python/">l&#8217;article sur le tri</a>, vous savez que <code>sorted()</code> et <code>sort()</code> peuvent prendre une fonction de callback via l&#8217;argument <code>key</code>, permettant de choisir comment extraire l&#8217;information qui va servir à déterminer la place de chaque élément.</p>
+<p><code>min</code> et <code>max</code> marchent de la même manière :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> scores <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;allemagne&quot;</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #483d8b;">&quot;montagne&quot;</span>: <span style="color: #ff4500;">0</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+dict_items<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'allemagne'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'montagne'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">max</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">'montagne'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">max</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #483d8b;">'allemagne'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2><code>next</code> possède un second paramètre</h2>
+<p>Vous savez, sur les dicos, on peut choper une valeur par défaut si une clé n&#8217;existe pas :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;allemagne&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;kamoulox&quot;</span><span style="color: #66cc66;">,</span> 1j<span style="color: black;">&#41;</span>
+1j</pre></td></tr></table></div>
+
+<p>Mais ceci n&#8217;existe pas pour les listes. Je pensais que c&#8217;était un oubli, mais en fait c&#8217;est comblé par le deuxième argument de <code>next</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> g <span style="color: #66cc66;">=</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span>l<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> next<span style="color: black;">&#40;</span>g<span style="color: #66cc66;">,</span> 1j<span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> next<span style="color: black;">&#40;</span>g<span style="color: #66cc66;">,</span> 1j<span style="color: black;">&#41;</span>
+1j</pre></td></tr></table></div>
+
+<h2><code>__future__</code> n&#8217;est pas bullet proof</h2>
+<p>Certains comportements backportés en Python 2.7 ne peuvent pas être parfaitement implémentés. Ce sont &#8220;ce qu&#8217;on peut avoir de plus proche&#8221;. C&#8217;est déjà pas mal, et je les active tout le temps, mais ça peut vous rattraper à un moment inattendu.</p>
+<p>Par exemple, les caractères d&#8217;échappements unicodes.</p>
+<p>En Python 3:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> r<span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\u</span>&quot;</span>
+<span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\\</span>u'</span></pre></td></tr></table></div>
+
+<p>En Python 2.7, par contre, utiliser <code>u</code> et <code>r</code> entraine une exception :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> ur<span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\u</span>&quot;</span>
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span>
+<span style="color: #008000;">SyntaxError</span>: <span style="color: black;">&#40;</span><span style="color: #008000;">unicode</span> error<span style="color: black;">&#41;</span> <span style="color: #483d8b;">'rawunicodeescape'</span> codec can<span style="color: #483d8b;">'t decode bytes in position 0-1: truncated <span style="color: #000099; font-weight: bold;">\u</span>XXXX</span></pre></td></tr></table></div>
+
+<p>Et donc si on active les littéraux unicodes (ce qui est une bonne pratique) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> r<span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\u</span>&quot;</span>
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span>
+<span style="color: #008000;">SyntaxError</span>: <span style="color: black;">&#40;</span><span style="color: #008000;">unicode</span> error<span style="color: black;">&#41;</span> <span style="color: #483d8b;">'rawunicodeescape'</span> codec can<span style="color: #483d8b;">'t decode bytes in position 0-1: truncated <span style="color: #000099; font-weight: bold;">\u</span>XXXX</span></pre></td></tr></table></div>
+
+<p>De quoi se gratter la tête sur des regexs ou des chemins de fichiers Windows.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/vrac-python-encore/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/03/ZLMR0Tf.jpg" length="557125" type="image/jpg" />	</item>
+	</channel>
+</rss>

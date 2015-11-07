@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; tests unitaires</title>
+	<atom:link href="http://sametmax.com/tag/tests-unitaires/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Un gros guide bien gras sur les tests unitaires en Python, partie 4 8</title>
+		<link>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/</link>
+		<comments>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/#comments</comments>
+		<pubDate>Sat, 06 Dec 2014 20:34:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[docstring]]></category>
+		<category><![CDATA[doctest]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[tests unitaires]]></category>
+		<category><![CDATA[unit tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12717</guid>
+		<description><![CDATA[<a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-3/">Après avoir vu pytest</a>, un outil typiquement pythonique sont les doctests, des tests unitaires intégrés dans les <a href="http://sametmax.com/les-docstrings/">docstrings</a>.]]></description>
+				<content:encoded><![CDATA[<p>Python est un langage très pro, et il y a beaucoup, beaucoup d&#8217;outils pour faire des tests.</p>
+<p><a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-3/">Après avoir vu pytest</a>, un outil typiquement pythonique sont les doctests, des tests unitaires intégrés dans les <a href="http://sametmax.com/les-docstrings/">docstrings</a>.</p>
+<p>Pour rappel, les docstrings, ce sont ces chaînes de caractères qu&#8217;on retrouve au début des modules, sous la signature des fonctions ou dans la définition des classes. Elles servent à la documentation de ceux-ci, ainsi on peut la lire dans le code, et dans les vraies docs car les outils standards savent les extraire.</p>
+<p>Ça ressemble à ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> une_fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Ceci est une docstring.
+&nbsp;
+        On peut la lire dans le code source, avec help() dans le shell ou
+        dans les docs générés par pydoc et sphinx.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Et bien ces docstrings, on peut mettre des tests unitaires dedans formatés comme des sessions de shell Python. Cela permet de donner des exemples d&#8217;usage, tout en testant son code. C&#8217;est chouette.</p>
+<p>Musique ?</p>
+<p>Musique.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/hUSm87nvG3k?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Hello doctests</h2>
+<p>Faire des doctests n&#8217;est pas bien compliqué car c&#8217;est du copier coller. On fait une session shell avec ce qu&#8217;on veut tester, et on copie-colle le tout dans la docstring. Fastoche.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># on copie juste la session de shell tel quel</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> ajouter<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        &gt;&gt;&gt; ajouter(1, 2)
+        3
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et on demande à Python de parser les doctests. Directement dans votre fichier</span>
+<span style="color: #808080; font-style: italic;"># de code. Si, si. Pas de fichier de tests à part.</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">doctest</span>
+    <span style="color: #dc143c;">doctest</span>.<span style="color: black;">testmod</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On lance ensuite directement notre fichier de code :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python mon_module.py</pre></td></tr></table></div>
+
+<p>Et ça n&#8217;affiche absolument rien. C&#8217;est parce qu&#8217;il n&#8217;y a pas d&#8217;erreur. On peut avoir le topo en demandant un peu de verbosité avec <code>-v</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python mon_module.py <span style="color: #660033;">-v</span>
+Trying:
+    ajouter<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">1</span>, <span style="color: #000000;">2</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+Expecting:
+    <span style="color: #000000;">3</span>
+ok
+<span style="color: #000000;">1</span> items had no tests:
+    __main__
+<span style="color: #000000;">1</span> items passed all tests:
+   <span style="color: #000000;">1</span> tests <span style="color: #000000; font-weight: bold;">in</span> __main__.ajouter
+<span style="color: #000000;">1</span> tests <span style="color: #000000; font-weight: bold;">in</span> <span style="color: #000000;">2</span> items.
+<span style="color: #000000;">1</span> passed and <span style="color: #000000;">0</span> failed.
+Test passed.</pre></td></tr></table></div>
+
+<p>Les doctests marchent purement en se basant sur le formatage texte. Python va prendre la ligne avec <code>>>></code>, l&#8217;exécuter, si la ligne suivante ne contient pas de <code>>>></code>, il va comparer le résultat de l&#8217;exécution de la ligne précédente avec le contenu de la ligne qui la suit.</p>
+<p>Ceci passe :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+    &gt;&gt;&gt; ajouter(1, 2)
+    3
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p>Mais ceci échoue :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+    &gt;&gt;&gt; ajouter(1, 2)
+    4
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p>Car le résultat AFFICHÉ dans le shell est 3, et non 4.</p>
+<p>En cas d&#8217;échec, Python vous en dit un peu plus :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python mon_module.py
+<span style="color: #000000; font-weight: bold;">**********************************************************************</span>
+File <span style="color: #ff0000;">&quot;mon_module.py&quot;</span>, line <span style="color: #000000;">6</span>, <span style="color: #000000; font-weight: bold;">in</span> __main__.ajouter
+Failed example:
+    ajouter<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">1</span>, <span style="color: #000000;">2</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+Expected:
+    <span style="color: #000000;">4</span>
+Got:
+    <span style="color: #000000;">3</span>
+<span style="color: #000000; font-weight: bold;">**********************************************************************</span>
+<span style="color: #000000;">1</span> items had failures:
+   <span style="color: #000000;">1</span> of   <span style="color: #000000;">1</span> <span style="color: #000000; font-weight: bold;">in</span> __main__.ajouter</pre></td></tr></table></div>
+
+<h2>Formater ses doctests</h2>
+<p>Les doctests sont faits pour s&#8217;intégrer de manière transparente aux docstrings. On peut donc en mettre autant qu&#8217;on veut, au milieu du texte ordinaire de la docstring. Python se base sur les chevrons (<code>>>></code>) pour savoir quand commence un test, et le saut de ligne pour savoir quand ça se termine. Au delà de ça, le style est libre.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> ajouter<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Je peux mettre n'importe quoi ici.
+&nbsp;
+        Et ici aussi.
+&nbsp;
+        Puis intégrer des tests:
+&nbsp;
+        &gt;&gt;&gt; ajouter(1, 2)
+        3
+        &gt;&gt;&gt; ajouter(2, 2)
+        4
+&nbsp;
+        Et un saut de ligne indique que les tests sont terminés. Mais je peux
+        encore en ajouter après si je veux.
+&nbsp;
+        &gt;&gt;&gt; ajouter(0, 0)
+        0
+&nbsp;
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b</pre></td></tr></table></div>
+
+<p>Néanmoins, l’intérêt des doctests est de documenter son code à travers les tests, et donc on adoptera généralement un format tel que :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> ajouter<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Additionne deux elements.
+&nbsp;
+        Exemple :
+&nbsp;
+            &gt;&gt;&gt; # on peut mettre des commentaires ici
+            &gt;&gt;&gt; ajouter(1, 2) # ou là
+            3
+            &gt;&gt;&gt; ajouter(2., 2) # fonctionne sur tous les types de nombre
+            4.0
+&nbsp;
+        La fonction fonctionne en duck typing, et accepte donc tout objet
+        qui possède la méthode magique __add__ :
+&nbsp;
+            &gt;&gt;&gt; ajouter('a', 'b')
+            'ab'
+            &gt;&gt;&gt; ajouter([1], [2])
+            [1, 2]
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b</pre></td></tr></table></div>
+
+<p>Notez comme il est agréable de lire cette docstring : on comprend tout de suite comment utiliser la fonction. En prime, ce sont des tests unitaires qui garantissent que notre fonction va continuer de fonctionner correctement et nous oblige à garder cette doc à jour.</p>
+<p>On peut faire des imports dedans ou utiliser temporairement <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> pour debugger. N&#8217;importe quel code de shell est valide mais faites attention à ne pas démarrer des boucles infinies comme les event loops des GUI ou lib async.</p>
+<p>Voici ce que donnerait l&#8217;exemple des articles précédents avec des docstests :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get<span style="color: black;">&#40;</span>data<span style="color: #66cc66;">,</span> index<span style="color: #66cc66;">,</span> default<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Implémente l'équivalent de dict.get() pour les indexables.
+&nbsp;
+        Example :
+&nbsp;
+            &gt;&gt;&gt; simple_comme_bonjour = ('pomme', 'banane')
+            &gt;&gt;&gt; get(simple_comme_bonjour, 0)
+            'pomme'
+            &gt;&gt;&gt; get(simple_comme_bonjour, 1000, 'Je laisse la main')
+            'Je laisse la main'
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> data<span style="color: black;">&#91;</span>index<span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IndexError</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> default</pre></td></tr></table></div>
+
+<h2>Problèmes et solutions</h2>
+<p>Les doctests ne sont pas la Panacée, particulièrement parce que le test se fera sur le résultat AFFICHÉ dans le shell. Cela peut facilement amener à des erreurs.</p>
+<p>Déjà, il faut faire attention à la représentation des objets dans le shell Python. <strong>La représentation n&#8217;est pas forcément la valeur de saisie</strong> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">1</span>.
+<span style="color: #ff4500;">1.0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;1&quot;</span>
+<span style="color: #483d8b;">'1'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;foo&quot;</span>: <span style="color: #483d8b;">&quot;bar&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;une apostrophe : '&quot;</span>: <span style="color: #483d8b;">&quot;est échapée ainsi qu'un accent&quot;</span><span style="color: black;">&#125;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;une apostrophe : '&quot;</span>: <span style="color: #483d8b;">&quot;est <span style="color: #000099; font-weight: bold;">\x</span>c3<span style="color: #000099; font-weight: bold;">\x</span>a9chap<span style="color: #000099; font-weight: bold;">\x</span>c3<span style="color: #000099; font-weight: bold;">\x</span>a9e ainsi qu'un accent&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span>: <span style="color: #483d8b;">'bar'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>La solution à ce problème est de tester dans le shell les valeurs de retour, et non de le faire de tête. Faites bien gaffe aux espaces qui sont donc significatifs, surtout ceux en fin de ligne. Mon éditeur est configuré pour les virer par défaut, et ça m&#8217;a niqué en écrivant l&#8217;article :)</p>
+<p>Ensuite, il y a des cas où la représentation ne sera pas la même d&#8217;un appel à l&#8217;autre.</p>
+<p>C&#8217;est le cas avec les dictionnaires, puisque l&#8217;ordre des éléments n&#8217;est pas garanti par nature. Ne faites donc pas :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> retourne_un_dico<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'ordre'</span>: <span style="color: #483d8b;">'non garanti'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'le'</span>: <span style="color: #483d8b;">'resultat'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Mais plutôt quelque chose qui vous garantit l&#8217;affichage :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+&gt;&gt;&gt; res = list(retourne_un_dico().items())
+&gt;&gt;&gt; res.sort()
+[('le', 'resultat'), ('ordre', 'non garanti')]
+&gt;&gt;&gt; # ou
+&gt;&gt;&gt; retourne_un_dico() == {'ordre': 'non garanti', 'le': 'resultat'}
+True
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p>Parfois, on ne peut juste pas garantir l&#8217;affichage. Par exemple avec des nombres non prévisibles comme les hash ou les id des objets :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+&gt;&gt;&gt; class Test(): pass
+&gt;&gt;&gt; repr(Test())
+''
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p><code>7f4687d30fc8</code> n&#8217;est ici pas prévisible. Python met certains cas spéciaux comme celui-ci des flags activables via le commentaire <code># doctest: +NOM_DU_FLAG</code>.</p>
+<p>Par exemple, le flag <code>ELLIPSIS</code> permet de placer <code>...</code> dans le résultat en guise de joker :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+&gt;&gt;&gt; repr(Test()) # doctest: +ELLIPSIS
+''
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p>D&#8217;autres problèmes similaires peuvent être résolus ainsi. Le flag <code>SKIP</code> permet de sauter un test que vous voulez mettre là, en exemple, mais qui ne doit pas être testé :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+&gt;&gt;&gt; # ce test va être ignoré
+&gt;&gt;&gt; repr(Test()) # doctest: +SKIP
+''
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p><code>NORMALIZE_WHITESPACE</code> permet de considérer toute séquence de caractères non imprimables comme un espace. 8 tabs ou 4 espaces dans le résultat seront tous considérés comme un espace.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+&gt;&gt;&gt; 'ceci est une assez longue ligne divisible' # doctest: +NORMALIZE_WHITESPACE
+'ceci    est     une assez longue    ligne divisible'
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p>Les flags sont cumulables, si on les sépare par des virgules dans le commentaire.</p>
+<p>Autre astuce, si votre sortie doit contenir un saut de ligne, Python va l’interpréter comme la fin des tests. On peut pallier cela en utilisant <code>&lt;BLANKLINE&gt;</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+&gt;&gt;&gt; print('Un saut de ligne<span style="color: #000099; font-weight: bold;">\\</span>n')
+Un saut de ligne
+&nbsp;
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p>Faites attention aux antislash et autres caractères spéciaux dans vos docstests puisque toute string est parsée deux fois : une fois à l&#8217;écriture de la docstring, puis une fois à son exécution. Ici vous voyez que je suis tenu d&#8217;échapper mon <code>\n</code> On peut d&#8217;ailleurs utiliser les préfixes <code>r</code> (cf: les <a href="http://sametmax.com/comment-marchent-les-raw-strings-en-python/">raw strings</a>) et <code>u</code> sur les docstrings, si un jour vous êtes bloqué par trop d&#8217;échappements ou des caractères non ASCII en pagaille, pensez-y.</p>
+<p>Un cas particulier est celui des exceptions. LOL, n&#8217;est-il pas ?</p>
+<p>Pour y répondre, Python décide qu&#8217;une expression est levée si il voit <code>Traceback (most recent call last):</code>. Il ignore ensuite tout le texte &#8211; qui est donc optionnel et que vous pouvez omettre &#8211; jusqu&#8217;à ce qu&#8217;il rencontre le nom de l&#8217;exception levée. À partir de là, il vérifie que le test passe.</p>
+<p>Par exemple, si votre exception génère ce traceback :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> 
+  File <span style="color: #483d8b;">&quot;test.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">41</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> ajouter
+    <span style="color: #ff4500;">1</span> / <span style="color: #ff4500;">0</span>
+<span style="color: #008000;">ZeroDivisionError</span>: integer division <span style="color: #ff7700;font-weight:bold;">or</span> modulo by zero</pre></td></tr></table></div>
+
+<p>Vous pouvez faire dans votre doctest :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+&gt;&gt;&gt; je_leve_une_exception()
+Traceback (most recent call last):
+ZeroDivisionError: integer division or modulo by zero
+&quot;&quot;&quot;</span></pre></td></tr></table></div>
+
+<p>Seule la dernière ligne est comparée.</p>
+<p>Il est également possible de mettre les doctests dans un fichier texte à part, mais je ne vous le recommande pas. Cela retire l’intérêt principal des doctests : avoir du code exécutable dans la doc. Si on doit avoir un fichier séparé, autant utiliser des tests normaux, bien plus pratiques et complets.</p>
+<p>Car il n&#8217;y a pas de tear down, setup ou fixtures avec les docstests. Ca reste un outil basique.</p>
+<p>Sachez néanmoins que les doctests sont parfaitement compris par <code>pytest</code>, il suffit juste de lui demander de les exécuter avec l&#8217;option suivante :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py.test <span style="color: #660033;">--doctest-modules</span></pre></td></tr></table></div>
+
+<p>Dans ce cas, il n&#8217;est pas nécessaire de faire à la fin de chaque fichier contenant des doctests :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">doctest</span>
+    <span style="color: #dc143c;">doctest</span>.<span style="color: black;">testmod</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Quand utiliser les doctests ?</h2>
+<p>Généralement, on utilise un mélange des tests ordinaires (dans notre cas des tests <code>pytest</code> plutôt que <code>unittest</code>) et des doctests.</p>
+<p>On utilisera des doctests pour les objets ou les fonctions simples et indépendantes. J&#8217;entends par là, des fonctions et des objets qui prennent uniquement des types basiques en paramètres, et qui retournent uniquement ces types basiques en paramètres. Pour les objets, ils doivent avoir peu de méthodes.</p>
+<p>Pour tout le reste, on utilisera des tests ordinaires.</p>
+<p>Par exemple, si vous avez une fonction comme notre exemple <code>get()</code>, les doctests sont un bon choix. En revanche, si vous avez un objet <code>Server</code> qui est un serveur HTTP, ou une fonction qui prend un objet <code>Server</code> en paramètre, il vaut mieux utiliser les tests ordinaires.</p>
+<p>Il est tout à fait possible, et même agréable, de mettre quelques tests simples en doctests qui aident à la documentation, et de faire les tests les plus compliqués via <code>pytest</code>.</p>
+<p>Prochaine étape, <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/">les mocks</a>. Parti de là, je pourrai vous dire quelles parties de votre programme tester en priorité, et comment. Au début je voulais faire l&#8217;inverse, mais finalement, c&#8217;est plus pratique.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/decembre/docstests.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/12/tumblr_n5i7twM2SY1r539hzo1_500.gif" length="598099" type="image/jpg" />	</item>
+	</channel>
+</rss>

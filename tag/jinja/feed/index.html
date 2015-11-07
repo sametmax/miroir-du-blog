@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; jinja</title>
+	<atom:link href="http://sametmax.com/tag/jinja/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Templates de projet avec cookiecutter 10</title>
+		<link>http://sametmax.com/templates-de-projet-avec-cookiecutter/</link>
+		<comments>http://sametmax.com/templates-de-projet-avec-cookiecutter/#comments</comments>
+		<pubDate>Thu, 11 Jun 2015 21:49:11 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[jinja]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[template]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16371</guid>
+		<description><![CDATA[La meilleure solution à ce jour vient de Audrey Roy, qui est avant tout connue pour avoir co-écrit le livre Two scoops of Django, et qui a aussi pondu <a href="http://cookiecutter.readthedocs.org/en/latest/readme.html">cookiecutter</a>.]]></description>
+				<content:encoded><![CDATA[<p>Beaucoup de frameworks viennent avec des templates de projets maintenant. Django vient avec <code>django-admin startproject --template</code>, tandis que crossbar vient avec <code>crossbar init --template</code>. L&#8217;idée d&#8217;avoir de templates pour ses projets n&#8217;a rien de nouveau, d&#8217;ailleurs la plupart des OS modernes ont au moins ça intégré pour des fichiers. Ainsi Ubuntu à un dossière &#8220;Modèles&#8221;, et tout ce qu&#8217;il y a dedans peut être dupliqué ailleurs via un clic droit dans Nautilus.</p>
+<p>Néanmoins la meilleure solution à ce jour vient de Audrey Roy, qui est avant tout connue pour avoir co-écrit le livre Two scoops of Django, et qui a aussi pondu <a href="http://cookiecutter.readthedocs.org/en/latest/readme.html">cookiecutter</a>.</p>
+<p>L&#8217;outil est très simple. D&#8217;abord un <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> pour l&#8217;installer :</p>
+<p><code>pip install cookiecutter</code></p>
+<p>Notez que bien que le projet soit en Python, les templates peuvent être en n&#8217;importe quel langage, cookiecutter s&#8217;en branle. Lui, il va juste copier le contenu du template dans un dossier, et remplacer les variables notées <code>{{}}</code> dedans.</p>
+<p>Pour commencer, on créé un dossier nommé <code>{{cookiecutter.repo_name}}</code> qui va contenir le template de son projet. Oui, le nom du dossier est <code>{{cookiecutter.repo_name}}</code>. En effet les noms de dossiers et fichiers sont aussi templatisables, et passés à la moulinette de <a href="https://en.wikipedia.org/wiki/Jinja_%28template_engine%29">jinja2</a>.</p>
+<p>Dans ce dossier, on peut mettre tous les fichiers qu&#8217;on veut, avec des noms normaux, ou avec des variables. Le contenu des fichiers peut, bien entendu, contenir aussi des variables. Les variables sont toujours de la forme <code>{{cookiecutter.nom_de_variable}}</code>.</p>
+<p>Ensuite, à côté de notre dossier nommé <code>{{cookiecutter.repo_name}}</code> (le dossier du template), on peut créer un fichier <code>cookiecutter.json</code> qui va contenir les valeurs par défaut de nos variables :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #009900;">&#123;</span>
+    <span style="color: #3366CC;">&quot;repo_name&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;nouveau_projet&quot;</span><span style="color: #339933;">,</span>
+    <span style="color: #3366CC;">&quot;version&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;0.1.0&quot;</span><span style="color: #339933;">,</span>
+    <span style="color: #3366CC;">&quot;autre_variable&quot;</span><span style="color: #339933;">:</span> <span style="color: #3366CC;">&quot;Bidule&quot;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Enfin pour récolter les fruits de son labeur, on lance <code>cookiecutter /chemin/vers/template</code> et l&#8217;outil va vous poser tout un tas de question pour remplir les variables, puis va générer le nouveau projet dans le dossier courant.</p>
+<p>Cookiecutter accepte aussi des urls de repo git et mercurial comme source de template, et l&#8217;auteur de l&#8217;outil fournit un <a href="https://github.com/audreyr/cookiecutter-pypackage">template de projet Python</a> très complet par ce biais. </p>
+<p>On va l&#8217;utiliser comme exemple.</p>
+<p>Voici son contenu :</p>
+<pre>├── cookiecutter.json <= valeur par défaut des variables
+├── {{cookiecutter.repo_name}} <= template du projet
+│   ├── AUTHORS.rst
+│   ├── CONTRIBUTING.rst
+│   ├── {{cookiecutter.repo_name}}
+│   │   ├── {{cookiecutter.repo_name}}.py
+│   │   └── __init__.py
+│   ├── docs
+│   │   ├── authors.rst
+│   │   ├── conf.py
+│   │   ├── contributing.rst
+│   │   ├── history.rst
+│   │   ├── index.rst
+│   │   ├── installation.rst
+│   │   ├── make.bat
+│   │   ├── Makefile
+│   │   ├── readme.rst
+│   │   └── usage.rst
+│   ├── HISTORY.rst
+│   ├── LICENSE
+│   ├── Makefile
+│   ├── MANIFEST.in
+│   ├── README.rst
+│   ├── requirements.txt
+│   ├── setup.cfg
+│   ├── setup.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   └── test_{{cookiecutter.repo_name}}.py
+│   └── tox.ini
+└── README.rst</pre>
+<p>Certains usages de variables sont assez évident, comme par exemple le fichier __init__:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+__author__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'{{ cookiecutter.full_name }}'</span>
+__email__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'{{ cookiecutter.email }}'</span>
+__version__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'{{ cookiecutter.version }}'</span></pre></td></tr></table></div>
+
+<p>D'autres sont assez malines et inattendues comme le fichier de test :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+test_{{ cookiecutter.repo_name }}
+----------------------------------
+Tests for `{{ cookiecutter.repo_name }}` module.
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unittest</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: black;">&#123;</span><span style="color: black;">&#123;</span> cookiecutter.<span style="color: black;">repo_name</span> <span style="color: black;">&#125;</span><span style="color: black;">&#125;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: black;">&#123;</span><span style="color: black;">&#123;</span> cookiecutter.<span style="color: black;">repo_name</span> <span style="color: black;">&#125;</span><span style="color: black;">&#125;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Test<span style="color: black;">&#123;</span><span style="color: black;">&#123;</span> cookiecutter.<span style="color: black;">repo_name</span>|capitalize <span style="color: black;">&#125;</span><span style="color: black;">&#125;</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">unittest</span>.<span style="color: black;">TestCase</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> setUp<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> test_something<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tearDown<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+    <span style="color: #dc143c;">unittest</span>.<span style="color: black;">main</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On note l'usage du filtre jinja <code>capitalize</code>. Tous les outils de jinja sont à disposition, ce serait con de s'en priver.</p>
+<p>Pour utiliser le template on fait <code>$ cookiecutter https://github.com/audreyr/cookiecutter-pypackage.git</code>, ce qui nous donne :</p>
+<pre>
+Clonage dans 'cookiecutter-pypackage'...
+remote: Counting objects: 505, done.
+remote: Total 505 (delta 0), reused 0 (delta 0), pack-reused 505
+Réception d'objets: 100% (505/505), 77.89 KiB | 0 bytes/s, done.
+Résolution des deltas: 100% (265/265), done.
+Vérification de la connectivité... fait.
+full_name (default is "Audrey Roy")? Sam
+email (default is "audreyr@gmail.com")? lesametlemax@gmail.com
+github_username (default is "audreyr")? sam
+project_name (default is "Python Boilerplate")? essai
+repo_name (default is "boilerplate")? essai
+project_short_description (default is "Python Boilerplate contains all the boilerplate you need to create a Python package.")? C'est un essai j'ai dis
+release_date (default is "2015-01-11")? 
+year (default is "2015")? 
+version (default is "0.1.0")? </pre>
+<p>Notez les valeurs par défaut du fichier JSON, qui sont celles de l'auteur.</p>
+<p>Le résultat généré :</p>
+<pre>
+├── essai
+│   ├── AUTHORS.rst
+│   ├── CONTRIBUTING.rst
+│   ├── docs
+│   │   ├── authors.rst
+│   │   ├── conf.py
+│   │   ├── contributing.rst
+│   │   ├── history.rst
+│   │   ├── index.rst
+│   │   ├── installation.rst
+│   │   ├── make.bat
+│   │   ├── Makefile
+│   │   ├── readme.rst
+│   │   └── usage.rst
+│   ├── essai
+│   │   ├── essai.py
+│   │   └── __init__.py
+│   ├── HISTORY.rst
+│   ├── LICENSE
+│   ├── Makefile
+│   ├── MANIFEST.in
+│   ├── README.rst
+│   ├── requirements.txt
+│   ├── setup.cfg
+│   ├── setup.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   └── test_essai.py
+│   └── tox.ini
+└── README.rst</pre>
+<p>Le fichier __init__ est devenu :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+__author__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'Sam'</span>
+__email__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'lesametlemax@gmail.com'</span>
+__version__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'0.1.0'</span></pre></td></tr></table></div>
+
+<p>Et le fichier de test :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+test_essai
+----------------------------------
+&nbsp;
+Tests for `essai` module.
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unittest</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> essai <span style="color: #ff7700;font-weight:bold;">import</span> essai
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> TestEssai<span style="color: black;">&#40;</span><span style="color: #dc143c;">unittest</span>.<span style="color: black;">TestCase</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> setUp<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> test_something<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tearDown<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+    <span style="color: #dc143c;">unittest</span>.<span style="color: black;">main</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>L'outil accepte <a href="http://cookiecutter.readthedocs.org/en/latest/advanced_usage.html">un beau degré de customisation</a>, avec un fichier de configuration général au niveau de l'utilisateur (et donc des valeurs par défaut par utilisateur), une API programmable en Python, des hooks pre et post generation (qui permettent d'injecter des variables dynamiquement comme par exemple un uuid ou un timestamp).</p>
+<p>Donc si vous recréez souvent les mêmes layout de projet encore et encore, pensez à cookiecutter.</p>
+<p>Mais surtout, surtout, si vous codez votre propre framework, ne faites pas comme Django, utilisez l'API de cookiecutter au lieu de réinventer la roue.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/templates-de-projet-avec-cookiecutter/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/06/j2J1ge8.jpg" length="205582" type="image/jpg" />	</item>
+	</channel>
+</rss>

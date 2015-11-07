@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; wsgi</title>
+	<atom:link href="http://sametmax.com/tag/wsgi/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>WAMP et les outils de dev Web Python existants 8</title>
+		<link>http://sametmax.com/wamp-et-les-outils-de-dev-web-python-existants/</link>
+		<comments>http://sametmax.com/wamp-et-les-outils-de-dev-web-python-existants/#comments</comments>
+		<pubDate>Wed, 02 Jul 2014 05:21:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[wamp]]></category>
+		<category><![CDATA[wsgi]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=11259</guid>
+		<description><![CDATA[C'est tout naturellement qu'on a fini par me poser (par mail), ze question.]]></description>
+				<content:encoded><![CDATA[<p>Même si on peut créer un site Web en utilisant uniquement des libs WAMP, tout comme on peut le faire en utilisant uniquement flask ou tornado, il arrive immanquablement le moment où on veut mélanger, intégrer, faire cohabiter les techos ensemble. D&#8217;abord parce qu&#8217;il y a des sites existants, et qu&#8217;on va pas les jeter à la poubelle. Ensuite parce que ce sont des techos qu&#8217;on connaît et pour lesquelles ils y a beaucoup d&#8217;outils, que l&#8217;on veut mettre à profit.</p>
+<p>C&#8217;est tout naturellement qu&#8217;on a fini par me poser (par mail), ze question :</p>
+<blockquote><p>Subject: crossabar et autobahn</p>
+<p>Message Body:<br />
+Ha bah oui vous l&#8217;avez cherché à nous parler de truc comme ça: ça interroge !</p>
+<p>Je m&#8217;interroge donc sur la manière d&#8217;intégrer WAMP à django. Pour la perstistence des données (l&#8217;ORM qui simplifie la création des tables tout de même), pour l&#8217;authentication et l&#8217;authorization, pour la robustesse et versatilité apportée par django&#8230;</p>
+<p>J&#8217;ai pour habitude de mettre pas mal de logique dans mes modèles et je me demandais si il n&#8217;y aurait pas moyen de pluguer WAMP dans ceux ci&#8230; exposer une méthode update en RPC avec passage de JSON ? Avec namespace automatique à partir de la classe ? </p>
+<p>En fait remplacer: Angular+tastypie+django+nginx par Angular+WAMP+django+crossbar avec du coup le bonus de WAMP pour le pubsub que n&#8217;a pas AJAX.</p>
+<p>Comment vous verriez un (petit &#8211; après relecture ça parait dur) mixin WAMP pour des modèles django auto-détectés, auto-exposés en RPC ?</p>
+<p>J&#8217;ai du mal à voir quelle tactique utiliser. J&#8217;ai peur que ça finisse en refaire tout le travail que fait déjà (très bien) tastypie/RESTframework.</p>
+<p>Comment modulariser (là ou est sensé briller WAMP) les services déjà offerts par django: celery, authentication, etc ?<br />
+Ces services sont tous très dépendant du système de persistance des données (check des users, permissions, query) et donc l&#8217;approche plus monolithique de django n&#8217;est pas mauvaise car tout est lié et donc facilement manipulable au même endroit&#8230; où est le gain de WAMP dans ce cas, pour une application assez classique en fait ?</p>
+<p>Merci encore pour cette découverte dans tous les cas. C&#8217;est top.</p>
+<p>Du coup je me relis et ça part un peu dans tous les sens&#8230; désolé.</p>
+</blockquote>
+<p>Comme je me suis fendu d&#8217;une réponse bien longue, je vais la paster verbatim :</p>
+<blockquote><p>
+Bonjour,</p>
+<p>C&#8217;est une très bonne question.</p>
+<p>D&#8217;abord, il faut savoir qu&#8217;on ne peut pas faire tourner un routeur WAMP dans un process Django (ou tout autre app WSGI) car Django est synchrone. En plus, l&#8217;ORM de django est bloquant, donc même sans utiliser django, utiliser son ORM au sein de WAMP va bloquer la boucle d&#8217;événements et on perdra tout l&#8217;interêt d&#8217;avoir une techno temps réel.</p>
+<p>(Note a posteriori : y a surement un truc à faire avec gevent ou des threads ici, mais je sais pas encore quoi)</p>
+<p>Ici on a donc 3 problèmes à résoudre :</p>
+<p>&#8211; comment faire communiquer django et son app WAMP ?<br />
+&#8211; comment utiliser un ORM bloquant avec WAMP ?<br />
+&#8211; comment auto générer une API WAMP ?</p>
+<p>Ces 3 questions n&#8217;ont pas encore de réponse définitive puisque, comme je l&#8217;ai précisé, WAMP est une techno jeune, et donc il y a beaucoup à faire. Mes articles sont précisément là pour tenter de générer un enthousiasme et pousser les gens à améliorer les outils autour de WAMP.</p>
+<p>Prenons les problèmes un par un :</p>
+<p>Comment faire communiquer django et son app WAMP ?<br />
+====================================</p>
+<p>C&#8217;est le problème le plus facile à mon sens. Il faut coder une app WAMP qui fasse le bridge entre HTTP et WAMP. Quand on register côté app HTTP, on fait un post sur l&#8217;app WAMP (qui écoute aussi sur HTTP du coup) en fournissant une URL de callback. L&#8217;app WAMP fait le register, et quand on l&#8217;appelle, elle fait l&#8217;appel à l&#8217;app HTTP via l&#8217;url de callback, et retourne le résultat. On peut faire ça pour register, subscribe, call et publish, c&#8217;est le même principe.</p>
+<p>(Note a posteriori : en me relisant moi-même je m&#8217;aperçois à quel point c&#8217;est pas clair. De toute façon il faudra que je le code un jour où l&#8217;autre, et avec un bon tuto pratique, la pilule passera mieux).</p>
+<p>Ce faisant, on pourra appeler du WAMP côté app HTTP, et taper dans l&#8217;app HTTP côté client WAMP.</p>
+<p>Une amorce de travail  a été fait pour coder un tel bridge. Pour le moment il n&#8217;y a que le publish :</p>
+<p>https://groups.google.com/forum/#!searchin/autobahnws/http/autobahnws/SbobAnoWVlQ/FnGhdYXj9aIJ</p>
+<p>Ce n&#8217;est pas très dur à coder, c&#8217;est juste un boulot chiant à faire.</p>
+<p>Cela dit, ça ne résout pas le problème de l&#8217;authentification, qu&#8217;il faudra à un moment on un autre, se poser. Je pense qu&#8217;on va se diriger vers une authentification hybride, qui va utiliser le session ID en cookie, mais l&#8217;envoyer via un token. Encore un truc à travailler.</p>
+<p>De même, on voudra sûrement créer quelques facilités pour intégrer ça dans les frameworks les plus connus en proposant une app prêt à plugger. Rien d&#8217;insurmontable donc, mais pas mal de taff.</p>
+<p>Par contre, pour ce qui est des tasks queues, à mon avis une solution de task queue WAMP sera bien plus intéressante qu&#8217;une solution type celery car on peut envoyer des messages WAMP depuis les tâches et donc avertir en temps réel de l&#8217;avancement du process. Je voterais donc pour coder soi-même une alternative.</p>
+<p>Comment utiliser un ORM bloquant avec WAMP ?<br />
+===============================</p>
+<p>Idéalement, il faudrait avoir des ORM non bloquant, mais on Python, on en a pas. On a quelques drivers non bloquant, notamment pour PostGres et Mongo, mais pas d&#8217;ORM, et ils demandent une forme de compilation d&#8217;extension C.</p>
+<p>C&#8217;est là qu&#8217;on voit qu&#8217;on se traine la culture de l&#8217;API synchrone en Python, car côté NodeJS, ils commencent à avoir pas mal de solutions.</p>
+<p>En l’occurrence, on a 3 solutions :</p>
+<p>&#8211; utiliser le bridge dont je viens de parler pour garder les appels dans l&#8217;app HTTP.  Ca veut dire que quand on veut faire un appel à de la base de données, ça fait WAMP => HTTP => connexion à la base, aller-retour. C&#8217;est pas idéal.<br />
+&#8211; créer une app WAMP pour héberger les appels bloquants et taper dedans en RPC. Une bonne solution à mon avis. Mais assez peu intuitive.<br />
+&#8211; faire tous les appels dans un threads à part. Le plus simple. Un peu verbeux par contre.</p>
+<p>Dans les deux derniers cas, on à quand même le problème des querysets qui sont lazy, notamment au niveau des foreign keys. Il faudra faire particulièrement attention à ne pas accidentellement faire des appels bloquant, par exemple dans le rendu du template. Une solution viable est de créer un wrapper qui fait le rendu du template dans un threads.</p>
+<p>Bref, encore pas mal d&#8217;outils à developper.</p>
+<p>On peut aussi se lancer dans l&#8217;écriture d&#8217;un ORM non bloquant. Une bonne année de travail avant d&#8217;avoir quelque chose qui soit compétitif.</p>
+<p>Comment auto générer une API WAMP ?<br />
+==========================</p>
+<p>Là tu m&#8217;en poses une bonne.</p>
+<p>C&#8217;est la suite logique, évidement, mais je n&#8217;avais jamais réfléchi aussi loin. C&#8217;est un taff énorme, surtout que ça dépend de l&#8217;outil derrière. La solution la plus simple c&#8217;est encore de faire un mapper dans le bridge HTTP-WAMP qui va traduire directement un appel WAMP en un appel JSON vers l&#8217;API générée par django-rest-framework ou autre.</p>
+<p>Mais bon, je suis pas certains de la valeur ajoutée.</p>
+<p>Je pense qu&#8217;il est difficile pour moi de répondre à cette question pour le moment car :</p>
+<p>&#8211; je ne suis pas certain que WAMP soit un bon remplacement pour les API REST. Je pense plutôt que c&#8217;est un complément.<br />
+&#8211; il y a toute la question de l&#8217;authentification. Encore et toujours.<br />
+&#8211; il va falloir pas mal d&#8217;essais avec plusieurs architectures en prod (séparées, mixtes, mono culture&#8230;) pour pouvoir déterminer ce qui rend le mieux.</p>
+<p>Mon intuition est qu&#8217;on utilise généralement 10% de l&#8217;API générée par les frameworks, et que la partie dont on a besoin à peut très bien se faire à la main. La raison pour laquelle les trucs comme django-rest-framework sont si pratiques, c&#8217;est qu&#8217;ils gèrent des problématiques comme l&#8217;authentification, la sérialisation et la pagination.</p>
+<p>Je serais plutôt d&#8217;avis de s&#8217;attaquer à ça pour WAMP, et je pense qu&#8217;on s’apercevra que finalement, pour ses propres besoins, un API complète est overkill. Par contre, pour exposer une API au monde, c&#8217;est une autre histoire. J&#8217;ai eu récemment une discussion à propos de faire des APIs WAMP :) Il y a des possibilités fascinantes. Mais c&#8217;est peut être encore un peu loin tout ça.</p>
+<p>Je pense que je vais publier cette réponse sur le blog, car tu soulèves des points très importants.</p></blockquote>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/wamp-et-les-outils-de-dev-web-python-existants/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/07/tumblr_n3pyweC7q71r539hzo1_500.png" length="804621" type="image/jpg" />	</item>
+		<item>
+		<title>Qu&#8217;est-ce que WSGI et à quoi ça sert ? 29</title>
+		<link>http://sametmax.com/quest-ce-que-wsgi-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/quest-ce-que-wsgi-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Wed, 03 Jul 2013 10:36:16 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bottle]]></category>
+		<category><![CDATA[cherrypy]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[server]]></category>
+		<category><![CDATA[wsgi]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6544</guid>
+		<description><![CDATA[On va dire que je me répète, mais <a href="https://en.wikipedia.org/wiki/Wsgi">WSGI</a> est typiquement le cas d'une notion simple et super mal expliquée sur le Web.]]></description>
+				<content:encoded><![CDATA[<p>On va dire que je me répète, mais <a href="https://en.wikipedia.org/wiki/Wsgi">WSGI</a> est typiquement le cas d&#8217;une notion simple et super mal expliquée sur le Web.</p>
+<p>C&#8217;est terrible ça, une vrai maladie. Ça me donne envie de faire des vidéos comme le joueur du Grenier pour râler à voix haute.</p>
+<p>Bref.</p>
+<p>Donc WSGI a le même but que FastCGI, SCGI, or AJP : c&#8217;est une norme qui sert à définir comment un serveur Python et son application peuvent discuter. Ça été pondu pour que tous les serveurs et toutes les applications Python qui respectent la norme soient garantis de pouvoir s&#8217;interfacer.</p>
+<p>Ça, c&#8217;est la définition que vous voyez partout. Super, mais concrètement ça veut dire quoi ?</p>
+<h2>WSGI, c&#8217;est juste une convention de discussion</h2>
+<p>Un bon dessin vaut mieux&#8230;</p>
+<div id="attachment_6545" style="width: 465px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2013/07/wsgi.png" class="grouped_elements" rel="tc-fancybox-group6544"><img class=" wp-image-6545  " title="C'est compliqué de faire un schéma comme ça sérieux ? Ah ça pond une norme de 30 pages mais ça peut pas faire 3 ronds dans paint." src="http://sametmax.com/wp-content/uploads/2013/07/wsgi.png" alt="Schéma du fonctionnement de WSGI" width="455" height="644" /></a><p class="wp-caption-text">C&#39;est compliqué de faire un schéma comme ça sérieux ? Ah ça pond une norme de 30 pages mais ça peut pas faire 3 ronds dans paint.</p></div>
+<p>D&#8217;un côté vous avez des serveurs comme ceux de cherrypy, de paste, de werkzeug ou comme la commande runserver de Django, ou tels que les serveurs gunicorn, Apache (avec mod_wsgi). Ces logiciels ont pour boulot d’accueillir une requête HTTP et de renvoyer la réponse. Ils ont des problématiques comme : gérer les sockets, gérer plusieurs processus en parallèle, éviter qu&#8217;un pirate se balade sur votre serveur, etc.</p>
+<p>De l&#8217;autre côté vous avez votre application. 9 fois sur 10, votre site Web, donc votre code. Sa problématique c&#8217;est de recevoir une requête, la comprendre, et générer une réponse en tapant dans la base de données, et en faisant sa popotte HTML.</p>
+<p>Il faut donc que votre serveur dialogue avec votre app, qu&#8217;il lui passe la requête, que votre app la gère, retourne la réponse, et file la réponse au serveur. Alors le serveur envoie la réponse au navigateur.</p>
+<p>C&#8217;est la chose la plus mal expliquée : il y a deux parties à WSGI. Une pour le serveur, et une pour l&#8217;application.</p>
+<p>Un serveur est dit &#8220;compatible WSGI&#8221; quand il est capable de transmettre une requête HTTP normale à votre application via le protocole WSGI, et qu&#8217;il est capable de récupérer une réponse HTTP depuis votre application via le protocole WSGI pour en faire une requête HTTP normale.</p>
+<p>Une application est dite &#8220;compatible WSGI&#8221; quand elle est capable de recevoir une requête HTTP <strong>transformée en un objet Python</strong> selon la norme WSGI, et qu&#8217;elle retourne une réponse HTTP <strong>sous la forme d&#8217;un objet Python</strong> selon la norme WSGI.</p>
+<h2>J&#8217;avais demandé concrètement, show me the fucking code !</h2>
+<p>Côté serveur WSGI, on doit lui passer le point d&#8217;entrée de votre app.</p>
+<p>Le point d&#8217;entrée est un module Python qui contient une variable nommé <code>application</code>.</p>
+<p>C&#8217;est tout.</p>
+<p>La variable application doit contenir votre application compatible WSGI.</p>
+<p>Une application compatible WSGI a un certain nombre de méthodes pour accepter en paramètres un objet requête HTTP, et retourner un objet réponse HTTP, mais la bonne nouvelle, c&#8217;est que <strong>vous n&#8217;avez absolument pas besoin de savoir comment ça marche</strong>.</p>
+<p>En effet, tous les frameworks compatibles WSGI (bottle, django, cherrypy, etc) ont une fonction qui retourne cette application toute faite.</p>
+<p>Par exemple, avec bottle, mon fichier wsgi va contenir :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">site</span> <span style="color: #ff7700;font-weight:bold;">import</span> app
+&nbsp;
+application <span style="color: #66cc66;">=</span> app</pre></td></tr></table></div>
+
+<p>C&#8217;est tout. <code>app</code>, le décorateur qui permet de faire <code>@app.route('/')</code> dans le code du site bottle, est déjà une application WSGI.</p>
+<p>Pour Django, ça va donner un truc comme :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #808080; font-style: italic;"># ont dit quel est le module de settings Django</span>
+<span style="color: #dc143c;">os</span>.<span style="color: black;">environ</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;project.settings&quot;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et on fabrique l'application WSGI avec une fonction</span>
+<span style="color: #808080; font-style: italic;"># que Django nous donne</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">core</span>.<span style="color: black;">wsgi</span> <span style="color: #ff7700;font-weight:bold;">import</span> get_wsgi_application
+&nbsp;
+application <span style="color: #66cc66;">=</span> get_wsgi_application<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Le simple fait qu&#8217;il y ait une variable nommée <code>application</code> fait que le serveur va se débrouiller. Tout ce qu&#8217;il y a à faire, c&#8217;est passer en paramètre ce module au serveur, et comment le faire dépend du serveur.</p>
+<p>Par exemple pour gunicorn, c&#8217;est le premier paramètre de la commande qu&#8217;on utilise pour lancer le serveur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">gunicorn nom_du_module</pre></td></tr></table></div>
+
+<p>Il faut que le module soit importable (on peut passer l&#8217;option <code>--pythonpath</code> pour s&#8217;en assurer.)</p>
+<p>Pour Apache et mod_wsgi, ça se fait dans le fichier de config <em>apache.conf</em>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="xml" style="font-family:monospace;">WSGIScriptAlias / /chemin/version/module.wsgi</pre></td></tr></table></div>
+
+<p>Bref, faire dialoguer un serveur et une application WSGI, c&#8217;est con comme la lune :</p>
+<ol>
+<li>Faire un module qui contient une variable nommée <code>application</code> contenant l&#8217;app WSGI.</li>
+<li>Dire au serveur où se trouve le fichier</li>
+</ol>
+<h2>Avantages et inconvénients de WSGI</h2>
+<p>Parmi les avantages, on retrouve :</p>
+<ul>
+<li>Pas de parsing de la requête au niveau de l&#8217;application.</li>
+<li>Entrée de toutes les apps WSGI normalisées.</li>
+<li>Tous les logiciels WSGI sont compatibles entre eux.</li>
+<li>Le module WSGI reste chargé en mémoire une bonne fois pour toute, pas besoin de le recréer à chaque requête.</li>
+<li>WSGI se suffit à lui même pour écrire une application. Dans la théorie, on n&#8217;a même pas besoin de framework.</li>
+</ul>
+<p>Quant aux inconvénients :</p>
+<ul>
+<li>En pratique il y a très peu de code partagé entre les applications WSGI. La communication sur WSGI s&#8217;est très mal passée et cela reste quelque chose de mystérieux pour la plupart des développeurs.</li>
+<li>WSGI ne gère pas les websockets, et la norme est en train d&#8217;être mise à jour pour cela. Mais cela prend du temps et les websockets sont déjà là, du coup les gens se tournent vers des solutions non WSGI (tornado, twisted, etc).</li>
+<li>Certains serveurs ne gèrent pas WSGI (comme nginx ou lighttpd), du coup on ne peut pas communiquer directement entre l&#8217;app et eux. Il faut un intermédiaire. C&#8217;est pour cela qu&#8217;on voit très souvent des setups comme nginx <=> gunicorn <=> django, avec un serveur WSGI qui sert d&#8217;intermédiaire. Il y a tout de même le bénéfice de pouvoir gérer parfaitement indépendamment le processus WSGI du serveur HTTP, ce qui est très pratique pour le debug, l&#8217;administration système, le déploiement, etc.</li>
+<li>WSGI, c&#8217;est du Python. Qui dit Python, dit import, qui dit import, dit PYTHON PATH. 90% des erreurs de mise en prod sont des erreurs d&#8217;import, et pour cette raison <code>sys.path</code> est presque toujours manipulé dans un fichier qui contient une application WSGI.</li>
+</ul>
+<h2>Pour la culture</h2>
+<p>Voici à quoi ressemble un hello world en WSGI :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> application<span style="color: black;">&#40;</span>environ<span style="color: #66cc66;">,</span> start_response<span style="color: black;">&#41;</span>:
+    start_response<span style="color: black;">&#40;</span><span style="color: #483d8b;">'200 OK'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Content-Type'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'text/plain'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #483d8b;">'Hello World<span style="color: #000099; font-weight: bold;">\n</span>'</span></pre></td></tr></table></div>
+
+<p>Et oui, c&#8217;est très simple, et il n&#8217;y a rien à importer. La norme WSGI est une convention : il doit y avoir une variable nommée <code>application</code> (ici la variable c&#8217;est le nom de la fonction), et cette variable doit contenir une application WSGI.</p>
+<p>Mais une application WSGI, c&#8217;est juste un callable (ici une fonction) qui accepte en paramètres <code>environ</code> (la requête), <code>start_response</code> (une fonction qui écrit l&#8217;en-tête de la réponse) et qui retourne un générateur de string. C&#8217;est tout.</p>
+<p>Il n&#8217;y a rien de magique. C&#8217;est une simple interface sur laquelle tout le monde s&#8217;est mis d&#8217;accord.</p>
+<p>Quand on fait en Django:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">application <span style="color: #66cc66;">=</span> get_wsgi_application<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En fait Django ne fait que fabriquer une fonction comme on vient de voir, qui derrière appelle votre application Django.</p>
+<p>En revanche, comme on utilise souvent Django derrière nginx, le setup ressemble très souvent à ça :</p>
+<div id="attachment_6546" style="width: 465px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2013/07/wsgi_with_nginx.png" class="grouped_elements" rel="tc-fancybox-group6544"><img class="size-full wp-image-6546" title="Quand on voit &quot;socket&quot;, ça fait peur, mais c'est juste une ligne de config qui point généralement vers localhost:8000." src="http://sametmax.com/wp-content/uploads/2013/07/wsgi_with_nginx.png" alt="Schém d'utilistation de WSGI avec Nginx" width="455" height="644" /></a><p class="wp-caption-text">Quand on voit &quot;socket&quot;, ça fait peur, mais c&#39;est juste une ligne de config qui point généralement vers localhost:8000.</p></div>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-que-wsgi-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/07/v2TyF.jpg" length="31544" type="image/jpg" />	</item>
+	</channel>
+</rss>

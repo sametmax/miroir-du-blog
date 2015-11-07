@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; mock</title>
+	<atom:link href="http://sametmax.com/tag/mock/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Un gros guide bien gras sur les tests unitaires en Python, partie 5 9</title>
+		<link>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/</link>
+		<comments>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/#comments</comments>
+		<pubDate>Sun, 17 May 2015 07:35:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[mock]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unit tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16281</guid>
+		<description><![CDATA[Vous avez <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/">vu</a> les modules pour faire les tests, mais dès que vous allez vouloir faire des tests sérieux, vous allez vous heurter à la dure réalité.
+
+La réalité est que pour tester, il vous faut la réalité.]]></description>
+				<content:encoded><![CDATA[<p>Vous avez <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-4/">vu</a> les modules pour faire les tests, mais dès que vous allez vouloir faire des tests sérieux, vous allez vous heurter à la dure réalité.</p>
+<p>La réalité est que pour tester, il vous faut la réalité.</p>
+<p>Par exemple, si vous tapez dans une base de données, il vous faut une base de données opérationnelle. Pour tester un téléchargement, il vous faut une connexion internet. Pour tester si votre API fonctionne, il faut lancer un serveur Web.</p>
+<p>Autre chose, si votre code appelle un autre code, comment vous assurer que cet appel a bien eu lieu ? Il faudrait aussi un logger pour tous les appels, et si le code n&#8217;est pas le vôtre, c&#8217;est encore plus chiant.</p>
+<p>Comme nous savons que les informaticiens sont des grosses larves, il y a forcément une solution, au moins partielle, à ces problèmes. En l’occurrence, on va jouer au docteur, à la dinette, aux cowboys et aux indiens.</p>
+<p>Bref, on va jouer à faire semblant.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/vjncyiuwwXQ?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Les objets mocks</h2>
+<p>Un objet mock, c&#8217;est un objet basé sur le <a href="http://sametmax.com/usages-et-dangers-du-null-object-pattern-en-python/">null object pattern</a> qui sert à faire semblant. Quand on l&#8217;instancie avec n&#8217;importe quoi, ça marche, quand on appelle n&#8217;importe quelle méthode, ça marche et ça renvoie un mock.</p>
+<p>Bien entendu, comme les besoins des tests sont un peu plus raffinés que ça, mock fait plus que du null object pattern, et permet :</p>
+<ul>
+<li>De configurer son API.</li>
+<li>De configurer ses sides effects.</li>
+<li>De configurer sa valeur de retour.</li>
+<li>De monkey patcher un autre objet.</li>
+<li>D&#8217;enregistrer tous les appels qu&#8217;on lui fait.</li>
+</ul>
+<p>Alors évidement, comme ça, je me doute bien que la puissance de l&#8217;outil ne vous frappe pas en face comme le nez au milieu de l&#8217;eureka dans un couloir.</p>
+<p>C&#8217;est pour ça qu&#8217;on va passer aux exemples concrets. D&#8217;abord, assurez-vous de pouvoir faire <code>import unittest.mock</code>, qui est dispo depuis Python 3.3. Si ce n&#8217;est pas le cas, <a href="http://sametmax.com/votre-python-aime-les-pip/">l&#8217;installer</a> avec <code>pip install mock</code> vous permettra de l&#8217;importer sous la forme <code>import mock</code>. Le reste, c&#8217;est pareil.</p>
+<h2>On dirait que moi je t&#8217;attaque et toi tu meurs pas</h2>
+<p>Un objet mock est un <a href="http://sametmax.com/les-trucmuchables-en-python/">callable</a>, c&#8217;est-à-dire qu&#8217;il peut être appelé comme une fonction ou une classe, et il retourne toujours un objet mock :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">unittest</span>.<span style="color: black;">mock</span> <span style="color: #ff7700;font-weight:bold;">import</span> MagicMock <span style="color: #808080; font-style: italic;"># ou from mock import MagicMock</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock <span style="color: #66cc66;">=</span> MagicMock<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>mock<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>MagicMock <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'140302100559296'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>MagicMock name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'mock()'</span> <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'140302101821704'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">True</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #008000;">Exception</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>MagicMock name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'mock()'</span> <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'140302101821704'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>On peut appeler n&#8217;importe quoi sur son objet mock, et ça retourne toujours un objet mock :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> mock.<span style="color: black;">foo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>MagicMock name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'mock.foo()'</span> <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'140302101723960'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock.<span style="color: black;">nimporte</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">nawak</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">je</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">te</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #dc143c;">dis</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>MagicMock name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'mock.nimporte().nawak().je().te().dis()'</span> <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'140302101825744'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock + mock - <span style="color: #ff4500;">10000</span>
+<span style="color: #66cc66;">&lt;</span>MagicMock name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'mock.__add__().__sub__()'</span> <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'140302134081520'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Quand retourner un objet mock n&#8217;est pas possible, l&#8217;objet essaye d&#8217;avoir le comportement qui fera planter le moins possible :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>mock<span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#91;</span>m <span style="color: #ff7700;font-weight:bold;">for</span> m <span style="color: #ff7700;font-weight:bold;">in</span> mock<span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<h2>On dirait que le bâton, là, c&#8217;est un sabre laser</h2>
+<p>Parfois, néanmoins, il est utile de vouloir avoir un comportement spécifique. Il se trouve que les méthodes des objets mocks peuvent être des objets mocks. Mock, mock, mock !!!!!</p>
+<p>Et les objets mocks peuvent être configurés pour avoir un effet de bord ou une valeur de retour :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">mock.<span style="color: black;">you</span> <span style="color: #66cc66;">=</span> MagicMock<span style="color: black;">&#40;</span>side_effect<span style="color: #66cc66;">=</span><span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'mofo !'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un callable marche aussi</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock.<span style="color: black;">you</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-21-a7e6455585e9&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    mock.<span style="color: black;">you</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python3.4/unittest/mock.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">885</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__call__</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> _mock_self._mock_call<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python3.4/unittest/mock.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">941</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> _mock_call
+    <span style="color: #ff7700;font-weight:bold;">raise</span> effect
+<span style="color: #008000;">ValueError</span>: mofo <span style="color: #66cc66;">!</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock.<span style="color: black;">mock</span> <span style="color: #66cc66;">=</span> MagicMock<span style="color: black;">&#40;</span>return_value<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;moooooooooock&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock.<span style="color: black;">mock</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'moooooooooock'</span></pre></td></tr></table></div>
+
+<p>Cela vous permet d&#8217;utiliser les objets mocks comme des remplacements pour des objets réels dans vos tests mais chiants à instancier comme une event loop, un serveur, une connexion à une base de données&#8230; Ca permet aussi de remplacer des appels très longs par des trucs instantanés.</p>
+<p>Mais la partie vraiment fun, c&#8217;est qu&#8217;on peut associer des vrais objets avec des objets mocks :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> VraiObjetSerieuxEtTout:
+...     <span style="color: #ff7700;font-weight:bold;">def</span> faire_un_truc_super_serieux<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;... and don't call me Shirley&quot;</span>
+...     <span style="color: #ff7700;font-weight:bold;">def</span> faire_un_autre_truc_serieux<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;why so serious ?&quot;</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sirius <span style="color: #66cc66;">=</span> VraiObjetSerieuxEtTout<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sirius.<span style="color: black;">faire_un_truc_super_serieux</span> <span style="color: #66cc66;">=</span> MagicMock<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># It's a kinda magic, magic !</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sirius.<span style="color: black;">faire_un_autre_truc_serieux</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'why so serious ?'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sirius.<span style="color: black;">faire_un_truc_super_serieux</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ieux'</span><span style="color: black;">&#41;</span>.<span style="color: black;">delamort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span>:<span style="color: #ff4500;">14</span><span style="color: black;">&#93;</span> + <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&lt;</span>MagicMock name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'mock().delamort().__getitem__().__add__()'</span> <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">'140302103288296'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Et là ça devient super sympa : vous pouvez utilisez vos vrais objets, et pour certains appels, juste vous faciliter la vie pour les tests.</p>
+<h2>On dirait qu&#8217;on compte le nombre de balles que tu as tirées</h2>
+<p>Puisque les objets mocks sont un peu les <a href="http://sametmax.com/merci-de-respecter-les-salopes">grosses salopes</a> de la programmation et acceptent tout ce qui vient (oups, je viens de tuer l’ambiance métaphore enfantine là), il peut être nécessaire de vérifier ce qui s&#8217;est passé. Or il se trouve qu&#8217;ils intègrent un historique des appels :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> sirius.<span style="color: black;">faire_un_truc_super_serieux</span>.<span style="color: black;">mock_calls</span>
+<span style="color: black;">&#91;</span>call<span style="color: black;">&#40;</span><span style="color: #483d8b;">'ieux'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+ call<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">delamort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+ call<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">delamort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__getitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">slice</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">14</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">None</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+ call<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">delamort</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__getitem__</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__add__</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p> Et comme vérifier qu&#8217;un appel a bien eu lieu est une tâche courante, <a href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.Mock.assert_called_with">des méthodes</a> pour les tests unitaires ont été intégrées :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> sirius.<span style="color: black;">faire_un_truc_super_serieux</span>.<span style="color: black;">assert_called_with</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ieux'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> sirius.<span style="color: black;">faire_un_truc_super_serieux</span>.<span style="color: black;">assert_called_with</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'not_ieux'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-56-e8c4890f08d9&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    sirius.<span style="color: black;">faire_un_truc_super_serieux</span>.<span style="color: black;">assert_called_with</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'not_ieux'</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python3.4/unittest/mock.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">760</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> assert_called_with
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">AssertionError</span><span style="color: black;">&#40;</span>_error_message<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">from</span> cause
+<span style="color: #008000;">AssertionError</span>: Expected call: mock<span style="color: black;">&#40;</span><span style="color: #483d8b;">'not_ieux'</span><span style="color: black;">&#41;</span>
+Actual call: mock<span style="color: black;">&#40;</span><span style="color: #483d8b;">'ieux'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>On dirait que tu vas mettre ces porte-jartelles et&#8230;</h2>
+<p>Pour finir, le module <code>mock</code> vient avec <code>patch()</code>, qui sert à, surprise, patcher les objets, et propose des <a href="http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/">context managers</a> et des <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">décorateurs</a> pour se faciliter la vie.</p>
+<p>Par exemple, détourner <code>open()</code> temporairement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">unittest</span>.<span style="color: black;">mock</span> <span style="color: #ff7700;font-weight:bold;">import</span> patch
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">with</span> patch<span style="color: black;">&#40;</span><span style="color: #483d8b;">'__main__.open'</span><span style="color: #66cc66;">,</span> mock_open<span style="color: black;">&#40;</span>read_data<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'wololo'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> create<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> mock:
+...     <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'zefile'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> h:
+...         <span style="color: black;">result</span> <span style="color: #66cc66;">=</span> h.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> mock.<span style="color: black;">assert_called_once_with</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'zefile'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">assert</span> result <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'wololo'</span></pre></td></tr></table></div>
+
+<p>Ou alors avoir une partie d&#8217;un module qui soit un mock pour tout un appel de fonction :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>patch<span style="color: black;">&#40;</span><span style="color: #483d8b;">'os.listdir'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> ah<span style="color: black;">&#40;</span>mock<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">listdir</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'.'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># l'objet mock initial est aussi passé en param automatiquement</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>mock<span style="color: black;">&#41;</span>
+ah<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## &lt;MagicMock name='listdir()' id='140302096346864'&gt;</span>
+<span style="color: #808080; font-style: italic;">## &lt;MagicMock name='listdir' id='140302101454688'&gt;</span></pre></td></tr></table></div>
+
+<p>Le module mock est vraiment très complet, avec des outils pour checker les signatures, passer <code>isinstance()</code>, overrider le contenu d&#8217;un dico, et tout un tas de cas particuliers et corner cases. Donc <a href="https://docs.python.org/3/library/unittest.mock.html#unittest.mock.patch">lisez la doc</a> si vous rencontrez un blocage avant de paniquer.</p>
+<h2>Dis, comment on fait les bébés</h2>
+<p>Exemple prit d&#8217;une base de code IRL, avec une fonction pytest qui teste un objet <code>response</code> représentant une réponse HTTP. Si on appelle <code>write()</code> sur cet objet sous-jacent elle doit faire des appels à deux méthodes privées et une méthode d&#8217;un objet Twisted.</p>
+<p>Problème, ces méthodes :</p>
+<ul>
+<li>Supposent qu&#8217;une event loop est lancée.</li>
+<li>Ecrivent sur le réseau.</li>
+<li>Sont potentiellement appelées de manière asynchrone, en dehors de notre contrôle.</li>
+<li>Ont des side effects donc on veut être certains qu&#8217;elles sont appelées, et avec les bons paramètres.</li>
+</ul>
+<p>Du coup, on les remplace par des objets mocks, et yala :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> test_write<span style="color: black;">&#40;</span>response<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">assert</span> response.<span style="color: black;">write</span> <span style="color: #66cc66;">!=</span> response._req.<span style="color: black;">write</span>
+    response._disable_rendering <span style="color: #66cc66;">=</span> MagicMock<span style="color: black;">&#40;</span>name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'_disable_rendering'</span><span style="color: black;">&#41;</span>
+    response._set_twisted_headers <span style="color: #66cc66;">=</span> MagicMock<span style="color: black;">&#40;</span>name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'_set_twisted_headers'</span><span style="color: black;">&#41;</span>
+    response.<span style="color: black;">write</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">'test'</span><span style="color: black;">&#41;</span>
+    response._set_twisted_headers.<span style="color: black;">assert_called_once_with</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    response._disable_rendering.<span style="color: black;">assert_called_once_with</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">assert</span> response.<span style="color: black;">write</span> <span style="color: #66cc66;">==</span> response._req.<span style="color: black;">write</span>
+    response._req.<span style="color: black;">write</span>.<span style="color: black;">assert_called_once_with</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">'test'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Et pourquoi ? Et pourquoi ? Et pourquoi ?</h2>
+<p>Prochaines étapes, savoir quand tester, et quoi tester, mais aussi comment rendre un code plus testable. Probablement la partie qui sera la plus difficile à écrire pour moi, car c&#8217;est assez subjectif. On parlera sans doute du code coverage, et je gage que je vais devoir créer un petit projet bidon pour tester tout ça, du genre un minifieur d&#8217;URL ou autre. Faudra voir l&#8217;inspiration.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-5/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/05/VLbJSOV.gif" length="937018" type="image/jpg" />	</item>
+		<item>
+		<title>Générer des données factices avec faker 12</title>
+		<link>http://sametmax.com/generer-des-donnees-factices-avec-faker/</link>
+		<comments>http://sametmax.com/generer-des-donnees-factices-avec-faker/#comments</comments>
+		<pubDate>Thu, 17 Apr 2014 08:30:21 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[mock]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[tests]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10029</guid>
+		<description><![CDATA[Le principe de la lib est très simple : générer des données bidons. Noms, numéros de téléphone, adresses physiques ou email...]]></description>
+				<content:encoded><![CDATA[<p><a href="https://github.com/joke2k/faker">faker</a> fait partie de ses libs que j&#8217;ai toujours voulu écrire sans jamais prendre le temps de le faire. Comme <a href="http://sametmax.com/les-time-zones-en-python/">arrow</a> par exemple. Et puis un jour quelqu&#8217;un le fait, et je suis à la fois soulagé de ne pas avoir tenté de le faire (au risque de ne pas réussir aussi bien) et un peu déçu d&#8217;être passé à côté de la bonne idée.</p>
+<p>Le principe de la lib est très simple : générer des données bidons. Noms, numéros de téléphone, adresses physiques ou email&#8230; C&#8217;est utile pour tout un tas de choses :</p>
+<ul>
+<li>Faire des tests, évidement.</li>
+<li>Créer des bots, des crawlers et tout autre programme qui doit se faire passer pour un utilisateur.</li>
+<li>Remplir une base de données vide en attendant que les utilisateurs réels remplissent le site. Cela évite le sentiment d&#8217;arriver sur un service désert. Tous les sites de rencontre font ça.</li>
+<li>Générer un contexte artificiel, par exemple pour un jeu vidéo.</li>
+</ul>
+<p>Faker est déjà très simple à utiliser :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> faker <span style="color: #ff7700;font-weight:bold;">import</span> Faker
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f <span style="color: #66cc66;">=</span> Faker<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">phone_number</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'+69(4)8833689405'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">phone_number</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'1-201-240-9452'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">phone_number</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'+95(8)7680219065'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">phone_number</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'754-833-9664x654'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: #dc143c;">email</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'bentley.gaylord@batz.org'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: #dc143c;">email</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'ludwig.rohan@adamskoch.info'</span></pre></td></tr></table></div>
+
+<p>Et surtout déjà très riche. Il y a <strong>plus d&#8217;une centaine</strong> de choses que vous pouvez générer. Quelques exemples :</p>
+<ul>
+<li><code>f.city</code></li>
+<li><code>f.company</code></li>
+<li><code>f.credit_card_number</code></li>
+<li><code>f.date_time_this_decade</code></li>
+<li><code>f.geo_coordinate</code></li>
+<li><code>f.hex_color</code></li>
+<li><code>f.ipv4</code></li>
+<li><code>f.language_code</code></li>
+<li><code>f.md5</code></li>
+<li><code>f.mime_type</code></li>
+<li><code>f.month_name</code></li>
+<li><code>f.paragraph</code></li>
+<li><code>f.password</code></li>
+<li><code>f.postcode</code></li>
+<li><code>f.ssn</code></li>
+<li><code>f.street_address</code></li>
+<li><code>f.url</code></li>
+<li><code>f.user_agent</code></li>
+<li><code>f.word</code></li>
+</ul>
+<p>faker est très flexible. En effet, beaucoup d&#8217;éléments existent en plusieurs versions ou de manière composée et utilisables séparément. Ainsi, on peut prendre l&#8217;IPV4 ou V6, choisir l&#8217;adresse entière ou le code postal seul, récupérer le nom complet, ou juste le prénom :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">name</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'Olin McCullough'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">first_name</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'Brandie'</span></pre></td></tr></table></div>
+
+<p>Mais en plus, faker est localisé :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> f <span style="color: #66cc66;">=</span> Faker<span style="color: black;">&#40;</span><span style="color: #dc143c;">locale</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;fr_FR&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">name</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+u<span style="color: #483d8b;">'Martine de la Petitjean'</span></pre></td></tr></table></div>
+
+<p>Enfin, on peut créer ses propres générateurs et fournisseurs de données au besoin.</p>
+<p>Comme dirait Max, c&#8217;est d&#8217;la balle baby !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/generer-des-donnees-factices-avec-faker/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/TbAwI.jpg" length="55074" type="image/jpg" />	</item>
+	</channel>
+</rss>

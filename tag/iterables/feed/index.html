@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; iterables</title>
+	<atom:link href="http://sametmax.com/tag/iterables/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Ce que vous ne saviez pas sur les collections en Python 16</title>
+		<link>http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/</link>
+		<comments>http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/#comments</comments>
+		<pubDate>Tue, 10 Jul 2012 22:05:52 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[collections]]></category>
+		<category><![CDATA[dicts]]></category>
+		<category><![CDATA[iterables]]></category>
+		<category><![CDATA[lists]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[set]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1101</guid>
+		<description><![CDATA[Batteries included on vous dit...]]></description>
+				<content:encoded><![CDATA[<p>Les collections en Python sont organisées autour de la philosophie du langage, notament <a href="http://docs.python.org/glossary.html#term-eafp">EAFP</a>, et la <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">manie de l&#8217;itération</a>.</p>
+<h2>Les dictionnaires</h2>
+<h3>Valeur par défaut</h3>
+<p>Une fois à l&#8217;aise en Python, on utilise souvent les dictionnaires. Et on fait souvent ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> get<span style="color: black;">&#40;</span>d<span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">,</span> default<span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">try</span>:
+...         <span style="color: #ff7700;font-weight:bold;">return</span> d<span style="color: black;">&#91;</span>key<span style="color: black;">&#93;</span>
+...     <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">KeyError</span>:
+...         <span style="color: #ff7700;font-weight:bold;">return</span> default
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>:<span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get<span style="color: black;">&#40;</span>d<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'bar'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get<span style="color: black;">&#40;</span>d<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span></pre></td></tr></table></div>
+
+<p>C&#8217;est parfaitement superflux, puisque Python le propose en standard:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> d.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;foo&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'bar'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'bar'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span></pre></td></tr></table></div>
+
+<p>Plus tordu encore:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> get_and_set_if_not_exist<span style="color: black;">&#40;</span>d<span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">,</span> default<span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">try</span>:
+...         <span style="color: #ff7700;font-weight:bold;">return</span> d<span style="color: black;">&#91;</span>key<span style="color: black;">&#93;</span>
+...     <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">KeyError</span>:
+...         <span style="color: black;">d</span><span style="color: black;">&#91;</span>key<span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> default
+...         <span style="color: #ff7700;font-weight:bold;">return</span> default
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>:<span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_and_set_if_not_exist<span style="color: black;">&#40;</span>d<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'wololo'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'wololo'</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> get_and_set_if_not_exist<span style="color: black;">&#40;</span>d<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'oyo oyo'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'wololo'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'oyo oyo'</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Python le propose aussi en standard:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>:<span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'foo'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'wololo'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'foo'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'oyo oyo'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'foo'</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'wololo'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'oyo oyo'</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<h3>Clés des dictionnaires</h3>
+<p>Les clés des dictionnaires n&#8217;ont pas à être des strings. N&#8217;importe quel objet hashable fait l&#8217;affaire, par exemple, des tuples:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> positions <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> positions<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">48.856614</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">48.856614</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;Paris&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> positions<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">40.7143528</span><span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">74.0059731</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;New York&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> positions
+<span style="color: black;">&#123;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">48.856614</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">48.856614</span><span style="color: black;">&#41;</span>: <span style="color: #483d8b;">'Paris'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">40.7143528</span><span style="color: #66cc66;">,</span> -<span style="color: #ff4500;">74.0059731</span><span style="color: black;">&#41;</span>: <span style="color: #483d8b;">'New York'</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> positions<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">48.856614</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">48.856614</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #483d8b;">'Paris'</span></pre></td></tr></table></div>
+
+<h2>Les sets</h2>
+<p>Les sets sont un type de structure peu connu: ils représentent un ensemble non ordonné d&#8217;objets uniques. Il n&#8217;y a donc pas d&#8217;ordre évident dans un set, et le résultat est garanti sans doublon:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> e <span style="color: #66cc66;">=</span> <span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">14</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">14</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Les opérations du set acceptent n&#8217;importe quel <a href="http://sametmax.com/parcourir-un-iterable-par-morceaux-en-python/">itérable</a>. Y compris les opérations ensemblistes:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> e.<span style="color: black;">update</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'abcdef'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'e'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'d'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'f'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">14</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e <span style="color: #66cc66;">=</span> <span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'abc'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e.<span style="color: black;">union</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;cde&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'e'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'d'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e.<span style="color: black;">difference</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;cde&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> e.<span style="color: black;">intersection</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;cde&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'c'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Vérifier la présence l&#8217;un élément dans un set (avec l&#8217;opérateur <code>in</code>) est une opération extrêment rapide (compléxité <code>O(1)</code>), beaucoup plus que dans une liste ou un tuple. Le set reste pourtant itérable (mais on ne peut pas compter sur l&#8217;ordre).</p>
+<p>Les opérateurs binaires sont overridés pour les opérations entre sets. De plus on peut utiliser une notation littérale pour décrire un set à partir de Python 2.7:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span><span style="color: black;">&#125;</span> | <span style="color: black;">&#123;</span><span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'d'</span><span style="color: black;">&#125;</span> <span style="color: #808080; font-style: italic;"># union</span>
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'d'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span><span style="color: black;">&#125;</span> &amp; <span style="color: black;">&#123;</span><span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'d'</span><span style="color: black;">&#125;</span> <span style="color: #808080; font-style: italic;"># intersection</span>
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'c'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span><span style="color: black;">&#125;</span> - <span style="color: black;">&#123;</span><span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'d'</span><span style="color: black;">&#125;</span> <span style="color: #808080; font-style: italic;"># difference</span>
+<span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Les listes</h2>
+<h3><code>Pop()</code> prend un argument</h3>
+<p>La raison pour laquelle il n&#8217;y a pas de <code>unshift</code> sur les listes en Python, c&#8217;est que l&#8217;on en a pas besoin:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">5</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">pop</span><span style="color: black;">&#40;</span>-<span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<h3>Le slicing accepte un 3eme argument</h3>
+<p>Le slicing, que l&#8217;on peut appliquer à tous les indexables (listes, tuples, strings, etc), est la fonctionalité bien pratique qui permet de récupérer une sous partie de la structure de données:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>:<span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span>:<span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span>:<span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Ca vous connaissiez sûrement. Mais cette syntaxe accepte un 3eme nombre: le pas.</p>
+<p>Le premier nombre dit d&#8217;où l&#8217;on part. Le second où l&#8217;on s&#8217;arrête. Le dernier dit de combien on avance (par défaut de 1).</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>:<span style="color: #ff4500;">8</span>:<span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>::<span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># chaque paramètre est optionel</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Et le pas peut être négatif, ce qui est plutôt sympas si vous voulez parcourir une liste ou une string à reculon.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l<span style="color: black;">&#91;</span>::-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">9</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">8</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<h3><code>extend()</code> accepte n&#8217;importe quel itérable</h3>
+<p>extend() permet de mettre à jour une liste. On l&#8217;utilise souvent en lui passant une autre liste:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">extend</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Mais comme la plupart du code la bibliothèque standard, <code>extend()</code> accepte n&#8217;importe quel itérable.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> t <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">42</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">666</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1024</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># un tuple</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'456'</span> <span style="color: #808080; font-style: italic;"># une string</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'3.14'</span>: <span style="color: #483d8b;">'pi'</span><span style="color: black;">&#125;</span> <span style="color: #808080; font-style: italic;"># un dico</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">extend</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'4'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'5'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'6'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">extend</span><span style="color: black;">&#40;</span>d<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;">#</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'4'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'5'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'6'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'3.14'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l.<span style="color: black;">extend</span><span style="color: black;">&#40;</span>t<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> l
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'4'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'5'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'6'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'3.14'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">42</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">666</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1024</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Ca marche aussi avec les set, les fichiers, les expressions génératrices. Attention cependant, sachez que l&#8217;itération retourne: par exemple itérer sur un dico retourne ses clés, pas ses valeurs (car on peut récupérer l&#8217;un avec l&#8217;autre, mais pas l&#8217;inverse).</p>
+<h2>Les tuples</h2>
+<p>Ce qui permet de créer un tuple ne sont pas les parenthèses, mais la virgule:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">3</span> <span style="color: #808080; font-style: italic;"># ceci EST un tuple</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #808080; font-style: italic;"># tuple</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff4500;">1</span> <span style="color: #808080; font-style: italic;"># int</span>
+<span style="color: #ff4500;">1</span></pre></td></tr></table></div>
+
+<p>La raison pour laquelle il est recommandé d&#8217;utiliser presque TOUJOURS les parenthèses, c&#8217;est qu&#8217;elles permettent d&#8217;éviter les ambiguïtés, et qu&#8217;elles autorisent la définition sur plusieurs lignes:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># tuple ou paramètres ?</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-62-5be61417b8a3&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> argument <span style="color: #ff4500;">1</span> must be <span style="color: #dc143c;">string</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">int</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'tuple'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #808080; font-style: italic;"># un gros tuple s'écrit sur plusieurs lignes</span>
+... <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span>
+... <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mais il existe des rares cas où il est acceptable de ne pas mettre de parenthèses:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">def</span> debut_et_fin<span style="color: black;">&#40;</span>lst<span style="color: black;">&#41;</span>:
+...     <span style="color: #483d8b;">&quot;&quot;&quot;
+...         Retourne le début et la fin d'une liste
+...     &quot;&quot;&quot;</span>
+...     <span style="color: black;">debut</span> <span style="color: #66cc66;">=</span> lst<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+...     <span style="color: black;">fin</span> <span style="color: #66cc66;">=</span> lst<span style="color: black;">&#91;</span>-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+...     <span style="color: #808080; font-style: italic;"># donner l'illusion de retourner plusieurs valeurs</span>
+...     <span style="color: #808080; font-style: italic;"># alors qu'on retourne en fait un tuple</span>
+...     <span style="color: #ff7700;font-weight:bold;">return</span> debut<span style="color: #66cc66;">,</span> fin <span style="color: #808080; font-style: italic;"># </span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> debut<span style="color: #66cc66;">,</span> fin <span style="color: #66cc66;">=</span> debut_et_fin<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># unpacking</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> debut
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> fin
+<span style="color: #ff4500;">4</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> debut<span style="color: #66cc66;">,</span> fin <span style="color: #66cc66;">=</span> fin<span style="color: #66cc66;">,</span> debut <span style="color: #808080; font-style: italic;"># variable swap</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> debut
+<span style="color: #ff4500;">4</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> fin
+<span style="color: #ff4500;">1</span></pre></td></tr></table></div>
+
+<h2>Le module <code>collections</code></h2>
+<p>En plus des collections built-in, la bibliothèque standard de Python propose un module <code>collections</code> avec plein d&#8217;outils en bonus.</p>
+<p>Des dictionnaires qui conservent l&#8217;ordre d&#8217;insertion (comme les Arrays en PHP):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> OrderedDict
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span> <span style="color: #808080; font-style: italic;"># l'ordre d'un dico n'est pas garanti</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'c'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d.<span style="color: black;">keys</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> OrderedDict<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'c'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'b'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">2</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">'a'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d.<span style="color: black;">keys</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'c'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Un compteur qui a une interface similaire à un dictionnaire spécialisé.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> Counter
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> score <span style="color: #66cc66;">=</span> Counter<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> score<span style="color: black;">&#91;</span><span style="color: #483d8b;">'bob'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">0</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> score<span style="color: black;">&#91;</span><span style="color: #483d8b;">'robert'</span><span style="color: black;">&#93;</span> +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> score<span style="color: black;">&#91;</span><span style="color: #483d8b;">'robert'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> score<span style="color: black;">&#91;</span><span style="color: #483d8b;">'robert'</span><span style="color: black;">&#93;</span> +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> score<span style="color: black;">&#91;</span><span style="color: #483d8b;">'robert'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff4500;">2</span></pre></td></tr></table></div>
+
+<p>Comme vous pouvez le voir il gère les valeurs par defaut, mais en prime il compte le contenu de n&#8217;importe quel itérable:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> Counter<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+Counter<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #ff4500;">1</span>: <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span>: <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span>: <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Counter<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Une petite puce pique plus'</span><span style="color: black;">&#41;</span>
+Counter<span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'e'</span>: <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">' '</span>: <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'p'</span>: <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'u'</span>: <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'i'</span>: <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'t'</span>: <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'c'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'l'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'n'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'q'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'s'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'U'</span>: <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Des tuples qui ressemblent à des structs en C, mais itérables:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> namedtuple
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> Fiche <span style="color: #66cc66;">=</span> namedtuple<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Fiche&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;force charisme intelligence&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f <span style="color: #66cc66;">=</span> Fiche<span style="color: black;">&#40;</span>force<span style="color: #66cc66;">=</span><span style="color: #ff4500;">18</span><span style="color: #66cc66;">,</span> charisme<span style="color: #66cc66;">=</span><span style="color: #ff4500;">17</span><span style="color: #66cc66;">,</span> intelligence<span style="color: #66cc66;">=</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f
+Fiche<span style="color: black;">&#40;</span>force<span style="color: #66cc66;">=</span><span style="color: #ff4500;">18</span><span style="color: #66cc66;">,</span> charisme<span style="color: #66cc66;">=</span><span style="color: #ff4500;">17</span><span style="color: #66cc66;">,</span> intelligence<span style="color: #66cc66;">=</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> f:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> x
+...
+<span style="color: #ff4500;">18</span>
+<span style="color: #ff4500;">17</span>
+<span style="color: #ff4500;">3</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> f.<span style="color: black;">force</span>
+<span style="color: #ff4500;">18</span></pre></td></tr></table></div>
+
+<p>Des dicos dont la valeur par défaut est le résultat de l&#8217;appel d&#8217;une fonction:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> defaultdict
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d <span style="color: #66cc66;">=</span> defaultdict<span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;jour&quot;</span><span style="color: black;">&#93;</span>
+<span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">17</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">34</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">265222</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;jour&quot;</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># la valeur est settée</span>
+<span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">17</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">34</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">265222</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d<span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;raison&quot;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;test&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> d.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;jour&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">17</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">34</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">265222</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;raison&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'test'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/sex-toy-collection.jpg" length="437398" type="image/jpg" />	</item>
+	</channel>
+</rss>

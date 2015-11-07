@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; nsa</title>
+	<atom:link href="http://sametmax.com/tag/nsa/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Heartbleed, une semaine plus tard 32</title>
+		<link>http://sametmax.com/heartbleed-une-semaine-plus-tard/</link>
+		<comments>http://sametmax.com/heartbleed-une-semaine-plus-tard/#comments</comments>
+		<pubDate>Tue, 15 Apr 2014 09:16:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[foss]]></category>
+		<category><![CDATA[heartbleed]]></category>
+		<category><![CDATA[nsa]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[ssl]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10007</guid>
+		<description><![CDATA[Il y a eu pas mal d'infos sur le sujet, généralement assez technique et en anglais, aussi je vous fais un petit résumé de la crise.
+]]></description>
+				<content:encoded><![CDATA[<p>Il y a eu pas mal d&#8217;infos sur le sujet, généralement assez technique et en anglais, aussi je vous fais un petit résumé de la crise.</p>
+<p>Le 8 avril dernier, une faille dans le logiciel OpenSSL, surnommée <a href="http://heartbleed.com/">Heartbleed</a>, a été <a href="http://www.washingtonpost.com/business/technology/heartbleed-bug-puts-the-chaotic-nature-of-the-internet-under-the-magnifying-glass/2014/04/09/00f7064c-c00b-11e3-bcec-b71ee10e9bc3_story.html">rendue publique</a>. OpenSSL est le logiciel le plus utilisé au monde pour chiffrer les communications entre le navigateur et le site Web. Les banques, les e-commerce, les emails, les réseaux sociaux, tous utilisent SSL, pour éviter que l&#8217;on puisse intercepter vos communications. Et la plupart utilisent OpenSSL sur leurs serveurs pour permettre une connexion SSL.</p>
+<p>Ce n&#8217;est pas le protocole SSL ou le chiffrement en général qui est mis en cause mais bien le logiciel OpenSSL.</p>
+<p>Au début, on a cru à une faille critique qui permettait à l&#8217;attaquant de lire les communications. Toute personne exploitant cette faille aurait pu récupérer vos identifiants de banque au moment de votre login par exemple.</p>
+<p>Il s&#8217;est avéré que c&#8217;était <a href="https://www.schneier.com/blog/archives/2014/04/heartbleed.html">bien pire encore</a>.</p>
+<p>La faille permet de récupérer, à chaque heart beat (d&#8217;où le surnom) &#8211; c&#8217;est à dire à chaque fois qu&#8217;un client dit au serveur &#8220;je suis toujours connecté&#8221; &#8211; 64K de mémoire de l&#8217;ordinateur cible, au hasard. Parce que cette faille utilise le heart beat, elle n&#8217;implique pas d&#8217;authentification ou de log, elle est donc parfaitement silencieuse, ne laisse pas de trace, et n&#8217;importe qui sans autorisation peut se connecter et en tirer parti.</p>
+<p><a href="http://www.scribd.com/doc/217805356/9/NCSC-FI-Advisory-on-OpenSSL">Tous les sites les plus importants sont concernés</a> incluant tous les réseaux sociaux, fournisseurs d&#8217;email, banque, etc. En fait, même les services en ligne qui ne sont pas des sites, comme Steam, sont affectés.</p>
+<p>On ne peut pas choisir les 64K sur la machine, mais si on répète l&#8217;opération suffisamment longtemps, on peut récupérer la plupart des choses en mémoire. Comme un serveur a généralement énormément de cache en mémoire, il y a de tout dedans : les mots de passe, adresses emails, clés privées, certificats d&#8217;authentification, présents dans le programme, etc. En prime, en récupérant la clé privée, on peut écouter les connections au site ou carrément se faire passer pour le site, puis facilement récupérer numéros de carte de crédit, emails, messages privés, et tout ce qui transite.</p>
+<href="https://filippo.io/Heartbleed/">La plupart des services</a> ont réagit très vite et ont corrigé le problème, seulement la faille a été dans la nature pendant 2 ans.</p>
+<p>C&#8217;est une catastrophe.</p>
+<h2>A qui profite le crime ?</h2>
+<p>La question n&#8217;est pas qui peut en tirer parti. La réponse à cela est tous les attaquants : pirates, gouvernements, armées, services secrets et même script kiddies.</p>
+<p>Non. Le débat est plutôt de savoir si la faille était intentionnelle ou pas.</p>
+<p>D&#8217;un côté, j&#8217;aime beaucoup cette phrase attribuée à Napoléon :</p>
+<blockquote><p>N&#8217;attribuez jamais à la malveillance ce qui s&#8217;explique très bien par l&#8217;incompétence.</p></blockquote>
+<p>Et l&#8217;incompétence, il en a fallu, car il ne s&#8217;agit pas d&#8217;une faille de cryptographie complexe, mais d&#8217;<a href="http://blog.existentialize.com/diagnosis-of-the-openssl-heartbleed-bug.html">une erreur de débutant en programmation C</a>. Dans un logiciel qui a la portée de OpenSSL, ça amène sérieusement à se poser des questions, malgré <a href="http://www.smh.com.au/it-pro/security-it/man-who-introduced-serious-heartbleed-security-flaw-denies-he-inserted-it-deliberately-20140410-zqta1.html">le déni de l&#8217;auteur</a>.</p>
+<p>Par dessus se rajoute <a href="http://igurublog.wordpress.com/2014/04/08/julian-assange-debian-is-owned-by-the-nsa/">une déclaration d&#8217;Assange</a>, qui enfonce un clou dans le cercueil, en expliquant que de nombreux logiciels Open Source sont complètement vérolés par la NSA, incluant des distributions Linux aussi réputées que Debian.</p>
+<p>Comme souvent sur Internet, ce sont les commentaires de l&#8217;article qui sont les plus intéressants. On y note notamment plusieurs personnes, se présentant comme des professionnels de la cryptographies, débattant avec des argumentaires très bien construits de l&#8217;implication probable de la NSA et d&#8217;autres services secret dans la mise en œuvre de cette faille, et de son exploitation.</p>
+<p>D&#8217;un côté, Bloomberg a annoncé que la NSA, a défaut d&#8217;avoir créé le bug, <a href="http://www.bloomberg.com/news/2014-04-11/nsa-said-to-have-used-heartbleed-bug-exposing-consumers.html">savait à son propos</a> depuis le début et l&#8217;a exploité. De l&#8217;autre, <a href="https://twitter.com/NSA_PAO/status/454720059156754434">la NSA nie</a> (putain la NSA a un compte Twitter ?).</p>
+<p>En tout cas, avec la révélation de Prism, il ne tient plus de la théorie du complot mais de faits que ces entités cherchent par tous les moyens à obtenir la main mise sur les réseaux d&#8217;information. L&#8217;idée qu&#8217;ils aient créé cette back door parait donc plausible, bien qu&#8217;improuvable.</p>
+<p>Et surtout, si c&#8217;est le cas, combien d&#8217;autres accès aussi radicaux ont-ils à leur disposition ? Mon frère me disait dernièrement :</p>
+<blockquote><p>Je ne sais pas pourquoi ça te surprend encore. Tout en informatique a été craqué. Tout. Depuis toujours. On crack les playstations, Windows&#8230; Pourquoi tu crois que tes systèmes de sécurités ne sont pas craqués aux aussi ?</p></blockquote>
+<p>Sous prétexte que tout le monde les utilise, qu&#8217;ils sont Open source et que des gens vachement plus intelligents que nous les ont vérifié, on fait confiance à ces systèmes. Mais si la porte blindée est attachée à un mur en BA13 et qu&#8217;on ne le sait pas ?</p>
+<h2>Que faire pour l&#8217;utilisateur ?</h2>
+<p>Comme l&#8217;a recommandé <a href="http://mathieu.agopian.info/blog/heartbleed-consequences-pour-les-utilisateurs.html">Mathieu Agopian</a>, d&#8217;abord changer tous ses mots de passe, pour tous ses sites. C&#8217;est là qu&#8217;on apprécie <a href="http://sametmax.com/les-10-meilleures-extensions-firefox-chrome/">lastpass</a>.</p>
+<p>Je sais pertinemment que personne ne va le faire. Les gens ont une forte tendance à se plaindre que tout le monde est pourri et qu&#8217;on ne peut rien y changer, mais dès qu&#8217;il faut mettre la main à la pâte, y a plus personne. C&#8217;est pareil pour le recyclage, le boycott ou la lecture des programmes électoraux.</p>
+<p>Et puis ils n&#8217;ont <a href="https://xkcd.com/1353/">rien à cacher</a>, pas vrai ?</p>
+<p>De plus, si il existe d&#8217;autres failles de ce genre, ça ne résoudra pas le problème général, qui est politique et social. L&#8217;informatique n&#8217;est qu&#8217;un outil, on ne résout pas avec de la technique les problèmes d&#8217;un peuple. Même si ça aide.</p>
+<p>De plus, le problème n&#8217;est pas complètement résolu côté fournisseur. Il faut que tout le monde mette à jour ses certificats, et les autorités de certifications croulent sous les demandes. Elles n&#8217;ont pas une infra prévue pour ça. Ensuite, certains outils ne pourront pas se changer. OpenSSL est présent dans de nombreux systèmes embarqués. Si vous mettre en sécurité implique jeter votre appareil et en racheter un neuf, vous pouvez être certain que que ça se fera encore moins que changer les mots de passe. Et je ne vous parle même pas de l&#8217;industrie. Je met ma bite à couper que dans le domaine des transports il y a des tas d&#8217;équipements bien trop chers à changer pour qu&#8217;ils soient sécurisés. Les professionnels vont donc jouer la carte de l&#8217;obscurité et serrer les fesses.</p>
+<h2>La désillusion sur l&#8217;Open Source</h2>
+<p>Ce qui fait mal au fion, c&#8217;est l&#8217;évidence de la réponse de <em>Wolf</em> dans un des commentaires de l&#8217;article sur Asssange, quand quelqu&#8217;un demande des solutions :</p>
+<blockquote><p>I think the reason you’re not receiving much of an answer on this is the reason I gave above – there are none. We’re in a place of no good options.</p></blockquote>
+<p>Car quand il s&#8217;agit du système général qui joue contre celui qu&#8217;il est censé servir, changer de logiciel ne sert à rien. On pensait que parce que les systèmes ouverts étaient transparents, ils n&#8217;étaient pas attaquables de cette manière. Des milliers d&#8217;yeux pour regarder le code source, qu&#8217;ils disaient.</p>
+<p>Heartbleed nous montre une histoire bien différente.</p>
+<p>OpenSSL s&#8217;est révélé être extrêmement difficile à auditer, car il est très complexe, sa documentation est réputée lacunaire sans compter qu&#8217;il faut de sacrées compétences pour ne serait-ce que commencer à proposer de participer.</p>
+<p>En clair, la taille, la complexité et l&#8217;accessibilité des projets libres les plus importants font un sérieux contre poids à la fameuse garantie de la revue de pairs. C&#8217;est pour cette raison que des projets comme Android ne sont pas considérés comme libres par beaucoup : seul Google a les ressources pour étudier tout le code source. On manque de gens compétents, ainsi que de temps et d&#8217;argent. Il y a de plus en plus d&#8217;informaticiens, mais de moins en moins, proportionnellement, sont qualifiés. Beaucoup de techniciens, peu d&#8217;ingénieurs ou de hackers, malgré le titre sur le CV. Et encore moins qui sont motivés pour mettre les mains dans le cambouis du FOSS.</p>
+<p>Cela veut-il dire qu&#8217;il faut jeter le bébé avec l&#8217;eau du bain ?</p>
+<p><a href="http://sebsauvage.net/links/?CjQyCg">Certainement pas.</a></p>
+<p>En fait, si cette faille avait été dans un logiciel propriétaire, nous n&#8217;aurions jamais été au courant. Elle a été découverte par hasard lors d&#8217;un audit d&#8217;un système qui n&#8217;a absolument rien à voir, par une équipe de sécurité Finlandaise. Les ingénieurs ont matraqué leur cible de tests aléatoires et sont tombés sur un problème. En cherchant l&#8217;origine du problème, ils se sont aperçus que le souci ne venait pas du produit testé, mais d&#8217;OpenSSL. <strong>Parce qu&#8217;ils avaient le code source</strong>, ils ont pu pointer du doigt la faille et prévenir les auteurs d&#8217;OpenSSL.</p>
+<p>Entre temps, l&#8217;équipe de sécurité de Google (là encore, ça fait jaser car ils ont la réputation d&#8217;être proches de la NSA) a publié le bug et le correctif, et la couverture de presse vend le tout comme étant leur propre découverte.</p>
+<h2>L&#8217;Emo de la fin</h2>
+<p>Donc non, les logiciels Open Source ne sont pas vaccinés contre les failles majeures sous prétexte que le code est public.</p>
+<p>Oui, il y a un soupçon grave de sabotage, à l&#8217;heure actuelle (et probablement pour longtemps) il n&#8217;y a aucune preuve. On peut s&#8217;attendre à une grosse vague de rejet de cette idée pour cause de &#8220;théorie du complot&#8221;. Ça ne change pas beaucoup des débats habituels dès qu&#8217;on parle de sécurité. C&#8217;est fou comme les gens sont prêt à jouer la carte de la présomption d&#8217;innocence pour défendre des grosses institutions boîtes noires au passé trouble et désignent coupable les accusés de pédophilie dès qu&#8217;ils voient leur tête au 20H&#8230;</p>
+<p>La différence, c&#8217;est l&#8217;enjeu, et il est de taille. On parle pas d&#8217;une déchirure du slip, on parle d&#8217;être complètement à poil avec un bout du string cassé qui sort de l&#8217;anus.</p>
+<p>Enfin oui, l&#8217;Open Source, offre toujours de meilleures garanties de sécurité en la matière que le logiciel fermé. Plus de transparence, plus de vitesse de réaction, disponibilité immédiate et pour toujours des correctifs, etc. Mais surtout, on vient d&#8217;en parler, si il s&#8217;agit de sabotage, le problème est politique et social, pas juste technique. Face à cela, un système démocratique, comme l&#8217;Open Source, a plus de chance de jouer en notre faveur qu&#8217;un système oligarchique de logiciel propriétaire. Reste à vérifier si l&#8217;élitisme du savoir ne risque pas de créer une oligarchie d&#8217;un autre genre côté FOSS. Sans compter les innombrables problèmes d&#8217;ego.</p>
+<p>Mais ça ne suffit pas. Et à la lueur de ce genre d&#8217;affaire, il va falloir que la communauté du libre, principale gardienne des plus gros codes sources ouverts, se réorganise pour à la fois faire le ménage dans la base de code existante et filtrer à l&#8217;entrée les potentiels saboteurs. Qu&#8217;ils soient incompétents ou malveillants.</p>
+<p>J&#8217;aimerais pas être dans les chaussettes de Linus en ce moment.</p>
+<p>Malheureusement wikipedia est la preuve que des règles plus restrictives pour participer n&#8217;empêche pas les lobbyistes de pourrir le contenu mais apporte bel et bien un énorme frein à l&#8217;entrée de sang neuf. Ce qui n&#8217;arrange pas nos affaires, dans un monde où la complexité des sujets augmente plus vite que la compétence des gens qui pourraient participer. La revue communautaire reste le moins pire des systèmes, comme la démocratie pour Churchill, mais ça me colle un petit coup de blues tout ça quand même.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/heartbleed-une-semaine-plus-tard/feed/</wfw:commentRss>
+		<slash:comments>32</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/ACjP5.jpg" length="59159" type="image/jpg" />	</item>
+	</channel>
+</rss>

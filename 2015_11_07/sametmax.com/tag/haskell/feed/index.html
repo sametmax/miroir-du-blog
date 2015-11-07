@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; haskell</title>
+	<atom:link href="http://sametmax.com/tag/haskell/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Attention au télé-achat 30</title>
+		<link>http://sametmax.com/attention-au-tele-achat/</link>
+		<comments>http://sametmax.com/attention-au-tele-achat/#comments</comments>
+		<pubDate>Thu, 30 Jul 2015 21:54:34 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fp]]></category>
+		<category><![CDATA[haskell]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16712</guid>
+		<description><![CDATA[Dès qu&#8217;il y a une tendance, on voit les fanboys sortir leurs dentiers éclatant pour vous faire des démos ventant le produit qui retire toutes les tâches et si vous appelez maintenant il y a 20% de réduction. Mais tout comme à la télé le magic bullet fait le smoothie en seulement 2 minutes parce [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Dès qu&#8217;il y a une tendance, on voit les fanboys sortir leurs dentiers éclatant pour vous faire des démos ventant le produit qui retire toutes les tâches et si vous appelez maintenant il y a 20% de réduction.</p>
+<p>Mais tout comme à la télé le magic bullet fait le smoothie en seulement 2 minutes parce que le mec commence la vidéo avec 10 fruits déjà choisis/payés/livrés/lavés/épluchés/découpés, la techno qu&#8217;on vous vend a ses travers.</p>
+<p>C&#8217;est normal. Mais c&#8217;est rarement dit.</p>
+<p>Ces dernières années, NoSQL, la programmation asynchrone, la programmation fonctionnelle et les projets JS, Node en tête, ont été sur toutes les chaînes : si vous avez pas programmé votre chat avec Mongo + MeteorJS avant 50 ans, vous avez raté votre vie ! Appelez le 5555-5555 et recevez un pins Haskell qui vous créé une copie de votre pull quand vous l&#8217;accrochez.</p>
+<p>C&#8217;est pas qu&#8217;il y a une arnaque, c&#8217;est juste qu&#8217;il y a un truc qu&#8217;on appelle la réalité.</p>
+<p>Par exemple, aujourd&#8217;hui, je tombe sur un projet appelé <a href="https://github.com/ekampf/pymaybe">pymaybe</a> qui implémente le pattern fonctionnel monadique maybe. Je déconne pas, c&#8217;est le terme technique.</p>
+<p>Je taquine, mais je trouve le projet sincèrement intéressant. Néanmoins la page d&#8217;exemple reflète typiquement l&#8217;esprit Pierre Bellemare.</p>
+<p>Ca commence par un exemple Python soit disant trop long :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get_user_name<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    current_user <span style="color: #66cc66;">=</span> request.<span style="color: #dc143c;">user</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> current_user:
+        <span style="color: #ff7700;font-weight:bold;">return</span> current_user.<span style="color: black;">name</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">''</span></pre></td></tr></table></div>
+
+<p>Converti en :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get_user_name<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> :
+    <span style="color: #ff7700;font-weight:bold;">return</span> maybe<span style="color: black;">&#40;</span>request.<span style="color: #dc143c;">user</span><span style="color: black;">&#41;</span>.<span style="color: black;">name</span>.<span style="color: black;">or_else</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Mais c&#8217;est très maladroit, car on résout ici un problème qui n&#8217;existe pas. En effet, personne écrivant du Python professionnellement (et qui serait donc intéressé par ce projet) n&#8217;écrirait le premier exemple ainsi. Un code de prod serait :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> get_user_name<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span>request.<span style="color: #dc143c;">user</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'name'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui est plus court que les deux snippets ci-dessus, immédiatement reconnu par des pairs, et ne demande pas d&#8217;ajouter une dépendance externe à son code.</p>
+<p>Le second exemple est plus trompeur encore, et commence par cet extrait :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">stores <span style="color: #66cc66;">=</span> json.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'stores'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> stores:
+    products <span style="color: #66cc66;">=</span> stores<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'products'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> products:
+        product_name <span style="color: #66cc66;">=</span> products<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'details'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #483d8b;">'unknown'</span></pre></td></tr></table></div>
+
+<p>Et avec &#8220;coder builder 3000&#8243; vous pouvez faire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">product_name <span style="color: #66cc66;">=</span> maybe<span style="color: black;">&#40;</span>stores<span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'products'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'details'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#93;</span>.<span style="color: black;">or_else</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'unknown'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Impressionant ! C&#8217;est la barre de fer !</p>
+<p>Sauf que&#8230; Avez-vous remarqué ? Le json.get() est passé à la trappe&#8230;</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">stores <span style="color: #66cc66;">=</span> json.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'stores'</span><span style="color: black;">&#41;</span>
+product_name <span style="color: #66cc66;">=</span> maybe<span style="color: black;">&#40;</span>stores<span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'products'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'details'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#93;</span>.<span style="color: black;">or_else</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'unknown'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et puis d&#8217;où vient <code>maybe()</code> ? Ce n&#8217;est pas un builtin&#8230; Donc il faut l&#8217;importer, comme pour les fruits du mixer qui ne se découpent pas tout seuls.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> pymaybe <span style="color: #ff7700;font-weight:bold;">import</span> maybe
+stores <span style="color: #66cc66;">=</span> json.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'stores'</span><span style="color: black;">&#41;</span>
+product_name <span style="color: #66cc66;">=</span> maybe<span style="color: black;">&#40;</span>stores<span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'products'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'details'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#93;</span>.<span style="color: black;">or_else</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'unknown'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et si vous avez un editeur bien réglé, la 3eme ligne va lever un warning PEP8 : 85 charaters, c&#8217;est 5 de trop (sinon on peut écrire tout son script sur une ligne aussi).</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> pymaybe <span style="color: #ff7700;font-weight:bold;">import</span> maybe
+stores <span style="color: #66cc66;">=</span> json.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'stores'</span><span style="color: black;">&#41;</span>
+product_name <span style="color: #66cc66;">=</span> maybe<span style="color: black;">&#40;</span>stores<span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'products'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'details'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#93;</span>
+product_name <span style="color: #66cc66;">=</span> product_name.<span style="color: black;">or_else</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'unknown'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ah, plus qu&#8217;une seule ligne d&#8217;avantage par rapport à la version originale. Mais une seconde, cette version vous l&#8217;écririez ainsi ? Bien entendu que non :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">try</span>:
+    product_name <span style="color: #66cc66;">=</span> json.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'stores'</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'products'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'details'</span><span style="color: black;">&#93;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: black;">&#40;</span><span style="color: #008000;">TypeError</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">KeyError</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">IndexError</span><span style="color: black;">&#41;</span>:
+    product_name <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'unknown'</span></pre></td></tr></table></div>
+
+<p>Ce qui a en prime l&#8217;avantage de montrer explicitement les cas dans lequels <code>product_name = 'unknown'</code>, plutôt que de devoir savoir ce que fait exactement une lib tierce partie (qui doit en plus être déployée). Et si il y a une erreur en plus qu&#8217;il faut gérer ? <code>TypeError</code> ? <code>IoError</code> ? C&#8217;est juste une clause de plus. Pour l&#8217;autre version, on rajoute 4 lignes.</p>
+<p>Attendez, ce n&#8217;est pas fini. Il est facile de croire, quand on vient d&#8217;un autre langage, que Python est un langage simpliste. Il se traine sa réputation de langage jouet depuis bien longtemps. Erreur classique !</p>
+<p>Car Python est très simple à prendre en main, mais possède énormément de profondeur.</p>
+<p><code>__getitem__</code>, anyone ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#40;</span><span style="color: #dc143c;">test</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> Test:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #ff4500;">1</span>
+      ...:     
+&nbsp;
+<span style="color: black;">&#40;</span><span style="color: #dc143c;">test</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> maybe<span style="color: black;">&#40;</span>Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+---------------------------------------------------------------------------
+<span style="color: #008000;">AttributeError</span>                            Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>ipython-input-<span style="color: #ff4500;">6</span>-e4a755e77e5b<span style="color: #66cc66;">&gt;</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+----<span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">1</span> maybe<span style="color: black;">&#40;</span>Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+&nbsp;
+/home/sam/.<span style="color: black;">local</span>/share/virtualenvs/<span style="color: #dc143c;">test</span>/local/lib/python2.7/site-packages/pymaybe/<span style="color: #0000cd;">__init__</span>.<span style="color: black;">pyc</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__getitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> key<span style="color: black;">&#41;</span>
+    <span style="color: #ff4500;">212</span> 
+    <span style="color: #ff4500;">213</span>     <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> key<span style="color: black;">&#41;</span>:
+--<span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">214</span>         <span style="color: #ff7700;font-weight:bold;">return</span> maybe<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.__value.<span style="color: black;">get</span><span style="color: black;">&#40;</span>key<span style="color: #66cc66;">,</span> <span style="color: #008000;">None</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff4500;">215</span> 
+    <span style="color: #ff4500;">216</span>     <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+&nbsp;
+<span style="color: #008000;">AttributeError</span>: Test instance has no attribute <span style="color: #483d8b;">'get'</span>
+&nbsp;
+<span style="color: black;">&#40;</span><span style="color: #dc143c;">test</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> Test<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+           <span style="color: #ff4500;">1</span></pre></td></tr></table></div>
+
+<p><code>defaultdict</code> ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#40;</span><span style="color: #dc143c;">test</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> maybe<span style="color: black;">&#40;</span>defaultdict<span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: black;">utcnow</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+           <span style="color: #008000;">None</span>
+&nbsp;
+<span style="color: black;">&#40;</span><span style="color: #dc143c;">test</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> defaultdict<span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: black;">utcnow</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+           <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2015</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">30</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">39</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">28</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">298488</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Cela signifie-t-il que ce projet ne mérite pas d&#8217;être suivi ? Pas du tout, le principe est sympas, ça doit être creusé. Simplement il faut se méfier du mimi, du rara, du miracle.</p>
+<p>Si vous relisez les articles sur WAMP et crossbar, vous noterez que je souligne clairement les problèmes de la techno : doc, debugging, syntax twisted&#8230; Personne ne demande d&#8217;être impartial, mais faut pas non plus vendre la vessie de l&#8217;ours avant la lanterne des boeufs.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/attention-au-tele-achat/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/07/h0QmUSB.jpg" length="61936" type="image/jpg" />	</item>
+	</channel>
+</rss>

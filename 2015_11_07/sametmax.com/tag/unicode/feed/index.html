@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; unicode</title>
+	<atom:link href="http://sametmax.com/tag/unicode/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Toutes les lettres UTF8 4</title>
+		<link>http://sametmax.com/toutes-les-lettres-utf8/</link>
+		<comments>http://sametmax.com/toutes-les-lettres-utf8/#comments</comments>
+		<pubDate>Wed, 15 Jul 2015 10:38:06 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16625</guid>
+		<description><![CDATA[Pour l'ascii, on a <code>string.ascii_letters</code>, mais rien de tel pour un autre charset.]]></description>
+				<content:encoded><![CDATA[<p>Pour l&#8217;ascii, on a <code>string.ascii_letters</code>, mais rien de tel pour un autre charset.</p>
+<p>Voici comment obtenir une string qui contient toutes les lettres en UTF8 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">unicodedata</span> <span style="color: #ff7700;font-weight:bold;">import</span> category
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> get_all_unicode_letters<span style="color: black;">&#40;</span>categs<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Lu'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Ll'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Lt'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Lm'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Categores unicode dans lesquelles récupérer les lettres</span>
+    <span style="color: #808080; font-style: italic;"># On peut virer 'Lt', 'Lm' si on veut garder des lettres plus</span>
+    <span style="color: #808080; font-style: italic;"># proches de notre alphabet</span>
+    categs <span style="color: #66cc66;">=</span> <span style="color: #008000;">set</span><span style="color: black;">&#40;</span>categs<span style="color: black;">&#41;</span> 
+    <span style="color: #808080; font-style: italic;"># on prend tous les symboles utf8</span>
+    all_unicode <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #008000;">chr</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">65536</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># on garde ceux qui sont dans une categorie 'lettre'</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>c <span style="color: #ff7700;font-weight:bold;">for</span> c <span style="color: #ff7700;font-weight:bold;">in</span> all_unicode <span style="color: #ff7700;font-weight:bold;">if</span> category<span style="color: black;">&#40;</span>c<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">in</span> categs<span style="color: black;">&#41;</span>
+&nbsp;
+letters <span style="color: #66cc66;">=</span> get_all_unicode_letters<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est quand même bien foutu pour ça unicode : <a href="http://www.fileformat.info/info/unicode/category/index.htm">tout est catégorisé</a> avec les trucs en majuscule, les modifieurs, les nombres, les espaces et tout le bordel.</p>
+<p>Par exemple vous voulez voir tous les symboles monétaires :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> pognon<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    all_unicode <span style="color: #66cc66;">=</span>  <span style="color: black;">&#40;</span><span style="color: #008000;">chr</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> i <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">65536</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>c <span style="color: #ff7700;font-weight:bold;">for</span> c <span style="color: #ff7700;font-weight:bold;">in</span> all_unicode <span style="color: #ff7700;font-weight:bold;">if</span> category<span style="color: black;">&#40;</span>c<span style="color: black;">&#41;</span> <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'Sc'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>pognon<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+$¢£¤¥֏؋৲৳৻૱௹฿៛₠₡₢₣₤₥₦₧₨₩₪₫€₭₮₯₰₱₲₳₴₵₶₷₸₹₺꠸﷼﹩＄￠￡￥￦</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/toutes-les-lettres-utf8/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/07/AU8MY7S.jpg" length="180164" type="image/jpg" />	</item>
+		<item>
+		<title>assert &#8220;а&#8221; == &#8220;a&#8221; # lol 19</title>
+		<link>http://sametmax.com/assert-%d0%b0-a-lol/</link>
+		<comments>http://sametmax.com/assert-%d0%b0-a-lol/#comments</comments>
+		<pubDate>Mon, 09 Jun 2014 08:45:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10433</guid>
+		<description><![CDATA[Python 3, le bonheur d'avoir UTF8 comme encoding par défaut !]]></description>
+				<content:encoded><![CDATA[<p>Python 3, le bonheur d&#8217;avoir UTF8 comme encoding par défaut !</p>
+<p>En plus, ça ajoute un petit potentiel de lulz.</p>
+<p>Par exemple, ceci marche très bien :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Youpi'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Youpi'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et ceci&#8230;</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">test</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Arg'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Arg'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>&#8230; provoque une syntaxe error !</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">2</span>
+       <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Arg'</span><span style="color: black;">&#41;</span>
+    ^
+<span style="color: #008000;">SyntaxError</span>: invalid character <span style="color: #ff7700;font-weight:bold;">in</span> identifier</pre></td></tr></table></div>
+
+<p>La raison est que la première ligne print(&#8216;Arg&#8217;) contient le caractère unicode U+0020, qui est un espace inimprimable, mais pas le même que l&#8217;ascii :)</p>
+<p>Bon, vous allez-me dire, on pouvait déjà mélanger les tabs et les espaces, s&#8217;amuser avec les espaces insécables, ou simplement déclarer manuellement l&#8217;encoding et faire pareil&#8230;</p>
+<p>Allons plus loin. Saviez-vous qu&#8217;on pouvait utiliser des caractères non-ASCII <strong>dans les identifiants</strong> en Python 3 ?</p>
+<p>Ceci est donc parfaitement valide :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">éôà <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span></pre></td></tr></table></div>
+
+<p>Ce qui invite bien entendu a des choses tout à fait amusantes comme :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> аttention<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'!'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> аttention<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">!</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> attention<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">NameError</span>: name <span style="color: #483d8b;">'attention'</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> defined</pre></td></tr></table></div>
+
+<p>En effet, j&#8217;ai utilisé le caractère &#8220;а&#8221; cyrilique comme première lettre, et non le &#8220;a&#8221; ASCII. Ils n&#8217;ont pas le même code :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">ord</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;а&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">ord</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">1072</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">97</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;а&quot;</span> <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;a&quot;</span>
+<span style="color: #008000;">False</span></pre></td></tr></table></div>
+
+<p>Quand j&#8217;étais au lycée, une bonne blague qu&#8217;on faisait aux profs était de faire une capture d&#8217;écran du bureau de leur ordi, la mettre en fond d&#8217;écran, virer les icônes et régler la barrer des tâches pour se cacher automatiquement. Ils pensaient que leur machine était freezée, et un reboot ne changeait rien. Des heures à s&#8217;arracher les cheveux.</p>
+<p>Avec les identifiants unicodes je pense qu&#8217;on peut retrouver cette merveilleuse créativité avec ses collègues.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/assert-%d0%b0-a-lol/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/iyqfDLr.jpg" length="303031" type="image/jpg" />	</item>
+		<item>
+		<title>En Python 3, le type bytes est un array d&#8217;entiers 16</title>
+		<link>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/</link>
+		<comments>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/#comments</comments>
+		<pubDate>Thu, 05 Dec 2013 16:00:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ascii]]></category>
+		<category><![CDATA[bytes]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[str]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8160</guid>
+		<description><![CDATA[Le plus gros changement quand on passe de Python 2 à Python 3, c'est la gestion des chaînes de caractères.]]></description>
+				<content:encoded><![CDATA[<p>Le plus gros changement quand on passe de Python 2 à Python 3, c&#8217;est la gestion des chaînes de caractères.</p>
+<p>Pour rappel :</p>
+<ul>
+<li>En 2.7, les chaînes sont par défaut des arrays d&#8217;octets, et il faut les décoder pour obtenir de l&#8217;unicode.</li>
+<li>En 3, les chaînes sont par défaut de type &#8216;unicode&#8217;, et il faut les encoder pour obtenir de un array d&#8217;octets.</li>
+</ul>
+<p>Si vous avez besoin d&#8217;une mise à jour sur l&#8217;encoding en Python, on <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">a un article pour ça</a>.</p>
+<p>Comme toute entrée ou sortie est forcément un flux d&#8217;octets, mais pas forcément dans le même encodage, Python 2.7 pouvait poser problème pour le débutant qui essayait de comprendre pourquoi son programme plantait, bordel de merde.</p>
+<p>La version 3 prend plusieurs mesures pour éviter les bugs vicieux liés à l&#8217;encodage de caractères:</p>
+<ul>
+<li>L&#8217;encodage par défaut du code est UTF8.</li>
+<li>L&#8217;encodage par défaut de lecture et d&#8217;écriture est UTF8.</li>
+<li>On ne peut plus mélanger &#8216;bytes&#8217; et &#8216;unicode&#8217;.</li>
+<li>Les messages d&#8217;erreur expliquent clairement et tôt tout problème.</li>
+</ul>
+<p>La plupart du temps, quand on va manipuler du texte, on va donc toujours manipuler de l&#8217;unicode, en Python 3. Ce dernier va nous forcer à faire le décodage / encodage au bon moment.</p>
+<p>Mais il restera quelques fois le besoin de manipuler du <code>bytes</code>, et ce type a subi un lifting&#8230;</p>
+<h2>La base</h2>
+<p>Créer un array d&#8217;octets (le type <code>bytes</code>&#8216;, en Python 3) demande de préfixer une chaîne avec &#8216;b&#8217; :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s <span style="color: #66cc66;">=</span> b<span style="color: #483d8b;">'I am evil, stop laughing!'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'bytes'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+b<span style="color: #483d8b;">'I am evil, stop laughing!'</span></pre></td></tr></table></div>
+
+<p>Première remarque, on ne peut plus utiliser ce type pour afficher quoi que ce soit, puisque l&#8217;affichage est une représentation du type (appel à <code>__repr__</code>), et pas du texte mis en forme. Déjà Python vous indique la couleur : si vous voulez manipulez du texte, n&#8217;utilisez pas ce type.</p>
+<p>Comparez avec le type unicode :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> u <span style="color: #66cc66;">=</span> s.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>u<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>u<span style="color: black;">&#41;</span>
+I am evil<span style="color: #66cc66;">,</span> stop laughing<span style="color: #66cc66;">!</span></pre></td></tr></table></div>
+
+<p>L&#8217;affichage marche comme on s&#8217;y attend. Bref, vous êtes forcé de toujours rester sur de l&#8217;unicode (le type <code>str</code> en Python 3, ce qui porte à confusion) si vous manipulez du texte. Heureusement, c&#8217;est quasiment toujours ce que vous aurez.</p>
+<p>Par exemple, si vous ouvrez un fichier en Python 3 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> content <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>content<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est du texte. A moins de demander qu&#8217;il soit ouvert en mode binaire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;&gt;</span> content <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'rb'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>content<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'bytes'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Une autre différence MAJEURE, c&#8217;est que, si dans Python 2.7, les arrays d&#8217;octets pouvaient être manipulés comme un array de lettres :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'I put the goal in golem...'</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># en Python 2.7</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'I'</span></pre></td></tr></table></div>
+
+<p>En Python 3, les array d&#8217;octets sont au mieux manipulables comme un array d&#8217;entiers :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s <span style="color: #66cc66;">=</span> b<span style="color: #483d8b;">'I put the goal in golem...'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># en Python 3</span>
+<span style="color: #ff4500;">73</span></pre></td></tr></table></div>
+
+<p>La représentation sous forme de lettre est gardée pour l&#8217;initialisation pour des raisons pratiques, mais sous le capot, il se passe ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">bytes</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">73</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">112</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">117</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">116</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">116</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">104</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">101</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">103</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">111</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">97</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">108</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">105</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">110</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">103</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">111</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">108</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">101</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">109</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">46</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">46</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">46</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+b<span style="color: #483d8b;">'I put the goal in golem...'</span></pre></td></tr></table></div>
+
+<p>D&#8217;ailleurs, on ne peut même plus faire d&#8217;opérations de formatage avec des octets comme en Python 2.7 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> b<span style="color: #483d8b;">&quot;Welcome to the league of %s&quot;</span> % <span style="color: #008000;">input</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>
+Draven
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">TypeError</span>: unsupported operand <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> %: <span style="color: #483d8b;">'bytes'</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">'str'</span></pre></td></tr></table></div>
+
+<p><code>format()</code> ne marche pas non plus. On est assez proche du tableau d&#8217;octets en C, sauf qu&#8217;en plus, on ne peut pas le modifier :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s <span style="color: #66cc66;">=</span> b<span style="color: #483d8b;">&quot;My right arm is a lot stronger than my left arm.&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">TypeError</span>: <span style="color: #483d8b;">'bytes'</span> <span style="color: #008000;">object</span> does <span style="color: #ff7700;font-weight:bold;">not</span> support item assignment</pre></td></tr></table></div>
+
+<p>Les arrays d&#8217;octets sont donc maintenant essentiellement des outils de communication avec le monde extérieur.</p>
+<h2>Bytearray</h2>
+<p>Il existe encore des raisons de manipuler des arrays d&#8217;octets : les applications scientifiques. Typiquement, les algos de crypto opérent sur des arrays d&#8217;octets.</p>
+<p>Pour cette raison, Python 3 vient également avec un nouveau type de base : <code>bytearray</code>, un array d&#8217;octets modifiable.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> s <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">&quot;this tasted purple !&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> s<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span>:<span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> b<span style="color: #483d8b;">'at'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">'that tasted purple !'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et on a toutes les opérations de liste dessus, comme <code>append</code>, <code>pop()</code>, etc :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> b<span style="color: #483d8b;">' ,puY'</span>:
+...     <span style="color: black;">s</span>.<span style="color: black;">insert</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> x<span style="color: black;">&#41;</span>
+... 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">'Yup, that tasted purple !'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Attention par contre, ces opérations attendent un entier en paramètres et NON un array d&#8217;octets.</p>
+<p>Et un dernier détail :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">bytes</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">bytearray</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">bytearray</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">bytes</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">False</span></pre></td></tr></table></div>
+
+<h2>Différence entre string et array d&#8217;octets</h2>
+<p>Il est facile de confondre tout ce merdier.</p>
+<p>En Python 2.7, le type <code>str</code> était un array d&#8217;octets, et on le manipulait comme une chaîne, d&#8217;où la difficulté de transition.</p>
+<p>En Python 3, bien qu&#8217;on puisse créer un array d&#8217;octets avec une syntaxe utilisant des lettres, ils ne sont plus du tout utilisés pour la manipulation de texte. Si vous voulez manipuler du texte qui vient de l&#8217;extérieur de votre programme, il faudra toujours le décoder pour obtenir un type <code>str</code> (qui est l&#8217;ancien type <code>unicode</code> de Python 2.7).</p>
+<p>Le décodage sera fait automatiquement dans la plupart des cas, et plantera si on tombe sur un cas où vous devez le faire à la main et que vous ne le faites pas. Du coup, plus de difficulté à trouver d&#8217;où vient ce bug d&#8217;encoding, car on a toujours l&#8217;erreur à la source. </p>
+<p>En ce sens, Python 3 est beaucoup plus clair : les octets d&#8217;un côté, le texte de l&#8217;autre. Bon, tout ça c&#8217;est de la surcouche, au final, tout est octet. Mais on a rarement envie de manipuler un octet directement, sinon on coderait encore en assembleur.</p>
+<p>Avec ce système, Python 3 est le langage le plus sain que j&#8217;ai pu rencontrer dans sa gestion de l&#8217;encodage : il ne cache rien, oblige l&#8217;utilisateur à coder avec de bonnes habitudes, facilite le débugage et met sur le devant de la scène la problématique de l&#8217;encoding, qui est le plus souvent cachée vite fait sous le tapis.</p>
+<p>L&#8217;alternative intelligente la plus proche étant celle de node.js, qui <a href="https://github.com/joyent/node/blob/master/lib/buffer.js#L126">interdit tout simplement la plupart des encodings dans son API</a>.</p>
+<p>La bonne nouvelle ? 99% du temps, vous n&#8217;aurez même pas à vous en soucier, car ASCII est inclus dans UTF8, et ce sont les encodings les plus utilisés. Avec Python 3 forçant UTF8 par défaut partout et des chaînes en unicode dès le départ, il n&#8217;y a presque rien à faire. Je doute que la plupart des gens aient même à manipuler le type <code>bytes</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-python-3-le-type-bytes-est-un-array-dentiers/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/CRutQrO.jpg" length="140436" type="image/jpg" />	</item>
+		<item>
+		<title>Plus besoin d&#8217;images pour les smileys grâce à Unicode 28</title>
+		<link>http://sametmax.com/plus-besoin-dimages-pour-les-smileys-grace-a-unicode/</link>
+		<comments>http://sametmax.com/plus-besoin-dimages-pour-les-smileys-grace-a-unicode/#comments</comments>
+		<pubDate>Sat, 25 May 2013 14:03:58 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[smiley]]></category>
+		<category><![CDATA[smilye]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4014</guid>
+		<description><![CDATA[Faut virer les smiley des logiciels de chat. Utilisons des caractères UTF8, ça sera plus léger, et plus interropérable.]]></description>
+				<content:encoded><![CDATA[<h2>☹</h2>
+<h2>☺</h2>
+<h2>☻</h2>
+<p>Maintenant ça passe partout ce genre de truc. Et c&#8217;est dingue ce qu&#8217;ils ont réussi à stuffer dans cet encoding. </p>
+<p>Des formes géométriques :</p>
+<h2>■</h2>
+<p>Des tas de faces :</p>
+<p>&#8212;&#8212;&#8212;&#8212;&#8212;<br />
+<strong><br />
+Grace au support absolument minable de l&#8217;encoding de wordpress, cet article est à moité tronqué. Merci codeur PHP de merde qui n&#8217;a jamais su gérer le texte correctement de ta putain de viiiiiiiiiiiiiiie.</p>
+<p>Afin de pouvoir lire l&#8217;article en entier, je <a href="http://goo.gl/zbjJo">l&#8217;ai déporté sur 0bin</a>. Putain.</p>
+<p>Moralité, non en fait on ne peut pas utiliser ces smileys partout. Les navigateurs les supportent, les fonts sont sur vos systèmes, les OS les supportent. Mais les développeurs sont toujours trop cons. 10 ans bordel, wordpress a 10 ans et des millions de users. Vous pourriez penser qu&#8217;ils font au minimum le traitement des chaînes de caractères correctement, non ? Je sais pas, un blog, le principe, c&#8217;est pas de TRAITER DU PUTAIN DE TEXTE, MERDE ? </p>
+<p></strong></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/plus-besoin-dimages-pour-les-smileys-grace-a-unicode/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/KRid7RS.jpg" length="87002" type="image/jpg" />	</item>
+		<item>
+		<title>L&#8217;encoding en Python, une bonne fois pour toute 89</title>
+		<link>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/</link>
+		<comments>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/#comments</comments>
+		<pubDate>Sun, 21 Apr 2013 07:02:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[ascii]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+		<category><![CDATA[utf8]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5824</guid>
+		<description><![CDATA[A la fin de cet article, vous saurez vous sortir de toutes les situations merdiques liées aux encodages.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;avais oublié la zik, je rajoute:</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/8XOV2L-eM38" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Vous avez tous un jour eu l&#8217;erreur suivante :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">UnicodeDecodeError</span>: <span style="color: #483d8b;">'machine'</span> codec can<span style="color: #483d8b;">'t decode character '</span>trucmuche<span style="color: #483d8b;">' in position x: ordinal not in range(z)</span></pre></td></tr></table></div>
+
+<p>Et là, pour vous en sortir, vous en avez chié des ronds de pâté.</p>
+<p>Le problème vient du fait que la plupart du temps, ignorer l&#8217;encoding marche : nous travaillons dans des environnements homogènes et toujours avec des données dans le même format, ou un format plus ou moins compatible.</p>
+<p>Mais le texte, c&#8217;est compliqué, terriblement compliqué, et le jour où ça se gâte, si vous ne savez pas ce que vous faites, vous ne vous en sortirez pas.</p>
+<p>C&#8217;est d&#8217;autant plus vrai en Python car :</p>
+<ul>
+<li>Par défaut, Python plante sur les erreurs d&#8217;encoding là où d&#8217;autres langages (comme le PHP) se débrouillent pour vous sortir un truc (qui ne veut rien dire, qui peut corrompre toute votre base de données, mais qui ne plante pas).</li>
+<li>Python est utilisé dans des environnements hétérogènes. Quand vous codez en JS sur le navigateur, vous n&#8217;avez presque jamais à vous soucier de l&#8217;encoding : le browser gère quasiment tout pour vous. En Python dès que vous allez lire un fichier et l&#8217;afficher dans un terminal, cela fait potentiellement 3 encoding différents.</li>
+<li>Python 2.7 a des réglages par défaut très stricts, et pas forcément adaptés à notre informatique moderne (fichier de code en ASCII par exemple).</li>
+</ul>
+<p>A la fin de cet article, vous saurez vous sortir de toutes les situations merdiques liées aux encodages.</p>
+<h2>Règle numéro 1 : Le texte brut n&#8217;existe pas.</h2>
+<p>Quand vous avez du texte quelque part (un terminal, un fichier, une base de données&#8230;), il est forcément représenté sous forme de 0 et de 1.</p>
+<p>La corrélation entre cette suite de 0 et de 1 et la lettre est faite dans un énorme tableau qui contient toutes les lettres d&#8217;un côté, et toutes les combinaisons de 0 et de 1 de l&#8217;autre. Il n&#8217;y a pas de magie. C&#8217;est un énorme tableau stocké quelque part dans votre ordinateur. <strong>Si vous n&#8217;avez pas ce tableau, vous ne pouvez pas lire du texte. Même le texte le plus simple.</strong></p>
+<p>Malheureusement, au début de l&#8217;informatique, <strong>presque chaque pays a créé son propre tableau, et ces tableaux sont incompatibles entre eux</strong> : pour la même combinaison de 0 et de 1, ils donnent un caractère différent voire rien du tout.</p>
+<p>La mauvaise nouvelle, c&#8217;est qu&#8217;ils sont encore utilisés aujourd&#8217;hui.</p>
+<p>Ces tableaux, c&#8217;est ce qu&#8217;on appelle les encodings, et il y en a beaucoup. Voici la liste de ceux que Python gère :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">encodings</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'- '</span> + e + <span style="color: #483d8b;">'<span style="color: #000099; font-weight: bold;">\n</span>'</span> <span style="color: #ff7700;font-weight:bold;">for</span> e <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span><span style="color: #008000;">set</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">encodings</span>.<span style="color: black;">aliases</span>.<span style="color: black;">aliases</span>.<span style="color: black;">values</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+- ascii
+- base64_codec
+- big5
+- big5hkscs
+- bz2_codec
+- cp037
+- cp1026
+- cp1140
+- cp1250
+- cp1251
+- cp1252
+- cp1253
+- cp1254
+- cp1255
+- cp1256
+- cp1257
+- cp1258
+- cp424
+- cp437
+- cp500
+- cp775
+- cp850
+- cp852
+- cp855
+- cp857
+- cp858
+- cp860
+- cp861
+- cp862
+- cp863
+- cp864
+- cp865
+- cp866
+- cp869
+- cp932
+- cp949
+- cp950
+- euc_jis_2004
+- euc_jisx0213
+- euc_jp
+- euc_kr
+- gb18030
+- gb2312
+- gbk
+- hex_codec
+- hp_roman8
+- hz
+- iso2022_jp
+- iso2022_jp_1
+- iso2022_jp_2
+- iso2022_jp_2004
+- iso2022_jp_3
+- iso2022_jp_ext
+- iso2022_kr
+- iso8859_10
+- iso8859_11
+- iso8859_13
+- iso8859_14
+- iso8859_15
+- iso8859_16
+- iso8859_2
+- iso8859_3
+- iso8859_4
+- iso8859_5
+- iso8859_6
+- iso8859_7
+- iso8859_8
+- iso8859_9
+- johab
+- koi8_r
+- latin_1
+- mac_cyrillic
+- mac_greek
+- mac_iceland
+- mac_latin2
+- mac_roman
+- mac_turkish
+- mbcs
+- ptcp154
+- quopri_codec
+- rot_13
+- shift_jis
+- shift_jis_2004
+- shift_jisx0213
+- tactis
+- tis_620
+- utf_16
+- utf_16_be
+- utf_16_le
+- utf_32
+- utf_32_be
+- utf_32_le
+- utf_7
+- utf_8
+- uu_codec
+- zlib_codec</pre></td></tr></table></div>
+
+<p>Et certains ont plusieurs noms (des alias), donc on pourrait en compter plus:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">encodings</span>.<span style="color: black;">aliases</span>.<span style="color: black;">aliases</span>.<span style="color: black;">keys</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">307</span></pre></td></tr></table></div>
+
+<p>Quand vous affichez du texte sur un terminal avec un simple <code>print</code>, votre ordinateur va implicitement chercher le tableau qu&#8217;il pense être le plus adapté, et fait la traduction. Même pour le texte le plus simple. Même pour un espace tout seul.</p>
+<p><strong>Mais surtout, ça veut dire que votre propre code EST dans un encoding. Et vous DEVEZ savoir lequel.</strong></p>
+<h2>Règle numéro 2 : utf8 est le langage universel, utilisez-le</h2>
+<p>Il existe un encoding qui essaye des regrouper toutes les langues du monde, et il s&#8217;appelle unicode. Unicode est un tableau gigantesque qui contient des combinaisons de 1 et de 0 d&#8217;un côté, et les caractères de toutes la langues possibles de l&#8217;autre : chinois, arabe, français, espagnol, russe&#8230;</p>
+<p>Bon, il ne contient pas encore absolument tout, mais il couvre suffisamment de terrain pour éliminer 99.999999999% des problèmes de communications de texte entre machines dans le monde.</p>
+<p>Le défaut d&#8217;Unicode est qu&#8217;il est plus lent et prend plus de place que d&#8217;autres représentations du même texte. Aujourd&#8217;hui le téléphone le plus pourri a 10 fois la puissance nécessaire, et ce n&#8217;est plus un souci : il peut être utilisé presque partout (sauf peut-être dans l&#8217;embarqué drastique) sans même réfléchir à la question. Tous les langages les plus importants, tous les services les plus importants, tous les logiciels les plus importants gèrent unicode.</p>
+<p>Il y a plusieurs implémentations concrètes d&#8217;unicode, la plus célèbre est &#8220;UTF 8&#8243;.</p>
+<p><strong>Moralité, par défaut, utilisez utf-8.</strong></p>
+<p>Une fois, à l&#8217;entretien d&#8217;embauche, un mec m&#8217;avait reproché d&#8217;utiliser UTF8 parce que &#8220;ça posait des problèmes d&#8217;encoding&#8221;. Comprenez bien qu&#8217;utf-8 ne pose aucun problème d&#8217;encoding. Ce sont tous les autres codecs du monde qui posent des problèmes d&#8217;encoding. UTF-8 est certainement le seul à justement, ne poser aucun problème.</p>
+<p>UTF 8 est le seul encoding vers lequel, aujourd&#8217;hui, on puisse convertir vers et depuis (pratiquement) n&#8217;importe quel autre codec du monde. C&#8217;est un espéranto. C&#8217;est une pierre de rosette. C&#8217;est au texte ce que l&#8217;or est à l&#8217;économie.</p>
+<p>Si UTF8 vous pose &#8220;un problème d&#8217;encoding&#8221;, c&#8217;est que vous ne savez pas dans quel encoding votre texte est actuellement ou comment le convertir. C&#8217;est tout.</p>
+<p>Il n&#8217;y a presque aucune raison de ne pas utiliser UTF8 aujourd&#8217;hui (à part sur des vieux systèmes ou des systèmes où les ressources sont tellement limitées que vous n&#8217;utiliseriez pas Python de toute façon).</p>
+<p><strong>Utilisez utf8. Partout. Tout le temps.</strong></p>
+<p>Si vous communiquez avec un système qui ne comprend pas UTF8, convertissez.</p>
+<p>Mais gardez votre partie en UTF8.</p>
+<h2>Règle numéro 3 : il faut maîtriser l&#8217;encoding de son code</h2>
+<p>Le fichier dans lequel vous écrivez votre code est dans un encoding et ce n&#8217;est pas lié à votre OS. C&#8217;est votre éditeur qui s&#8217;en occupe. Apprenez à régler votre éditeur pour qu&#8217;il utilise l&#8217;encoding que vous voulez.</p>
+<p>Et l&#8217;encoding que vous voulez est UTF8.</p>
+<p><strong>Si vous ne savez pas dans quel encoding est votre code, vous ne pouvez pas manipuler du texte et garantir l&#8217;absence de bug.</strong></p>
+<p>Vous ne POUVEZ PAS.</p>
+<p>Donc réflexe : vous configurez votre éditeur de texte pour sauvegarder tous vos nouveaux fichiers par défaut en UTF8. Maintenant. Tout de suite.</p>
+<p>Regardez dans la doc de l&#8217;éditeur, dans l&#8217;aide ou tapez sur Google, mais faites le.</p>
+<p>Puis il faut déclarer cet encoding à la première ligne de chaque fichier de code avec l&#8217;expression suivante :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># coding: encoding</span></pre></td></tr></table></div>
+
+<p>Par exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># coding: utf8</span></pre></td></tr></table></div>
+
+<p>C&#8217;est une spécificité de Python : si l&#8217;encoding du fichier est différent de l&#8217;encoding par défaut du langage, il faut le déclarer sinon le programme plantera à la première conversion. En Python 2.7, l&#8217;encoding par défaut est ASCII, donc il faut presque toujours le déclarer. En Python 3, l&#8217;encoding par défaut est UTF8 et on peut donc l&#8217;omettre si on l&#8217;utilise. Ce que vous allez faire après la lecture de cet article.</p>
+<p>Ensuite, il existe deux types de chaînes de caractères en Python :</p>
+<ul>
+<li>La chaîne de caractères encodée: type &#8216;str&#8217; en Python 2.7, &#8216;byte&#8217; en Python 3.</li>
+<li>La chaîne de caractères décodée: type &#8216;unicode&#8217; en Python 2.7, et &#8216;str&#8217; en python 3 (sic).</li>
+</ul>
+<p>Illustration :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ python2.7
+Python 2.7.3 <span style="color: black;">&#40;</span>default<span style="color: #66cc66;">,</span> Aug  <span style="color: #ff4500;">1</span> <span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">05</span>:<span style="color: #ff4500;">14</span>:<span style="color: #ff4500;">39</span><span style="color: black;">&#41;</span> 
+<span style="color: black;">&#91;</span>GCC 4.6.3<span style="color: black;">&#93;</span> on linux2
+Type <span style="color: #483d8b;">&quot;help&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;copyright&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;credits&quot;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #483d8b;">&quot;license&quot;</span> <span style="color: #ff7700;font-weight:bold;">for</span> more information.
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chaine'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># bits =&gt; encodée</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'chaine'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># unicode =&gt; décodée</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ python3
+Python 3.2.3 <span style="color: black;">&#40;</span>default<span style="color: #66cc66;">,</span> Oct <span style="color: #ff4500;">19</span> <span style="color: #ff4500;">2012</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">20</span>:<span style="color: #ff4500;">10</span>:<span style="color: #ff4500;">41</span><span style="color: black;">&#41;</span> 
+<span style="color: black;">&#91;</span>GCC 4.6.3<span style="color: black;">&#93;</span> on linux2
+Type <span style="color: #483d8b;">&quot;help&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;copyright&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;credits&quot;</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #483d8b;">&quot;license&quot;</span> <span style="color: #ff7700;font-weight:bold;">for</span> more information.
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;chaine&quot;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># unicode =&gt; decodée</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">&quot;chaine&quot;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># bits =&gt; encodée</span>
+&nbsp;
+<span style="color: #66cc66;">&lt;</span><span style="color: #ff7700;font-weight:bold;">class</span> <span style="color: #483d8b;">'bytes'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Votre but, c&#8217;est de n&#8217;avoir dans votre code que des chaînes de type &#8216;unicode&#8217;.</p>
+<p>En Python 3, c&#8217;est automatique. Toutes les chaînes sont de type &#8216;unicode&#8217; (appelé &#8216;str&#8217; dans cette version, je sais, je sais, c&#8217;est confusionant à mort) par défaut.</p>
+<p>En Python 2.7 en revanche, il faut préfixer la chaîne par un <code>u</code>.</p>
+<p>Donc, dans votre code, TOUTES vos chaînes doivent être déclarées ainsi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="pyhton" style="font-family:monospace;">u&quot;votre chaîne&quot;</pre></td></tr></table></div>
+
+<p>Oui, c&#8217;est chiant. Mais c&#8217;est indispensable. Encore une fois, il n&#8217;y a pas d&#8217;alternative (dites le avec la voix de Thatcher si ça vous excite).</p>
+<p>Si vous voulez, vous pouvez activer le comportement de Python 3 dans Python 2.7 en mettant ceci au début de CHACUN de vos modules :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals</pre></td></tr></table></div>
+
+<p>Ceci n&#8217;affecte que le fichier en cours, jamais les autres modules.</p>
+<p>On peut le mettre <a href="http://sametmax.com/personnalisez-le-demarrage-dipython/">au démarrage d&#8217;iPython également</a>.</p>
+<p>Je résume :</p>
+<ul>
+<li>Réglez votre éditeur sur UTF8.</li>
+<li>Mettez <code># coding: utf8 </code> au début de vos modules.</li>
+<li>Préfixez toutes vos chaînes de <code>u</code> ou faites <code>from __future__ import unicode_literals</code> en début de chaque module.</li>
+</ul>
+<p>Si vous ne faites pas cela, votre code marchera. La plupart de temps. Et un jour, dans une situation particulière, il ne marchera plus. Plus du tout.</p>
+<p>Oh, et ce n&#8217;est pas grave si vous avez d&#8217;anciens modules dans d&#8217;autres encodings. Tant que vous utilisez des objets &#8216;unicode&#8217; partout, ils marcheront sans problème ensemble.</p>
+<h2>Règle numéro 4 : décodez toutes les entrées de votre programme</h2>
+<p>La partie difficile de ce conseil, c&#8217;est de savoir ce qu&#8217;est une entrée.</p>
+<p>Je vais vous donner une définition simple : <strong>tout ce qui ne fait pas partie du code de votre programme et qui est traité dans votre programme est une entrée.</strong></p>
+<p>Le texte des fichiers, le nom de ces fichiers, le retour des appels système, le retour d&#8217;une ligne de commande parsée, la saisie utilisateur sur un terminal, le retour d&#8217;une requête SQL, le téléchargement d&#8217;une donnée sur le Web, etc.</p>
+<p>Ce sont toutes des entrées.</p>
+<p><strong>Comme tous les textes du monde, les entrées sont dans un encoding. Et vous DEVEZ savoir lequel.</strong></p>
+<p>Comprenez bien, si vous ne connaissez pas l&#8217;encoding de vos entrées, ça marchera la plupart du temps, et un jour, ça va planter.</p>
+<p>Il n&#8217;y a pas d&#8217;alternative (bis).</p>
+<p>Or, <strong>il n&#8217;y a pas de moyen de détecter un encoding de façon fiable.</strong></p>
+<p>Donc, soit le fournisseur de la donnée vous donne cette information (settings dans la base de données, doc de votre logiciel, configuration de votre OS, spec du client, coup de fils au fournisseur&#8230;), soit vous êtes baisés.</p>
+<p>On ne peut pas lire un simple fichier si on ne connait pas son encoding. Point.</p>
+<p>Si cela a marché jusqu&#8217;ici pour vous, c&#8217;est que vous avez eu de la chance : la plupart de vos fichiers étaient dans l&#8217;encoding de votre éditeur et de votre système. Tant qu&#8217;on travaille sur sa machine, tout va bien.</p>
+<p>Si vous lisez une page HTML, l&#8217;encoding est souvent déclaré dans la balise META ou dans un header.</p>
+<p>Si vous écrivez dans un terminal, l&#8217;encoding du terminal est accessible avec <code>sys.(stdin|stdout).encoding</code>.</p>
+<p>Si vous manipulez des noms de fichier, on peut récupérer l&#8217;encoding du file system en cours avec <code>sys.getfilesystemencoding()</code>.</p>
+<p>Mais parfois il n&#8217;y a pas d&#8217;autres moyens d&#8217;obtenir cette information que de demander à la personne qui a produit la donnée. Parfois même, l&#8217;encoding déclaré est faux.</p>
+<p>Dans tous les cas, vous avez besoin de cette information.</p>
+<p>Et une fois que vous l&#8217;avez, il faut décoder le texte reçu.</p>
+<p>La manière la plus simple de faire cela est :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">votre_chaine <span style="color: #66cc66;">=</span> votre_chaine.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nom_du_codec'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Le texte sera de type &#8216;str&#8217;, et <code>decode()</code> retourne (si vous lui fournissez le bon codec ;-)), une version &#8216;unicode&#8217;.</p>
+<p>Exemple, obtenir une chaîne &#8216;unicode&#8217; depuis une chaîne &#8216;str&#8217; encodée en utf8 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'Chaîne'</span> <span style="color: #808080; font-style: italic;"># mon fichier est encodé en UTF8, donc la chaine est en UTF8</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine <span style="color: #66cc66;">=</span> une_chaine.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Donc dès que vous lisez un fichier, récupérez une réponse d&#8217;une base de données ou parsez des arguments d&#8217;un terminal, appelez <code>decode()</code> sur la chaîne reçue.</p>
+<h2>Règle numéro 5 : encodez toutes les sorties de votre programme</h2>
+<p>La partie difficile de ce conseil, c&#8217;est de savoir ce qu&#8217;est une sortie.</p>
+<p>Encore une fois, une définition simple : <strong>toute donnée que vous traitez et qui va être lue par autre chose que votre code est une sortie.</strong></p>
+<p>Un <code>print</code> dans un terminal est une sortie, un <code>write()</code> dans un fichier est une sortie, un <code>UPDATE</code> en SQL est une sortie, un envoi dans une socket est une sortie, etc.</p>
+<p>Le reste du monde ne peut pas lire les objets &#8216;unicode&#8217; de Python. Si vous écrivez ces objets dans un fichier, un terminal ou dans une base de données, Python va les convertir automatiquement en objet &#8216;str&#8217;, et l&#8217;encoding utilisé dépendra du contexte.</p>
+<p>Malheureusement, il y a une limite à la capacité de Python à décider du bon encoding.</p>
+<p>Donc, tout comme il vous faut connaitre l&#8217;encoding d&#8217;un texte en entrée, il vous faut connaitre l&#8217;encoding attendu par le système avec lequel vous communiquez en sortie : sachez quel est l&#8217;encoding du terminal, de votre base de données ou système de fichiers sur lequel vous écrivez.</p>
+<p>Si vous ne pouvez pas savoir (page Web, API, etc), utilisez UTF8.</p>
+<p>Pour ce faire, il suffit d&#8217;appelez <code>encode()</code> sur tout objet de type &#8216;unicode&#8217; :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">une_chaine <span style="color: #66cc66;">=</span> une_chaine.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nom_du_codec'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Par exemple, pour convertir un objet &#8216;unicode&#8217; en &#8216;str&#8217; utf8:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine <span style="color: #66cc66;">=</span> u<span style="color: #483d8b;">'Chaîne'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> une_chaine <span style="color: #66cc66;">=</span> une_chaine.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>une_chaine<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'str'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<h2>Résumé des règles</h2>
+<ol>
+<li>Le texte brut n&#8217;existe pas.</li>
+<li>Utilisez UTF8. Maintenant. Partout.</li>
+<li>Dans votre code, spécifiez l&#8217;encoding du fichier et déclarez vos chaînes comme &#8216;unicode&#8217;.</li>
+<li>À l&#8217;entrée, connaissez l&#8217;encoding de vos données, et décodez avec <code>decode()</code>.</li>
+<li>A la sortie, encodez dans l&#8217;encoding attendu par le système qui va recevoir la données, ou si vous ne pouvez pas savoir, en UTF8, avec <code>encode()</code>.</li>
+</ol>
+<p>Je sais que ça vous démange de voir un cas concret, alors voici un pseudo programme (<a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/avril/encoding.py">téléchargeable ici</a>) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># coding: utf-8 </span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># toutes les chaines sont en unicode (même les docstrings)</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    Un script tout pourri qui télécharge plein de page et les sauvegarde
+    dans une base de données sqlites.
+&nbsp;
+    On écrit dans un fichier de log les opérations effectuées.
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">urllib2</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> sqlite3
+&nbsp;
+pages <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Snippets de Sebsauvage'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'http://www.sebsauvage.net/python/snyppets/'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'Top 50 de bashfr'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'http://danstonchat.com/top50.html'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># création de la base de données</span>
+conn <span style="color: #66cc66;">=</span> sqlite3.<span style="color: black;">connect</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">&quot;backup.db&quot;</span><span style="color: black;">&#41;</span>
+c <span style="color: #66cc66;">=</span> conn.<span style="color: black;">cursor</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    c.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'''
+        CREATE TABLE pages (
+            id INTEGER PRIMARY KEY,
+            nom TEXT,
+            html TEXT
+        )'''</span>
+    <span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> sqlite3.<span style="color: black;">OperationalError</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+log <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'backup.log'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'wa'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> nom<span style="color: #66cc66;">,</span> page <span style="color: #ff7700;font-weight:bold;">in</span> pages:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ceci est une manière très fragile de télécharger et</span>
+    <span style="color: #808080; font-style: italic;"># parser du HTML. Utilisez plutôt scrapy et beautifulsoup</span>
+    <span style="color: #808080; font-style: italic;"># si vous faites un vrai crawler</span>
+    response <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">urllib2</span>.<span style="color: black;">urlopen</span><span style="color: black;">&#40;</span>page<span style="color: black;">&#41;</span>
+    html <span style="color: #66cc66;">=</span> response.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">100000</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># je récupère l'encoding à l'arrache</span>
+    encoding <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">findall</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'&lt;meta.*?charset=[&quot;<span style="color: #000099; font-weight: bold;">\'</span>]*(.+?)[&quot;<span style="color: #000099; font-weight: bold;">\'</span>&gt;]'</span><span style="color: #66cc66;">,</span> html<span style="color: #66cc66;">,</span> flags<span style="color: #66cc66;">=</span><span style="color: #dc143c;">re</span>.<span style="color: black;">I</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># html devient de l'unicode</span>
+    html <span style="color: #66cc66;">=</span> html.<span style="color: black;">decode</span><span style="color: black;">&#40;</span>encoding<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici je peux faire des traitements divers et varié avec ma chaîne</span>
+    <span style="color: #808080; font-style: italic;"># et en fin de programme...</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># la lib sqlite convertie par défaut tout objet unicode en UTF8</span>
+    <span style="color: #808080; font-style: italic;"># car c'est l'encoding de sqlite par défaut donc passer des chaînes</span>
+    <span style="color: #808080; font-style: italic;"># unicode marche, et toutes les chaînes de mon programme sont en unicode</span>
+    <span style="color: #808080; font-style: italic;"># grace à mon premier import</span>
+    c.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;&quot;&quot;INSERT INTO pages (nom, html) VALUES (?, ?)&quot;&quot;&quot;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> html<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># j'écris dans mon fichier en UTF8 car c'est ce que je veux pouvoir lire</span>
+    <span style="color: #808080; font-style: italic;"># plus tard</span>
+    msg <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;Page '{}' sauvée<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>nom<span style="color: black;">&#41;</span>
+    log.<span style="color: black;">write</span><span style="color: black;">&#40;</span>msg.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># notez que si je ne fais pas encode(), soit:</span>
+    <span style="color: #808080; font-style: italic;"># - j'ai un objet 'unicode' et ça plante</span>
+    <span style="color: #808080; font-style: italic;"># - j'ai un objet 'str' et ça va marcher mais mon fichier contiendra</span>
+    <span style="color: #808080; font-style: italic;">#   l'encoding de la chaîne initiale (qui ici serait aussi UTF8, mais</span>
+    <span style="color: #808080; font-style: italic;">#   ce n'est pas toujours le cas)</span>
+&nbsp;
+conn.<span style="color: black;">commit</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+c.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+log.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Quelques astuces</h2>
+<p>Certaines bibliothèques acceptent indifféremment des objets &#8216;unicode&#8217; et &#8216;str&#8217; :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">logging</span> <span style="color: #ff7700;font-weight:bold;">import</span> basicConfig<span style="color: #66cc66;">,</span> getLogger
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> basicConfig<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> log <span style="color: #66cc66;">=</span> getLogger<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> log.<span style="color: black;">warn</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Détécé&quot;</span><span style="color: black;">&#41;</span>
+WARNING:root:Détécé
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> log.<span style="color: black;">warn</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Détécé&quot;</span><span style="color: black;">&#41;</span>
+WARNING:root:Détécé</pre></td></tr></table></div>
+
+<p>Et ce n&#8217;est pas forcément une bonne chose car si il y a derrière écriture dans un fichier de log, cela peut poser problème.</p>
+<p>D&#8217;autres ont besoin qu&#8217;on leur précise:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">search</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'télé'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>_sre.<span style="color: black;">SRE_Match</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x7fa4d3f77238</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">search</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'télé'</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">UNICODE</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>_sre.<span style="color: black;">SRE_Match</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x7fa4d3f772a0</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Le module <code>re</code> par exemple aura des résultats biaisés sur une chaîne &#8216;unicode&#8217; si on ne précise pas le flag <code>re.UNICODE</code>.</p>
+<p>D&#8217;autres n&#8217;acceptent pas d&#8217;objet &#8216;str':</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> io
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #66cc66;">&gt;&gt;&gt;</span> io.<span style="color: #dc143c;">StringIO</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>_io.<span style="color: #dc143c;">StringIO</span> <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x14a96d0</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> io.<span style="color: #dc143c;">StringIO</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-5-16988a0d4ac4&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    io.<span style="color: #dc143c;">StringIO</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: initial_value must be <span style="color: #008000;">unicode</span> <span style="color: #ff7700;font-weight:bold;">or</span> <span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">str</span></pre></td></tr></table></div>
+
+<p>D&#8217;autres encore n&#8217;acceptent pas d&#8217;objet &#8216;unicode':</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">base64</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">base64</span>.<span style="color: black;">encodestring</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'w6k=<span style="color: #000099; font-weight: bold;">\n</span>'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">base64</span>.<span style="color: black;">encodestring</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'é'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-3-1714982ca68e&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #dc143c;">base64</span>.<span style="color: black;">encodestring</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'é'</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/usr/lib/python2.7/base64.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">315</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> encodestring
+    pieces.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">binascii</span>.<span style="color: black;">b2a_base64</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">chunk</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">UnicodeEncodeError</span>: <span style="color: #483d8b;">'ascii'</span> codec can<span style="color: #483d8b;">'t encode character u'</span>\xe9<span style="color: #483d8b;">' in position 0: ordinal not in range(128)</span></pre></td></tr></table></div>
+
+<p>Cela peut être pour des raison de performances (certaines opérations sont plus rapides sur un objet &#8216;str&#8217;), ou pour des raisons historiques, d&#8217;ignorance ou de paresse.</p>
+<p>Vous ne pouvez pas le deviner à l&#8217;avance. Souvent c&#8217;est marqué dans la doc, sinon il faut tester dans le shell.</p>
+<p>Une bibliothèque bien faite demandera de l&#8217;unicode et vous retournera de l&#8217;unicode, vous libérant l&#8217;esprit. Par exemple, <a href="sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">requests</a> et l&#8217;ORM <a href="http://sametmax.com/quels-gros-sites-sont-faits-en-django/">Django</a> le font, et communiquent avec le reste du monde (en l&#8217;occurence le Web et les bases de données) dans le meilleur encoding possible automatiquement de manière transparente. Quand c&#8217;est possible bien entendu, parfois il faudra forcer l&#8217;encoding car le fournisseur de votre donnée déclare le mauvais. Vous n&#8217;y pouvez rien, c&#8217;est pareil pour tous les langages du monde.</p>
+<p>Enfin il existe des raccourcis pour certaines opérations, utilisez-les autant que possible. Par exemple, pour lire un fichier, au lieu de faire un simple <code>open()</code>, vous pouvez faire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">codecs</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #008000;">open</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># open() de codec à exactement la même API, y compris avec &quot;with&quot;</span>
+f <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fichier'</span><span style="color: #66cc66;">,</span> encoding<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'encoding'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Les chaînes récupérées seront automatiquement sous forme d&#8217;objet &#8216;unicode&#8217; au lieu d&#8217;objet &#8216;str&#8217; qu&#8217;il vous aurait fallu convertir à la main.</p>
+<h2>Les outils de la dernière chance</h2>
+<p>Je vous ai menti, si vous ne connaissez pas l&#8217;encoding de vos entrées ou de vos sorties, il vous reste encore quelques options.</p>
+<p>Sachez cependant que ces options sont des hacks, des trucs à tenter quand tout ce qui a été décrit plus haut a foiré.</p>
+<p>Si vous faites bien votre boulot, ça ne doit pas arriver souvent. Une à deux fois max dans votre année, sauf environnement de travail très très merdique.</p>
+<p>D&#8217;abord, parlons de l&#8217;entrée.</p>
+<p>Si vous recevez un objet et qu&#8217;il vous est impossible de trouver l&#8217;encoding, vous pouvez forcer un décodage imparfait avec <code>decode()</code> en spécifiant le paramètre <code>error</code>.</p>
+<p>Il peut prendre les valeurs suivantes :</p>
+<ul>
+<li><code>'strict'</code> : lever une exception en cas d&#8217;erreur. C&#8217;est le comportement par défaut.</li>
+<li><code>'ignore'</code> : tout caractère qui provoque une erreur est ignoré.</li>
+<li><code>'replace'</code> : tout caractère qui provoque une erreur est remplacé par un point d&#8217;interrogation.</li>
+</ul>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'Père Noël'</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;stdin&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+<span style="color: #008000;">UnicodeDecodeError</span>: <span style="color: #483d8b;">'ascii'</span> codec can<span style="color: #483d8b;">'t decode byte 0xc3 in position 1: ordinal not in range(128)
+&gt;&gt;&gt; print '</span>Pè<span style="color: #dc143c;">re</span> Noël<span style="color: #483d8b;">'.decode('</span>ascii<span style="color: #483d8b;">', errors='</span>ignore<span style="color: #483d8b;">')
+Pre Nol
+&gt;&gt;&gt; print '</span>Pè<span style="color: #dc143c;">re</span> Noël<span style="color: #483d8b;">'.decode('</span>ascii<span style="color: #483d8b;">', errors='</span>replace<span style="color: #483d8b;">')
+P��re No��l</span></pre></td></tr></table></div>
+
+<p>Mozilla vient également à la rescousse avec sa lib <a href="https://pypi.python.org/pypi/chardet">chardet</a> qu&#8217;il faut donc <a href="http://sametmax.com/votre-python-aime-les-pip/">installer</a> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> chardet</pre></td></tr></table></div>
+
+<p>Et qui TENTE (du verbe &#8216;tenter&#8217;, &#8220;qui essaye&#8221;, et qui donc peut échouer et se tromper) de détecter l&#8217;encoding utilisé.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> chardet.<span style="color: black;">detect</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'Le Père Noël est une ordure'</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'confidence'</span>: <span style="color: #ff4500;">0.8063275188616134</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'encoding'</span>: <span style="color: #483d8b;">'ISO-8859-2'</span><span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> chardet.<span style="color: black;">detect</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Le Père Noël est une ordure j'ai dis enculé&quot;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#123;</span><span style="color: #483d8b;">'confidence'</span>: <span style="color: #ff4500;">0.87625</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'encoding'</span>: <span style="color: #483d8b;">'utf-8'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Cela marche pas trop mal, mais n&#8217;attendez pas de miracles. Plus il y a de texte, plus c&#8217;est précis, et plus le paramètre <code>confidence</code> est proche de 1.</p>
+<p>Parlons maintenant de la sortie, c&#8217;est à dire le cas où le système qui va recevoir vos données est une grosse quiche qui plante dès qu&#8217;on lui donne autre chose que de l&#8217;ASCII.</p>
+<p>Je ne veux balancer personne, mais mon regard se tourne vers l&#8217;administration américaine. Subtilement. De manière insistante.</p>
+<p>D&#8217;abord, <code>encode()</code> accepte les mêmes valeurs pour <code>errors</code> que <code>decode()</code>. Mais en prime, il accepte <code>'xmlcharrefreplace'</code>, très pratique pour les fichiers XML :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> u<span style="color: #483d8b;">&quot;Et là-bas, tu vois, c'est la coulée du grand bronze&quot;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> errors<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'xmlcharrefreplace'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">&quot;Et l&amp;#224;-bas, tu vois, c'est la coul&amp;#233;e du grand bronze&quot;</span></pre></td></tr></table></div>
+
+<p>Enfin, on peut essayer d&#8217;obtenir un texte potable en remplaçant les caractères spéciaux par leur équivalent ASCII le plus proche.</p>
+<p>Avec l&#8217;alphabet latin, c&#8217;est très facile :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;éçûö&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'ecuo'</span></pre></td></tr></table></div>
+
+<p>Pour des trucs plus avancés comme le cyrilique ou le mandarin, il faut installer <a href="https://pypi.python.org/pypi/Unidecode">unidecode</a> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> unidecode</pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> unidecode <span style="color: #ff7700;font-weight:bold;">import</span> unidecode
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> unidecode<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;En russe, Moscou s'écrit Москва&quot;</span><span style="color: black;">&#41;</span>
+En russe<span style="color: #66cc66;">,</span> Moscou s<span style="color: #483d8b;">'ecrit Moskva</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/feed/</wfw:commentRss>
+		<slash:comments>89</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/OxpEP.jpg" length="87049" type="image/jpg" />	</item>
+		<item>
+		<title>Transformer des caractères spéciaux en ASCII 5</title>
+		<link>http://sametmax.com/transformer-des-caracteres-speciaux-en-ascii/</link>
+		<comments>http://sametmax.com/transformer-des-caracteres-speciaux-en-ascii/#comments</comments>
+		<pubDate>Sat, 01 Dec 2012 14:23:37 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3419</guid>
+		<description><![CDATA[Dans beaucoup de cas, plutôt que de se taper la gestion de l'encodage, on préfère tout ramener au plus petit dénominateur commun: l'ASCII. Pas d'accent, pas de problème, comme disait mon grand-père juif. Ça devait être un autre contexte. Mais quand même.]]></description>
+				<content:encoded><![CDATA[<p>Dans beaucoup de cas, plutôt que de se taper la gestion de l&#8217;encodage, on préfère tout ramener au plus petit dénominateur commun: l&#8217;ASCII. Pas d&#8217;accent, pas de problème, comme disait mon grand-père juif. Ça devait être un autre contexte. Mais quand même.</p>
+<h2>Remplacer les accents par leurs équivalents ASCII les plus proches</h2>
+<p>Une astuce que j&#8217;ai lue pour la toute première fois dans les excellents <a href="http://www.sebsauvage.net/python/snyppets/">snippets Python</a> de Sauvage (encore et toujours&#8230;).</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> chaine_unicode <span style="color: #66cc66;">=</span> u<span style="color: #483d8b;">&quot;Vous êtes le Père Noël ? s'étonna le petit garçon.&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> chaine_unicode<span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">&quot;Vous etes le Pere Noel ? s'etonna le petit garcon.&quot;</span></pre></td></tr></table></div>
+
+<p>Si un caractère n&#8217;est pas vraiment remplaçable, on peut choisir plusieurs stratégies. Ignorer le caractère:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Bei Jing en chinois s'écrit 北亰&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">&quot;Bei Jing en chinois s'ecrit &quot;</span></pre></td></tr></table></div>
+
+<p>Remplacer le caractère par un point d&#8217;interrogation:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Bei Jing en chinois s'écrit 北亰&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'replace'</span><span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">&quot;Bei Jing en chinois s'e?crit ??&quot;</span></pre></td></tr></table></div>
+
+<p>Notez l&#8217;effet sur le caractère accentué&#8230;</p>
+<p>Ou se vautrer comme une grosse loutre bourrée à la bière:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Bei Jing en chinois s'écrit 北亰&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-21-24181c80fc7f&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Bei Jing en chinois s'écrit 北亰&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">UnicodeEncodeError</span>: <span style="color: #483d8b;">'ascii'</span> codec can<span style="color: #483d8b;">'t encode character u'</span>\u0301<span style="color: #483d8b;">' in position 23: ordinal not in range(128)</span></pre></td></tr></table></div>
+
+<p>Ce qui pour nous a un intérêt limité.</p>
+<p>Certains alphabets, comme le hongrois, ont des caractères qui pourraient être extrapolés vers l&#8217;ASCII, mais la normalisation NFKD ne le permet pas. On peut alors faire appel à une bibliothèque externe.</p>
+<h2>Unidecode, la cafetière de l&#8217;encoding</h2>
+<p><a href="https://github.com/iki/unidecode">Unidecode</a> est une lib <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> installable qui permet la translittération de caractères. Ce n&#8217;est pas toujours très rigoureux, mais c&#8217;est toujours très pratique.</p>
+<p>Par exemple, vous voulez créer un site Web de mode à destination du marché Hongrois. Si, si. C&#8217;est un marché en pleine expansion, j&#8217;vous dis. </p>
+<p>Et bien entendu vous avez une rubrique manteau, qui se dit en hongrois, comme nous le savons tous: &#8220;kožušček&#8221;.</p>
+<p>Bon, si vous essayé de mettre ça en slug dans vos URL, ça va être un peu chiant à taper, et malheureusement l&#8217;astuce précédente ne va pas vous aider:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>: <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;kožušček&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'replace'</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#93;</span>: <span style="color: #483d8b;">'koz?us?c?ek'</span></pre></td></tr></table></div>
+
+<p>Partant de là, vous pouvez soit:</p>
+<ul>
+<li>choisir d&#8217;inviter tous vos utilisateurs à lire <a href="http://fr.wikipedia.org/wiki/%C3%89loge_des_femmes_m%C3%BBres">l&#8217;éloge des femmes mûres</a> dans la langue de l&#8217;auteur et arrêter d&#8217;acheter des manteaux de merde qui sont de toute façon faits en Chine.</li>
+<li>soit utiliser <code>unidecode</code>.</li>
+</ul>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">7</span><span style="color: black;">&#93;</span>: <span style="color: #ff7700;font-weight:bold;">from</span> unidecode <span style="color: #ff7700;font-weight:bold;">import</span> unidecode
+In <span style="color: black;">&#91;</span><span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>: unidecode<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;kožušček&quot;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">8</span><span style="color: black;">&#93;</span>: <span style="color: #483d8b;">'kozuscek'</span></pre></td></tr></table></div>
+
+<h2>
+Encore plus fastoche, dans le XML et HTML</h2>
+<p>Dans ces formats à balise, on peut s&#8217;affranchir des problème d&#8217;encodage en transformant chaque caractère en une entité XML / HTML. On récupère alors du texte ASCII et le client se tapera le boulot d&#8217;afficher tous les caractères tordus auxquels l&#8217;humanité a pu penser:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">11</span><span style="color: black;">&#93;</span>: <span style="color: #ff7700;font-weight:bold;">print</span> u<span style="color: #483d8b;">&quot;Le Père Noël m'a offert un kožušček à 北亰&quot;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'xmlcharrefreplace'</span><span style="color: black;">&#41;</span>
+Le P&amp;<span style="color: #808080; font-style: italic;">#232;re No&amp;#235;l m'a offert un ko&amp;#382;u&amp;#353;&amp;#269;ek &amp;#224; &amp;#21271;&amp;#20144;</span></pre></td></tr></table></div>
+
+<h2>Et dans tous les autres cas ?</h2>
+<p>Ben c&#8217;est comme d&#8217;hab: <code>str.decode()</code> pour tout ce qui rentre pour récupérer une chaîne unicode, et <code>unicode.encode()</code> pour tout ce qui sort pour rebalancer une chaîne de caractères au monde extérieur.</p>
+<p>Ça mérite peut être un article d&#8217;ailleurs&#8230;</p>
+<p>P.S: <a href="http://sametmax.com/les-10-meilleures-extensions-firefox-chrome/">Lazarus</a> vient de me sauver la mise en restaurant cet article suite à un clic malheureux. Vive lazarus.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/transformer-des-caracteres-speciaux-en-ascii/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/pomme_de_terre.jpg" length="91567" type="image/jpg" />	</item>
+		<item>
+		<title>Slug d&#8217;une chaîne de caractères non ASCII avec Django et unidecode 3</title>
+		<link>http://sametmax.com/slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode/</link>
+		<comments>http://sametmax.com/slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode/#comments</comments>
+		<pubDate>Tue, 27 Mar 2012 18:39:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[slug]]></category>
+		<category><![CDATA[unicode]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=296</guid>
+		<description><![CDATA[Slugify ne fonctionne pas comme prévu avec des caractères unicode, mais, une fois n'est pas coutume, il existe une solution magique.]]></description>
+				<content:encoded><![CDATA[<p>Une slug est une chaîne de caractère ASCII en minuscule, sans espace, ponctuation, ni caractères spéciaux, qu&#8217;on utilise souvent dans les URLs ou les noms de ficher pour en simplifier l&#8217;analyse informatique.</p>
+<p>Par exemple, le titre de cet article est <em>Slug d&#8217;une chaîne de caractères non ASCII avec Django et unidecode</em>, mais si vous regardez dans la barre d&#8217;adresse de votre navigateur, vous remarquerez qu&#8217;on le retrouve sous la forme <em>slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode</em>. C&#8217;est le slug du titre de l&#8217;article.</p>
+<p>Django possède un filter <code>slugify</code> et un <code>SlugField</code> qui sont censés nous faciliter la vie quand on a besoin de générer un slug :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> slugify<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Slug d'une chaîne de caractères non ASCII avec Django et unidecode&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> u<span style="color: #483d8b;">'slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode'</span></pre></td></tr></table></div>
+
+<p>Sous le capot, ça utilise le module standard <code>unicodedata</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;éêèçàùï&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'eeecaui'</span></pre></td></tr></table></div>
+
+<p>Problème, <code>unicodedata</code> ne fonctionne qu&#8217;avec des caractères dérivés de l&#8217;alphabet latin. Essayez avec du chinois ou de l&#8217;arabe, ça ne marche pas. Petit exemple avec du Hongrois et son alphabet cyrillique :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Сайн уу&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">' '</span></pre></td></tr></table></div>
+
+<p>Il existe deux solutions. La première est <a href="https://github.com/mozilla/unicode-slugify">proposée par Mozilla</a> : elle retourne un slug unicode, et présuppose que vous voulez créer des urls unicodes.</p>
+<p>La seconde, qui nous intéresse, est une tout petite library pip installable : <a href="http://pypi.python.org/pypi/Unidecode/">unidecode</a>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;北亰&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'Bei Jing '</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Сайн уу&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'Sain uu'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;éùïàô&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">'euiao'</span></pre></td></tr></table></div>
+
+<p>Du coup, pour le slugify :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">In <span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: black;">&#93;</span>: slugify<span style="color: black;">&#40;</span>unidecode.<span style="color: black;">unidecode</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Сайн уу&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Out<span style="color: black;">&#91;</span><span style="color: #ff4500;">52</span><span style="color: black;">&#93;</span>: u<span style="color: #483d8b;">'sain-uu'</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/slug-dune-chaine-de-caracteres-non-ascii-avec-django-et-unidecode/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/03/Mslug103.png" length="21561" type="image/jpg" />	</item>
+	</channel>
+</rss>

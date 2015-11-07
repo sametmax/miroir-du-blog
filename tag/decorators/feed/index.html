@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; decorators</title>
+	<atom:link href="http://sametmax.com/tag/decorators/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Refactoriser ses vérifications en Python 4</title>
+		<link>http://sametmax.com/refactoriser-ses-verifications-en-python/</link>
+		<comments>http://sametmax.com/refactoriser-ses-verifications-en-python/#comments</comments>
+		<pubDate>Sun, 23 Jun 2013 21:56:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[fonctions]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6437</guid>
+		<description><![CDATA[On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre.]]></description>
+				<content:encoded><![CDATA[<p>On nous a interpelé sur Twitter pour nous demander comment faire un code comme ceci (en tout cas similaire) plus propre:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> verification1<span style="color: black;">&#40;</span>val<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">bool</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+verification2 <span style="color: #66cc66;">=</span> verification1
+verification3 <span style="color: #66cc66;">=</span> verification1
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification1<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Erreur, la vérification 1 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification2<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Erreur, la vérification 2 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification3<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Erreur, la vérification 3 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> valeur</pre></td></tr></table></div>
+
+<p>Ceci est évidement un exemple tout bidon, mais la problématique, c&#8217;est qu&#8217;on a plein de vérifications à faire, et un code à lancer si jamais ces vérifications échouent. Et chaîner les <code>if</code>, c&#8217;est vrai que c&#8217;est pas super mignon (même si c&#8217;est tout à fait valide, faut pas non plus se prendre trop la tête avec ça).</p>
+<p>En Python, on a plusieurs manières de s&#8217;occuper de ça. La première, j&#8217;en ai déjà parlé, c&#8217;est <a href="http://sametmax.com/quest-ce-quun-callback/">l&#8217;injection de dépendances</a>. On va passer ces checks en paramètres.</p>
+<p>Car je le rappelle, on peut passer des fonctions en paramètres, on peut mettre des fonctions dans des listes, et on peut même passer des listes de fonctions en paramètres. Ce qui ici va nous permettre de :</p>
+<ul>
+<li>Regrouper les traitements.</li>
+<li>Permettre de changer les traitements à la volée.</li>
+<li>Avoir malgré tout un traitement par défaut.</li>
+<li>Rendre les groupes de vérifications réutilisables</li>
+</ul>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+&nbsp;
+VERIF <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+    <span style="color: black;">&#40;</span>verification1<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Erreur, la vérification 1 n'est pas passée&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#40;</span>verification2<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Erreur, la vérification 2 n'est pas passée&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#40;</span>verification3<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Erreur, la vérification 3 n'est pas passée&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> v: <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">bool</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">&quot;Erreur, la vérification 4 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> faire_verifications<span style="color: black;">&#40;</span>verifications<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">for</span> verif<span style="color: #66cc66;">,</span> msg <span style="color: #ff7700;font-weight:bold;">in</span> verifications:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verif<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span> msg
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>valeur<span style="color: #66cc66;">,</span> verifications<span style="color: #66cc66;">=</span>VERIF<span style="color: black;">&#41;</span>:
+    faire_verifications<span style="color: black;">&#40;</span>verifications<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> valeur</pre></td></tr></table></div>
+
+<p>Cette manière de faire est plus verbeuse si votre liste de <code>if</code> est courte, ou si vous n&#8217;avez à le faire que pour une fonction. Mais elle devient vite plus courte et clair dans le cas où votre code grandi.</p>
+<p>Elle aussi l&#8217;avantage de pouvoir insérer ou retirer une modification très simplement (même avec une simple lambda). Enfin, le code de vérification est découplé du code de la fonction ce qui ajoute les bénéfices suivant :</p>
+<ul>
+<li>Votre code de vérification peut être déplacé dans un module dédié.</li>
+<li>Si vous avez des vérifications en plusieurs endroits, il n&#8217;y a qu&#8217;un seul endroit pour corriger les bugs des vérifications, et un seul pour faire une modification des vérifications.</li>
+<li>Le code de la fonction redevient simple : elle fait une vérification (on s&#8217;en branle de comment ça marche, on sait que ça vérifie), et ensuite elle s&#8217;occupe de SON boulot. C&#8217;est la partie du code qui nous intéresse quand on va voir la fonction.</li>
+</ul>
+<p>On peut évidement imaginer autre chose qu&#8217;un print: lever une exception, faire un log, ou même carrément aussi passer une fonction en lieu et place du message d&#8217;erreur qui fait office de callback quand la vérification échoue (et qui par défaut print, le meilleur des deux mondes).</p>
+<p>Si vos vérifications deviennent très courantes, alors, l&#8217;utilisation de décorateurs prend tout son sens. Je ne vais pas rentrer sur comment écrire son décorateur, il y a <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1">un autre article pour ça</a>, mais on peut obtenir un résultat du genre :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> verif<span style="color: black;">&#40;</span>verification<span style="color: #66cc66;">,</span> message<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> decorateur<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> verification<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+                <span style="color: #ff7700;font-weight:bold;">print</span> message
+            <span style="color: #ff7700;font-weight:bold;">return</span> func<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+    <span style="color: #ff7700;font-weight:bold;">return</span> decorateur
+&nbsp;
+<span style="color: #808080; font-style: italic;"># si on utilise souvent une vérif, on peut l'avoir </span>
+<span style="color: #808080; font-style: italic;"># tout le temps tout la main</span>
+verif3 <span style="color: #66cc66;">=</span> verif<span style="color: black;">&#40;</span>verification3<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Erreur, la vérification 3 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et ensuite il suffit d'appliquer autant de décorateur qu'on le souhaite</span>
+<span style="color: #66cc66;">@</span>verif<span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> v: <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">bool</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Erreur, la vérification 4 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>verif3
+<span style="color: #66cc66;">@</span>verif<span style="color: black;">&#40;</span>verification2<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Erreur, la vérification 2 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>verif<span style="color: black;">&#40;</span>verification1<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Erreur, la vérification 1 n'est pas passée&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>valeur<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> valeur</pre></td></tr></table></div>
+
+<p>Les avantages ici sont :</p>
+<ul>
+<li>Corps de la fonction initial vide de toute vérification. Les vérifications sont purement déclaratives (comme par exemple la vérification de login dans Django).</li>
+<li>Chaque vérif est très facilement réutilisable, il suffit de mettre le décorateur. Si on utilise une vérif très souvent, alors on peut même mettre le décorateur dans une variable et juste déclarer <code>@ma_verif</code>.</li>
+<li>C&#8217;est très pythonique comme style.</li>
+</ul>
+<p>En résumé : si vous avez un petit code, ne vous prenez pas la tête. Une série de if est tout à fait valide, ça marche bien, c&#8217;est clair et lisible. Il faut savoir aller au plus simple. Mais si votre code devient touffu, utiliser une liste de fonction peut aider à faire le ménage. Si vous commencer carrément à avoir un gros projet ou que vous codez une lib réutilisable, les décorateurs seront de précieux alliés : ils permettent à celui qui passe derrière vous de se foutre complètement de savoir comment ça marche et de juste assembler son code comme un légo.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/juin/verification.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/refactoriser-ses-verifications-en-python/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/EoH7ChB.jpg" length="115889" type="image/jpg" />	</item>
+		<item>
+		<title>Django-quicky: l&#8217;abolition des préliminaires, par Sam et Max 22</title>
+		<link>http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/</link>
+		<comments>http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/#comments</comments>
+		<pubDate>Tue, 09 Oct 2012 15:22:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[routing]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2537</guid>
+		<description><![CDATA[Max aime <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">Bottle</a> pour sa simplicité. J'aime Django pour sa puissance. Nous aimons tous les deux les jeux de mots graveleux à conotations sexuelles.
+
+Ainsi est né <a href="https://github.com/sametmax/django-quicky">django-quicky</a>, une petite app qui permet de faire du routing et du rendering déclaratif en Django.]]></description>
+				<content:encoded><![CDATA[<p>Max aime <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">Bottle</a> pour sa simplicité. J&#8217;aime Django pour sa puissance. Nous aimons tous les deux les jeux de mots graveleux à connotations sexuelles.</p>
+<p>Ainsi est né <a href="https://github.com/sametmax/django-quicky">django-quicky</a>, une petite app qui permet de faire du routing et du rendering déclaratif en Django.</p>
+<p><code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install django-quicky</code></p>
+<h2>Par toutes les routes</h2>
+<p>Vous avez envie d&#8217;un site, maintenant, tout de suite. Mais il faut créer l&#8217;<em>urls.py</em>, et les vues, et les mapper. Et jongler entre les deux fichiers.</p>
+<p>Ou alors vous pouvez juste faire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django_quicky <span style="color: #ff7700;font-weight:bold;">import</span> routing
+&nbsp;
+url<span style="color: #66cc66;">,</span> urlpatterns <span style="color: #66cc66;">=</span> routing<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">@</span>url<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/une/regex/que/django/comprends'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> une_vue<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    ...
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">@</span>url<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/on/peut/cummuler/les/routes'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>url<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/une/regex/que/django/comprends'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> une_vue<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    ...</pre></td></tr></table></div>
+
+<p>Le résultat est parfaitement compatible (et mélangeable) avec le routing habituel de Django. Il suffit juste d&#8217;utiliser <em>views.py</em> à la place d&#8217;<em>urls.py</em>, par exemple dans <code>URL_ROOT</code> ou dans <code>include()</code>.</p>
+<h2>Rien ne vaut une bonne renderette</h2>
+<p>Declarer sa vue, c&#8217;est comme les jupes, c&#8217;est de plus en plus court avec le temps qui passe (et la méthode <code>render()</code>). Mais on peut faire encore plus court, genre limite tanga:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django_quicky <span style="color: #ff7700;font-weight:bold;">import</span> view
+&nbsp;
+<span style="color: #66cc66;">@</span>view<span style="color: black;">&#40;</span>render_to<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'template.html'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> une_vue<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'truc'</span>: truc<span style="color: black;">&#125;</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">@</span>view<span style="color: black;">&#40;</span>render_to<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'json'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> une_vue_json<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'truc'</span>: truc<span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Dans la première vue, le dico est utilisé comme contexte pour faire le rendu du template. Dans la seconde vue, le dico est retourné sérialisé en JSON.</p>
+<h2>On change de position ?</h2>
+<p>Des fois vous êtes sur une bonne lancée, mais vous voudriez changer juste un truc. Et garder le code précédent bien sûr. C&#8217;est d&#8217;ailleurs pour ça qu&#8217;on nous vend les <a href="http://sametmax.com/des-vues-normales-aux-vues-generiques-django/">CBV</a>, c&#8217;est tellement plus flexible !</p>
+<p>Vous aimez la souplesse ? Voici de quoi mettre les chevilles très près des oreilles:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django_quicky <span style="color: #ff7700;font-weight:bold;">import</span> view
+&nbsp;
+<span style="color: #66cc66;">@</span>view<span style="color: black;">&#40;</span>render_to<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'template.html'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> vue_commune<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'stuff'</span>: stuff<span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>vue_commune.<span style="color: black;">post</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> vue_POST<span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> context<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># do more stuff</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> context
+&nbsp;
+<span style="color: #66cc66;">@</span>vue_commune.<span style="color: black;">ajax</span><span style="color: black;">&#40;</span>render_to<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'json'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> vue_AJAX<span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> context<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> context</pre></td></tr></table></div>
+
+<p>On a ici une seule et même vue. La première partie est rendue sous forme de template si on y arrive par une requête GET ordinaire. La seconde si c&#8217;est une requête POST. La troisième si c&#8217;est une requête en AJAX, avec rendering JSON en prime. Et les deux dernières récupèrent toujours le résultat de la première avant de s&#8217;exécuter, ce qui permet d&#8217;avoir le code en commun dans la première.</p>
+<p>C&#8217;est sous licence <a href="http://www.zlib.net/zlib_license.html">zlib</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/django-quicky-labolition-des-preliminaires-par-sam-et-max/feed/</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/49-quickos.jpg" length="358030" type="image/jpg" />	</item>
+		<item>
+		<title>Comprendre les décorateurs Python pas à pas (partie 2) 23</title>
+		<link>http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/</link>
+		<comments>http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/#comments</comments>
+		<pubDate>Wed, 23 May 2012 03:30:05 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=683</guid>
+		<description><![CDATA[Dans l'article précédent, nous avons vu comment fonctionnaient les décorateurs. Mais dans leur usage quotidien vous aller rencontrer des cas particuliers comme passer des arguments. Voici de quoi y faire face.]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<p>Dans la <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">partie 1</a>, nous avons vu comment fonctionnaient les décorateurs. Mais dans leur usage quotidien vous allez rencontrer des cas particuliers:</p>
+<ul>
+<li>Comment faire si la fonction décorée attend des arguments ?</li>
+<li>Comment changer le comportement d&#8217;un décorateur en lui passant des paramètres ?</li>
+<li>Comment préserver l&#8217;introspection ?</li>
+</ul>
+<h2>Introspection</h2>
+<p>Un des grands avantages de Python, c&#8217;est qu&#8217;il permet une très forte introspection, c&#8217;est à dire qu&#8217;on peut accéder à énormément d&#8217;informations sur le code lui-même.</p>
+<p>Par exemple, si vous mettez une docstring à une fonction:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> ma_fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        C'est une super fonction
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Vous pouvez ensuite récupérer la docstring très facilement:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> ma_fonction.__doc__ <span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>            C'est une super fonction<span style="color: #000099; font-weight: bold;">\n</span>        &quot;</span></pre></td></tr></table></div>
+
+<p>Et vous pouvez la lire dans l&#8217;aide:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span>ma_fonction<span style="color: black;">&#41;</span>
+Help on function ma_fonction <span style="color: #ff7700;font-weight:bold;">in</span> module <span style="color: #dc143c;">__main__</span>:
+&nbsp;
+ma_fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    C<span style="color: #483d8b;">'est une super fonction
+(END)</span></pre></td></tr></table></div>
+
+<p>L&#8217;autocompletion, la liste des attributs, le nom de la classe, etc. Toutes ces choses sont rendues accessibles grâce à l&#8217;introspection.</p>
+<p>Mais quand vous décorez une fonction, vous l&#8217;enrobez dans une autre, détruisant ces informations:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> decorateur_inutile<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        func<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+<span style="color: #66cc66;">@</span>decorateur_inutile
+<span style="color: #ff7700;font-weight:bold;">def</span> ma_fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        C'est une super fonction
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>ma_fonction.__doc__<span style="color: black;">&#41;</span>
+<span style="color: #008000;">None</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">help</span><span style="color: black;">&#40;</span>ma_fonction<span style="color: black;">&#41;</span>
+Help on function wrapper <span style="color: #ff7700;font-weight:bold;">in</span> module <span style="color: #dc143c;">__main__</span>:
+&nbsp;
+wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En effet, <code>ma_fonction</code> contient maitenant <code>wrapper</code> et non la fonction initiale. Heureusement le module <code>functool</code> possède des outils pour y pallier.</p>
+<p>Le plus utile est le décorateur <code>@wraps</code>, qui copie littéralement toutes les infos d&#8217;une fonction sur son wrapper:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> wraps
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> decorateur_inutile<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #66cc66;">@</span>wraps<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># il suffit de décorer le wrapper</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        func<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+<span style="color: #66cc66;">@</span>decorateur_inutile
+<span style="color: #ff7700;font-weight:bold;">def</span> ma_fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        C'est une super fonction
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Et tout s&#8217;arrange:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> ma_fonction.__doc__
+<span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>        C'est une super fonction<span style="color: #000099; font-weight: bold;">\n</span>    &quot;</span></pre></td></tr></table></div>
+
+<h2>Fonction avec arguments</h2>
+<p>Jusqu&#8217;ici les fonctions que nous avons décorées n&#8217;attendaient pas d&#8217;arguments. Il faut en effet faire un petit effort supplémentaire pour les supporter.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Pas de magie noire, c'est le wrapper qui passe l'argument:</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> un_decorateur_passant_un_argument<span style="color: black;">&#40;</span>fonction_a_decorer<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> un_wrapper_acceptant_des_arguments<span style="color: black;">&#40;</span>arg1<span style="color: #66cc66;">,</span> arg2<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;J'ai des arguments regarde :&quot;</span><span style="color: #66cc66;">,</span> arg1<span style="color: #66cc66;">,</span> arg2<span style="color: black;">&#41;</span>
+        fonction_a_decorer<span style="color: black;">&#40;</span>arg1<span style="color: #66cc66;">,</span> arg2<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> un_wrapper_acceptant_des_arguments
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Puisqu'on appelle en fait un_wrapper_acceptant_des_arguments(),</span>
+<span style="color: #808080; font-style: italic;"># il accepte les arguments, et les passe à la fonctions décorée</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>un_decorateur_passant_un_argument
+<span style="color: #ff7700;font-weight:bold;">def</span> afficher_nom<span style="color: black;">&#40;</span>nom<span style="color: #66cc66;">,</span> prenom<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Mon nom est&quot;</span><span style="color: #66cc66;">,</span> nom<span style="color: #66cc66;">,</span> prenom<span style="color: black;">&#41;</span>
+&nbsp;
+afficher_nom<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Peter&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Venkman&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># output:</span>
+<span style="color: #808080; font-style: italic;">#J'ai des arguments regarde : Peter Venkman</span>
+<span style="color: #808080; font-style: italic;">#My name is Peter Venkman</span></pre></td></tr></table></div>
+
+<p>Du coup pour décorer une méthode, il suffit d&#8217;accepter que le décorateur accepte <code>self</code>. Le moyen le plus simple est encore d&#8217;accepter <code>*args, **kwargs</code>, comme ça on est paré pour tous les cas.</p>
+<p>Mais attention, si vous acceptez <code>*args, **kwargs</code>, la liste des arguments ne sera plus disponible pour l&#8217;introspection. C&#8217;est quelque chose que <code>@wraps</code> ne peut pas changer. La plupart du temps, c&#8217;est un compromis acceptable.</p>
+<h2>Passer un argument au décorateur lui-même</h2>
+<p>Le problème d&#8217;un décorateur, c&#8217;est qu&#8217;il doit accepter une fonction en paramètre. Pourtant, vous avez bien vu que <code>@wraps</code> accepte lui même un argument. C&#8217;est qu&#8217;il existe donc un moyen de passer un argument au décorateur lui-même.</p>
+<p>La solution est tordue: créer un décorateur à la volée. En fait ce decorateur ne sera plus le décorateur, mais le créateur de décorateur. Il y aura donc 3 niveaux d&#8217;imbrication&#8230; C&#8217;est parti pour une session de vaudou :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> createur_de_decorateur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je fabrique des décorateurs. Je suis éxécuté une seule fois :&quot;</span> +
+           <span style="color: #483d8b;">&quot;à la création du décorateur&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> mon_decorateur<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis un décorateur, je suis éxécuté une seule fois quand on décore la )fonction&quot;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis le wrapper autour de la fonction décorée. &quot;</span>
+                  <span style="color: #483d8b;">&quot;Je suis appelé quand on appelle la fonction décorée. &quot;</span>
+                  <span style="color: #483d8b;">&quot;En tant que wrapper, je retourne le RESULTAT de la fonction décorée.&quot;</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> func<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;En tant que décorateur, je retourne le wrapper&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;En tant que créateur de décorateur, je retourne un décorateur&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> mon_decorateur
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Créons un décorateur, c'est juste une fonction après tout.</span>
+nouveau_decorateur <span style="color: #66cc66;">=</span> createur_de_decorateur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouputs:</span>
+<span style="color: #808080; font-style: italic;">#Je fabrique des décorateurs. Je suis éxécuté une seule fois : à la création du décorateur.</span>
+<span style="color: #808080; font-style: italic;">#En tant que créateur de décorateur, je retourne un décorateur</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ensuite décorons la fonction</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_decoree<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis la fonction décorée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+fonction_decoree <span style="color: #66cc66;">=</span> nouveau_decorateur<span style="color: black;">&#40;</span>fonction_decoree<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouputs:</span>
+<span style="color: #808080; font-style: italic;">#Je suis un décorateur, je suis éxécuté une seule fois quand on décore la fonction</span>
+<span style="color: #808080; font-style: italic;">#En tant que décorateur, je retourne la fonction décorée</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Appelons la fonction:</span>
+fonction_decoree<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouputs:</span>
+<span style="color: #808080; font-style: italic;">#Je suis le wrapper autour de la fonction décorée. Je suis appelé quand on appelle la fonction décorée.</span>
+<span style="color: #808080; font-style: italic;">#En tant que wrapper, je retourne le RESULTAT de la fonction décorée.</span>
+<span style="color: #808080; font-style: italic;">#Je suis la fonction décorée</span></pre></td></tr></table></div>
+
+<p>Aucune surprise ici. Faisons EXACTEMENT la même chose, mais en sautant les variables intermédiares.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction_decoree<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis la fonction décorée&quot;</span><span style="color: black;">&#41;</span>
+fonction_decoree <span style="color: #66cc66;">=</span> createur_de_decorateur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span>fonction_decoree<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouputs:</span>
+<span style="color: #808080; font-style: italic;">#Je fabrique des décorateurs. Je suis éxécuté une seule fois : à la création du décorateur.</span>
+<span style="color: #808080; font-style: italic;">#En tant que créateur de décorateur, je retourne un décorateur</span>
+<span style="color: #808080; font-style: italic;">#Je suis un décorateur, je suis éxécuté une seule fois quand on décore la fonction</span>
+<span style="color: #808080; font-style: italic;">#En tant que décorateur, je retourne la fonction décorée.</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Au final:</span>
+fonction_decoree<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouputs:</span>
+<span style="color: #808080; font-style: italic;">#Je suis le wrapper autour de la fonction décorée. Je suis appelé quand on appelle la fonction décorée.</span>
+<span style="color: #808080; font-style: italic;">#En tant que wrapper, je retourne le RESULTAT de la fonction décorée.</span>
+<span style="color: #808080; font-style: italic;">#Je suis la fonction décorée</span></pre></td></tr></table></div>
+
+<p>On recommence, en encore plus court::</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>createur_de_decorateur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_decoree<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis la fonction décorée&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouputs:</span>
+<span style="color: #808080; font-style: italic;">#Je fabrique des décorateurs. Je suis éxécuté une seule fois : à la création du décorateur.</span>
+<span style="color: #808080; font-style: italic;">#En tant que créateur de décorateur, je retourne un décorateur</span>
+<span style="color: #808080; font-style: italic;">#Je suis un décorateur, je suis éxécuté une seule fois quand on décore la fonction</span>
+<span style="color: #808080; font-style: italic;">#En tant que décorateur, je retourne la fonction décorée.</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">#Et pour finir:</span>
+fonction_decoree<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouputs:</span>
+<span style="color: #808080; font-style: italic;">#Je suis le wrapper autour de la fonction décorée. Je suis appelé quand on appelle la fonction décorée.</span>
+<span style="color: #808080; font-style: italic;">#En tant que wrapper, je retourne le RESULTAT de la fonction décorée.</span>
+<span style="color: #808080; font-style: italic;">#Je suis la fonction décorée</span></pre></td></tr></table></div>
+
+<p>Vous noterez qu&#8217;on a utilisé la notation <code>@</code>, avec un appel de fonction: <code>@createur_de_decorateur()</code> et non <code>@createur_de_decorateur</code> !</p>
+<p>Maintenant que nous pouvons générer des décorateurs à la volée, il suffit de passer des arguments au créateur de décorateur:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> createur_de_decorateur_avec_arguments<span style="color: black;">&#40;</span>decorator_arg1<span style="color: #66cc66;">,</span> decorator_arg2<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je créé des décorateur et j'accepte des arguments:&quot;</span><span style="color: #66cc66;">,</span> decorator_arg1<span style="color: #66cc66;">,</span> decorator_arg2<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> mon_decorateur<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis un décorateur, vous me passez des arguments:&quot;</span><span style="color: #66cc66;">,</span> decorator_arg1<span style="color: #66cc66;">,</span> decorator_arg2<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Ne pas mélanger les arguments du décorateurs et de la fonction !</span>
+        <span style="color: #ff7700;font-weight:bold;">def</span> wrapped<span style="color: black;">&#40;</span>function_arg1<span style="color: #66cc66;">,</span> function_arg2<span style="color: black;">&#41;</span> :
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis le wrapper autour de la fonction décorée.<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+                  <span style="color: #483d8b;">&quot;Je peux accéder à toutes les variables<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+                  <span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\t</span>- du décorateur: {0} {1}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+                  <span style="color: #483d8b;">&quot;<span style="color: #000099; font-weight: bold;">\t</span>- de l'appel de la fonction: {2} {3}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+                  <span style="color: #483d8b;">&quot;Et je les passe ensuite à la fonction décorée&quot;</span>
+                  .<span style="color: black;">format</span><span style="color: black;">&#40;</span>decorator_arg1<span style="color: #66cc66;">,</span> decorator_arg2<span style="color: #66cc66;">,</span>
+                          function_arg1<span style="color: #66cc66;">,</span> function_arg2<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> func<span style="color: black;">&#40;</span>function_arg1<span style="color: #66cc66;">,</span> function_arg2<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> wrapped
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> mon_decorateur
+&nbsp;
+<span style="color: #66cc66;">@</span>createur_de_decorateur_avec_arguments<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Leonard&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Sheldon&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_decoree_avec_arguments<span style="color: black;">&#40;</span>function_arg1<span style="color: #66cc66;">,</span> function_arg2<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis une fonctions décorée, je ne me soucie que de mes arguments: {0}&quot;</span>
+           <span style="color: #483d8b;">&quot; {1}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>function_arg1<span style="color: #66cc66;">,</span> function_arg2<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+fonction_decoree_avec_arguments<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Rajesh&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Howard&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#Je crée des décorateurs et j'accepte des arguments: Leonard Sheldon</span>
+<span style="color: #808080; font-style: italic;">#Je suis un décorateur, vous me passez des arguments: Leonard Sheldon</span>
+<span style="color: #808080; font-style: italic;">#Je suis le wrapper autour de la fonction décorée function.</span>
+<span style="color: #808080; font-style: italic;">#Je peux accéder à toutes les variables</span>
+<span style="color: #808080; font-style: italic;">#   - du décorateur: Leonard Sheldon</span>
+<span style="color: #808080; font-style: italic;">#   - de l'appel de la fonction: Rajesh Howard</span>
+<span style="color: #808080; font-style: italic;">#Et je les passe ensuite à la fonction décorée</span>
+<span style="color: #808080; font-style: italic;">#Je suis une fonction décorée, je ne me soucie que de mes arguments: Rajesh Howard</span></pre></td></tr></table></div>
+
+<p><code>mon_decorateur</code> a accès aux variables du scope supérieur car elles sont dans une closure. <a href="http://sametmax.com/closure-en-python-et-javascript/">Vous ne pourrez donc pas les modifier</a>.</p>
+<p>Et voilà, un décorateur avec des arguments ! Les arguments peuvent être des<br />
+variables:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">c1 <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;Penny&quot;</span>
+c2 <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;Leslie&quot;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>createur_de_decorateur_avec_arguments<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Leonard&quot;</span><span style="color: #66cc66;">,</span> c1<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_decoree_avec_arguments<span style="color: black;">&#40;</span>function_arg1<span style="color: #66cc66;">,</span> function_arg2<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis une fonctions décorée, je ne me soucie que de mes arguments:&quot;</span>
+           <span style="color: #483d8b;">&quot; {0} {1}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>function_arg1<span style="color: #66cc66;">,</span> function_arg2<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+fonction_decoree_avec_arguments<span style="color: black;">&#40;</span>c2<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Howard&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#Je créé des décorateurs et j'accepte des arguments: Leonard Penny</span>
+<span style="color: #808080; font-style: italic;">#Je suis un décorateur, vous me passez des arguments: Leonard Penny</span>
+<span style="color: #808080; font-style: italic;">#Je suis le wrapper autour de la fonction décorée function.</span>
+<span style="color: #808080; font-style: italic;">#Je peux accéder à toutes les variables</span>
+<span style="color: #808080; font-style: italic;">#   - du décorateur: Leonard Penny</span>
+<span style="color: #808080; font-style: italic;">#   - de l'appel de la fonction: Leslie Howard</span>
+<span style="color: #808080; font-style: italic;">#Et je les passe ensuite à la fonction décorée</span>
+<span style="color: #808080; font-style: italic;">#Je suis une fonctions décorée, je ne me soucie que de mes arguments: Leslie Howard</span></pre></td></tr></table></div>
+
+<p>Comme vous le voyez, on peut passer des arguments au décorateur comme à n&#8217;importe quelle fonction en utilisant cette astuce. En fait on peut même utiliser <code>*args, **kwargs</code>. Mais rappelez-vous: les décorateurs sont appelés uniquement une fois, au moment de l&#8217;import du script. On ne peut pas changer leurs arguments a posteriori. Quand vous faites <code>from x import ma_fonction</code>, <code>ma_fonction</code> est déjà décorée, et on ne peut rien y changer.</p>
+<h2>Super, mais ça sert à quoi un décorateur ?</h2>
+<p>Ca a l&#8217;air chouette et tout, mais un exemple d&#8217;usage concret, ça aiderait quand même&#8230;.</p>
+<p>Et bien il y a 1000 possibilités. Parmi les usages classiques:</p>
+<ul>
+<li>étendre la fonction d&#8217;une lib externe qu&#8217;on ne peut pas modifier;</li>
+<li>gérer les permissions d&#8217;une fonction;</li>
+<li>réagir aux arguments passés;</li>
+<li>débugger.</li>
+</ul>
+<p>Le principe est la réutilisabilité: on fait un seul code, et on décore plein de fonctions avec.</p>
+<p>Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> benchmark<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+    Un décorateur qui affiche le temps qu'une fonction met à s'éxécuter
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        t <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">time</span>.<span style="color: black;">clock</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        res <span style="color: #66cc66;">=</span> func<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>func.__name__<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">time</span>.<span style="color: black;">clock</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>-t<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> res
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #dc143c;">logging</span><span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+    Un décorateur qui log l'activité d'un script.
+    (Ok, en vrai ça fait un print, mais ça pourrait logger !)
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        res <span style="color: #66cc66;">=</span> func<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>func.__name__<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">,</span> kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> res
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> counter<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+    Compte et affiche le nombre de fois qu'une fonction a été exécutée
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        wrapper.<span style="color: black;">count</span> <span style="color: #66cc66;">=</span> wrapper.<span style="color: black;">count</span> + <span style="color: #ff4500;">1</span>
+        res <span style="color: #66cc66;">=</span> func<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;{0} a été utilisée: {1}x&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>func.__name__<span style="color: #66cc66;">,</span> wrapper.<span style="color: black;">count</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> res
+    wrapper.<span style="color: black;">count</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+<span style="color: #66cc66;">@</span>counter
+<span style="color: #66cc66;">@</span>benchmark
+<span style="color: #66cc66;">@</span><span style="color: #dc143c;">logging</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> reverse_string<span style="color: black;">&#40;</span><span style="color: #dc143c;">string</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #dc143c;">string</span><span style="color: black;">&#91;</span>::-<span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>reverse_string<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Karine alla en Irak&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>reverse_string<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Sa nana snob porte de trop bons ananas&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## reverse_string ('Karine alla en Irak',) {}</span>
+<span style="color: #808080; font-style: italic;">## wrapper 0.000132</span>
+<span style="color: #808080; font-style: italic;">## wrapper a été utilisée: 1x</span>
+<span style="color: #808080; font-style: italic;">## karI ne alla eniraK</span>
+<span style="color: #808080; font-style: italic;">## reverse_string ('Sa nana snob porte de trop bons ananas',) {}</span>
+<span style="color: #808080; font-style: italic;">## wrapper 0.000128</span>
+<span style="color: #808080; font-style: italic;">## wrapper a été utilisée: 2x</span>
+<span style="color: #808080; font-style: italic;">## sanana snob port ed etrop bons anan aS</span></pre></td></tr></table></div>
+
+<p>Mais bien sur, le plus cool avec les décorateurs, c&#8217;est qu&#8217;on peut les utiliser immédiatement sans avoir à réécrire quoi ce que soit:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">urllib</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>counter
+<span style="color: #66cc66;">@</span>benchmark
+<span style="color: #66cc66;">@</span><span style="color: #dc143c;">logging</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> citation_de_futurama_au_hasard<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    url <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'http://subfusion.net/cgi-bin/quote.pl?quote=futurama&amp;number=1'</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        res <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">urllib</span>.<span style="color: black;">request</span>.<span style="color: black;">urlopen</span><span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>
+        html <span style="color: #66cc66;">=</span> res.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ISO-8859-1'</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> html.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'&lt;br&gt;'</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;No, I'm ... doesn't!&quot;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>citation_de_futurama_au_hasard<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>citation_de_futurama_au_hasard<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#citation_de_futurama_au_hasard () {}</span>
+<span style="color: #808080; font-style: italic;">#wrapper 0.02</span>
+<span style="color: #808080; font-style: italic;">#wrapper a été utilisée: 1x</span>
+<span style="color: #808080; font-style: italic;">#The laws of science be a harsh mistress.</span>
+<span style="color: #808080; font-style: italic;">#citation_de_futurama_au_hasard () {}</span>
+<span style="color: #808080; font-style: italic;">#wrapper 0.01</span>
+<span style="color: #808080; font-style: italic;">#wrapper a été utilisée: 2x</span>
+<span style="color: #808080; font-style: italic;">#Curse you, merciful Poseidon!</span></pre></td></tr></table></div>
+
+<p>Python vient chargé de décorateurs dans la lib standard: <code>property</code>, <code>staticmethod</code>, <code>classmethod</code>, <code>@coroutine</code>, <code>@lru_cache</code>, etc. Django gère les <a href="https://docs.djangoproject.com/en/dev/topics/auth/#the-login-required-decorator">permissions des vues</a> avec les décorateurs. Bottle <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">déclare ses routes</a> avec. Twisted <a href="http://hackedbellini.org/development/writing-asynchronous-python-code-with-twisted-using-inlinecallbacks/">donne l&#8217;impression qu&#8217;un appel asynchrone est synchrone</a> en les utilisant. On peut faire vraiment tout et n&#8217;importe quoi.</p>
+<p><em>Un grand merci à gawel, de l&#8217;AFPY, qui m&#8217;a, il y a quelques années, <a href="http://web.archive.org/web/20101223001036/http://www.afpy.org/Members/gawel/python/python-decorators">donné envie de découvrir les décorateurs</a>.</em></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/green-snake-branch-080909_3635_990x742.jpg" length="94869" type="image/jpg" />	</item>
+		<item>
+		<title>Comprendre les décorateurs Python pas à pas (partie 1) 12</title>
+		<link>http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/</link>
+		<comments>http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/#comments</comments>
+		<pubDate>Mon, 30 Apr 2012 22:32:26 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorators]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=480</guid>
+		<description><![CDATA[Les décorateurs ont toujours l'air un peu magique à un développeur qui découvre Python. La principale raison est le manque d'explication détaillée sur le sujet, car en vérité c'est une fonctionalité simple, facile à comprendre, et très pratique. Suivez-le guide.]]></description>
+				<content:encoded><![CDATA[<aside style="text-align:center; font-size:60%"><em>Cet article a été mis à jour et contient maintenant du code Python en version 3</em></aside>
+<h2>Les fonctions Python sont des objets</h2>
+<p>Pour comprendre les décorateurs, il faut d&#8217;abord comprendre que les fonctions sont des objets en Python. Cela a d&#8217;importantes conséquences:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> crier<span style="color: black;">&#40;</span>mot<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;yes&quot;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> mot.<span style="color: black;">capitalize</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">&quot;!&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>crier<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># output : 'Yes!'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Puisque les fonctions sont des objets,</span>
+<span style="color: #808080; font-style: italic;"># on peut les assigner à des variables</span>
+&nbsp;
+hurler <span style="color: #66cc66;">=</span> crier
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Notez que l'on n’utilise pas les parenthèses :</span>
+<span style="color: #808080; font-style: italic;"># la fonction n'est pas appelée. Ici nous mettons la fonction &quot;crier&quot;</span>
+<span style="color: #808080; font-style: italic;"># dans la variable &quot;hurler&quot; afin de pouvoir appeler &quot;crier&quot; avec &quot;hurler&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>hurler<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># output : 'Yes!'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et vous pouvez même supprimer l'ancien nom &quot;crier&quot;,</span>
+<span style="color: #808080; font-style: italic;"># la fonction restera accessible avec &quot;hurler&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">del</span> crier
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>crier<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">NameError</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>e<span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;">#output: &quot;name 'crier' is not defined&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>hurler<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># output: 'Yes!'</span></pre></td></tr></table></div>
+
+<p>Gardez ça à l&#8217;esprit, on va y revenir.</p>
+<p>Une autre propriété intéressante des fonctions en Python est qu&#8217;on peut les définir à l&#8217;intérieur&#8230; d&#8217;une autre fonction.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> parler<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On peut définir une fonction à la volée dans &quot;parler&quot; ...</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> chuchoter<span style="color: black;">&#40;</span>mot<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;yes&quot;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> mot.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>+<span style="color: #483d8b;">&quot;...&quot;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ... et l'utiliser immédiatement !</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>chuchoter<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On appelle &quot;parler&quot;, qui définit &quot;chuchoter&quot; A CHAQUE APPEL,</span>
+<span style="color: #808080; font-style: italic;"># puis &quot;chuchoter&quot; est appelé à l’intérieur de &quot;parler&quot;</span>
+&nbsp;
+parler<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># output:</span>
+<span style="color: #808080; font-style: italic;"># &quot;yes...&quot;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Mais &quot;chuchoter&quot; N'EXISTE PAS en dehors de &quot;parler&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>chuchoter<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">NameError</span><span style="color: #66cc66;">,</span> e:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>e<span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;">#output : &quot;name 'chuchoter' is not defined&quot;</span></pre></td></tr></table></div>
+
+<h2>Passage des fonctions par référence</h2>
+<p>Toujours là ? Maintenant la partie amusante: vous avez vu que les fonctions sont des objets et peuvent donc:</p>
+<ul>
+<li>être assignées à une variable;</li>
+<li>être définies dans une autre fonction.</li>
+</ul>
+<p>Cela veut dire aussi qu&#8217;une fonction peut retourner une autre fonction :-) Hop:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> creerParler<span style="color: black;">&#40;</span><span style="color: #008000;">type</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;crier&quot;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On fabrique 2 fonctions à la volée</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> crier<span style="color: black;">&#40;</span>mot<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;yes&quot;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> mot.<span style="color: black;">capitalize</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">&quot;!&quot;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> chuchoter<span style="color: black;">&#40;</span>mot<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;yes&quot;</span><span style="color: black;">&#41;</span> :
+        <span style="color: #ff7700;font-weight:bold;">return</span> mot.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">&quot;...&quot;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Puis on retourne l'une ou l'autre</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">type</span> <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;crier&quot;</span>:
+        <span style="color: #808080; font-style: italic;"># on utilise pas &quot;()&quot;, on n’appelle pas la fonction</span>
+        <span style="color: #808080; font-style: italic;"># on retourne l'objet fonction</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> crier
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> chuchoter
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Comment ce truc bizarre s'utilise ?</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Obtenir la fonction et l'assigner à une variable</span>
+parler <span style="color: #66cc66;">=</span> creerParler<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># &quot;parler&quot; est une variable qui contient la fonction &quot;crier&quot;:</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>parler<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output : &lt;function crier at 0xb7ea817c&gt;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On peut appeler &quot;crier&quot; depuis &quot;parler&quot;:</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>parler<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#ouput : YES!</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et si on se sent chaud, on peut même créer et appeler la</span>
+<span style="color: #808080; font-style: italic;"># fonction en une seule fois:</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>creerParler<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;chuchoter&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output : yes...</span></pre></td></tr></table></div>
+
+<p>Mais c&#8217;est pas fini ! Si on peut retourner une fonction, on peut aussi en passer une en argument&#8230;</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> faireQuelqueChoseAvant<span style="color: black;">&#40;</span>fonction<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je fais quelque chose avant d'appeler la fonction&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>fonction<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+faireQuelqueChoseAvant<span style="color: black;">&#40;</span>hurler<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#Je fais quelque chose avant d'appeler la fonction</span>
+<span style="color: #808080; font-style: italic;">#Yes!</span></pre></td></tr></table></div>
+
+<p>C&#8217;est bon, vous avez toutes les cartes en main pour comprendre les décorateurs. En effet, les décorateurs sont des wrappers, c&#8217;est à dire qu&#8217;ils permettent d’exécuter du code avant et après la fonction qu&#8217;ils décorent, sans modifier la fonction elle-même.</p>
+<h2>Décorateur artisanal</h2>
+<p>Comment on en coderait un à la main:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Un décorateur est une fonction qui attend une autre fonction en paramètre</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> decorateur_tout_neuf<span style="color: black;">&#40;</span>fonction_a_decorer<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># En interne, le décorateur définit une fonction à la volée: le wrapper.</span>
+    <span style="color: #808080; font-style: italic;"># Le wrapper va enrober la fonction originale de telle sorte qu'il</span>
+    <span style="color: #808080; font-style: italic;"># puisse exécuter du code avant et après celle-ci</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper_autour_de_la_fonction_originale<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Mettre ici le code que l'on souhaite exécuter AVANT que la</span>
+        <span style="color: #808080; font-style: italic;"># fonction s’exécute</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Avant que la fonction ne s’exécute&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Apperler la fonction (en utilisant donc les parenthèses)</span>
+        fonction_a_decorer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Mettre ici le code que l'on souhaite exécuter APRES que la</span>
+        <span style="color: #808080; font-style: italic;"># fonction s’exécute</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Après que la fonction se soit exécutée&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Arrivé ici, la &quot;fonction_a_decorer&quot; n'a JAMAIS ETE EXECUTEE</span>
+    <span style="color: #808080; font-style: italic;"># On retourne le wrapper que l'on vient de créer.</span>
+    <span style="color: #808080; font-style: italic;"># Le wrapper contient la fonction originale et le code à exécuter</span>
+    <span style="color: #808080; font-style: italic;"># avant et après, prêt à être utilisé.</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper_autour_de_la_fonction_originale
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Maintenant imaginez une fonction que l'on ne souhaite pas modifier.</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> une_fonction_intouchable<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Je suis une fonction intouchable, on ne me modifie pas !&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+une_fonction_intouchable<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output: Je suis une fonction intouchable, on ne me modifie pas !</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On peut malgré tout étendre son comportement</span>
+<span style="color: #808080; font-style: italic;"># Il suffit de la passer au décorateur, qui va alors l'enrober dans</span>
+<span style="color: #808080; font-style: italic;"># le code que l'on souhaite, pour ensuite retourner une nouvelle fonction</span>
+&nbsp;
+une_fonction_intouchable_decoree <span style="color: #66cc66;">=</span> decorateur_tout_neuf<span style="color: black;">&#40;</span>une_fonction_intouchable<span style="color: black;">&#41;</span>
+une_fonction_intouchable_decoree<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#Avant que la fonction ne s’exécute</span>
+<span style="color: #808080; font-style: italic;">#Je suis une fonction intouchable, on ne me modifie pas !</span>
+<span style="color: #808080; font-style: italic;">#Après que la fonction se soit exécutée</span></pre></td></tr></table></div>
+
+<p>Puisqu&#8217;on y est, autant faire en sorte qu&#8217;à chaque fois qu&#8217;on appelle <code>une_fonction_intouchable</code>, c&#8217;est <code>une_fonction_intouchable_decoree</code> qui est appelée à la place. C&#8217;est facile, il suffit d&#8217;écraser la fonction originale par celle retournée par le décorateur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">une_fonction_intouchable <span style="color: #66cc66;">=</span> decorateur_tout_neuf<span style="color: black;">&#40;</span>une_fonction_intouchable<span style="color: black;">&#41;</span>
+une_fonction_intouchable<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#Avant que la fonction ne s’exécute</span>
+<span style="color: #808080; font-style: italic;">#Je suis une fonction intouchable, on ne me modifie pas !</span>
+<span style="color: #808080; font-style: italic;">#Après que la fonction se soit exécutée</span></pre></td></tr></table></div>
+
+<p>Et c&#8217;est exactement ce que les décorateurs font.</p>
+<h2>Les décorateurs, démystifiés</h2>
+<p>L&#8217;exemple précédent, en utilisant la syntaxe précédente :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>decorateur_tout_neuf
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_intouchable<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Me touche pas !&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+fonction_intouchable<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#Avant que la fonction ne s’exécute</span>
+<span style="color: #808080; font-style: italic;">#Me touche pas !</span>
+<span style="color: #808080; font-style: italic;">#Après que la fonction se soit exécutée</span></pre></td></tr></table></div>
+
+<p>C&#8217;est tout. Oui, c&#8217;est aussi bête que ça.</p>
+<p><code>@decorateur_tout_neuf</code> est juste un raccourci pour</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">fonction_intouchable <span style="color: #66cc66;">=</span> decorateur_tout_neuf<span style="color: black;">&#40;</span>fonction_intouchable<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Les décorateurs sont juste une variante pythonique du classique motif de conception &#8220;décorateur&#8221;.</p>
+<p>Et bien sûr, on peut cumuler les décorateurs:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> pain<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;&lt;/''''''<span style="color: #000099; font-weight: bold;">\&gt;</span>&quot;</span><span style="color: black;">&#41;</span>
+        func<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;&lt;<span style="color: #000099; font-weight: bold;">\_</span>_____/&gt;&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> ingredients<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;#tomates#&quot;</span><span style="color: black;">&#41;</span>
+        func<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;~salade~&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> sandwich<span style="color: black;">&#40;</span>food<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;--jambon--&quot;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>food<span style="color: black;">&#41;</span>
+&nbsp;
+sandwich<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output: --jambon--</span>
+sandwich <span style="color: #66cc66;">=</span> pain<span style="color: black;">&#40;</span>ingredients<span style="color: black;">&#40;</span>sandwich<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+sandwich<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#&lt;/''''''\&gt;</span>
+<span style="color: #808080; font-style: italic;"># #tomates#</span>
+<span style="color: #808080; font-style: italic;"># --jambon--</span>
+<span style="color: #808080; font-style: italic;"># ~salade~</span>
+<span style="color: #808080; font-style: italic;">#&lt;\______/&gt;</span></pre></td></tr></table></div>
+
+<p>Avec la syntaxe Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>pain
+<span style="color: #66cc66;">@</span>ingredients
+<span style="color: #ff7700;font-weight:bold;">def</span> sandwich<span style="color: black;">&#40;</span>nourriture<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;--jambon--&quot;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nourriture<span style="color: black;">&#41;</span>
+&nbsp;
+sandwich<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">#&lt;/''''''\&gt;</span>
+<span style="color: #808080; font-style: italic;"># #tomates#</span>
+<span style="color: #808080; font-style: italic;"># --jambon--</span>
+<span style="color: #808080; font-style: italic;"># ~salade~</span>
+<span style="color: #808080; font-style: italic;">#&lt;\______/&gt;</span></pre></td></tr></table></div>
+
+<p>Avec cet exemple, on voit aussi que l&#8217;ordre d&#8217;application des décorateurs a de l&#8217;importance :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>ingredients
+<span style="color: #66cc66;">@</span>pain
+<span style="color: #ff7700;font-weight:bold;">def</span> sandwich_zarb<span style="color: black;">&#40;</span>nourriture<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;--jambon--&quot;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>nourriture<span style="color: black;">&#41;</span>
+&nbsp;
+sandwich_zarb<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">#output:</span>
+<span style="color: #808080; font-style: italic;">##tomates#</span>
+<span style="color: #808080; font-style: italic;">#&lt;/''''''\&gt;</span>
+<span style="color: #808080; font-style: italic;"># --jambon--</span>
+<span style="color: #808080; font-style: italic;">#&lt;\______/&gt;</span>
+<span style="color: #808080; font-style: italic;"># ~salade~</span></pre></td></tr></table></div>
+
+<p>Vous pouvez maintenant éteindre votre ordinateur et reprendre une activité normale.</p>
+<p>Aller à la <a href="http://sametmax.com/comprendre-les-decorateur-python-pas-a-pas-partie-2/">partie 2</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/04/animaux-serpent-calebasse-1299646-img-3563-2c84d_big.jpg" length="66649" type="image/jpg" />	</item>
+	</channel>
+</rss>

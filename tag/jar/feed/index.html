@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; jar</title>
+	<atom:link href="http://sametmax.com/tag/jar/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Simuler un cookie avec Mechanize en python</title>
+		<link>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/</link>
+		<comments>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/#comments</comments>
+		<pubDate>Sun, 20 May 2012 19:46:51 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cookie]]></category>
+		<category><![CDATA[jar]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=667</guid>
+		<description><![CDATA[Comment simuler la présence d'un cookie lorsque l'on veut se connecter à un site via Mechanize. ]]></description>
+				<content:encoded><![CDATA[<p>Il peut arriver que l&#8217;on ai besoin de simuler la présence d&#8217;un cookie lors de l&#8217;exploration d&#8217;un site avec <a href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> .<br />
+Un exemple tout bête l&#8217;autre jour j&#8217;essayais de me connecter à un site qui demandait une vérif d&#8217;âge, impossible de simuler le click sur &#8220;ENTER&#8221; car le bouton était géré par Jquery (et Mechanize ne fait pas de js).<br />
+Après quelques debug je me suis aperçu que le site stockait dans un cookie la confirmation d&#8217;âge sous la forme &#8220;age_verified&#8221;, valeur 1.</p>
+<p>il suffisait donc d&#8217;avoir ce cookie et le site nous laissait tranquille.<br />
+Avec Mechanize il est possible d&#8217;ajouter un cookie dans son cookie jar, voici comment:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">import mechanize
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Browser use mechanize</span>
+br = mechanize.Browser<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Cookie Jar</span>
+cj = cookielib.LWPCookieJar<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+br.set_cookiejar<span style="color: #7a0874; font-weight: bold;">&#40;</span>cj<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># add a cookie to cookie jar</span>
+cj.set_cookie<span style="color: #7a0874; font-weight: bold;">&#40;</span>cookielib.Cookie<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">0</span>, <span style="color: #ff0000;">'age_verified'</span>, <span style="color: #ff0000;">'1'</span>, <span style="color: #ff0000;">'80'</span>, False, <span style="color: #ff0000;">'www.nom_de_domaine.com'</span>, True, False, <span style="color: #ff0000;">'/'</span>, True, False, None, False, None, None, None<span style="color: #7a0874; font-weight: bold;">&#41;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Browser options</span>
+br.set_handle_redirect<span style="color: #7a0874; font-weight: bold;">&#40;</span>True<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></td></tr></table></div>
+
+<p><strong>Où:</strong><br />
+age_verified : SID du cookie<br />
+1: valeur<br />
+80: port<br />
+www.nom_de_domaine.com : le nom de domaine du site auquel le cookie appartient<br />
+/: path du cookie</p>
+<p><strong>Un peu plus sur les options:</strong></p>
+<pre lang="python">cookielib.Cookie(version=0, name='SID', value=self._sid, port=None, port_specified=False, domain='.google.com', domain_specified=True, domain_initial_dot=True, path='/', path_specified=True, secure=False, expires='1600000000', discard=False, comment=None, comment_url=None, rest={})</lang></p>
+<p><strong>Quelques liens:</strong><br />
+<a href="http://nullege.com/codes/search/cookielib.Cookie">http://nullege.com/codes/search/cookielib.Cookie</a><br />
+<a href="http://docs.python.org/library/cookielib.html ">http://docs.python.org/library/cookielib.html</a><br />
+<a href="http://wwwsearch.sourceforge.net/mechanize/hints.html ">http://wwwsearch.sourceforge.net/mechanize/hints.html<br />
+</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/cookiejar.jpg" length="43489" type="image/jpg" />	</item>
+	</channel>
+</rss>

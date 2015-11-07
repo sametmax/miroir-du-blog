@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; outils</title>
+	<atom:link href="http://sametmax.com/tag/outils/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Ma boîte à outils Python, mise à jour 24</title>
+		<link>http://sametmax.com/ma-boite-a-outils-python-mise-a-jour/</link>
+		<comments>http://sametmax.com/ma-boite-a-outils-python-mise-a-jour/#comments</comments>
+		<pubDate>Sat, 14 Jun 2014 15:59:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[outils]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10520</guid>
+		<description><![CDATA[Comme je ne m'attends pas à ce que vous suiviez le blog article par article, voici une petit synthèse, la conclusion de l'évolution de ma boîte à outils Python.]]></description>
+				<content:encoded><![CDATA[<p>Il y a bien longtemps je vous avais parlé de <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">7 libs Python </a> vraiment chouettes, puis quelques articles pour vous signaler des remplaçants, ici et là.</p>
+<p>Comme je ne m&#8217;attends pas à ce que vous suiviez le blog article par article, voici une petit synthèse, la conclusion de l&#8217;évolution de ma boîte à outils Python.</p>
+<h2>D&#8217;abord, ce qui n&#8217;a pas changé</h2>
+<p><a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">Ipdb</a>, est toujours de la partie. Je m&#8217;essaye à <a href="https://pypi.python.org/pypi/pudb">pudb</a> de temps à autre, mais vraiment pour casser l&#8217;habitude. Ipdb reste la référence pour tout debugger. C&#8217;est simple, c&#8217;est puissant, c&#8217;est fantastique.</p>
+<p><a href="https://github.com/jaraco/path.py">path.py</a>, inébranlable remplacement de os.path et shutil, malgré l&#8217;intégration de <a href="https://docs.python.org/3/library/pathlib.html?highlight=pathlib#module-pathlib">pathlib</a> à python 3.4 qui est loin d&#8217;être aussi bon. J&#8217;ai même fait quelques contributions sur le projet, notamment l&#8217;écriture de fichier &#8220;inplace&#8221;.</p>
+<p><a href="http://docs.python-requests.org/">requests</a>, la fantastique lib HTTP, qui n&#8217;évolue plus beaucoup, car qui a besoin d&#8217;améliorer la perfection ? On regrettera l&#8217;absence de version asynchrone, bien que certains projets alternatifs, moins bons, s&#8217;y collent.</p>
+<p><a href="http://bottlepy.org/">bottle</a>, toujours pour bricoler des sites rapides. Mais de moins en moins, maintenant que <a href="https://github.com/sametmax/django-quicky">django_quicky</a> est bien rodé, si je sais que le site va déboucher sur un truc, c&#8217;est plus productif d&#8217;utiliser ce dernier.</p>
+<p><a href="http://peewee.readthedocs.org/">peewee</a>, surtout pour introduire les gens à la programmation avec base de données durant les formations. SQLAlchemy c&#8217;est bien trop dur, et l&#8217;ORM Django se ramène avec tout le framework. Mais pour mes besoins rapides, j&#8217;avoue que je tape de plus en plus dans Redis ou du flat file. C&#8217;est souvent du jetable de toute façon et je manipule itertools mieux que SQL ou toute couche ORM au dessus.</p>
+<p><a href="http://sametmax.com/grin-le-grep-python-sous-steroid/">grin</a> est toujours là. Parce que je ne me souviens jamais des millions de flags de grep pour obtenir ce que grin donne gratos, comme la coloration, le contexte, la récursivité et l&#8217;exclusion du dossier <em>.git</em>. Parce qu&#8217;il prend les regex Python en compte. Parce qu&#8217;il marche sous n&#8217;importe quelle plateforme supportée par Python de la même manière, y compris Windows, et s&#8217;installe avec un <code>pip install grin --user</code> sans avoir besoin des droits root.</p>
+<h2>Ce qui a changé</h2>
+<p>Adios dateutil, bonjour <a href="http://sametmax.com/les-time-zones-en-python/">arrow</a>. Ok, je triche un peu, car arrow utilise dateutil sous le capot, mais je n&#8217;en vois jamais la couleur. Arrow est plus simple, plus beau, plus productif, plus mieux. Les dates, telles que ça devrait être dans la lib standard.</p>
+<p>Ensuite, au revoir clize, place à <a href="http://sametmax.com/la-plus-belle-maniere-de-parser-les-arguments-de-script-en-python/">docopt</a> pour parser toutes les lignes de commandes. Les fonctionnalités avancées de <a href="http://click.pocoo.org/">click</a> ne m&#8217;ont pas convaincu de migrer, et docopt est tellement intuitif, tellement merveilleux dans son fonctionnement&#8230;</p>
+<p><a href="https://github.com/sametmax/minibelt">minibelt</a> fait maintenant partie de tous mes fichiers requirements. Surtout pour son sorted <code>set</code>, son <code>dmerge</code>, ses <code>get</code>, <code>attr</code> et <code>iget</code>. Parfois pour <code>chunk</code> et <code>windows</code>. C&#8217;est tellement rageant de devoir recoder ces petites fonctions pour chaque projet.</p>
+<p><a href="http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/">pyped</a> est de plus en plus utile chaque jour. Depuis l&#8217;article du blog, il a bien évolué et embarque un tas de goodies comme le spliting via options, l&#8217;auto filter ou encore le parsing JSON. Bref, je n&#8217;ai plus touché à <code>sed</code> depuis des mois.</p>
+<p><a href="http://sametmax.com/se-simplifier-les-tests-python-avec-pytest/">pytest</a> partout. Je ne touche plus au module unittest de la stdlib ni celui de Django. pytest est la réponse à tout et même plus, c&#8217;est 42 + 1, c&#8217;est la seule raison pour laquelle je fais encore des tests.</p>
+<p><a href="https://pypi.python.org/pypi/six/1.7.2">six</a>. Pas parce que j&#8217;aime cette lib, mais parce que je me tape pas mal de conversion Python 2/3 en ce moment, et six est le socle sur lequel repose toutes mes migrations. Pourvue que je n&#8217;ai bientôt plus besoin de l&#8217;utiliser. Oui, oui, je sais, on doit migrer <a href="http://0bin.net/">0bin</a> et tous les autres projets. Un jour.</p>
+<p>Pas directement lié à Python, mais pour faire des UI au dessus de mes APIs en Python. jQuery est petit à petit en train d&#8217;être remplacé par <a href="http://angular-ui.github.io/">angularjs</a> que je commence à bien maitriser. Ça mériterait un paquet d&#8217;articles rien que pour le bestiau mais je vais m&#8217;en tenir au 180 drafts qu&#8217;on a déjà en stock :) Et puis jQuery a encore de beaux jours devant lui pour tous les sites qui ont besoin de ref, les sites legacy, les petits sites qui n&#8217;ont pas besoin d&#8217;un bazooka pour l&#8217;UI&#8230;</p>
+<p>Un autre truc que j&#8217;utilise tous les jours, c&#8217;est la <a href="http://sametmax.com/cours-et-tutos/">liste des cours</a> du blog avec une recherche type &#8220;site:http://sametmax.com/cours-et-tutos/ mes mots clés&#8221; car le moteur de recherche de wordpress est à chier. Et franchement, je me félicite régulièrement du <a href="https://github.com/sametmax/miroir-du-blog">dump du blog</a> parce qu&#8217;Internet est pas stable ici et la consultation hors ligne devient vite indispensable. Pour cette même raison, j&#8217;ai installé <a href="http://zealdocs.org/">zeal</a> avec la doc de python en local.</p>
+<h2>Ce qui est resté au placard</h2>
+<p>Je pensais que j&#8217;utiliserais beaucoup <a href="https://github.com/sametmax/templite">templite</a>, mais en fait pas du tout. Comme minibelt contient mes fonctions favorites, <a href="http://sametmax.com/batbelt-la-lib-des-petits-outils-python-qui-vont-bien/">batbelt</a>, sa grande soeur, s’ennuie, surtout qu&#8217;elle n&#8217;est toujours pas compatible Python 3.</p>
+<p>Plus de Beautiful soup. Je ne parse plus de HTML, il y a des APIs partout&#8230; Plus de Fabric. J&#8217;utilise docker et je déploie mes instances à la main (j&#8217;ai pas 500 serveurs à gérer).</p>
+<p>J&#8217;ai aussi fait un long essai du shell fish, mais je ne suis pas convaincu et je vais retourner à ce bon vieux bash.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ma-boite-a-outils-python-mise-a-jour/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/VGsOsiK.gif" length="3819" type="image/jpg" />	</item>
+	</channel>
+</rss>

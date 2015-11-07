@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; form</title>
+	<atom:link href="http://sametmax.com/tag/form/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Exclure un champ d&#8217;un formulaire parent avec Django 1</title>
+		<link>http://sametmax.com/exclure-un-champ-dun-formulaire-parent-avec-django/</link>
+		<comments>http://sametmax.com/exclure-un-champ-dun-formulaire-parent-avec-django/#comments</comments>
+		<pubDate>Sun, 15 Jul 2012 13:14:41 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[form]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1130</guid>
+		<description><![CDATA[Cas simple: vous héritez d'un formulaire, mais il y a une champ que vous ne souhaitez pas utiliser. Malheureusement, il n'y a aucun hook dans Django permettant d'exclure ce champ.
+]]></description>
+				<content:encoded><![CDATA[<p>Cas simple: vous héritez d&#8217;un formulaire, mais il y a un champ que vous ne souhaitez pas utiliser. Malheureusement, il n&#8217;y a aucun hook dans Django permettant d&#8217;exclure ce champ.</p>
+<p>Mais bonne nouvelle, il suffit de retirer le champ du dictionnaire <code>self.field</code>.</p>
+<p>Exemple, la lib <a href="https://github.com/clones/django-contact-form">django-contact-form</a> me donne:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> ContactForm<span style="color: black;">&#40;</span>forms.<span style="color: black;">Form</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    name <span style="color: #66cc66;">=</span> forms.<span style="color: black;">CharField</span><span style="color: black;">&#40;</span>max_length<span style="color: #66cc66;">=</span><span style="color: #ff4500;">100</span><span style="color: #66cc66;">,</span>
+                           widget<span style="color: #66cc66;">=</span>forms.<span style="color: black;">TextInput</span><span style="color: black;">&#40;</span>attrs<span style="color: #66cc66;">=</span>attrs_dict<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+                           label<span style="color: #66cc66;">=</span>u<span style="color: #483d8b;">'Your name'</span><span style="color: black;">&#41;</span>
+    <span style="color: #dc143c;">email</span> <span style="color: #66cc66;">=</span> forms.<span style="color: black;">EmailField</span><span style="color: black;">&#40;</span>widget<span style="color: #66cc66;">=</span>forms.<span style="color: black;">TextInput</span><span style="color: black;">&#40;</span>attrs<span style="color: #66cc66;">=</span><span style="color: #008000;">dict</span><span style="color: black;">&#40;</span>attrs_dict<span style="color: #66cc66;">,</span>
+                                                               maxlength<span style="color: #66cc66;">=</span><span style="color: #ff4500;">200</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+                             label<span style="color: #66cc66;">=</span>u<span style="color: #483d8b;">'Your email address'</span><span style="color: black;">&#41;</span>
+    body <span style="color: #66cc66;">=</span> forms.<span style="color: black;">CharField</span><span style="color: black;">&#40;</span>widget<span style="color: #66cc66;">=</span>forms.<span style="color: black;">Textarea</span><span style="color: black;">&#40;</span>attrs<span style="color: #66cc66;">=</span>attrs_dict<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+                              label<span style="color: #66cc66;">=</span>u<span style="color: #483d8b;">'How can we improve %s?'</span> % <span style="color: black;">&#40;</span>Site.<span style="color: black;">objects</span>.<span style="color: black;">get_current</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">name</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et je veux le même formulaire, sans le champ <code>name</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> SimpleContactForm<span style="color: black;">&#40;</span>ContactForm<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>SimpleContactForm<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">fields</span>.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'name'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Il faut bien sur s&#8217;assurer que <code>name</code> n&#8217;est utilisé nul part dans une des méthodes de <code>ConctactForm</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/exclure-un-champ-dun-formulaire-parent-avec-django/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/Asterix.jpg" length="41785" type="image/jpg" />	</item>
+	</channel>
+</rss>

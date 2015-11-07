@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; py</title>
+	<atom:link href="http://sametmax.com/tag/py/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Gérer plusieurs versions de Python avec &#8220;py&#8221; sous Windows 7</title>
+		<link>http://sametmax.com/gerer-plusieurs-versions-de-python-avec-py-sous-windows/</link>
+		<comments>http://sametmax.com/gerer-plusieurs-versions-de-python-avec-py-sous-windows/#comments</comments>
+		<pubDate>Sat, 10 Jan 2015 09:10:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[py]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python 2]]></category>
+		<category><![CDATA[python 3]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15699</guid>
+		<description><![CDATA[Il est courant de vouloir installer plusieurs versions de Python. Pour faire des tests, pour s'assurer que son code est portable, pour utiliser des libs qui marchent uniquement sur une des versions, etc.
+
+Or, depuis la version 3.3, l'installeur de Python installe la commande <a href="https://docs.python.org/3/using/windows.html#launcher">py</a> sous Windows, qui permet de choisir quelle version de Python on lance.]]></description>
+				<content:encoded><![CDATA[<p>Il est courant de vouloir installer plusieurs versions de Python. Pour faire des tests, pour s&#8217;assurer que son code est portable, pour utiliser des libs qui marchent uniquement sur une des versions, etc.</p>
+<p>Sous Linux, c&#8217;est facile : chaque interpretteur est préfixé. Par exemple, sous Ubuntu, si je veux utiliser Python 3.4, je l&#8217;installe :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> python3.4</pre></td></tr></table></div>
+
+<p>Et si je lance <code>python</code>, ça me lance la 2.7 car c&#8217;est celle de base. Mais si je lance <code>python3.4</code>, ça me lance bien la 3.4. </p>
+<p>Au final, on finit par utiliser des <a href="virtuels">environnements virtuels</a> qui isolent des versions de Python particulières. Mais ça ne retire pas l&#8217;envie de pouvoir choisir sa version de Python au niveau du système, ce qui reste difficile à faire sous Windows.</p>
+<p>Or, depuis la version 3.3, l&#8217;installeur pour cet OS de Python installe la commande <a href="https://docs.python.org/3/using/windows.html#launcher">py</a>, qui permet de choisir quelle version de Python on lance.</p>
+<h2>Dans un terminal</h2>
+<p>Si dans une console vous faites :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py</pre></td></tr></table></div>
+
+<p>Il lancera le shell de votre installation Python 2.x la plus récente.</p>
+<p>Si vous faites :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py script.py</pre></td></tr></table></div>
+
+<p>Il exécutera le script avec votre installation Python 2.x la plus récente.</p>
+<p>Mais vous pouvez passez un flag <code>-version</code> pour forcer une version de Python. Lancer le shell Python avec la 3.3 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py -<span style="color: #000000;">3.3</span></pre></td></tr></table></div>
+
+<p>Lancer un script avec la 3.4 :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py -<span style="color: #000000;">3.4</span> script.py</pre></td></tr></table></div>
+
+<p>Cela suppose que vous avez la 3.3 et la 3.4, installés, évidement.</p>
+<p>La syntaxe est surprenante. J&#8217;aurais pensé qu&#8217;ils mettraient un truc du genre <code>py -i 3.4</code> mais non, c&#8217;est direct <code>-numero</code>.</p>
+<p>La commande <code>py</code> accepte aussi les paramètres qu&#8217;on passerait normalement à la commande <code>python</code>, et notament l&#8217;option <code>-m module</code>, qui permet de lancer un module en particulier. </p>
+<p>C&#8217;est pratique pour lancer <code>ipython</code> ou <code>pip</code> avec une version particulière. Par exemple pour installer <a href="https://github.com/tavendo/AutobahnPython/">autobahn</a> uniquement pour la version 3.4 et donc utiliser <code>asyncio</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py -<span style="color: #000000;">3.4</span> <span style="color: #660033;">-m</span> pip <span style="color: #c20cb9; font-weight: bold;">install</span> autobahn</pre></td></tr></table></div>
+
+<h2>Bang !</h2>
+<p>La commande <code>py</code> reconnait également la ligne <em>shebang</em>, cette syntaxe unix qui dit quel interpretteur utiliser. Si vous mettez sur la première ligne de votre script :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#! python3.4</span></pre></td></tr></table></div>
+
+<p>Alors :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py script.py</pre></td></tr></table></div>
+
+<p>Invoquera python 3.4.</p>
+<p>La commande est capable de se débrouiller avec les chemins Unix, afin de garder la portabilité. Donc si vous faites :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#! /usr/bin/env python2.7</span></pre></td></tr></table></div>
+
+<p>Alors :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">py script.py</pre></td></tr></table></div>
+
+<p>Va ignorer le debut de la ligne, et prendre l&#8217;installation locale de Python 2.7 pour lancer le script.</p>
+<h2>On click</h2>
+<p>Si vous installez la version Python 3.3 ou 3.4 en premier, les fichiers <code>.py</code> seront associés à la commande <code>py</code>. Donc si vous cliquez sur un script Python avec une ligne shebang, la bonne version sera lancée.</p>
+<p>Mais si vous avez installé Python 2.x avant, il est possible que vos fichiers <code>.py</code> soient encore associés directement à la commande <code>python</code> ordinnaire.</p>
+<p>Pour changer cela, faites un clic droit sur un fichier <code>.py</code>, modifiez le programme qui ouvre ce fichier et faites le pointer sur <code>"C:\Windows\py.exe"</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/gerer-plusieurs-versions-de-python-avec-py-sous-windows/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/UrBfT5U.jpg" length="469292" type="image/jpg" />	</item>
+	</channel>
+</rss>

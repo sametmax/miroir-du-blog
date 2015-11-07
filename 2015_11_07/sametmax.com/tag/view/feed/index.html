@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; view</title>
+	<atom:link href="http://sametmax.com/tag/view/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Views VS generators 6</title>
+		<link>http://sametmax.com/views-vs-generators/</link>
+		<comments>http://sametmax.com/views-vs-generators/#comments</comments>
+		<pubDate>Wed, 25 Mar 2015 18:57:20 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dict]]></category>
+		<category><![CDATA[generator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[view]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15993</guid>
+		<description><![CDATA[Avec Python 2.7, un outil appelé les "views" (les "vues") est apparu. Une vue est juste un enrobage qui permet de voir un objet d'une certaine façon, et de le manipuler d'une certaine façon (avec une autre API), sans changer cet objet.]]></description>
+				<content:encoded><![CDATA[<p>Avec Python 2.7, un outil appelé les &#8220;views&#8221; (les &#8220;vues&#8221;) est apparu. Une vue est juste un enrobage qui permet de voir un objet d&#8217;une certaine façon, et de le manipuler d&#8217;une certaine façon (avec une autre API), sans changer cet objet.</p>
+<p>Les vues ont surtout été notables pour leur apparition dans les dictionnaires avec Python 2.7:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">    <span style="color: #66cc66;">&gt;&gt;&gt;</span> scores <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;sam&quot;</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;max&quot;</span>: <span style="color: #ff4500;">0</span><span style="color: black;">&#125;</span>
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># retourne une lsite</span>
+    <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'sam'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># retourne un générateur</span>
+    <span style="color: #66cc66;">&lt;</span>dictionary-itemiterator <span style="color: #008000;">object</span> at <span style="color: #ff4500;">0x7f8782a26628</span><span style="color: #66cc66;">&gt;</span>
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># sans views</span>
+    <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'sam'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">viewsitems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># avec views</span>
+    Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+      File <span style="color: #483d8b;">&quot;&lt;ipython-input-12-dc0b08011047&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+        scores.<span style="color: black;">viewsitems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># avec views</span>
+    <span style="color: #008000;">AttributeError</span>: <span style="color: #483d8b;">'dict'</span> <span style="color: #008000;">object</span> has no attribute <span style="color: #483d8b;">'viewsitems'</span>
+&nbsp;
+    <span style="color: #66cc66;">&gt;&gt;&gt;</span> scores.<span style="color: black;">viewitems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># retourne une vue</span>
+    dict_items<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'sam'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Néanmoins personne ne les a vraiment utilisé, et c&#8217;est un tort. Elles sont en effet très performantes, et pour cette raison sont retournées par défaut avec <code>items()</code> en Python 3.</p>
+<p>En effet, les vues ne sont qu&#8217;un enrobage : elles ne contiennent rien, et donc ne prennent pas beaucoup mémoire, tout comme les générateurs.</p>
+<p>Mais contrairement aux générateurs, les vues ne se vident pas et peuvent exposer une API plus complète que les générateurs, comme par exemple déclarer une taille :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> items <span style="color: #66cc66;">=</span> scores.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>items<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'sam'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>items<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># woops</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> items <span style="color: #66cc66;">=</span> scores.<span style="color: black;">viewitems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>items<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'sam'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>items<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'sam'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># nope</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-21-9c7f250da51d&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">TypeError</span>: <span style="color: #008000;">object</span> of <span style="color: #008000;">type</span> <span style="color: #483d8b;">'dictionary-itemiterator'</span> has no <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>scores.<span style="color: black;">viewitems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">2</span></pre></td></tr></table></div>
+
+<p>Alors certes, on ne peut pas mettre des vues partout, et les générateurs restent utiles. Mais quand il est possible de les utiliser, et à moins d&#8217;avoir besoin d&#8217;une liste afin de modifier les valeurs in place, il n&#8217;y pas de raison de ne pas le faire : c&#8217;est le meilleur des deux mondes. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/views-vs-generators/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/03/magic-realism-paintings-illusions-rob-gonsalves-11.jpg" length="398794" type="image/jpg" />	</item>
+		<item>
+		<title>Django, une app à la fois &#8211; faire une app de base 3</title>
+		<link>http://sametmax.com/django-une-app-a-la-fois-faire-une-app-de-base/</link>
+		<comments>http://sametmax.com/django-une-app-a-la-fois-faire-une-app-de-base/#comments</comments>
+		<pubDate>Sat, 18 Jan 2014 15:22:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[template]]></category>
+		<category><![CDATA[view]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8789</guid>
+		<description><![CDATA[Voici un nouveau morceau qui montre comment écrire une petite app de base avec un template et une vue réutilisable qui serviront donc dans les prochaines apps du projets.
+]]></description>
+				<content:encoded><![CDATA[<p>Ca faisait longtemps que je n&#8217;avais pas fait avancer le projet <a href="http://sametmax.com/django-une-app-a-la-fois/">django, an app at a time</a>.</p>
+<p>Voici donc un nouveau morceau qui montre comment écrire une petite app de base avec un template et une vue réutilisables qui serviront donc dans les prochaines apps du projet.</p>
+<p>Comme d&#8217;hab, vous pouvez récupérer le code sur <a href="https://github.com/sametmax/Django--an-app-at-a-time">la teub de Guy</a> et il y a une version française et anglaise.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/django-une-app-a-la-fois-faire-une-app-de-base/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/vghvgMc.jpg" length="111945" type="image/jpg" />	</item>
+		<item>
+		<title>La question du jour: qu&#8217;est-ce que l&#8217;objet context en Django 4</title>
+		<link>http://sametmax.com/la-question-du-jour-quest-ce-que-lobjet-context-en-django/</link>
+		<comments>http://sametmax.com/la-question-du-jour-quest-ce-que-lobjet-context-en-django/#comments</comments>
+		<pubDate>Sun, 12 Aug 2012 14:38:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[context]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[view]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1643</guid>
+		<description><![CDATA[<blockquote>J'apprends Django. Pouvez-vous me dire ce qu'est l'object context dans une méthode liée à une vue. Je vois vaguement ce qu'est l'objet request mais pas l'objet context? pouvez-vous m'en dire plus?</blockquote>]]></description>
+				<content:encoded><![CDATA[<p>Petit mail aujourd’hui:</p>
+<blockquote><p>J&#8217;apprends Django. Pouvez-vous me dire ce qu&#8217;est l&#8217;object <code>context</code> dans une méthode liée à une vue. Je vois vaguement ce qu&#8217;est l&#8217;objet <code>request</code> mais pas l&#8217;objet <code>context</code>? pouvez-vous m&#8217;en dire plus?</p></blockquote>
+<p>L&#8217;objet context est ce qui permet de faire passer des valeurs depuis la vue au template.</p>
+<p>Pour des raisons de performance, de sécurité et de facilité de débuggage, on ne veut pas passer <strong>toutes</strong> les variables d&#8217;une vue dans le template. On va donc créer un objet context, que l&#8217;on va remplir des trucs qu&#8217;on souhaite être accessibles depuis le template.</p>
+<p>L&#8217;objet context ressemble à un dictionnaire: il a des clés et des valeurs. Il est d&#8217;ailleurs créé à partir d&#8217;un vrai dictionnaire, et la plupart du temps dans une vue on voit un truc comme ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">tous_les_articles <span style="color: #66cc66;">=</span> Article.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+context <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'articles'</span>: tous_les_articles<span style="color: black;">&#125;</span>
+<span style="color: #ff7700;font-weight:bold;">return</span> render<span style="color: black;">&#40;</span><span style="color: #483d8b;">'index.html'</span><span style="color: #66cc66;">,</span> context<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Typiquement cela veut dire &#8220;Renvoyer une réponse en utilisant le template <em>index.html</em> qui aura accès à la variable <code>articles</code> contenant des objets <code>Article()</code>.).</p>
+<p>Du coup, dans le template <em>index.html</em>, on pourra faire ça:<br />
+<code><br />
+{{ articles }}</code></p>
+<p>Mais pas ça:<br />
+<code><br />
+{{ tous_les_articles }}</code></p>
+<p>Car <code>articles</code> est dans le <code>context</code>, mais pas <code>tous_les_articles</code>. Même si dans notre cas on s&#8217;en branle puisqu&#8217;ils ont la même valeur.</p>
+<p>Il y a un piège cependant dans cet exemple :-)</p>
+<p><code>Context</code> ici <strong>n&#8217;est PAS un objet context</strong>, mais par facilité on l&#8217;appelle ainsi. Ici <code>context</code> est un dictionnaire des valeurs que l&#8217;on veut mettre dans le vrai objet context. On passe ce dictionnaire à la fonction <code>render()</code> qui va se charger de la corvée de charger le template, créer le vrai objet context, lui passer les valeurs dans le dictionnaires, et faire le rendu du template avec ces valeurs puis retourner la réponse HTTP avec le résultat.</p>
+<p>Je note que dans le question, notre interlocuteur nous parle de méthode. Si il utilise les vues génériques sous forme de classe (ce que <a href="http://sametmax.com/des-vues-normales-aux-vues-generiques-django/">je recommande d&#8217;éviter à tout prix</a>), dans ce cas on retrouve le <code>context</code> généralement ainsi:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">context <span style="color: #66cc66;">=</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>MaView<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">get_context_data</span><span style="color: black;">&#40;</span>**kwargs<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Dans ce cas, <code>context</code> est le vrai objet <code>context</code>, déjà tout fait rien que pour vous par la vue. Mais comme il se comporte comme un dictionnaire, on peut très bien continuer à l&#8217;utiliser comme avant:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">context<span style="color: black;">&#91;</span><span style="color: #483d8b;">'articles'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> Article.<span style="color: black;">objects</span>.<span style="color: #008000;">all</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">return</span> context</pre></td></tr></table></div>
+
+<p>Et du coup faire:<br />
+<code><br />
+{{ articles }}<br />
+</code><br />
+Dans le <code>template</code> spécifié dans l&#8217;attribut <code>template_name</code> de la classe.</p>
+<p>Dans ce cas, la vue va se charger automatiquement de récupérer le <code>context</code> ainsi retourné, et de faire le rendu du template avec celui-ci. Ici ça à l&#8217;air un peu plus magique, et un débutant aura du mal à comprendre d&#8217;où vient le <code>context</code> et où va le <code>context</code>. C&#8217;est entre autre pour ça que je recommande de ne pas utiliser les vues sous forme de classe. Utilisez les fonctions, c&#8217;est beaucoup plus simple.</p>
+<p>Une dernière chose: <strong>pourquoi utiliser un objet <code>context</code>, et pas juste un dictionnaire ?</strong> Après tout il s&#8217;agit juste d&#8217;avoir une liste des variables accessible dans le template non ?</p>
+<p>En fait, le <code>context</code> peut faire bien plus. Notamment, il est possible de le remplir automatiquement pour toutes les vues au travers des context managers.</p>
+<p>Par ailleurs, pour les questions sur Django, je vous recommande à tous de rejoindre le forum de <a href="http://forum.django-fr.org/">Django-fr</a> qui est justement là pour ça. On ouvrira un compte Sam&amp;Max si personne ne répond :-)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/la-question-du-jour-quest-ce-que-lobjet-context-en-django/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/949432-help-hand.jpg" length="157138" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Le guide ultime et définitif sur la programmation orientée objet en Python à l’usage des débutants qui sont rassurés par les textes détaillés qui prennent le temps de tout expliquer. Partie 3.</title>
+	<atom:link href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-164506</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 18 Sep 2015 17:10:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-164506</guid>
+		<description><![CDATA[&lt;p&gt;Il va falloir que je rajoute le mécanisme de recherche.&lt;/p&gt;
+
+&lt;p&gt;Quand tu fais obj.attr, ça va chercher obj.attr, et si ça ne le trouve pas, ça va chercher Class.attr, puis si ça ne le trouve pas, ça va chercher celui de la classe parente, etc.&lt;/p&gt;
+
+&lt;p&gt;Donc si tu set ton attribut (obj.attr = truc), il existe sur l&#039;objet, et c&#039;est ce qui est retourné. Si tu ne le set pas, alors c&#039;est celui de la classe qui est utilisé, et c&#039;est pourquoi tu vois la modification sembler se &quot;propager&quot;.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Il va falloir que je rajoute le mécanisme de recherche.</p>
+<p>Quand tu fais obj.attr, ça va chercher obj.attr, et si ça ne le trouve pas, ça va chercher Class.attr, puis si ça ne le trouve pas, ça va chercher celui de la classe parente, etc.</p>
+<p>Donc si tu set ton attribut (obj.attr = truc), il existe sur l&#8217;objet, et c&#8217;est ce qui est retourné. Si tu ne le set pas, alors c&#8217;est celui de la classe qui est utilisé, et c&#8217;est pourquoi tu vois la modification sembler se &#8220;propager&#8221;.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Benji</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-164427</link>
+		<dc:creator><![CDATA[Benji]]></dc:creator>
+		<pubDate>Wed, 16 Sep 2015 12:44:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-164427</guid>
+		<description><![CDATA[&lt;blockquote&gt;
+Si je modifie l’attribut au niveau de la classe, la classe et toutes les instances crées après ont la nouvelle valeur.
+&lt;/blockquote&gt;
+
+&lt;p&gt;Bizarre, j&#039;ai ça :&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;&gt;&gt;&gt; class HobJay:
+...  classtribut = &#039;et un&#039;&gt;&gt;&gt; 
+...
+
+      &gt;&gt;&gt; h1 = HobJay()
+      &gt;&gt;&gt; h2 = HobJay()
+      &gt;&gt;&gt; h3 = HobJay()
+      &gt;&gt;&gt; h1.classtribut
+      &#039;et un&#039;
+      &gt;&gt;&gt; h2.classtribut
+      &#039;et un&#039;
+      &gt;&gt;&gt; h3.classtribut
+      &#039;et un&#039;
+      &gt;&gt;&gt; h2.classtribut = &#039;et deux&#039;
+      &gt;&gt;&gt; h2.classtribut
+      &#039;et deux&#039;
+      &gt;&gt;&gt; HobJay.classtribut = &#039;et trois zero !&#039;
+      &gt;&gt;&gt; h1.classtribut
+      &#039;et trois zero !&#039;
+      &gt;&gt;&gt; h2.classtribut
+      &#039;et deux&#039;
+      &gt;&gt;&gt; h3.classtribut
+      &#039;et trois zero !&#039;
+      &gt;&gt;&gt; import sys
+      &gt;&gt;&gt; print(sys.version)
+      3.4.3 (default, Mar 25 2015, 17:13:50)
+      
+      [GCC 4.9.2 20150304 (prerelease)]&lt;/pre&gt;
+
+&lt;p&gt;On dirait plutôt que changer l&#039;attribut de classe change l&#039;attribut de toutes les instances, sauf celles dont l&#039;attribut a été changée avant. Comme si l&#039;attribut de classe était &quot;écrasé&quot; par un attribut d&#039;instance chez h2.&lt;/p&gt;
+
+&lt;p&gt;Ou alors c&#039;est un comportement qui change avec les versions ?&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<blockquote><p>
+Si je modifie l’attribut au niveau de la classe, la classe et toutes les instances crées après ont la nouvelle valeur.
+</p></blockquote>
+<p>Bizarre, j&#8217;ai ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> HobJay:
+...  <span style="color: black;">classtribut</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'et un'</span><span style="color: #66cc66;">&gt;&gt;&gt;</span> 
+...
+&nbsp;
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h1 <span style="color: #66cc66;">=</span> HobJay<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h2 <span style="color: #66cc66;">=</span> HobJay<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h3 <span style="color: #66cc66;">=</span> HobJay<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h1.<span style="color: black;">classtribut</span>
+      <span style="color: #483d8b;">'et un'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h2.<span style="color: black;">classtribut</span>
+      <span style="color: #483d8b;">'et un'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h3.<span style="color: black;">classtribut</span>
+      <span style="color: #483d8b;">'et un'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h2.<span style="color: black;">classtribut</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'et deux'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h2.<span style="color: black;">classtribut</span>
+      <span style="color: #483d8b;">'et deux'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> HobJay.<span style="color: black;">classtribut</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'et trois zero !'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h1.<span style="color: black;">classtribut</span>
+      <span style="color: #483d8b;">'et trois zero !'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h2.<span style="color: black;">classtribut</span>
+      <span style="color: #483d8b;">'et deux'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> h3.<span style="color: black;">classtribut</span>
+      <span style="color: #483d8b;">'et trois zero !'</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+      <span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">version</span><span style="color: black;">&#41;</span>
+      3.4.3 <span style="color: black;">&#40;</span>default<span style="color: #66cc66;">,</span> Mar <span style="color: #ff4500;">25</span> <span style="color: #ff4500;">2015</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">17</span>:<span style="color: #ff4500;">13</span>:<span style="color: #ff4500;">50</span><span style="color: black;">&#41;</span>
+&nbsp;
+      <span style="color: black;">&#91;</span>GCC 4.9.2 <span style="color: #ff4500;">20150304</span> <span style="color: black;">&#40;</span>prerelease<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>On dirait plutôt que changer l&#8217;attribut de classe change l&#8217;attribut de toutes les instances, sauf celles dont l&#8217;attribut a été changée avant. Comme si l&#8217;attribut de classe était &#8220;écrasé&#8221; par un attribut d&#8217;instance chez h2.</p>
+<p>Ou alors c&#8217;est un comportement qui change avec les versions ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-163957</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 20 Aug 2015 16:59:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-163957</guid>
+		<description><![CDATA[&lt;blockquote&gt;
+  &lt;p&gt;As-tu un conseil qui peut aider à réfléchir objet ?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Réfléchir objet le moins possible. On utilise les objets quand on veut créer une API particulière ou quand on a un état auquel on fait référence dans de nombreuses fonctions qu&#039;on transforme donc en méthode. Pour le reste, pas besoin d&#039;objets.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Autre question, un peu plus technique, les attributs de classes au niveau de la classe se mettent-ils à jour si 2 objets sont dans des threads différents ?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Oui les espaces mémoires sont partagé entre les threads, pour avoir des variables non partagées, il faut utilise des thread locals variables ou des queues.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<blockquote>
+<p>As-tu un conseil qui peut aider à réfléchir objet ?</p>
+</blockquote>
+<p>Réfléchir objet le moins possible. On utilise les objets quand on veut créer une API particulière ou quand on a un état auquel on fait référence dans de nombreuses fonctions qu&#8217;on transforme donc en méthode. Pour le reste, pas besoin d&#8217;objets.</p>
+<blockquote>
+<p>Autre question, un peu plus technique, les attributs de classes au niveau de la classe se mettent-ils à jour si 2 objets sont dans des threads différents ?</p>
+</blockquote>
+<p>Oui les espaces mémoires sont partagé entre les threads, pour avoir des variables non partagées, il faut utilise des thread locals variables ou des queues.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: John</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-163906</link>
+		<dc:creator><![CDATA[John]]></dc:creator>
+		<pubDate>Tue, 18 Aug 2015 11:50:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-163906</guid>
+		<description><![CDATA[Hello et bravo pour ce tuto, j&#039;en suis à ma seconde lecture.
+
+Je maitrise bien les notions des classes Python, mon grand défaut est de vouloir (insconciemment) créer des classes outils pour y fourrer un peu tout ce qui a un rapport (donc finalement beaucoup de méthodes).
+
+J&#039;essaie donc de sortir de mon habitude bizarre de tout ranger, et d&#039;utiliser un peu plus les objets et les comportements naturels qui y sont liés, et après plusieurs années de dev procédural ce n&#039;est pas toujours simple (surtout sur la partie intéraction entre les classes, j&#039;hésite souvent entre la dérivation etc...)
+
+As-tu un conseil qui peut aider à réfléchir objet ?
+
+Autre question, un peu plus technique, les attributs de classes au niveau de la classe se mettent-ils à jour si 2 objets sont dans des threads différents ?
+]]></description>
+		<content:encoded><![CDATA[<p>Hello et bravo pour ce tuto, j&#8217;en suis à ma seconde lecture.</p>
+<p>Je maitrise bien les notions des classes Python, mon grand défaut est de vouloir (insconciemment) créer des classes outils pour y fourrer un peu tout ce qui a un rapport (donc finalement beaucoup de méthodes).</p>
+<p>J&#8217;essaie donc de sortir de mon habitude bizarre de tout ranger, et d&#8217;utiliser un peu plus les objets et les comportements naturels qui y sont liés, et après plusieurs années de dev procédural ce n&#8217;est pas toujours simple (surtout sur la partie intéraction entre les classes, j&#8217;hésite souvent entre la dérivation etc&#8230;)</p>
+<p>As-tu un conseil qui peut aider à réfléchir objet ?</p>
+<p>Autre question, un peu plus technique, les attributs de classes au niveau de la classe se mettent-ils à jour si 2 objets sont dans des threads différents ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: sensini42</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-106670</link>
+		<dc:creator><![CDATA[sensini42]]></dc:creator>
+		<pubDate>Tue, 05 Aug 2014 11:51:39 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-106670</guid>
+		<description><![CDATA[ce qu&#039;on a pas vu : on &lt;strong&gt;n&lt;/strong&gt;&#039;a ?
+toutes les instances crées : créées
+ça à l&#039;air : ça a
+
+écrite toute en majuscule : tout en majuscule (voire tout en lettres capitales, majuscule = 1e lettre du mot toussa)
+
+(object) là haut là: balise code à object + là-haut avec trait d&#039;union
+
+Très clair sinon :)]]></description>
+		<content:encoded><![CDATA[<p>ce qu&#8217;on a pas vu : on <strong>n</strong>&#8216;a ?<br />
+toutes les instances crées : créées<br />
+ça à l&#8217;air : ça a</p>
+<p>écrite toute en majuscule : tout en majuscule (voire tout en lettres capitales, majuscule = 1e lettre du mot toussa)</p>
+<p>(object) là haut là: balise code à object + là-haut avec trait d&#8217;union</p>
+<p>Très clair sinon :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-18857</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 23 Jan 2014 09:24:59 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-18857</guid>
+		<description><![CDATA[C&#039;est corrigé mon amour.]]></description>
+		<content:encoded><![CDATA[<p>C&#8217;est corrigé mon amour.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Réchèr</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-18853</link>
+		<dc:creator><![CDATA[Réchèr]]></dc:creator>
+		<pubDate>Thu, 23 Jan 2014 09:01:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-18853</guid>
+		<description><![CDATA[Ouais, mais dans True Lies, Schwarzy bute un crocodile en le traitant de &quot;sac à main&quot;, ce que Lhermitte ne fait pas. C&#039;était donc un remake qui valait le coup.
+
+Quelques petites corrections :
+
+&quot;public static virtuel &lt;strong&gt;neconceptuel&lt;/strong&gt;&quot;
+C&#039;est quoi ce &quot;neconceptuel&quot; ? C&#039;est un vrai-mot clé, ou c&#039;est une faute de frappe au mot &quot;neoconceptuel&quot; ?
+
+Y&#039;a dû y avoir confusion dans la lolisation du code. Les instances qui s&#039;appellent &quot;&lt;strong&gt;etranger_qui_vole_le_travail_des_francais&lt;/strong&gt;&quot; devraient être renommées en &quot;&lt;strong&gt;flim_pas_sur_le_cyclimse&lt;/strong&gt;&quot;.
+À remplacer à deux endroits.]]></description>
+		<content:encoded><![CDATA[<p>Ouais, mais dans True Lies, Schwarzy bute un crocodile en le traitant de &#8220;sac à main&#8221;, ce que Lhermitte ne fait pas. C&#8217;était donc un remake qui valait le coup.</p>
+<p>Quelques petites corrections :</p>
+<p>&#8220;public static virtuel <strong>neconceptuel</strong>&#8221;<br />
+C&#8217;est quoi ce &#8220;neconceptuel&#8221; ? C&#8217;est un vrai-mot clé, ou c&#8217;est une faute de frappe au mot &#8220;neoconceptuel&#8221; ?</p>
+<p>Y&#8217;a dû y avoir confusion dans la lolisation du code. Les instances qui s&#8217;appellent &#8220;<strong>etranger_qui_vole_le_travail_des_francais</strong>&#8221; devraient être renommées en &#8220;<strong>flim_pas_sur_le_cyclimse</strong>&#8220;.<br />
+À remplacer à deux endroits.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: foxmask</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-5901</link>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+		<pubDate>Sun, 03 Feb 2013 19:41:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-5901</guid>
+		<description><![CDATA[Ok ;) aime bien mettre le doigt à des endroits comme ça ;)]]></description>
+		<content:encoded><![CDATA[<p>Ok ;) aime bien mettre le doigt à des endroits comme ça ;)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-5897</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 03 Feb 2013 16:32:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-5897</guid>
+		<description><![CDATA[Aucune idée.]]></description>
+		<content:encoded><![CDATA[<p>Aucune idée.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: foxmask</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comment-5895</link>
+		<dc:creator><![CDATA[foxmask]]></dc:creator>
+		<pubDate>Sun, 03 Feb 2013 16:06:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=4292#comment-5895</guid>
+		<description><![CDATA[Alors si c&#039;est si chiant pourquoi le laisser possible en python ?]]></description>
+		<content:encoded><![CDATA[<p>Alors si c&#8217;est si chiant pourquoi le laisser possible en python ?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
