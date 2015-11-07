@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
 	xmlns:content="http://purl.org/rss/1.0/modules/content/"
 	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -9,30 +8,169 @@
 	>
 
 <channel>
-	<title>Sam &#38; Max: Python, Django, Git et du cul &#187; coyote</title>
+	<title>Sam &#38; Max &#187; coyote</title>
 	<atom:link href="http://sametmax.com/author/coyote/feed/" rel="self" type="application/rss+xml" />
 	<link>http://sametmax.com</link>
-	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
-	<lastBuildDate>Wed, 05 Feb 2014 14:20:37 +0000</lastBuildDate>
-	<language>en</language>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.3.1</generator>
-	<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2F&amp;language=en_US&amp;category=text&amp;title=Sam+%26amp%3B+Max%3A+Python%2C+Django%2C+Git+et+du+cul&amp;description=Deux+d%C3%A9veloppeurs+en+vadrouille+qui+se+sortent+les+doigts+du+code&amp;tags=blog" type="text/html" />
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Minitip pew et OSX</title>
+		<link>http://sametmax.com/minitip-pew-et-osx/</link>
+		<comments>http://sametmax.com/minitip-pew-et-osx/#comments</comments>
+		<pubDate>Wed, 15 Apr 2015 11:27:32 +0000</pubDate>
+		<dc:creator><![CDATA[coyote]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[osx]]></category>
+		<category><![CDATA[pew]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15826</guid>
+		<description><![CDATA[
+Comme tout bon lecteur de S&#38;M, je me fais un devoir d'adopter tous les outils conseillés par nos maîtres (oui bon sauf crossbar.io – j'ai une vie…)
+]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/coyote/">coyote</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<p>Comme tout bon lecteur de S&amp;M, je me fais un devoir d&#8217;adopter tous les outils conseillés par nos maîtres (oui bon sauf crossbar.io – j&#8217;ai une vie…)</p>
+<p>Donc, j&#8217;étais très heureux de découvrir <a title="pew" href="http://sametmax.com/mieux-que-python-virtualenvwrapper-pew/">pew</a> mais soyons honnête, ce n&#8217;est pas <em>exactement</em> un drop-in replacement de virtualenv-wrapper. Bien sûr, c&#8217;est très proche et c&#8217;est beaucoup mieux mais… deux-trois petites bricoles n’emmerdaient toujours.</p>
+<h3>Le problème</h3>
+<p><strong>bash</strong> sous OSX et Linux ont des configurations et conventions un poil différentes ce qui fait que par défaut, si vous n&#8217;êtes pas déjà au fait de ces différences, vous vous rendez compte que dès que vous activez un environnement avec pew, tout est cassé : votre prompt, vos raccourcis, etc.</p>
+<p>Tout ça est dû au fait que (/!\ simplification inside) :</p>
+<p>* Sous linux, au lancement de tout shell, le contenu du <em>bashrc</em> (<em>~/.bashrc</em>, <em>/etc/bashrc</em>) est exécuté.<br />
+* Sous OSX, au lancement d&#8217;un terminal, le contenu du <em>~/.bash_login</em> est exécuté puis au lancement de subshell, c&#8217;est le ~/bashrc.</p>
+<p>C&#8217;est con, mais ça veut dire qu&#8217;à chaque <code lang="bash">pew workon toto</code>, seul <em>.bashrc</em> est exécuté. Et généralement, sous OSX, il est vide ou non existant.</p>
+<h3>La solution</h3>
+<p>C&#8217;est très simple, mais ça prends quand même 5mn…</p>
+<p>On ne peut pas simplement tout déplacer du .bash_login vers le .bashrc, sinon hors virtualenv ça ne marchera pas. Voici donc comment je fais moi, mais c&#8217;est juste parce que je suis paresseux.</p>
+<p><strong><em>~/.bash_login</em>:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">source</span> ~<span style="color: #000000; font-weight: bold;">/</span>.bashrc</pre></td></tr></table></div>
+
+<p>Et c&#8217;est tout. En gros, on court-circuite le comportement OSX pour revenir vers du plus standard.</p>
+<p><strong>Extrait du <em>~/.bashrc</em>:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;"># modification de diverses variables que je veux PARTOUT (hors env et dans env)</span>
+<span style="color: #7a0874; font-weight: bold;">export</span> <span style="color: #007800;">PATH</span>=<span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>mongodb-osx-x86_64-2.6.3<span style="color: #000000; font-weight: bold;">/</span>bin:<span style="color: #007800;">$PATH</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># modifications que je veux uniquement HORS env</span>
+<span style="color: #666666; font-style: italic;"># si vous avez d'autres versions de python ou pip dans votre path,</span>
+<span style="color: #666666; font-style: italic;"># comme le .bashrc est lancé après l'inclusion du path de l'environ par pew</span>
+<span style="color: #666666; font-style: italic;"># vous devez bricoler sinon vous aurez pas la bonne version. </span>
+<span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#91;</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${VIRTUAL_ENV}</span>a&quot;</span> = <span style="color: #ff0000;">&quot;a&quot;</span> <span style="color: #7a0874; font-weight: bold;">&#93;</span>
+	<span style="color: #000000; font-weight: bold;">then</span>
+	<span style="color: #7a0874; font-weight: bold;">export</span> <span style="color: #007800;">PATH</span>=<span style="color: #ff0000;">&quot;/Library/Frameworks/Python.framework/Versions/3.4/bin:<span style="color: #007800;">${PATH}</span>&quot;</span>
+<span style="color: #000000; font-weight: bold;">else</span>
+        <span style="color: #666666; font-style: italic;"># modification voulues uniquement dans l'env ?</span>
+<span style="color: #000000; font-weight: bold;">fi</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># raccourcis pour les vieilles habitudes. c'est ce qui me derange</span>
+<span style="color: #666666; font-style: italic;"># le plus avec pew :)</span>
+<span style="color: #000000; font-weight: bold;">function</span> workon<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+	pew-workon $<span style="color: #000000; font-weight: bold;">@</span>;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># completion pew sur le raccourci. vous connaissez le nom de vos envs vous ?</span>
+_pew<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #7a0874; font-weight: bold;">&#123;</span>
+    <span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">cur</span>=<span style="color: #800000;">${COMP_WORDS[COMP_CWORD]}</span>
+    <span style="color: #007800;">COMPREPLY</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span> $<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">compgen</span> <span style="color: #660033;">-W</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">$(pew-ls)</span>&quot;</span> <span style="color: #660033;">--</span> <span style="color: #800000;">${cur}</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">complete</span> <span style="color: #660033;">-F</span> _pew workon
+&nbsp;
+<span style="color: #666666; font-style: italic;"># renvoie le path d'un projet depuis le nom de l'env pour faire d'une pierre deux coups (optionnel)</span>
+<span style="color: #666666; font-style: italic;"># utilise pyp</span>
+<span style="color: #000000; font-weight: bold;">function</span> pwdof<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+	<span style="color: #007800;">path</span>=<span style="color: #000000; font-weight: bold;">`</span><span style="color: #7a0874; font-weight: bold;">pwd</span><span style="color: #000000; font-weight: bold;">`</span>
+	<span style="color: #007800;">env_name</span>=<span style="color: #000000; font-weight: bold;">`</span><span style="color: #7a0874; font-weight: bold;">echo</span> $<span style="color: #000000; font-weight: bold;">@|</span> pyp <span style="color: #ff0000;">&quot;p.split('/')[-1]&quot;</span><span style="color: #000000; font-weight: bold;">`</span>
+	<span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#91;</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${env_name}</span>&quot;</span> = <span style="color: #ff0000;">&quot;toto&quot;</span> <span style="color: #7a0874; font-weight: bold;">&#93;</span>
+		<span style="color: #000000; font-weight: bold;">then</span>
+		<span style="color: #007800;">path</span>=~<span style="color: #000000; font-weight: bold;">/</span>src<span style="color: #000000; font-weight: bold;">/</span>toto-project;
+	<span style="color: #000000; font-weight: bold;">fi</span>
+&nbsp;
+	<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #007800;">$path</span>;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># coloration du prompt a l’intérieur du subshell</span>
+<span style="color: #666666; font-style: italic;"># j'aime avoir les branches git et le nom de l'env dans mon prompt.</span>
+<span style="color: #666666; font-style: italic;"># donc pour que votre prompt marche dehors ET dedans (exemple)</span>
+<span style="color: #000000; font-weight: bold;">function</span> color_prompt <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+    <span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">__user_and_host</span>=<span style="color: #ff0000;">&quot;\[\033[01;32m\]\u@\h&quot;</span>
+    <span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">__cur_location</span>=<span style="color: #ff0000;">&quot;\[\033[01;34m\]\w&quot;</span>
+    <span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">__git_branch_color</span>=<span style="color: #ff0000;">&quot;\[\033[31m\]&quot;</span>
+    <span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">__git_branch</span>=<span style="color: #ff0000;">'`git branch 2&amp;gt; /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\(\\\\\1\)\ /`'</span>
+    <span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">__prompt_tail</span>=<span style="color: #ff0000;">&quot;\[\033[35m\]$&quot;</span>
+    <span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">__last_color</span>=<span style="color: #ff0000;">&quot;\[\033[00m\]&quot;</span>
+    <span style="color: #7a0874; font-weight: bold;">export</span> <span style="color: #007800;">PS1</span>=<span style="color: #ff0000;">&quot;<span style="color: #007800;">$__user_and_host</span> <span style="color: #007800;">$__cur_location</span> <span style="color: #007800;">$__git_branch_color</span><span style="color: #007800;">$__git_branch</span><span style="color: #007800;">$__prompt_tail</span><span style="color: #007800;">$__last_color</span> &quot;</span>
+    <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#91;</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${VIRTUAL_ENV}</span>a&quot;</span> <span style="color: #000000; font-weight: bold;">!</span>= <span style="color: #ff0000;">&quot;a&quot;</span> <span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    	<span style="color: #000000; font-weight: bold;">then</span>
+		<span style="color: #7a0874; font-weight: bold;">export</span> <span style="color: #007800;">PS1</span>=<span style="color: #ff0000;">&quot;(<span style="color: #000099; font-weight: bold;">\$</span>(basename '<span style="color: #007800;">$VIRTUAL_ENV</span>'))<span style="color: #007800;">$PS1</span>&quot;</span>;
+&nbsp;
+		<span style="color: #666666; font-style: italic;"># facultatif: permet de faire un cd au lancement du subshell</span>
+		<span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">`</span>pwdof <span style="color: #800000;">${VIRTUAL_ENV}</span><span style="color: #000000; font-weight: bold;">`</span>
+   	<span style="color: #000000; font-weight: bold;">fi</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+color_prompt
+&nbsp;
+<span style="color: #666666; font-style: italic;"># completion de la commande pew qui n'est pas installé par pip</span>
+<span style="color: #666666; font-style: italic;"># mais qui reste pratique.</span>
+<span style="color: #666666; font-style: italic;"># adapté depuis: https://github.com/berdario/pew/blob/master/pew/complete_scripts/complete.bash</span>
+_pew<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+<span style="color: #7a0874; font-weight: bold;">&#123;</span>
+	<span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">cur</span>=<span style="color: #800000;">${COMP_WORDS[COMP_CWORD]}</span>
+	<span style="color: #7a0874; font-weight: bold;">local</span> <span style="color: #007800;">prev</span>=<span style="color: #800000;">${COMP_WORDS[COMP_CWORD-1]}</span>
+    <span style="color: #007800;">args</span>=<span style="color: #ff0000;">&quot;--help --python -i -a -r&quot;</span>
+    <span style="color: #007800;">commands</span>=<span style="color: #ff0000;">&quot;ls add mkproject rm lssitepackages cp workon new mktmpenv setproject show wipeenv sitepackages_dir inall toggleglobalsitepackages&quot;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">case</span> <span style="color: #007800;">$prev</span> <span style="color: #000000; font-weight: bold;">in</span>
+        <span style="color: #c20cb9; font-weight: bold;">ls</span><span style="color: #000000; font-weight: bold;">|</span>show<span style="color: #000000; font-weight: bold;">|</span><span style="color: #c20cb9; font-weight: bold;">rm</span><span style="color: #000000; font-weight: bold;">|</span>workon<span style="color: #000000; font-weight: bold;">|</span><span style="color: #c20cb9; font-weight: bold;">cp</span><span style="color: #000000; font-weight: bold;">|</span>setproject<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #007800;">COMPREPLY</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span> $<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">compgen</span> <span style="color: #660033;">-W</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">$(pew-ls)</span>&quot;</span> <span style="color: #660033;">--</span> <span style="color: #800000;">${cur}</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #7a0874; font-weight: bold;">return</span> <span style="color: #000000;">0</span>
+            <span style="color: #000000; font-weight: bold;">;;</span>
+        inall<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            _command_offset <span style="color: #000000;">2</span>
+            <span style="color: #7a0874; font-weight: bold;">return</span> <span style="color: #000000;">0</span>
+            <span style="color: #000000; font-weight: bold;">;;</span>
+        mktmpenv<span style="color: #000000; font-weight: bold;">|</span>new<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #007800;">COMPREPLY</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span> $<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">compgen</span> <span style="color: #660033;">-W</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${args}</span>&quot;</span> <span style="color: #660033;">--</span> <span style="color: #800000;">${cur}</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #7a0874; font-weight: bold;">return</span> <span style="color: #000000;">0</span>
+            <span style="color: #000000; font-weight: bold;">;;</span>
+        mkproject<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #007800;">COMPREPLY</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span> $<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">compgen</span> <span style="color: #660033;">-W</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${args}</span> -t --list&quot;</span> <span style="color: #660033;">--</span> <span style="color: #800000;">${cur}</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #7a0874; font-weight: bold;">return</span> <span style="color: #000000;">0</span>
+            <span style="color: #000000; font-weight: bold;">;;</span>
+        add<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #007800;">COMPREPLY</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span> $<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">compgen</span> <span style="color: #660033;">-W</span> <span style="color: #ff0000;">&quot;--help -d&quot;</span> <span style="color: #660033;">--</span> <span style="color: #800000;">${cur}</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#41;</span>
+            <span style="color: #7a0874; font-weight: bold;">return</span> <span style="color: #000000;">0</span>
+            <span style="color: #000000; font-weight: bold;">;;</span>
+    <span style="color: #000000; font-weight: bold;">esac</span>
+&nbsp;
+    <span style="color: #007800;">COMPREPLY</span>=<span style="color: #7a0874; font-weight: bold;">&#40;</span> $<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">compgen</span> <span style="color: #660033;">-W</span> <span style="color: #ff0000;">&quot;<span style="color: #007800;">${commands}</span>&quot;</span> <span style="color: #660033;">--</span> <span style="color: #800000;">${cur}</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">complete</span> <span style="color: #660033;">-F</span> _pew pew</pre></td></tr></table></div>
+
+<p>Et voilà !</p>
+<p>Ça casse pas trois pattes à un canard mais si vous êtes sous OSX, que vous avez installé, vu que c&#8217;était pas parfait puis vous êtes dit «on verra plus tard» et bien le moment est arrivé.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/minitip-pew-et-osx/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/ZhHAoYy.jpg" length="112688" type="image/jpg" />	</item>
 		<item>
-		<title>Mon premier projet Python3</title>
+		<title>Mon premier projet Python3 7</title>
 		<link>http://sametmax.com/mon-premier-projet-python3/</link>
 		<comments>http://sametmax.com/mon-premier-projet-python3/#comments</comments>
 		<pubDate>Thu, 03 Oct 2013 18:37:01 +0000</pubDate>
-		<dc:creator>coyote</dc:creator>
+		<dc:creator><![CDATA[coyote]]></dc:creator>
 				<category><![CDATA[Programmation]]></category>
 		<category><![CDATA[django]]></category>
 		<category><![CDATA[python]]></category>
 		<category><![CDATA[python 3]]></category>
 
 		<guid isPermaLink="false">http://sametmax.com/?p=7281</guid>
-		<description><![CDATA[Ceci est un post invité de Coyote posté sous licence creative common 3.0 unported. Et oui, il fallait bien que ça arrive. La genèse Bon, ça avait commencé doucement. Il y a de ça quelques temps (avant même l&#8217;article de Sam), j&#8217;avais configuré mon Sublimissime pour qu&#8217;il me force les import du __futur__. Étant moi-même [...]]]></description>
-			<content:encoded><![CDATA[<blockquote><p>
+		<description><![CDATA[Ceci est un post invité de Coyote posté sous licence creative common 3.0 unported. Et oui, il fallait bien que ça arrive. La genèse Bon, ça avait commencé doucement. Il y a de ça quelques temps (avant même l&#8217;article de Sam), j&#8217;avais configuré mon Sublimissime pour qu&#8217;il me force les import du __futur__. Étant moi-même [&#8230;]]]></description>
+				<content:encoded><![CDATA[<blockquote><p>
 Ceci est un post invité de <a href="http://sametmax.com/author/coyote/">Coyote</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.
 </p></blockquote>
 <p>Et oui, il fallait bien que ça arrive.</p>
@@ -91,17 +229,16 @@ Ce code fonctionne bien avec PY3, mais avec PY2, le fait de réutiliser le même
 <p>Et bien, on a un petit projet développé à plusieurs, en PY3.3, qui est déployé en PY2.7 donc c&#8217;est possible ; on a pas rencontré de grande difficultées donc je pense que pour du web, c&#8217;est pas loin d&#8217;être mûr.</p>
 <p><strong>Pas grand chose à dire</strong> finalement, et c&#8217;est sans doute ça le plus important !</p>
 <p>Allez bookmarker le site <a href="http://python3porting.com">python3porting</a> qui contient les infos sur ce qui a changé. Ca a l&#8217;air long mais en fait, y&#8217;a beaucoup de cas spécifiques.</p>
- <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=7281&amp;md5=dec3880c1a22a4a73680bebe3f8f04fc" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+]]></content:encoded>
 			<wfw:commentRss>http://sametmax.com/mon-premier-projet-python3/feed/</wfw:commentRss>
 		<slash:comments>7</slash:comments>
-		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Fmon-premier-projet-python3%2F&amp;language=en_GB&amp;category=text&amp;title=Mon+premier+projet+Python3&amp;description=Ceci+est+un+post+invit%C3%A9+de+Coyote+post%C3%A9+sous+licence+creative+common+3.0+unported.+Et+oui%2C+il+fallait+bien+que+%C3%A7a+arrive.+La+gen%C3%A8se+Bon%2C+%C3%A7a+avait+commenc%C3%A9+doucement.+Il...&amp;tags=django%2Cpython%2Cpython+3%2Cblog" type="text/html" />
-<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/28-manipulations-photographiques-brillantes-qui-vous-feront-rever9.jpg" length="163962" type="image/jpg" />	</item>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/28-manipulations-photographiques-brillantes-qui-vous-feront-rever9.jpg" length="163962" type="image/jpg" />	</item>
 		<item>
-		<title>Tiens, je suis toujours sur OSX</title>
+		<title>Tiens, je suis toujours sur OSX 81</title>
 		<link>http://sametmax.com/tiens-je-suis-toujours-sur-osx/</link>
 		<comments>http://sametmax.com/tiens-je-suis-toujours-sur-osx/#comments</comments>
 		<pubDate>Wed, 19 Jun 2013 11:23:42 +0000</pubDate>
-		<dc:creator>coyote</dc:creator>
+		<dc:creator><![CDATA[coyote]]></dc:creator>
 				<category><![CDATA[Administration System]]></category>
 		<category><![CDATA[linux]]></category>
 		<category><![CDATA[mac]]></category>
@@ -110,7 +247,7 @@ Ce code fonctionne bien avec PY3, mais avec PY2, le fait de réutiliser le même
 
 		<guid isPermaLink="false">http://sametmax.com/?p=6419</guid>
 		<description><![CDATA[Soudain, je sais plus exactement vers quelle version, je crois que c'était la 10.10, Ubuntu a commencé à devenir de plus en plus pénible et les nouvelles versions n'ont fait qu'accroitre la frustration.]]></description>
-			<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/coyote/">coyote</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/coyote/">coyote</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
 <p><strong>Attention</strong>: ce qui suit est un billet d&#8217;humeur personnel. Prenez le comme tel…</p>
 <p>Je suis un <em>linuxien</em>. Pas un activiste, mais tout de même un fervent défenseur du logiciel libre et de Linux (oui pour moi écrire <em>GNU/Linux</em> partout c&#8217;est pédant et inutile – et ça te fait passer pour un gros nazi.). J&#8217;ai même créé une association de défense du libre, un <acronym title="Linux User Group">LUG</acronym> et fait <em>switcher</em> de très nombreuses personnes.</p>
 <h2>Mais alors, <strong>bordel, que fais-je sur<sup>1</sup> OSX ?</strong></h2>
@@ -132,30 +269,29 @@ Ce code fonctionne bien avec PY3, mais avec PY2, le fait de réutiliser le même
 <p>Au fil des versions, des nouveaux problèmes, des fonctionnalités perdues, toute tentative montrant à quel point Ubuntu s&#8217;écarte du Linux modulaire, j&#8217;ai décidé de franchir le Rubicon et de tester d&#8217;autres distros.</p>
 <p>Pour faire (très) court :</p>
 <ul>
-<li>Toutes les non-debian ne m&#8217;ont pas plus: la gestion des paquets est contre-productive pour moi qui ait des années d&#8217;apt dans les dents. Surtout, c&#8217;est <strong>lent comme la mort</strong>. Incroyablement lent en 2013 ; WTF?</li>
-<li>Les debian-ubuntu-based: la plupart sont des customisations d&#8217;Ubuntu avec des paquets différents, des thèmes et des outils. J&#8217;ai pas vu d&#8217;avantages vraiment et toutes ont des petits désagréments supplémentaires, sans compter que les problèmes spécifiques sont dur à résoudre car ils ont peu d&#8217;utilisateurs.</li>
-<li>debian ; j&#8217;ai beaucoup aimé car c&#8217;est très simple, la modularité est là, la vitesse aussi ; c&#8217;est bien intégré. Malheureusement, la gestion non souple des paquets (soit tout est vieux, soit tout est jeune) couplé avec l&#8217;absence de PPA (<strong>les PPA, c&#8217;est génial!</strong>) font que j&#8217;ai renoncé.</li>
+<li>Toutes les non-debian ne m&#8217;ont pas plu: la gestion des paquets est contre-productive pour moi qui ait des années d&#8217;apt dans les dents. Surtout, c&#8217;est <strong>lent comme la mort</strong>. Incroyablement lent en 2013 ; WTF?</li>
+<li>Les Debian-Ubuntu-based: la plupart sont des customisations d&#8217;Ubuntu avec des paquets différents, des thèmes et des outils. J&#8217;ai pas vu d&#8217;avantages vraiment et toutes ont des petits désagréments supplémentaires, sans compter que les problèmes spécifiques sont dur à résoudre car ils ont peu d&#8217;utilisateurs.</li>
+<li>Debian ; j&#8217;ai beaucoup aimé car c&#8217;est très simple, la modularité est là, la vitesse aussi ; c&#8217;est bien intégré. Malheureusement, la gestion non souple des paquets (soit tout est vieux, soit tout est jeune) couplé avec l&#8217;absence de PPA (<strong>les PPA, c&#8217;est génial!</strong>) font que j&#8217;ai renoncé.</li>
 </ul>
 <h2>Archlinux</h2>
-<p>Je suis donc resté sur Archlinux. J&#8217;avais utilisé un peu par le passé et ça correspondait bien à ce que je voulais actuellement: quelque chose de propre, documenté ou je savais qu&#8217;en cas de problème, je pourrais l&#8217;identifier facilement.</p>
-<p>Archlinux m&#8217;a prit du temps pour le configurer. C&#8217;est sans doute ce qui m&#8217;a le plus dérangé car <strong>j&#8217;utilise mon laptop pour travailler</strong>, pas pour geeker. Une journée de perdue à configurer la machine, c&#8217;est une journée de travail en moins avec des conséquences en sousous.</p>
+<p>Je suis donc resté sur Archlinux. J&#8217;avais utilisé un peu par le passé et ça correspondait bien à ce que je voulais actuellement: quelque chose de propre, documenté où je savais qu&#8217;en cas de problème, je pourrais l&#8217;identifier facilement.</p>
+<p>Archlinux m&#8217;a pris du temps pour le configurer. C&#8217;est sans doute ce qui m&#8217;a le plus dérangé car <strong>j&#8217;utilise mon laptop pour travailler</strong>, pas pour geeker. Une journée de perdue à configurer la machine, c&#8217;est une journée de travail en moins avec des conséquences en sousous.</p>
 <p>Mais j&#8217;étais satisfait d&#8217;Archlinux, c&#8217;était effectivement beaucoup plus simple et clair qu&#8217;Ubuntu. J&#8217;ai pu faire fonctionner des petites choses qui marchaient pas avec Ubuntu ; j&#8217;avais un Gnome à jour, etc.</p>
 <p>Mais, car il y a toujours un mais ; Archlinux a aussi ses problèmes: il <strong>veut</strong> que vous soyez à jour, et vous avez pas intérêt à le contrarier ; mais en même temps, il faut vérifier ce qu&#8217;il fait donc re-perte de temps.</p>
 <p>Au fil du temps, les problèmes des logiciels récents se faisaient plus frustrants ; une version qui marche ; une qui marche pas, etc.</p>
-<p>Quand je me suis rendu compte que je devais redémarrer ma machine plus d&#8217;une fois par semaine, et que je perdais vraiment du temps avec des bêtises, je me suis dis “<em>oh et puis merde, je vais mettre OSX!</em>” (oui je reste relativement poli dans ma tête).</p>
+<p>Quand je me suis rendu compte que je devais redémarrer ma machine plus d&#8217;une fois par semaine, et que je perdais vraiment du temps avec des bêtises, je me suis dit “<em>oh et puis merde, je vais mettre OSX!</em>” (oui je reste relativement poli dans ma tête).</p>
 <h2>Le trou noir</h2>
 <p>J&#8217;ai formatté ma machine sur un coup de tête, un week-end, pour voir si vraiment Linux devenait de la fiente d&#8217;âne ou si c&#8217;était partout pareil. Je me suis dis, ce sera l&#8217;occasion de voir à quoi ressemble la concurrence, de voir comment se comporte cette machine dans son environnement naturel (genre voir ce que ça fait d&#8217;utiliser un SSD qui a couté la peau du Q). Je voulais tester ça une semaine, deux tout au plus.</p>
 <p>C&#8217;était il y a des mois déjà. Je sais plus trop quand. Janvier ? Février ? Je ne m&#8217;en souviens pas car <strong>je ne pense plus à ma machine</strong>. Je l&#8217;oublie complètement.</p>
-<p>Bien sûr, au début, je raillais ce système et ses perversions (installer GCC nécessite de passer par un Store à la con), et puis, passé les deux premiers jours de <em>setup</em>, je l&#8217;ai oublié. Le matin, j&#8217;arrive au boulot, la machine est là, allumée, prête, rapide, disponible. Je travaille, et je lui <em>clou le bec</em> en partant, chose qui ne marchait pas avant.</p>
-<p>Je peux me promener avec sans craindre pour la batterie, je peux utiliser le Wifi à tout moment (pas besoin de patcher le kernel dans un hôtel), je peux faire de la visio-conf sans jongler avec 2 outils PulseAudio, le trackpad marche à merveille, le tout démarre en mois de 10s, j&#8217;ai mon Sublime Text, mon terminal, mon ipython et toute sa clique, bref, c&#8217;est le bonheur.</p>
+<p>Bien sûr, au début, je raillais ce système et ses perversions (installer GCC nécessite de passer par un Store à la con), et puis, passé les deux premiers jours de <em>setup</em>, je l&#8217;ai oublié. Le matin, j&#8217;arrive au boulot, la machine est là, allumée, prête, rapide, disponible. Je travaille, et je lui <em>cloue le bec</em> en partant, chose qui ne marchait pas avant.</p>
+<p>Je peux me promener avec sans craindre pour la batterie, je peux utiliser le Wifi à tout moment (pas besoin de patcher le kernel dans un hôtel), je peux faire de la visio-conf sans jongler avec 2 outils PulseAudio, le trackpad marche à merveille, le tout démarre en moins de 10s, j&#8217;ai mon Sublime Text, mon terminal, mon ipython et toute sa clique, bref, c&#8217;est le bonheur.</p>
 <p>Je ne sais pas quand je vais retourner sous Linux ; la simple idée de me retaper le setup à l&#8217;envers alors que je suis si productif maintenant me donne la nausée. Je n&#8217;ai même pas été tenté à la sortie du 13.04. Tout juste ais-je pris le temps de lancer le Live-CD dans VirtualBox.</p>
 <p>Bien sûr, tout n&#8217;est pas rose, je connais bien les arcanes de Linux, mais pas celles d&#8217;OSX ; dès qu&#8217;il y a une dépendances bizarre dans un projet (genre opencv), je prends peur car tout n&#8217;est pas aussi bien packagé, ou aussi facilement compilable, etc mais finalement, ça n&#8217;arrive pas très souvent.</p>
-<p>Vous m&#8217;avez lu jusqu&#8217;ici, bravo, je n&#8217;ai pas écris tout ça pour vous convaincre de quoi que ce soit ou pour me justifier. Je suis toujours autant dérangé par Apple, je ne me sens pas à l&#8217;aise en utilisant OSX, mais je peux enfin utiliser ma machine comme l&#8217;outil de dev qu&#8217;il devrait être et rien d&#8217;autre ; c&#8217;est un soulagement très grand.</p>
+<p>Vous m&#8217;avez lu jusqu&#8217;ici, bravo, je n&#8217;ai pas écrit tout ça pour vous convaincre de quoi que ce soit ou pour me justifier. Je suis toujours autant dérangé par Apple, je ne me sens pas à l&#8217;aise en utilisant OSX, mais je peux enfin utiliser ma machine comme l&#8217;outil de dev qu&#8217;il devrait être et rien d&#8217;autre ; c&#8217;est un soulagement très grand.</p>
 <p>J&#8217;espère retrouver dans les commentaires de ce billet vos frustrations concernant Linux et pourquoi pas ce que vous faites pour y remédier (Punching Ball?).</p>
- <p><a href="http://sametmax.com/?flattrss_redirect&amp;id=6419&amp;md5=faed6b478a934ae40deca6d09439e907" title="Flattr" target="_blank"><img src="http://sametmax.com/wp-content/plugins/flattr/img/flattr-badge-large.png" alt="flattr this!"/></a></p>]]></content:encoded>
+]]></content:encoded>
 			<wfw:commentRss>http://sametmax.com/tiens-je-suis-toujours-sur-osx/feed/</wfw:commentRss>
-		<slash:comments>79</slash:comments>
-		<atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=sam_et_max&amp;popout=1&amp;url=http%3A%2F%2Fsametmax.com%2Ftiens-je-suis-toujours-sur-osx%2F&amp;language=en_GB&amp;category=text&amp;title=Tiens%2C+je+suis+toujours+sur+OSX&amp;description=Ceci+est+un+post+invit%C3%A9+de+coyote+post%C3%A9+sous+licence+creative+common+3.0+unported.+Attention%3A+ce+qui+suit+est+un+billet+d%26%238217%3Bhumeur+personnel.+Prenez+le+comme+tel%E2%80%A6+Je+suis+un...&amp;tags=linux%2Cmac%2Cmac+os%2Cubuntu%2Cblog" type="text/html" />
-<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/35aTn.jpg" length="76539" type="image/jpg" />	</item>
+		<slash:comments>81</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/35aTn.jpg" length="76539" type="image/jpg" />	</item>
 	</channel>
 </rss>

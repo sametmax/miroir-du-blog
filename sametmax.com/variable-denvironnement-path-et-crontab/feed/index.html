@@ -3,25 +3,75 @@
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:atom="http://www.w3.org/2005/Atom"
 	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
-		>
+	
+	>
 <channel>
 	<title>Comments on: Variable d&#8217;environnement PATH et crontab</title>
 	<atom:link href="http://sametmax.com/variable-denvironnement-path-et-crontab/feed/" rel="self" type="application/rss+xml" />
 	<link>http://sametmax.com/variable-denvironnement-path-et-crontab/</link>
-	<description>Deux développeurs en vadrouille qui se sortent les doigts du code</description>
-	<lastBuildDate>Wed, 05 Feb 2014 12:15:31 +0000</lastBuildDate>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
-	<generator>http://wordpress.org/?v=3.3.1</generator>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/#comment-147825</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 05 Nov 2014 19:47:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2741#comment-147825</guid>
+		<description><![CDATA[Il faut éviter les imports (et non les chemins, ce n&#039;est pas du tout pareil), comme la peste en Python. Tout mettre en absolu. Ca ne gène pas la portabilité si le code est bien organisés en modules avec responsabilités séparées.]]></description>
+		<content:encoded><![CDATA[<p>Il faut éviter les imports (et non les chemins, ce n&#8217;est pas du tout pareil), comme la peste en Python. Tout mettre en absolu. Ca ne gène pas la portabilité si le code est bien organisés en modules avec responsabilités séparées.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Guts</title>
+		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/#comment-147821</link>
+		<dc:creator><![CDATA[Guts]]></dc:creator>
+		<pubDate>Wed, 05 Nov 2014 19:05:12 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=2741#comment-147821</guid>
+		<description><![CDATA[Bonsoir,
+
+Question de 
+
+Je rencontre des difficultés avec la planification de mon script qui doit être lancé dans un environnement virtuel avec des chemins relatifs dedans (vers la BD et surtout les autres modules) :
+- lorsque j&#039;indique &quot;en dur&quot; tous les chemins contenus dans le script en absolus, que je lance manuellement ou via le cron : OK
+- lorsque les chemins sont indiqués en relatif et que je lance manuellement : OK
+- lorsque les chemins sont indiqués en relatif et c&#039;est lancé via le cron : ça plante !
+
+Nous avons commencé notre développement en chemins absolus et ça roulait donc bien avec ceci dans crontab -e :
+
+0 1,13 * * * /home/$USER/chemin_vers_virtualenv /home/$USER/chemin_vers_script.py
+
+Depuis qu&#039;on a passé les chemins en relatif (pour des besoins de portabilité et puis pour faire plus propre), ça merdouille au moment des imports relatifs (&#039;from . import models&#039;). Du coup, j&#039;essaye d&#039;appliquer la logique indiquée et je me dis que je dois mettre ça :
+
+0 1,13 * * * PATH=$PATH:/home/$USER/chemin_vers_virtualenv /home/$USER/chemin_vers_script.py
+
+Mais je me dis que je passe à côté de quelque chose et je comprends pas pourquoi le cron fait merder quand c&#039;est en chemin relatif.
+Sur le principe, si j&#039;ai bien compris : on lui file les horaires et la fréquence, le chemin vers l&#039;environnement d&#039;exécution (ici un virtualenv) et le script à lancer ?]]></description>
+		<content:encoded><![CDATA[<p>Bonsoir,</p>
+<p>Question de </p>
+<p>Je rencontre des difficultés avec la planification de mon script qui doit être lancé dans un environnement virtuel avec des chemins relatifs dedans (vers la BD et surtout les autres modules) :<br />
+&#8211; lorsque j&#8217;indique &#8220;en dur&#8221; tous les chemins contenus dans le script en absolus, que je lance manuellement ou via le cron : OK<br />
+&#8211; lorsque les chemins sont indiqués en relatif et que je lance manuellement : OK<br />
+&#8211; lorsque les chemins sont indiqués en relatif et c&#8217;est lancé via le cron : ça plante !</p>
+<p>Nous avons commencé notre développement en chemins absolus et ça roulait donc bien avec ceci dans crontab -e :</p>
+<p>0 1,13 * * * /home/$USER/chemin_vers_virtualenv /home/$USER/chemin_vers_script.py</p>
+<p>Depuis qu&#8217;on a passé les chemins en relatif (pour des besoins de portabilité et puis pour faire plus propre), ça merdouille au moment des imports relatifs (&#8216;from . import models&#8217;). Du coup, j&#8217;essaye d&#8217;appliquer la logique indiquée et je me dis que je dois mettre ça :</p>
+<p>0 1,13 * * * PATH=$PATH:/home/$USER/chemin_vers_virtualenv /home/$USER/chemin_vers_script.py</p>
+<p>Mais je me dis que je passe à côté de quelque chose et je comprends pas pourquoi le cron fait merder quand c&#8217;est en chemin relatif.<br />
+Sur le principe, si j&#8217;ai bien compris : on lui file les horaires et la fréquence, le chemin vers l&#8217;environnement d&#8217;exécution (ici un virtualenv) et le script à lancer ?</p>
+]]></content:encoded>
+	</item>
 	<item>
 		<title>By: Max</title>
 		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/#comment-2657</link>
-		<dc:creator>Max</dc:creator>
+		<dc:creator><![CDATA[Max]]></dc:creator>
 		<pubDate>Fri, 26 Oct 2012 15:35:01 +0000</pubDate>
 		<guid isPermaLink="false">http://sametmax.com/?p=2741#comment-2657</guid>
-		<description>@gkar, ouais ça aussi c&#039;est bien je le rajoute, thanks
+		<description><![CDATA[@gkar, ouais ça aussi c&#039;est bien je le rajoute, thanks
 
-@shnouki , merci je corrige</description>
+@shnouki , merci je corrige]]></description>
 		<content:encoded><![CDATA[<p>@gkar, ouais ça aussi c&#8217;est bien je le rajoute, thanks</p>
 <p>@shnouki , merci je corrige</p>
 ]]></content:encoded>
@@ -29,12 +79,12 @@
 	<item>
 		<title>By: Schnouki</title>
 		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/#comment-2652</link>
-		<dc:creator>Schnouki</dc:creator>
+		<dc:creator><![CDATA[Schnouki]]></dc:creator>
 		<pubDate>Fri, 26 Oct 2012 13:39:00 +0000</pubDate>
 		<guid isPermaLink="false">http://sametmax.com/?p=2741#comment-2652</guid>
-		<description>&lt;code&gt;PATH=$PATH:/usr/local/bin&lt;/code&gt;, pas &lt;code&gt;$PATH=PATH&lt;/code&gt; !
+		<description><![CDATA[&lt;code&gt;PATH=$PATH:/usr/local/bin&lt;/code&gt;, pas &lt;code&gt;$PATH=PATH&lt;/code&gt; !
 
-Et sinon je crois qu&#039;on peut définir une variable juste pour une commande: &lt;code&gt;PATH=$PATH:/usr/local/bin python /home/penetrator/script.py&lt;/code&gt;</description>
+Et sinon je crois qu&#039;on peut définir une variable juste pour une commande: &lt;code&gt;PATH=$PATH:/usr/local/bin python /home/penetrator/script.py&lt;/code&gt;]]></description>
 		<content:encoded><![CDATA[<p><code>PATH=$PATH:/usr/local/bin</code>, pas <code>$PATH=PATH</code> !</p>
 <p>Et sinon je crois qu&#8217;on peut définir une variable juste pour une commande: <code>PATH=$PATH:/usr/local/bin python /home/penetrator/script.py</code></p>
 ]]></content:encoded>
@@ -42,10 +92,10 @@ Et sinon je crois qu&#039;on peut définir une variable juste pour une commande:
 	<item>
 		<title>By: Gkar</title>
 		<link>http://sametmax.com/variable-denvironnement-path-et-crontab/#comment-2651</link>
-		<dc:creator>Gkar</dc:creator>
+		<dc:creator><![CDATA[Gkar]]></dc:creator>
 		<pubDate>Fri, 26 Oct 2012 13:13:09 +0000</pubDate>
 		<guid isPermaLink="false">http://sametmax.com/?p=2741#comment-2651</guid>
-		<description>&lt;span =class=&quot;merci&quot;&gt;&lt;/span&gt;le plus simple est de définir les variables en haut du fichier cron comme expliqué dans &lt;code&gt;man 5 crontab&lt;/code&gt;
+		<description><![CDATA[&lt;span =class=&quot;merci&quot;&gt;&lt;/span&gt;le plus simple est de définir les variables en haut du fichier cron comme expliqué dans &lt;code&gt;man 5 crontab&lt;/code&gt;
 
 sur mes serveurs j&#039;ai au moins ça:
 &lt;code&gt;
@@ -56,7 +106,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
 
 # Cmd cron
 ...
-&lt;/code&gt;</description>
+&lt;/code&gt;]]></description>
 		<content:encoded><![CDATA[<p><span =class="merci"></span>le plus simple est de définir les variables en haut du fichier cron comme expliqué dans <code>man 5 crontab</code></p>
 <p>sur mes serveurs j&#8217;ai au moins ça:<br />
 <code><br />
