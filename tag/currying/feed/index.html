@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; currying</title>
+	<atom:link href="http://sametmax.com/tag/currying/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Introduction au currying  3</title>
+		<link>http://sametmax.com/introduction-au-currying/</link>
+		<comments>http://sametmax.com/introduction-au-currying/#comments</comments>
+		<pubDate>Fri, 12 Dec 2014 19:37:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[currying]]></category>
+		<category><![CDATA[fonction]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lambda]]></category>
+		<category><![CDATA[listes en intention]]></category>
+		<category><![CDATA[programmation functionelle]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12693</guid>
+		<description><![CDATA[Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d'une autre fonction et d'une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu'elle permet de créer une fonction pure à partir d'une autre fonction pure. C'est une forme de réutilisabilité de code.]]></description>
+				<content:encoded><![CDATA[<p>Le currying (ou Curryfication pour les frencofans) est le nom donné à une technique de programmation qui consiste à créer une fonction à partir d&#8217;une autre fonction et d&#8217;une liste partielle de paramètres destinés à celle-ci. On retrouve massivement cette technique en programmation fonctionnelle puisqu&#8217;elle permet de créer une fonction pure à partir d&#8217;une autre fonction pure. C&#8217;est une forme de réutilisabilité de code.</p>
+<p>La forme la plus simple de currying est de réécrire une fonction appelant l&#8217;autre. Par exemple, soit une fonction pour multiplier tous les éléments d&#8217;un itérable :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> multiply<span style="color: black;">&#40;</span>iterable<span style="color: #66cc66;">,</span> number<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Multiplie tous les éléments d'un itérable par un nombre.
+&nbsp;
+        Exemple :
+&nbsp;
+            &gt;&gt;&gt; list(multiply([1, 2, 3], 2))
+            [2, 4, 6]
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>x * number <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> iterable<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On peut ensuite créer une fonction qui multipliera par 2 tous les éléments d&#8217;un itérable :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> doubled<span style="color: black;">&#40;</span>iterable<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Multiplie tous les éléments d'un itérable par un 2.
+&nbsp;
+        Exemple :
+&nbsp;
+            &gt;&gt;&gt; list(doubled([1, 2, 3]))
+            [2, 4, 6]
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> multiply<span style="color: black;">&#40;</span>iterable<span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est une forme de currying. On créé une fonction qui fait ce que fait une autre fonction, mais avec des arguments par défaut.</p>
+<p>Python possède une fonction pour faire ça automatiquement avec n&#8217;importe quelle fonction :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> partial 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> tripled <span style="color: #66cc66;">=</span> partial<span style="color: black;">&#40;</span>multiply<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># on curryfie ici</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>tripled<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># nouvelle fonction avec un seul argument</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Cela marche car, je vous le rappelle, les fonctions sont des objets en Python. On peut mettre une fonction (je ne parle pas de son résultat) dans une variable, passer une fonction en paramètre ou retourner une fonction dans une autre fonction. <strong>Les fonctions sont manipulables</strong>.</p>
+<p>Il n&#8217;est pas rare d&#8217;utiliser les fonctions anonymes comme outils curryfication. En Python, on ferait ça avec une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> tripled <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> x: multiple<span style="color: black;">&#40;</span>x<span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>tripled<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">9</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Certains outils, comme <a href="http://buzzdecafe.github.io/code/2014/05/16/introducing-ramda/">Ramda</a> en Javascript, vont plus loin, et exposent des fonctions qui se curryfient automatiquement.</p>
+<p>Pour ce faire, il faut inverser l&#8217;ordre qu&#8217;on mettrait intuitivement aux arguments dans la déclaration d&#8217;une fonction :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># au lieu de multiply(iterable, number), on a :</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> multiply<span style="color: black;">&#40;</span>number<span style="color: #66cc66;">,</span> iterable<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Si on a pas d'itérable passé, on curryfie</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> iterable <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">None</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> partial<span style="color: black;">&#40;</span>multiply<span style="color: #66cc66;">,</span> number<span style="color: #66cc66;">=</span>number<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>x * number <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> iterable<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ainsi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>multiply<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># pas de currying</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> quintuple <span style="color: #66cc66;">=</span> multiply<span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># currying automatique</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>quintuple<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">15</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>L’intérêt de ce style, c&#8217;est qu&#8217;on peut composer des traitements à partir de plusieurs sous traitements, presque déclarativement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> remove<span style="color: black;">&#40;</span><span style="color: #008000;">filter</span><span style="color: #66cc66;">,</span> iterable<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot; Retire tous les éléments d'un itérable correspondant au filtre.
+&nbsp;
+        Exemple :
+&nbsp;
+            &gt;&gt;&gt; list(remove(lambda x: x &gt;= 4, [1, 2, 3, 4, 5]))
+            [1, 2, 3]
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> iterable <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #008000;">None</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> partial<span style="color: black;">&#40;</span>remove<span style="color: #66cc66;">,</span> <span style="color: #008000;">filter</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> iterable <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> smalls <span style="color: #66cc66;">=</span> remove<span style="color: black;">&#40;</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: x <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>smalls<span style="color: black;">&#40;</span>tripled<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># le traitement est auto descriptif</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Néanmoins, il faut savoir que ce style n&#8217;est pas pythonique. En effet, en Python on préférera généralement utiliser des suites suite de générateurs. Soit par <a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">intention</a>, soit via <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>.</p>
+<p>Notre exemple serait alors :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> tripled <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>x * <span style="color: #ff4500;">3</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> smalls <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> tripled <span style="color: #ff7700;font-weight:bold;">if</span> x <span style="color: #66cc66;">&lt;=</span> <span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>smalls<span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>De plus, cette technique suppose qu&#8217;on ne profitera pas de certaines fonctionnalités, comme les paramètres par défaut des fonctions Python.</p>
+<p>C&#8217;est toutefois une bonne chose à connaître. C&#8217;est occasionnellement utile en Python et peut produire des solutions très élégantes. C&#8217;est également une bonne chose à comprendre pour aborder d&#8217;autres langages plus fonctionnels qui les utilisent bien plus comme le Javascript, le Lisp, ou carrément le Haskell.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/introduction-au-currying/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/12/tumblr_n5zg0woqTQ1r539hzo1_500.jpg" length="68286" type="image/jpg" />	</item>
+	</channel>
+</rss>

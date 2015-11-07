@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; mecached</title>
+	<atom:link href="http://sametmax.com/tag/mecached/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Comment Redis et Memcache font expirer leurs données 12</title>
+		<link>http://sametmax.com/comment-redis-et-memcache-font-expirer-leurs-donnees/</link>
+		<comments>http://sametmax.com/comment-redis-et-memcache-font-expirer-leurs-donnees/#comments</comments>
+		<pubDate>Thu, 28 Feb 2013 12:04:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[architecture]]></category>
+		<category><![CDATA[mecached]]></category>
+		<category><![CDATA[redis]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5184</guid>
+		<description><![CDATA[Redis et Memcache ont des opérations d'insertion de complexité O(1) (très rapide). Malgré ça ils proposent tout deux l'expiration de clé.]]></description>
+				<content:encoded><![CDATA[<p>Redis et Memcache ont des opérations d&#8217;insertion de complexité O(1) (très rapide). Malgré ça ils proposent tout deux l&#8217;expiration de clé.</p>
+<p>Et je me suis demandé : comment ils font ? Comment je pourrais fais ça si je devais le coder en Python ?</p>
+<p>En effet, rechercher une clé expirée prend du temps. J&#8217;ai pensé à utiliser <a href="http://sametmax.com/heapq-le-module-python-incompris/">heapq</a>, mais l&#8217;insertion serait en 0(log(n)) (temps dépendant du nombre d&#8217;items), donc rapide, mais loin des perfs de Redis et Memcache.</p>
+<p>Même si on garde à l&#8217;esprit qu&#8217;ils sont codés en C, et donc plus rapide, ça m&#8217;a turlupiné. Comment ils font ces cons ?</p>
+<p>La réponse est surprenant : ils font la même chose que <a href="http://0bin.net">0bin</a> !</p>
+<p><a href="http://www.memcachier.com/documentation/memcache-user-guide/">Memcache</a> :</p>
+<blockquote><p>Memcache doesn’t evict keys when their expiration time expires, as doing so isn’t possible while still guaranteeing O(1) operation times. Instead expiration is more of a way to say how long until a key should be considered stale. When a GET is performed, Memcache checks if the key’s expiration time is still valid before returning it.</p></blockquote>
+<p><a href="http://redis.io/commands/expire">Redis</a> :</p>
+<blockquote><p>Redis keys are expired in two ways: a passive way, and an active way. A key is actively expired simply when some client tries to access it, and the key is found to be timed out. Of course this is not enough as there are expired keys that will never be accessed again. This keys should be expired anyway, so periodically Redis test a few keys at random among keys with an expire set. All the keys that are already expired are deleted from the keyspace.</p></blockquote>
+<p>Memcache et Redis ne cherchent donc pas les clés, ils vérifient l&#8217;expiration à l&#8217;accès de la clé et suppriment le contenu si c&#8217;est dépassé.</p>
+<p>Redis va plus loin en régulièrement prenant des clés <strong>au hasard</strong> et en checkant leur date d&#8217;expiration.</p>
+<div id="attachment_5185" style="width: 260px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2013/02/nQrJypO.gif" class="grouped_elements" rel="tc-fancybox-group5184"><img class="size-full wp-image-5185" title="Comment il fait ? Ah bah il fait pas." src="http://sametmax.com/wp-content/uploads/2013/02/nQrJypO.gif" alt="Gif de Tealc' buvant un café très chaud" width="250" height="136" /></a><p class="wp-caption-text">Comment il fait ? Ah bah il fait pas.</p></div>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-redis-et-memcache-font-expirer-leurs-donnees/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/02/RNJUv.jpg" length="62975" type="image/jpg" />	</item>
+	</channel>
+</rss>

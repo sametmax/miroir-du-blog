@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; middleware</title>
+	<atom:link href="http://sametmax.com/tag/middleware/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Qu&#8217;est ce qu&#8217;un middleware Django ? 7</title>
+		<link>http://sametmax.com/quest-ce-quun-middleware-django/</link>
+		<comments>http://sametmax.com/quest-ce-quun-middleware-django/#comments</comments>
+		<pubDate>Sun, 07 Oct 2012 19:47:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[middleware]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1674</guid>
+		<description><![CDATA[Vous savez qu'il y a un settings MIDDLEWARE_CLASSES. Vous savez qu'il est important. Vous ne savez pas vraiment pourquoi.]]></description>
+				<content:encoded><![CDATA[<p>Vous savez qu&#8217;il y a un settings qui ressemble à ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">MIDDLEWARE_CLASSES <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+    <span style="color: #483d8b;">'django.middleware.common.CommonMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.contrib.sessions.middleware.SessionMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.middleware.csrf.CsrfViewMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.contrib.auth.middleware.AuthenticationMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.contrib.messages.middleware.MessageMiddleware'</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Vous savez qu&#8217;il est important. Vous ne savez pas vraiment pourquoi.</p>
+<h2>WaT iZ a MideulWaire ?</h2>
+<p>Un <a href="https://docs.djangoproject.com/en/1.4/ref/middleware/">middleware</a> est un moyen d&#8217;éxécuter du code à toutes requêtes et/ou à toutes les réponses reçues et envoyées par Django. Si vous ne voyez pas comment fonctionne le cyle de requêtes/réponses, faites un petit saut sur notre <a href="http://sametmax.com/schema-de-fonctionnement-general-de-django/">schéma de fonctionnement général de Django</a>.</p>
+<p>Un middleware, c&#8217;est <strong>une classe Python ordinaire</strong>, avec deux méthodes: une appelée pour les requêtes, une appelée pour les réponses.</p>
+<h2>L&#8217;exemple bidon habituel</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MideulWaireForEverReturnsTheRevenge3<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># cette méthode sera appelée automatiquement pour chaque requête</span>
+    <span style="color: #808080; font-style: italic;"># et Django lui passera la requête en cours</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> process_request<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Hey, une requête est arrivée !&quot;</span>
+        <span style="color: #808080; font-style: italic;"># on est pas obligé de retourner quoi que ce soit</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># cette méthode sera appelée automatiquement pour chaque réponse</span>
+    <span style="color: #808080; font-style: italic;"># et Django lui passera la reponse en cours et la requete</span>
+    <span style="color: #808080; font-style: italic;"># à laquelle on répond</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> process_response<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: #66cc66;">,</span> response<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Hey, on a répondu a une requête !&quot;</span>
+        <span style="color: #808080; font-style: italic;"># on DOIT retourner une réponse</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> response</pre></td></tr></table></div>
+
+<p>On met tout ça dans un fichier <em>mon_projet/mon_app/middlewares.py</em>, et on active le middleware en le rajoutant dans les settings:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">MIDDLEWARE_CLASSES <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+    <span style="color: #483d8b;">'django.middleware.common.CommonMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.contrib.sessions.middleware.SessionMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.middleware.csrf.CsrfViewMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.contrib.auth.middleware.AuthenticationMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.contrib.messages.middleware.MessageMiddleware'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'mon_projet.mon_app.middlewares.MideulWaireForEverReturnsTheRevenge3'</span>
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et à chaque reload de page, dans l&#8217;affichage du terminal de dev, on a ça:</p>
+<div id="attachment_2527" style="width: 520px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/10/Espace-de-travail-1_013.jpg" class="grouped_elements" rel="tc-fancybox-group1674"><img class=" wp-image-2527 " title="./manage.py runserver" src="http://sametmax.com/wp-content/uploads/2012/10/Espace-de-travail-1_013.jpg" alt="Capture d'écran de l'output terminal de ./mange.py runserver avec un middleware qui print sur stdout" width="510" height="328" /></a><p class="wp-caption-text">./manage.py runserver</p></div>
+<p>Et voici ce qui se passe dans le fonctionnement de Django: il trouve la liste des classes de middlewares, et pour chaque requête et réponse, il appelle les méthodes <code>process_response</code> et <code>process_request</code> de chaque middleware.</p>
+<div id="attachment_2514" style="width: 479px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/10/middleware_django2.png" class="grouped_elements" rel="tc-fancybox-group1674"><img class=" wp-image-2514 " title="C'est l'histoire de la viiiiiiiiiiiiiie. C'est le cycle éterneeeeeleuuuuuuuuuuuu" src="http://sametmax.com/wp-content/uploads/2012/10/middleware_django2.png" alt="Schéma de fonctionnement des middlewares en Django" width="469" height="454" /></a><p class="wp-caption-text">C&#39;est l&#39;histoire de la viiiiiiiiiiiiiie. C&#39;est le cycle éterneeeeeleuuuuuuuuuuuu</p></div>
+<h2>Les points les plus importants</h2>
+<p>Aucune méthode n&#8217;est obligatoire, vous pouvez créer un middleware avec uniquement l&#8217;une ou l&#8217;autre.</p>
+<p>Si <code>process_request</code> renvoit une réponse, tout s&#8217;arrête. Les <code>process_request</code> des autres middlewares ne sont pas appelés, vos vues ne sont pas appelées, et c&#8217;est le cycle de réponse qui commence directement. Très utile si par exemple vous voulez faire une redirection brutale pour toutes les requêtes qui correspondent à un certain critère (par exemple rediriger vers un site mobile).</p>
+<p>Les middlewares sont appelés dans leur ordre de déclaration dans <code>MIDDLEWARE_CLASSES</code> pour chaque requête, et dans l&#8217;ordre inverse pour chaque réponse. Mettez donc votre middleware au bon endroit dans la file: inutile de mettre un middleware qui vérifie si un user a des droits avant le middleware d&#8217;authentification, puisque l&#8217;utilisateur n&#8217;est pas encore authentifié.</p>
+<p>Un middleware peut posséder 3 autres méthodes également facultatives: <code>process_view</code> (appelée juste avant l&#8217;appel de chaque vue, et et permettant de modifier l&#8217;instance de la vue elle-même), <code>process_template_response</code> (appelée sur chaque instance implémentant une méthode render, et surtout utilisée pour injecter des données dans TemplateResponse) et <code>process_exception</code> (appelée quand une vue lève une exception).</p>
+<h2>Pour quoi utiliser les middleware ?</h2>
+<p>Exemples de quelques middlewares qui viennent d&#8217;office avec Django:</p>
+<ul>
+<li><strong>UpdateCacheMiddleware, FetchFromCacheMiddleware</strong>: ils cachent l&#8217;intégralité des pages.</li>
+<li><strong>GZipMiddleware</strong>: retourne une réponse compressée si le browser le gère.</li>
+<li><strong>LocaleMiddleware</strong>: set la langue que Djando doit utiliser, en fonction du navigateur.</li>
+<li><strong>MessageMiddleware</strong>: gestion des &#8220;flash-messages&#8221;.</li>
+<li><strong>SessionMiddleware</strong>: gestion des sessions.</li>
+<li><strong>AuthenticationMiddleware</strong>: authentifier un utilisateur.</li>
+</ul>
+<p>Il y en a beaucoup d&#8217;autres, et il y en a plein qui trainent sur internet. Mais bien entendu le plus chouette, c&#8217;est d&#8217;en faire un soi-même.</p>
+<p>Par exemple, quand je développe (pas en prod, hien !), j&#8217;utilise souvent ce petit middleware que j&#8217;ai fait avec amour:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> ForceSuperUserMiddleWare<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> process_request<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: black;">&#41;</span>:
+        request.<span style="color: #dc143c;">user</span> <span style="color: #66cc66;">=</span> User.<span style="color: black;">objects</span>.<span style="color: #008000;">filter</span><span style="color: black;">&#40;</span>is_superuser<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Comme ça je suis toujours connecté en tant que super user, même sur les projets avec des timeout courts pour la session, des doubles authentifications super relous et tout le toutim des clients paranos (traduction: des américains).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-ce-quun-middleware-django/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/figurines-22-470x550.jpg" length="36259" type="image/jpg" />	</item>
+	</channel>
+</rss>

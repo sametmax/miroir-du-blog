@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; authentication</title>
+	<atom:link href="http://sametmax.com/tag/authentication/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>The User is dead 18</title>
+		<link>http://sametmax.com/the-user-is-dead/</link>
+		<comments>http://sametmax.com/the-user-is-dead/#comments</comments>
+		<pubDate>Tue, 14 Jul 2015 12:27:42 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[authentication]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[framework]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16615</guid>
+		<description><![CDATA[L&#8217;authentification de mémé (enfin, mémé&#8230;) n&#8217;a plus de sens, et pourtant, on continue de la montrer en exemple dans tous les tutos : Un compte utilisateur. Un email. Un mot de passe. Boom, on vérifie le mot de passe (avec un peu de chance sur une version sainement hachée), on identifie l&#8217;utilisateur, et c&#8217;est plié. [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>L&#8217;authentification de mémé (enfin, mémé&#8230;) n&#8217;a plus de sens, et pourtant, on continue de la montrer en exemple dans tous les tutos :</p>
+<ul>
+<li>Un compte utilisateur.</li>
+<li>Un email.</li>
+<li>Un mot de passe.</li>
+</ul>
+<p>Boom, on vérifie le mot de passe (avec un peu de chance sur une version sainement hachée), on identifie l&#8217;utilisateur, et c&#8217;est plié.</p>
+<p>C&#8217;est simple, c&#8217;est beau, ça marche.</p>
+<p>Mais ça ne représente pas du tout la réalité.</p>
+<p>Une des plus grosses erreurs de design de frameworks comme Django est justement la classe <code>User</code>.</p>
+<p>En soit, la classe <code>User</code> n&#8217;est pas un problème, mais son omniprésence dans toutes les couches du framework et sa promotion au rang d&#8217;unité de référence dans les apps tierces parties ont gardé la vision de l&#8217;authentification très monolithique.</p>
+<p>C&#8217;est que le Web n&#8217;a plus du tout la forme qu&#8217;il avait il y a 10 ans, et aujourd&#8217;hui, vous pouvez vous connecter via un service (facebook, twitter, github&#8230;), utiliser une authentification à double facteur (sms, email, yubikey&#8230;) ou avoir un compte unique qui unifie plusieurs fournisseurs (ah, le fameux compte Google qui fait gmail, youtube, calendar, play, saucisseland&#8230;).</p>
+<p>Les gens ont plusieurs identités, plusieurs comptes, plusieurs modes d&#8217;authentification, plusieurs points d&#8217;entrées. Ce modèle ne marche plus :</p>
+<pre>USER <-- Profile </pre>
+<p>Si vous créez un service aujourd'hui et que vous souhaitez prendre en compte cette réalité, le schéma en base de données va plutôt ressembler à un truc du genre :</p>
+<pre>                      +-------+
+                      |Session|
+                      +----+--+
+                           |
+                           |
+                           |
+                           |
++-----------+         +----v---+         +--------+
+|  Identity | <-------+ Account| <-------+Profile |
++-----------+         +--------+         +--------+
+                 +------^   ^--------+
+                 |                   |
+                 |                   |
+                 |                   |
+                 |                   |
+         +-------+-----+      +------+----+
+         | Credential  |      |  Service  |
+         +-------------+      +-----------+
+</pre>
+<p>Et encore, je n'ai pas mis les permissions, les devices, les comptes multi-utilisateurs, la vérification des comptes (lien email, sms, etc), les niveaux d'offre commerciale... Ca rend le truc vraiment compliqué.</p>
+<p>Ce qui est important ici, c'est que la notion de compte devient centrale, mais que seule l'identité est unique. Une identité peut avoir plusieurs comptes. Et un compte peut être chez votre service ou un service externe. Et l'authentification peut très bien avoir lieu ailleurs : ldap, OAuth, Mozilla Personna, Open ID...</p>
+<p>Si votre utilisateur a un compte chez Facebook et un compte chez vous, les deux sont des comptes, avec leurs profils, reliés à la même identité, servant à vous donner des informations, permettant de se loguer... Et vous devez garder une trace de tout ça. Le fait que l'API d'un service tape sur votre serveur et l'autre non n'a en fait aucune importance pour l'utilisateur, qui utilise tout ça comme un gros blob comme si internet était un tout.</p>
+<p>La nouvelle génération ne fait pas la différence avec un site Web et un app, ne sait pas ce qu'est une URL ou un cookie et ne veut pas rentrer trop de mots de passe, mais veut par contre utiliser 5000 services.</p>
+<p>Ainsi on voit que les archis basées sur des microservices (hello crossbar :)) commencent à avoir la côte, faisant abstraction de la notion de "ceci est mon app, ceci est ton app" dans la structure de son projet. Bien entendu, la distinction est importante d'un point de vue humain, mais du point de vue du workflow d'authentification, non.</p>
+<p>Par contre, forcément, ça fait beaucoup plus qu'une table <code>User</code> et une table <code>Profile</code> en base de données, et c'est pourquoi toutes les apps pluggables des frameworks actuellement ont leurs propres structures bizarres, incompatibles et torturées pour faire tenir toute cette logique. Parce qu'on code sur des frameworks qui vivent encore dans les années 2000, qui passent à votre vue un objet <code>User</code> en paramètre avec ses attributs <code>username</code> et <code>email</code>.</p>
+<p>Mais ce que vous avez en face de vous, ce n'est pas un utilisateur.</p>
+<p>C'est une session d'utilisation.</p>
+<p>D'un service (le votre). Liée à un compte. Qui peut-être (surement) possède un profil avec un username.</p>
+<p>Cette session s'est initiée par une authentification avec une méthode parmi 100 auprès d'un service également, lié à un compte, avec un profil. Peut-être le même service que celui qui est utilisé, peut-être pas.</p>
+<p>Et cette authentification a pu être demandée par un utilisateur, ou encore un autre service, ou un logiciel client complètement automatiquement. Souvenez-vous : la session n'a peut-être aucun humain derrière.</p>
+<p>Ce qui est en face de vous n'est pas un utilisateur. L'utilisateur est mort il y a des années.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/the-user-is-dead/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/07/Qokothr.jpg" length="88567" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; greenlet</title>
+	<atom:link href="http://sametmax.com/tag/greenlet/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Les Greenlets c&#8217;est bon, c&#8217;est bio, mangez-en ! 3</title>
+		<link>http://sametmax.com/les-greenlets-cest-bon-cest-bio-mangez-en/</link>
+		<comments>http://sametmax.com/les-greenlets-cest-bon-cest-bio-mangez-en/#comments</comments>
+		<pubDate>Fri, 17 Aug 2012 23:42:00 +0000</pubDate>
+		<dc:creator><![CDATA[poulpe]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[greenlet]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[state machines]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1750</guid>
+		<description><![CDATA[Et même que ça sauve les bébés phoques. Si avec ça vous êtes pas convaincu je sais pas ce qu'il vous faut.]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;"><em><small>Ceci est un post invité de <a href="http://sametmax.com/author/poulpe/">poulpe</a> posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</small></em></p>
+<h2>Coroutines et Machines à états.</h2>
+<p>Quel est le rapport entre les coroutines et les machines à état me demanderez-vous (ou pas) ?<br />
+Et bieeeeen aucun, si ce n&#8217;est que vous pouvez déjà consulter deux articles sur ce site qui vous permettent d&#8217;en bricoler en python.<br />
+Mais bon, les <a href="http://sametmax.com/concurrence-sans-threads-en-python/">tournevis Playskool</a> et la <a href="http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/">colle UHU</a>, pour du vrai bricolage de grand, c&#8217;est rigolo mais c&#8217;est pas forcement très adapté. Je vais donc vous présenter le Black &amp; Decker de l&#8217;exécution concurrente, le Rubson de la State Machine : le module <a href="http://pypi.python.org/pypi/greenlet/">greenlet</a>.<br />
+Les greenlets c&#8217;est quoi ? C&#8217;est simplement un fork de l&#8217;interpréteur <a href="http://www.stackless.com/">Stackless</a> sous forme de module pour CPython. Ca permet de profiter de la quasi-totalité de Stackless sans mettre en péril l&#8217;environnement d&#8217;exécution et/ou le code existant.</p>
+<h2>Mais comment ça s&#8217;utilise alors ?</h2>
+<p>Tout d&#8217;abord :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> greenlet <span style="color: #ff7700;font-weight:bold;">import</span> greenlet</pre></td></tr></table></div>
+
+<p>Le principe de base c&#8217;est :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fun1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">42</span>
+    g2.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">44</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> fun2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">43</span>
+    g2.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">45</span>
+&nbsp;
+g1 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun1<span style="color: black;">&#41;</span>
+g2 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun2<span style="color: black;">&#41;</span>
+g1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Sortie écran :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">42</span>
+<span style="color: #ff4500;">43</span>
+<span style="color: #ff4500;">44</span></pre></td></tr></table></div>
+
+<p>Ca à l&#8217;air simple comme ça, mais on constate une petite chose : on n&#8217;affiche jamais 45. Pourquoi ? Et bien parce que quand une greenlet se termine, on ne retourne pas à l&#8217;appelant (puisque ce n&#8217;est pas réellement un appel) on retourne à la greenlet parente, qui est ici notre main.<br />
+En fait, les greenlets sont organisées en arbre, chaque greenlet possède un unique parent qui est lui est définit au moment de sa création. Les appels à « switch » permettent de sauter d&#8217;une greenlet à l&#8217;autre mais ils n&#8217;affectent pas l&#8217;organisation de l&#8217;arbre.<br />
+Heureusement, cet arbe n&#8217;est pas en lecture seule et on peut réorganiser les parents comme on veut (du moment qu&#8217;on ne crée pas de cycles) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">g1 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun1<span style="color: black;">&#41;</span>
+g2 <span style="color: #66cc66;">=</span> greenlet<span style="color: black;">&#40;</span>fun2<span style="color: black;">&#41;</span>
+g1.<span style="color: black;">parent</span> <span style="color: #66cc66;">=</span> g2
+g1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Sortie écran :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff4500;">42</span>
+<span style="color: #ff4500;">43</span>
+<span style="color: #ff4500;">44</span>
+<span style="color: #ff4500;">45</span></pre></td></tr></table></div>
+
+<p>On est passé de ça :<br />
+<a href="http://sametmax.com/wp-content/uploads/2012/08/cas1.png" class="grouped_elements" rel="tc-fancybox-group1750"><img src="http://sametmax.com/wp-content/uploads/2012/08/cas1.png" alt="cas1" width="195" height="149" class="alignnone size-full wp-image-1753" /></a><br />
+à ça :<br />
+<a href="http://sametmax.com/wp-content/uploads/2012/08/cas2.png" class="grouped_elements" rel="tc-fancybox-group1750"><img src="http://sametmax.com/wp-content/uploads/2012/08/cas2.png" alt="cas2" width="101" height="205" class="alignnone size-full wp-image-1754" /></a></p>
+<h2>Et dans la vraie vie ?</h2>
+<p>« Oui parce que là, t&#8217;es mignon, mais ton exemple bidon ça me sert pas à grand chose. » Du coup on peut essayer de faire un truc utile et de mettre tout ça en forme pour une faire une super Machine à État Orientée Objet en Wolframite (la fameuse <a href="http://fuckyeahcatgifs.tumblr.com/">MeooW</a>). Au passage on va utiliser un peu d&#8217;héritage sur les greenlets et montrer que la fonction exécutable qu&#8217;on leur passe à la création dans le premier exemple est simplement affectée à la méthode run() de la greenlet.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">max_iter <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">5</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Etat1<span style="color: black;">&#40;</span>greenlet<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> iteration<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 1, Iteration : %s&quot;</span>%iteration
+            iteration <span style="color: #66cc66;">=</span> etat2.<span style="color: black;">switch</span><span style="color: black;">&#40;</span>iteration + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> iteration <span style="color: #66cc66;">&gt;</span> max_iter:
+                <span style="color: #ff7700;font-weight:bold;">return</span> iteration
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Etat2<span style="color: black;">&#40;</span>greenlet<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> iteration<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 2, Iteration : %s&quot;</span>%iteration
+            iteration <span style="color: #66cc66;">=</span> etat1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span>iteration + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> iteration <span style="color: #66cc66;">&gt;</span> max_iter:
+                <span style="color: #ff7700;font-weight:bold;">return</span> iteration
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> EtatFinal<span style="color: black;">&#40;</span>greenlet<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> iteration<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Monde de merde ! Iteration : %s&quot;</span>%iteration
+&nbsp;
+etat1 <span style="color: #66cc66;">=</span> Etat1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+etat2 <span style="color: #66cc66;">=</span> Etat2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+etat_final <span style="color: #66cc66;">=</span> EtatFinal<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+etat1.<span style="color: black;">parent</span> <span style="color: #66cc66;">=</span> etat_final
+etat2.<span style="color: black;">parent</span> <span style="color: #66cc66;">=</span> etat_final
+etat1.<span style="color: black;">switch</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Sortie écran :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">Etat <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">2</span>
+Etat <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">3</span>
+Etat <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">4</span>
+Etat <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> Iteration : <span style="color: #ff4500;">5</span>
+Monde de merde <span style="color: #66cc66;">!</span> Iteration : <span style="color: #ff4500;">6</span></pre></td></tr></table></div>
+
+<p>On peut voir ici que la méthode switch permet de faire passe-plat pour des variables (de la même manière que <a href="http://sametmax.com/astuces-python-en-vrac/">yield retourne l&#8217;argument qu&#8217;on send()</a> à un itérateur).</p>
+<h2>Plus loin</h2>
+<p>Les greenlets permettent d&#8217;aller beaucoup plus loin que ça, notamment en travaillant sur le dynamisme de l&#8217;arbre. C&#8217;est très pratique pour faire de la gestion d’évènements. Attention tout de même car ça peut vite devenir un enfer à débugger (pas de stack, pas de chocolat).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-greenlets-cest-bon-cest-bio-mangez-en/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/phoque.png" length="112107" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; mvc</title>
+	<atom:link href="http://sametmax.com/tag/mvc/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Qu&#8217;est-ce que MVC et à quoi ça sert ? 23</title>
+		<link>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Tue, 10 Dec 2013 08:39:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[csv]]></category>
+		<category><![CDATA[mvc]]></category>
+		<category><![CDATA[php]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7440</guid>
+		<description><![CDATA[MVC, pour "Modèle, Vue, Contrôleur", est le nom donné à une manière d'organiser son code. C'est une façon d'appliquer le principe de séparation des responsabilités, en l’occurrence celles du traitement de l'information et de sa mise en forme.
+
+Une fois n'est pas coutume je vais donner un exemple en Python <strong>et PHP</strong>, car c'est une question qui hante les codeurs de ce langage. En effet on leur rabâche qu'il faut utiliser MVC, que tel framework est MVC, que leur code à eux ne l'est pas, etc. Sans que nul part, évidement, on ne donne une explication correcte de la notion.]]></description>
+				<content:encoded><![CDATA[<p>MVC, pour &#8220;Modèle, Vue, Contrôleur&#8221;, est le nom donné à une manière d&#8217;organiser son code. C&#8217;est une façon d&#8217;appliquer le principe de séparation des responsabilités, en l’occurrence celles du traitement de l&#8217;information et de sa mise en forme.</p>
+<p>Une fois n&#8217;est pas coutume je vais donner un exemple en Python <strong>et PHP</strong>, car c&#8217;est une question qui hante les codeurs de ce langage. En effet on leur rabâche qu&#8217;il faut utiliser MVC, que tel framework est MVC, que leur code à eux ne l&#8217;est pas, etc. Sans que nulle part, évidement, on ne donne une explication correcte de la notion.</p>
+<p>Long article, petite musique.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/E-lPrWLzGSM?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<p><em>(piqué à What the cut :-))</em></p>
+<h2>Principe de base</h2>
+<p>Il n&#8217;y a pas de Tables De La Loi qui disent ce qu&#8217;est le MVC, il y a donc autant de manières de le faire que de programmes. En fait, c&#8217;est un simple principe d&#8217;organisation de code, et il y en a d&#8217;<a href="http://cirw.in//blog/time-to-move-on.html">autres</a>. Mais généralement, c&#8217;est basé sur la répartition suivante :</p>
+<ul>
+<li>Une part du code gère l&#8217;affichage. C&#8217;est la partie &#8220;Vue&#8221;.</li>
+<li>Une part du code gère la manipulation des données. C&#8217;est la partie &#8220;Modèle&#8221;.</li>
+<li>Tout le reste. L&#8217;espèce de merdier qu&#8217;on va mettre en place pour faire marcher le programme, c&#8217;est le contrôleur. Souvent, c&#8217;est le code qui réagit à l&#8217;action de l&#8217;utilisateur, mais pas seulement.</li>
+</ul>
+<p>MVC est typiquement quelque chose d&#8217;abstrait qu&#8217;on ne peut pas comprendre avec une explication seule. Passons donc rapidement à un exemple.</p>
+<p>Imaginons que l&#8217;on ait des tas de fichiers CSV ainsi faits :</p>
+<pre>"Jeu";"Nombre de joueurs Max";"Support"
+"Secret of Mana";"3";"Super Nintendo"
+"Bomberman";"8";"Super Nintendo"
+"Mario Kart";"4";"Nintendo 64"
+"Age of Empire 2";"8";"PC"</pre>
+<p>Et que nous voulions un programme qui fasse un rapport sur le CSV, affichant :</p>
+<pre>Nombre de jeux analysés : 10
+
+Détails
+--------
+
+Support: Super Nintendo
+Nombre de jeux : 2
+Nombre de joueurs max : 8
+
+Support: Nintendo 64
+Nombre de jeux : 1
+Nombre de joueurs max : 4
+
+etc</pre>
+<p>Il y a de nombreuses manières de coder ce programme. Si on le fait en suivant le principe du modèle MVC, on va faire 3 fichiers : un pour le modèle, un pour la vue, et un pour le contrôleur. On peut avoir plus ou moins de 3 fichiers, j&#8217;ai choisi 3 fichiers pour bien illustrer le principe de séparation des responsabilités.</p>
+<h3>Le modèle</h3>
+<p>Le modèle manipule la donnée. Dans un site Web, le modèle est souvent le code qui permet de faire de requêtes à la base de données. Dans notre cas, c&#8217;est le code qui va manipuler le CSV. Encore une fois, il n&#8217;y a pas de définition divine de ce qu&#8217;est un modèle, ceci n&#8217;est qu&#8217;un exemple de ce que cela PEUT être. C&#8217;est le choix du dev.</p>
+<p><em>modele.py</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals<span style="color: #66cc66;">,</span> absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">csv</span> <span style="color: #ff7700;font-weight:bold;">import</span> DictReader
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">collections</span> <span style="color: #ff7700;font-weight:bold;">import</span> OrderedDict
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Modele<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">csv</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">total_jeux</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">supports</span> <span style="color: #66cc66;">=</span> OrderedDict<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">csv</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+            <span style="color: #808080; font-style: italic;"># on parse le csv</span>
+            <span style="color: #ff7700;font-weight:bold;">for</span> data <span style="color: #ff7700;font-weight:bold;">in</span> DictReader<span style="color: black;">&#40;</span>f<span style="color: #66cc66;">,</span> delimiter<span style="color: #66cc66;">=</span>b<span style="color: #483d8b;">';'</span><span style="color: #66cc66;">,</span> quotechar<span style="color: #66cc66;">=</span>b<span style="color: #483d8b;">'&quot;'</span><span style="color: black;">&#41;</span>:
+                <span style="color: #808080; font-style: italic;"># on calcule les stats pour que ligne du csv</span>
+                support <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">supports</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Support'</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+                support<span style="color: black;">&#91;</span><span style="color: #483d8b;">'nombre_de_jeux'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> support.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nombre_de_jeux'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span> + <span style="color: #ff4500;">1</span>
+                <span style="color: #008000;">self</span>.<span style="color: black;">total_jeux</span> +<span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+                <span style="color: #ff7700;font-weight:bold;">if</span> support.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'joueurs_max'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;</span> data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Nombre de joueurs Max'</span><span style="color: black;">&#93;</span>:
+                    support<span style="color: black;">&#91;</span><span style="color: #483d8b;">'joueurs_max'</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> data<span style="color: black;">&#91;</span><span style="color: #483d8b;">'Nombre de joueurs Max'</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># goodies pour pouvoir itérer sur le modèle</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">supports</span>.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ca s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> modele <span style="color: #66cc66;">=</span> Modele<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Bureau/jeux.csv&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> modele.<span style="color: black;">total_jeux</span>
+<span style="color: #ff4500;">4</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> support<span style="color: #66cc66;">,</span> data <span style="color: #ff7700;font-weight:bold;">in</span> modele:
+    <span style="color: #ff7700;font-weight:bold;">print</span> support
+    <span style="color: #ff7700;font-weight:bold;">print</span> data
+...
+<span style="color: black;">Super</span> Nintendo
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'8'</span><span style="color: black;">&#125;</span>
+Nintendo <span style="color: #ff4500;">64</span>
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'4'</span><span style="color: black;">&#125;</span>
+PC
+<span style="color: black;">&#123;</span>u<span style="color: #483d8b;">'nombre_de_jeux'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'joueurs_max'</span>: <span style="color: #483d8b;">'8'</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>On voit ici le principe : le modèle ne fait que manipuler la donnée, et rien d&#8217;autre. Il extrait, regroupe, calcule, raffine, et donne une belle interface propre pour que le reste du programme puisse utiliser le résultat sans avoir à connaitre les détails du traitement.</p>
+<h3>La vue</h3>
+<p>La vue, c&#8217;est de la présentation. C&#8217;est comment on veut que la donnée soit présentée à l&#8217;utilisateur. Ça peut être le code qui pond du HTML ou produit un CSV, ou fait configurer de jolis boutons dans une UI.</p>
+<p>Dans notre cas, c&#8217;est le code qui va formater le texte pour la console.</p>
+<p>On veut un truc comme ça :</p>
+<pre>
+Nombre de jeux analysés : 10
+
+Détails
+--------
+
+Support: Super Nintendo
+Nombre de jeux : 2
+Nombre de joueurs max : 8
+
+Support: Nintendo 64
+Nombre de jeux : 1
+Nombre de joueurs max : 4</pre>
+<p>Normalement, on voudrait un template. Mais on a pas de langage de template qui accepte les boucles dans la lib standard, alors on va faire comme la norme WSGI et retourner un générateur de strings.</p>
+<p><em>vue.py</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals<span style="color: #66cc66;">,</span> absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> rapport<span style="color: black;">&#40;</span>modele<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># affichage de l'en-tête</span>
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Nombre de jeux analysés : {total_jeux}<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+           <span style="color: #483d8b;">&quot;Détails<span style="color: #000099; font-weight: bold;">\n</span>--------<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>total_jeux<span style="color: #66cc66;">=</span>modele.<span style="color: black;">total_jeux</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># affichage des stats pour chaque console</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> support<span style="color: #66cc66;">,</span> data <span style="color: #ff7700;font-weight:bold;">in</span> modele:
+        <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Support: {support}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+               <span style="color: #483d8b;">&quot;Nombre de jeux : {nombre_de_jeux}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span>
+               <span style="color: #483d8b;">&quot;Nombre de joueurs max : {joueurs_max}<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: black;">&#41;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>
+               support<span style="color: #66cc66;">=</span>support<span style="color: #66cc66;">,</span> **data<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et ça s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> m <span style="color: #66cc66;">=</span> Modele<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Bureau/jeux.csv&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span>rapport<span style="color: black;">&#40;</span>m<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'Nombre de jeux analys<span style="color: #000099; font-weight: bold;">\x</span>e9s : 4<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\n</span>D<span style="color: #000099; font-weight: bold;">\x</span>e9tails<span style="color: #000099; font-weight: bold;">\n</span>--------<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'Support: Super Nintendo<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 2<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 8<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'Support: Nintendo 64<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 1<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 4<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'Support: PC<span style="color: #000099; font-weight: bold;">\n</span>Nombre de jeux : 1<span style="color: #000099; font-weight: bold;">\n</span>Nombre de joueurs max : 8<span style="color: #000099; font-weight: bold;">\n</span>'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Encore une fois, ceci n&#8217;est pas LA manière de faire une vue. Ceci est UNE manière de faire une vue. Le but de la vue est de contenir le code qui se charge de formater la donnée pour l&#8217;utilisateur. </p>
+<p>Il est plus courant d&#8217;utiliser un template pour cela, c&#8217;est à dire une sorte lib de texte à trou à remplir plus tard avec le modèle. C&#8217;est plus facile et flexible qu&#8217;une fonction. Il y a des tas de <a href="https://wiki.python.org/moin/Templating">libs de templates en Python</a>. Je ferai sans doute un article dessus un jour. Si vous voulez un truc simple et rapide, utilisez <a href="http://www.joonis.de/en/code/templite">templite</a> : rien besoin d&#8217;installer, ça tient dans un fichier. Si vous voulez le truc le plus standard possible, utiliser <a href="http://jinja.pocoo.org/docs/">jinja2</a>, c&#8217;est plus ou moins la lib la plus connue actuellement.</p>
+<h3>Le contrôleur</h3>
+<p>Le contrôleur, c&#8217;est tout le reste. Essayer de définir le contrôleur est généralement voué à l&#8217;échec, tant sa nature change d&#8217;une application à l&#8217;autre. Certains disent que c&#8217;est le code glue qui permet de lier le modèle et la vue. D&#8217;autres qu&#8217;il contient la logique de flux du programme. Personnellement, je vous invite à vous fier à la définition &#8220;c&#8217;est tout le reste&#8221;. Avec l&#8217;expérience, vous en viendrez à faire des modèles et des vues de plus en plus adaptées, et la partie contrôleur découlera d&#8217;elle-même.</p>
+<p>De toute façon, aucun MVC n&#8217;est parfait, et un peu de vue dégouline parfois sur le contrôleur, un peu de contrôleur coule dans le modèle, ou inversement. Il ne sert à rien d&#8217;être un nazi du MVC, c&#8217;est une bonne pratique, pas un dogme religieux.</p>
+<p>Dans notre cas le programme a besoin d&#8217;un code qui :</p>
+<ul>
+<li>Importe notre vue et notre modèle.</li>
+<li>Prend en paramètre le fichier CSV via la ligne de commande.</li>
+<li>Mélange tout ça pour afficher le résultat dans la console.</li>
+</ul>
+<p>Le contrôleur est par ailleurs le point d&#8217;entrée d&#8217;un programme. Et ce sera essentiellement ça, le contrôleur de notre programme : un point d&#8217;entrée.</p>
+<p><em>controlleur.py</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">__future__</span> <span style="color: #ff7700;font-weight:bold;">import</span> unicode_literals<span style="color: #66cc66;">,</span> absolute_import
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> vue <span style="color: #ff7700;font-weight:bold;">import</span> rapport
+<span style="color: #ff7700;font-weight:bold;">from</span> modele <span style="color: #ff7700;font-weight:bold;">import</span> Modele
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on prend le csv en paramètre du script</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    f <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">sys</span>.<span style="color: black;">argv</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">IndexError</span>:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Veuillez passer le chemin d'un fichier CSV en paramètre.&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on vérifie que le csv existe</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>f<span style="color: black;">&#41;</span>:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Le fichier '%s' n'existe pas&quot;</span> % f<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on analyse le CSV et on affiche le rapport</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> texte <span style="color: #ff7700;font-weight:bold;">in</span> rapport<span style="color: black;">&#40;</span>Modele<span style="color: black;">&#40;</span>f<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> texte</pre></td></tr></table></div>
+
+<h3>Résultat final</h3>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ python controlleur.<span style="color: black;">py</span> jeux.<span style="color: #dc143c;">csv</span>
+Nombre de jeux analysés : <span style="color: #ff4500;">4</span>
+&nbsp;
+Détails
+--------
+&nbsp;
+Support: Super Nintendo
+Nombre de jeux : <span style="color: #ff4500;">2</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">8</span>
+&nbsp;
+Support: Nintendo <span style="color: #ff4500;">64</span>
+Nombre de jeux : <span style="color: #ff4500;">1</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">4</span>
+&nbsp;
+Support: PC
+Nombre de jeux : <span style="color: #ff4500;">1</span>
+Nombre de joueurs <span style="color: #008000;">max</span> : <span style="color: #ff4500;">8</span></pre></td></tr></table></div>
+
+<p>Vous pouvez <a href="https://github.com/sametmax/codes-des-articles/tree/master/2013/decembre">télécharger le code Python de cet article</a>.</p>
+<h2>Exemple en PHP</h2>
+<p>Le PHP a eu beaucoup de succès du fait de la facilité avec laquelle on pouvait coder un site Web, en mélangeant code et HTML. Malheureusement cela a donné lieu à des codes très sales, où on trouvait les requêtes SQL à côté de l&#8217;affichage d&#8217;un tableau, l&#8217;analyse des paramètres <code>$_GET</code> à deux pas de la vérification du mot de passe.</p>
+<p>MVC a été une réponse à cela.</p>
+<p>Un modèle MVC propre sera généralement très riche et complexe, mais il est possible de bricoler un site en MVC basique à la main sans trop de problème. Je ne vous recommande pas d&#8217;utiliser ce code en prod, mais c&#8217;est un bon début pour comprendre comment ça marche. Une fois que vous serez à l&#8217;aise avec l&#8217;idée, n&#8217;hésitez pas à coder le votre sur un petit projet, puis à tester un framework. <a href="http://symfony.com/">Symfony</a>, par exemple, est une valeur sûre en PHP.</p>
+<p>Admettons que notre site ait deux pages : <em>accueil</em> et <em>liste des utilisateurs</em>.</p>
+<p>L&#8217;accueil dit juste bonjour, la liste affiche tous les utilisateurs du site Web. Passionnant.</p>
+<h3>Le modèle</h3>
+<p>L&#8217;idée est de mettre toutes les requêtes SQL au même endroit.</p>
+<p>Les vieux routards du PHP m&#8217;excuseront, mais je n&#8217;ai plus codé dans ce langage depuis des années, donc mon style va dater un peu :-) Et honnêtement tous ces points-virgules, ces dollars et ces brackets dans tous les sens, sans compter la flèche comme caractère de look up, ça me perturbe grandement.</p>
+<p><em>modele.php</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>
+&nbsp;
+<span style="color: #000088;">$con</span> <span style="color: #339933;">=</span> <span style="color: #990000;">mysqli_connect</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;127.0.0.1&quot;</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'root'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'admin123'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'ma_db'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #000000; font-weight: bold;">class</span> User <span style="color: #009900;">&#123;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$name</span><span style="color: #339933;">;</span>
+    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$age</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #000000; font-weight: bold;">function</span> __construct<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$age</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$name</span><span style="color: #339933;">;</span>
+        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">age</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$age</span><span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+    static <span style="color: #000000; font-weight: bold;">function</span> liste<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+&nbsp;
+        <span style="color: #000088;">$users</span> <span style="color: #339933;">=</span> <span style="color: #990000;">array</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #000088;">$query</span> <span style="color: #339933;">=</span>  <span style="color: #990000;">mysqli_query</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$con</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'SELECT * FROM `user`'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+        <span style="color: #b1b100;">while</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$row</span> <span style="color: #339933;">=</span> <span style="color: #990000;">mysql_fetch_assoc</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$query</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#123;</span>
+            <span style="color: #000088;">$users</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> User<span style="color: #009900;">&#40;</span><span style="color: #000088;">$row</span><span style="color: #009900;">&#91;</span><span style="color: #cc66cc;">0</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$row</span><span style="color: #009900;">&#91;</span><span style="color: #cc66cc;">1</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+        <span style="color: #009900;">&#125;</span>
+&nbsp;
+        <span style="color: #b1b100;">return</span> users<span style="color: #339933;">;</span>
+    <span style="color: #009900;">&#125;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Et ça s&#8217;utilise comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000088;">$users</span> <span style="color: #339933;">=</span> User<span style="color: #339933;">-&gt;</span><span style="color: #004000;">liste</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$users</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$user</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$user</span><span style="color: #339933;">.</span>name <span style="color: #339933;">.</span> <span style="color: #0000ff;">'('</span> <span style="color: #339933;">.</span> <span style="color: #000088;">$users</span><span style="color: #339933;">.</span>age<span style="color: #339933;">.</span> <span style="color: #0000ff;">'ans)'</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Ce qui affiche tous les noms et les ages des utilisateurs.</p>
+<p>Bien, on a isolé l&#8217;accès aux données, maintenant on va isoler la mise en forme.</p>
+<h3>La vue</h3>
+<p>Ou plutôt, les vues, puisqu&#8217;on a deux pages, et donc deux vues.</p>
+<p>Vous ne le savez peut être pas, mais PHP vient avec une <a href="http://www.php.net/manual/fr/control-structures.alternative-syntax.php">syntaxe alternativ</a>e spécialement conçue pour être utilisée dans le HTML. Elle est similaire à la syntaxe originale, mais les blocs sont ouverts avec <code>:</code> au lieux de <code>{</code> et fermés par <code>endinstruction</code>. Les variables sont affichées avec <<code>?=$nom_de_variable?></code>.</p>
+<p>Par exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">if</span> <span style="color: #000088;">$truc</span><span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+    &lt;p&gt;
+        <span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$machin</span><span style="color: #000000; font-weight: bold;">?&gt;</span>
+    &lt;/p&gt;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">endif</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span></pre></td></tr></table></div>
+
+<p>Cette syntaxe permet de bien séparer le texte du code PHP, et donc sera utilisée pour la vue.</p>
+<p><em>accueil.php</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;"><span style="color: #339933;">&lt;</span>html<span style="color: #339933;">&gt;&lt;</span>body<span style="color: #339933;">&gt;&lt;</span>h1<span style="color: #339933;">&gt;</span>Bonjour<span style="color: #339933;">&lt;/</span>h1<span style="color: #339933;">&gt;&lt;/</span>body<span style="color: #339933;">&gt;&lt;/</span>html<span style="color: #339933;">&gt;</span></pre></td></tr></table></div>
+
+<p><em>liste_utilisateurs.php</em></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;">&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Utilisateurs&lt;/h1&gt;
+&nbsp;
+        &lt;ul&gt;http://www.php.net/manual/fr/control-structures.alternative-syntax.php
+            <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">foreach</span> <span style="color: #000088;">$users</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$user</span><span style="color: #339933;">:</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+                &lt;li&gt;<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$user</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span><span style="color: #000000; font-weight: bold;">?&gt;</span> (<span style="color: #000000; font-weight: bold;">&lt;?=</span><span style="color: #000088;">$user</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">age</span><span style="color: #000000; font-weight: bold;">?&gt;</span> ans)&lt;/li&gt;
+            <span style="color: #000000; font-weight: bold;">&lt;?php</span> <span style="color: #b1b100;">endforeach</span><span style="color: #339933;">;</span> <span style="color: #000000; font-weight: bold;">?&gt;</span>
+        &lt;/ul&gt;
+&nbsp;
+    &lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table></div>
+
+<p>Et voilà, on a deux pages, et la deuxième affiche notre liste d&#8217;utilisateur. Vous remarquerez qu&#8217;il n&#8217;y a pas de requête ou de logique de choix de page, pas d&#8217;accès à <code>mysql_*</code> ou à <code>$_GET</code> dans ce code. Que de l&#8217;affichage.</p>
+<h3>Le contrôleur</h3>
+<p>Puisque le contrôleur, c&#8217;est le reste, ce sera à la fois notre point d&#8217;entrée, notre code glue et notre routing.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="php" style="font-family:monospace;">&nbsp;
+<span style="color: #000000; font-weight: bold;">&lt;?php</span>
+&nbsp;
+<span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #990000;">isset</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'page'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">&amp;&amp;</span> <span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'page'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">==</span> <span style="color: #0000ff;">'liste'</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'modele.php'</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'liste_utilisateurs.php'</span>
+<span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+    <span style="color: #b1b100;">require</span> <span style="color: #0000ff;">'accueil.php'</span>
+<span style="color: #009900;">&#125;</span></pre></td></tr></table></div>
+
+<p>Et c&#8217;est tout.</p>
+<p>Si l&#8217;utilisateur va sur l&#8217;adresse <em>monsite.com/</em>, il va arriver sur l&#8217;accueil, si il va sur <em>monsite.com/?page=liste</em>, il va atterrir sur la liste des utilisateurs.</p>
+<p>Si on veut changer le look de la page, on modifie la vue. Si on veut changer de base de source de données (et lire par exemple depuis un fichier), on change le modèle. Si on veut rajouter des pages, on change le contrôleur. L&#8217;avantage de la séparation des responsabilités, c&#8217;est la facilité de lecture et donc de maintenance et d&#8217;évolution.</p>
+<p>J&#8217;insiste sur le fait que c&#8217;est un exemple pédagogique, et pas quelque chose à utiliser en prod (par exemple à cause des URLs très moches). Mais il va vous permettre de coder votre premier site en MVC, et plus tard, aller vers des versions plus sérieuses.</p>
+<p>L&#8217;important, c&#8217;est la séparation donnée / formatage / reste du code.</p>
+<h2>MVC dans la vraie vie vivante</h2>
+<p>Créer un modèle MVC à la main propre et efficace, c&#8217;est énormément de taff. C&#8217;est pour cela qu&#8217;on utilise des outils tout fait comme des frameworks Web ou des libs graphiques (Qt, wxWidget et Gtk ont toutes des outils MVC, ex : Qt possède <a href="http://en.wikipedia.org/wiki/QML">QML</a>, un dialecte type CSS pour manipuler des vues).</p>
+<p>Un modèle MVC simple, mais propre, est celui du micro-framework Web Python <a href="http://bottlepy.org">bottle</a>, dont Max vous avait parlé <a href="http://sametmax.com/creer-un-site-avec-bottle-en-5-minutes-parceque-7-cest-impossible-voyons/">ici</a>. Lisez l&#8217;article, et revenez à ce paragraphe, et vous comprendrez que :</p>
+<ul>
+<li>La vue, c&#8217;est le template.</li>
+<li>Le modèle n&#8217;est inclus dans bottle, il faut le faire à la main ou utiliser quelque chose comme un ORM (<a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/">peewee</a> est très bien adapté).</li>
+<li>Le contrôleur, ce sont les fonctions qu&#8217;on trouve sous les décorateurs <code>@url</code>.</li>
+</ul>
+<p>Comme je l&#8217;ai dit précédemment, il y a de nombreuses manières de séparer le contenu de sa présentation.</p>
+<p>Django par exemple n&#8217;utilise pas un modèle MVC au sens traditionnel, mais plutôt du MVT (Modèle &#8211; Vue &#8211; Template). Ce qu&#8217;il appelle les vues sont en fait ce qu&#8217;on appelle le contrôleur dans bottle : les fonctions qui mélangent les données avec le template. Django propose par contre un ORM, qui est bel est bien un système de modèle très élaboré.</p>
+<p>C&#8217;est une question de sémantique, et au final, qu&#8217;importe le flacon, pourvu qu&#8217;on ait l&#8217;ivresse.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>23</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/65XmWyF.jpg" length="75561" type="image/jpg" />	</item>
+	</channel>
+</rss>

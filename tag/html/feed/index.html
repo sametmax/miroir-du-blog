@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; html</title>
+	<atom:link href="http://sametmax.com/tag/html/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Un petit goût de meteor.js en Python 30</title>
+		<link>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/</link>
+		<comments>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/#comments</comments>
+		<pubDate>Thu, 06 Mar 2014 10:37:34 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[meteojs]]></category>
+		<category><![CDATA[pub/sub]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[websocket]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9703</guid>
+		<description><![CDATA[Depuis quelques temps, un standard est en train d'émerger autour du RPC et PUB/SUB entre navigateurs et serveurs : <a href="http://wamp.ws/">WAMP</a>. Il existe du coup des implémentations du protocole en plusieurs langages, donc une en Python avec <a href="http://autobahn.ws/python/">autobahn</a>.]]></description>
+				<content:encoded><![CDATA[<p>Je n&#8217;ai jamais caché ma jalousie envers les codeurs Javascript sous <a href="https://www.meteor.com/">meteor.js</a>. C&#8217;est à mon sens la techno la plus révolutionnaire en matière de dev Web depuis l&#8217;invention des frameworks HTTP.</p>
+<p>Ca permet notamment de faire du PUB/SUB entre le navigateur et le serveur. C&#8217;est à dire qu&#8217;un navigateur déclenche un événement, le serveur le reçoit, et tous les browsers abonnés le reçoivent aussi. Du coup, on modifie une page, toutes les autres pages sont modifiées en temps réel.</p>
+<p>Dommage que ce soit codé dans un langage pourri.</p>
+<p>Heureusement depuis quelques temps, un standard est en train d&#8217;émerger autour du RPC et PUB/SUB entre navigateurs et serveurs : <a href="http://wamp.ws/">WAMP</a>. Il existe du coup des implémentations du protocole en plusieurs langages, donc une en Python avec <a href="http://autobahn.ws/python/">autobahn</a>.</p>
+<p>Ca s&#8217;utilise ainsi : <code><a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a> install autobahn</code>.</p>
+<p>Puis, un petit coup de Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> twisted.<span style="color: black;">python</span> <span style="color: #ff7700;font-weight:bold;">import</span> log
+<span style="color: #ff7700;font-weight:bold;">from</span> twisted.<span style="color: black;">internet</span> <span style="color: #ff7700;font-weight:bold;">import</span> reactor
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">twisted</span>.<span style="color: black;">websocket</span> <span style="color: #ff7700;font-weight:bold;">import</span> listenWS
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">wamp1</span>.<span style="color: black;">protocol</span> <span style="color: #ff7700;font-weight:bold;">import</span> WampServerFactory<span style="color: #66cc66;">,</span> WampServerProtocol
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> MyPubSubServerProtocol<span style="color: black;">&#40;</span>WampServerProtocol<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> onSessionOpen<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># On choisit un namespace pour enregistrer ses events PUB/SUB</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">registerForPubSub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;http://example.com/events/bam&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+   <span style="color: #808080; font-style: italic;"># on lance notre serveur avec moult verbosité</span>
+   log.<span style="color: black;">startLogging</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">stdout</span><span style="color: black;">&#41;</span>
+   wampFactory <span style="color: #66cc66;">=</span> WampServerFactory<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;ws://127.0.0.1:9000&quot;</span><span style="color: #66cc66;">,</span> debugWamp<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+   wampFactory.<span style="color: black;">protocol</span> <span style="color: #66cc66;">=</span> MyPubSubServerProtocol
+   listenWS<span style="color: black;">&#40;</span>wampFactory<span style="color: black;">&#41;</span>
+   reactor.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On lance le serveur directement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python votre_script.py</pre></td></tr></table></div>
+
+<p>Côté client (pas besoin de serveur, on peut l&#8217;ouvrir dans le browser cash pistache) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;script src=&quot;http://code.jquery.com/jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://raw.github.com/tavendo/AutobahnPython/master/examples/twisted/wamp1/pubsub/simple/example1/autobahn.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+&nbsp;
+    $(function(){
+        ab.connect(&quot;ws://localhost:9000&quot;, function(session) {
+&nbsp;
+            $('#foo').click(function(){
+                // au clic sur le bouton, on envoit un evenement BAM
+                session.publish('http://example.com/events/bam', ['bam']);
+&nbsp;
+                // On ajoute bam à la liste en local car le publisher ne
+                // reçoit pas ses propres events
+                $('#doh').append('&lt;li&gt;bam&lt;/li&gt;');
+            });
+&nbsp;
+            session.subscribe('http://example.com/events/bam', function(topic, evt){
+                // on s'inscrit pour recevoir l'event quand il est
+                // déclenché. Ceci marchera dans tout autre tab que celui
+                // qui a déclenché l'event
+                $('#doh').append('&lt;li&gt;bam&lt;/li&gt;');
+            });
+        })
+&nbsp;
+    });
+&nbsp;
+    &lt;/script&gt;
+&nbsp;
+&lt;/head&gt;
+&nbsp;
+&lt;body&gt;
+&nbsp;
+&lt;!-- Notre liste qui va se remplir de bam ! --&gt;
+&lt;ul id=&quot;doh&quot;&gt;&lt;/ul&gt;
+&lt;button id=&quot;foo&quot; value=&quot;Bam&quot;&gt;Bam&lt;/button&gt;
+&nbsp;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table></div>
+
+<p>Ce qui ce passe, c&#8217;est que quand j&#8217;appuie sur le bouton &#8220;Bam&#8221;, ça envoit un événement Bam au serveur via Websocket, qui propage l&#8217;événement à tous les clients. Donc tous les tabs ouverts sur cette page récupèrent l&#8217;événement et peuvent y réagir. Ici, les deux pages sont mises à jour en simultané. </p>
+<div id="attachment_9705" style="width: 610px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2014/03/out.gif" class="grouped_elements" rel="tc-fancybox-group9703"><img src="http://sametmax.com/wp-content/uploads/2014/03/out.gif" alt="Mise à jour de deux pages web en simultané avec autobahn" title="Chez moi ça marche" width="600" height="160" class="size-full wp-image-9705" /></a><p class="wp-caption-text">Chez moi ça marche</p></div>
+<p>Bien entendu, ceci est un exemple très basique fait pour vous donner un avant goût de la techno. D&#8217;ailleurs, meteor.js, c&#8217;est bien plus que du PUB/SUB. Il y a de la gestion de la deco, la synchro de la base côté client, le hot push de code, etc. Ils ont fait un vrai travail de fond sur les problématiques concrètes. </p>
+<p>Donc on en est encore loin, surtout que même leur techno est toujours expérimentale. Mais on a enfin de quoi rattraper le temps perdu. Et avec asyncio, îl n&#8217;y aura même pas besoin de dépendre de twisted pour ce faire. 2014 va être trop fun !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-petit-gout-de-meteor-js-en-python/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/out.gif" length="52202" type="image/jpg" />	</item>
+		<item>
+		<title>Preprocesser ses fichiers statiques et recharger son navigateur automatiquement avec Python livereload 6</title>
+		<link>http://sametmax.com/preprocesser-ses-fichiers-statiques-et-recharger-son-navigateur-automatiquement-avec-python-livereload/</link>
+		<comments>http://sametmax.com/preprocesser-ses-fichiers-statiques-et-recharger-son-navigateur-automatiquement-avec-python-livereload/#comments</comments>
+		<pubDate>Sun, 10 Nov 2013 06:47:39 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[extensions]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[javascrit]]></category>
+		<category><![CDATA[lesscss]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7698</guid>
+		<description><![CDATA[Livereload est une extension multi-navigateur qui permet de recharger tout ou partie d'une page quand un fichier a changé sur le disque.]]></description>
+				<content:encoded><![CDATA[<p>Livereload est une extension multi-navigateur qui permet de recharger tout ou partie d&#8217;une page quand un fichier a changé sur le disque. </p>
+<p>C&#8217;est très pratique pour développer un site Web puisque si vous modifiez un template, un fichier JavaScript, une image ou un fichier CSS, vous n&#8217;avez pas besoin de cliquer sur la fenêtre du navigateur et appuyez sur F5 pour voir le résultat. Si vous avez un double écran (et si vous faites du dev Web, vous devriez), vous ne quittez pas votre éditeur de code.</p>
+<p>L&#8217;extension est gratuite, mais le serveur existe en plusieurs version. Il y a une version graphique pour Windows et Mac qui est payante. Si vous avez un peu de budget et pas envie de vous prendre la tête, <a href="http://livereload.com/">achetez là</a> et arrêtez la lecture de l&#8217;article, c&#8217;est beaucoup plus facile.</p>
+<p>Sinon, suivez le guide pour la version gratos en ligne de commande.</p>
+<h2>Installation</h2>
+<p>Il existe une version Python en ligne de commande du serveur : <a href="http://livereload.readthedocs.org/en/latest/install.html">Python livereload</a>. Il y a aussi <a href="https://github.com/guard/guard-livereload">une version pour les rubistes</a>.</p>
+<p>Je vous invite donc à l&#8217;installer avec <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> livereload</pre></td></tr></table></div>
+
+<p>Il vous faudra aussi l&#8217;<a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">extension de navigateur</a>.</p>
+<p>Après, depuis votre terminal, mettez vous dans le dossier que vous voulez surveiller (par exemple le dossier contenant vos fichiers CSS), et lancez le serveur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">livereload</pre></td></tr></table></div>
+
+<p>Et activez l&#8217;extension pour la page que vous voulez recharger automatiquement. Normalement, c&#8217;est juste un clic sur un bouton.</p>
+<p>C&#8217;est bon, votre page devrait recharger automatiquement.</p>
+<h2>Rechargement à la carte</h2>
+<p>On peut choisir ce qu&#8217;on va recharger plus précisément en créant un fichier de configuration.</p>
+<p>Créez un fichier de code Python nommé &#8220;Guardfile&#8221;, sans l&#8217;extension &#8220;.py&#8221;. Il va ressembler à ceci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> livereload.<span style="color: black;">task</span> <span style="color: #ff7700;font-weight:bold;">import</span> Task
+&nbsp;
+<span style="color: #808080; font-style: italic;"># watcher les js ou les css</span>
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chemin/relatif/vers/fichier/a/surveiller.css'</span><span style="color: black;">&#41;</span>
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chemin/relatif/vers/fichier/a/surveiller.js'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># watcher les images ou les templates</span>
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chemin/relatif/vers/dossier/a/surveiller'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et lancez la commande <code>livereload</code> <strong>en étant dans le même dossier que ce fichier</strong>. Notez que le serveur ne parse ce fichier que quand l&#8217;extension est activée et que vous avez visité la page au moins une fois.</p>
+<p>On peut même demander d&#8217;effectuer des tâches avant le rechargement de la page. Cela peut être des tâches complètement arbitraires, mais des raccourcis existent pour les tâches les plus courantes, telle que minifier du JS ou compiler un pre-processeur CSS.</p>
+<p>Par exemple, j&#8217;utilise cette fonctionnalité pour compiler mes fichiers LESS CSS à chaque modification.</p>
+<p>Pour cela, il faut installer le compilateur LESS. Sous Ubuntu, ça se fait en deux coups de cuillère à pot :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> npm
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> npm <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">-g</span> <span style="color: #c20cb9; font-weight: bold;">less</span></pre></td></tr></table></div>
+
+<p>Et dans le Guardfile, il faut ajouter un code du style :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> livereload.<span style="color: black;">task</span> <span style="color: #ff7700;font-weight:bold;">import</span> Task
+<span style="color: #ff7700;font-weight:bold;">from</span> livereload.<span style="color: #dc143c;">compiler</span> <span style="color: #ff7700;font-weight:bold;">import</span> lessc
+&nbsp;
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'../apps/core/static/less/boostrap/boostrap.less'</span><span style="color: #66cc66;">,</span>
+         lessc<span style="color: black;">&#40;</span><span style="color: #483d8b;">'../apps/core/static/less/boostrap/boostrap.less'</span><span style="color: #66cc66;">,</span>
+               <span style="color: #483d8b;">'../apps/core/static/css/boostrap.css'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Il y a un a tas d&#8217;options donc checkez la doc, mais aussi le code source car la doc n&#8217;est pas exhaustive.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/preprocesser-ses-fichiers-statiques-et-recharger-son-navigateur-automatiquement-avec-python-livereload/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/tumblr_mv7un4bdLS1r539hzo1_500.jpg" length="44490" type="image/jpg" />	</item>
+		<item>
+		<title>Dites non aux animations 3D 15</title>
+		<link>http://sametmax.com/dites-non-aux-animations-3d/</link>
+		<comments>http://sametmax.com/dites-non-aux-animations-3d/#comments</comments>
+		<pubDate>Mon, 14 Oct 2013 16:07:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[ergonomie]]></category>
+		<category><![CDATA[html]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7435</guid>
+		<description><![CDATA[Juste parce que vous pouvez ne veut pas dire que vous devez, et le fait que maintenant la plupart des navigateurs supportent des belles transitions 3D ne signifie certainement PAS que vous devriez les utiliser.]]></description>
+				<content:encoded><![CDATA[<p>Juste parce que vous pouvez ne veut pas dire que vous devez, et le fait que maintenant la plupart des navigateurs supportent des belles transitions 3D ne signifie certainement PAS que vous devriez les utiliser.</p>
+<p>En ergonomie, une règle essentielle est de ne pas mettre ou faire de choses qui n&#8217;ont pas de valeur ajoutée pour l&#8217;utilisateur.</p>
+<p>L&#8217;esthétique est certes, en soi, une valeur ajoutée. Mais il faut considérer deux choses :</p>
+<ul>
+<li>Cette technique apporte-t-elle une valeur esthétique qui n&#8217;est pas remplaçable par le bénéfice d&#8217;une autre technique ?</li>
+<li>Le bénéfice que mon utilisateur en retire compense-t-il les inconvénients auxquels il est confronté ?</li>
+</ul>
+<p>Pour les animations 3D, la réponse est clairement NON, dans 99% des cas.</p>
+<p>D&#8217;abord, généralement l&#8217;animation est lente, ne serait-ce que pour que le mec devant son écran puisse la voir. Vu le temps qu&#8217;on passe à se faire chier à rendre une app plus rapide et fluide à utiliser, pourquoi voulez-vous, VOLONTAIREMENT et ARTIFICIELLEMENT faire patienter votre utilisateur 400ms de plus devant le slide à cube rotatif pour voir la photo suivante ?</p>
+<p>Ensuite, malgré l&#8217;énorme progrès de nos navigateurs, ça bouffe beaucoup de ressources. Bien sûr, quand vous testez sur votre machine quad core avec chrome et un tab ouvert, c&#8217;est parfaitement fluide. Mais il suffit de jouer sur seul de ces paramètres pour que ça ne le soit plus :</p>
+<ul>
+<li>20 tabs sont ouverts.</li>
+<li>Un autre tab utilise Javascript comme un goret (Hello Twitter !).</li>
+<li>Un autre tab utilise de la 3D.</li>
+<li>Un autre tab charge beaucoup d&#8217;images.</li>
+<li>Un autre tab utilise flash.</li>
+<li>L&#8217;utilisateur a des logiciels récents sur une vieille machine.</li>
+<li>L&#8217;utilisateur utilise d&#8217;autres logiciels que son navigateur qui sollicitent la carte graphique (quelle honte, il ose avoir une vie en dehors de facebook et votre site de merde!).</li>
+</ul>
+<p>Dans la vraie vie vivante, ce sont plusieurs de ces paramètres qui rentrent en compte, presque systématiquement. Et je ne vais même pas vous parler de ceux qui utilisent IE avec plein de toolbar sur une machine infectée jusqu&#8217;à la moelle. Qui sont, je le rappelle, la majorité des personnes dans le monde. Pas forcément la majorité de votre cible, mais tout de même&#8230;</p>
+<p>&#8230;vous êtes une putain de page Web, vous ne pouvez pas pré-supposer de ce que l&#8217;utilisateur fait et dans quel contexte.</p>
+<p>Bref, à moins d&#8217;avoir une app avec une connotation visuelle primordiale, par exemple un jeu vidéo, arrêtez avec ces foutues transitions 3D, ça rend votre app inutilisable. Les transitions 2D suffisent largement à améliorer l&#8217;ergonomie et l&#8217;esthétisme d&#8217;une page, et elles bouffent beaucoup moins.</p>
+<p>Merci</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/dites-non-aux-animations-3d/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/LPpLM.jpg" length="13635" type="image/jpg" />	</item>
+		<item>
+		<title>Comment parser du HTML avec des Regex ? 26</title>
+		<link>http://sametmax.com/comment-parser-de-html-avec-des-regex/</link>
+		<comments>http://sametmax.com/comment-parser-de-html-avec-des-regex/#comments</comments>
+		<pubDate>Wed, 05 Jun 2013 18:24:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[lol]]></category>
+		<category><![CDATA[regex]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=216</guid>
+		<description><![CDATA[Il y a longtemps que je voulais traduire cette réponse de StackOverflow, qui donne une bonne fois pour toute la réponse à cette question souvent posée.]]></description>
+				<content:encoded><![CDATA[<p>Il y a longtemps que je voulais traduire <a href="http://stackoverflow.com/a/1732454">cette réponse</a> de StackOverflow, qui donne une bonne fois pour toute la réponse à cette question souvent posée.</p>
+<p>Voici (le formatage exotique a été conservé au maximum):</p>
+<p>Vous ne pouvez pas analyser [X]HTML avec des regex. Parce qu&#8217;HTML ne peut être analysé par des regex. Les regex sont un outil qui ne peut être utilisé pour analyser correctement du HTML. Comme je l&#8217;ai répondu dans des question HTML-et-regex ici de nombreuses fois auparavant, l&#8217;utilisation de regex ne permet pas de consommer du HTML. Les expressions rationnelles sont un outil qui n&#8217;est pas suffisamment sophistiqué pour comprendre les constructions employées par HTML. HTML n&#8217;est pas une langage rationnel, et de fait ne peut être parsé par des expressions rationnelles. Les requêtes par regex ne sont pas équipées pour diviser du HTML en parties qui ont du sens. Tant de fois, mais je ne m&#8217;en lasse pas. Même des expressions irrationnelles telles qu&#8217;utilisées par Perl en sont pas à la hauteur de la tâche que représente l&#8217;analyse de HTML. Vous ne me ferez pas céder. HTML est un langage d&#8217;une complexité telle qu&#8217;il ne peut être analysé par des expressions rationnelles. Même Chuck Norris ne peut analyser du HTML avec des expressions rationnelles. Chaque fois que vous essayez d&#8217;analyser du HTML avec des expressions rationnelles, l&#8217;enfant damné pleure du sang de vierge, et des hackers russes pown votre webapp. Analyser du HTML avec des regex invoque des âmes perdues dans le royaume des vivants. HTML et les regex vont ensemble comme l&#8217;amour, le mariage et les rituels infanticides. Le &lt;center&gt; ne peut tenir, il est trop tard. La force des regex et du HTML ensemble dans le même espace conceptuel détruira votre esprit comme l&#8217;humidité détruit les joints. Si vous analysez du HTML avec des regex, vous vous adonnez à Eux et leurs traditions blasphématoires qui nous condamnent tous à un labeur inhumain pour Celui dont le Nom ne peut être exprimé avec le Plan Multilingue Basique, il arrive. HTML-plus-regex liquéfiera les nerfs des êtres les plus sensibles sous vos yeux, votre psyché dépérissant sous les assauts de l&#8217;horreur. Les an̷al̵y͘s̕e͝urs ̸HT͝M͡L basés sur les regex sont le cancer qui tue StackOverflow <em>il est trop tard il est trop tard nous ne pouvons être sauvé</em>s la trangession d&#8217;un en̵f͝ant amènera les regex à consommer tout tissue vivant (excepté pour le HTML puisqu&#8217;il ne le peut, tel que prophétisé précédemment) <em>oh seigneur aide nous comment qui que ce soit peut-il survire à cet fléau</em> utiliser des regex pour analyser du HTML a condamné l&#8217;humanité à la terreur de la torture and aux failles de sécurité <em>utiliser les regex</em> comme outil pour travailler du HTML établie un brèche<em> entre ce monde</em> et le royaume terrifiant des entités corrompues (comme les entités SGML, mais plus<em> corrompues) un bref regard</em> vers le monde des analy<strong>seurs regex pour HTML transportera ins</strong>tantanément la <em>conscience d&#8217;un programmeur</em> d<em>a</em>ns un <em>m</em>onde de cris sans fin, il arrive, la <del>nauséabonde</del> plaie des infections regex <strong>dévoreront votre parser HT</strong>ML, votre application et votre existence pour l&#8217;éternité comme l&#8217;a fait Visual Basic mais en pire<em> il arrive il arrive ne vous déba</em>ttez pas <em>i̢l͞ a͘rr̸i҉v̡é,̨ <strong>sa radiance</strong> damnée</em> détruisant toute illumination, <em>des ͠t̕a̕g͡s ̶<strong>H͞TM̵L͞ ̕c̸o͜ùlan͜t̀ de̶ vos͜ ͟y͏eưx te̷l̛s̡ de l͜a̶ ̛d͝ǫ</strong>u͜lȩur҉ ͝l̡iquid͝ee,</em> la chanson de l&#8217;ana<del>lyse par expressions</del> rationnelles <em>reduit a<strong>u silence les voix de l&#8217;homme mortel depuis la sp</strong>hère je peux le voir pouvez-vous le voir c&#8217;est magnifique</em> l&#8217;expurgation de tous les mensonges de l&#8217;Homme  TOUT EST PERDU TOUT EST PERDU le poney il arrive i͟l arrive il̸ ̕arr̴i҉ve͢ ̕l&#8217;̵ich҉or ̸p̴é͝n͘è͟t̡r͞e tout MON V̴ISA҉ĢE͘͜ M̵̢͟O̶N ͢͏V͏I̧̨S͞AG̶̕͞E̷̡̕ oh mon dieu no Ņ̵̨ON̕ ̢҉̀N̸͡͞OO͏̢͝O̶͠O̷҉N҉͝ ͡N̶͘͏O̧N͟ ́͜͡s̀͟͡t̶͟o̧͝p̧ ̕͘l̴e҉͠s ͟ań̴gl͏ę̀͏s͢͝ ͜͝n̡e͏̡ ́so҉͜nt̵̡ ͢p̧͘a̛s̀ ̸͞r͞é̕͞e̛l̸͏s̨ ̧̀ZA̷Ĺ͝GO̸ ̸E̴͜͝Ş̵̛T̴̸͠ ̨T̨̢Ó͜N͡Y̢ ̷̨̕L̀E̵͠ PONE̕Y͟ I͖̮̝̥̞͟L̴̬͈͍͞ ̞̦A̴҉͕̩͉R͎͉̯̼̹̫͈̹R̩͎̙̥̦I̶̢͓̘̗V̤̳͓͓͇̯̭̯̥͜͢͢E̹̣͚̩̯̙͡.</p>
+<p>Avez vous essayé un parser XML à la place ?</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-parser-de-html-avec-des-regex/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/zalgo_boxxy1.jpg" length="10115" type="image/jpg" />	</item>
+		<item>
+		<title>De l&#8217;inutilité de &lt;dl&gt; 16</title>
+		<link>http://sametmax.com/de-linutilite-de/</link>
+		<comments>http://sametmax.com/de-linutilite-de/#comments</comments>
+		<pubDate>Sat, 30 Mar 2013 18:28:01 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[definition list]]></category>
+		<category><![CDATA[dl]]></category>
+		<category><![CDATA[html]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3261</guid>
+		<description><![CDATA[Sémantiquement c'est génial, en pratique, c'est complètement inutile.]]></description>
+				<content:encoded><![CDATA[<p>Sémantiquement c&#8217;est génial :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;dl&gt;
+&lt;dt&gt;Couleurs disponibles :&lt;/dt&gt;
+&lt;dd&gt;Bleue&lt;/dd&gt;
+&lt;dd&gt;Rouge&lt;/dd&gt;
+&lt;dt&gt;Pas de RAM&lt;/dt&gt;
+&lt;dt&gt;Pays : &lt;/dt&gt;
+&lt;dd&gt;France&lt;/dd&gt;
+&lt;dd&gt;Espagne&lt;/dd&gt;
+&lt;dd&gt;Wonderland&lt;/dd&gt;
+&lt;/dl&gt;</pre></td></tr></table></div>
+
+<p>On peut faire une liste avec des sortes de titres, et on sait que les éléments de la liste sont liés par leur titre.</p>
+<p>Sauf que :</p>
+<ul>
+<li>Les moteurs de recherche en ont rien à foutre. On a constaté aucune différence en passant de ça à un &lt;ul&gt; ou même une imbrication de &lt;div&gt;.</li>
+<li>C&#8217;est impossible à styler : on ne peut pas grouper en CSS un &lt;dt&gt; et ses &lt;dd&gt;. Et les foutre dans des conteneurs rend le code invalide.</li>
+<li>On ne peut pas mettre de balise block dans le &lt;dt&gt;. WTF ? C&#8217;est une putain de balise de titre !</li>
+</ul>
+<p>Bref, la definition list est la balise la plus inutile de tous les temps. J&#8217;ai essayé de l&#8217;utiliser dans un millions de cas de figure, au final un &lt;ul&gt; avec un &lt;strong&gt; et un &lt;span&gt; dans le &lt;li&gt; ou des &lt;div&gt; pour les gros morceaux sont toujours plus facile à style. Les développeurs front end peuvent se mettre la sémantique au cul.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/de-linutilite-de/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/Iif6rdC.gif" length="335784" type="image/jpg" />	</item>
+		<item>
+		<title>Évolution de la courbe d&#8217;apprentissage d&#8217;un dev front end 12</title>
+		<link>http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/</link>
+		<comments>http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/#comments</comments>
+		<pubDate>Mon, 07 Jan 2013 16:42:50 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bootstrap]]></category>
+		<category><![CDATA[coffescript]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[css3]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4029</guid>
+		<description><![CDATA[On est pas dans la spatio-merde]]></description>
+				<content:encoded><![CDATA[
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://fr.slideshare.net/slideshow/embed_code/15885873" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" 1="webkitallowfullscreen" 2="mozallowfullscreen" class="iframe-class"></iframe>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/blue-growth-chart.jpg" length="36625" type="image/jpg" />	</item>
+		<item>
+		<title>Echaper du HTML en Python ou avec jQuery</title>
+		<link>http://sametmax.com/echaper-le-html/</link>
+		<comments>http://sametmax.com/echaper-le-html/#comments</comments>
+		<pubDate>Wed, 28 Nov 2012 15:02:56 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3395</guid>
+		<description><![CDATA[La question bateau du jour: mais comment transforme-t-on des tags HTML en entités HTML pour sécuriser les inputs utilisateurs qui seront affichées sur le site ?]]></description>
+				<content:encoded><![CDATA[<p>La question bateau du jour: mais comment transforme-t-on des tags HTML en entités HTML pour sécuriser les inputs utilisateurs qui seront affichées sur le site ?</p>
+<h2>En Python</h2>
+<p>On peut utiliser le module <code>sax</code>, qui a la base sert à échaper les caractères pour du XML. On va juste étendre sa table de caractères pour rajouter le simple et le double quote.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">xml</span>.<span style="color: black;">sax</span>.<span style="color: black;">saxutils</span> <span style="color: #ff7700;font-weight:bold;">import</span> escape<span style="color: #66cc66;">,</span> unescape
+&nbsp;
+a_echapper <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'&quot;'</span>: <span style="color: #483d8b;">&quot;&amp;quot;&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;'&quot;</span>: <span style="color: #483d8b;">&quot;&amp;apos;&quot;</span><span style="color: black;">&#125;</span>
+a_reconstituer <span style="color: #66cc66;">=</span> <span style="color: #008000;">dict</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>value<span style="color: #66cc66;">,</span> key<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> key<span style="color: #66cc66;">,</span> value <span style="color: #ff7700;font-weight:bold;">in</span> a_echapper.<span style="color: black;">iteritems</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> echape_html<span style="color: black;">&#40;</span>text<span style="color: #66cc66;">,</span> a_echapper<span style="color: #66cc66;">=</span>a_echapper<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> escape<span style="color: black;">&#40;</span>text<span style="color: #66cc66;">,</span> a_echapper<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> reconstitue_html<span style="color: black;">&#40;</span>text<span style="color: #66cc66;">,</span> a_reconstituer<span style="color: #66cc66;">=</span>a_reconstituer<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> unescape<span style="color: black;">&#40;</span>text<span style="color: #66cc66;">,</span> a_reconstituer<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Avec jQuery</h2>
+<p>En pur JS, ce sera galère. Mais avec jQuery, c&#8217;est :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'&lt;div&gt;&lt;/div&gt;'</span><span style="color: #009900;">&#41;</span>.<span style="color: #660066;">text</span><span style="color: #009900;">&#40;</span>text_a_echaper<span style="color: #009900;">&#41;</span>.<span style="color: #660066;">html</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Je ne sais pas comment on peut faire facilement l&#8217;opération inverse par contre.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/echaper-le-html/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/Ape_Escape_Pal.jpg" length="313189" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; admin</title>
+	<atom:link href="http://sametmax.com/tag/admin/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Accélérer les listings de l&#8217;admin Django avec beaucoup de ForeignKeys 3</title>
+		<link>http://sametmax.com/accelerer-les-listings-de-ladmin-django-avec-beaucoup-de-foreignkeys/</link>
+		<comments>http://sametmax.com/accelerer-les-listings-de-ladmin-django-avec-beaucoup-de-foreignkeys/#comments</comments>
+		<pubDate>Sun, 28 Sep 2014 07:32:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[admin]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[perf]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12251</guid>
+		<description><![CDATA[Je pensais que ces astuces étaient très connues, mais quand j'en ai eu besoin, j'ai galéré pour mettre la main dessus. Du coup blogage, blogation, blogitude.]]></description>
+				<content:encoded><![CDATA[<p>Je pensais que ces astuces étaient très connues, mais quand j&#8217;en ai eu besoin, j&#8217;ai galéré pour mettre la main dessus. Du coup blogage, blogation, blogitude.</p>
+<p>L&#8217;admin Django permet de faire automatiquement un listing des objets voulus afin de les modifier. Si un modèle a une ForeignKey et qu&#8217;on définit le champ en <code>list_editable</code>, Django va pondre un drop down pour choisir parmi les relations possibles.</p>
+<p>Or, le framework fait une requête <strong>pour chaque objet de la liste</strong>. Si vous avez deux ForeignKeys sur votre modèle et 20 objets (valeur par défaut) dans la liste, ça vous fait donc 40 queries, juste pour afficher ces deux drop down. Doh.</p>
+<p>On peut néanmoins forcer Django à cacher le résultat de la première requête, réduisant ainsi le compte à 1, avec cette étrange astuce d&#8217;une mère au foyer (consultants hate her !) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> VotreClasseAdmin<span style="color: black;">&#40;</span>admin.<span style="color: black;">ModelAdmin</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Cette méthode est appelée pour créer le champ de formulaire de pour</span>
+    <span style="color: #808080; font-style: italic;"># chaque objet</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> formfield_for_dbfield<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> db_field<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+&nbsp;
+        request <span style="color: #66cc66;">=</span> kwargs<span style="color: black;">&#91;</span><span style="color: #483d8b;">'request'</span><span style="color: black;">&#93;</span>
+        formfield <span style="color: #66cc66;">=</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>ProductPageAdmin<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">formfield_for_dbfield</span><span style="color: black;">&#40;</span>db_field<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Si le champ est editable dans la liste</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> db_field.<span style="color: black;">name</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">list_editable</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>formfield<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'choices'</span><span style="color: black;">&#41;</span>:
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># On tente de récupérer la query en cache</span>
+            cache_attr_name <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'_%s_cache'</span> % db_field.<span style="color: black;">name</span>
+            choices_cache <span style="color: #66cc66;">=</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> cache_attr_name<span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> choices_cache <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+                formfield.<span style="color: black;">choices</span> <span style="color: #66cc66;">=</span> choices_cache
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># Pas de cache, on force Django à faire la query en accédant</span>
+            <span style="color: #808080; font-style: italic;"># au descripteur .choices et on met le resultat</span>
+            <span style="color: #808080; font-style: italic;"># en cache</span>
+            <span style="color: #ff7700;font-weight:bold;">else</span>:
+                <span style="color: #008000;">setattr</span><span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> cache_attr_name<span style="color: #66cc66;">,</span> formfield.<span style="color: black;">choices</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On retourne le champ de notre formulaire avec sa valeur mise</span>
+        <span style="color: #808080; font-style: italic;"># en cache</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> formfield</pre></td></tr></table></div>
+
+<p>Malheureusement, il peut arriver qu&#8217;il y ait tellement d&#8217;objets que c&#8217;est votre navigateur qui panique. En effet, si vous avez un modèle <code>Promotion</code> avec un lien vers un modèle <code>Produit</code> et que vous avez 5000 produits en base, vous allez créer 20 <code>&lt;select&gt;</code> avec 5000 <code>&lt;options&gt;</code> dedans. 100000 balises dans une page, ça peut faire mal.</p>
+<p>Dans ce cas, il vaut mieux désactiver la possibilité de faire un drop down, et mettre un champ text à la place dans lequel on entre un ID en utilisant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> VotreClasseAdmin<span style="color: black;">&#40;</span>admin.<span style="color: black;">ModelAdmin</span><span style="color: black;">&#41;</span>
+&nbsp;
+     raw_id_fields <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">'nom_de_votre_champ'</span><span style="color: #66cc66;">,</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Django n&#8217;est pas chien, et vous mettra un petit bouton en forme de loupe pour chercher l&#8217;ID dont vous avez besoin.</p>
+<p>Si vous avez beaucoup de ForeignKey <strong>non éditables</strong> (<code>readonly_fields</code>), vous pouvez aussi vous fendre d&#8217;un <code>select_related</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> VotreClasseAdmin<span style="color: black;">&#40;</span>admin.<span style="color: black;">ModelAdmin</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> queryset<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># On filtre le queryset que Django va utiliser pour populer la liste</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>MyAdmin<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: black;">queryset</span><span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>.<span style="color: black;">select_related</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'myfield'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ça ne marche que sur les non éditables, car pour eux Django ne créé pas de champ de formulaire.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/accelerer-les-listings-de-ladmin-django-avec-beaucoup-de-foreignkeys/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/09/501854_d01f_1024x2000.jpg" length="103754" type="image/jpg" />	</item>
+		<item>
+		<title>Monitorez vos serveurs avec munin et notifications par email 19</title>
+		<link>http://sametmax.com/monitorez-vos-serveurs-avec-munin-et-notifications-par-email/</link>
+		<comments>http://sametmax.com/monitorez-vos-serveurs-avec-munin-et-notifications-par-email/#comments</comments>
+		<pubDate>Wed, 24 Apr 2013 06:02:07 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[admin]]></category>
+		<category><![CDATA[munin]]></category>
+		<category><![CDATA[serveurs]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5860</guid>
+		<description><![CDATA[C'est toujours utile d'avoir une vue d'ensemble de son serveur, avec pourquoi pas  des notifications par email lorsque quelque chose ne tourne pas rond, ça peut éviter bien des désagréments comme un disque dur plein, un cpu qui a atteint la température du soleil, etc.]]></description>
+				<content:encoded><![CDATA[<p>Avoir un serveur c&#8217;est bien, en prendre soin c&#8217;est mieux. J&#8217;ai longtemps administré des serveurs sans trop me soucier de ce qui pouvait leur arriver et bien des fois tout a planté car je n&#8217;avais pas su anticiper la catastrophe.<br />
+Un exemple courant, j&#8217;ai viré Apache pour installer Nginx et ce dernier log par défaut les accès http, après quelques semaines, le disque dur bien rempli, le serveur me claque dans les doigts, plus de place, tout merde, c&#8217;est le drame, pas moyen de rebooter à part en safe mode car disque plein, les hémorroïdes s&#8217;en mêlent, c&#8217;est foutu.</p>
+<p>J&#8217;ai commencé par <a href="http://oss.oetiker.ch/mrtg/">MRTG</a>, pas terrible à installer mais il fait son boulot. Et puis j&#8217;ai changé de serveur pas mal de fois en une année, horrible d&#8217;avoir à réinstaller ce truc à chaque fois alors j&#8217;ai cherché autre chose, après quelques tests pas terribles je suis tombé sur munin, plutôt complet avec des plugins que l&#8217;on peut écrire soit-même. Facile à installer quand on utilise les packages, suivez le guide.</p>
+<p><strong>Installation de <a>Munin</a>:</strong><br />
+Munin se compose de deux programmes.<br />
+<strong>Le maître (munin):</strong> qui va récupérer les infos et générer les graphs.<br />
+<strong>Le noeud (munin-node):</strong> qui s&#8217;installe sur tous les serveurs à monitorer y compris le maître si besoin et qui va envoyer les infos au maître.</p>
+<p><strong>Sur le serveur Maître pour une distribution Ubuntu:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> munin munin-node munin-plugins-extra
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>cache<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>www <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>www<span style="color: #000000; font-weight: bold;">/</span>munin
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>init.d<span style="color: #000000; font-weight: bold;">/</span>munin-node restart</pre></td></tr></table></div>
+
+<p>Pour voir s&#8217;afficher les pages il vous faudra un serveur web, exemple avec Nginx:<br />
+dans le répertoire conf.d de Nginx ajoutez un fichier munin.conf et mettez-y le code suivant.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>local<span style="color: #000000; font-weight: bold;">/</span>nginx<span style="color: #000000; font-weight: bold;">/</span>conf.d<span style="color: #000000; font-weight: bold;">/</span>munin.conf</pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">server <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+&nbsp;
+    listen       <span style="color: #000000;">80</span>;
+    server_name munin.monserveur.com;
+&nbsp;
+	location <span style="color: #000000; font-weight: bold;">/</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+	        auth_basic            <span style="color: #ff0000;">&quot;Restricted&quot;</span>;
+	        <span style="color: #666666; font-style: italic;"># Create the htpasswd file with the htpasswd tool.</span>
+	        auth_basic_user_file  <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>nginx<span style="color: #000000; font-weight: bold;">/</span>htpasswd;
+&nbsp;
+	        root <span style="color: #000000; font-weight: bold;">/</span>var<span style="color: #000000; font-weight: bold;">/</span>www<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>;
+	        index  index.html index.htm;
+	        expires modified +310s;
+	<span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></td></tr></table></div>
+
+<p>Note: vous pouvez désactiver l&#8217;authentification si vous voulez rendre votre page publique.</p>
+<p>Après réglage de vos DNS chez votre registrar vous devriez avoir quelque chose à la page <strong>http://munin.monserveur.com</strong></p>
+<p><strong>Sur les serveurs à monitorer (les noeuds):</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> munin-node munin-plugins-extra</pre></td></tr></table></div>
+
+<p>Il faut maintenant &#8220;dire&#8221; au serveur noeud l&#8217;IP du serveur maître pour qu&#8217;il puisse lui envoyer les informations sur l&#8217;état de la machine.</p>
+<p>Editez le fichier /etc/munin/munin-node.conf</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">allow ^<span style="color: #000000;">192</span>\.168\.1\.200$</pre></td></tr></table></div>
+
+<p>Cette partie va permettre au Maître de venir récupérer les infos nécessaires. Remplacez l&#8217;IP par celle de votre serveur Maître.</p>
+<p>On redémarre munin-node pour prendre en compte les changements.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>init.d<span style="color: #000000; font-weight: bold;">/</span>munin-node restart</pre></td></tr></table></div>
+
+<p>PS: Si il ne se passe rien vérifiez que vous n&#8217;avez pas un firewall qui bloque l&#8217;IP et/ou le port TCP/4949</p>
+<p><strong>Les plugins:</strong><br />
+Les plugins sont des petits programmes permettant de rajouter des fonctionnalitées au monitoring comme la supervision de services tels que Redis, Varnish, Nginx, etc. <a href="https://github.com/munin-monitoring/contrib/tree/master/plugins">La liste est ici</a></p>
+<p>Attention: L&#8217;ajout des plugins se fait côté serveur Noeud !</p>
+<p>En fait il s&#8217;agit de simples liens symboliques dans le répertoire <strong>/etc/munin/plugins/</strong> pointants vers le répertoire <strong>/usr/share/munin/plugins/</strong>.<br />
+La liste des plugins disponibles s&#8217;obtient avec:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> munin-node-configure</pre></td></tr></table></div>
+
+<p><strong>Exemple rajouter le plugin pour monitorer Mysql:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ln</span> <span style="color: #660033;">-s</span> <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>share<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>plugins<span style="color: #000000; font-weight: bold;">/</span>mysql_queries <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>plugins<span style="color: #000000; font-weight: bold;">/</span>mysql_queries</pre></td></tr></table></div>
+
+<div id="attachment_5863" style="width: 626px" class="wp-caption aligncenter"><img class=" wp-image-5863 " title="Mysql monitoré, il en chie des briques là..." src="http://sametmax.com/wp-content/uploads/2013/04/munin.png" alt="" width="616" height="418" /><p class="wp-caption-text">Mysql en train de mourir...</p></div>
+<p><strong>Après que les machines noeuds aient été configurées on les déclare au serveur Maître:</strong><br />
+Il faut éditer le fichier munin.conf sur le serveur Maître.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span>  <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>munin.conf</pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">&#91;</span>sametmax<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address sametmax.com
+    df._home.warning <span style="color: #000000;">95</span>
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>machine_locale_maitre<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  127.0.0.1
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  127.0.0.1
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;serveur_adolf<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  33.94.124.33
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;serveur_himler<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  33.94.124.33
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>groupe_de_serveurs;serveur_DSK<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address  69.69.69.69
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span></pre></td></tr></table></div>
+
+<p><strong>Analysons la config ci-dessus:</strong></p>
+<p><em>sametmax:</em><br />
+Le premier va nous sortir les stats du serveur sametmax.com, on peut mettre l&#8217;ip comme le nom de domaine.</p>
+<p><em>machine_locale_maitre:</em><br />
+Si on veut monitorer la machine maitre on met 127.0.0.1</p>
+<p><em>groupe_de_serveurs:</em><br />
+Va définir un groupe de serveurs, l&#8217;affichage groupera tous les serveurs y appartenant, c&#8217;est juste pour un affichage plus clair, ne pas oublier le &#8220;;&#8221; à la fin</p>
+<p><em>groupe_de_serveurs;serveur_adolf:</em><br />
+Un serveur qui apparaîtra dans le groupe de serveurs avec himler et DSK</p>
+<p><strong>Notification par email:</strong><br />
+Avec munin il est possible de recevoir des notifications lorsque certains capteurs de votre monitoring atteignent un certain seuil.</p>
+<p>Vérifiez bien que sendmail est installé et qu&#8217;il <a href="http://stackoverflow.com/questions/10359437/sendmail-how-to-configure-sendmail-on-ubuntu">fonctionne</a><br />
+Dans le shell on teste sendmail</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">'Promo sur les BBW'</span> <span style="color: #000000; font-weight: bold;">|</span> mail <span style="color: #660033;">-s</span> <span style="color: #ff0000;">'sujet à poil les putes'</span> monmail<span style="color: #000000; font-weight: bold;">@</span>moi.com</pre></td></tr></table></div>
+
+<p><strong>Toujours dans le fichier munin.conf sur le serveur Maître:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#email notifications settings</span>
+contacts max
+contact.max.command mail <span style="color: #660033;">-s</span> <span style="color: #ff0000;">&quot;Munin notif <span style="color: #007800;">${var:host}</span>&quot;</span> monmail<span style="color: #000000; font-weight: bold;">@</span>moi.com
+contact.max.always_send warning critical</pre></td></tr></table></div>
+
+<p>La premiere ligne définit un contact, la deuxième va envoyer l&#8217;email de notification via sendmail au mail indiqué.<br />
+La dernière ligne va indiquer à munin qu&#8217;il faut envoyer les alertes pour les <em>warning</em> et les <em>critical</em>.</p>
+<p>Les seuils pour les notifications sont définis par warning et critical. Regardez plus haut pour le serveur [sametmax] nous avons défini un seuil pour df (disk free) de 95%.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">&#91;</span>sametmax<span style="color: #7a0874; font-weight: bold;">&#93;</span>
+    address sametmax.com
+    df._home.warning <span style="color: #000000;">95</span>
+    use_node_name <span style="color: #c20cb9; font-weight: bold;">yes</span></pre></td></tr></table></div>
+
+<p>Ce qui veut dire que lorsque l&#8217;usage disque de<strong> /home</strong> aura dépassé les 95% d&#8217;utilisation munin va vous envoyer une notification par email. ça peut devenir lourd à la longue par contre car il s&#8217;arrête jamais :)</p>
+<p><b>On redémarre munin sur le serveur maître pour prendre en compte les modif:</b></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">su</span> - munin <span style="color: #660033;">--shell</span>=<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span><span style="color: #c20cb9; font-weight: bold;">bash</span>
+<span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>share<span style="color: #000000; font-weight: bold;">/</span>munin<span style="color: #000000; font-weight: bold;">/</span>munin-update</pre></td></tr></table></div>
+
+<p>Bon monitorage!</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/monitorez-vos-serveurs-avec-munin-et-notifications-par-email/feed/</wfw:commentRss>
+		<slash:comments>19</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/chaplin.jpeg" length="10150" type="image/jpg" />	</item>
+		<item>
+		<title>Réinitialiser le mot de passe de l&#8217;admin django 1</title>
+		<link>http://sametmax.com/reinitialiser-le-mot-de-passe-de-ladmin-django/</link>
+		<comments>http://sametmax.com/reinitialiser-le-mot-de-passe-de-ladmin-django/#comments</comments>
+		<pubDate>Fri, 13 Apr 2012 23:21:56 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[admin]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[mot de passe]]></category>
+		<category><![CDATA[reset]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=388</guid>
+		<description><![CDATA[Réinitialiser le mot de passe de l'admin django.]]></description>
+				<content:encoded><![CDATA[<p>Zut j&#8217;ai paumé le mot de passe de mon admin django. Bien évidement je ne l&#8217;ai pas sauvegarder la dernière fois pensant que je m&#8217;en rappellerais et surtout par pure fainéantise&#8230;</p>
+<p>Pour réinitialiser un mot de passe on se connecte au shell et on import le User.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py shell</pre></td></tr></table></div>
+
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span>.<span style="color: black;">auth</span>.<span style="color: black;">models</span> <span style="color: #ff7700;font-weight:bold;">import</span> User
+u <span style="color: #66cc66;">=</span> User.<span style="color: black;">objects</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>username<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'admin'</span><span style="color: black;">&#41;</span>
+u.<span style="color: black;">set_password</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'nouveau_mot_de_passe'</span><span style="color: black;">&#41;</span>
+u.<span style="color: black;">save</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et on a un nouveau mot de passe. Ouf! on peut retourner regarder une série tv pour fêter ça&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/reinitialiser-le-mot-de-passe-de-ladmin-django/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/04/admin01.png" length="6361" type="image/jpg" />	</item>
+	</channel>
+</rss>

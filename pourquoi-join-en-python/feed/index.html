@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Pourquoi &#039;,&#039;.join en Python ?</title>
+	<atom:link href="http://sametmax.com/pourquoi-join-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/pourquoi-join-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-1021</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Fri, 03 Aug 2012 12:12:18 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-1021</guid>
+		<description><![CDATA[Voilà. Moi autant &lt;code&gt;&#039;,&#039;.join&lt;/code&gt; me parle complètement, autant &lt;code&gt;len(obj)&lt;/code&gt; à la place de &lt;code&gt;obj.length&lt;/code&gt; je trouve ça bidon puisque &lt;code&gt;len()&lt;/code&gt; ne fait qu&#039;appeler __len__ de toute façon. Encore, si &lt;code&gt;len()&lt;/code&gt; pouvait fallback sur &lt;code&gt;__iter__&lt;/code&gt;, mais même pas.]]></description>
+		<content:encoded><![CDATA[<p>Voilà. Moi autant <code>','.join</code> me parle complètement, autant <code>len(obj)</code> à la place de <code>obj.length</code> je trouve ça bidon puisque <code>len()</code> ne fait qu&#8217;appeler __len__ de toute façon. Encore, si <code>len()</code> pouvait fallback sur <code>__iter__</code>, mais même pas.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Romain</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-1016</link>
+		<dc:creator><![CDATA[Romain]]></dc:creator>
+		<pubDate>Fri, 03 Aug 2012 04:55:47 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-1016</guid>
+		<description><![CDATA[OK implode est l&#039;inverse d&#039;explode mais PHP aurait pu coller à Perl et au reste du monde et utiliser split / join !
+
+Pour les histoires de map / filter / reduce : c&#039;est vrai que des fois, on a l&#039;impression que Python ne sait pas trop choisir entre fonction et méthodes... Dans ce cadre là, c&#039;est le choix de rendre l&#039;objet iterable grâce à la méthode _iter_ et pas en rajoutant une tonne de méthodes comme avec un mixin comme dans Ruby (parce que Ruby ne rigole pas avec la taille des interfaces, c&#039;est bien chiant d&#039;ailleurs)]]></description>
+		<content:encoded><![CDATA[<p>OK implode est l&#8217;inverse d&#8217;explode mais PHP aurait pu coller à Perl et au reste du monde et utiliser split / join !</p>
+<p>Pour les histoires de map / filter / reduce : c&#8217;est vrai que des fois, on a l&#8217;impression que Python ne sait pas trop choisir entre fonction et méthodes&#8230; Dans ce cadre là, c&#8217;est le choix de rendre l&#8217;objet iterable grâce à la méthode _iter_ et pas en rajoutant une tonne de méthodes comme avec un mixin comme dans Ruby (parce que Ruby ne rigole pas avec la taille des interfaces, c&#8217;est bien chiant d&#8217;ailleurs)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: LeMeteore</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-1011</link>
+		<dc:creator><![CDATA[LeMeteore]]></dc:creator>
+		<pubDate>Thu, 02 Aug 2012 21:59:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-1011</guid>
+		<description><![CDATA[Pourquoi map(func, iterable), merci pour l&#039;explication. Je comprends mieux maintenant.
+
+J&#039;ai un ami qui il y a longtemps m&#039;avait expliqué que c&#039;etait (entre autre?) pour encourager un style de programmation purement fonctionnel.]]></description>
+		<content:encoded><![CDATA[<p>Pourquoi map(func, iterable), merci pour l&#8217;explication. Je comprends mieux maintenant.</p>
+<p>J&#8217;ai un ami qui il y a longtemps m&#8217;avait expliqué que c&#8217;etait (entre autre?) pour encourager un style de programmation purement fonctionnel.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-1006</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 02 Aug 2012 19:07:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-1006</guid>
+		<description><![CDATA[Pour la même raison: pour qu&#039;on puisse passer n&#039;importe quel itérable à map et filter. On peut faire un map/filter sur autre chose qu&#039;un séquence. Un itérable doit juste remplir une seule condition: pouvoir récupérer des valeurs une à une. 
+
+Si on suit la logique sequence.filter, sequence.map, sequence.join, alors on se retrouve à demander à tous les itérable d&#039;implémenter un proxy de filter, map et join, ce qui revient à complexifier l&#039;interface de chaque nouvel itérable codé.
+
+Python fonctionne en duck typing, si c&#039;est itérable, on peut maper, on peut filtrer, on peut joiner. L&#039;action de maper, filtrer, joiner est indépendance de l&#039;itérable, et donc ne fait pas partie de son interface.]]></description>
+		<content:encoded><![CDATA[<p>Pour la même raison: pour qu&#8217;on puisse passer n&#8217;importe quel itérable à map et filter. On peut faire un map/filter sur autre chose qu&#8217;un séquence. Un itérable doit juste remplir une seule condition: pouvoir récupérer des valeurs une à une. </p>
+<p>Si on suit la logique sequence.filter, sequence.map, sequence.join, alors on se retrouve à demander à tous les itérable d&#8217;implémenter un proxy de filter, map et join, ce qui revient à complexifier l&#8217;interface de chaque nouvel itérable codé.</p>
+<p>Python fonctionne en duck typing, si c&#8217;est itérable, on peut maper, on peut filtrer, on peut joiner. L&#8217;action de maper, filtrer, joiner est indépendance de l&#8217;itérable, et donc ne fait pas partie de son interface.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: shenshei</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-1004</link>
+		<dc:creator><![CDATA[shenshei]]></dc:creator>
+		<pubDate>Thu, 02 Aug 2012 18:48:08 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-1004</guid>
+		<description><![CDATA[et pourquoi on a:
+ &lt;code&gt;filter(function, sequence)&lt;/code&gt; et &lt;code&gt;map(function, sequence)&lt;/code&gt;
+et pas:
+ &lt;code&gt;sequence.filter(function)&lt;/code&gt; et &lt;code&gt;sequence.map(function)&lt;/code&gt;
+
+car lors de l&#039;imbrication de plusieurs &lt;code&gt;map&lt;/code&gt; et &lt;code&gt;filter&lt;/code&gt; la seconde solution est nettement plus lisible (pas besoin de jouer au poupées russes)]]></description>
+		<content:encoded><![CDATA[<p>et pourquoi on a:<br />
+ <code>filter(function, sequence)</code> et <code>map(function, sequence)</code><br />
+et pas:<br />
+ <code>sequence.filter(function)</code> et <code>sequence.map(function)</code></p>
+<p>car lors de l&#8217;imbrication de plusieurs <code>map</code> et <code>filter</code> la seconde solution est nettement plus lisible (pas besoin de jouer au poupées russes)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: PHPman</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-1003</link>
+		<dc:creator><![CDATA[PHPman]]></dc:creator>
+		<pubDate>Thu, 02 Aug 2012 18:37:36 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-1003</guid>
+		<description><![CDATA[Parce que join = implode :
+&lt;a href=&quot;http://in.php.net/manual/en/function.join.php&quot; rel=&quot;nofollow&quot;&gt;http://in.php.net/manual/en/function.join.php&lt;/a&gt;]]></description>
+		<content:encoded><![CDATA[<p>Parce que join = implode :<br />
+<a href="http://in.php.net/manual/en/function.join.php" rel="nofollow">http://in.php.net/manual/en/function.join.php</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-1000</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 02 Aug 2012 17:55:43 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-1000</guid>
+		<description><![CDATA[Parceque c&#039;est l&#039;inverse d&#039;explode :-)]]></description>
+		<content:encoded><![CDATA[<p>Parceque c&#8217;est l&#8217;inverse d&#8217;explode :-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Romain</title>
+		<link>http://sametmax.com/pourquoi-join-en-python/#comment-998</link>
+		<dc:creator><![CDATA[Romain]]></dc:creator>
+		<pubDate>Thu, 02 Aug 2012 17:48:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1467#comment-998</guid>
+		<description><![CDATA[ça fait un peu réfléchir à l&#039;envers mais on s&#039;y fait... Et encore c&#039;est parce que les codeurs pensent de travers :
+
+&#039;,&#039;.join(ma_liste) =&gt; &#039;,&#039; joint les éléments de ma liste
+
+Ce que propose Ruby roxe quand même pour ce qui est de la lisibilité, surtout associé à des blocs.
+
+Mais &#039;implode&#039; en PHP ? pourquoi ?]]></description>
+		<content:encoded><![CDATA[<p>ça fait un peu réfléchir à l&#8217;envers mais on s&#8217;y fait&#8230; Et encore c&#8217;est parce que les codeurs pensent de travers :</p>
+<p>&#8216;,&#8217;.join(ma_liste) =&gt; &#8216;,&#8217; joint les éléments de ma liste</p>
+<p>Ce que propose Ruby roxe quand même pour ce qui est de la lisibilité, surtout associé à des blocs.</p>
+<p>Mais &#8216;implode&#8217; en PHP ? pourquoi ?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

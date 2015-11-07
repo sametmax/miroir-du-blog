@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: [FFMPEG] &#8211; Encoder un répertoire entier en mp3</title>
+	<atom:link href="http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Etienne</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7682</link>
+		<dc:creator><![CDATA[Etienne]]></dc:creator>
+		<pubDate>Thu, 04 Apr 2013 22:24:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7682</guid>
+		<description><![CDATA[&lt;code&gt;${var%regex} ${var%wildcard}&lt;/code&gt;
+D&#039;accord! Ça m&#039;a chiffonné cette histoire.]]></description>
+		<content:encoded><![CDATA[<p><code>${var%regex} ${var%wildcard}</code><br />
+D&#8217;accord! Ça m&#8217;a chiffonné cette histoire.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Romain</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7660</link>
+		<dc:creator><![CDATA[Romain]]></dc:creator>
+		<pubDate>Thu, 04 Apr 2013 13:23:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7660</guid>
+		<description><![CDATA[Très exactement le shell n&#039;utilise pas des regex mais des wildcards
+
+&lt;del&gt;${var%regex}&lt;/del&gt; ${var%wildcard}]]></description>
+		<content:encoded><![CDATA[<p>Très exactement le shell n&#8217;utilise pas des regex mais des wildcards</p>
+<p><del>${var%regex}</del> ${var%wildcard}</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fred</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7605</link>
+		<dc:creator><![CDATA[Fred]]></dc:creator>
+		<pubDate>Wed, 03 Apr 2013 05:35:13 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7605</guid>
+		<description><![CDATA[Attention aux backquotes &lt;code&gt;`ffmpeg -i &quot;$file&quot; &quot;$file.mp3&quot;`&lt;/code&gt; car elles ont pour but de récupérer les éléments affichés par la commande ; afin de les réutiliser ailleurs (dans une variable).
+
+Exemple: &lt;code&gt;var=`pwd`; echo &quot;Je me trouve dans $var&quot;&lt;/code&gt; ou plus simplement &lt;code&gt;echo &quot;Je me trouve dans `pwd` et on est le `date`&quot;&lt;/code&gt;
+
+Ici, manifestement, récupérer le stdout de ffmpeg n&#039;est pas utile donc pas de backquotes =&gt; &lt;code&gt;ffmpeg -i &quot;$file&quot; &quot;$file.mp3&quot;&lt;/code&gt;
+
+Ce n&#039;est même pas une option car avec les backquotes, ce qu&#039;affiche la commande est réutilisé dans le contexte de la ligne. Or tout premier mot de la ligne doit être impérativement une instruction shell valide. Donc si la commande ffmpeg affiche qqchose, cet affichage sera réutilisé en tant que commande shell.
+Donc conclusion, réellement pas de backquotes.
+
+Sinon j&#039;aime bien la solution de cym13 basée sur &lt;code&gt;ls &#124; while read var&lt;/code&gt;. En effet, le for se cale sur l&#039;espace pour travailler ce qui pose soucis sur des fichiers dont le nom contient un espace. Or, comme le read se cale sur le return et non sur l&#039;espace, on est certain avec cette méthode de ne pas avoir de souci avec des noms contenant un espace. Toutefois ce pb ne survient que sur des instructions type &lt;code&gt;for var in `commande`&lt;/code&gt; et non sur des instructions type &lt;code&gt;for var in metacharactère&lt;/code&gt; car dans ce dernier cas, le shell encapsule chaque nom de guillemets.]]></description>
+		<content:encoded><![CDATA[<p>Attention aux backquotes <code>`ffmpeg -i "$file" "$file.mp3"`</code> car elles ont pour but de récupérer les éléments affichés par la commande ; afin de les réutiliser ailleurs (dans une variable).</p>
+<p>Exemple: <code>var=`pwd`; echo "Je me trouve dans $var"</code> ou plus simplement <code>echo "Je me trouve dans `pwd` et on est le `date`"</code></p>
+<p>Ici, manifestement, récupérer le stdout de ffmpeg n&#8217;est pas utile donc pas de backquotes =&gt; <code>ffmpeg -i "$file" "$file.mp3"</code></p>
+<p>Ce n&#8217;est même pas une option car avec les backquotes, ce qu&#8217;affiche la commande est réutilisé dans le contexte de la ligne. Or tout premier mot de la ligne doit être impérativement une instruction shell valide. Donc si la commande ffmpeg affiche qqchose, cet affichage sera réutilisé en tant que commande shell.<br />
+Donc conclusion, réellement pas de backquotes.</p>
+<p>Sinon j&#8217;aime bien la solution de cym13 basée sur <code>ls | while read var</code>. En effet, le for se cale sur l&#8217;espace pour travailler ce qui pose soucis sur des fichiers dont le nom contient un espace. Or, comme le read se cale sur le return et non sur l&#8217;espace, on est certain avec cette méthode de ne pas avoir de souci avec des noms contenant un espace. Toutefois ce pb ne survient que sur des instructions type <code>for var in `commande`</code> et non sur des instructions type <code>for var in metacharactère</code> car dans ce dernier cas, le shell encapsule chaque nom de guillemets.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Fred</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7604</link>
+		<dc:creator><![CDATA[Fred]]></dc:creator>
+		<pubDate>Wed, 03 Apr 2013 05:33:28 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7604</guid>
+		<description><![CDATA[Attention aux backquotes &lt;code&gt;`ffmpeg -i &quot;$file&quot; &quot;$file.mp3&quot;`&lt;/code&gt; car elles ont pour but de récupérer les éléments affichés par la commande ; afin de les réutiliser ailleurs (dans une variable)
+
+Exemple: &lt;code&gt;var=`pwd`; echo &quot;Je me trouve dans $var&quot;&lt;/code&gt; ou plus simplement &lt;code&gt;echo &quot;Je me trouve dans $pwd et on est le `date`&quot;&lt;/code&gt;
+
+Ici, manifestement, récupérer le stdout de ffmpeg n&#039;est pas utile donc pas de backquotes =&gt; &lt;code&gt;ffmpeg -i &quot;$file&quot; &quot;$file.mp3&quot;&lt;/code&gt;
+
+Ce n&#039;est même pas une option car avec les backquotes, ce qu&#039;affiche la commande est réutilisé dans le contexte de la ligne. Or tout premier mot de la ligne doit être impérativement une instruction shell valide. Donc si la commande ffmpeg affiche qqchose, cet affichage sera réutilisé en tant que commande shell.
+Donc conclusion, réellement pas de backquotes.
+
+Sinon j&#039;aime bien la solution de cym13 basée sur &lt;code&gt;ls &#124; while read var&lt;/code&gt;. En effet, le for se cale sur l&#039;espace pour travailler ce qui pose soucis sur des fichiers dont le nom contient un espace. Or, comme le read se cale sur le return et non sur l&#039;espace, on est certain avec cette méthode de ne pas avoir de souci avec des noms contenant un espace. Toutefois ce pb ne survient que sur des instructions type &lt;code&gt;for var in `commande`&lt;/code&gt; et non sur des instructions type &lt;code&gt;for var in metacharactère&lt;/code&gt; car dans ce dernier cas, le shell encapsule chaque nom de guillemets.]]></description>
+		<content:encoded><![CDATA[<p>Attention aux backquotes <code>`ffmpeg -i "$file" "$file.mp3"`</code> car elles ont pour but de récupérer les éléments affichés par la commande ; afin de les réutiliser ailleurs (dans une variable)</p>
+<p>Exemple: <code>var=`pwd`; echo "Je me trouve dans $var"</code> ou plus simplement <code>echo "Je me trouve dans $pwd et on est le `date`"</code></p>
+<p>Ici, manifestement, récupérer le stdout de ffmpeg n&#8217;est pas utile donc pas de backquotes =&gt; <code>ffmpeg -i "$file" "$file.mp3"</code></p>
+<p>Ce n&#8217;est même pas une option car avec les backquotes, ce qu&#8217;affiche la commande est réutilisé dans le contexte de la ligne. Or tout premier mot de la ligne doit être impérativement une instruction shell valide. Donc si la commande ffmpeg affiche qqchose, cet affichage sera réutilisé en tant que commande shell.<br />
+Donc conclusion, réellement pas de backquotes.</p>
+<p>Sinon j&#8217;aime bien la solution de cym13 basée sur <code>ls | while read var</code>. En effet, le for se cale sur l&#8217;espace pour travailler ce qui pose soucis sur des fichiers dont le nom contient un espace. Or, comme le read se cale sur le return et non sur l&#8217;espace, on est certain avec cette méthode de ne pas avoir de souci avec des noms contenant un espace. Toutefois ce pb ne survient que sur des instructions type <code>for var in `commande`</code> et non sur des instructions type <code>for var in metacharactère</code> car dans ce dernier cas, le shell encapsule chaque nom de guillemets.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: pirateboxge</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7600</link>
+		<dc:creator><![CDATA[pirateboxge]]></dc:creator>
+		<pubDate>Tue, 02 Apr 2013 20:46:12 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7600</guid>
+		<description><![CDATA[Je plussoie imagemagick est une pure tuerie en manipulation d&#039;image.
+J&#039;ai des collègue sous photoshop et il hallucine de la puissance de imagemagick pour les traitements par lots ou même du graphisme de prod.Il faut se taper le man mais ça vaut le coup.
+http://www.imagemagick.org/script/index.php]]></description>
+		<content:encoded><![CDATA[<p>Je plussoie imagemagick est une pure tuerie en manipulation d&#8217;image.<br />
+J&#8217;ai des collègue sous photoshop et il hallucine de la puissance de imagemagick pour les traitements par lots ou même du graphisme de prod.Il faut se taper le man mais ça vaut le coup.<br />
+<a href="http://www.imagemagick.org/script/index.php" rel="nofollow">http://www.imagemagick.org/script/index.php</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: hdsdi3g</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7598</link>
+		<dc:creator><![CDATA[hdsdi3g]]></dc:creator>
+		<pubDate>Tue, 02 Apr 2013 19:28:24 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7598</guid>
+		<description><![CDATA[Avec Convert (Imagemagick).]]></description>
+		<content:encoded><![CDATA[<p>Avec Convert (Imagemagick).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Etienne</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7596</link>
+		<dc:creator><![CDATA[Etienne]]></dc:creator>
+		<pubDate>Tue, 02 Apr 2013 19:27:04 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7596</guid>
+		<description><![CDATA[Et pour simplement redimensionner des images par lot, vous faites comment?]]></description>
+		<content:encoded><![CDATA[<p>Et pour simplement redimensionner des images par lot, vous faites comment?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: François</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7595</link>
+		<dc:creator><![CDATA[François]]></dc:creator>
+		<pubDate>Tue, 02 Apr 2013 18:46:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7595</guid>
+		<description><![CDATA[&lt;a href=&quot;http://0bin.net/paste/1e79db0b32bd39b5f1bc8366b1d7d84453a342c4#SiMUySegUnMTTq80oEA3htrjH8mGGgkHi+KE9KgxAkM=&quot; rel=&quot;nofollow&quot;&gt;lien&lt;/a&gt;]]></description>
+		<content:encoded><![CDATA[<p><a href="http://0bin.net/paste/1e79db0b32bd39b5f1bc8366b1d7d84453a342c4#SiMUySegUnMTTq80oEA3htrjH8mGGgkHi+KE9KgxAkM=" rel="nofollow">lien</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: François</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7594</link>
+		<dc:creator><![CDATA[François]]></dc:creator>
+		<pubDate>Tue, 02 Apr 2013 18:45:01 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7594</guid>
+		<description><![CDATA[Je n&#039;ai pas trop le temps de faire le ménage, mais je vous donne mes notes perso audio-video par souci de partage. &lt;a href=&quot;http://0bin.net/paste/1e79db0b32bd39b5f1bc8366b1d7d84453a342c4#SiMUySegUnMTTq80oEA3htrjH8mGGgkHi+KE9KgxAkM=&quot; rel=&quot;nofollow&quot;&gt;]]></description>
+		<content:encoded><![CDATA[<p>Je n&#8217;ai pas trop le temps de faire le ménage, mais je vous donne mes notes perso audio-video par souci de partage. <a href="http://0bin.net/paste/1e79db0b32bd39b5f1bc8366b1d7d84453a342c4#SiMUySegUnMTTq80oEA3htrjH8mGGgkHi+KE9KgxAkM=" rel="nofollow"></a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Max</title>
+		<link>http://sametmax.com/ffmpeg-encoder-un-repertoire-entier-en-mp3/#comment-7586</link>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+		<pubDate>Tue, 02 Apr 2013 13:27:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=5574#comment-7586</guid>
+		<description><![CDATA[&lt;blockquote&gt;Pour ceux qui ne sont pas très familiers de bash, ${var%regex} enlève la plus courte chaine de charactère correspondant à “regex” à la fin de la variable var.
+&lt;/blockquote&gt;
+
+
+Je connaissais pas, merci ;)]]></description>
+		<content:encoded><![CDATA[<blockquote><p>Pour ceux qui ne sont pas très familiers de bash, ${var%regex} enlève la plus courte chaine de charactère correspondant à “regex” à la fin de la variable var.
+</p></blockquote>
+<p>Je connaissais pas, merci ;)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; tco</title>
+	<atom:link href="http://sametmax.com/tag/tco/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>State machine en Python en l&#8217;absence d&#8217;algos récursifs bénéficiant de tail call optimisation 11</title>
+		<link>http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/</link>
+		<comments>http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/#comments</comments>
+		<pubDate>Thu, 26 Jul 2012 12:44:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[recursion]]></category>
+		<category><![CDATA[state machine]]></category>
+		<category><![CDATA[tco]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1299</guid>
+		<description><![CDATA[Comme l'indique le titre...]]></description>
+				<content:encoded><![CDATA[<p>Ca c&#8217;est un titre qui en jette ! Faut dire que je tiens du <a href="https://fr.wikipedia.org/wiki/Impostures_intellectuelles">maître Sokal</a> himself.</p>
+<p>Donc, vulgarisons un peu. Ca sera un article bien prise de tête. Lisez-le un dimanche soir quand vous ne captez pas arte (et si vous ne pigez rien, c&#8217;est pas grave, revenez dans un an, moi je le fais bien avec tous les articles d&#8217;<a href="http://www.aleax.it/python_mat_en.html">Alex Martelli</a>).</p>
+<p>Un appel récursif, c&#8217;est une fonction qui s&#8217;appelle elle-même. Et en Python ça donne ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction_recursive<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Je suis récursive, fuck yeah !&quot;</span>
+&nbsp;
+    fonction_recursive<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et sa sortie va ressembler à ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> fonction_recursive<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+Je suis récursive<span style="color: #66cc66;">,</span> fuck yeah <span style="color: #66cc66;">!</span>
+<span style="color: black;">&#91;</span>...<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Un peu comme une boucle infinie:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Je suis récursive, fuck yeah !&quot;</span></pre></td></tr></table></div>
+
+<p>Car la fonction s&#8217;appelle elle même indéfiniement.</p>
+<p>Les boucles infinies peuvent être utiles, mais en Python, les récursions infinies sont vachement craignos, parcequ&#8217;elles aboutissent toujours à ce message d&#8217;erreur:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">RuntimeError</span>: maximum recursion depth exceeded</pre></td></tr></table></div>
+
+<p>En effet, une boucle infinie est une sucession d&#8217;opération les une après les autres, mais une récursion infinie est une succession d&#8217;opérations les unes <strong>dans</strong> les autres. Et comme Python garde en mémoire une pile de chaque appel de fonction (c&#8217;est entre autre ce qui vous permet de voir le fameux stack trace quand il y a une erreur et remonter jusqu&#8217;à la source du plantage au moment d&#8217;une exception), il finit par remplir la pile, qui par défaut a une limite de 1000 entrées.</p>
+<p>Du coup, en Python, quand on fait du récursif, on est obligé de faire une condition de sortie, du genre:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction_recursive<span style="color: black;">&#40;</span>count<span style="color: #66cc66;">=</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> count <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">100</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> 
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Je suis récursive, fuck yeah !&quot;</span>
+&nbsp;
+    fonction_recursive<span style="color: black;">&#40;</span>count + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui va ici limité le nombre d&#8217;appels récursifs à 100.</p>
+<p>On ne va pas discuter de la pertinence de la récursivité, mais toujours est-il que Python est limité de ce côté, et <a href="http://neopythonic.blogspot.fr/2009/04/tail-recursion-elimination.html">c&#8217;est un choix délibéré</a>.</p>
+<p>Il est limité car dans d&#8217;autres langages, tels que Lisp et <a href="http://sametmax.com/premiere-approche-du-langage-erlang-vu-par-un-pythoniste/">Erlang</a>, on peut faire autant de récursion qu&#8217;on le souhaite, pourvu qu&#8217;on écrive la récursion d&#8217;une certaine façon. C&#8217;est ce qu&#8217;on appelle la TCO, <a href="https://en.wikipedia.org/wiki/Tail-call_optimization">Tail Call Optimisation</a>: le pile d&#8217;appels est vidée au fur et à mesure et ne devient jamais pleine.</p>
+<p>Comment ça s&#8217;utilise et pourquoi ça marche peut faire l&#8217;objet d&#8217;un article à lui tout seul, et ce n&#8217;est pas le but ici.</p>
+<p>Le but de l&#8217;article est de répondre à une question que certains habitués de la récursion se posent: <strong>comment faire des state machines en Python ?</strong></p>
+<p>En effet, une manière très élégante de coder une state machine, ou <a href="https://fr.wikipedia.org/wiki/Automate_fini">automate fini</a>, est justement d&#8217;utiliser une récusion infinie:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> etat3<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 3&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c
+&nbsp;
+    etat1<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> etat2<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 2&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c
+&nbsp;
+    etat3<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> etat1<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 3&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c
+&nbsp;
+    etat2<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>
+&nbsp;
+etat1<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Cela permet de faire transiter le code d&#8217;un état à un autre sans se soucier de stocker l&#8217;état courant, sans barder le programme de <code>if/else</code>, et le code est beaucoup plus élégant et simple à suivre (c&#8217;est un état qui change, c&#8217;est tout):</p>
+<p>etat1 => etat2 => etat3 => etat1 => etat2 => etat3 => etc</p>
+<p>Enfin plus simple, pourvu qu&#8217;on code proprement, car la récursion infinie, c&#8217;est au fond <a href="http://academic.research.microsoft.com/Paper/896024.aspx">une forme ultime de goto</a> (instruction qui par ailleurs est bannie de Python).</p>
+<p>Mais, si vous l&#8217;avez remarqué, pour faire une state machine de cette manière, il nous faut des appels infinis (la state machine n&#8217;est pas sensée s&#8217;arrêter au bout de 1000 appels), et donc une TCO, ce que Python ne possède pas.</p>
+<p>C&#8217;est évidement sans comptez notre Guido favoris qui nous a pondu <a href="http://neopythonic.blogspot.fr/2009/04/final-words-on-tail-calls.html">la solution au problème</a>, version Python:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> etat3<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 3&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> etat1<span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> etat2<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 2&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> etat3<span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> etat1<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Etat 3&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> etat2<span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#93;</span>
+&nbsp;
+func<span style="color: #66cc66;">,</span> args <span style="color: #66cc66;">=</span> etat1<span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">True</span>:
+  func<span style="color: #66cc66;">,</span> args <span style="color: #66cc66;">=</span> func<span style="color: black;">&#40;</span>*args<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et voilà, nous avons le même effet (et les mêmes possibilités de sortie, condition, etc), mais en procédural plutôt qu&#8217;en purement fonctionnel. Toute l&#8217;astuce consiste à retourner le prochain état désiré au lieu de l&#8217;éxécuter, et de laisser la boucle principale se charger des appels.</p>
+<p>Le bloc <code>while</code> est rarement utilisé en Python, à part justement pour des main loops (souvent infinies), et c&#8217;est probablement l&#8217;usage le plus pertinent que j&#8217;ai vu depuis longtemps.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/state-machine-en-python-en-labsence-dalgos-recursifs-beneficiant-de-tail-call-optimisation/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/fastoche.gif" length="400558" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; problemes</title>
+	<atom:link href="http://sametmax.com/tag/problemes/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>10 trucs que je déteste en Python 28</title>
+		<link>http://sametmax.com/10-trucs-que-je-deteste-en-python/</link>
+		<comments>http://sametmax.com/10-trucs-que-je-deteste-en-python/#comments</comments>
+		<pubDate>Sat, 15 Mar 2014 06:52:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[problemes]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9771</guid>
+		<description><![CDATA[Il faut savoir être honête dans la vie, et puisque j'ai tapé sur le JS dans le dernier article, on va rappeler que rien n'est parfait et que chez les Pythoneux aussi y a du boulot.
+]]></description>
+				<content:encoded><![CDATA[<p>Il faut savoir être honnête dans la vie, et puisque j&#8217;ai tapé sur le JS dans le dernier article, on va rappeler que rien n&#8217;est parfait et que chez les Pythoneux aussi y a du boulot.</p>
+<h2>Le piège des paramètres par défaut mutables</h2>
+<p>C&#8217;est le &#8220;ne pas faire&#8221; le plus connu en Python. Mais même en étant au courant on se fait TOUS baiser un jour.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> transfert<span style="color: black;">&#40;</span>source<span style="color: #66cc66;">,</span> res<span style="color: #66cc66;">=</span><span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>:
+	<span style="color: #808080; font-style: italic;"># faire un truc qui passe des élement de</span>
+	<span style="color: #808080; font-style: italic;"># source à res</span></pre></td></tr></table></div>
+
+<p>Ce code va remplir <code>res</code> d&#8217;appels en appels, qui ne sera donc plus une liste vide dès le second appel.</p>
+<p>It&#8217;s a feature, not a bug, mais c&#8217;est pourtant rarement ce qu&#8217;on veut.</p>
+<h2>L&#8217;opérateur pour les tuples est la virgule, pas les parenthèses</h2>
+<p>C&#8217;est pratique car ça permet de rendre l&#8217;unpacking propre et élégant. Mais c&#8217;est aussi un coup à se tirer une balle dans le pied :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> t <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;a&quot;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ceci n'est pas un tuple !</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>t<span style="color: black;">&#41;</span>
+<span style="color: #008000;">str</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> t <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;a&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #808080; font-style: italic;"># grrrr</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>t<span style="color: black;">&#41;</span> 
+<span style="color: #008000;">tuple</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> t <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> 
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>t<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># WAIT WAT ?</span>
+<span style="color: #008000;">tuple</span></pre></td></tr></table></div>
+
+<p>Et comme les string sont itérables, la boucle <code>for</code> marchera toujours, silencieusement, jusqu&#8217;à ce que bug s&#8217;en suive.</p>
+<h2>Pas de set literal vide</h2>
+<p>On peut faire <code>set()</code>, on peut faire <code>{1}</code>, on peut faire <code>()</code> mais on ne peut pas faire <code>{}</code> puisque c&#8217;est un dico, ni <code>{,}</code> puisque c&#8217;est une syntax error. Ces deux lettres à taper en plus pèsent sur ma conscience.</p>
+<h2>Le packaging</h2>
+<p>Packager un programme Python est une grosse galère. Créer un setup.py est facile, mais savoir comment le créer, c&#8217;est une autre histoire. En fait le seul tuto valable sur la question est <a href="http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/">celui de ce blog</a>, et il commence à être vieux. Vous savez pourquoi ? J&#8217;ai pas la foi de le mettre à jour car ça veut dire de nouveau passer des heures à me renseigner sur ce qu&#8217;il faut faire maintenant.</p>
+<p>En fait un exe ou un deb devrait se faire en une ligne de commande.</p>
+<h2>Les modules inutiles de stdlib</h2>
+<p>Vous saviez qu&#8217;il y a un module pour lire les fichiers WAV dans la stdlib ? Sérieusement, qu&#8217;est-ce que ça fout dans la lib standard ?</p>
+<h2>La convention de langage, pas respectée dans la stdlib</h2>
+<p>Même après le nettoyage de Python 3, des libs existent qui utilisent le camelcase pour les noms de méthodes comme par exemple <a href="http://docs.python.org/2/library/unittest.html?highlight=unittest#unittest">unittest</a>. Le code de ces libs lui-même n&#8217;est pas PEP8, ce qui craint dès qu&#8217;on veut voir comment c&#8217;est fait à l&#8217;intérieur.</p>
+<h2>La concaténation automatique fonctionne à côté de l&#8217;opérateur virgules</h2>
+<p>J&#8217;adore le fait que :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;1&quot;</span>
+<span style="color: #483d8b;">&quot;2&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Se concatène automatiquement.</p>
+<p>Mais ça devrait lever une syntax error quand c&#8217;est déclaré à côté de virgules pour éviter cette merde :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">var <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+<span style="color: #483d8b;">&quot;1&quot;</span><span style="color: #66cc66;">,</span>
+<span style="color: #483d8b;">&quot;2&quot;</span>
+<span style="color: #483d8b;">&quot;3&quot;</span>
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Combien de fois je me suis fait niquer avec ça dans <code>settings.py</code>&#8230;</p>
+<h2>On n&#8217;a pas accès au bloc de code dans un with</h2>
+<p>Il y a des tas de context managers géniaux qu&#8217;on pourrait faire si on avait accès au bloc de code exposée dans la close <code>with</code> comme on pourrait le faire avec lisp. Cette limitation m&#8217;a frustré plus d&#8217;une fois.</p>
+<h2>Pas de plug de code à chaud</h2>
+<p>Je rêve de cette feature.</p>
+<h2>Ecrire du code parallèle, concurrent ou non bloquant est lourd</h2>
+<p>Syntaxiquement c&#8217;est pas top, surtout qu&#8217;on doit contourner souvent le GIL. Une grosse amélioration pour l&#8217;io async arrive avec la 3.4 mais elle sera surtout bas niveau.</p>
+<h2>Y a pas de point 10</h2>
+<p>Ce langage est fantastique.</p>
+<h2>Ce qui n&#8217;est PAS un problème à mes yeux</h2>
+<h3>Le passage à Python 3</h3>
+<p>A mon sens, brillament exécuté. Je sais que les gens pensent que ça prend un temps fou et que ça a foutu la merde, etc. Mais en vérité, c&#8217;est un des rares langages qui ait géré la transition aussi bien : largement documentée, outillée et suivie, bien soutenue par la communauté, avec tout le temps qu&#8217;il faut pour la transition mais une direction ferme de la part du BDFL. En plus il est POSSIBLE d&#8217;écrire du code qui fonctionne dans les deux versions alors qu&#8217;elles sont supposément incompatibles. C&#8217;est assez fou quand on y pense.</p>
+<p>Il y a d&#8217;autres langages qui n&#8217;ont jamais réussi ce genre de changements, comme PERL (qui en est mort) ou PHP (qui a avorté).</p>
+<h3>Les espaces significatifs</h3>
+<p>Best. Feature. Ever.</p>
+<h3>Les lambdas sur une ligne</h3>
+<p>Ne pas toujours pouvoir faire des <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">fonctions anonymes</a> pour les callback, c&#8217;est un peu moins élégants, mais sinon, ça ne me manque pas.</p>
+<h3>L&#8217;encoding</h3>
+<p>Les gens râlent sur la gestion de l&#8217;encoding Python parce qu&#8217;ils ne comprennent pas ce qu&#8217;ils font. Mais personnellement je trouve excellent que le langage te force à gérer CORRECTEMENT tes encodings ou te lève une erreur. J&#8217;ai vu tellement de bases de données corrompues, de scripts qui affichent des hiéroglyphes, des &#8220;?&#8221; plein les pages Web, que je me dis que trop de personnes ignorent juste complètement la question. Et le jour où ça merde, ils passent un mois à réparer.</p>
+<p>En 2.7, cette gestion était assez verbeuse par contre, et je suis bien content que ça change en 3.4.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/10-trucs-que-je-deteste-en-python/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n2fcni3D651r539hzo1_500.jpg" length="56525" type="image/jpg" />	</item>
+	</channel>
+</rss>

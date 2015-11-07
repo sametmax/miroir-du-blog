@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Réagir à un changement sur un fichier avec watchdog</title>
+	<atom:link href="http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: hiramash</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163311</link>
+		<dc:creator><![CDATA[hiramash]]></dc:creator>
+		<pubDate>Tue, 14 Jul 2015 19:23:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163311</guid>
+		<description><![CDATA[@Sam
+
+&quot;Mais faut pas avoir trop de fichiers j’imagine sinon ça doit ramouiller.&quot;
+
+En fait c&#039;est beaucoup plus lourd que ça.
+
+J&#039;ai utilisé &quot;inotify&quot; (c&#039;était pas du Python à l&#039;époque, mais j&#039;attaquais en batch) et je l&#039;ai recommandé à un collègue sysadmin. Enchanté, il l&#039;a mis sur un serveur de gestion de mises à jour et un jour...le serveur s&#039;est effondré car il y avait près de 2000 mises à jour simultanées.
+
+Il aurait fallu que les routines déclenchées appellent la mise en tampon avec &quot;at&quot; ; bref, mettre en file d&#039;attente les tâches déclenchées par des événements...
+
+En outre,  j&#039;ai voulu m&#039;en servir sur un serveur Samba, pour qu&#039;il purge un répertoire sous certaines conditions, et me lance des &quot;copy&quot; et des &quot;rsync&quot; sous d&#039;autres conditions. Las ! Inotify, ça ne MARCHE PAS sur un répertoire Windows...(normal, hein? Le système de fichiers Win ne fournissant pas les mêmes événements fichiers que sous Linux)
+
+Donc, le concept de portabilité sous Python, c&#039;est pas un gadget, c&#039;est une vraie bouée de sauvetage face aux lacunes des OS les uns par rapport aux autres. Autre exemple pour le troll : &quot;virtualenv&quot; et &quot;fakeroot&quot;...
+
+Vala, vala,
+
+Long life to Python !
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam</p>
+<p>&#8220;Mais faut pas avoir trop de fichiers j’imagine sinon ça doit ramouiller.&#8221;</p>
+<p>En fait c&#8217;est beaucoup plus lourd que ça.</p>
+<p>J&#8217;ai utilisé &#8220;inotify&#8221; (c&#8217;était pas du Python à l&#8217;époque, mais j&#8217;attaquais en batch) et je l&#8217;ai recommandé à un collègue sysadmin. Enchanté, il l&#8217;a mis sur un serveur de gestion de mises à jour et un jour&#8230;le serveur s&#8217;est effondré car il y avait près de 2000 mises à jour simultanées.</p>
+<p>Il aurait fallu que les routines déclenchées appellent la mise en tampon avec &#8220;at&#8221; ; bref, mettre en file d&#8217;attente les tâches déclenchées par des événements&#8230;</p>
+<p>En outre,  j&#8217;ai voulu m&#8217;en servir sur un serveur Samba, pour qu&#8217;il purge un répertoire sous certaines conditions, et me lance des &#8220;copy&#8221; et des &#8220;rsync&#8221; sous d&#8217;autres conditions. Las ! Inotify, ça ne MARCHE PAS sur un répertoire Windows&#8230;(normal, hein? Le système de fichiers Win ne fournissant pas les mêmes événements fichiers que sous Linux)</p>
+<p>Donc, le concept de portabilité sous Python, c&#8217;est pas un gadget, c&#8217;est une vraie bouée de sauvetage face aux lacunes des OS les uns par rapport aux autres. Autre exemple pour le troll : &#8220;virtualenv&#8221; et &#8220;fakeroot&#8221;&#8230;</p>
+<p>Vala, vala,</p>
+<p>Long life to Python !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: khamaileon</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163308</link>
+		<dc:creator><![CDATA[khamaileon]]></dc:creator>
+		<pubDate>Tue, 14 Jul 2015 16:42:11 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163308</guid>
+		<description><![CDATA[@Sam: Ok c&#039;est limpide pour moi maintenant. Au final je lance simplement mes tests à chaque modification de fichiers avec la commande watchmedo: watchmedo shell-command --patterns=&quot;*.py&quot; --recursive --command=&#039;python manage.py test -v2&#039;
+
+Thx
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam: Ok c&#8217;est limpide pour moi maintenant. Au final je lance simplement mes tests à chaque modification de fichiers avec la commande watchmedo: watchmedo shell-command &#8211;patterns=&#8221;*.py&#8221; &#8211;recursive &#8211;command=&#8217;python manage.py test -v2&#8242;</p>
+<p>Thx</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163307</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 14 Jul 2015 14:52:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163307</guid>
+		<description><![CDATA[&lt;p&gt;@khamaileon: question trop vague, on ne connait pas tes besoins, les points de comparaison avec les autres solutions, les contraintes.... Mais d&#039;une manière générale, watchdog est juste là pour faire la moitié du boulot : lancer un truc au changement d&#039;un fichier. Pour du build, il faut aussi la notion de tache (comme par exemple le fait pydoit).&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@khamaileon: question trop vague, on ne connait pas tes besoins, les points de comparaison avec les autres solutions, les contraintes&#8230;. Mais d&#8217;une manière générale, watchdog est juste là pour faire la moitié du boulot : lancer un truc au changement d&#8217;un fichier. Pour du build, il faut aussi la notion de tache (comme par exemple le fait pydoit).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: khamaileon</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163306</link>
+		<dc:creator><![CDATA[khamaileon]]></dc:creator>
+		<pubDate>Tue, 14 Jul 2015 14:34:55 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163306</guid>
+		<description><![CDATA[@Sam @LeMeteore
+
+Je me suis mal exprimé. Par meilleure solution j&#039;entendais facile à mettre en place, rapide d’exécution, solution éprouvée, documentée, ...
+
+@LeMeteore
+
+On utiliser aussi Grunt et Gulp pour le front. Je cherche donc à trouver un équivalent Python.
+
+Merci à @Sam pour le post
+]]></description>
+		<content:encoded><![CDATA[<p>@Sam @LeMeteore</p>
+<p>Je me suis mal exprimé. Par meilleure solution j&#8217;entendais facile à mettre en place, rapide d’exécution, solution éprouvée, documentée, &#8230;</p>
+<p>@LeMeteore</p>
+<p>On utiliser aussi Grunt et Gulp pour le front. Je cherche donc à trouver un équivalent Python.</p>
+<p>Merci à @Sam pour le post</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163285</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2015 19:19:06 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163285</guid>
+		<description><![CDATA[&lt;p&gt;Sympas ! Mais faut pas avoir trop de fichiers j&#039;imagine sinon ça doit ramouiller.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Sympas ! Mais faut pas avoir trop de fichiers j&#8217;imagine sinon ça doit ramouiller.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Kikoololmdr</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163284</link>
+		<dc:creator><![CDATA[Kikoololmdr]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2015 18:58:21 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163284</guid>
+		<description><![CDATA[Et un petit code en exemple pour avoir la notification des modifications de fichiers entre le moment où le programme s&#039;est arrêté et où il a été redémarré :
+
+https://gist.github.com/serge-kilimoff/8163233
+
+Je l&#039;ai écrit il y a un moment, je ne sais pas si ça fonctionne toujours, c&#039;est plutôt considérer comme une base de code pour un truc plus poussé (de mémoire, je l&#039;avais fais pour reconstruire automatiquement du css avec clevercss).
+]]></description>
+		<content:encoded><![CDATA[<p>Et un petit code en exemple pour avoir la notification des modifications de fichiers entre le moment où le programme s&#8217;est arrêté et où il a été redémarré :</p>
+<p><a href="https://gist.github.com/serge-kilimoff/8163233" rel="nofollow">https://gist.github.com/serge-kilimoff/8163233</a></p>
+<p>Je l&#8217;ai écrit il y a un moment, je ne sais pas si ça fonctionne toujours, c&#8217;est plutôt considérer comme une base de code pour un truc plus poussé (de mémoire, je l&#8217;avais fais pour reconstruire automatiquement du css avec clevercss).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163281</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2015 16:52:12 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163281</guid>
+		<description><![CDATA[&lt;p&gt;@ThomasG77: c&#039;est pareil. La doc de watchdog est un peu mieux, et comme tu le dis, watchdog est crossplateform. Sinon c&#039;est kiffkiff.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@ThomasG77: c&#8217;est pareil. La doc de watchdog est un peu mieux, et comme tu le dis, watchdog est crossplateform. Sinon c&#8217;est kiffkiff.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: LeMeteore</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163276</link>
+		<dc:creator><![CDATA[LeMeteore]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2015 14:56:35 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163276</guid>
+		<description><![CDATA[@khamaileon
+
+il n&#039;existe pas de meilleure solution.
+
+Je gere ce genre de tache avec incron: http://www.cyberciti.biz/faq/linux-inotify-examples-to-replicate-directories/
+
+Mon pote front-dev lui prefere gruntJs
+
+Et certains utilisent des git hook pre-commits.
+
+Merci encore pr le post, je ne connaissais pas watchdog.
+]]></description>
+		<content:encoded><![CDATA[<p>@khamaileon</p>
+<p>il n&#8217;existe pas de meilleure solution.</p>
+<p>Je gere ce genre de tache avec incron: <a href="http://www.cyberciti.biz/faq/linux-inotify-examples-to-replicate-directories/" rel="nofollow">http://www.cyberciti.biz/faq/linux-inotify-examples-to-replicate-directories/</a></p>
+<p>Mon pote front-dev lui prefere gruntJs</p>
+<p>Et certains utilisent des git hook pre-commits.</p>
+<p>Merci encore pr le post, je ne connaissais pas watchdog.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ThomasG77</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163275</link>
+		<dc:creator><![CDATA[ThomasG77]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2015 14:42:49 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163275</guid>
+		<description><![CDATA[Si &quot;Linux only&quot;, quel est l&#039;intérêt par rapport à son cousin Pyinotify https://github.com/seb-m/pyinotify?
+
+Je connais Watchdog comme Pyinotify mais j&#039;ai plutôt utilisé Pyinotify et je vois pas trop la différence sauf l&#039;aspect multi-plateforme.
+]]></description>
+		<content:encoded><![CDATA[<p>Si &#8220;Linux only&#8221;, quel est l&#8217;intérêt par rapport à son cousin Pyinotify <a href="https://github.com/seb-m/pyinotify" rel="nofollow">https://github.com/seb-m/pyinotify</a>?</p>
+<p>Je connais Watchdog comme Pyinotify mais j&#8217;ai plutôt utilisé Pyinotify et je vois pas trop la différence sauf l&#8217;aspect multi-plateforme.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/reagir-a-un-changement-sur-un-fichier-avec-watchdog/#comment-163274</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 13 Jul 2015 12:36:16 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16607#comment-163274</guid>
+		<description><![CDATA[&lt;p&gt;@khamaileon : je n&#039;ai aucune idée de ce que signifie &quot;meilleure solution&quot;.&lt;/p&gt;
+
+&lt;p&gt;@Paradox : il n&#039;y a rien à faire, la méthode est appelée automatiquement à chaque fois qu&#039;un fichier est modifié. event.src_path contient le chemin du fichier modifié, tu fais ensuite ce que bon te semble avec.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>@khamaileon : je n&#8217;ai aucune idée de ce que signifie &#8220;meilleure solution&#8221;.</p>
+<p>@Paradox : il n&#8217;y a rien à faire, la méthode est appelée automatiquement à chaque fois qu&#8217;un fichier est modifié. event.src_path contient le chemin du fichier modifié, tu fais ensuite ce que bon te semble avec.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

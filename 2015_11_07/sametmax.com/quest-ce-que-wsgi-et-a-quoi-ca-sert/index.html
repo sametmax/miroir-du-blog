@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">                          
+<!--<![endif]-->
+					<head>
+				    <meta charset="UTF-8" />
+				    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+            				    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				    <link rel="profile" href="http://gmpg.org/xfn/11" />
+				    <link rel="pingback" href="../xmlrpc.php" />
+
+				   <!-- Icons font support for IE6-7  -->
+				    <!--[if lt IE 8]>
+				      <script src="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/lte-ie7.js"></script>
+				    <![endif]-->
+				    <style type="text/css" id="customizr-inline-fonts">@font-face{font-family:genericons;src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot');src:url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.eot%3F') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/genericons-regular-webfont.svg') format('svg')}@font-face{font-family:entypo;src:url('http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot);src:url(http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.eot?#iefix') format('embedded-opentype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.woff') format('woff'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.ttf') format('truetype'),url('../wp-content/themes/customizr/inc/assets/css/fonts/fonts/entypo.svg') format('svg')}</style><title>Qu&#8217;est-ce que WSGI et à quoi ça sert ? | Sam &amp; Max</title>
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Feed" href="../feed.1" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Comments Feed" href="../comments/feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title="Sam &amp; Max &raquo; Qu&#8217;est-ce que WSGI et à quoi ça sert ? Comments Feed" href="feed/index.html" />
+<link rel='stylesheet' id='contact-form-7-css'  href='../wp-content/plugins/contact-form-7/includes/css/styles.css%3Fver=4.0.3.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-polls-css'  href='../wp-content/plugins/wp-polls/polls-css.css%3Fver=2.68.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-syntax-css-css'  href='../wp-content/plugins/wp-syntax/css/wp-syntax.css%3Fver=1.0.css' type='text/css' media='all' />
+<link rel='stylesheet' id='customizr-skin-css'  href='../wp-content/themes/customizr/inc/assets/css/black2.min.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<style id='customizr-skin-inline-css' type='text/css'>
+
+.sticky-enabled .tc-shrink-on .site-logo img {
+						height:30px!important;width:auto!important
+					}
+
+					.sticky-enabled .tc-shrink-on .brand .site-title {
+						font-size:0.6em;opacity:0.8;line-height:1.2em
+					}
+
+.tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+          .single .tc-rectangular-thumb {
+            max-height: 250px;
+            height :250px
+          }
+
+
+</style>
+<link rel='stylesheet' id='customizr-style-css'  href='../wp-content/themes/customizr/style.css%3Fver=3.2.10.css' type='text/css' media='all' />
+<link rel='stylesheet' id='fancyboxcss-css'  href='../wp-content/themes/customizr/inc/assets/js/fancybox/jquery.fancybox-1.3.4.min.css%3Fver=4.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='../wp-content/plugins/jetpack/_inc/genericons/genericons/genericons.css%3Fver=3.1.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='../wp-content/plugins/jetpack/css/jetpack.css%3Fver=3.3.css' type='text/css' media='all' />
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery.js%3Fver=1.11.1'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min.js%3Fver=1.2.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var TCParams = {"FancyBoxState":"1","FancyBoxAutoscale":"1","SliderName":"","SliderDelay":"","SliderHover":"1","SmoothScroll":"linear","ReorderBlocks":"1","CenterSlides":"1","HasComments":"1","LeftSidebarClass":".span3.left.tc-sidebar","RightSidebarClass":".span3.right.tc-sidebar","LoadModernizr":"1","stickyCustomOffset":"0","stickyHeader":"1","dropdowntoViewport":"0","timerOnScrollAllBrowsers":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/tc-scripts.min.js%3Fver=3.2.10'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc.php%3Frsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Le guide ultime et définitif sur la programmation orientée objet en Python à l’usage des débutants qui sont rassurés par les textes détaillés qui prennent le temps de tout expliquer. Partie 8.' href='../le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-8/index.html' />
+<link rel='next' title='Les vierges, c&#8217;est chiant' href='../les-vierges-cest-chiant/index.html' />
+<meta name="generator" content="WordPress 4.1" />
+<link rel='canonical' href='index.html' />
+<link rel='shortlink' href='http://wp.me/p2ckfk-1Hy' />
+<style type="text/css">
+.wp-polls .pollbar {
+	margin: 1px;
+	font-size: 6px;
+	line-height: 8px;
+	height: 8px;
+	background-image: url('../wp-content/plugins/wp-polls/images/default/pollbg.gif');
+	border: 1px solid #c8c8c8;
+}
+</style>
+<style type="text/css" media="all">
+/* <![CDATA[ */
+@import url("../wp-content/plugins/wp-table-reloaded/css/plugin.css%3Fver=1.9.4.css");
+@import url("../wp-content/plugins/wp-table-reloaded/css/datatables.css%3Fver=1.9.4.css");
+/* ]]> */
+</style><link rel="shortcut icon" href="../wp-content/uploads/2015/06/favicon.png" type="image/png">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Qu&#039;est-ce que WSGI et à quoi ça sert ?" />
+<meta property="og:url" content="http://sametmax.com/quest-ce-que-wsgi-et-a-quoi-ca-sert/" />
+<meta property="og:description" content="On va dire que je me répète, mais WSGI est typiquement le cas d&#039;une notion simple et super mal expliquée sur le Web." />
+<meta property="article:published_time" content="2013-07-03T10:36:16+00:00" />
+<meta property="article:modified_time" content="2013-07-03T21:10:23+00:00" />
+<meta property="article:author" content="http://sametmax.com/author/sam/" />
+<meta property="og:site_name" content="Sam &amp; Max" />
+<meta property="og:image" content="http://sametmax.com/wp-content/uploads/2013/07/v2TyF.jpg" />
+<meta name="twitter:site" content="@jetpack" />
+<meta name="twitter:image:src" content="http://sametmax.com/wp-content/uploads/2013/07/v2TyF.jpg?w=640" />
+<meta name="twitter:card" content="summary_large_image" />
+		<link rel="stylesheet" id="custom-css-css" type="text/css" href="../index.html%3Fcustom-css=1&amp;csblog=1&amp;cscache=6&amp;csrev=13.css" />
+						    <!--Icons size hack for IE8 and less -->
+				    <!--[if lt IE 9]>
+				      <link href="http://sametmax.com/wp-content/themes/customizr/inc/assets/css/fonts/ie8-hacks.css" rel="stylesheet" type="text/css"/>
+				    <![endif]-->
+				</head>
+				
+	<body class="single single-post postid-6544 single-format-standard tc-fade-hover-links tc-sticky-header tc-transparent-on-scroll" itemscope itemtype="http://schema.org/WebPage">
+		
+		
+	   	<header class="tc-header clearfix row-fluid tc-tagline-off tc-title-logo-on  tc-shrink-on tc-menu-on logo-left" role="banner">
+			      <div class="brand span3 pull-left ">
+
+        <h1><a class="site-title" href="../index.html" title="Sam &amp; Max | Du code, du cul">Sam &amp; Max</a></h1>
+      </div> <!-- brand span3 pull-left -->
+      <div class="container outside"><h2 class="site-description">Du code, du cul</h2></div>      	<div class="navbar-wrapper clearfix span9 tc-submenu-fade tc-submenu-move tc-open-on-hover left">
+        	<div class="navbar resp">
+          		<div class="navbar-inner" role="navigation">
+            		<div class="row-fluid">
+              		<div class="social-block span5" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></div><h2 class="span7 inside site-description">Du code, du cul</h2><button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><div class="nav-collapse collapse tc-hover-menu-wrapper"><div class="menu-top-menu-container"><ul id="menu-top-menu-2" class="nav tc-hover-menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1702"><a href="../category/programmation/index.html">Prog</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1703"><a href="../category/administration-system/index.html">Admin Sys</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1704"><a href="../category/philo-et-culture/index.html">Philo &#038; culture</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1706"><a href="../category/cul/index.html">Cul</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3340"><a href="../cours-et-tutos/index.html">Cours &#038; tutos</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1707"><a title="Les meilleurs blogs du Web" href="http://multiboards.net/">Multiboards</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12415"><a href="../planet-python-fr/index.html">Veille Python Fr</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15634"><a href="http://indexerror.net">Questions Python</a></li>
+</ul></div></div>          			</div>
+          		</div><!-- /.navbar-inner -->
+        	</div><!-- /.navbar resp -->
+      	</div><!-- /.navbar-wrapper -->
+    			</header>
+		<div id="tc-reset-margin-top" class="container-fluid" style="margin-top:103px"></div><div id="main-wrapper" class="container">
+
+        
+    <div class="container" role="main">
+        <div class="row column-content-wrapper">
+
+                            
+                <div id="content" class="span9 article-container">
+                    
+                    
+                        
+                                                                                    
+                                                                    <article id="post-6544" class="post-6544 post type-post status-publish format-standard has-post-thumbnail hentry category-programmation tag-bottle tag-cherrypy tag-django tag-nginx tag-python tag-server tag-wsgi row-fluid">
+                                                <header class="entry-header">
+          <h1 class="entry-title format-icon">Qu&#8217;est-ce que WSGI et à quoi ça sert ? <span class="comments-link"><a href="index.html#tc-comment-title" title="Comment(s) on Qu&#039;est-ce que WSGI et à quoi ça sert ?"><span class="tc-comment-bubble fs1 icon-bubble" ></span><span class="inner">29</span></a></span></h1>            <div class="entry-meta">
+                This entry was posted in <a class="btn btn-mini" href="../category/programmation/index.html" title="View all posts in Programmation"> Programmation </a> and tagged <a class="btn btn-mini btn-tag" href="../tag/bottle/index.html" title="View all posts in bottle"> bottle </a><a class="btn btn-mini btn-tag" href="../tag/cherrypy/index.html" title="View all posts in cherrypy"> cherrypy </a><a class="btn btn-mini btn-tag" href="../tag/django/index.html" title="View all posts in django"> django </a><a class="btn btn-mini btn-tag" href="../tag/nginx/index.html" title="View all posts in nginx"> nginx </a><a class="btn btn-mini btn-tag" href="../tag/python/index.html" title="View all posts in python"> python </a><a class="btn btn-mini btn-tag" href="../tag/server/index.html" title="View all posts in server"> server </a><a class="btn btn-mini btn-tag" href="../tag/wsgi/index.html" title="View all posts in wsgi"> wsgi </a> on <a href="../2013/07/03/index.html" title="10:36" rel="bookmark"><time class="entry-date updated" datetime="2013-07-03T10:36:16+00:00">03/07/2013</time></a> <span class="by-author">by <span class="author vcard"><a class="url fn n" href="../author/sam/index.html" title="View all posts by Sam" rel="author">Sam</a></span></span>             </div><!-- .entry-meta -->
+            <hr class="featurette-divider __before_content">        </header>
+            
+
+          <section class="entry-content ">
+              <p>On va dire que je me répète, mais <a href="https://en.wikipedia.org/wiki/Wsgi">WSGI</a> est typiquement le cas d&#8217;une notion simple et super mal expliquée sur le Web.</p>
+<p>C&#8217;est terrible ça, une vrai maladie. Ça me donne envie de faire des vidéos comme le joueur du Grenier pour râler à voix haute.</p>
+<p>Bref.</p>
+<p>Donc WSGI a le même but que FastCGI, SCGI, or AJP : c&#8217;est une norme qui sert à définir comment un serveur Python et son application peuvent discuter. Ça été pondu pour que tous les serveurs et toutes les applications Python qui respectent la norme soient garantis de pouvoir s&#8217;interfacer.</p>
+<p>Ça, c&#8217;est la définition que vous voyez partout. Super, mais concrètement ça veut dire quoi ?</p>
+<h2>WSGI, c&#8217;est juste une convention de discussion</h2>
+<p>Un bon dessin vaut mieux&#8230;</p>
+<div id="attachment_6545" style="width: 465px" class="wp-caption aligncenter"><a href="../wp-content/uploads/2013/07/wsgi.png" class="grouped_elements" rel="tc-fancybox-group6544"><img class=" wp-image-6545  " title="C'est compliqué de faire un schéma comme ça sérieux ? Ah ça pond une norme de 30 pages mais ça peut pas faire 3 ronds dans paint." src="../wp-content/uploads/2013/07/wsgi.png" alt="Schéma du fonctionnement de WSGI" width="455" height="644" /></a><p class="wp-caption-text">C&#39;est compliqué de faire un schéma comme ça sérieux ? Ah ça pond une norme de 30 pages mais ça peut pas faire 3 ronds dans paint.</p></div>
+<p>D&#8217;un côté vous avez des serveurs comme ceux de cherrypy, de paste, de werkzeug ou comme la commande runserver de Django, ou tels que les serveurs gunicorn, Apache (avec mod_wsgi). Ces logiciels ont pour boulot d’accueillir une requête HTTP et de renvoyer la réponse. Ils ont des problématiques comme : gérer les sockets, gérer plusieurs processus en parallèle, éviter qu&#8217;un pirate se balade sur votre serveur, etc.</p>
+<p>De l&#8217;autre côté vous avez votre application. 9 fois sur 10, votre site Web, donc votre code. Sa problématique c&#8217;est de recevoir une requête, la comprendre, et générer une réponse en tapant dans la base de données, et en faisant sa popotte HTML.</p>
+<p>Il faut donc que votre serveur dialogue avec votre app, qu&#8217;il lui passe la requête, que votre app la gère, retourne la réponse, et file la réponse au serveur. Alors le serveur envoie la réponse au navigateur.</p>
+<p>C&#8217;est la chose la plus mal expliquée : il y a deux parties à WSGI. Une pour le serveur, et une pour l&#8217;application.</p>
+<p>Un serveur est dit &#8220;compatible WSGI&#8221; quand il est capable de transmettre une requête HTTP normale à votre application via le protocole WSGI, et qu&#8217;il est capable de récupérer une réponse HTTP depuis votre application via le protocole WSGI pour en faire une requête HTTP normale.</p>
+<p>Une application est dite &#8220;compatible WSGI&#8221; quand elle est capable de recevoir une requête HTTP <strong>transformée en un objet Python</strong> selon la norme WSGI, et qu&#8217;elle retourne une réponse HTTP <strong>sous la forme d&#8217;un objet Python</strong> selon la norme WSGI.</p>
+<h2>J&#8217;avais demandé concrètement, show me the fucking code !</h2>
+<p>Côté serveur WSGI, on doit lui passer le point d&#8217;entrée de votre app.</p>
+<p>Le point d&#8217;entrée est un module Python qui contient une variable nommé <code>application</code>.</p>
+<p>C&#8217;est tout.</p>
+<p>La variable application doit contenir votre application compatible WSGI.</p>
+<p>Une application compatible WSGI a un certain nombre de méthodes pour accepter en paramètres un objet requête HTTP, et retourner un objet réponse HTTP, mais la bonne nouvelle, c&#8217;est que <strong>vous n&#8217;avez absolument pas besoin de savoir comment ça marche</strong>.</p>
+<p>En effet, tous les frameworks compatibles WSGI (bottle, django, cherrypy, etc) ont une fonction qui retourne cette application toute faite.</p>
+<p>Par exemple, avec bottle, mon fichier wsgi va contenir :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">site</span> <span style="color: #ff7700;font-weight:bold;">import</span> app
+&nbsp;
+application <span style="color: #66cc66;">=</span> app</pre></td></tr></table></div>
+
+<p>C&#8217;est tout. <code>app</code>, le décorateur qui permet de faire <code>@app.route('/')</code> dans le code du site bottle, est déjà une application WSGI.</p>
+<p>Pour Django, ça va donner un truc comme :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #808080; font-style: italic;"># ont dit quel est le module de settings Django</span>
+<span style="color: #dc143c;">os</span>.<span style="color: black;">environ</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;DJANGO_SETTINGS_MODULE&quot;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;project.settings&quot;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># et on fabrique l'application WSGI avec une fonction</span>
+<span style="color: #808080; font-style: italic;"># que Django nous donne</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">core</span>.<span style="color: black;">wsgi</span> <span style="color: #ff7700;font-weight:bold;">import</span> get_wsgi_application
+&nbsp;
+application <span style="color: #66cc66;">=</span> get_wsgi_application<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Le simple fait qu&#8217;il y ait une variable nommée <code>application</code> fait que le serveur va se débrouiller. Tout ce qu&#8217;il y a à faire, c&#8217;est passer en paramètre ce module au serveur, et comment le faire dépend du serveur.</p>
+<p>Par exemple pour gunicorn, c&#8217;est le premier paramètre de la commande qu&#8217;on utilise pour lancer le serveur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">gunicorn nom_du_module</pre></td></tr></table></div>
+
+<p>Il faut que le module soit importable (on peut passer l&#8217;option <code>--pythonpath</code> pour s&#8217;en assurer.)</p>
+<p>Pour Apache et mod_wsgi, ça se fait dans le fichier de config <em>apache.conf</em>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="xml" style="font-family:monospace;">WSGIScriptAlias / /chemin/version/module.wsgi</pre></td></tr></table></div>
+
+<p>Bref, faire dialoguer un serveur et une application WSGI, c&#8217;est con comme la lune :</p>
+<ol>
+<li>Faire un module qui contient une variable nommée <code>application</code> contenant l&#8217;app WSGI.</li>
+<li>Dire au serveur où se trouve le fichier</li>
+</ol>
+<h2>Avantages et inconvénients de WSGI</h2>
+<p>Parmi les avantages, on retrouve :</p>
+<ul>
+<li>Pas de parsing de la requête au niveau de l&#8217;application.</li>
+<li>Entrée de toutes les apps WSGI normalisées.</li>
+<li>Tous les logiciels WSGI sont compatibles entre eux.</li>
+<li>Le module WSGI reste chargé en mémoire une bonne fois pour toute, pas besoin de le recréer à chaque requête.</li>
+<li>WSGI se suffit à lui même pour écrire une application. Dans la théorie, on n&#8217;a même pas besoin de framework.</li>
+</ul>
+<p>Quant aux inconvénients :</p>
+<ul>
+<li>En pratique il y a très peu de code partagé entre les applications WSGI. La communication sur WSGI s&#8217;est très mal passée et cela reste quelque chose de mystérieux pour la plupart des développeurs.</li>
+<li>WSGI ne gère pas les websockets, et la norme est en train d&#8217;être mise à jour pour cela. Mais cela prend du temps et les websockets sont déjà là, du coup les gens se tournent vers des solutions non WSGI (tornado, twisted, etc).</li>
+<li>Certains serveurs ne gèrent pas WSGI (comme nginx ou lighttpd), du coup on ne peut pas communiquer directement entre l&#8217;app et eux. Il faut un intermédiaire. C&#8217;est pour cela qu&#8217;on voit très souvent des setups comme nginx <=> gunicorn <=> django, avec un serveur WSGI qui sert d&#8217;intermédiaire. Il y a tout de même le bénéfice de pouvoir gérer parfaitement indépendamment le processus WSGI du serveur HTTP, ce qui est très pratique pour le debug, l&#8217;administration système, le déploiement, etc.</li>
+<li>WSGI, c&#8217;est du Python. Qui dit Python, dit import, qui dit import, dit PYTHON PATH. 90% des erreurs de mise en prod sont des erreurs d&#8217;import, et pour cette raison <code>sys.path</code> est presque toujours manipulé dans un fichier qui contient une application WSGI.</li>
+</ul>
+<h2>Pour la culture</h2>
+<p>Voici à quoi ressemble un hello world en WSGI :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> application<span style="color: black;">&#40;</span>environ<span style="color: #66cc66;">,</span> start_response<span style="color: black;">&#41;</span>:
+    start_response<span style="color: black;">&#40;</span><span style="color: #483d8b;">'200 OK'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Content-Type'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'text/plain'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #483d8b;">'Hello World<span style="color: #000099; font-weight: bold;">\n</span>'</span></pre></td></tr></table></div>
+
+<p>Et oui, c&#8217;est très simple, et il n&#8217;y a rien à importer. La norme WSGI est une convention : il doit y avoir une variable nommée <code>application</code> (ici la variable c&#8217;est le nom de la fonction), et cette variable doit contenir une application WSGI.</p>
+<p>Mais une application WSGI, c&#8217;est juste un callable (ici une fonction) qui accepte en paramètres <code>environ</code> (la requête), <code>start_response</code> (une fonction qui écrit l&#8217;en-tête de la réponse) et qui retourne un générateur de string. C&#8217;est tout.</p>
+<p>Il n&#8217;y a rien de magique. C&#8217;est une simple interface sur laquelle tout le monde s&#8217;est mis d&#8217;accord.</p>
+<p>Quand on fait en Django:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">application <span style="color: #66cc66;">=</span> get_wsgi_application<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En fait Django ne fait que fabriquer une fonction comme on vient de voir, qui derrière appelle votre application Django.</p>
+<p>En revanche, comme on utilise souvent Django derrière nginx, le setup ressemble très souvent à ça :</p>
+<div id="attachment_6546" style="width: 465px" class="wp-caption aligncenter"><a href="../wp-content/uploads/2013/07/wsgi_with_nginx.png" class="grouped_elements" rel="tc-fancybox-group6544"><img class="size-full wp-image-6546" title="Quand on voit &quot;socket&quot;, ça fait peur, mais c'est juste une ligne de config qui point généralement vers localhost:8000." src="../wp-content/uploads/2013/07/wsgi_with_nginx.png" alt="Schém d'utilistation de WSGI avec Nginx" width="455" height="644" /></a><p class="wp-caption-text">Quand on voit &quot;socket&quot;, ça fait peur, mais c&#39;est juste une ligne de config qui point généralement vers localhost:8000.</p></div>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing"><h3 class="sd-title">Partager:</h3><div class="sd-content"><ul><li class="share-twitter"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsametmax.com%2Fquest-ce-que-wsgi-et-a-quoi-ca-sert%2F&#038;counturl=http%3A%2F%2Fsametmax.com%2Fquest-ce-que-wsgi-et-a-quoi-ca-sert%2F&#038;count=horizontal&#038;text=Qu%27est-ce%20que%20WSGI%20et%20%C3%A0%20quoi%20%C3%A7a%20sert%20%3F%3A" style="width:101px; height:20px;"></iframe></div></li><li class="share-facebook"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsametmax.com%2Fquest-ce-que-wsgi-et-a-quoi-ca-sert%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;locale=en_US&amp;width=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:96px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-google-plus-1"><div class="googleplus1_button"><div class="g-plus" data-action="share" data-annotation="bubble" data-href="http://sametmax.com/quest-ce-que-wsgi-et-a-quoi-ca-sert/"></div></div></li><li class="share-email"><a rel="nofollow" data-shared="" class="share-email sd-button" href="index.html%3Fshare=email.html" title="Click to email this to a friend"><span>Email</span></a></li><li><a href="index.html#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-reddit"><div class="reddit_button"><iframe src="http://www.reddit.com/static/button/button1.html?width=120&amp;url=http%3A%2F%2Fsametmax.com%2Fquest-ce-que-wsgi-et-a-quoi-ca-sert%2F&amp;title=Qu%27est-ce%20que%20WSGI%20et%20%C3%A0%20quoi%20%C3%A7a%20sert%20%3F" height="22" width="120" scrolling="no" frameborder="0"></iframe></div></li><li class="share-pinterest"><div class="pinterest_button"><a href="http://pinterest.com/pin/create/button/?url=http%3A%2F%2Fsametmax.com%2Fquest-ce-que-wsgi-et-a-quoi-ca-sert%2F&#038;description=Qu%27est-ce%20que%20WSGI%20et%20%C3%A0%20quoi%20%C3%A7a%20sert%20%3F" data-pin-do="buttonBookmark" data-pin-config="beside"><img src="http://assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a></div></li><li class="share-end"></li><li class="share-tumblr"><a target="" href="http://www.tumblr.com/share/link/?url=http%3A%2F%2Fsametmax.com%2Fquest-ce-que-wsgi-et-a-quoi-ca-sert%2F&name=Qu%27est-ce%20que%20WSGI%20et%20%C3%A0%20quoi%20%C3%A7a%20sert%20%3F" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:62px; height:20px; background:url('http://platform.tumblr.com/v1/share_2.png') top left no-repeat transparent;">Share on Tumblr</a></li><li class="share-pocket"><div class="pocket_button"><a href="https://getpocket.com/save" class="pocket-btn" data-lang="en" data-save-url="http://sametmax.com/quest-ce-que-wsgi-et-a-quoi-ca-sert/" data-pocket-count="horizontal" >Pocket</a></div></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div>                        </section><!-- .entry-content -->
+
+        <footer class="entry-meta"><hr class="featurette-divider"><div class="author-info"><div class="row-fluid"><div class="comment-avatar author-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=100&amp;d=retro&amp;r=X' class='avatar avatar-100 photo' height='100' width='100' /></div> <div class="author-description span10"><h3>About Sam</h3><p>Waf !</p><div class="author-link"><a href="../author/sam/index.html" rel="author">View all posts by Sam <span class="meta-nav">&rarr;</span></a></div></div></div></div></footer>                                    </article>
+                                
+                            
+                        
+                    
+<div id="comments" class="comments-area" >
+	<h2 id="tc-comment-title" class="comments-title">29 thoughts on &ldquo;<span>Qu&#8217;est-ce que WSGI et à quoi ça sert ?</span>&rdquo;</h2>              <ul class="commentlist">
+                        <li class="comment even thread-even depth-1" id="li-comment-10551">
+          
+            <article id="comment-10551" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/3a4f0e873a0fd405ffdbeced05f59bba?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">DSeed  </cite> <a class="comment-date" href="index.html#comment-10551"><time datetime="2013-07-03T11:03:36+00:00">03/07/2013 at 11:03</time></a></header>  <section class="comment-content comment"><p>Génial merci pour l&#8217;article ça me permet vraiment de mieux comprendre parce que c&#8217;est vrais que les explications sur ce domaine sont incompréhensible sinon pour pousser un peu, django parle aussi d&#8217;autre protocoles: <a href="https://docs.djangoproject.com/en/dev/howto/deployment/fastcgi/" rel="nofollow">https://docs.djangoproject.com/en/dev/howto/deployment/fastcgi/</a><br />
+Si tu as des infos clair comme pour wsgi ça m&#8217;intéresse MERCI</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10554">
+          
+            <article id="comment-10554" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/b7fce35166f3683fa08295d1968b78fc?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">maethor  </cite> <a class="comment-date" href="index.html#comment-10554"><time datetime="2013-07-03T11:34:18+00:00">03/07/2013 at 11:34</time></a></header>  <section class="comment-content comment"><p>Oh, un article écrit rien que pour moi :P</p>
+<p>Je sais, je l&#8217;ai déjà dit, mais vous êtes géniaux &lt;3</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10555">
+          
+            <article id="comment-10555" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-10555"><time datetime="2013-07-03T11:38:30+00:00">03/07/2013 at 11:38</time></a></header>  <section class="comment-content comment"><p>Ceci dit il faut vraiment que je fasse un article de deploiment complet de django en production avec nginx, supervisor, gunicorn, et tout le bazar.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10559">
+          
+            <article id="comment-10559" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/647dae215d91b81bb1b5da30d6990302?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Krypted  </cite> <a class="comment-date" href="index.html#comment-10559"><time datetime="2013-07-03T12:32:55+00:00">03/07/2013 at 12:32</time></a></header>  <section class="comment-content comment"><p>Wahou, je comprends pas comment vous faîtes, vous pondez toujours des articles au moment où j&#8217;en ai besoin!</p>
+<p>D&#8217;ailleurs la semaine dernière je me demandais s&#8217;il était possible de faire tourner plusieurs instances d&#8217;une application CherryPy sur le même serveur WSGI. </p>
+<p>Je voulais créer un Service Web REST et lancer plusieurs instance de l&#8217;application WSGI sur des chemins différents.</p>
+<p>Ex:<br />
+&#8211; localhost:8080/app1/instance1<br />
+&#8211; localhost:8080/app1/instance2</p>
+<p>Je n&#8217;ai pas réussi à le faire parce que les applications étaient crées au lancement du serveur.<br />
+Du coup CherryPy était un module partagé et global aux applications ce qui créait des conflits avec les pluggins et tools créés. </p>
+<p>Finalement j&#8217;ai pour chaque instance je fais lance un serveur web + application sur un port différent, mais je sens que c&#8217;est un peu sale non ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-10560">
+          
+            <article id="comment-10560" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/b7fce35166f3683fa08295d1968b78fc?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">maethor  </cite> <a class="comment-date" href="index.html#comment-10560"><time datetime="2013-07-03T12:41:54+00:00">03/07/2013 at 12:41</time></a></header>  <section class="comment-content comment"><p>Oui, ça serait vraiment instructif, je pense. Django ou n&#8217;importe quel autre appli WSGI (bottle, flask…).</p>
+<p>D&#8217;ailleurs, gunicorn ou uWSGI ? J&#8217;ai beau chercher, je comprend bien que l&#8217;approche est différente, mais je ne vois pas lequel est le plus performant. Sur mes premiers benchmarks, les deux sont équivalents. L&#8217;avantage de uWSGI c&#8217;est que nginx parle nativement uwsgi, et du coup on a pas à faire un proxy vers gunicorn.<br />
+Tu en penses quoi ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10562">
+          
+            <article id="comment-10562" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/192d5995945394cb3dbdca9a9c436edc?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Snarkturne  </cite> <a class="comment-date" href="index.html#comment-10562"><time datetime="2013-07-03T13:12:22+00:00">03/07/2013 at 13:12</time></a></header>  <section class="comment-content comment"><p>Bonjour,</p>
+<p>Merci pour vos articles.<br />
+Une précision (enfin je crois) : vous écrivez : &#8220;Apache a néanmoins besoin que le fichier s’appelle un_truc.wsgi et pas un_truc.py.&#8221;. Je ne crois pas.<br />
+Sur ma config, qui est assez ordinaire (Apache/2.2.22), mes apps, sont dans des fichiers d&#8217;extension .py. Et le fichier de config d&#8217;Apache contient des trucs comme :<br />
+WSGIScriptAlias /test /home/blabla/APPS/TEST/test.py</p>
+<p>J&#8217;ai rien fait de spécial (enfin&#8230; je me souviens pas avoir fait qquechose de spécial :) ), et ça marche bien.</p>
+<p>Les applis en question utilisent bottle ou cherrypy.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10565">
+          
+            <article id="comment-10565" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-10565"><time datetime="2013-07-03T16:28:16+00:00">03/07/2013 at 16:28</time></a></header>  <section class="comment-content comment"><p>Bon, j&#8217;ai fumé alors. Au temps pour moi.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10567">
+          
+            <article id="comment-10567" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/97a98eb5d9537097fa2b8112da6aaa22?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">flon  </cite> <a class="comment-date" href="index.html#comment-10567"><time datetime="2013-07-03T17:22:53+00:00">03/07/2013 at 17:22</time></a></header>  <section class="comment-content comment"><p>Finalement, c&#8217;est un peu comme CGI/FastCGI, spécialisé pour Python, non ?<br />
+Plutôt FastCGI dans le sens où il n&#8217;y a qu&#8217;une instance de l&#8217;appli pour tous les appels&#8230;</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-foxmask even thread-even depth-1" id="li-comment-10570">
+          
+            <article id="comment-10570" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/437805955e9381e69429143c0fc40f6e?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">foxmask  </cite> <a class="comment-date" href="index.html#comment-10570"><time datetime="2013-07-03T17:44:14+00:00">03/07/2013 at 17:44</time></a></header>  <section class="comment-content comment"><p>et c&#8217;est là qu&#8217;on est content d&#8217;avoir découvert ce blog pour la clairvoyance dans ses articles .<br />
+*kiff*</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10571">
+          
+            <article id="comment-10571" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/b7fce35166f3683fa08295d1968b78fc?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">maethor  </cite> <a class="comment-date" href="index.html#comment-10571"><time datetime="2013-07-03T18:34:55+00:00">03/07/2013 at 18:34</time></a></header>  <section class="comment-content comment"><p>@Sam, du coup tu sais quoi faire dans la prochaine version de hyde ? git mv app.wsgi app.py ;)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10573">
+          
+            <article id="comment-10573" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-10573"><time datetime="2013-07-03T21:10:01+00:00">03/07/2013 at 21:10</time></a></header>  <section class="comment-content comment"><p>@Krypted: il n&#8217;y a pas de routing intégré dans wsgi, mais un middleware maison peut le faire en quelques ligne. Exemple : <a href="http://mariz.org/blog/2007/06/08/simple-wsgi-middleware-dispatcher/" rel="nofollow">http://mariz.org/blog/2007/06/08/simple-wsgi-middleware-dispatcher/</a></p>
+<p>@maethor: j&#8217;utilise gunicorn car je le trouve plus facile à déployer, après je crois qu&#8217;à ce niveau de différence de perf, osef un peu.</p>
+<p>@flon: oui mais la norme permet en plus de créer une application complète. On peut faire un site Web en Python en pure WSGI alors que les autres normes ne définissent que la transmission de données. Le but initial était de permettre le partage de code, notamment à travers les fameux middleware qui auraient pu s&#8217;occuper du routing, de l&#8217;authentification, etc. Dans la pratique, WSGI est utilisé exactement, et uniquement comme les normes précédentes, en plus performant.</p>
+<p>@maethor: hyde ? Tu veux dire 0bin ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10576">
+          
+            <article id="comment-10576" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/9007ac06ae43b44bb090f1fd77f1e80e?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://act-dakar.net' rel='external nofollow' class='url'>LeMeteore</a>  </cite> <a class="comment-date" href="index.html#comment-10576"><time datetime="2013-07-04T06:09:26+00:00">04/07/2013 at 06:09</time></a></header>  <section class="comment-content comment"><p>Je suis justement entrain de me documenter un peu sur nginx, et j&#8217;avais mis de coté ce <a href="https://bitbucket.org/lifeeth/mod_wsgi/" rel="nofollow">lien</a> pour consultation ulterieure.</p>
+<p>La derniere maj date de pres d&#8217;un an :( est ce pour ça que tu dis qu&#8217;il n&#8217;y a pas de module wsgi pour nginx? </p>
+<p>Dans tous les cas, merci pour l&#8217;article :)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-10580">
+          
+            <article id="comment-10580" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/ac37de58294f0c881f6198a0588c02ab?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://url.bidouille.info/' rel='external nofollow' class='url'>cyp</a>  </cite> <a class="comment-date" href="index.html#comment-10580"><time datetime="2013-07-04T08:04:13+00:00">04/07/2013 at 08:04</time></a></header>  <section class="comment-content comment"><p>Top l&#8217;article ;-)</p>
+<p>C&#8217;est vrai qu&#8217;on est un peux perdu au début dans ce domaine avec pas mal d&#8217;infos assez partiel et pas forcément d&#8217;actualité.</p>
+<p>Pour ceux que ça intéresse des modèle de configs que je m&#8217;étais fait pour<br />
+&#8211; apache + passenger<br />
+<a href="https://github.com/cypx/trocr/blob/master/config-samples/apache_trocr.conf" rel="nofollow">https://github.com/cypx/trocr/blob/master/config-samples/apache_trocr.conf</a><br />
+<a href="https://github.com/cypx/trocr/blob/master/config-samples/passenger_wsgi_trocr.py" rel="nofollow">https://github.com/cypx/trocr/blob/master/config-samples/passenger_wsgi_trocr.py</a><br />
+&#8211; nginx + uwsgi emperor<br />
+<a href="https://github.com/cypx/trocr/blob/master/config-samples/nginx_trocr.conf" rel="nofollow">https://github.com/cypx/trocr/blob/master/config-samples/nginx_trocr.conf</a><br />
+<a href="https://github.com/cypx/trocr/blob/master/config-samples/uwsgi_trocr.ini" rel="nofollow">https://github.com/cypx/trocr/blob/master/config-samples/uwsgi_trocr.ini</a><br />
+(trocr c&#8217;est le nom de l&#8217;application concerné mais ça fonctionnera tout aussi bien avec d&#8217;autres)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10581">
+          
+            <article id="comment-10581" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/ac37de58294f0c881f6198a0588c02ab?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://url.bidouille.info/' rel='external nofollow' class='url'>cyp</a>  </cite> <a class="comment-date" href="index.html#comment-10581"><time datetime="2013-07-04T08:07:01+00:00">04/07/2013 at 08:07</time></a></header>  <section class="comment-content comment"><p>Attention à la configuration nginx par contre parce qu&#8217;elle utilise le cache, donc a adapter (ou supprimer) en fonction des éléments que vous ne voulez pas voir dans le cache nginx.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10587">
+          
+            <article id="comment-10587" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-10587"><time datetime="2013-07-04T10:41:35+00:00">04/07/2013 at 10:41</time></a></header>  <section class="comment-content comment"><p>@LeMeteore: pas du tout. Je ne savais même pas que ça existait, tu me fais découvrir quelque chose. En fait, je n&#8217;avais jamais entendu parlé de quelqu&#8217;un qui utilisait quelque chose de similaire sur un site en PythoN.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10596">
+          
+            <article id="comment-10596" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/b7fce35166f3683fa08295d1968b78fc?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">maethor  </cite> <a class="comment-date" href="index.html#comment-10596"><time datetime="2013-07-04T15:18:07+00:00">04/07/2013 at 15:18</time></a></header>  <section class="comment-content comment"><p>@Sam, ouais, s/hyde/0bin :D</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-10602">
+          
+            <article id="comment-10602" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/2cb6a22c42476804f59d6506b9df7dac?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">FFFFFFFab  </cite> <a class="comment-date" href="index.html#comment-10602"><time datetime="2013-07-04T16:43:56+00:00">04/07/2013 at 16:43</time></a></header>  <section class="comment-content comment"><p>@Snarkturne, si tu as une directive WSGIScriptAlias dans la configuration d&#8217;Apache, alors tu utilises nécessairement le module mod_wsgi.</p>
+<p>Pour ceux qui sont intéressé par le déploiement d&#8217;une application python avec le serveur Apache et le module mod_wsgi comme interface WSGI, le site du projet <a href="http://code.google.com/p/modwsgi/" rel="nofollow">http://code.google.com/p/modwsgi/</a>, et le blog du développeur où on peut trouver des infos complémentaires <a href="http://blog.dscpl.com.au" rel="nofollow">http://blog.dscpl.com.au</a>.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-10729">
+          
+            <article id="comment-10729" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/2a15cf15ba2484312642d641c2cee8fc?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Pickle  </cite> <a class="comment-date" href="index.html#comment-10729"><time datetime="2013-07-09T08:58:14+00:00">09/07/2013 at 08:58</time></a></header>  <section class="comment-content comment"><p>Très bon article, le WSGI me paraît un peu moins mystique dorénavant. Mais, j&#8217;ai une question qui reste en suspens : quelle est la différence entre WSGI et CGI ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor even thread-even depth-1" id="li-comment-10735">
+          
+            <article id="comment-10735" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-10735"><time datetime="2013-07-09T09:35:03+00:00">09/07/2013 at 09:35</time></a></header>  <section class="comment-content comment"><p>WSGi ne fonctionne qu&#8217;avec Python, il charge le code en mémoire une bonne fois pour toute (contrairement à CGI), et il transforme tous les objets en objets Python (l&#8217;application WSGI n&#8217;a pas à faire le moindre parsing). L&#8217;application doit retourner un objet Python. Par ailleurs, WSGI d&#8217;écrire à lui seule des applications complètes, et bien que ce ne soit pas beaucoup utilisé, définie également des zones d&#8217;interfaçages supplémentaires comme les middlewares.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-11350">
+          
+            <article id="comment-11350" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/adb9b72c931524c4e7cf97b8639a3a54?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://murlock.org/blog' rel='external nofollow' class='url'>murlock</a>  </cite> <a class="comment-date" href="index.html#comment-11350"><time datetime="2013-07-19T14:25:09+00:00">19/07/2013 at 14:25</time></a></header>  <section class="comment-content comment"><p>Attention à la configuration d&#8217;apache :</p>
+<p>En prod dans mon ancien taf, apache était configuré (d&#8217;après un vague tuto pêcho sur le net) de tel manière que les taches WGSI n&#8217;étaient jamais redémarré mais les instances d&#8217;apache prenaient de plus en plus de mémoire jusqu&#8217;au OOM fatal (une erreur de conception de l&#8217;application n&#8217;était pas non plus à exclure)</p>
+<p>Donc pensez à zieuter vos apache en WSGI :)</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-11639">
+          
+            <article id="comment-11639" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/396b0cd822ae7a5624da96d4bfa1a40d?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://phndiaye.github.io' rel='external nofollow' class='url'>phinson</a>  </cite> <a class="comment-date" href="index.html#comment-11639"><time datetime="2013-07-24T20:23:03+00:00">24/07/2013 at 20:23</time></a></header>  <section class="comment-content comment"><p>Pour commencer: Ce blog est tout simplement GENIAL ! Je vous suis depuis maintenant 1 an quand je venais de commencer en Python et c&#8217;est mon premier commentaire :D </p>
+<p>Sinon, super article, comme d&#8217;hab ! D&#8217;ailleurs, il m&#8217;a assez inspiré (et je vous ai piqué une image) pour un article que je viens tout juste de publier sur WSGI (et 2 wrappers). Si vous voulez jeter un oeil =&gt; <a href="http://phndiaye.github.io/wsgi-kezako/" rel="nofollow">http://phndiaye.github.io/wsgi-kezako/</a></p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-11642">
+          
+            <article id="comment-11642" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-11642"><time datetime="2013-07-24T20:39:58+00:00">24/07/2013 at 20:39</time></a></header>  <section class="comment-content comment"><p>Ouaiiiii ! C&#8217;est la première fois qu&#8217;on nous pique une image !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-11644">
+          
+            <article id="comment-11644" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/396b0cd822ae7a5624da96d4bfa1a40d?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://phndiaye.github.io' rel='external nofollow' class='url'>phinson</a>  </cite> <a class="comment-date" href="index.html#comment-11644"><time datetime="2013-07-24T20:46:46+00:00">24/07/2013 at 20:46</time></a></header>  <section class="comment-content comment"><p>Haha ! Un badge &#8220;Piqueur d&#8217;image&#8221; pour moi !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-30381">
+          
+            <article id="comment-30381" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/0c570b5a82c4beec6018879641d4dc35?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">furrypet  </cite> <a class="comment-date" href="index.html#comment-30381"><time datetime="2014-05-16T19:21:59+00:00">16/05/2014 at 19:21</time></a></header>  <section class="comment-content comment"><p>Pour un gros débutant dans le domaine du web en python comme moi, ce blog et cet article sont comme une pinte de bière bien fraîche offertes à un mec assoiffé ! J&#8217;avais jeté un œil a la pep wsgi mais n&#8217;avait rien capté. Merci encore pour tout ce que vous faites, vraiment des articles clairs qu&#8217;on ne trouve nulle part ailleurs !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-154213">
+          
+            <article id="comment-154213" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://0.gravatar.com/avatar/ad6822301983178c4539afad9440a18d?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Drife  </cite> <a class="comment-date" href="index.html#comment-154213"><time datetime="2015-01-21T14:21:20+00:00">21/01/2015 at 14:21</time></a></header>  <section class="comment-content comment"><p>une fois de plus, un article très clair (qui m&#8217;a fait comprendre WSGI). Bravo les gars&#8230;</p>
+<p>J&#8217;ai quand même une question bête dont je crois deviner la réponse.</p>
+<p>Dans la mesure ou Django vient avec son propre server pour balancer la sauce, pourquoi mettre le code dans Gunicorn ?</p>
+<p>Question de perf j&#8217;imagine ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-154225">
+          
+            <article id="comment-154225" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-154225"><time datetime="2015-01-21T20:56:03+00:00">21/01/2015 at 20:56</time></a></header>  <section class="comment-content comment"><p>Oui, le serveur de Django est conçu pour le dev. Gunicorn est conçu pour la mise en prod. Et encore, Gunicorn ne peut pas être en front, il faut mettre un truc genre nginx devant pour des raisons de sécurité.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-156403">
+          
+            <article id="comment-156403" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/f91ee12ddd76fb9aabf4f8e8cb538889?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.metal3d.org' rel='external nofollow' class='url'>Metal3d</a>  </cite> <a class="comment-date" href="index.html#comment-156403"><time datetime="2015-02-19T08:38:55+00:00">19/02/2015 at 08:38</time></a></header>  <section class="comment-content comment"><p>Yep, je me promenais un peu et je suis tombé sur ton post. Très bon post, sauf que je suis gêné par un truc. Tu dis que WSGI demande à ce que ton application soit nommé &#8220;application&#8221;. Or, dans toutes les specs que j&#8217;ai lu, ce n&#8217;est pas ce qui est dit. La contrainte est simplement de faire un &#8220;callable&#8221; qui accepte deux paramètres: les variable d&#8217;environnement et la fonction &#8220;start_response&#8221;, et qui doit retourner un iterrable (la réponse au client).</p>
+<p>D&#8217;ailleurs, regarde gunicorn (<a href="http://gunicorn.org/" rel="nofollow">http://gunicorn.org/</a>) l&#8217;exemple qu&#8217;ils donnent ne parle pas de &#8220;application&#8221;, il défini par contre que l&#8217;application est &#8220;main:app&#8221; (le callable &#8220;app&#8221; dans main.py). Non mais je sais que je suis chiant mais bon ce serait plus exact non ? hein dis hein ?</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-sam bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-157625">
+          
+            <article id="comment-157625" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/bf9ecde8f5e286de6ce5c80206cf9dd6?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Sam <span> Post author</span> </cite> <a class="comment-date" href="index.html#comment-157625"><time datetime="2015-03-12T16:00:42+00:00">12/03/2015 at 16:00</time></a></header>  <section class="comment-content comment"><p>Le but de l&#8217;article n&#8217;est pas d&#8217;expliquer la spec, mais ce que ça fait. La plupart des serveurs WSGI cherchent par défaut un callable appelé &#8220;application&#8221; si on en précise pas un. La méthode pour préciser le nom du callable change d&#8217;un serveur à l&#8217;autre (mod_wsgi, gunicorn and uwsgi ont des syntaxes dissemblables). Pour simplifier l&#8217;explication, je vais donc simplement au plus court.</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-even depth-1" id="li-comment-165275">
+          
+            <article id="comment-165275" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='http://1.gravatar.com/avatar/95ae3203ec871b72df2dc1dee4ab487f?s=80&amp;d=retro&amp;r=X' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"> <header class="comment-meta comment-author vcard"><cite class="fn">Shir0kamii  </cite> <a class="comment-date" href="index.html#comment-165275"><time datetime="2015-10-29T11:54:00+00:00">29/10/2015 at 11:54</time></a></header>  <section class="comment-content comment"><p>Merci beaucoup pour cet article. Même 2 ans après, ça reste l&#8217;explication la plus concrête que j&#8217;ai trouvé pour comprendre quels problèmes WSGI résoud, et comment il le fait. Continuez comme ça, vous êtes géniaux !</p>
+</section></div></div></article>          <!-- #comment-## -->
+        </li><!-- #comment-## -->
+              </ul><!-- .commentlist -->
+            								<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a comment <small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://sametmax.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-describedby="email-notes" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment-69005804924c5ba04" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true"></textarea><textarea name="comment" rows="1" cols="1" style="display:none"></textarea></p><input type="hidden" name="comment-replaced" value="true" />						<p class="form-allowed-tags" id="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;pre&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" class="submit" value="Post Comment" />
+							<input type='hidden' name='comment_post_ID' value='6544' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="76fc2355de" /></p><script src="../index.html%3Flive-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p style="display:none;"><input type="text" name="nxts" value="1446909293" /><input type="text" name="nxts_signed" value="8f6705b6984cc2e8e9a2aee3f9f5697f400c6ac3" /><input type="text" name="3391944b2f16b5" value="" /><input type="text" name="60b0898998b38feb005f" value="1384821080ddbd3ad8d04e611" /></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="52"/></p>					</form>
+							</div><!-- #respond -->
+			</div><!-- #comments .comments-area -->
+
+
+<div class="ie-comment">
+Des questions Python sans rapport avec l'article ? Posez-les sur <a href="http://indexerror.net">IndexError</a>.
+
+</div>
+        
+          <hr class="featurette-divider __after_loop">
+          <nav id="nav-below" class="navigation" role="navigation">
+
+              <h3 class="assistive-text">
+                Post navigation              </h3>
+
+              <ul class="pager">
+                                  <li class="previous">
+                    <span class="nav-previous">
+                      <a href="../le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-8/index.html" rel="prev"><span class="meta-nav">&larr;</span> Le guide ultime et définitif sur la programmation orientée objet en Python à l’usage des débutants qui sont rassurés par les textes détaillés qui prennent le temps de tout expliquer. Partie 8.</a>                    </span>
+                  </li>
+                                                  <li class="next">
+                    <span class="nav-next">
+                        <a href="../les-vierges-cest-chiant/index.html" rel="next">Les vierges, c&#8217;est chiant <span class="meta-nav">&rarr;</span></a>                    </span>
+                  </li>
+                              </ul>
+
+          </nav><!-- #nav-below .navigation -->
+
+        
+        
+                </div><!--.article-container -->
+
+                    
+        <div class="span3 right tc-sidebar">
+           <div id="right" class="widget-area" role="complementary">
+                                                      <aside id="text-9" class="widget widget_text">			<div class="textwidget"><p style="font-size:1.3em"><a href="../mais-ou-je-suis-tombee-la/index.html">Mais où je suis tombé(e) là ?</a></p></div>
+		</aside><aside id="text-7" class="widget widget_text">			<div class="textwidget"><img src="http://www.adobe.com/images/pdficon_small.png" width="16" height="16"/> <a href="http://pdfcrowd.com/url_to_pdf/">Télécharger cette page en PDF</a> </div>
+		</aside><aside id="text-4" class="widget widget_text">			<div class="textwidget"><br><br><a href="../appel-a-contributeurs-impertinents/index.html"><img src="../wp-content/uploads/2012/07/contributeur.png" width="288px" style="vertical-align: middle;margin-top:-40px;margin-bottom:10px;"></a> </div>
+		</aside><aside id="blog_subscription-4" class="widget jetpack_subscription_widget"><h3 class="widget-title"><label for="subscribe-field">Souscrire à nos conneries</label></h3>
+		<form action="index.html#" method="post" accept-charset="utf-8" id="subscribe-blog-blog_subscription-4">
+			<div id="subscribe-text"><p>Entrez votre adresse mail et vous recevrez une notification à chaque nouvel article.</p>
+</div><p>Join 646 other subscribers</p>
+
+			<p id="subscribe-email">
+				<label id="jetpack-subscribe-label" for="subscribe-field">
+					Email Address				</label>
+				<input type="email" name="email" value="Email Address" id="subscribe-field" placeholder="Email Address" />
+			</p>
+
+			<p id="subscribe-submit">
+				<input type="hidden" name="action" value="subscribe" />
+				<input type="hidden" name="source" value="http://sametmax.com/quest-ce-que-wsgi-et-a-quoi-ca-sert/" />
+				<input type="hidden" name="sub-type" value="widget" />
+				<input type="hidden" name="redirect_fragment" value="blog_subscription-4" />
+								<input type="submit" value="J&#039;adhère, bon dieu !" name="jetpack_subscriptions_widget" />
+			</p>
+		</form>
+
+		<script>
+			( function( d ) {
+				if ( ( 'placeholder' in d.createElement( 'input' ) ) ) {
+					var label = d.getElementById( 'jetpack-subscribe-label' );
+ 					label.style.clip 	 = 'rect(1px, 1px, 1px, 1px)';
+ 					label.style.position = 'absolute';
+ 					label.style.height   = '1px';
+ 					label.style.width    = '1px';
+ 					label.style.overflow = 'hidden';
+				}
+			} ) ( document );
+		</script>
+
+		
+</aside><aside id="tag_cloud-3" class="widget widget_tag_cloud"><h3 class="widget-title">TagCloud</h3><div class="tagcloud"><a href='../tag/0bin/index.html' class='tag-link-148' title='9 topics' style='font-size: 8.8092485549133pt;'>0bin</a>
+<a href='../tag/angularjs/index.html' class='tag-link-443' title='9 topics' style='font-size: 8.8092485549133pt;'>angularjs</a>
+<a href='../tag/autobahn/index.html' class='tag-link-979' title='9 topics' style='font-size: 8.8092485549133pt;'>autobahn</a>
+<a href='../tag/bash/index.html' class='tag-link-14' title='16 topics' style='font-size: 10.670520231214pt;'>bash</a>
+<a href='../tag/bitcoin/index.html' class='tag-link-320' title='7 topics' style='font-size: 8pt;'>bitcoin</a>
+<a href='../tag/blog/index.html' class='tag-link-107' title='26 topics' style='font-size: 12.28901734104pt;'>blog</a>
+<a href='../tag/cache/index.html' class='tag-link-333' title='10 topics' style='font-size: 9.1329479768786pt;'>cache</a>
+<a href='../tag/comprehension-lists/index.html' class='tag-link-20' title='8 topics' style='font-size: 8.4046242774566pt;'>comprehension-lists</a>
+<a href='../tag/crossbar/index.html' class='tag-link-1046' title='8 topics' style='font-size: 8.4046242774566pt;'>crossbar</a>
+<a href='../tag/css/index.html' class='tag-link-188' title='9 topics' style='font-size: 8.8092485549133pt;'>css</a>
+<a href='../tag/cul-2/index.html' class='tag-link-33' title='11 topics' style='font-size: 9.4566473988439pt;'>cul</a>
+<a href='../tag/decorator/index.html' class='tag-link-265' title='7 topics' style='font-size: 8pt;'>decorator</a>
+<a href='../tag/django/index.html' class='tag-link-28' title='81 topics' style='font-size: 16.173410404624pt;'>django</a>
+<a href='../tag/don/index.html' class='tag-link-1210' title='10 topics' style='font-size: 9.1329479768786pt;'>don</a>
+<a href='../tag/encoding/index.html' class='tag-link-54' title='8 topics' style='font-size: 8.4046242774566pt;'>encoding</a>
+<a href='../tag/git/index.html' class='tag-link-18' title='34 topics' style='font-size: 13.179190751445pt;'>git</a>
+<a href='../tag/http/index.html' class='tag-link-204' title='13 topics' style='font-size: 10.023121387283pt;'>http</a>
+<a href='../tag/import/index.html' class='tag-link-215' title='9 topics' style='font-size: 8.8092485549133pt;'>import</a>
+<a href='../tag/ipython/index.html' class='tag-link-164' title='10 topics' style='font-size: 9.1329479768786pt;'>ipython</a>
+<a href='../tag/iterable/index.html' class='tag-link-217' title='14 topics' style='font-size: 10.265895953757pt;'>iterable</a>
+<a href='../tag/javascript/index.html' class='tag-link-96' title='44 topics' style='font-size: 14.06936416185pt;'>javascript</a>
+<a href='../tag/jquery/index.html' class='tag-link-112' title='8 topics' style='font-size: 8.4046242774566pt;'>jquery</a>
+<a href='../tag/lambda/index.html' class='tag-link-292' title='7 topics' style='font-size: 8pt;'>lambda</a>
+<a href='../tag/linux/index.html' class='tag-link-238' title='10 topics' style='font-size: 9.1329479768786pt;'>linux</a>
+<a href='../tag/meta/index.html' class='tag-link-102' title='127 topics' style='font-size: 17.791907514451pt;'>meta</a>
+<a href='../tag/mysql/index.html' class='tag-link-82' title='8 topics' style='font-size: 8.4046242774566pt;'>mysql</a>
+<a href='../tag/nginx/index.html' class='tag-link-183' title='14 topics' style='font-size: 10.265895953757pt;'>nginx</a>
+<a href='../tag/nsfw/index.html' class='tag-link-319' title='14 topics' style='font-size: 10.265895953757pt;'>nsfw</a>
+<a href='../tag/pip/index.html' class='tag-link-344' title='7 topics' style='font-size: 8pt;'>pip</a>
+<a href='../tag/poo/index.html' class='tag-link-549' title='14 topics' style='font-size: 10.265895953757pt;'>poo</a>
+<a href='../tag/python/index.html' class='tag-link-4' title='429 topics' style='font-size: 22pt;'>python</a>
+<a href='../tag/python-3/index.html' class='tag-link-365' title='8 topics' style='font-size: 8.4046242774566pt;'>python 3</a>
+<a href='../tag/redis/index.html' class='tag-link-196' title='10 topics' style='font-size: 9.1329479768786pt;'>redis</a>
+<a href='../tag/ruby/index.html' class='tag-link-325' title='8 topics' style='font-size: 8.4046242774566pt;'>ruby</a>
+<a href='../tag/server/index.html' class='tag-link-185' title='7 topics' style='font-size: 8pt;'>server</a>
+<a href='../tag/shell/index.html' class='tag-link-202' title='9 topics' style='font-size: 8.8092485549133pt;'>shell</a>
+<a href='../tag/ssh/index.html' class='tag-link-206' title='7 topics' style='font-size: 8pt;'>ssh</a>
+<a href='../tag/sublime-text/index.html' class='tag-link-76' title='9 topics' style='font-size: 8.8092485549133pt;'>sublime text</a>
+<a href='../tag/ubuntu/index.html' class='tag-link-255' title='15 topics' style='font-size: 10.42774566474pt;'>ubuntu</a>
+<a href='../tag/unicode/index.html' class='tag-link-53' title='7 topics' style='font-size: 8pt;'>unicode</a>
+<a href='../tag/unit-tests/index.html' class='tag-link-302' title='8 topics' style='font-size: 8.4046242774566pt;'>unit tests</a>
+<a href='../tag/unpacking/index.html' class='tag-link-180' title='8 topics' style='font-size: 8.4046242774566pt;'>unpacking</a>
+<a href='../tag/virtualenv/index.html' class='tag-link-259' title='8 topics' style='font-size: 8.4046242774566pt;'>virtualenv</a>
+<a href='../tag/wamp/index.html' class='tag-link-1039' title='14 topics' style='font-size: 10.265895953757pt;'>wamp</a>
+<a href='../tag/yield/index.html' class='tag-link-287' title='9 topics' style='font-size: 8.8092485549133pt;'>yield</a></div>
+</aside><aside id="text-5" class="widget widget_text"><h3 class="widget-title"> Envoyez des sioux</h3>			<div class="textwidget"><p><img src="../wp-content/uploads/2013/07/bitcoin.png" width="16" height="16"/> On adooooore les bitcoins :</p>
+
+<p>
+
+<a href="bitcoin:19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn?amount=1X8&label=SamEtMax">19zAHPPuce4BAhsdy9KaFwVLurEJXMhMAn</a>
+
+</p></div>
+		</aside><aside id="nav_menu-3" class="widget widget_nav_menu"><h3 class="widget-title">Nos projets</h3><div class="menu-nos-projets-container"><ul id="menu-nos-projets" class="menu"><li id="menu-item-15841" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15841"><a href="http://multiboards.net/">Multiboards &#8211; l&#8217;actu geek fr en une page</a></li>
+<li id="menu-item-15837" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15837"><a href="http://0bin.net">0bin &#8211; le pastebin chiffré</a></li>
+<li id="menu-item-15838" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15838"><a href="http://allthatcounts.net">All that counts &#8211; compteur pour jeux</a></li>
+<li id="menu-item-15839" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15839"><a href="https://github.com/sametmax/django-quicky">Django quicky &#8211; quick views for Django</a></li>
+<li id="menu-item-15840" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15840"><a href="https://github.com/sametmax/VizHash.js">VizHash.js &#8211; Hash visuels</a></li>
+<li id="menu-item-15842" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15842"><a href="https://github.com/sametmax/codes-des-articles">Code des articles du blog</a></li>
+</ul></div></aside>                                              </div><!-- #left or #right-->
+        </div><!--.tc-sidebar -->
+
+        
+        </div><!--.row -->
+    </div><!-- .container role: main -->
+
+    
+</div><!--#main-wrapper"-->
+
+		<!-- FOOTER -->
+		<footer id="footer" class="">
+		 					<div class="container footer-widgets ">
+					<div class="row widget-area" role="complementary">
+												
+							<div id="footer_one" class="span4">
+																
+										<aside id="nav_menu-2" class="widget widget_nav_menu"><h3 class="widget-title">Hors du blog</h3><div class="menu-bottom-menu-container"><ul id="menu-bottom-menu" class="menu"><li id="menu-item-2391" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2391"><a href="../contactez-nous/index.html">Page de contact</a></li>
+<li id="menu-item-12230" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12230"><a href="http://twitter.com/sam_et_max">@sam_et_max sur tweeter</a></li>
+<li id="menu-item-12285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12285"><a href="http://bridge.suumitsu.eu/?action=display&#038;bridge=TwitterBridge&#038;u=sam_et_max&#038;format=AtomFormat">Nos tweets en RSS</a></li>
+<li id="menu-item-12231" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12231"><a href="https://github.com/sametmax/">Fork me, I&#8217;m famous (github)</a></li>
+</ul></div></aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_two" class="span4">
+																
+										<aside id="text-8" class="widget widget_text">			<div class="textwidget">Tous les textes de ce blog, sauf signalement contraire, sont sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.</div>
+		</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_three" class="span4">
+																
+										<aside id="archives-2" class="widget widget_archive"><h3 class="widget-title">Toi aussi, trouve un article obsolète sur notre blog</h3>		<ul>
+	<li><a href='../2015/11/index.html'>November 2015</a>&nbsp;(5)</li>
+	<li><a href='../2015/10/index.html'>October 2015</a>&nbsp;(2)</li>
+	<li><a href='../2015/09/index.html'>September 2015</a>&nbsp;(6)</li>
+	<li><a href='../2015/08/index.html'>August 2015</a>&nbsp;(10)</li>
+	<li><a href='../2015/07/index.html'>July 2015</a>&nbsp;(18)</li>
+	<li><a href='../2015/06/index.html'>June 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/05/index.html'>May 2015</a>&nbsp;(12)</li>
+	<li><a href='../2015/04/index.html'>April 2015</a>&nbsp;(13)</li>
+	<li><a href='../2015/03/index.html'>March 2015</a>&nbsp;(8)</li>
+	<li><a href='../2015/02/index.html'>February 2015</a>&nbsp;(4)</li>
+	<li><a href='../2015/01/index.html'>January 2015</a>&nbsp;(21)</li>
+	<li><a href='../2014/12/index.html'>December 2014</a>&nbsp;(24)</li>
+	<li><a href='../2014/11/index.html'>November 2014</a>&nbsp;(6)</li>
+	<li><a href='../2014/10/index.html'>October 2014</a>&nbsp;(18)</li>
+	<li><a href='../2014/09/index.html'>September 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/08/index.html'>August 2014</a>&nbsp;(5)</li>
+	<li><a href='../2014/07/index.html'>July 2014</a>&nbsp;(11)</li>
+	<li><a href='../2014/06/index.html'>June 2014</a>&nbsp;(25)</li>
+	<li><a href='../2014/05/index.html'>May 2014</a>&nbsp;(14)</li>
+	<li><a href='../2014/04/index.html'>April 2014</a>&nbsp;(10)</li>
+	<li><a href='../2014/03/index.html'>March 2014</a>&nbsp;(23)</li>
+	<li><a href='../2014/02/index.html'>February 2014</a>&nbsp;(27)</li>
+	<li><a href='../2014/01/index.html'>January 2014</a>&nbsp;(17)</li>
+	<li><a href='../2013/12/index.html'>December 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/11/index.html'>November 2013</a>&nbsp;(25)</li>
+	<li><a href='../2013/10/index.html'>October 2013</a>&nbsp;(27)</li>
+	<li><a href='../2013/09/index.html'>September 2013</a>&nbsp;(1)</li>
+	<li><a href='../2013/08/index.html'>August 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/07/index.html'>July 2013</a>&nbsp;(32)</li>
+	<li><a href='../2013/06/index.html'>June 2013</a>&nbsp;(24)</li>
+	<li><a href='../2013/05/index.html'>May 2013</a>&nbsp;(30)</li>
+	<li><a href='../2013/04/index.html'>April 2013</a>&nbsp;(31)</li>
+	<li><a href='../2013/03/index.html'>March 2013</a>&nbsp;(33)</li>
+	<li><a href='../2013/02/index.html'>February 2013</a>&nbsp;(29)</li>
+	<li><a href='../2013/01/index.html'>January 2013</a>&nbsp;(34)</li>
+	<li><a href='../2012/12/index.html'>December 2012</a>&nbsp;(32)</li>
+	<li><a href='../2012/11/index.html'>November 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/10/index.html'>October 2012</a>&nbsp;(35)</li>
+	<li><a href='../2012/09/index.html'>September 2012</a>&nbsp;(36)</li>
+	<li><a href='../2012/08/index.html'>August 2012</a>&nbsp;(37)</li>
+	<li><a href='../2012/07/index.html'>July 2012</a>&nbsp;(33)</li>
+	<li><a href='../2012/06/index.html'>June 2012</a>&nbsp;(24)</li>
+	<li><a href='../2012/05/index.html'>May 2012</a>&nbsp;(31)</li>
+	<li><a href='../2012/04/index.html'>April 2012</a>&nbsp;(20)</li>
+	<li><a href='../2012/03/index.html'>March 2012</a>&nbsp;(10)</li>
+	<li><a href='../2012/02/index.html'>February 2012</a>&nbsp;(14)</li>
+		</ul>
+</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+																	</div><!-- .row.widget-area -->
+				</div><!--.footer-widgets -->
+				    				 <div class="colophon">
+			 	<div class="container">
+			 		<div class="row-fluid">
+					    <div class="span4 social-block pull-left"><span class="tc-footer-social-links-wrapper" ><a class="social-icon icon-feed" href="../feed/rss/index.html" title="Subscribe to my rss feed"  ></a></span></div><div class="span4 credits"><p>&middot; &copy; 2015 <a href="../index.html" title="Sam &amp; Max" rel="bookmark">Sam &amp; Max</a> &middot; Designed by <a href="http://themesandco.com/">Themes &amp; Co</a> &middot;</p></div><div class="span4 backtop"><p class="pull-right"><a class="back-to-top" href="index.html#">Back to top</a></p></div>	      			</div><!-- .row-fluid -->
+	      		</div><!-- .container -->
+	      	</div><!-- .colophon -->
+	    			</footer>
+			<div style="display:none">
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-3a4f0e873a0fd405ffdbeced05f59bba">
+	</div>
+	<div class="grofile-hash-map-b7fce35166f3683fa08295d1968b78fc">
+	</div>
+	<div class="grofile-hash-map-bf9ecde8f5e286de6ce5c80206cf9dd6">
+	</div>
+	<div class="grofile-hash-map-647dae215d91b81bb1b5da30d6990302">
+	</div>
+	<div class="grofile-hash-map-192d5995945394cb3dbdca9a9c436edc">
+	</div>
+	<div class="grofile-hash-map-97a98eb5d9537097fa2b8112da6aaa22">
+	</div>
+	<div class="grofile-hash-map-437805955e9381e69429143c0fc40f6e">
+	</div>
+	<div class="grofile-hash-map-9007ac06ae43b44bb090f1fd77f1e80e">
+	</div>
+	<div class="grofile-hash-map-ac37de58294f0c881f6198a0588c02ab">
+	</div>
+	<div class="grofile-hash-map-2cb6a22c42476804f59d6506b9df7dac">
+	</div>
+	<div class="grofile-hash-map-2a15cf15ba2484312642d641c2cee8fc">
+	</div>
+	<div class="grofile-hash-map-adb9b72c931524c4e7cf97b8639a3a54">
+	</div>
+	<div class="grofile-hash-map-396b0cd822ae7a5624da96d4bfa1a40d">
+	</div>
+	<div class="grofile-hash-map-0c570b5a82c4beec6018879641d4dc35">
+	</div>
+	<div class="grofile-hash-map-ad6822301983178c4539afad9440a18d">
+	</div>
+	<div class="grofile-hash-map-f91ee12ddd76fb9aabf4f8e8cb538889">
+	</div>
+	<div class="grofile-hash-map-c31993f8d331d381d133af35f218ed17">
+	</div>
+	</div>
+		<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-twitter' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-facebook' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+					<script type="text/javascript">
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/plusone.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script>
+				<div id="sharing_email" style="display: none;">
+		<form action="index.html" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email" value="" />
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email" value="" />
+
+			
+			
+			<img style="float: right; display: none" class="loading" src="../wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a href="index.html#cancel" class="sharing_cancel">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+					<script type="text/javascript">
+				// Pinterest shared resources
+				var s = document.createElement("script");
+				s.type = "text/javascript";
+				s.async = true;
+				s.src = window.location.protocol + "//assets.pinterest.com/js/pinit.js";
+				var x = document.getElementsByTagName("script")[0];
+				x.parentNode.insertBefore(s, x);
+				// if 'Pin it' button has 'counts' make container wider
+				jQuery(window).load( function(){ jQuery( 'li.share-pinterest a span:visible' ).closest( '.share-pinterest' ).width( '80px' ); } );
+			</script>
+		<script type="text/javascript" src="http://platform.tumblr.com/v1/share.js"></script>		<script>
+		// Don't use Pocket's default JS as it we need to force init new Pocket share buttons loaded via JS.
+		function jetpack_sharing_pocket_init() {
+			jQuery.getScript( 'https://widgets.getpocket.com/v1/j/btn.js?v=1' );
+		}
+		jQuery( document ).on( 'ready', jetpack_sharing_pocket_init );
+		jQuery( document.body ).on( 'post-load', jetpack_sharing_pocket_init );
+		</script>
+		<script type='text/javascript' src='../wp-content/plugins/akismet/_inc/form.js%3Fver=3.1.2'></script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js%3Fver=3.51.0-2014.06.20'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/sametmax.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"Sending ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts.js%3Fver=4.0.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var pollsL10n = {"ajax_url":"http:\/\/sametmax.com\/wp-admin\/admin-ajax.php","text_wait":"Your last request is still being processed. Please wait a while ...","text_valid":"Please choose a valid poll answer.","text_multiple":"Maximum number of choices allowed: ","show_loading":"1","show_fading":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/wp-polls/polls-js.js%3Fver=2.68'></script>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201545'></script>
+<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=2015Novaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/wpgroho.js%3Fver=4.1'></script>
+<script type='text/javascript' src='../wp-includes/js/jquery/ui/core.min.js%3Fver=1.11.2'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/modernizr.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript' src='../wp-content/themes/customizr/inc/assets/js/retina.min.js%3Fver=3.2.10'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='../wp-content/plugins/jetpack/modules/sharedaddy/sharing.js%3Fver=20140920'></script>
+
+	<script src="http://stats.wp.com/e-201545.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:3.3',blog:'32490438',post:'6544',tz:'0'});
+	var load_cmc = function(){linktracker_init(32490438,6544,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script><div class="tc-btt-wrapper"><i class="btt-arrow" style="color:#394143"></i></div>	</body>
+	</html>

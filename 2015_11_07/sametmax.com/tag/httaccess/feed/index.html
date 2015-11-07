@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; .httaccess</title>
+	<atom:link href="http://sametmax.com/tag/httaccess/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Servir les fichiers statiques Django avec un .htaccess Apache 4</title>
+		<link>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/</link>
+		<comments>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/#comments</comments>
+		<pubDate>Fri, 30 Aug 2013 18:14:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[.httaccess]]></category>
+		<category><![CDATA[apache]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[static files]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7235</guid>
+		<description><![CDATA[J'avais fais un giga article pour expliquer <a href="http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/">comment servir les fichiers statiques Django</a>, mais j'ai réalisé ensuite que les gens n'avaient pas forcément accès aux fichiers de configuration du serveur.]]></description>
+				<content:encoded><![CDATA[<p>Servir le Javascript, les images et le CSS avec Django a toujours été une grande question pour les débutants.</p>
+<p>J&#8217;avais fais un giga article pour expliquer <a href="http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/">comment servir les fichiers statiques avec ce framework</a>, mais j&#8217;ai réalisé ensuite que les gens n&#8217;avaient pas forcément accès aux fichiers de configuration du serveur.</p>
+<p>Parfois, tout ce qu&#8217;ils ont c&#8217;est un pauvre fichier <em>.htaccess</em>. Tout n&#8217;est pas perdu, avec une petite règle de rewrite :</p>
+<pre>AddHandler fcgid-script .fcgi
+RewriteEngine On
+RewriteRule /static/ /chemin/vers/dossier/racine/apache/static
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ site.fcgi/$1 [QSA,L]</pre>
+<p>Attention à ce que <em>/static/</em> corresponde bien à l&#8217;arborescence <strong>complète</strong> de sous dossiers de <em>/chemin/vers/dossier/racine/apache/</em> et à <code>settings.STATIC_ROOT</code>.</p>
+<p>Par exemple :</p>
+<pre>AddHandler fcgid-script .fcgi
+RewriteEngine On
+RewriteRule /sous/dossier/static/ /chemin/vers/dossier/racine/apache/sous/dossier/static
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ site.fcgi/$1 [QSA,L]</pre>
+<p>Et <code>settings.STATIC_ROOT = "/sous/dossier/static/"</code>.</p>
+<p>En effet, on fait un rewrite ici, on ne sert pas le sous dossier directement.</p>
+<p>P.S: ça va sans le dire, mais ça va mieux en le disant, c&#8217;est de la prod, donc faut faire un <code>manage.py collecstatic</code> avant, et s&#8217;assurer d&#8217;avoir les bonnes valeurs pour <code>settings.STATIC_ROOT</code> et <code>settings.STATIC_URL</code>/</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/servir-les-fichiers-statiques-django-avec-un-httaccess-apache/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/xirtyXE.jpg" length="152901" type="image/jpg" />	</item>
+	</channel>
+</rss>

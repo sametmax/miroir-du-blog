@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Explication de code: des mixins et des décorateurs de méthode pour Django</title>
+	<atom:link href="http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: rakweine</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160430</link>
+		<dc:creator><![CDATA[rakweine]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 16:01:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160430</guid>
+		<description><![CDATA[Et oui je souhaite faire un filtre plus tard, et oui je vais me servir au moment là de la query_set method unique pour le filtre
+
+l&#039;avantage c&#039;est que j&#039;aurai beaucoup moins de traitement conditionnels à faire vue que les variables auront déjà été trité dans ma dispatch. Mon code sera alors plus facile à maintenir.
+]]></description>
+		<content:encoded><![CDATA[<p>Et oui je souhaite faire un filtre plus tard, et oui je vais me servir au moment là de la query_set method unique pour le filtre</p>
+<p>l&#8217;avantage c&#8217;est que j&#8217;aurai beaucoup moins de traitement conditionnels à faire vue que les variables auront déjà été trité dans ma dispatch. Mon code sera alors plus facile à maintenir.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: rakweine</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160429</link>
+		<dc:creator><![CDATA[rakweine]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 15:55:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160429</guid>
+		<description><![CDATA[Bah! résolu !
+
+j&#039;ai pu constaté que la dispatch method est fournie avec une batterie de variables interressantes et j&#039;ai compris le rôle de la super method  !(desolé j&#039;ai tendance à utiliser le plus souvent l&#039;anglais ne m&#039;en voule pas trop)
+
+donc c&#039;est un souci resolu:
+
+et pour ce que sa interresse voici ma façon de procéder:
+
+problème: &lt;strong&gt;soit un formulaire de recherche d&#039;articles en get method (&lt;form... method=&quot;GET&quot;&gt;...), le dis formulaire est autocomplete(grace à js + ajax) afin de faciliter la recherche d&#039;un article. sauf que l&#039;user(utilisateur malveillant ou autre..) peut indiquer un nom absent dans la bdd ou la jumping list qui apparaît&lt;/strong&gt;
+
+je souhaitais à partir de cet exemple aleatoirement choisi savoir comment gérer ce genre de cas et j&#039;ai choisi d&#039;utliser une liste view pour l&#039;affichage du resultat et la dispatch method pour le traitement des données transmises.
+
+&lt;code&gt;
+
+class MaVue(ListView):
+
+def dispatch(self, request, *args, **kwargs):
+
+try:
+
+get_elt_search = MonModel.objects.get(article_name=search_article)
+
+except MonModel.DoesNotExist:
+
+self.kwargs.update(csrf(self.request)
+
+self.kwargs[&#039;nom_erreur&#039;]= erreur
+
+return template_to_response(self.template_name, kwargs)
+
+super(MaVue, self).dispatch(request, *args, **kwargs)
+
+----- reste du code de la vue ------
+
+&lt;/code&gt;
+
+Bon c&#039;est tout et ça fonctionne correctement.
+]]></description>
+		<content:encoded><![CDATA[<p>Bah! résolu !</p>
+<p>j&#8217;ai pu constaté que la dispatch method est fournie avec une batterie de variables interressantes et j&#8217;ai compris le rôle de la super method  !(desolé j&#8217;ai tendance à utiliser le plus souvent l&#8217;anglais ne m&#8217;en voule pas trop)</p>
+<p>donc c&#8217;est un souci resolu:</p>
+<p>et pour ce que sa interresse voici ma façon de procéder:</p>
+<p>problème: <strong>soit un formulaire de recherche d&#8217;articles en get method (&lt;form&#8230; method=&#8221;GET&#8221;&gt;&#8230;), le dis formulaire est autocomplete(grace à js + ajax) afin de faciliter la recherche d&#8217;un article. sauf que l&#8217;user(utilisateur malveillant ou autre..) peut indiquer un nom absent dans la bdd ou la jumping list qui apparaît</strong></p>
+<p>je souhaitais à partir de cet exemple aleatoirement choisi savoir comment gérer ce genre de cas et j&#8217;ai choisi d&#8217;utliser une liste view pour l&#8217;affichage du resultat et la dispatch method pour le traitement des données transmises.</p>
+<p><code></p>
+<p>class MaVue(ListView):</p>
+<p>def dispatch(self, request, *args, **kwargs):</p>
+<p>try:</p>
+<p>get_elt_search = MonModel.objects.get(article_name=search_article)</p>
+<p>except MonModel.DoesNotExist:</p>
+<p>self.kwargs.update(csrf(self.request)</p>
+<p>self.kwargs['nom_erreur']= erreur</p>
+<p>return template_to_response(self.template_name, kwargs)</p>
+<p>super(MaVue, self).dispatch(request, *args, **kwargs)</p>
+<p>----- reste du code de la vue ------</p>
+<p></code></p>
+<p>Bon c&#8217;est tout et ça fonctionne correctement.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160428</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 15:51:51 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160428</guid>
+		<description><![CDATA[&lt;p&gt;Si tu veux filtrer ton queryset, fait le en overridant get_queryset(). Tu n&#039;as pas besoin de toucher à dispatch()&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Si tu veux filtrer ton queryset, fait le en overridant get_queryset(). Tu n&#8217;as pas besoin de toucher à dispatch()</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: rakweine</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160419</link>
+		<dc:creator><![CDATA[rakweine]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 10:37:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160419</guid>
+		<description><![CDATA[&lt;p&gt;Je repose ma question vue que tu ne l&#039;as pas vu:&lt;/p&gt;
+
+&lt;p&gt;comment je pourrais transmettre des paramètres aux autres méthodes de ma CBV (eg: MaVue(ListView)) lorsque je modifie la methode dispatch ?&lt;/p&gt;
+
+&lt;p&gt;un exemple vaudrais mieux alors voici un très simple pris comme ça…:&lt;/p&gt;
+
+&lt;p&gt;disons que j’ai un formulaire de recherche d’articles ou autres, ce formulaire utilise la Get method, bien ! lorsque les donnés sont transmises je souhaite appellé la methode dispatch afin de limiter la recherche aux articles susceptibles d’exister dans ma bdd (dans les cas d’un formulaire avec des autocompletions ou autres…).&lt;/p&gt;
+
+&lt;p&gt;Alors moi j’aimerais savoir comment je pourrais transmettre les paramètres analysé aux autres methode de la même vue.&lt;/p&gt;
+
+&lt;p&gt;code:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+
+class MaVue(ListView):
+
+def dispatch(self, request, *args, **kwargs):
+
+je recupere les donnees transmise via get
+
+seach_article = self.request.GET.get(&quot;elt&quot;) &lt;---- données recherché par un eventuels user
+
+try:
+
+get_elt_search = MonModel.objects.get(article_name=search_article)
+
+except MonModel.DoesNotExist:
+
+je retourne une render_to_response ou autre
+
+---- et c&#039;est ici que je bloque j&#039;aimerais savoir comment je pourrais transmettre ma get_elt_search à ma super method comme explique dans le tutos.
+
+&lt;/pre&gt;
+
+&lt;p&gt;pourquoi: parce que bah je souhaite reutiliser cette get_elt_search dans ma queryset method histoire de customiser un peu plus ma requête .&lt;/p&gt;
+
+&lt;p&gt;Voilà j’espère que vous m’avez compris et que vous me repondrai aussi vite.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Je repose ma question vue que tu ne l&#8217;as pas vu:</p>
+<p>comment je pourrais transmettre des paramètres aux autres méthodes de ma CBV (eg: MaVue(ListView)) lorsque je modifie la methode dispatch ?</p>
+<p>un exemple vaudrais mieux alors voici un très simple pris comme ça…:</p>
+<p>disons que j’ai un formulaire de recherche d’articles ou autres, ce formulaire utilise la Get method, bien ! lorsque les donnés sont transmises je souhaite appellé la methode dispatch afin de limiter la recherche aux articles susceptibles d’exister dans ma bdd (dans les cas d’un formulaire avec des autocompletions ou autres…).</p>
+<p>Alors moi j’aimerais savoir comment je pourrais transmettre les paramètres analysé aux autres methode de la même vue.</p>
+<p>code:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> MaVue<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+&nbsp;
+je recupere les donnees transmise via get
+&nbsp;
+seach_article <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">request</span>.<span style="color: black;">GET</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;elt&quot;</span><span style="color: black;">&#41;</span> &amp;lt<span style="color: #66cc66;">;</span>---- données recherché par un eventuels <span style="color: #dc143c;">user</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+&nbsp;
+get_elt_search <span style="color: #66cc66;">=</span> MonModel.<span style="color: black;">objects</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>article_name<span style="color: #66cc66;">=</span>search_article<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">except</span> MonModel.<span style="color: black;">DoesNotExist</span>:
+&nbsp;
+je retourne une render_to_response ou autre
+&nbsp;
+---- et c<span style="color: #483d8b;">'est ici que je bloque j'</span>aimerais savoir comment je pourrais transmettre ma get_elt_search à ma <span style="color: #008000;">super</span> method comme explique dans le tutos.</pre></td></tr></table></div>
+
+<p>pourquoi: parce que bah je souhaite reutiliser cette get_elt_search dans ma queryset method histoire de customiser un peu plus ma requête .</p>
+<p>Voilà j’espère que vous m’avez compris et que vous me repondrai aussi vite.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160417</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 08:55:49 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160417</guid>
+		<description><![CDATA[&lt;p&gt;Le MRO d&#039;une classe en Python est disponible dans l&#039;attribut &lt;code&gt;__mro__&lt;/code&gt; :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&gt;&gt;&gt; from collection import defaultdict
+&gt;&gt;&gt; defaultdict.__mro__
+(collections.defaultdict, dict, object)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Pour le schéma, on verra quand j&#039;aurais le temps de pondre ça.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Le MRO d&#8217;une classe en Python est disponible dans l&#8217;attribut <code>__mro__</code> :</p>
+<pre><code>&gt;&gt;&gt; from collection import defaultdict
+&gt;&gt;&gt; defaultdict.__mro__
+(collections.defaultdict, dict, object)
+</code></pre>
+<p>Pour le schéma, on verra quand j&#8217;aurais le temps de pondre ça.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: rakweine</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160412</link>
+		<dc:creator><![CDATA[rakweine]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 07:36:32 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160412</guid>
+		<description><![CDATA[Désolé de ne pas rafraichir la page tout le temps donc:
+
+Oui,
+
+Je souhaite avoir le mro de certaines classe en particulier les voici:
+
+ListView, DetailView, Formview, createView, UpdateView.
+
+et si possible indiquez les elements retournés par chacune des methode de la vue.
+]]></description>
+		<content:encoded><![CDATA[<p>Désolé de ne pas rafraichir la page tout le temps donc:</p>
+<p>Oui,</p>
+<p>Je souhaite avoir le mro de certaines classe en particulier les voici:</p>
+<p>ListView, DetailView, Formview, createView, UpdateView.</p>
+<p>et si possible indiquez les elements retournés par chacune des methode de la vue.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: rakweine</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160410</link>
+		<dc:creator><![CDATA[rakweine]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 07:29:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160410</guid>
+		<description><![CDATA[&lt;p&gt;Une derniere question est ce qu&#039;il serait possible dans le schema que vous ferez d&#039;indiquer les eletments que les methodes que vous choisirez retournent ?&lt;/p&gt;
+
+&lt;p&gt;comment je pourrais transmettre des paramètres aux autres méthodes de ma CBV (eg: MaVue(ListView)) lorsque je modifie la methode dispatch ?&lt;/p&gt;
+
+&lt;p&gt;un exemple vaudrais mieux alors voici un très simple pris comme ça...:&lt;/p&gt;
+
+&lt;p&gt;disons que j&#039;ai un formulaire de recherche d&#039;articles ou autres, ce formulaire utilise la Get method, bien !  lorsque les donnés sont transmises je souhaite appellé la methode dispatch afin de limiter la recherche aux articles susceptibles d&#039;exister dans ma bdd (dans les cas d&#039;un formulaire avec des autocompletions ou autres...).&lt;/p&gt;
+
+&lt;p&gt;Alors moi j&#039;aimerais savoir comment je pourrais transmettre les paramètres analysé aux autres methode de la même vue&lt;/p&gt;
+
+&lt;p&gt;code:&lt;/p&gt;
+
+&lt;pre lang=&quot;python&quot;&gt;
+
+class MaVue(ListView):
+
+def dispatch(self, request, *args, **kwargs):
+
+#je recupere les donnees transmise via get
+
+seach_article = self.request.GET.get(&quot;elt&quot;) &lt;---- données recherché par un eventuels user
+
+try:
+
+get_elt_search = MonModel.objects.get(article_name=search_article)
+
+except MonModel.DoesNotExist:
+
+#je retourne une render_to_response ou autre
+
+#---- et c&#039;est ici que je bloque j&#039;aimerais savoir comment je pourrais transmettre ma get_elt_search à ma super method comme explique dans le tutos.
+&lt;/pre&gt;
+
+&lt;p&gt;pourquoi: parce que bah je souhaite reutiliser cette get_elt_search dans ma queryset method histoire de customiser un peu plus ma requête .&lt;/p&gt;
+
+&lt;p&gt;Voilà j&#039;espère que vous m&#039;avez compris et que vous me repondrai aussi vite.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Une derniere question est ce qu&#8217;il serait possible dans le schema que vous ferez d&#8217;indiquer les eletments que les methodes que vous choisirez retournent ?</p>
+<p>comment je pourrais transmettre des paramètres aux autres méthodes de ma CBV (eg: MaVue(ListView)) lorsque je modifie la methode dispatch ?</p>
+<p>un exemple vaudrais mieux alors voici un très simple pris comme ça&#8230;:</p>
+<p>disons que j&#8217;ai un formulaire de recherche d&#8217;articles ou autres, ce formulaire utilise la Get method, bien !  lorsque les donnés sont transmises je souhaite appellé la methode dispatch afin de limiter la recherche aux articles susceptibles d&#8217;exister dans ma bdd (dans les cas d&#8217;un formulaire avec des autocompletions ou autres&#8230;).</p>
+<p>Alors moi j&#8217;aimerais savoir comment je pourrais transmettre les paramètres analysé aux autres methode de la même vue</p>
+<p>code:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> MaVue<span style="color: black;">&#40;</span>ListView<span style="color: black;">&#41;</span>:
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> dispatch<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+&nbsp;
+<span style="color: #808080; font-style: italic;">#je recupere les donnees transmise via get</span>
+&nbsp;
+seach_article <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">request</span>.<span style="color: black;">GET</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;elt&quot;</span><span style="color: black;">&#41;</span> &amp;lt<span style="color: #66cc66;">;</span>---- données recherché par un eventuels <span style="color: #dc143c;">user</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+&nbsp;
+get_elt_search <span style="color: #66cc66;">=</span> MonModel.<span style="color: black;">objects</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>article_name<span style="color: #66cc66;">=</span>search_article<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">except</span> MonModel.<span style="color: black;">DoesNotExist</span>:
+&nbsp;
+<span style="color: #808080; font-style: italic;">#je retourne une render_to_response ou autre</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">#---- et c'est ici que je bloque j'aimerais savoir comment je pourrais transmettre ma get_elt_search à ma super method comme explique dans le tutos.</span></pre></td></tr></table></div>
+
+<p>pourquoi: parce que bah je souhaite reutiliser cette get_elt_search dans ma queryset method histoire de customiser un peu plus ma requête .</p>
+<p>Voilà j&#8217;espère que vous m&#8217;avez compris et que vous me repondrai aussi vite.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160408</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 07:23:49 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160408</guid>
+		<description><![CDATA[&lt;p&gt;Tu veux explication sur le MRO en Python en général, ou voir le MRO de certaines classes en particulier ?&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Tu veux explication sur le MRO en Python en général, ou voir le MRO de certaines classes en particulier ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: rakweine</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160403</link>
+		<dc:creator><![CDATA[rakweine]]></dc:creator>
+		<pubDate>Thu, 07 May 2015 05:54:25 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160403</guid>
+		<description><![CDATA[d&#039;accord  !
+
+mais s&#039;il vous plait plutôt que d&#039;attendre (je propose même que vous preniez votre temps afin que cela ressemble au tuto actuel)
+
+je suis habituer à me servir des documentations bien expliquées, jai néanmoins trouvé ceci &lt;a href=&quot;https://ccbv.co.uk/projects/Django/1.8/django.views.generic.list/ListView/&quot; rel=&quot;nofollow&quot;&gt;ccbv&lt;/a&gt; sa ressemble beaucoup à Qt (C++) dans la fàçon dont les classe sont hierarchisées, il y&#039;a aussi l&#039;api des CBV que j&#039;ai trouvé dans le site de django, Ce que je veux maintenant c&#039;est ce fameux MRO bien expliqué si jamais il y&#039;a un article qui puisse aussi bien que vous expliquez celà dans un schema je prend.
+]]></description>
+		<content:encoded><![CDATA[<p>d&#8217;accord  !</p>
+<p>mais s&#8217;il vous plait plutôt que d&#8217;attendre (je propose même que vous preniez votre temps afin que cela ressemble au tuto actuel)</p>
+<p>je suis habituer à me servir des documentations bien expliquées, jai néanmoins trouvé ceci <a href="https://ccbv.co.uk/projects/Django/1.8/django.views.generic.list/ListView/" rel="nofollow">ccbv</a> sa ressemble beaucoup à Qt (C++) dans la fàçon dont les classe sont hierarchisées, il y&#8217;a aussi l&#8217;api des CBV que j&#8217;ai trouvé dans le site de django, Ce que je veux maintenant c&#8217;est ce fameux MRO bien expliqué si jamais il y&#8217;a un article qui puisse aussi bien que vous expliquez celà dans un schema je prend.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/explication-de-code-des-mixins-et-des-decorateurs-de-methode-pour-django/#comment-160394</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Wed, 06 May 2015 22:39:28 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=1812#comment-160394</guid>
+		<description><![CDATA[&lt;p&gt;Faudrait faire un schéma de l&#039;odre des appels des méthodes. Je vais voir si je peux faire ça.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Faudrait faire un schéma de l&#8217;odre des appels des méthodes. Je vais voir si je peux faire ça.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Point rapide sur les types hints</title>
+	<atom:link href="http://sametmax.com/point-rapide-sur-les-types-hints/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/point-rapide-sur-les-types-hints/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Ludovic Gasc (GMLudo)</title>
+		<link>http://sametmax.com/point-rapide-sur-les-types-hints/#comment-159822</link>
+		<dc:creator><![CDATA[Ludovic Gasc (GMLudo)]]></dc:creator>
+		<pubDate>Mon, 27 Apr 2015 19:45:15 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16128#comment-159822</guid>
+		<description><![CDATA[Salut Sam,
+
+En ce qui concerne l&#039;amélioration des performances, j&#039;avais les mêmes espoirs que toi.
+
+J&#039;en avais discuté avec Guido au moment où il avait sorti ça, il m&#039;avait dit que c&#039;était peu probable.
+
+J&#039;en ai rediscuté avec des gens de PyPy pendant la PyCON-US, ils m&#039;ont confirmé cet état de fait.
+
+En fait, si j&#039;ai bien tout suivi, un des problèmes, c&#039;est que les types fournis dans ce module sont trop &quot;high-level&quot; par rapport aux types de base qu&#039;utilisent PyPy, Cython &amp; cie, tu n&#039;as pas un matching 1-1, et donc soit tu dois quand même fournir des types + précis avec Cython, soit PyPy doit quand même faire du prédictive pour le JIT.
+
+Après, ça ne serait pas la première fois que quelqu&#039;un trouve une manière pour que ça serve à booster du code, alors que tout le monde pensait que c&#039;était impossible. La communauté Python est quand même spécialisé dans la course à la + grosse, il n&#039;y a qu&#039;à voir toutes les pistes pour pouvoir optimiser du code en Python pour s&#039;en convaincre ;-) Par exemple, ce n&#039;est pas en Ruby que tu as tout cet arsenal.
+]]></description>
+		<content:encoded><![CDATA[<p>Salut Sam,</p>
+<p>En ce qui concerne l&#8217;amélioration des performances, j&#8217;avais les mêmes espoirs que toi.</p>
+<p>J&#8217;en avais discuté avec Guido au moment où il avait sorti ça, il m&#8217;avait dit que c&#8217;était peu probable.</p>
+<p>J&#8217;en ai rediscuté avec des gens de PyPy pendant la PyCON-US, ils m&#8217;ont confirmé cet état de fait.</p>
+<p>En fait, si j&#8217;ai bien tout suivi, un des problèmes, c&#8217;est que les types fournis dans ce module sont trop &#8220;high-level&#8221; par rapport aux types de base qu&#8217;utilisent PyPy, Cython &amp; cie, tu n&#8217;as pas un matching 1-1, et donc soit tu dois quand même fournir des types + précis avec Cython, soit PyPy doit quand même faire du prédictive pour le JIT.</p>
+<p>Après, ça ne serait pas la première fois que quelqu&#8217;un trouve une manière pour que ça serve à booster du code, alors que tout le monde pensait que c&#8217;était impossible. La communauté Python est quand même spécialisé dans la course à la + grosse, il n&#8217;y a qu&#8217;à voir toutes les pistes pour pouvoir optimiser du code en Python pour s&#8217;en convaincre ;-) Par exemple, ce n&#8217;est pas en Ruby que tu as tout cet arsenal.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: matthieu</title>
+		<link>http://sametmax.com/point-rapide-sur-les-types-hints/#comment-159814</link>
+		<dc:creator><![CDATA[matthieu]]></dc:creator>
+		<pubDate>Mon, 27 Apr 2015 16:24:23 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16128#comment-159814</guid>
+		<description><![CDATA[J&#039;utilise déjà ce système (PyCharm le prend en compte avec Python 3.4, même si ce n&#039;est pas aussi complet).
+
+L&#039;utiliser dans l&#039;annotation a l&#039;avantage d&#039;avoir la complétion active et donc nettement plus pratique à utiliser. En revanche, ça pose des problèmes quand on a des références croisées (module1.fonction est utilisé dans module2, et prend des arguments de type module2.classe).
+
+Je ne sais pas trop comment les résoudre proprement (ce qui m&#039;a poussé à abandonner le truc).
+
+En type hiniting, sachant que le import se fait automatiquement :
+
+&lt;code&gt;from mon.super.projet import maclasse
+
+def mafonction(arg: maclasse):
+
+[blabla]&lt;/code&gt;
+
+Avec les docstring, tout doit être tapé à la main :
+
+&lt;code&gt;def mafonction(arg):
+
+&quot;&quot;&quot; :type arg: :class:&lt;code&gt;mon.super.projet.maclasse&lt;/code&gt;  (le :class: permet à sphinx de faire les liens)
+
+&quot;&quot;&quot;
+
+[balbla]&lt;/code&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>J&#8217;utilise déjà ce système (PyCharm le prend en compte avec Python 3.4, même si ce n&#8217;est pas aussi complet).</p>
+<p>L&#8217;utiliser dans l&#8217;annotation a l&#8217;avantage d&#8217;avoir la complétion active et donc nettement plus pratique à utiliser. En revanche, ça pose des problèmes quand on a des références croisées (module1.fonction est utilisé dans module2, et prend des arguments de type module2.classe).</p>
+<p>Je ne sais pas trop comment les résoudre proprement (ce qui m&#8217;a poussé à abandonner le truc).</p>
+<p>En type hiniting, sachant que le import se fait automatiquement :</p>
+<p><code>from mon.super.projet import maclasse</p>
+<p>def mafonction(arg: maclasse):</p>
+<p>[blabla]</code></p>
+<p>Avec les docstring, tout doit être tapé à la main :</p>
+<p><code>def mafonction(arg):</p>
+<p>""" :type arg: :class:</code><code>mon.super.projet.maclasse</code>  (le :class: permet à sphinx de faire les liens)</p>
+<p>"""</p>
+<p>[balbla]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Zanguu</title>
+		<link>http://sametmax.com/point-rapide-sur-les-types-hints/#comment-159808</link>
+		<dc:creator><![CDATA[Zanguu]]></dc:creator>
+		<pubDate>Mon, 27 Apr 2015 14:20:48 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16128#comment-159808</guid>
+		<description><![CDATA[En ce moment j&#039;ai un combo Symfony2 PhpStorm, j&#039;use et abuse des @param et @var pour forcer l&#039;autocomplétion.
+
+Je peux toujours passer une string au lieu d&#039;un int à ma fonction mais la signature fait pas trop lignes quand j&#039;ai plus de 4 paramètres.
+
+Du coup j&#039;ai des comm tout le temps repliés qui prennent presque plus de place que le code
+
+&lt;code&gt;
+
+/**
+
+* @param &#092;Chemin&#092;vers&#092;entity $entity
+
+* @param int $un_id
+
+* @return JsonResponse
+
+*/
+
+function truc($entity, $un_id) {
+
+/**
+
+* @var &#092;Chemin&#092;vers&#092;entityDeux $autre_entity
+
+* @var &#092;Chemin&#092;vers&#092;mon&#092;objet&#092;aLaCon $a_la_con
+
+*/
+
+return new JsonResponse([$autre_entity, $a_la_con]);
+
+}
+&lt;/code&gt;
+
+C&#039;est moche, ça prend de la place, mais ça m&#039;évite de taper n&#039;importe quoi et quand je veux lire ma fonction pour voir si j&#039;ai raté un truc, je les replie et c&#039;est aussi lisible qu&#039;avant.
+
+J&#039;aime bien aussi &lt;a href=&quot;http://www.codeproject.com/Articles/3009/C-Documenting-and-Commenting&quot; rel=&quot;nofollow&quot;&gt;les annotation en C#&lt;/a&gt; aka &quot;le triple slash&quot; qui sert à documenter l&#039;auto-complétion de VS et/ou sortir une doc complete.
+
+Mais là en python, pour un truc censé être juste indicatif c&#039;est vraiment moche.
+]]></description>
+		<content:encoded><![CDATA[<p>En ce moment j&#8217;ai un combo Symfony2 PhpStorm, j&#8217;use et abuse des @param et @var pour forcer l&#8217;autocomplétion.</p>
+<p>Je peux toujours passer une string au lieu d&#8217;un int à ma fonction mais la signature fait pas trop lignes quand j&#8217;ai plus de 4 paramètres.</p>
+<p>Du coup j&#8217;ai des comm tout le temps repliés qui prennent presque plus de place que le code</p>
+<p><code></p>
+<p>/**</p>
+<p>* @param &#092;Chemin&#092;vers&#092;entity $entity</p>
+<p>* @param int $un_id</p>
+<p>* @return JsonResponse</p>
+<p>*/</p>
+<p>function truc($entity, $un_id) {</p>
+<p>/**</p>
+<p>* @var &#092;Chemin&#092;vers&#092;entityDeux $autre_entity</p>
+<p>* @var &#092;Chemin&#092;vers&#092;mon&#092;objet&#092;aLaCon $a_la_con</p>
+<p>*/</p>
+<p>return new JsonResponse([$autre_entity, $a_la_con]);</p>
+<p>}<br />
+</code></p>
+<p>C&#8217;est moche, ça prend de la place, mais ça m&#8217;évite de taper n&#8217;importe quoi et quand je veux lire ma fonction pour voir si j&#8217;ai raté un truc, je les replie et c&#8217;est aussi lisible qu&#8217;avant.</p>
+<p>J&#8217;aime bien aussi <a href="http://www.codeproject.com/Articles/3009/C-Documenting-and-Commenting" rel="nofollow">les annotation en C#</a> aka &#8220;le triple slash&#8221; qui sert à documenter l&#8217;auto-complétion de VS et/ou sortir une doc complete.</p>
+<p>Mais là en python, pour un truc censé être juste indicatif c&#8217;est vraiment moche.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: LeMeteore</title>
+		<link>http://sametmax.com/point-rapide-sur-les-types-hints/#comment-159807</link>
+		<dc:creator><![CDATA[LeMeteore]]></dc:creator>
+		<pubDate>Mon, 27 Apr 2015 14:12:20 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16128#comment-159807</guid>
+		<description><![CDATA[Je pense que cette fonctionnalité sera surtout utilisée par de grosses boites ayant besoin de contraintes fortes dans leurs pipelines de builds automatisés, etc. A mon tout petit niveau, j&#039;attends, qui sait? Je m&#039;en servirai peut etre :&#092;
+
+Je pense aussi que la syntaxe c&#039;est pr ne pas trop s&#039;eloigner de ce que font &quot;les autres langages&quot;, tu lis, et tu piges plus ou moins vite ce qui se passe (scala, java, haskell, ...)
+
+Mais oui, je trouve moi aussi que c&#039;est moche :&#092; on verra bien où ça nous mene.
+]]></description>
+		<content:encoded><![CDATA[<p>Je pense que cette fonctionnalité sera surtout utilisée par de grosses boites ayant besoin de contraintes fortes dans leurs pipelines de builds automatisés, etc. A mon tout petit niveau, j&#8217;attends, qui sait? Je m&#8217;en servirai peut etre :&#092;</p>
+<p>Je pense aussi que la syntaxe c&#8217;est pr ne pas trop s&#8217;eloigner de ce que font &#8220;les autres langages&#8221;, tu lis, et tu piges plus ou moins vite ce qui se passe (scala, java, haskell, &#8230;)</p>
+<p>Mais oui, je trouve moi aussi que c&#8217;est moche :&#092; on verra bien où ça nous mene.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Eric</title>
+		<link>http://sametmax.com/point-rapide-sur-les-types-hints/#comment-159801</link>
+		<dc:creator><![CDATA[Eric]]></dc:creator>
+		<pubDate>Mon, 27 Apr 2015 12:12:34 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16128#comment-159801</guid>
+		<description><![CDATA[Il y avait une &lt;a href=&quot;https://www.youtube.com/watch?v=pJOmlFf5Je4&quot; rel=&quot;nofollow&quot;&gt;session&lt;/a&gt; interessante sur le sujet a l&#039;europython 2014 par Bob Ippolito.
+
+Il en ressortait que &lt;a href=&quot;http://mypy-lang.org/&quot; rel=&quot;nofollow&quot;&gt;MyPy&lt;/a&gt; etait la &quot;moins pire&quot; des options pour verifier les types.
+]]></description>
+		<content:encoded><![CDATA[<p>Il y avait une <a href="https://www.youtube.com/watch?v=pJOmlFf5Je4" rel="nofollow">session</a> interessante sur le sujet a l&#8217;europython 2014 par Bob Ippolito.</p>
+<p>Il en ressortait que <a href="http://mypy-lang.org/" rel="nofollow">MyPy</a> etait la &#8220;moins pire&#8221; des options pour verifier les types.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Romain</title>
+		<link>http://sametmax.com/point-rapide-sur-les-types-hints/#comment-159797</link>
+		<dc:creator><![CDATA[Romain]]></dc:creator>
+		<pubDate>Mon, 27 Apr 2015 10:42:33 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=16128#comment-159797</guid>
+		<description><![CDATA[&lt;cite&gt;Mais quand même, putain c’est moche.&lt;/cite&gt;
+
+Ben, ça ressemble à du Scala quoi ^-^.
+
+Ça a un aspect documentaire indéniable. Par contre, ça ouvre la porte à une étape de build qui va effectuer les contrôles, non ?
+
+Ce qui est amusant c&#039;est que ça arrive à un moment ou je lis pas mal de chose contre le typage dynamique...
+
+Au final, pourquoi  pas. C&#039;est bien de laisser le choix au développeur de les utiliser ou pas.
+]]></description>
+		<content:encoded><![CDATA[<p><cite>Mais quand même, putain c’est moche.</cite></p>
+<p>Ben, ça ressemble à du Scala quoi ^-^.</p>
+<p>Ça a un aspect documentaire indéniable. Par contre, ça ouvre la porte à une étape de build qui va effectuer les contrôles, non ?</p>
+<p>Ce qui est amusant c&#8217;est que ça arrive à un moment ou je lis pas mal de chose contre le typage dynamique&#8230;</p>
+<p>Au final, pourquoi  pas. C&#8217;est bien de laisser le choix au développeur de les utiliser ou pas.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

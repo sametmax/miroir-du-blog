@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; flask</title>
+	<atom:link href="http://sametmax.com/tag/flask/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Les managers le détestent : faites tourner WAMP dans Django avec cette astuce insolite 11</title>
+		<link>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/</link>
+		<comments>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/#comments</comments>
+		<pubDate>Sun, 04 Jan 2015 19:45:07 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[crochet]]></category>
+		<category><![CDATA[crossbar]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[flask]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15665</guid>
+		<description><![CDATA[On peut utiliser WAMP, <code>directement</code> dans Django.]]></description>
+				<content:encoded><![CDATA[<p>Il existe une lib appelée <a href="https://pypi.python.org/pypi/crochet">crochet</a> qui permet de faire marcher des API de twisted entre deux bouts de code bloquants. Certes, ça ne marche qu&#8217;en 2.7 et c&#8217;est pas hyper performant, mais on peut faire des trucs mignons du genre cette démo qui <a href="https://github.com/tavendo/AutobahnPython/tree/master/examples/twisted/wamp/app/crochet/example1">mélange flask et WAMP</a>.</p>
+<p>C&#8217;est du pur Python, pas de process externe à gérer, c&#8217;est presque simple.</p>
+<p>Bref, si on veut utiliser WAMP avec une app synchrone comme flask, c&#8217;est un bon moyen de s&#8217;y mettre. On aura jamais des perfs fantastiques, mais on peut pusher vers le browser.</p>
+<p>Du coup je me suis demandé si on pouvait faire ça avec Django.</p>
+<p>Évidement, ça a été un peu plus compliqué car par défaut <code>runserver</code> lance plusieurs workers et fait un peu de magie avec les threads. Mais après un peu de bidouillage, ça marche !</p>
+<p>On peut utiliser WAMP, <code>directement</code> dans Django.</p>
+<h2>Suivez le guide</h2>
+<p>D&#8217;abord, on installe tout le bouzin (python 2.7, souvenez-vous) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> crossbar crochet django</pre></td></tr></table></div>
+
+<p>Il vous faudra un Django 1.7, le tout dernier, car il possède <a href="https://docs.djangoproject.com/en/dev/ref/applications/#django.apps.AppConfig.ready">une fonctionnalité</a> qui nous permet de lancer du code quand tout le framework est chargé.</p>
+<p>Vous vous faites votre projet comme d&#8217;hab, et vous ouvrez le fichier de settings et au lieu de mettre votre app dans <code>INSTALLED_APPS</code>, vous rajoutez ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">INSTALLED_APPS <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+    <span style="color: #483d8b;">'...'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'votreapp.app.VotreAppConfig'</span>
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Puis dans le module de votre app, vous créez un fichier app.py, qui va contenir ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> crochet
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">apps</span> <span style="color: #ff7700;font-weight:bold;">import</span> AppConfig
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On charge l'objet contenant la session WAMP définie dans la vue</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> votreapp.<span style="color: black;">views</span> <span style="color: #ff7700;font-weight:bold;">import</span> wapp
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> VotreAppConfig<span style="color: black;">&#40;</span>AppConfig<span style="color: black;">&#41;</span>:
+    name <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'votreapp'</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> ready<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># On dit a crochet de faire tourner notre app wamp dans sa popote qui</span>
+        <span style="color: #808080; font-style: italic;"># isole le reactor de Twisted</span>
+        <span style="color: #66cc66;">@</span>crochet.<span style="color: black;">run_in_reactor</span>
+        <span style="color: #ff7700;font-weight:bold;">def</span> start_wamp<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+           <span style="color: #808080; font-style: italic;"># On démarre la session WAMP en se connectant au serveur</span>
+           <span style="color: #808080; font-style: italic;"># publique de test</span>
+           wapp.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;wws://demo.crossbar.io/ws&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;realm1&quot;</span><span style="color: #66cc66;">,</span> start_reactor<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+        start_wamp<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On passe à urls.py dans lequel on se rajoute des vues de démo :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^ping/'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'votreapp.views.ping'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    url<span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^$'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'votreapp.views.index'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Puis dans notre fichier views.py, on met :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> uuid
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">shortcuts</span> <span style="color: #ff7700;font-weight:bold;">import</span> render
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> crochet
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Crochet se démerde pour faire tourner le reactor twisted de</span>
+<span style="color: #808080; font-style: italic;"># manière invisible. A lancer avant d'importer autobahn</span>
+crochet.<span style="color: black;">setup</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">twisted</span>.<span style="color: black;">wamp</span> <span style="color: #ff7700;font-weight:bold;">import</span> Application
+&nbsp;
+<span style="color: #808080; font-style: italic;"># un objet qui contient une session WAMP</span>
+wapp <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On enrobe les primitives de WAMP pour les rendre synchrones</span>
+<span style="color: #66cc66;">@</span>crochet.<span style="color: black;">wait_for</span><span style="color: black;">&#40;</span>timeout<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> publish<span style="color: black;">&#40;</span>topic<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+   <span style="color: #ff7700;font-weight:bold;">return</span> wapp.<span style="color: black;">session</span>.<span style="color: black;">publish</span><span style="color: black;">&#40;</span>topic<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>crochet.<span style="color: black;">wait_for</span><span style="color: black;">&#40;</span>timeout<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> call<span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+   <span style="color: #ff7700;font-weight:bold;">return</span> wapp.<span style="color: black;">session</span>.<span style="color: black;">call</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> register<span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+    <span style="color: #66cc66;">@</span>crochet.<span style="color: black;">run_in_reactor</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> decorator<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+        wapp.<span style="color: black;">register</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span><span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> decorator
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> subscribe<span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+    <span style="color: #66cc66;">@</span>crochet.<span style="color: black;">run_in_reactor</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> decorator<span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>:
+        wapp.<span style="color: black;">subscribe</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span><span style="color: black;">&#40;</span>func<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> decorator
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et hop, on peut utiliser nos outils WAMP !</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>register<span style="color: black;">&#40;</span><span style="color: #483d8b;">'uuid'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> get_uuid<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> uuid.<span style="color: black;">uuid4</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #008000;">hex</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>subscribe<span style="color: black;">&#40;</span><span style="color: #483d8b;">'ping'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> onping<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'test'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'w'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+        f.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ping'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et à côté, quelques vues django normales</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> index<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># pub et RPC en action côté Python</span>
+    publish<span style="color: black;">&#40;</span><span style="color: #483d8b;">'ping'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> call<span style="color: black;">&#40;</span><span style="color: #483d8b;">'uuid'</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'test'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>f.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> render<span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'index.html'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> ping<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> render<span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ping.html'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Après, un peu de templating pour que ça marche&#8230;</p>
+<p>Index.html :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">{% load staticfiles %}
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;title&gt;
+       UUID
+    &lt;/title&gt;
+&nbsp;
+    &lt;script src=&quot;{% static 'autobahn.min.js' %}&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      var connection = new autobahn.Connection({
+         url: &quot;ws://localhost:8080/ws&quot;,
+         realm: &quot;realm1&quot;
+      });
+&nbsp;
+     connection.onopen = function (session) {
+&nbsp;
+        session.call(&quot;uuid&quot;).then(function (uuid) {
+          var p = document.getElementById('uuid');
+          p.innerHTML = uuid;
+        });
+     };
+&nbsp;
+     connection.open();
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2&gt;UUID&lt;/h2&gt;
+&lt;p id=&quot;uuid&quot;&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></td></tr></table></div>
+
+<p>ping.html :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: black;">&#123;</span>% load staticfiles %<span style="color: black;">&#125;</span>
+<span style="color: #66cc66;">&lt;!</span>DOCTYPE html<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>html<span style="color: #66cc66;">&gt;</span>
+  <span style="color: #66cc66;">&lt;</span>head<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #66cc66;">&lt;</span>meta charset<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;utf-8&quot;</span> /<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #66cc66;">&lt;</span>title<span style="color: #66cc66;">&gt;</span>
+       Ping
+    <span style="color: #66cc66;">&lt;</span>/title<span style="color: #66cc66;">&gt;</span>
+&nbsp;
+    <span style="color: #66cc66;">&lt;</span>script src<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;{% static 'autobahn.min.js' %}&quot;</span><span style="color: #66cc66;">&gt;&lt;</span>/script<span style="color: #66cc66;">&gt;</span>
+    <span style="color: #66cc66;">&lt;</span>script <span style="color: #008000;">type</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;text/javascript&quot;</span><span style="color: #66cc66;">&gt;</span>
+      var connection <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">new</span> autobahn.<span style="color: black;">Connection</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span>
+         url: <span style="color: #483d8b;">&quot;ws://localhost:8080/ws&quot;</span><span style="color: #66cc66;">,</span>
+         realm: <span style="color: #483d8b;">&quot;realm1&quot;</span>
+      <span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+     connection.<span style="color: black;">onopen</span> <span style="color: #66cc66;">=</span> function <span style="color: black;">&#40;</span>session<span style="color: black;">&#41;</span> <span style="color: black;">&#123;</span>
+&nbsp;
+        session.<span style="color: black;">subscribe</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;ping&quot;</span><span style="color: #66cc66;">,</span> function <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: black;">&#123;</span>
+          var ul <span style="color: #66cc66;">=</span> document.<span style="color: black;">getElementById</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ping'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+          var li <span style="color: #66cc66;">=</span> document.<span style="color: black;">createElement</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'li'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+          li.<span style="color: black;">innerHTML</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'Ping !'</span>
+          ul.<span style="color: black;">appendChild</span><span style="color: black;">&#40;</span>li<span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+        <span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+     <span style="color: black;">&#125;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+     connection.<span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+    <span style="color: #66cc66;">&lt;</span>/script<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/head<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>body<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>h2<span style="color: #66cc66;">&gt;</span>Ping me <span style="color: #66cc66;">!&lt;</span>/h2<span style="color: #66cc66;">&gt;</span>
+&nbsp;
+<span style="color: #66cc66;">&lt;</span>ul <span style="color: #008000;">id</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;ping&quot;</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/ul<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/body<span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&lt;</span>/html<span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>On ouvre la console, on lance son routeur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">    crossbar init
+    crossbar start</pre></td></tr></table></div>
+
+<p>On lance dans une autre console son serveur Django :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">.<span style="color: #000000; font-weight: bold;">/</span>manage.py runserver</pre></td></tr></table></div>
+
+<p>Et si on navigue sur <code>http://127.0.0.1:8000</code>, on récupère un UUID tout frais via RCP.</p>
+<p>On peut aussi voir dans le shell que ça marche côté Python :</p>
+<pre>94cfccf0899d4c42950788fa655b65ed
+ping</pre>
+<p>D’ailleurs un fichier nommé &#8220;test&#8221; est créé à la racine du projet.</p>
+<p>Et si on navigue sur <code>http://127.0.0.1:8000/ping/</code> et qu&#8217;on refresh <code>http://127.0.0.1:8000</code> plusieurs fois, on voit la page se mettre à jour.</p>
+<p>Achievement unlock : use WAMP and Django code in the same file.</p>
+<h2>A partir de là</h2>
+<p>Il y a plein de choses à faire.</p>
+<p>On pourrait faire une lib qui wrap tout ça pour pas à avoir à le mettre dans son fichier de vue et qui utilise settings.py pour la configuration.</p>
+<p>Il faut tester ça avec des setups plus gros pour voir comment ça se comporte avec gunicorn, plusieurs workers, le logging de Django, etc. Je suis à peu près sûr que les callbacks vont être registrés plusieurs fois et ça devrait faire des erreurs dans les logs (rien de grave ceci dit).</p>
+<p>On pourrait aussi adapter le RPC pour qu&#8217;il utilise les cookies d&#8217;authentification Django, et pouvoir les protéger avec @login_required.</p>
+<p>Mais un monde d&#8217;opportunités s&#8217;offrent à vous à partir de là.</p>
+<p>Moi, ça fait 6 h que je taffe dessus, je vais me pieuter.</p>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/tree/master/2015/janvier/wamp_et_django">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-managers-le-detestent-faites-tourner-wamp-dans-django-avec-cette-astuce-insolite/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/01/index.jpeg" length="10867" type="image/jpg" />	</item>
+		<item>
+		<title>Le potentiel de WAMP, autobahn et crossbar.io 27</title>
+		<link>http://sametmax.com/le-potentiel-de-wamp-autobahn-et-crossbar-io/</link>
+		<comments>http://sametmax.com/le-potentiel-de-wamp-autobahn-et-crossbar-io/#comments</comments>
+		<pubDate>Sun, 01 Jun 2014 10:09:32 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[autobahn]]></category>
+		<category><![CDATA[crossbar]]></category>
+		<category><![CDATA[flask]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10380</guid>
+		<description><![CDATA[Je sais, je sais, je vous fais chier avec <a href="http://sametmax.com/crossbar-le-futur-des-applications-web-python/">crossbar</a> et <a href="http://sametmax.com/un-petit-gout-de-meteor-js-en-python/">autobahn</a>.
+
+Mais ça me tue de ne pas voir plus de monde exploiter cette techno.]]></description>
+				<content:encoded><![CDATA[<p>Je sais, je sais, je vous fais chier avec <a href="http://sametmax.com/crossbar-le-futur-des-applications-web-python/">crossbar</a> et <a href="http://sametmax.com/un-petit-gout-de-meteor-js-en-python/">autobahn</a>.</p>
+<p>Mais ça me tue de ne pas voir plus de monde exploiter cette techno.</p>
+<p>Pendant que Max fait la sieste, j&#8217;ai pris mon stylo et j&#8217;ai fait la liste des besoins d&#8217;une app Web actuelle. Quels sont les composants qu&#8217;on utilise presque systématiquement, mais en agrégeant divers bouts de trucs à droite et à gauche ?</p>
+<p>Ensuite j&#8217;ai regardé les possibilités des outils WAMP :</p>
+<ul>
+<li>PUB/SUB et RPC.</li>
+<li>Asynchrone.</li>
+<li>Gestionnaire de process intégré.</li>
+<li>Serveur stand alone qui n&#8217;a pas besoin d&#8217;un proxy pour être en prod.</li>
+</ul>
+<p>M&#8217;inspirant de cela, et du travail que je suis en train de faire avec l&#8217;équipe de Tavendo pour faire une API flaskesque pour autobahn, j&#8217;ai prototypé une API d&#8217;un framework Web qu&#8217;on pourrait coder au dessus de cette techno.</p>
+<p>Voilà ce que ça donne&#8230;</p>
+<p>Une API qui mélange flask et nodejs pour le Web</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">app <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span><span style="color: #483d8b;">'YourProjectName'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Envoyer et recevoir des requêtes HTTP</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">http</span>.<span style="color: black;">post</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'/form'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>req<span style="color: #66cc66;">,</span> res<span style="color: black;">&#41;</span>:
+    res.<span style="color: black;">json</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'data'</span>: <span style="color: #483d8b;">'pouet'</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">http</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'/user/:id/'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>req<span style="color: #66cc66;">,</span> res<span style="color: black;">&#41;</span>:
+    res.<span style="color: black;">render</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'index.html'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'data'</span>: <span style="color: #483d8b;">'pouet'</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Servir des fichiers statiques</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">http</span>.<span style="color: black;">serve</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'uri'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'/path/to/dir'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>allow_index<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+app.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Comme c&#8217;est asynchrone, on a de très bonnes perfs. Comme c&#8217;est basé sur Twisted, on a pas besoin d&#8217;un serveur wsgi (gunicorn, uwsgi, etc) ni d&#8217;un proxy (nginx) devant. On peut le mettre en prod tel quel.</p>
+<p>Parti de ce principe, on peut ajouter la gestion du PUB/SUB et du RPC pour WAMP :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Callback attendant l'événement</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">wamp</span>.<span style="color: black;">event</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># déclenchement de l'événément</span>
+app.<span style="color: black;">wamp</span>.<span style="color: black;">pub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Déclaration du fonnction appelable à distance</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">wamp</span>.<span style="color: black;">remote</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> a<span style="color: #66cc66;">,</span> b<span style="color: #66cc66;">,</span> c<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># appel de la fonnction</span>
+app.<span style="color: black;">wamp</span>.<span style="color: black;">call</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signin'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On est souvent perdu quand on fait de l&#8217;asynchrone pour la première fois avec Python car on ne sait pas comment lancer du code après <code>.run()</code>. On peut régler la question proposant des hooks pour les instants clés de l&#8217;app.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Callback à lancer quand l'app est prête</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">on</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'app.ready'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Signalement que l'app est prête (fait automatiquement en interne</span>
+<span style="color: #808080; font-style: italic;"># pour les moments les plus importants)</span>
+app.<span style="color: black;">emit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'app.ready'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et tant qu&#8217;on y est, puisqu&#8217;on a une event loop, profitons en pour proposer du CRON intégré à l&#8217;app. C&#8217;est moins chiant à déployer qu&#8217;un script CRON, c&#8217;est cross plateforme, et on a accès facilement à toute sa stack.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Lancer du code tous les x temps ou a une date précise</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">cron</span><span style="color: black;">&#40;</span>every<span style="color: #66cc66;">=</span>seconds<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">cron</span><span style="color: black;">&#40;</span>every<span style="color: #66cc66;">=</span>timedelta<span style="color: #66cc66;">,</span> overlap<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">cron</span><span style="color: black;">&#40;</span>hour<span style="color: #66cc66;">=</span><span style="color: #ff4500;">7</span><span style="color: #66cc66;">,</span> minute<span style="color: #66cc66;">=</span><span style="color: #ff4500;">30</span><span style="color: #66cc66;">,</span> day_of_week<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">cron</span><span style="color: black;">&#40;</span>when<span style="color: #66cc66;">=</span><span style="color: #dc143c;">datetime</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Pourquoi s&#8217;arrêter là ? Event loop + message passing + safe queues + workers = tasks queues !</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Créer une file d'attente</span>
+queue <span style="color: #66cc66;">=</span> <span style="color: #66cc66;">@</span>app.<span style="color: black;">queue</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'name'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>workers<span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>result_backend<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Callback appelé par un worker quand il depop ce </span>
+<span style="color: #808080; font-style: italic;"># message dans la file</span>
+<span style="color: #66cc66;">@</span>queue.<span style="color: black;">task</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'encode.video'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> data<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Envoie d'une tache dans la queu</span>
+queue.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'encode.video'</span><span style="color: #66cc66;">,</span> data<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Comme on utilise Twisted, on a accès à une chiée de protocoles, et on peut aussi créer les siens. On peut donc imaginer un système de plugins qui rajoute des protocoles supportés :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">app <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span><span style="color: #483d8b;">'YourProjectName'</span><span style="color: black;">&#41;</span>
+app.<span style="color: black;">plug</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'lib.ajoutant.sms'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>namespace<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si on en a beaucoup et que le namespace nous convient :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">app <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span><span style="color: #483d8b;">'YourProjectName'</span><span style="color: #66cc66;">,</span> plugins<span style="color: #66cc66;">=</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'lib1'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'lib2'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'etc'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Exemples de plugins possibles :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Recevoir et envoyer des SMS (via un service type twilio, une gateway kannel ou</span>
+<span style="color: #808080; font-style: italic;"># un modem physique)</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">sms</span>.<span style="color: black;">receive</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'LOVE <span style="color: #000099; font-weight: bold;">\w</span>+ <span style="color: #000099; font-weight: bold;">\w</span>+'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+app.<span style="color: black;">sms</span>.<span style="color: black;">send</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'test'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>contact<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Envoyer et recevoir des emails (via un server SMTP ou IMAP)</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: #dc143c;">email</span>.<span style="color: black;">receive</span><span style="color: black;">&#40;</span>src<span style="color: #66cc66;">=</span>r<span style="color: #483d8b;">'.*@sametmax.com'</span><span style="color: #66cc66;">,</span> dest<span style="color: #66cc66;">=</span>r<span style="color: #483d8b;">'spam.*@*.'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+app.<span style="color: #dc143c;">email</span>.<span style="color: black;">send</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'test'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>contact<span style="color: #66cc66;">,</span> title<span style="color: #66cc66;">,</span> attachments<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># techniquement n'importe quel service de message pour lequel on peut écrire</span>
+<span style="color: #808080; font-style: italic;"># un backend</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">tweet</span>.<span style="color: black;">receive</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'Chat'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">fb</span>.<span style="color: black;">receive</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'Like'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">instagram</span>.<span style="color: black;">receive</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'Bouffe'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">irc</span>.<span style="color: black;">message</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'dtc'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Le problème des apps centrées sur un objet, c&#8217;est qu&#8217;elles ont souvent un design monolithique. Ce n&#8217;est pas un problème du concept d&#8217;app, c&#8217;est juste que les auteurs ont pensé &#8220;point d&#8217;entrée&#8221;, et pas &#8220;élément composable&#8221;.</p>
+<p>Si besoin, on doit pouvoir composer une app via plusieurs sous-app :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">app <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+app.<span style="color: black;">embed</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'autre.app'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>ou</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">app <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span>embed<span style="color: #66cc66;">=</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'app1'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'app2'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'app3'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Il faut des hooks pour overrider la configuration, mais vous avez compris le principe.</p>
+<p>Un autre problème avec les plateformes comme NodeJS, c&#8217;est qu&#8217;il est difficile d&#8217;utiliser plusieurs coeurs. C&#8217;est une des raisons du succès de Go.</p>
+<p>Or, Crossbar encourage la division en plusieurs process qui communiquent entre eux (un peu comme les channels). Créons aussi une API pour ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">p1 <span style="color: #66cc66;">=</span> app.<span style="color: black;">process</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+p2 <span style="color: #66cc66;">=</span> app.<span style="color: black;">process</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Déclarer et appeler une procédure dans process 1</span>
+<span style="color: #66cc66;">@</span>p1.<span style="color: black;">wamp</span>.<span style="color: black;">remote</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Déclarer et appeler une procédure dans process 2</span>
+<span style="color: #66cc66;">@</span>p2.<span style="color: black;">wamp</span>.<span style="color: black;">event</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Ainsi on profite enfin de plusieurs CPU. La même chose en plus facile à changer:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Déclarer et appeler une procédure</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">wamp</span>.<span style="color: black;">remote</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Déclarer et appeler une procédure</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">wamp</span>.<span style="color: black;">event</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+app.<span style="color: black;">processes</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span>
+    <span style="color: #ff4500;">1</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'wamp.remote:auth.signin'</span><span style="color: black;">&#93;</span>
+    <span style="color: #ff4500;">2</span>: <span style="color: black;">&#91;</span><span style="color: #483d8b;">'wamp.event:auth.signedin'</span><span style="color: black;">&#93;</span>
+<span style="color: black;">&#125;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En bonus, on fait la nique au GIL.</p>
+<p>Mieux, on peut bouger ses process sur plusieurs machines :</p>
+<p>Machine 1 (routeur):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">router <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span>endpoint<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;0.0.0.0:8080&quot;</span><span style="color: black;">&#41;</span>
+router.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Machine 2 (authentification):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># IP du router</span>
+auth <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth'</span><span style="color: #66cc66;">,</span> connect_to<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;182.64.1.15:8080&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Nommage automatique en fonction du nom de la fonction</span>
+<span style="color: #808080; font-style: italic;"># et de l'app, avec possibilité d'annuler ou overrider le prefix.</span>
+<span style="color: #808080; font-style: italic;"># Ici du coup la fonction s'appellera en RPC via 'auth.signin'</span>
+<span style="color: #66cc66;">@</span>auth.<span style="color: black;">wamp</span>.<span style="color: black;">remote</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> signin<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+auth.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Machine 3 (API REST):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">web <span style="color: #66cc66;">=</span> Application<span style="color: black;">&#40;</span><span style="color: #483d8b;">'site'</span><span style="color: #66cc66;">,</span> connect_to<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;182.64.1.15:8080&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>web.<span style="color: black;">http</span>.<span style="color: black;">post</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'api/auth/'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>req<span style="color: #66cc66;">,</span> res<span style="color: black;">&#41;</span>:
+    <span style="color: #dc143c;">user</span> <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> res.<span style="color: black;">wamp</span>.<span style="color: black;">call</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signin'</span><span style="color: #66cc66;">,</span>
+                               req.<span style="color: black;">POST</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'username'</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+                               req.<span style="color: black;">POST</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'password'</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>*
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #dc143c;">user</span>
+        <span style="color: #dc143c;">user</span> <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> res.<span style="color: black;">wamp</span>.<span style="color: black;">pub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">user</span>.<span style="color: black;">userid</span><span style="color: black;">&#41;</span>
+        res.<span style="color: black;">json</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'token'</span>: <span style="color: #dc143c;">user</span>.<span style="color: #dc143c;">token</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        res.<span style="color: black;">json</span><span style="color: black;">&#40;</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'error'</span>: <span style="color: #483d8b;">'nope'</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">@</span>web.<span style="color: black;">http</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'api/stuff/'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>req<span style="color: #66cc66;">,</span> res<span style="color: black;">&#41;</span>:
+    res.<span style="color: black;">json</span><span style="color: black;">&#40;</span>get_stuff<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>web.<span style="color: black;">http</span>.<span style="color: black;">serve</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'uri'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'/path/to/dir'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>allow_index<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+web.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et vous savez le plus beau dans tout ça ? En Python on a plein de libs qui sont encore bloquantes. En théorie on ne peut pas les utiliser dans les apps asynchrones. Quand on a toute sa logique métiers dans des classes d&#8217;ORM, c&#8217;est balot. Mais pas ici ! On met un process avec tous ces appels bloquants, et on les appelle depuis des process non bloquant en RPC de manière asynchrone. Pif, paf, pouf, problème isolé.</p>
+<p>Après, libre à son imagination de rajouter des fonctionnalités de confort&#8230;</p>
+<p>Callback qui sera appelé seulement x fois :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Déclarer et appeler une procédure</span>
+<span style="color: #66cc66;">@</span>p1.<span style="color: black;">wamp</span>.<span style="color: black;">event</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: #66cc66;">,</span> options<span style="color: #66cc66;">=</span><span style="color: black;">&#123;</span><span style="color: #483d8b;">'limit_calls'</span>: x<span style="color: black;">&#125;</span> <span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Raccourcis pour les opérations courantes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># Recevoir et envoyer un événement</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">sub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> *args<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ctx.pub</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">pub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Déclarer et appeler une procédure</span>
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">proc</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'auth.signedin'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>ctx<span style="color: #66cc66;">,</span> args<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># ctx.call</span>
+app.<span style="color: black;">rpc</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Comme je vous l&#8217;avais expliqué, crossbar peut gérer le cycle de vie de services externes à votre application au démarrage. Autant exposer cette API programativement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>app.<span style="color: black;">service</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'/urs/bin/nodejs'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'script.js'</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #dc143c;">user</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span>group<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p><code>.run()</code>, c&#8217;est cool, mais si on veut changer des options via la ligne de commande, faut se taper tout le boulot alors que ça pourrait très bien se générer automatiquement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>app.<span style="color: black;">cmd_run</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et si vous faites : <code>python sites.py --debug=true --endpoint=0.0.0.0:5252</code>, ça le prend automatiquement en compte. Y a pas de raison de se faire chier.</p>
+<p>En parlant de générer automatiquement des trucs, le fichiers de configs pour les services externes sur lesquels on peut avoir envie de brancher notre app, c&#8217;est toujours galère. Autant fournir un exemple de base qui est sûr de toujours marcher, généré avec les paramètres de notre app :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python site.py template centos:nginx
+python site.py template ubuntu:upstart
+python site.py template bsd:systemd <span style="color: #666666; font-style: italic;"># :D</span></pre></td></tr></table></div>
+
+<p>On peut partir très loin dans le délire &#8220;battery included&#8221;. Typiquement, on peut fournir des services externes nous même puisque crossbar nous le propose, et coder des versions moins bien, mais compatibles (et suffisantes pour les petits sites), de projets toujours utilses :</p>
+<ul>
+<li>cache (compatible redis)</li>
+<li>live settings (compatible etcd) mais avec en prime un event wamp propagé à chaque</li>
+<p>  changement de valeur</p>
+<li>build (compatible, heu, j&#8217;en sais rien) qui s&#8217;occupe en tâche de fond de surveiller le >système de fichier et lancer les compilations, les minifications, les copies, les tests unittaires, etc.</li
+<li>logging centralisé (compatible sentry).</li>
+<li>Un bridge WAMP/REST qui permet d&#8217;envoyer et recevoir des events WAMP sur votre app Django ou flask en utilisant HTTP.</li>
+</ul>
+<p>On plug tout ça a une admin Web.</p>
+<p>J&#8217;espère que je vous ai donné maintenant l&#8217;envie de vous plonger un peu plus dans cette techno, et peut être coder quelque chose avec.</p>
+<p>Il n&#8217;y a plus d&#8217;excuses pour ne pas avoir de framework web next gen, ultime de la mort qui tue en Python. A part le fait qu&#8217;on soit des feignasses.</p>
+<p>Ah, merde, on est foutus.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-potentiel-de-wamp-autobahn-et-crossbar-io/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/tumblr_n3hz135rRO1r539hzo1_500.jpg" length="48460" type="image/jpg" />	</item>
+	</channel>
+</rss>

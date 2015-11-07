@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; tips</title>
+	<atom:link href="http://sametmax.com/tag/tips/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Astuces Python en vrac (bis) 6</title>
+		<link>http://sametmax.com/astuces-python-en-vrac-bis/</link>
+		<comments>http://sametmax.com/astuces-python-en-vrac-bis/#comments</comments>
+		<pubDate>Sun, 19 Aug 2012 16:00:37 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[tips]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1794</guid>
+		<description><![CDATA[Le genre d'article qu'on fait <a href="sametmax.com/astuces-python-en-vrac/">quand on a pas d'inspiration</a>.]]></description>
+				<content:encoded><![CDATA[<p>Le genre d&#8217;article qu&#8217;on fait <a href="http://sametmax.com/astuces-python-en-vrac/">quand on a pas d&#8217;inspiration</a>.</p>
+<h2>Denester une list</h2>
+<p>On peut le faire avec des <a href="http://sametmax.com/python-love-les-listes-en-intention-partie-2/">listes en intention imbriquées</a>. Ou on peut utiliser cette astuce:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> lst <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span><span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">sum</span><span style="color: black;">&#40;</span>lst<span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">6</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est pas très performant, mais c&#8217;est très court. Notez l&#8217;usage d&#8217;une <a href="http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/">lambda</a>.</p>
+<h2>deepcopy de structures de données complexes</h2>
+<p>Si vous avez des listes des dictionnaires et de tuples, faire des copies, ne peut se faire avec le signe égal, car on copie juste la référence. Le module <a href="http://docs.python.org/library/copy.html">copy</a> permet de faire une vrai copie de la liste, mais il existe une alternative toute bête:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">pickle</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> deepcopy <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: #dc143c;">pickle</span>.<span style="color: black;">loads</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">pickle</span>.<span style="color: black;">dumps</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> deepcopy<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<h2>Initialiser rapidement une matrice</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> make_matrix <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">lambda</span> cols<span style="color: #66cc66;">,</span> rows: <span style="color: black;">&#91;</span>x<span style="color: black;">&#91;</span>:<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> * cols<span style="color: black;">&#93;</span> * rows<span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> make_matrix<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Ici toute l&#8217;astuce est l&#8217;utilisation de l&#8217;<a href="http://sametmax.com/operateur-splat-ou-etoile-en-python/">opérateur splat</a> (<code>*</code>) qui multiplie aussi les listes. Mais pour que cela soit un succès, on initialise la première liste avec 0 qui est immutable, et on copie chaque liste obtenue avec <code>x[:]</code> pour ne pas multiplier les références. On obtient ainsi de vraies copies, et non des duplications de références.</p>
+<p>Évidement si vous cherchez la performance, utilisez plutôt <a href="http://numpy.scipy.org/">NumPy</a>.</p>
+<h2>Plusieurs <code>print</code> sur une seule ligne</h2>
+<p><code>Print</code> insère toujours un saut de ligne, et pour écrire sur la même ligne avec plusieurs appels, on doit faire <code>sys.stdout.write</code>. Sauf si on utilise une virgule:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;bib&quot;</span><span style="color: #66cc66;">,</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;bip&quot;</span></pre></td></tr></table></div>
+
+<p>Va afficher <code>bip bip</code>.</p>
+<h2>Tout est comparable</h2>
+<p>Il y a pas que les chiffres qui sont comparables entre eux, tous les objets le sont. Ca n&#8217;a pas toujours du sens:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">True</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">False</span>
+<span style="color: #008000;">True</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">True</span> <span style="color: #66cc66;">&lt;</span> <span style="color: #008000;">False</span>
+<span style="color: #008000;">False</span></pre></td></tr></table></div>
+
+<p>Mais c&#8217;est utile dans certains cas, la comparaison des mots se fait par ordre alphabétique:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;a&quot;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #483d8b;">&quot;b&quot;</span>
+<span style="color: #008000;">False</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #483d8b;">&quot;abricot&quot;</span> <span style="color: #66cc66;">&lt;</span> <span style="color: #483d8b;">&quot;zoophile&quot;</span>
+<span style="color: #008000;">True</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/astuces-python-en-vrac-bis/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/canada-pulses.jpg" length="5505" type="image/jpg" />	</item>
+	</channel>
+</rss>

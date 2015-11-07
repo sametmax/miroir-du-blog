@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; proxy</title>
+	<atom:link href="http://sametmax.com/tag/proxy/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Un objet proxy : ce que c&#8217;est et à quoi ça sert 1</title>
+		<link>http://sametmax.com/un-objet-proxy-ce-que-cest-et-a-quoi-ca-sert/</link>
+		<comments>http://sametmax.com/un-objet-proxy-ce-que-cest-et-a-quoi-ca-sert/#comments</comments>
+		<pubDate>Sat, 01 Feb 2014 17:18:13 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[class]]></category>
+		<category><![CDATA[objet]]></category>
+		<category><![CDATA[proxy]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8076</guid>
+		<description><![CDATA[Un objet proxy est un objet qui prend un <strong>autre</strong> objet en paramètre et le sauvegarde dans un de ses attributs. Quand on appelle les méthodes du proxy, le proxy appelle la même méthode de l'objet qu'il a en attribut, et retourne le résultat. Quand on set/get/delete un attribut du proxy, il fait la même chose sur l'autre objet.]]></description>
+				<content:encoded><![CDATA[<p>Un objet proxy est un objet qui prend un <strong>autre</strong> objet en paramètre et le sauvegarde dans un de ses attributs. Quand on appelle les méthodes du proxy, le proxy appelle la même méthode de l&#8217;objet qu&#8217;il a en attribut, et retourne le résultat. Quand on set/get/delete un attribut du proxy, il fait la même chose sur l&#8217;autre objet.</p>
+<p>Voilà une implémentation très basique d&#8217;un objet proxy en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Proxy<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> obj<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># L'objet passé en paramètre est</span>
+        <span style="color: #808080; font-style: italic;"># sauvegardé dans un attribut.</span>
+        <span style="color: #808080; font-style: italic;"># On le fait en utilisant </span>
+        <span style="color: #808080; font-style: italic;"># object.__setattr__, qui est le</span>
+        <span style="color: #808080; font-style: italic;"># __setattr__ du parent, et non directement</span>
+        <span style="color: #808080; font-style: italic;"># en faisant self._obj = obj</span>
+        <span style="color: #808080; font-style: italic;"># afin d'éviter une boucle infinie car</span>
+        <span style="color: #808080; font-style: italic;"># nous écrasons __setattr__ plus bas.</span>
+        <span style="color: #008000;">object</span>.<span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: #66cc66;">,</span> obj<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On écrase les méthodes magiques __getattribute__</span>
+    <span style="color: #808080; font-style: italic;"># (qui est appelée quand on faire self.nom_attribut), </span>
+    <span style="color: #808080; font-style: italic;"># __delattr__ (qui est appelée quand on fait </span>
+    <span style="color: #808080; font-style: italic;"># del self.nom_attribut) et __setattr__ (qui est </span>
+    <span style="color: #808080; font-style: italic;"># appelée quand on fait self.nom_attribut = truc)</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">object</span>.<span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__delattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">delattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">object</span>.<span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">setattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">object</span>.<span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ca s&#8217;utilise comme ceci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> UnObjetOrdinnaire<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    attribut <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'VALEUR !'</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> methode<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> param<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> param * <span style="color: #ff4500;">2</span>
+&nbsp;
+&nbsp;
+objet_ordinnaire <span style="color: #66cc66;">=</span> UnObjetOrdinnaire<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># on passe l'objet ordinnaire au proxy</span>
+objet_proxy <span style="color: #66cc66;">=</span> Proxy<span style="color: black;">&#40;</span>objet_ordinnaire<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Accéder à des méthodes et attribut</span>
+<span style="color: #808080; font-style: italic;"># du proxy accède à ceux de l'objet</span>
+<span style="color: #808080; font-style: italic;"># derrière le proxy</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>objet_proxy.<span style="color: black;">attribut</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## VALEUR !</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>objet_proxy.<span style="color: black;">methode</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 6</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Modifier l'objet proxy modifie</span>
+<span style="color: #808080; font-style: italic;"># l'objet derrière le proxy</span>
+objet_proxy.<span style="color: black;">attribut</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'une autre valeur'</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>objet_ordinnaire.<span style="color: black;">attribut</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## une autre valeur</span></pre></td></tr></table></div>
+
+<p>Pour un exemple vraiment à l&#8217;épreuve des balles, il faut prendre en compte tout un tas de <a href="http://code.activestate.com/recipes/496741-object-proxying/">cas particuliers</a>, ce qui fait qu&#8217;il est bien plus rentable d&#8217;utiliser une <a href="https://pypi.python.org/pypi/ProxyTypes">lib solide</a> pour ça.</p>
+<p><strong>Attention, un objet proxy peut très bien avoir des méthodes qui n&#8217;appellent pas celles de l&#8217;objet derrière. On même avoir des méthodes qui appellent des méthodes qui n&#8217;ont pas le même nom, ou plusieurs méthodes&#8230;</strong> Ce que vous voyez en exemple est un proxy très basique.</p>
+<h2>Pourquoi voudrait-on obtenir ce résultat ?</h2>
+<p>Plusieurs design patterns font appel à des objets proxy. Par exemple, le design pattern &#8220;adapter&#8221; consiste à créer un objet proxy qui accepte plusieurs types d&#8217;objets en paramètres afin de présenter toujours la même interface.</p>
+<p>Imaginez que vous ayez plusieurs objets qui servent à s&#8217;authentifier :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Login<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    _is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">False</span> 
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> is_logged<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._is_logged
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> login<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">email</span><span style="color: #66cc66;">,</span> password<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> LoginWithUsername<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    _is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">False</span> 
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> is_logged<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._is_logged
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> login<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> username<span style="color: #66cc66;">,</span> password<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> SignIn<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    _is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">False</span> 
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> is_logged<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._is_logged
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> signin<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">email</span><span style="color: #66cc66;">,</span> password<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> LoginWithKey<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    _is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">False</span> 
+&nbsp;
+    key <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;jfjkdlmqfjdmqsjdk&quot;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> is_logged<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._is_logged
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> login<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> username<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._is_logged <span style="color: #66cc66;">=</span> <span style="color: #008000;">True</span></pre></td></tr></table></div>
+
+<p>Et vous avez un algo de parsing, qui attend un objet d&#8217;authentification. Si vous mettez le code qui permet de choisir la bonne API dans l&#8217;algo de parsing, vous liez l&#8217;algo (qui n&#8217;a rien à voir avec l&#8217;authentification) à toutes ces implémentations.</p>
+<p>Une des manières de faire, est d&#8217;utiliser un adaptateur, dont  voici une esquisse :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> AuthAdapter<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> obj<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">object</span>.<span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: #66cc66;">,</span> obj<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #808080; font-style: italic;"># Si l'attribut existe sur le proxy, on l'utilise</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">object</span>.<span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">AttributeError</span>:
+            <span style="color: #808080; font-style: italic;"># Sinon on tente le coup sur l'objet derrière le proxy</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">object</span>.<span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> login<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> id_<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> secret<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># Le login est différent pour chaque classe,</span>
+        <span style="color: #808080; font-style: italic;"># donc on s'arrange avec.</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #008000;">self</span>._obj.<span style="color: black;">login</span><span style="color: black;">&#40;</span>id_<span style="color: #66cc66;">,</span> secret<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">AttributeError</span>:
+            <span style="color: #008000;">self</span>._obj.<span style="color: black;">signin</span><span style="color: black;">&#40;</span>id_<span style="color: #66cc66;">,</span> secret<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">TypeError</span>:
+            <span style="color: #008000;">self</span>._obj.<span style="color: black;">login</span><span style="color: black;">&#40;</span>id_<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En gros, si on essaye d&#8217;appeler <code>login()</code>, il va lisser les contours et nous donner toujours la même interface, même si derrière l&#8217;objet peut marcher complètement différement. En revanche, si on appelle n&#8217;importe quel autre attribut ou méthode (par exemple <code>is_logged</code>, mais il pourrait y en avoir des dizaines d&#8217;autres dans la vrai vie vivante), ça tape directement dans l&#8217;objet derrière le proxy.</p>
+<p>Donc si j&#8217;applique l&#8217;adaptateur systématiquement, quelle que soit la classe derrière, le comportement est toujours le même : j&#8217;appelle <code>login(un id, un secret)</code>, et il se logge.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">all_auth <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>Login<span style="color: #66cc66;">,</span> LoginWithUsername<span style="color: #66cc66;">,</span> SignIn<span style="color: #66cc66;">,</span> LoginWithKey<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> auth <span style="color: #ff7700;font-weight:bold;">in</span> all_auth:
+    <span style="color: #808080; font-style: italic;"># 'auth' est une des 4 classes de login. On l'instancie et</span>
+    <span style="color: #808080; font-style: italic;"># on met l'instance derrière le proxy</span>
+    auth <span style="color: #66cc66;">=</span> AuthAdapter<span style="color: black;">&#40;</span>auth<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Testing '%s'&quot;</span> % auth.__class__.__name__<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Is logged : %s&quot;</span> % auth.<span style="color: black;">is_logged</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># Le login se passe toujours de la même manière, quelle que soit la classe</span>
+    auth.<span style="color: black;">login</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'id'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'secret'</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Is logged after logging : %s&quot;</span> % auth.<span style="color: black;">is_logged</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p> Comme d&#8217;habitude, ceci est un exemple naval. Il est bateau quoi. Mais cela vous démontre le principe.</p>
+<p> Le design pattern façade ressemble à l&#8217;adapter, en fait c&#8217;est une spécialisation de l&#8217;adapter. Il s&#8217;agit juste d&#8217;exposer une interface plus simple, de l&#8217;objet derrière le proxy.</p>
+<p>Un proxy peut aussi servir à hacker une lib. Par exemple, la lib attend un objet d&#8217;une ancienne version d&#8217;une autre lib dont l&#8217;auteur a déprécié un attribut. Avec un proxy, vous pouvez toujours faire semblant que l&#8217;attribut est toujours là : enrobez l&#8217;objet dans un proxy qui possède cet attribut, tout le reste de l&#8217;API sera la même.</p>
+<p>Un proxy peut également être utile si vous voulez effectuer des actions quand l&#8217;objet est manipulé.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">logging</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ProxyLogger<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> obj<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">object</span>.<span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: #66cc66;">,</span> obj<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>:
+        obj <span style="color: #66cc66;">=</span> <span style="color: #008000;">object</span>.<span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;_obj&quot;</span><span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># On lance un warning à chaque accès à un attribut de l'objet</span>
+        <span style="color: #808080; font-style: italic;"># derrière le proxy</span>
+        <span style="color: #dc143c;">logging</span>.<span style="color: black;">warning</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;%s.%s has been called&quot;</span> % <span style="color: black;">&#40;</span>obj.__class__.__name__<span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span>obj<span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Maintenant, supposons que vous avez un objet d&#8217;une lib externe (que vous ne pouvez donc pas modifier) sur lequel vous avez besoin d&#8217;infos :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> ObjetExterne<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> ahahah<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+o <span style="color: #66cc66;">=</span> ProxyLogger<span style="color: black;">&#40;</span>ObjetExterne<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+o.<span style="color: black;">ahahah</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## WARNING:root:ObjetExterne.ahahah has been called</span></pre></td></tr></table></div>
+
+<p>Vous pouvez refiler le proxy à n&#8217;importe quel objet de sa lib d&#8217;origine, si le proxy est bien fait, elle ne vera pas la différence.</p>
+<p>On finit sur une note culture, puisque le pattern decorator utilise souvent aussi un proxy. Cette fois d&#8217;une fonction sur un autre objet (en générale une autre fonction). Mais le principe est le même. Donc quand vous voyez <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">@un_decorateur</a>, il est peut être en train d&#8217;appliquer un proxy à la fonction.</p>
+<p>D&#8217;ailleurs on dit souvent que le proxy <strong>décore</strong> l&#8217;objet qui est derrière. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-objet-proxy-ce-que-cest-et-a-quoi-ca-sert/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/02/v1sV4jN.jpg" length="128340" type="image/jpg" />	</item>
+		<item>
+		<title>Objets proxy et pattern adapter en Python 11</title>
+		<link>http://sametmax.com/objets-proxy-et-pattern-adapter-en-python/</link>
+		<comments>http://sametmax.com/objets-proxy-et-pattern-adapter-en-python/#comments</comments>
+		<pubDate>Fri, 16 Aug 2013 19:40:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[adapter]]></category>
+		<category><![CDATA[poo]]></category>
+		<category><![CDATA[proxy]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7112</guid>
+		<description><![CDATA[En informatique, le vocabulaire c'est une bonne partie du travail. On a des tas de termes comme polymorphisme, récursivité, idempotent ou closure. Certains sont des termes mathématiques, d'autres sont des anglicismes, mais la majorité sont juste des mots compliqués pour décrire des choses simples.
+
+Vous connaissez mon manque d'attrait pour ça, on va donc clarifier.]]></description>
+				<content:encoded><![CDATA[<p>En informatique, le vocabulaire c&#8217;est une bonne partie du travail. On a des tas de termes comme polymorphisme, récursivité, idempotent ou closure. Certains sont des termes mathématiques, d&#8217;autres sont des anglicismes, mais la majorité sont juste des mots compliqués pour décrire des choses simples.</p>
+<p>Vous connaissez mon manque d&#8217;attrait pour ça, on va donc clarifier.</p>
+<p>Pour comprendre cet article, il vous faut les pré-requis suivants :</p>
+<ul>
+<li>Être à l&#8217;aise avec avec la programmation orientée objet : héritage, property&#8230;</li>
+<li>Bien comprendre la notion de référence.</li>
+<li>Avoir un peu de temps devant soi.</li>
+</ul>
+<p>Et pour une fois, on va mettre un morceau qui colle bien au blog :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="//www.youtube.com/embed/lqXRk-cmXwM" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<h2>S&#8217;il vous plait, dessine moi un objet proxy</h2>
+<p>Un proxy, en anglais, c&#8217;est un mandataire, c&#8217;est à dire grosso merdo un intermédiaire. Un objet proxy est donc tout simplement un objet qui fait l&#8217;intermédiaire, généralement entre un objet et un autre.</p>
+<p>Exemple, on a des enseignants qui vont avoir besoin d&#8217;une autorisation de sortie pour des enfants dans leur classe. Un enfant ne peut pas décider de cela, ses parents décident de ce genre de chose :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Enseignant<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># la demande d'autorisation attend un objet enfant en paramètre</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> demande_autorisation_de_sortie<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> enfant<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> enfant.<span style="color: black;">peut_sortir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Enfant<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> age<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">age</span> <span style="color: #66cc66;">=</span> age
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># mais un enfant ne peut pas donner cette information</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> peut_sortir<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Un enfant ne peut decider de cela'</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Parent<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># le parent va faire proxy sur l'objet enfant</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> enfant<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">enfant</span> <span style="color: #66cc66;">=</span> enfant
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># et propose la même méthode que l'objet enfant afin de pouvoir</span>
+    <span style="color: #808080; font-style: italic;"># être passé en paramètre à sa place à la méthode</span>
+    <span style="color: #808080; font-style: italic;"># demande_autorisation_de_sortie()</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> peut_sortir<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">enfant</span>.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">10</span></pre></td></tr></table></div>
+
+<p>Ici, si la classe <code>Enseignant</code> appelle directement la méthode <code>peut_sortir()</code> de la classe <code>Enfant</code>, on obtient une erreur. :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> prof <span style="color: #66cc66;">=</span> Enseignant<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> enfant <span style="color: #66cc66;">=</span> Enfant<span style="color: black;">&#40;</span><span style="color: #ff4500;">11</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> prof.<span style="color: black;">demande_autorisation_de_sortie</span><span style="color: black;">&#40;</span>enfant<span style="color: black;">&#41;</span>
+Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-23-6d509f016e40&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span>
+    prof.<span style="color: black;">demande_autorisation_de_sortie</span><span style="color: black;">&#40;</span>enfant<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-18-e8d34178df4c&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> demande_autorisation_de_sortie
+    <span style="color: #ff7700;font-weight:bold;">return</span> enfant.<span style="color: black;">peut_sortir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;&lt;ipython-input-18-e8d34178df4c&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">13</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> peut_sortir
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Un enfant ne peut decider de cela'</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">NotImplementedError</span>: Un enfant ne peut decider de cela</pre></td></tr></table></div>
+
+<p>Nous avons créé un système où on est obligé de créer une instance de <code>Parent</code>, qui va se placer entre la classe <code>Enseignant</code> et la classe <code>Enfant</code>, et qui va retourner la valeur pour cette méthode :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> parent <span style="color: #66cc66;">=</span> Parent<span style="color: black;">&#40;</span>enfant<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># on passe l'enfant en paramètre au parent</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> prof.<span style="color: black;">demande_autorisation_de_sortie</span><span style="color: black;">&#40;</span>parent<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># et le parent remplace l'enfant</span>
+<span style="color: #008000;">True</span></pre></td></tr></table></div>
+
+<p>Ceci est un objet proxy, c&#8217;est à dire un objet qui se place entre deux objets, et fait l&#8217;intermédiaire. <strong>Pour que cela marche, il faut que l&#8217;objet proxy, ici l&#8217;instance de <code>Parent</code>, ait la même interface (les mêmes méthodes, avec les mêmes paramètres et noms) que l&#8217;objet derrière le proxy, ici l&#8217;instance de <code>Enfant</code>.</strong></p>
+<p>Dans notre cas, c&#8217;est académique, ça ne sert pas à grand chose. Mais il y a des tas de cas utiles pour les objets proxy.</p>
+<p>Ainsi, on veut parfois créer des objets dit &#8220;lazy&#8221;, littéralement &#8220;paresseux&#8221;, c&#8217;est à dire pas évalués tout de suite. C&#8217;est ce que fait Django dans le cadre de certaines chaînes de caractères traduites. En effet, en Django, il existe une fonction <code>lazy_gettex()</code> que l&#8217;on peut appliquer sur les chaînes à traduire. Mais elle ne retourne pas une string, car on ne connait pas encore la langue dans laquelle il faut traduire la chaîne : la langue dépend de l&#8217;utilisateur qui viendra demander la page Web en question. <code>lazy_gettex()</code> retourne un objet proxy, et quand, à l&#8217;appel de la page Web, on tente de manipuler cet objet comme une string pour l&#8217;afficher, le proxy va chercher la traduction, et retourne la bonne chaîne. Pour que ça marche, <strong>il faut que l&#8217;interface de l&#8217;objet lazy ressemble trait pour trait à celui d&#8217;une chaîne</strong>.</p>
+<p>Dans d&#8217;autres cas on veut mettre un proxy pour gérer des permissions, et selon le niveau de permission, l&#8217;objet proxy donne accès ou non à l&#8217;objet derrière lui.</p>
+<p>Le design pattern décorateur, le fameux <code>@truc</code> en Python, n&#8217;est jamais qu&#8217;un objet fonction qui fait proxy vers une autre fonction qu&#8217;on a enrobé.</p>
+<p>Mais la raison majeur pour laquelle on va utiliser un objet proxy est le design pattern &#8220;adapter&#8221;.</p>
+<h2>Ce n&#8217;est pas un chapeau, c&#8217;est un boa qui a avalé un éléphant</h2>
+<p>En informatique, on aime bien les traitements généralistes.</p>
+<p>Par exemple, imaginez cet objet qui dit si on a le droit de se bourrer la gueule :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Cette fonction n'est pas réaliste, puisque bien entendu une mineure
+            à gros nichons rentrerait, et un arabe en short lacoste non,
+            mais heureusement l'informatique est plus simple que notre société.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Personne<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> age<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">age</span> <span style="color: #66cc66;">=</span> age</pre></td></tr></table></div>
+
+<p>Et tant que vous avez la main sur le système, tout va bien dans le meilleur des mondes :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">random</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> clients <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>Personne<span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">12</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">65</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">xrange</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">random</span>.<span style="color: black;">randint</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">100</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> videur <span style="color: #66cc66;">=</span> Videur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> client <span style="color: #ff7700;font-weight:bold;">in</span> clients:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> videur.<span style="color: black;">tu_peux_rentrer</span><span style="color: black;">&#40;</span>client<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Glouglou&quot;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Glouglou</span>
+Glouglou
+Glouglou
+Glouglou
+Glouglou
+...</pre></td></tr></table></div>
+
+<p>Mais malheureusement la vie n&#8217;est pas toujours pleine de licornes et de bisounours, et votre collègue, lui, il a codé une lib en C qui a extrait les clients d&#8217;un XML, et quand vous vous mappez directement dessus avec ctype, vous obtenez des clients comme ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Client<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> majeur<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">majeur</span> <span style="color: #66cc66;">=</span> majeur</pre></td></tr></table></div>
+
+<p>Bon, vous vous dites que c&#8217;est pas grave. Après tout, c&#8217;est juste une condition à rajouter :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></td></tr></table></div>
+
+<p>Ouai mais votre commercial arrive avec un super contrat avec pillierdebar.com, et il faut s&#8217;interfacer avec leur API SOAP de 1997, dont la deserialisation vous retourne :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Prospect<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">datetime</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">date_de_naissance</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span></pre></td></tr></table></div>
+
+<p>Les connards. Ah les connards.</p>
+<p>Mais bon, c&#8217;est pas grave, c&#8217;est juste une petite condition à rajouter.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></td></tr></table></div>
+
+<p>Bon, vous allez enfin pouvoir soufll&#8230;. Ahhhh ! Votre boss appelle, il a oublié de vous dire, le stagiaire travaille aussi sur une feature, et a fait son propre objet <code>Prospect</code>, c&#8217;est comme l&#8217;objet <code>Client</code> mais pas pareil. Non on ne peut pas changer. Oui il a fait de la merde mais si on change tout son code pête. Il se barre demain. Il n&#8217;a pas fait de test. Démerde toi.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> LeClient<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> majeur_de_combien<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.__majeur_de_combien <span style="color: #66cc66;">=</span> majeur_de_combien
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> get_majeur_de_combien<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.__majeur_de_combien</pre></td></tr></table></div>
+
+<p>A ce stade là, le code est tellement moche de toute façon, vous vous en branlez complètement. Vous allez rentrer jouer Left4Dead avec un mod qui transforme les zombies pour qu&#8217;ils aient la tête de votre patron. Le reste n&#8217;est que détail d&#8217;implémentation.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'get_majeur_de_combien'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></td></tr></table></div>
+
+<p>Quelque moi(s) plus tard, les specs changent. Il faut maintenant pouvoir vérifier la carte d&#8217;identité des clients. Ou la carte de membre. Et garder l&#8217;ancien système compatible bien entendu. Ah, et il y a aussi des controleurs, c&#8217;est comme des videurs, mais qui doivent vérifier si les personnes dans le bar sont majeurs, sauf qu&#8217;il n&#8217;acceptent pas la carte de membre ou la date de naissance donnée à l&#8217;oral.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> CarteDeMembre<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> CarteIdentité<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> date_de_naissance<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">date_de_naissance</span> <span style="color: #66cc66;">=</span> date_de_naissance
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Client<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> majeur<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> carte_identite<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: #66cc66;">,</span> carte_membre<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">majeur</span> <span style="color: #66cc66;">=</span> majeur
+        <span style="color: #008000;">self</span>.<span style="color: black;">carte_identite</span> <span style="color: #66cc66;">=</span> carte_identite
+        <span style="color: #008000;">self</span>.<span style="color: black;">carte_membre</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">None</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">age</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'carte_membre'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'carte_identite'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">carte_identite</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            now <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>now - personne.<span style="color: black;">carte_identite</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'get_majeur_de_combien'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Controleur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> est_autorise<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'age'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">age</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">age</span> <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'carte_identite'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> personne.<span style="color: black;">carte_identite</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            now <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>now - personne.<span style="color: black;">carte_identite</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'date_de_naissance'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - personne.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>personne<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'get_majeur_de_combien'</span><span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> personne.<span style="color: black;">majeur</span></pre></td></tr></table></div>
+
+<p>Bon, là c&#8217;est la merde. Vous le sentez, demain il va y avoir un portail électronique qui check uniquement les cartes de membres. Quand il va falloir faire une modif quelque part, ça va être galère. La maintenance va être un enfer. Le debuggage, bien relou. Il faut trouver un moyen de faire plus propre.</p>
+<p>C&#8217;est ici qu&#8217;entre en jeu le pattern &#8220;adapter&#8221;. Un adapter, c&#8217;est comme les adaptateurs pour prises, mais pour les objets. C&#8217;est un proxy qu&#8217;on met devant pour que la prise ressemble à une autre.</p>
+<p>Dans le domaine du code, ça veut dire qu&#8217;on va enrober chaque objet dans un autre pour qu&#8217;ils aient tous la même interface. Le traitement du coup sera de nouveau très simple, et la complexité sera répartie dans les adapters.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #808080; font-style: italic;"># on met le code commun dans un parent abstrait, notamment le check pour</span>
+<span style="color: #808080; font-style: italic;"># savoir si un adapter convient a un objet donné</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Adapteur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    cls <span style="color: #66cc66;">=</span> <span style="color: #008000;">None</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> objet<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">objet</span> <span style="color: #66cc66;">=</span> objet
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> peut_adapter<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> objet<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">cls</span> <span style="color: #66cc66;">==</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>objet<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># un adapter, c'est juste un objet proxy qui arrondit les angles</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> PersonneAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls <span style="color: #66cc66;">=</span> Personne
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on va réduire la complexité en faisant en sorte que tous les checks</span>
+    <span style="color: #808080; font-style: italic;"># soient cachés derrière une simple property</span>
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span> <span style="color: #66cc66;">&gt;=</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ProspectAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls <span style="color: #66cc66;">=</span> Prospect
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> LeClientAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls <span style="color: #66cc66;">=</span> LeClient
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># retourne le nombre d'années après 18 ans ou -1. Don't ask...</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">get_majeur_de_combien</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> -<span style="color: #ff4500;">1</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ClientAdapteur<span style="color: black;">&#40;</span>Adapteur<span style="color: black;">&#41;</span>:
+&nbsp;
+    cls <span style="color: #66cc66;">=</span> Client
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> objet<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">objet</span> <span style="color: #66cc66;">=</span> objet
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> majeur<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">accepte_carte_membre</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">carte_membre</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">objet</span>.<span style="color: black;">majeur</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: #008000;">object</span>.<span style="color: black;">carte_identite</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            now <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># TODO: prendre en compte les années bisextiles</span>
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#40;</span>now - personne.<span style="color: black;">carte_identite</span>.<span style="color: black;">date_de_naissance</span><span style="color: black;">&#41;</span> / <span style="color: #ff4500;">365</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">18</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">False</span></pre></td></tr></table></div>
+
+<p>Le contrôleur et le videur deviennent du coup beaucoup plus simples, maintenant que la logique est normalisée :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> VerificateurDeMajorite<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> check_majorite<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> adapteur <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">adapteurs</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> adapteur.<span style="color: black;">peut_adapter</span><span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span>:
+                <span style="color: #ff7700;font-weight:bold;">return</span> adapteur<span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span>.<span style="color: black;">majeur</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># du coup un vérificateur, c'est très déclaratif</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Videur<span style="color: black;">&#40;</span>VerificateurDeMajorite<span style="color: black;">&#41;</span>:
+&nbsp;
+    adapteurs <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+        PersonneAdapteur<span style="color: #66cc66;">,</span>
+        ClientAdapteur<span style="color: #66cc66;">,</span>
+        ProspectAdapteur<span style="color: #66cc66;">,</span>
+        LeClientAdapteur<span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> tu_peux_rentrer<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">check_majorite</span><span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Controleur<span style="color: black;">&#40;</span>VerificateurDeMajorite<span style="color: black;">&#41;</span>:
+&nbsp;
+    adapteurs <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+        PersonneAdapteur<span style="color: #66cc66;">,</span>
+        <span style="color: #808080; font-style: italic;"># ProspectAdapteur()</span>
+        LeClientAdapteur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> est_autorise<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> personne<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">check_majorite</span><span style="color: black;">&#40;</span>personne<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si il faut ajouter un autre format de client, il suffit de coder un adapteur. Si il faut ajouter une autre classe de vérification, il suffit de lui donner les bons adapteurs.</p>
+<p>Et le traitement est aussi simple, car si vous avez une liste qui contient plein de clients différents :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> clients <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>Client<span style="color: black;">&#40;</span>majeur<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Client<span style="color: black;">&#40;</span>carte_de_membre<span style="color: #66cc66;">=</span>CarteDeMembre<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Client<span style="color: black;">&#40;</span>carte_identite<span style="color: #66cc66;">=</span>CarteIdentité<span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> LeClient<span style="color: black;">&#40;</span>-<span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Personne<span style="color: black;">&#40;</span>age<span style="color: #66cc66;">=</span><span style="color: #ff4500;">16</span><span style="color: black;">&#41;</span>...<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Vous pouvez quand même vérifier tout ça sans y réfléchir:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> videur <span style="color: #66cc66;">=</span> Videur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> client <span style="color: #ff7700;font-weight:bold;">in</span> clients:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> videur.<span style="color: black;">tu_peux_rentrer</span><span style="color: black;">&#40;</span>client<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Glouglou&quot;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Glouglou</span>
+Glouglou
+...
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> controlleur <span style="color: #66cc66;">=</span> Controleur<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> client <span style="color: #ff7700;font-weight:bold;">in</span> clients:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> controlleur.<span style="color: black;">est_autorise</span><span style="color: black;">&#40;</span>client<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Ahhhh !&quot;</span><span style="color: black;">&#41;</span>
+...
+<span style="color: black;">Ahhhh</span> <span style="color: #66cc66;">!</span>
+Ahhhh <span style="color: #66cc66;">!</span>
+...</pre></td></tr></table></div>
+
+<p>Dans un cas comme celui de notre exemple, l&#8217;adapter est un peu overkill, on s&#8217;en tirerait aussi bien avec une liste de fonctions, et le code serait plus léger et lisible.</p>
+<p> Mais quand les objets et la logique deviennent très complexes, tout ramener à une interface commune permet de simplifier énormément le code.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/objets-proxy-et-pattern-adapter-en-python/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/LF4zJ3x.png" length="420644" type="image/jpg" />	</item>
+		<item>
+		<title>Récupérer l&#8217;IP client avec Nginx en proxy sous CherryPy/Django/Bottle &#8211; proxy_set_header</title>
+		<link>http://sametmax.com/recuperer-lip-client-avec-nginx-en-proxy-sous-cherrypy-proxy_set_header/</link>
+		<comments>http://sametmax.com/recuperer-lip-client-avec-nginx-en-proxy-sous-cherrypy-proxy_set_header/#comments</comments>
+		<pubDate>Thu, 06 Sep 2012 02:11:26 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[bottle]]></category>
+		<category><![CDATA[cherrypy]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[ip]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[proxy]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2041</guid>
+		<description><![CDATA[Si vous utilisez Nginx en proxy, vous allez vous heurter à son IP lorsque votre script tentera de récupérer l'IP du client soit 127.0.0.1. Voici comment récupérer la bonne IP.]]></description>
+				<content:encoded><![CDATA[<p>Si vous utilisez Nginx en proxy, vous allez vous heurter à son IP lorsque votre script tentera de récupérer l&#8217;IP du client soit 127.0.0.1.</p>
+<p>En rajoutant ces quelques lignes à votre config <a href="http://wiki.nginx.org/HttpProxyModule#proxy_set_header">Nginx</a>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">location <span style="color: #000000; font-weight: bold;">/</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span> 
+ <span style="color: #666666; font-style: italic;"># ici un proxy pass quelconque</span>
+ proxy_pass http:<span style="color: #000000; font-weight: bold;">//</span>cherrypy;
+&nbsp;
+ <span style="color: #666666; font-style: italic;"># et ici la magie opère</span>
+ proxy_set_header Host <span style="color: #007800;">$host</span>;
+ proxy_set_header X-Real-IP <span style="color: #007800;">$remote_addr</span>;
+ proxy_set_header X-Forwarded-For <span style="color: #007800;">$proxy_add_x_forwarded_for</span>;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></td></tr></table></div>
+
+<p><strong>Dans votre script python (ici Bottle), vous pouvez du coup la récupérer:<br />
+</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;">#get user IP</span>
+user_ip = request.remote_addr</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/recuperer-lip-client-avec-nginx-en-proxy-sous-cherrypy-proxy_set_header/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/Proxy-Sheen-Cloud.jpeg" length="15043" type="image/jpg" />	</item>
+	</channel>
+</rss>

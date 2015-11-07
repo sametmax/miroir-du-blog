@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Bridge HTTP/WAMP</title>
+	<atom:link href="http://sametmax.com/bridge-httpwamp/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/bridge-httpwamp/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/bridge-httpwamp/#comment-153411</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Tue, 30 Dec 2014 10:54:40 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=13072#comment-153411</guid>
+		<description><![CDATA[&lt;p&gt;Hi Tobias,&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Why is the call result transmitted by invoking a callback?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Because if the call is very long, it will block the wsgi process. If you call an external service to encode a video, you don&#039;t want to wait for the whole video to be encoded to process the next HTTP request.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;One problem: when a WAMP client that has registered/subscribed just dies, the router will notice and automatically unregister/unsubscribe.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;No solution is perfect, if people want a perfect fit, they shall use autobahn :)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Hi Tobias,</p>
+<blockquote>
+<p>Why is the call result transmitted by invoking a callback?</p>
+</blockquote>
+<p>Because if the call is very long, it will block the wsgi process. If you call an external service to encode a video, you don&#8217;t want to wait for the whole video to be encoded to process the next HTTP request.</p>
+<blockquote>
+<p>One problem: when a WAMP client that has registered/subscribed just dies, the router will notice and automatically unregister/unsubscribe.</p>
+</blockquote>
+<p>No solution is perfect, if people want a perfect fit, they shall use autobahn :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Tobias Oberstein</title>
+		<link>http://sametmax.com/bridge-httpwamp/#comment-153405</link>
+		<dc:creator><![CDATA[Tobias Oberstein]]></dc:creator>
+		<pubDate>Tue, 30 Dec 2014 10:23:53 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=13072#comment-153405</guid>
+		<description><![CDATA[Hi Sam,
+
+first, I think your list of blockers to WAMP adoption nails it. We simply need to get much better on these issues.
+
+Rgd 4):
+
+The &quot;publisher&quot; role of such a bridge is already implemented:
+
+https://github.com/crossbario/crossbar/wiki/HTTP%20Pusher%20Service
+
+This can be used to publish WAMP real-time events from plain Django or whatevers apps. It also supports &quot;signed&quot; requests.
+
+It differs in 2 aspects from the proposal above: a) the WAMP topic is in the POST body (and hence will be signed too with signed requests), and b) the signing works with a simple, secure scheme, not JSON token
+
+Rgd. 3):
+
+Why is the call result transmitted by invoking a callback? Why not simply return the result as part of the initial HTTP/POST?
+
+That would essentially make the bridge API of 3) very similar to 4).
+
+===
+
+Rgd. 1) + 2) - that is REGISTER and SUBSCRIBE.
+
+Yes, here we need definitely REST callbacks.
+
+One problem: when a WAMP client that has registered/subscribed just dies, the router will notice and automatically unregister/unsubscribe.
+
+When a legacy app using the REST bridge dies, this will not be noticed by the router. It will only be noticed when the router would try to invoke a REST callback on the legacy app to invoke a procedure or deliver an event.
+]]></description>
+		<content:encoded><![CDATA[<p>Hi Sam,</p>
+<p>first, I think your list of blockers to WAMP adoption nails it. We simply need to get much better on these issues.</p>
+<p>Rgd 4):</p>
+<p>The &#8220;publisher&#8221; role of such a bridge is already implemented:</p>
+<p><a href="https://github.com/crossbario/crossbar/wiki/HTTP%20Pusher%20Service" rel="nofollow">https://github.com/crossbario/crossbar/wiki/HTTP%20Pusher%20Service</a></p>
+<p>This can be used to publish WAMP real-time events from plain Django or whatevers apps. It also supports &#8220;signed&#8221; requests.</p>
+<p>It differs in 2 aspects from the proposal above: a) the WAMP topic is in the POST body (and hence will be signed too with signed requests), and b) the signing works with a simple, secure scheme, not JSON token</p>
+<p>Rgd. 3):</p>
+<p>Why is the call result transmitted by invoking a callback? Why not simply return the result as part of the initial HTTP/POST?</p>
+<p>That would essentially make the bridge API of 3) very similar to 4).</p>
+<p>===</p>
+<p>Rgd. 1) + 2) &#8211; that is REGISTER and SUBSCRIBE.</p>
+<p>Yes, here we need definitely REST callbacks.</p>
+<p>One problem: when a WAMP client that has registered/subscribed just dies, the router will notice and automatically unregister/unsubscribe.</p>
+<p>When a legacy app using the REST bridge dies, this will not be noticed by the router. It will only be noticed when the router would try to invoke a REST callback on the legacy app to invoke a procedure or deliver an event.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Romain</title>
+		<link>http://sametmax.com/bridge-httpwamp/#comment-153374</link>
+		<dc:creator><![CDATA[Romain]]></dc:creator>
+		<pubDate>Mon, 29 Dec 2014 12:07:56 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=13072#comment-153374</guid>
+		<description><![CDATA[Damned, j&#039;ai fait une confusion TCP + port 80 = &quot;websocket c&#039;est sur HTTP&quot;. Les url en ws:// auraient dû me mettre la puce à l&#039;oreille.
+
+En attendant l&#039;article sur S&amp;M, &lt;a href=&quot;https://en.wikipedia.org/wiki/WebSocket&quot; rel=&quot;nofollow&quot;&gt;faire un tour sur wikipedia&lt;/a&gt; c&#039;est déjà pas mal :).
+
+Merci pour la précision. J&#039;ai des choses à apprendre, c&#039;est bien.
+]]></description>
+		<content:encoded><![CDATA[<p>Damned, j&#8217;ai fait une confusion TCP + port 80 = &#8220;websocket c&#8217;est sur HTTP&#8221;. Les url en ws:// auraient dû me mettre la puce à l&#8217;oreille.</p>
+<p>En attendant l&#8217;article sur S&amp;M, <a href="https://en.wikipedia.org/wiki/WebSocket" rel="nofollow">faire un tour sur wikipedia</a> c&#8217;est déjà pas mal :).</p>
+<p>Merci pour la précision. J&#8217;ai des choses à apprendre, c&#8217;est bien.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/bridge-httpwamp/#comment-153373</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 29 Dec 2014 11:54:44 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=13072#comment-153373</guid>
+		<description><![CDATA[&lt;blockquote&gt;
+  &lt;p&gt;Salut et merci pour toutes ces infos sur WAMP. La stack à l’air bien cool. Toutefois, un truc me chiffonne, c’est que ça repose sur &gt; websocket qui propose en gros de faire de la communication “temps réel” sur HTTP qui fonctionne en requête / réponse.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Websocket n&#039;est pas HTTP&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;C&#039;est un protocole distinct, fait pour le temps réel. Il va falloir que je fasse un article là dessus car je m’aperçois que beaucoup de gens ne savent pas ce qu&#039;est Websocket. C&#039;est dommage car c&#039;est une très belle techno. Si on a la possibilité de l&#039;utiliser (IE10 ou plus ou un shym flash), il ne faut pas hésiter. C&#039;est beaucoup plus rapide, léger et efficace qu&#039;AJAX car ça ne marche pas du tout pareil.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Alors, effectivement, c’est sympa de pousser des notifications au browser mais y a-t-il une réel plus value à généraliser pour tout ce qui &gt; est communication inter process ? Est-ce qu’on n’a pas tendance à se servir d’HTTP pour tout alors qu’il y a peut-être des protocoles plus mûrs / stables (je pense à AMQP ?).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Websocket est fait pour ça. Ce n&#039;est pas un hack, un détournement de la techno. C&#039;est fait exprès pour une fois pour toute casser cette distinction communication client/server/process qui n&#039;a lieu d&#039;être qu&#039;à cause des barrières technologiques.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Je me réponds (partiellement) : la plus value est de brancher directement le browser sur une file de message sans passé par un serveur intermédiaire ce qui va bien dans le sens de micro service.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;On passe bien par un serveur intermédiaire. WAMP à besoin d&#039;un routeur. Si tu veux du P2P, il faut utiliser WebRTC. Mais même là il y a un serveur pour le signaling. Le vrai P2P, c&#039;est malheureusement pas pour demain. D&#039;ailleurs, ça me fait bien chier que les browsers intègres par le protocole torrent par défaut. Il a fait ses preuves.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Donc dans le premier frein à l’adoption, ce que je vois c’est le sentiment d’avoir une nouvelle technos pour la communication entre processus en plus des zillons de solutions existantes, qui plus est basée sur HTTP qui n’est pas forcément pensé pour à la base.&lt;/p&gt;
+  
+  &lt;p&gt;A toi de de me dire si je dis de la merde ou pas :)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Je le formulerai pas ainsi. Disons que ça mérite une complément d&#039;informations ^^ Je vais écrire ça demain.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<blockquote>
+<p>Salut et merci pour toutes ces infos sur WAMP. La stack à l’air bien cool. Toutefois, un truc me chiffonne, c’est que ça repose sur > websocket qui propose en gros de faire de la communication “temps réel” sur HTTP qui fonctionne en requête / réponse.</p>
+</blockquote>
+<p><strong>Websocket n&#8217;est pas HTTP</strong></p>
+<p>C&#8217;est un protocole distinct, fait pour le temps réel. Il va falloir que je fasse un article là dessus car je m’aperçois que beaucoup de gens ne savent pas ce qu&#8217;est Websocket. C&#8217;est dommage car c&#8217;est une très belle techno. Si on a la possibilité de l&#8217;utiliser (IE10 ou plus ou un shym flash), il ne faut pas hésiter. C&#8217;est beaucoup plus rapide, léger et efficace qu&#8217;AJAX car ça ne marche pas du tout pareil.</p>
+<blockquote>
+<p>Alors, effectivement, c’est sympa de pousser des notifications au browser mais y a-t-il une réel plus value à généraliser pour tout ce qui > est communication inter process ? Est-ce qu’on n’a pas tendance à se servir d’HTTP pour tout alors qu’il y a peut-être des protocoles plus mûrs / stables (je pense à AMQP ?).</p>
+</blockquote>
+<p>Websocket est fait pour ça. Ce n&#8217;est pas un hack, un détournement de la techno. C&#8217;est fait exprès pour une fois pour toute casser cette distinction communication client/server/process qui n&#8217;a lieu d&#8217;être qu&#8217;à cause des barrières technologiques.</p>
+<blockquote>
+<p>Je me réponds (partiellement) : la plus value est de brancher directement le browser sur une file de message sans passé par un serveur intermédiaire ce qui va bien dans le sens de micro service.</p>
+</blockquote>
+<p>On passe bien par un serveur intermédiaire. WAMP à besoin d&#8217;un routeur. Si tu veux du P2P, il faut utiliser WebRTC. Mais même là il y a un serveur pour le signaling. Le vrai P2P, c&#8217;est malheureusement pas pour demain. D&#8217;ailleurs, ça me fait bien chier que les browsers intègres par le protocole torrent par défaut. Il a fait ses preuves.</p>
+<blockquote>
+<p>Donc dans le premier frein à l’adoption, ce que je vois c’est le sentiment d’avoir une nouvelle technos pour la communication entre processus en plus des zillons de solutions existantes, qui plus est basée sur HTTP qui n’est pas forcément pensé pour à la base.</p>
+<p>A toi de de me dire si je dis de la merde ou pas :)</p>
+</blockquote>
+<p>Je le formulerai pas ainsi. Disons que ça mérite une complément d&#8217;informations ^^ Je vais écrire ça demain.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Romain</title>
+		<link>http://sametmax.com/bridge-httpwamp/#comment-153371</link>
+		<dc:creator><![CDATA[Romain]]></dc:creator>
+		<pubDate>Mon, 29 Dec 2014 11:14:00 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=13072#comment-153371</guid>
+		<description><![CDATA[Salut et merci pour toutes ces infos sur WAMP. La stack à l&#039;air bien cool. Toutefois, un truc me chiffonne,  c&#039;est que ça repose sur websocket qui propose en gros de faire de la communication &quot;temps réel&quot; sur HTTP qui fonctionne en requête / réponse. Alors, effectivement, c&#039;est sympa de pousser des notifications au browser mais y a-t-il une réel plus value à généraliser pour tout ce qui est communication inter process ? Est-ce qu&#039;on n&#039;a pas tendance à se servir d&#039;HTTP pour tout alors qu&#039;il y a peut-être des protocoles plus mûrs / stables (je pense à AMQP ?).
+
+Je me réponds (partiellement) :  la plus value est de brancher directement le browser sur une file de message sans passé par un serveur intermédiaire ce qui va bien dans le sens de micro service.
+
+Donc dans le premier frein à l&#039;adoption, ce que je vois c&#039;est le sentiment d&#039;avoir une nouvelle technos pour la communication entre processus en plus des zillons de solutions existantes, qui plus est basée sur HTTP qui n&#039;est pas forcément pensé pour à la base.
+
+A toi de de me dire si je dis de la merde ou pas :)
+]]></description>
+		<content:encoded><![CDATA[<p>Salut et merci pour toutes ces infos sur WAMP. La stack à l&#8217;air bien cool. Toutefois, un truc me chiffonne,  c&#8217;est que ça repose sur websocket qui propose en gros de faire de la communication &#8220;temps réel&#8221; sur HTTP qui fonctionne en requête / réponse. Alors, effectivement, c&#8217;est sympa de pousser des notifications au browser mais y a-t-il une réel plus value à généraliser pour tout ce qui est communication inter process ? Est-ce qu&#8217;on n&#8217;a pas tendance à se servir d&#8217;HTTP pour tout alors qu&#8217;il y a peut-être des protocoles plus mûrs / stables (je pense à AMQP ?).</p>
+<p>Je me réponds (partiellement) :  la plus value est de brancher directement le browser sur une file de message sans passé par un serveur intermédiaire ce qui va bien dans le sens de micro service.</p>
+<p>Donc dans le premier frein à l&#8217;adoption, ce que je vois c&#8217;est le sentiment d&#8217;avoir une nouvelle technos pour la communication entre processus en plus des zillons de solutions existantes, qui plus est basée sur HTTP qui n&#8217;est pas forcément pensé pour à la base.</p>
+<p>A toi de de me dire si je dis de la merde ou pas :)</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

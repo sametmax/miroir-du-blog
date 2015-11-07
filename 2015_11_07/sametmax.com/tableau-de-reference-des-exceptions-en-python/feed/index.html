@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Tableau de référence des exceptions en Python</title>
+	<atom:link href="http://sametmax.com/tableau-de-reference-des-exceptions-en-python/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 11:08:18 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/#comment-158357</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Sun, 29 Mar 2015 00:51:41 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15963#comment-158357</guid>
+		<description><![CDATA[&lt;p&gt;Pas IOError, OSError. FileNotFound est un enfant de OSError en Python 3:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;p&gt;FileNotFoundError.&lt;strong&gt;mro&lt;/strong&gt;&lt;/p&gt;
+      
+      &lt;p&gt;(builtins.FileNotFoundError,&lt;/p&gt;
+      
+      &lt;p&gt;builtins.OSError,&lt;/p&gt;
+      
+      &lt;p&gt;builtins.Exception,&lt;/p&gt;
+      
+      &lt;p&gt;builtins.BaseException,&lt;/p&gt;
+      
+      &lt;p&gt;builtins.object)&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ceci est une amélioration énorme car en 2.7, on doit checker OSError.errno pour savoir quel type d&#039;OSError il s&#039;agit. En Python 3, chaque numéro d&#039;erreur a été remplacé par une exception au nom explicite :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &#124;    +-- BlockingIOError
+  &#124;    +-- ChildProcessError
+  &#124;    +-- ConnectionError
+  &#124;    &#124;    +-- BrokenPipeError
+  &#124;    &#124;    +-- ConnectionAbortedError
+  &#124;    &#124;    +-- ConnectionRefusedError
+  &#124;    &#124;    +-- ConnectionResetError
+  &#124;    +-- FileExistsError
+  &#124;    +-- FileNotFoundError
+  &#124;    +-- InterruptedError
+  &#124;    +-- IsADirectoryError
+  &#124;    +-- NotADirectoryError
+  &#124;    +-- PermissionError
+  &#124;    +-- ProcessLookupError
+  &#124;    +-- TimeoutError
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Du coup, pas besoin de les expliquer. NotADirectory, je pense que ça se comprend :)&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Pas IOError, OSError. FileNotFound est un enfant de OSError en Python 3:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>FileNotFoundError.<strong>mro</strong></p>
+<p>(builtins.FileNotFoundError,</p>
+<p>builtins.OSError,</p>
+<p>builtins.Exception,</p>
+<p>builtins.BaseException,</p>
+<p>builtins.object)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Ceci est une amélioration énorme car en 2.7, on doit checker OSError.errno pour savoir quel type d&#8217;OSError il s&#8217;agit. En Python 3, chaque numéro d&#8217;erreur a été remplacé par une exception au nom explicite :</p>
+<pre><code>  |    +-- BlockingIOError
+  |    +-- ChildProcessError
+  |    +-- ConnectionError
+  |    |    +-- BrokenPipeError
+  |    |    +-- ConnectionAbortedError
+  |    |    +-- ConnectionRefusedError
+  |    |    +-- ConnectionResetError
+  |    +-- FileExistsError
+  |    +-- FileNotFoundError
+  |    +-- InterruptedError
+  |    +-- IsADirectoryError
+  |    +-- NotADirectoryError
+  |    +-- PermissionError
+  |    +-- ProcessLookupError
+  |    +-- TimeoutError
+</code></pre>
+<p>Du coup, pas besoin de les expliquer. NotADirectory, je pense que ça se comprend :)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Gabbro</title>
+		<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/#comment-158350</link>
+		<dc:creator><![CDATA[Gabbro]]></dc:creator>
+		<pubDate>Sat, 28 Mar 2015 21:44:50 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15963#comment-158350</guid>
+		<description><![CDATA[Je crois que l&#039;IOError a changé de nom en python3 :
+
+with open(&quot;truc&quot;, &quot;r&quot;) as test:
+
+pass
+
+renvois en python2 :
+
+Traceback (most recent call last):
+
+File &quot;&quot;, line 1, in
+
+IOError: [Errno 2] No such file or directory: &#039;truc&#039;
+
+mais en python3 :
+
+Traceback (most recent call last):
+
+File &quot;&quot;, line 1, in
+
+FileNotFoundError: [Errno 2] No such file or directory: &#039;truc&#039;
+
+Et merci pour le module Decimal que je ne connaissais pas, ça risque de m&#039;être utile un de ces jours !
+]]></description>
+		<content:encoded><![CDATA[<p>Je crois que l&#8217;IOError a changé de nom en python3 :</p>
+<p>with open(&#8220;truc&#8221;, &#8220;r&#8221;) as test:</p>
+<p>pass</p>
+<p>renvois en python2 :</p>
+<p>Traceback (most recent call last):</p>
+<p>File &#8220;&#8221;, line 1, in</p>
+<p>IOError: [Errno 2] No such file or directory: &#8216;truc&#8217;</p>
+<p>mais en python3 :</p>
+<p>Traceback (most recent call last):</p>
+<p>File &#8220;&#8221;, line 1, in</p>
+<p>FileNotFoundError: [Errno 2] No such file or directory: &#8216;truc&#8217;</p>
+<p>Et merci pour le module Decimal que je ne connaissais pas, ça risque de m&#8217;être utile un de ces jours !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: JEEK</title>
+		<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/#comment-158184</link>
+		<dc:creator><![CDATA[JEEK]]></dc:creator>
+		<pubDate>Wed, 25 Mar 2015 05:45:31 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15963#comment-158184</guid>
+		<description><![CDATA[Ah, c&#039;est bien kwoool ce tableau ; comme déjà dit... c&#039;est toujours utile !
+
+Merci Sam &amp; Max...
+
+;-)
+]]></description>
+		<content:encoded><![CDATA[<p>Ah, c&#8217;est bien kwoool ce tableau ; comme déjà dit&#8230; c&#8217;est toujours utile !</p>
+<p>Merci Sam &amp; Max&#8230;</p>
+<p>;-)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Sam</title>
+		<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/#comment-158115</link>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+		<pubDate>Mon, 23 Mar 2015 11:05:19 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15963#comment-158115</guid>
+		<description><![CDATA[&lt;p&gt;Ah, merci ! J&#039;ai corrigé.&lt;/p&gt;
+]]></description>
+		<content:encoded><![CDATA[<p>Ah, merci ! J&#8217;ai corrigé.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Dimtion</title>
+		<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/#comment-158114</link>
+		<dc:creator><![CDATA[Dimtion]]></dc:creator>
+		<pubDate>Mon, 23 Mar 2015 10:08:45 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15963#comment-158114</guid>
+		<description><![CDATA[Bien pratique le tableau, merci !
+
+Par contre il y a un petit 404 sur le lien vers le guide sur les tests unitaires.
+]]></description>
+		<content:encoded><![CDATA[<p>Bien pratique le tableau, merci !</p>
+<p>Par contre il y a un petit 404 sur le lien vers le guide sur les tests unitaires.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Coucou</title>
+		<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/#comment-158109</link>
+		<dc:creator><![CDATA[Coucou]]></dc:creator>
+		<pubDate>Sun, 22 Mar 2015 23:58:57 +0000</pubDate>
+		<guid isPermaLink="false">http://sametmax.com/?p=15963#comment-158109</guid>
+		<description><![CDATA[Merci pour la liste, toujours utile !
+
+PS : le lien vers la liste complète des exceptions est un peu peté
+]]></description>
+		<content:encoded><![CDATA[<p>Merci pour la liste, toujours utile !</p>
+<p>PS : le lien vers la liste complète des exceptions est un peu peté</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

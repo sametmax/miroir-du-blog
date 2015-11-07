@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; memoize</title>
+	<atom:link href="http://sametmax.com/tag/memoize/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Mémoization d&#8217;une fonction Python 11</title>
+		<link>http://sametmax.com/memoization-dune-fonction-python/</link>
+		<comments>http://sametmax.com/memoization-dune-fonction-python/#comments</comments>
+		<pubDate>Fri, 20 Jul 2012 20:37:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[decorator]]></category>
+		<category><![CDATA[function]]></category>
+		<category><![CDATA[memoize]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1223</guid>
+		<description><![CDATA[La <a href="http://fr.wikipedia.org/wiki/M%C3%A9moization">mémoization</a> est une forme de mise en cache, elle consiste à cacher le résultat d'une fonction afin que les appels successifs avec des paramètres identiques utilisent le cache plutôt que de calculer à nouveau les données.]]></description>
+				<content:encoded><![CDATA[<p>La <a href="http://fr.wikipedia.org/wiki/M%C3%A9moization">mémoization</a> est une forme de mise en cache, elle consiste à cacher le résultat d&#8217;une fonction afin que les appels successifs avec des paramètres identiques utilisent le cache plutôt que de calculer à nouveau les données.</p>
+<p>En gros:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> fonction_super_lente<span style="color: black;">&#40;</span><span style="color: #008000;">True</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'127.0.0.1'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># calcule</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> fonction_super_lente<span style="color: black;">&#40;</span><span style="color: #008000;">True</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'127.0.0.1'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ne calcule pas, retourne le cache</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> fonction_super_lente<span style="color: black;">&#40;</span><span style="color: #008000;">True</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'192.168.0.1'</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># calcule car les paramètres sont différents</span></pre></td></tr></table></div>
+
+<p>En Python on peut le faire de plusieurs manières, malgré ce que <a href="http://www.python.org/dev/peps/pep-0020/">prétend la philosophie du langage</a>.</p>
+<h2>La version avec dico externe</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">resultats <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_super_lente<span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">in</span> resultats:
+        resultats<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #808080; font-style: italic;"># balancer le calcul lent ici</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> resultats<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Cela marche parceque <code>resultats</code> est gardé dans une <a href="http://sametmax.com/closure-en-python-et-javascript/">closure</a> et donc accessible dans la fonction. Comme il est défini avant, et que les dictionnaires sont mutables, on a toujours la même référence au même dico à chaque appel. On a juste a vérifier qu&#8217;un résultat pour ces param existent (<a href="http://sametmax.com/ce-que-vous-ne-saviez-pas-sur-les-collections-en-python/">les tuples peuvent être des clés de dictionnaires</a>), et si non, on remplit le cache.</p>
+<p>Avantages:</p>
+<ul>
+<li>c&#8217;est facile à comprendre;</li>
+<li>on peut manipuler le cache depuis l&#8217;extérieur.</li>
+</ul>
+<p>Inconvénient:</p>
+<ul>
+<li>le namespace du module est pollué;</li>
+<li>on risque d&#8217;importer le cache par erreur.</li>
+</ul>
+<h2>La version avec paramètre additionel </h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction_super_lente<span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: #66cc66;">,</span> _resultats<span style="color: #66cc66;">=</span><span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">in</span> resultats:
+        _resultats<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #808080; font-style: italic;"># balancer le calcul lent ici</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> _resultats<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Même chose que précédement, mais la différence est que le cache est stocké dans un paramètre. Cela marche car <a href="http://sametmax.com/quelques-erreurs-tordues-et-leurs-solutions-en-python/">les paramètres sont initialisés à la déclaration en Python</a>, et une seule fois.</p>
+<p>Notez le underscore devant le nom de paramètre qui est une convention pour désigner un paramètre qui ne fait pas partie de l&#8217;API publique.</p>
+<p>Avantages:</p>
+<ul>
+<li>c&#8217;est encore pas trop dur à comprendre;</li>
+<li>le namespace est clean.</li>
+</ul>
+<p>Inconvénient:</p>
+<ul>
+<li>la signature de la fonction possède un argument artificiel.</li>
+</ul>
+<h2>La version avec attribut</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> fonction_super_lente<span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span>:
+&nbsp;
+    resultats <span style="color: #66cc66;">=</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span>function_super_lente<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'_resultats'</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">in</span> resultats:
+        resultats<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #808080; font-style: italic;"># balancer le calcul lent ici</span>
+        function_super_lente._resultats <span style="color: #66cc66;">=</span> resultats
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> resultats<span style="color: black;">&#91;</span><span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Cela marche car les fonctions en Python sont des objets. On peut leur rajouter des attributs à la volées comme pour n&#8217;importe quel objet :-)</p>
+<p>Notez l&#8217;usage du troisième paramètre de <code>getattr()</code> qui nous permet d&#8217;avoir une valeur par défaut même si l&#8217;attribut n&#8217;existe pas encore.</p>
+<p>Avantages:</p>
+<ul>
+<li>pas de polution du namespace ni de la signature.</li>
+</ul>
+<p>Inconvénient:</p>
+<ul>
+<li>votre collègue va surement vous demander: WTF ?</li>
+</ul>
+<h2>La version avec décorateur</h2>
+<p>Il existe pas mal de versions de <a href="http://wiki.python.org/moin/PythonDecoratorLibrary#Memoize">décorateurs de mémoization</a>  disponibles sur le Net. Ca s&#8217;utilise généralement comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> malib <span style="color: #ff7700;font-weight:bold;">import</span> memoized
+&nbsp;
+<span style="color: #66cc66;">@</span>memoized
+<span style="color: #ff7700;font-weight:bold;">def</span> fonction_super_lente<span style="color: black;">&#40;</span>le_faire<span style="color: #66cc66;">,</span> sur_quoi<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #808080; font-style: italic;"># le truc normalement</span></pre></td></tr></table></div>
+
+<p>Avantages:</p>
+<ul>
+<li>y a pas plus propre;</li>
+<li>y a pas plus facile.</li>
+</ul>
+<p>Inconvénient:</p>
+<ul>
+<li>une dépendance de plus;</li>
+<li>chaque implémentation possède une caractéristique (souvent une limite): il faut donc comprendre des codes parfois complexes pour les utiliser en toute tranquilité d&#8217;esprit.
+</li>
+</ul>
+<h2>
+Petit rappel</h2>
+<p>Cette technique, de par sa nature, implique de tout stocker en mémoire vive. Donc attention à votre RAM, et vérifiez bien que ça vaut le coup d&#8217;échanger la charge CPU contre celle de vos barettes. Ensuite, le bénéfice est d&#8217;autant plus grand que le code tourne longtemps. Si c&#8217;est un script lancé de nombreuses fois, avec quelques appels à la fonction, le gain est faible: entre chaque initialisation de la VM Python, le cache disparait. Dans ce cas il vaut mieux se tourner vers une solution telle que Redis.</p>
+<p>Le cas typique d&#8217;usage pertinent est celui d&#8217;un daemon faisant des appels à une API WEB: en cachant les résultats, vous économisez une requête HTTP.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/memoization-dune-fonction-python/feed/</wfw:commentRss>
+		<slash:comments>11</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/moise.jpg" length="66718" type="image/jpg" />	</item>
+	</channel>
+</rss>

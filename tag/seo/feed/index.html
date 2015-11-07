@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; seo</title>
+	<atom:link href="http://sametmax.com/tag/seo/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Authoriser GoogleBot à crawler certains contenus de votre site sous Django avec Reverse DNS Lookup 30</title>
+		<link>http://sametmax.com/authoriser-googleboot-a-crawler-certains-contenus-de-votre-site-sous-django-avec-reverse-dns-lookup/</link>
+		<comments>http://sametmax.com/authoriser-googleboot-a-crawler-certains-contenus-de-votre-site-sous-django-avec-reverse-dns-lookup/#comments</comments>
+		<pubDate>Tue, 20 Nov 2012 20:29:46 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[googlebot]]></category>
+		<category><![CDATA[reverse dns lookup]]></category>
+		<category><![CDATA[seo]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3165</guid>
+		<description><![CDATA[Si vous avez du contenu rich media que vous voulez faire indexer par Google vous aller devoir proposer dans votre Sitemap un lien vers votre contenu video ou image. Et vous n'avez certainement pas envie que tout le monde puisse puiser dedans.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez du contenu <a href="https://support.google.com/webmasters/bin/answer.py?hl=en&#038;answer=183668&#038;ctx=cb&#038;src=cb&#038;cbid=1bw4t9jciznos&#038;cbrank=3#2">rich media</a> que vous voulez le faire indexer par Google vous allez devoir proposer dans votre <a href="https://support.google.com/webmasters/bin/answer.py?hl=en&#038;answer=156184&#038;topic=8476&#038;ctx=topic">Sitemap</a> un lien vers votre contenu video ou image. Et vous n&#8217;avez certainement pas envie que tout le monde puisse puiser dedans.</p>
+<p>D&#8217;après La doc Google, le rich media c&#8217;est l&#8217;avenir, micro-datas, sitemap video, etc&#8230; faut être à la page.<br />
+Du coup vous avez envie que votre contenu se retrouve indexé par Google et rien que lui, ou pas lui et rien que Yahoo, ou pas Yahoo et rien que Bing, ou pas que Bing mais rien que Yahoo et Google et aussi un peu Bing finalement mais surtout pas Da silva&#8230;<a href="http://www.youtube.com/watch?v=wlPhNy8nHHU">Je l&#8217;aime pas Da silva</a>&#8230;</p>
+<p>Google <a href="https://support.google.com/webmasters/bin/answer.py?hl=en&#038;answer=80553">conseille d&#8217;utiliser le Reverse DNS lookup</a>. En gros de récupérer le nom de domaine du robot en fonction de l&#8217;IP qui vous crawle.</p>
+<p><strong>On fait une fonction qui check l&#8217;ip et on gère le retour dans la vue Django:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> allowed_bot<span style="color: black;">&#40;</span>ip<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Do a reverse dns lookup on IP to get domain 
+        and check if it is a bot from know search engines
+    &quot;&quot;&quot;</span>
+    allowed_bots <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'.msn.com'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'.yahoo.com'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'.googlebot.com'</span><span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #dc143c;">socket</span>.<span style="color: black;">setdefaulttimeout</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span>
+        host <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">socket</span>.<span style="color: black;">gethostbyaddr</span><span style="color: black;">&#40;</span>ip<span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #dc143c;">socket</span>.<span style="color: black;">herror</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">False</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">for</span> bot <span style="color: #ff7700;font-weight:bold;">in</span> allowed_bots:
+        <span style="color: #ff7700;font-weight:bold;">if</span> host.<span style="color: black;">find</span><span style="color: black;">&#40;</span>bot<span style="color: black;">&#41;</span> <span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">0</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">True</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> ma_vue<span style="color: black;">&#40;</span>request<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+       redirect to video to index
+    &quot;&quot;&quot;</span>
+    ip <span style="color: #66cc66;">=</span> request.<span style="color: black;">META</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'REMOTE_ADDR'</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">None</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> allowed_bot<span style="color: black;">&#40;</span>ip<span style="color: black;">&#41;</span>: 
+        <span style="color: #ff7700;font-weight:bold;">return</span> http.<span style="color: black;">HttpResponseRedirect</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;http://monsite.com/video/meme.flv&quot;</span><span style="color: black;">&#41;</span> 
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> http.<span style="color: black;">http404</span></pre></td></tr></table></div>
+
+<p>Cette méthode n&#8217;est pas à utiliser pour une vue qui retourne une page entière car ça ferait une requête à chaque fois, mais pour du contenu qu&#8217;on a mis à dispo dans un Sitemap comme un player flv .</p>
+<p>Exemple de sitemap avec la balise video :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="" style="font-family:monospace;">&nbsp;
+    &lt;video:video&gt;      
+      &lt;video:player_loc allow_embed=&quot;yes&quot;&gt;http://www.monsite.com/player.swf?file=/play/<span style="">76293</span>.xml&lt;/video:player_loc&gt;
+      &lt;video:thumbnail_loc&gt;http://www.monsite.com/video/<span style="">76293</span>/thumbnail.jpg&lt;/video:thumbnail_loc&gt;
+      &lt;video:title&gt;mémé à l'île de la raie&lt;/video:title&gt;
+      &lt;video:description&gt;Aller mémé te laisse pas ratrapper par la raie !&lt;/video:description&gt;
+    &lt;/video:video&gt;</pre></td></tr></table></div>
+
+<p>Il y a d&#8217;autres solutions comme récupérer la liste de toutes les IPs des crawlers et les passer à Nginx en adaptant un peu <a href="http://sametmax.com/nginx-et-limitation-de-connexion-par-ip-avec-limit_conn_zone/" title="nginx et limitation de connexion par IP avec limit_conn_zone">cet article</a></p>
+<p>NB: Si vous utilisez nginx en tant que proxy n&#8217;oubliez pas d&#8217;inclure proxy_set_header pour renvoyer la bonne IP du client:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">location <span style="color: #000000; font-weight: bold;">/</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+  proxy_pass        http:<span style="color: #000000; font-weight: bold;">//</span>monsite_cherrypy;
+  proxy_set_header  X-Real-IP  <span style="color: #007800;">$remote_addr</span>;
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/authoriser-googleboot-a-crawler-certains-contenus-de-votre-site-sous-django-avec-reverse-dns-lookup/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+<enclosure url="http://monsite.com/video/meme.flv" length="0" type="video/x-flv" />
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/genialo.jpeg" length="7768" type="image/jpg" />	</item>
+		<item>
+		<title>Google ne sait plus référencer correctement les sites, la preuve en images 21</title>
+		<link>http://sametmax.com/google-ne-sait-plus-referencer-correctement-les-sites-la-preuve-en-images/</link>
+		<comments>http://sametmax.com/google-ne-sait-plus-referencer-correctement-les-sites-la-preuve-en-images/#comments</comments>
+		<pubDate>Thu, 01 Nov 2012 14:33:32 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Web]]></category>
+		<category><![CDATA[google]]></category>
+		<category><![CDATA[référencement]]></category>
+		<category><![CDATA[seo]]></category>
+		<category><![CDATA[serp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2810</guid>
+		<description><![CDATA[Google perd la boule, il référence n'importe comment, pas besoin d'être spécialiste pour s'en rendre compte. Un algo comme ça ma grand-mère va vous en faire les yeux fermés... La preuve en images simone.]]></description>
+				<content:encoded><![CDATA[<p>Article un peu provocateur certes mais les résultats Google sont de plus en plus médiocres, j&#8217;en veux pour preuve le site de vos dévoués serviteurs, sam &#038; max. En fouinant dans les mots-clefs qui vous font venir ici je m&#8217;aperçois que pour certains on ressort non seulement sur la première page des résultats Google mais qu&#8217;en plus on rafle la place à des sites institutionnels.</p>
+<p>Deux exemples au menu, je précise que les tests ont été fait depuis <strong>différents navigateurs</strong>, sur des <strong>IP différentes</strong>, <strong>sans être loggué</strong> avec un quelconque compte Google.</p>
+<p><strong>1. Que les diététitiens me lèchent les couilles!</strong><br />
+Je rafle la première place car je suis le plus beau, c&#8217;est normal j&#8217;ai pondu un seul article <a href="http://sametmax.com/comment-bien-manger-en-5-etapes/" title="Comment bien manger">sur comment bien manger</a> et paf nous voilà sur la première page devant mangerbouger.fr.</p>
+<div id="attachment_2811" style="width: 608px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/10/bienmanger.png" class="grouped_elements" rel="tc-fancybox-group2810"><img src="http://sametmax.com/wp-content/uploads/2012/10/bienmanger.png" alt="" title="Résultats google pour &quot;Comment Bien manger&quot;" width="598" height="548" class="size-full wp-image-2811" /></a><p class="wp-caption-text">10 000$ le backlink, qui n&#039;en veut ?</p></div>
+<p>En cherchant sur pagerank.fr j&#8217;ai constaté que mangerbouger.fr avait un pagerank de 6 (sametmax.com a un pagerank de 2) et 1080 bakclinks contre une 20aine pour S&#038;M. C&#8217;est quand même un comble, honte sur eux&#8230;</p>
+<p><strong>2. Youporn a qu&#8217;à bien se tenir!</strong><br />
+On domine les résultats des recherchent sur le sexe au japon. Là encore un article certes avec du contenu mais pas de quoi fouetter une naine obèse unijambiste, arrive en premier pour pas mal de mots clefs qu&#8217;un webmaster de site de boules voudrait bien avoir (sexe japon, sex japon, sexe japonais, etc..)</p>
+<div id="attachment_2815" style="width: 608px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/11/sexejapon.png" class="grouped_elements" rel="tc-fancybox-group2810"><img src="http://sametmax.com/wp-content/uploads/2012/11/sexejapon.png" alt="" title="résultats pour &quot;sex japon&quot;" width="598" height="548" class="size-full wp-image-2815" /></a><p class="wp-caption-text">on fait moins les malins là !</p></div>
+<p>Je pense qu&#8217;un mec qui va taper ce genre de mot-clef (safesearch désactivé) a déjà la nouille à la main prêt à solliciter les actions de la companie Kleenex et ne s&#8217;attend pas à tomber sur un site comme le nôtre.</p>
+<p>Bientôt quand on va taper &#8220;unijambiste fisting&#8221; on va tomber sur un site de prothèses vous allez voir&#8230;</p>
+<p>Je nous prends comme exemple mais ça commence à me le faire de plus en plus, les recherches sont beaucoup moins sympas qu&#8217;avant je trouve, il y a aussi les sites comme Wikipedia qui tombent quasi systématiquement en premier alors que <a href="http://www.conservapedia.com/Examples_of_Bias_in_Wikipedia">presque n&#8217;importe qui peut modifier un article sournoisement pour induire le lecteur en erreur</a>.</p>
+<p><strong>Conclusion:</strong><br />
+Alors oui on pourrait croire que c&#8217;est cool d&#8217;avoir un petit site perso comme S&#038;M qui sort pour &#8220;comment bien manger&#8221; plutôt qu&#8217;un site institutionnel, que ça permet à des sites de sortir du néant face à des mastodontes mais faudrait pas que ça tombe dans le n&#8217;importe quoi non plus.<br />
+En fait la première page des résultats de Google est de moins en moins utile je trouve, soit on croise des sites qui n&#8217;ont rien à voir avec la choucroute soit on tombe sur des géants comme Wikipedia et dont on s&#8217;en branle, voire même depuis quelques temps Google nous refourgue ses propres services (traduc, email et Cie).<br />
+Faudrait sortir un plugin qui renvoit directos sur la 2ème page ^^</p>
+<p>HA! On vient de me signaler qu&#8217;un agent de Google vient de passer sur S&#038;M&#8230;<br />
+En plongée&#8230;. 2000 mètres&#8230;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/google-ne-sait-plus-referencer-correctement-les-sites-la-preuve-en-images/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/google_before_after.jpg" length="96925" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; xls</title>
+	<atom:link href="http://sametmax.com/tag/xls/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Lire et écrire dans un fichier XLS avec Python 10</title>
+		<link>http://sametmax.com/lire-et-ecrire-dans-un-fichier-xls/</link>
+		<comments>http://sametmax.com/lire-et-ecrire-dans-un-fichier-xls/#comments</comments>
+		<pubDate>Thu, 18 Apr 2013 18:49:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[excel]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[xls]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5793</guid>
+		<description><![CDATA[< Insérer ici vous-même troll sur Microsoft et LibreOffice et les formats >]]></description>
+				<content:encoded><![CDATA[<p>< Insérer ici vous-même troll sur Microsoft et LibreOffice et les formats ></p>
+<p>Puis, une fois cette corvée administrative remplie, faites un <a href="http://sametmax.com/votre-python-aime-les-pip/">pip install</a>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> xlutils</pre></td></tr></table></div>
+
+<p>Ceci va installer deux lib dont on va avoir besoin : <a href="https://pypi.python.org/pypi/xlrd">xlrd</a> pour la lecture, et <a href="https://pypi.python.org/pypi/xlwt">xlwt</a> pour l&#8217;écriture.</p>
+<p>Ensuite c&#8217;est très simple&#8230;</p>
+<p>Pour écrire dans un fichier Excel :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> xlrd
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> xlwt <span style="color: #ff7700;font-weight:bold;">import</span> Workbook<span style="color: #66cc66;">,</span> Formula
+&nbsp;
+path <span style="color: #66cc66;">=</span> r<span style="color: #483d8b;">&quot;C:<span style="color: #000099; font-weight: bold;">\c</span>hemin<span style="color: #000099; font-weight: bold;">\v</span>ers<span style="color: #000099; font-weight: bold;">\f</span>ichier.xls&quot;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On créer un &quot;classeur&quot;</span>
+classeur <span style="color: #66cc66;">=</span> Workbook<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># On ajoute une feuille au classeur</span>
+feuille <span style="color: #66cc66;">=</span> classeur.<span style="color: black;">add_sheet</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;OCB&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ecrire &quot;1&quot; dans la cellule à la ligne 0 et la colonne 0</span>
+feuille.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># Ecrire &quot;2&quot; dans la cellule à la ligne 0 et la colonne 1</span>
+feuille.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># Ecrire une formule dans la cellule à la ligne 0 et la colonne 2</span>
+<span style="color: #808080; font-style: italic;"># qui va additioner les deux autres cellules</span>
+feuille.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> Formula<span style="color: black;">&#40;</span><span style="color: #483d8b;">'A1+B1'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ecriture du classeur sur le disque</span>
+classeur.<span style="color: black;">save</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> u<span style="color: #483d8b;">&quot;Fichier créé: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## Fichier créé: C:\chemin\vers\fichier.xls</span>
+&nbsp;
+workbook.<span style="color: black;">save</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui nous pond un truc comme <a href="https://github.com/sametmax/codes-des-articles/raw/master/2013/avril/fichier.xls">ça</a>.</p>
+<p>Et pour lire ce même fichier :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> xlrd
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Réouverture du classeur</span>
+classeur <span style="color: #66cc66;">=</span> xlrd.<span style="color: black;">open_workbook</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Récupération du nom de toutes les feuilles sous forme de liste</span>
+nom_des_feuilles <span style="color: #66cc66;">=</span> classeur.<span style="color: black;">sheet_names</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Récupération de la première feuille</span>
+feuille <span style="color: #66cc66;">=</span> classeur.<span style="color: black;">sheet_by_name</span><span style="color: black;">&#40;</span>nom_des_feuilles<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> u<span style="color: #483d8b;">&quot;Lecture des cellules:&quot;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;A1: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>feuille.<span style="color: black;">cell_value</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;B1: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>feuille.<span style="color: black;">cell_value</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># On ne peut pas lire les les valeurs des cellules avec formules</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;C1: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>feuille.<span style="color: black;">cell_value</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## Lecture des cellules:</span>
+<span style="color: #808080; font-style: italic;">## A1: 1.0</span>
+<span style="color: #808080; font-style: italic;">## B1: 2.0</span>
+<span style="color: #808080; font-style: italic;">## C1:</span></pre></td></tr></table></div>
+
+<p>Comme vous pouvez le voir à la dernière ligne, lire une cellule avec une formule ne revoit rien. L&#8217;auteur de la lib <a href="http://stackoverflow.com/a/4695498/9951">explique</a> en effet que les formules sont stockées sous forme de bytecode et qu&#8217;il faudrait les décompiler pour obtenir le texte original.</p>
+<p>Il existe d&#8217;autres manières d&#8217;accéder à des fichiers XLS, puis puissantes mais aussi beaucoup plus contraignantes : </p>
+<ul>
+<li><a href="http://www.blog.pythonlibrary.org/2010/07/16/python-and-microsoft-office-using-pywin32/">Manipuler Office directement via l&#8217;API COM</a>: Windows uniquement, et nécessite d&#8217;avoir le logiciel installé.</li>
+<li><a href="http://wiki.openoffice.org/wiki/Using_Python_on_Windows">Manipuler Open Office via l&#8217;API UNO</a>, qui demande aussi d&#8217;avoir la suite bureautique installée.</li>
+</ul>
+<hr />
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/avril/excel.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lire-et-ecrire-dans-un-fichier-xls/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/2nQYHCb.jpg" length="198966" type="image/jpg" />	</item>
+	</channel>
+</rss>

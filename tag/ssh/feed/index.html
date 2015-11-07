@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; ssh</title>
+	<atom:link href="http://sametmax.com/tag/ssh/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Passer d&#8217;une clé Putty (ppk) à une clé OpenSSH 6</title>
+		<link>http://sametmax.com/passer-dun-cle-putty-ppk-a-une-cle-openssh/</link>
+		<comments>http://sametmax.com/passer-dun-cle-putty-ppk-a-une-cle-openssh/#comments</comments>
+		<pubDate>Sat, 27 Sep 2014 12:29:25 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cle]]></category>
+		<category><![CDATA[putty]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12248</guid>
+		<description><![CDATA[Cas d'école, mon client me donne la clé pour accéder à son instance Amazon (bouh !) et il me file une clé Putty puisqu'il est sous Windows. ]]></description>
+				<content:encoded><![CDATA[<p>Cas d&#8217;école, mon client me donne la clé pour accéder à son instance Amazon (bouh !) et il me file une clé Putty puisqu&#8217;il est sous Windows. </p>
+<p>Heureusement, Putty existe aussi sous nunux. Par exemple sous Ubuntu :</p>
+<pre>sudo apt-get install putty-tools</pre>
+<p>Et il embarque tout ce qu&#8217;il faut pour convertir sa clé :</p>
+<pre>
+puttygen cle.ppk -O public-openssh -o nouvelle_cle.pub
+puttygen cle.ppk -O private-openssh -o nouvelle_cle</pre>
+<p>Y a plus qu&#8217;à mettre dans son dossier <code>.ssh</code>. En prime, je rajoute généralement ça dans <code>.ssh/config</code> :</p>
+<pre>Host ip ou domaine
+HostName ip ou domaine
+User username pour le server
+IdentityFile ~/.ssh/nouvelle_cle</pre>
+<p>Comme ça pas besoin de sélectionner la clé manuellement à chaque connexion, si SSH voit cette IP, il me prend la bonne clé.</p>
+<p>Mon dossier .ssh est un simple lien vers le vrai dossier dans la partition <a href="http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/">Truecrypt</a>. Malgré la disparition du projet, j&#8217;ai pas trouvé mieux.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/passer-dun-cle-putty-ppk-a-une-cle-openssh/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/09/SWBP6w7.png" length="285129" type="image/jpg" />	</item>
+		<item>
+		<title>Installer SSH Plus sur Ubuntu 10</title>
+		<link>http://sametmax.com/installer-ssh-plus-sur-ubuntu/</link>
+		<comments>http://sametmax.com/installer-ssh-plus-sur-ubuntu/#comments</comments>
+		<pubDate>Thu, 24 Oct 2013 13:54:49 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[ssh]]></category>
+		<category><![CDATA[sshplus]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7499</guid>
+		<description><![CDATA[<a href="http://sametmax.com/mon-environnement-de-travail/">Je vous avais parlé</a> de <a href="http://www.gulecha.org/2011/07/29/sshplus-a-sshmenu-compatible-appindicator/">SSH Plus</a>, mais sans mentionner son process d'install, un peu chiant.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://sametmax.com/mon-environnement-de-travail/">Je vous avais parlé</a> de <a href="http://www.gulecha.org/2011/07/29/sshplus-a-sshmenu-compatible-appindicator/">SSH Plus</a>, mais sans mentionner son process d&#8217;install, un peu chiant.</p>
+<p>Pour rappel, c&#8217;est un petit indicateur qui vous permet de lancer une commande arbitraire. Son usage principal est d&#8217;ouvrir un terminal qui se connecte immédiatement en SSH à un serveur distant, mais on peut y mettre n&#8217;importe quoi.</p>
+<p>Pour l&#8217;installer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #666666; font-style: italic;"># on installe les dépendances</span>
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> python-appindicator
+<span style="color: #666666; font-style: italic;"># on se calle dans le dossier temporaire</span>
+<span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>tmp
+<span style="color: #666666; font-style: italic;"># on download le script en Python</span>
+<span style="color: #c20cb9; font-weight: bold;">wget</span> https:<span style="color: #000000; font-weight: bold;">//</span>raw.github.com<span style="color: #000000; font-weight: bold;">/</span>anilgulecha<span style="color: #000000; font-weight: bold;">/</span>misc<span style="color: #000000; font-weight: bold;">/</span>master<span style="color: #000000; font-weight: bold;">/</span>sshplus.py
+<span style="color: #666666; font-style: italic;"># on le copie dans le dossier des exécutables</span>
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">mv</span> sshplus.py <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>sshplus
+<span style="color: #666666; font-style: italic;"># on le rend exécutable</span>
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">chmod</span> +x <span style="color: #000000; font-weight: bold;">/</span>usr<span style="color: #000000; font-weight: bold;">/</span>bin<span style="color: #000000; font-weight: bold;">/</span>sshplus</pre></td></tr></table></div>
+
+<p>Pour le lancer, il n&#8217;y a plus qu&#8217;à faire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">sshplus</pre></td></tr></table></div>
+
+<p>Dans un terminal.</p>
+<p>Moi, je le rajoute dans ma liste des programme automatiquement lancé au démarrage, comme ça je n&#8217;y pense plus (&#8220;Dash&#8221; > &#8220;Applications au démarrage&#8221;).</p>
+<p>Après, vous pouvez lui faire lancer les commandes que vous voulez, en les mettant dans le fichier de config (~/.sshplus) en suivant la syntaxe  </p>
+<pre>Nom à afficher|commande|options</pre>
+<p>Par exemple :</p>
+<pre>Server Prod 12|guake|-t -n "new" -e "ssh username@adresse_ip"
+</pre>
+<p>Ceci va rajouter une entrée dans le menu nommée &#8220;Server Prod 12&#8243;. Si on clique dessus, ça lance <code>guake -t -n "new" -e "ssh username@adresse_ip"</code>, ce qui m&#8217;ouvre un nouvel onglet dans mon terminal guake avec lance la commande <code>ssh username@adresse_ip</code> juste après.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/installer-ssh-plus-sur-ubuntu/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/SwlAwJa.jpg" length="51490" type="image/jpg" />	</item>
+		<item>
+		<title>Tester une règle IPtable 18</title>
+		<link>http://sametmax.com/tester-une-regle-iptable/</link>
+		<comments>http://sametmax.com/tester-une-regle-iptable/#comments</comments>
+		<pubDate>Thu, 20 Jun 2013 11:20:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[iptable]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6414</guid>
+		<description><![CDATA[Je ne sais plus du tout où j'ai lu ça, mais vu le nombre de fois où je me suis fais connement kické de mon serveur parce que j'ai joué avec iptable et ai coupé mon accès SSH, je partage.]]></description>
+				<content:encoded><![CDATA[<p>Je ne sais plus du tout où j&#8217;ai lu ça, mais vu le nombre de fois où je me suis fais connement kické de mon serveur parce que j&#8217;ai joué avec iptable et ai coupé mon accès SSH, je partage.</p>
+<p>En gros, on fait comme votre OS quand vous changez la résolution de l&#8217;écran : on attend 30 secondes et on remet la configuration précédente :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> iptables-save <span style="color: #000000; font-weight: bold;">&gt;</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>iptables.bak <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> <span style="color: #c20cb9; font-weight: bold;">sudo</span> iptables votre_nouvelle_regle <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> <span style="color: #c20cb9; font-weight: bold;">sleep</span> <span style="color: #000000;">30</span> <span style="color: #000000; font-weight: bold;">&amp;&amp;</span> <span style="color: #c20cb9; font-weight: bold;">sudo</span> iptables-restore <span style="color: #000000; font-weight: bold;">&lt;</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>iptables.bak</pre></td></tr></table></div>
+
+<p>N&#8217;oubliez pas que le dernier <code>sudo</code> ne marchera pas si votre <code>sleep</code> dure trop longtemps (je crois que <code>sudo</code> ne demande pas le password dans les 5 minutes qui suivent la dernière commande avec <code>sudo</code>) donc n&#8217;augmentez pas trop ce chiffre.</p>
+<p>Bon, warning, je l&#8217;ai pas encore testé (si la connexion se coupe, est-ce que le shell se ferme pas ?), donc c&#8217;est juste là pour l&#8217;inspiration.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/tester-une-regle-iptable/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/06/yRTnKuy.gif" length="27467" type="image/jpg" />	</item>
+		<item>
+		<title>Forcer une identity SSH pour un host en particulier 6</title>
+		<link>http://sametmax.com/forcer-une-identity-ssh-pour-un-host-en-particulier/</link>
+		<comments>http://sametmax.com/forcer-une-identity-ssh-pour-un-host-en-particulier/#comments</comments>
+		<pubDate>Fri, 24 May 2013 10:25:45 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[host]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=6211</guid>
+		<description><![CDATA[Vous avez accumulé un certain nombre de clés SSH, et pour certains serveur ou certains sites Web (github, bitbucket...), vous voulez utiliser une clé SSH et pas une autre. ]]></description>
+				<content:encoded><![CDATA[<p>Vous avez accumulé un certain nombre de clés SSH, et pour certains serveurs ou certains sites Web (github, bitbucket&#8230;), vous voulez utiliser une clé SSH et pas une autre. Ce serait en effet dommage de pusher votre commit Git avec la mauvaise identité.</p>
+<p>Sous unix, le fichier <em>~/.ssh/config</em> est votre ami, rajoutez lui :</p>
+<pre>Host Un alias pour l'host
+HostName Une IP ou un nom de domaine pour l'host
+User votre nom d'utilisateur
+IdentityFile le fichier de clé public à utiliser
+</pre>
+<p>Par exemple :</p>
+<pre>Host bitbucket.org
+HostName bitbucket.org
+User sam
+IdentityFile ~/.ssh/sam.pub
+
+Host local-dev
+HostName 192.169.0.10
+User dev
+IdentityFile ~/.ssh/local-dev.pub</pre>
+<p>On peut créer plusieurs Host pour le même hostname, avec des résultats intéressants quand on a <a href="http://sametmax.com/utiliser-deux-comptes-github-separement/">plusieurs identités en ligne</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/forcer-une-identity-ssh-pour-un-host-en-particulier/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/05/tX7W5vZ.jpg" length="197388" type="image/jpg" />	</item>
+		<item>
+		<title>Pourquoi git clone me donne un résultat différent en HTTP et en SSH ?</title>
+		<link>http://sametmax.com/pourquoi-git-clone-me-donne-un-resultat-different-en-http-et-en-ssh/</link>
+		<comments>http://sametmax.com/pourquoi-git-clone-me-donne-un-resultat-different-en-http-et-en-ssh/#comments</comments>
+		<pubDate>Fri, 24 Aug 2012 14:27:15 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[clone]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[http]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1872</guid>
+		<description><![CDATA[Il clone depuis SSH et possède la dernière version.
+
+Je clone depuis HTTP et j'ai une version d'il y a une mois.]]></description>
+				<content:encoded><![CDATA[<p>Il clone depuis SSH et possède la dernière version.</p>
+<p>Je clone depuis HTTP et j&#8217;ai une version d&#8217;il y a une mois.</p>
+<p>La raison: Git doit générer des fichiers spéciaux pour que le pull via HTTP soit à jour.</p>
+<p>Sur le serveur, un petit:</p>
+<p><code>git update-server-info</code></p>
+<p>Et on est reparti comme en 40. Et pour pérenniser ça, un petit hook Git. Ca tombe bien, il est tout fait:</p>
+<p><code>mv .git/hooks/post-update.sample .git/hooks/post-update</code></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/pourquoi-git-clone-me-donne-un-resultat-different-en-http-et-en-ssh/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/temps-dali.jpg" length="23486" type="image/jpg" />	</item>
+		<item>
+		<title>Executer une commande sur un serveur distant via ssh avec Python</title>
+		<link>http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/</link>
+		<comments>http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/#comments</comments>
+		<pubDate>Thu, 21 Jun 2012 23:07:28 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[command]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[remote]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=970</guid>
+		<description><![CDATA[Executer une commande shell sur un serveur distant peut s'avérer très utile, par exemple avoir le load average du serveur distant à monitorer.]]></description>
+				<content:encoded><![CDATA[<p>Executer une commande shell sur un serveur distant peut s&#8217;avérer très utile, par exemple avoir le load average du serveur distant à monitorer, rebooter un serveur à distance, récupérer l&#8217;espace disque restant, etc.</p>
+<p>Il y a plusieurs manières d&#8217;executer une commande shell sur un serveur distant, on peut utiliser <a href="http://sametmax.com/sept-petites-libs-qui-changent-la-vie-dun-dev-python/" title="Sept petites libs qui changent la vie d’un dev Python">paramiko</a> ou un simple popen comme suit:</p>
+<p><strong><br />
+Pour connaitre le load average du serveur skynet:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">subprocess</span> <span style="color: #ff7700;font-weight:bold;">import</span> Popen<span style="color: #66cc66;">,</span> call<span style="color: #66cc66;">,</span> PIPE
+&nbsp;
+<span style="color: #dc143c;">user</span><span style="color: #66cc66;">=</span> arnold
+server <span style="color: #66cc66;">=</span> skynet.<span style="color: black;">com</span>
+&nbsp;
+process <span style="color: #66cc66;">=</span> Popen<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'ssh'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'-t'</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">user</span> + <span style="color: #483d8b;">'@'</span> + server <span style="color: #66cc66;">,</span><span style="color: #483d8b;">'cat'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'/proc/loadavg'</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> bufsize<span style="color: #66cc66;">=</span><span style="color: #ff4500;">4096</span><span style="color: #66cc66;">,</span> stdout<span style="color: #66cc66;">=</span>PIPE<span style="color: black;">&#41;</span>
+output <span style="color: #66cc66;">=</span> process.<span style="color: black;">communicate</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Ce procédé implique d&#8217;avoir des clefs <a href="http://sametmax.com/copier-ses-clefs-ssh-facilement-avec-ssh-copy-id/" title="Copier ses clefs SSH facilement avec ssh-copy-id">ssh configurées</a></p>
+<p>Note: J&#8217;ai eu quelques problèmes de blocage lors du login au serveur distant jusqu&#8217;à ce que j&#8217;ajoute l&#8217;option -t à ssh<br />
+<strong><br />
+Edit:</p>
+<p>En bash ça donne:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ssh</span> arnold<span style="color: #000000; font-weight: bold;">@</span>skynet.com <span style="color: #c20cb9; font-weight: bold;">cat</span> <span style="color: #000000; font-weight: bold;">/</span>proc<span style="color: #000000; font-weight: bold;">/</span>loadavg</pre></td></tr></table></div>
+
+<p>ou pour avoir l&#8217;espace disque</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ssh</span> arnold<span style="color: #000000; font-weight: bold;">@</span>skynet.com <span style="color: #c20cb9; font-weight: bold;">df</span> <span style="color: #660033;">-h</span>
+etc.</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/executer-une-commande-sur-un-serveur-distant-via-ssh/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/a.aaa-crazy-remote.jpg" length="35746" type="image/jpg" />	</item>
+		<item>
+		<title>Copier ses clefs SSH facilement avec ssh-copy-id</title>
+		<link>http://sametmax.com/copier-ses-clefs-ssh-facilement-avec-ssh-copy-id/</link>
+		<comments>http://sametmax.com/copier-ses-clefs-ssh-facilement-avec-ssh-copy-id/#comments</comments>
+		<pubDate>Thu, 21 Jun 2012 23:05:41 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[keygen]]></category>
+		<category><![CDATA[ssh]]></category>
+		<category><![CDATA[ssh-copy-id]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=724</guid>
+		<description><![CDATA[Si vous voulez ne plus à avoir à entrer votre mot de passe lorsque vous vous connectez à un serveur distant vous pouvez utiliser les clefs ssh.
+]]></description>
+				<content:encoded><![CDATA[<p>Si vous voulez ne plus à avoir à entrer votre mot de passe lorsque vous vous connectez à un serveur distant vous pouvez utiliser les clefs ssh.</p>
+<p><strong><br />
+en local:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">ssh-copy-id <span style="color: #660033;">-i</span> votre_username<span style="color: #000000; font-weight: bold;">@</span>votre_serveur.com</pre></td></tr></table></div>
+
+<p><strong><br />
+Le mot de passe vous sera demandé une seule fois, ensuite vou n&#8217;aurez plus qu&#8217;à taper :</strong><br />
+ssh votre_username@votre_serveur.com</p>
+<p>Note:<br />
+Vous pouvez générer une clef ssh en utilisant la commande: <strong>ssh-keygen -t rsa</strong></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/copier-ses-clefs-ssh-facilement-avec-ssh-copy-id/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/chastity-belt.jpg" length="23030" type="image/jpg" />	</item>
+	</channel>
+</rss>

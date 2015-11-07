@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; css</title>
+	<atom:link href="http://sametmax.com/tag/css/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Servir des fichiers statiques avec nginx 10</title>
+		<link>http://sametmax.com/servir-des-fichiers-statiques-avec-nginx/</link>
+		<comments>http://sametmax.com/servir-des-fichiers-statiques-avec-nginx/#comments</comments>
+		<pubDate>Thu, 23 Oct 2014 06:20:02 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[nginx]]></category>
+		<category><![CDATA[static]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10490</guid>
+		<description><![CDATA[C'est un truc donc j'ai tout le temps besoin, alors l'article servira de pense bête. ]]></description>
+				<content:encoded><![CDATA[<p>C&#8217;est un truc dont j&#8217;ai tout le temps besoin, alors l&#8217;article servira de pense bête. Marre de chercher à chaque fois :</p>
+<pre>
+        # sur django, on met tout dans /static/, donc par habitude je le fais
+        # pour tout
+        location /static/ {
+
+            # Le dossier doit contenir le dossier 'static'. Par exemple si votre
+            # arbo est /home/sametmax/repo/static, le chemin sera
+            # /home/sametmax/repo. Rassurez-vous, personne n'aura accès aux
+            # autres sous dossiers de "repo".
+            root  /chemin/absolu/vers/dossier/;
+
+            # On active la compression
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            gzip_buffers 16 8k;
+
+            # Sauf pour les vieux nav
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+
+            # On dit au navigateur de le mettre en cache pour 3 mois. Faites gaffe,
+            # mettez un param dans les url de vos balises script/link qui change
+            # à chaque version du fichier, sinon vous ne pourrez pas mettre à jour
+            # vos fichiers.
+            expires modified +90d;
+        }
+</pre>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/servir-des-fichiers-statiques-avec-nginx/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/81RMYJLMA-L__AA1500_.jpg" length="204738" type="image/jpg" />	</item>
+		<item>
+		<title>Preprocesser ses fichiers statiques et recharger son navigateur automatiquement avec Python livereload 6</title>
+		<link>http://sametmax.com/preprocesser-ses-fichiers-statiques-et-recharger-son-navigateur-automatiquement-avec-python-livereload/</link>
+		<comments>http://sametmax.com/preprocesser-ses-fichiers-statiques-et-recharger-son-navigateur-automatiquement-avec-python-livereload/#comments</comments>
+		<pubDate>Sun, 10 Nov 2013 06:47:39 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[extensions]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[javascrit]]></category>
+		<category><![CDATA[lesscss]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7698</guid>
+		<description><![CDATA[Livereload est une extension multi-navigateur qui permet de recharger tout ou partie d'une page quand un fichier a changé sur le disque.]]></description>
+				<content:encoded><![CDATA[<p>Livereload est une extension multi-navigateur qui permet de recharger tout ou partie d&#8217;une page quand un fichier a changé sur le disque. </p>
+<p>C&#8217;est très pratique pour développer un site Web puisque si vous modifiez un template, un fichier JavaScript, une image ou un fichier CSS, vous n&#8217;avez pas besoin de cliquer sur la fenêtre du navigateur et appuyez sur F5 pour voir le résultat. Si vous avez un double écran (et si vous faites du dev Web, vous devriez), vous ne quittez pas votre éditeur de code.</p>
+<p>L&#8217;extension est gratuite, mais le serveur existe en plusieurs version. Il y a une version graphique pour Windows et Mac qui est payante. Si vous avez un peu de budget et pas envie de vous prendre la tête, <a href="http://livereload.com/">achetez là</a> et arrêtez la lecture de l&#8217;article, c&#8217;est beaucoup plus facile.</p>
+<p>Sinon, suivez le guide pour la version gratos en ligne de commande.</p>
+<h2>Installation</h2>
+<p>Il existe une version Python en ligne de commande du serveur : <a href="http://livereload.readthedocs.org/en/latest/install.html">Python livereload</a>. Il y a aussi <a href="https://github.com/guard/guard-livereload">une version pour les rubistes</a>.</p>
+<p>Je vous invite donc à l&#8217;installer avec <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> livereload</pre></td></tr></table></div>
+
+<p>Il vous faudra aussi l&#8217;<a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-">extension de navigateur</a>.</p>
+<p>Après, depuis votre terminal, mettez vous dans le dossier que vous voulez surveiller (par exemple le dossier contenant vos fichiers CSS), et lancez le serveur :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">livereload</pre></td></tr></table></div>
+
+<p>Et activez l&#8217;extension pour la page que vous voulez recharger automatiquement. Normalement, c&#8217;est juste un clic sur un bouton.</p>
+<p>C&#8217;est bon, votre page devrait recharger automatiquement.</p>
+<h2>Rechargement à la carte</h2>
+<p>On peut choisir ce qu&#8217;on va recharger plus précisément en créant un fichier de configuration.</p>
+<p>Créez un fichier de code Python nommé &#8220;Guardfile&#8221;, sans l&#8217;extension &#8220;.py&#8221;. Il va ressembler à ceci :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> livereload.<span style="color: black;">task</span> <span style="color: #ff7700;font-weight:bold;">import</span> Task
+&nbsp;
+<span style="color: #808080; font-style: italic;"># watcher les js ou les css</span>
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chemin/relatif/vers/fichier/a/surveiller.css'</span><span style="color: black;">&#41;</span>
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chemin/relatif/vers/fichier/a/surveiller.js'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># watcher les images ou les templates</span>
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'chemin/relatif/vers/dossier/a/surveiller'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et lancez la commande <code>livereload</code> <strong>en étant dans le même dossier que ce fichier</strong>. Notez que le serveur ne parse ce fichier que quand l&#8217;extension est activée et que vous avez visité la page au moins une fois.</p>
+<p>On peut même demander d&#8217;effectuer des tâches avant le rechargement de la page. Cela peut être des tâches complètement arbitraires, mais des raccourcis existent pour les tâches les plus courantes, telle que minifier du JS ou compiler un pre-processeur CSS.</p>
+<p>Par exemple, j&#8217;utilise cette fonctionnalité pour compiler mes fichiers LESS CSS à chaque modification.</p>
+<p>Pour cela, il faut installer le compilateur LESS. Sous Ubuntu, ça se fait en deux coups de cuillère à pot :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> npm
+<span style="color: #c20cb9; font-weight: bold;">sudo</span> npm <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">-g</span> <span style="color: #c20cb9; font-weight: bold;">less</span></pre></td></tr></table></div>
+
+<p>Et dans le Guardfile, il faut ajouter un code du style :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> livereload.<span style="color: black;">task</span> <span style="color: #ff7700;font-weight:bold;">import</span> Task
+<span style="color: #ff7700;font-weight:bold;">from</span> livereload.<span style="color: #dc143c;">compiler</span> <span style="color: #ff7700;font-weight:bold;">import</span> lessc
+&nbsp;
+Task.<span style="color: black;">add</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'../apps/core/static/less/boostrap/boostrap.less'</span><span style="color: #66cc66;">,</span>
+         lessc<span style="color: black;">&#40;</span><span style="color: #483d8b;">'../apps/core/static/less/boostrap/boostrap.less'</span><span style="color: #66cc66;">,</span>
+               <span style="color: #483d8b;">'../apps/core/static/css/boostrap.css'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Il y a un a tas d&#8217;options donc checkez la doc, mais aussi le code source car la doc n&#8217;est pas exhaustive.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/preprocesser-ses-fichiers-statiques-et-recharger-son-navigateur-automatiquement-avec-python-livereload/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/tumblr_mv7un4bdLS1r539hzo1_500.jpg" length="44490" type="image/jpg" />	</item>
+		<item>
+		<title>Dites non aux animations 3D 15</title>
+		<link>http://sametmax.com/dites-non-aux-animations-3d/</link>
+		<comments>http://sametmax.com/dites-non-aux-animations-3d/#comments</comments>
+		<pubDate>Mon, 14 Oct 2013 16:07:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[ergonomie]]></category>
+		<category><![CDATA[html]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7435</guid>
+		<description><![CDATA[Juste parce que vous pouvez ne veut pas dire que vous devez, et le fait que maintenant la plupart des navigateurs supportent des belles transitions 3D ne signifie certainement PAS que vous devriez les utiliser.]]></description>
+				<content:encoded><![CDATA[<p>Juste parce que vous pouvez ne veut pas dire que vous devez, et le fait que maintenant la plupart des navigateurs supportent des belles transitions 3D ne signifie certainement PAS que vous devriez les utiliser.</p>
+<p>En ergonomie, une règle essentielle est de ne pas mettre ou faire de choses qui n&#8217;ont pas de valeur ajoutée pour l&#8217;utilisateur.</p>
+<p>L&#8217;esthétique est certes, en soi, une valeur ajoutée. Mais il faut considérer deux choses :</p>
+<ul>
+<li>Cette technique apporte-t-elle une valeur esthétique qui n&#8217;est pas remplaçable par le bénéfice d&#8217;une autre technique ?</li>
+<li>Le bénéfice que mon utilisateur en retire compense-t-il les inconvénients auxquels il est confronté ?</li>
+</ul>
+<p>Pour les animations 3D, la réponse est clairement NON, dans 99% des cas.</p>
+<p>D&#8217;abord, généralement l&#8217;animation est lente, ne serait-ce que pour que le mec devant son écran puisse la voir. Vu le temps qu&#8217;on passe à se faire chier à rendre une app plus rapide et fluide à utiliser, pourquoi voulez-vous, VOLONTAIREMENT et ARTIFICIELLEMENT faire patienter votre utilisateur 400ms de plus devant le slide à cube rotatif pour voir la photo suivante ?</p>
+<p>Ensuite, malgré l&#8217;énorme progrès de nos navigateurs, ça bouffe beaucoup de ressources. Bien sûr, quand vous testez sur votre machine quad core avec chrome et un tab ouvert, c&#8217;est parfaitement fluide. Mais il suffit de jouer sur seul de ces paramètres pour que ça ne le soit plus :</p>
+<ul>
+<li>20 tabs sont ouverts.</li>
+<li>Un autre tab utilise Javascript comme un goret (Hello Twitter !).</li>
+<li>Un autre tab utilise de la 3D.</li>
+<li>Un autre tab charge beaucoup d&#8217;images.</li>
+<li>Un autre tab utilise flash.</li>
+<li>L&#8217;utilisateur a des logiciels récents sur une vieille machine.</li>
+<li>L&#8217;utilisateur utilise d&#8217;autres logiciels que son navigateur qui sollicitent la carte graphique (quelle honte, il ose avoir une vie en dehors de facebook et votre site de merde!).</li>
+</ul>
+<p>Dans la vraie vie vivante, ce sont plusieurs de ces paramètres qui rentrent en compte, presque systématiquement. Et je ne vais même pas vous parler de ceux qui utilisent IE avec plein de toolbar sur une machine infectée jusqu&#8217;à la moelle. Qui sont, je le rappelle, la majorité des personnes dans le monde. Pas forcément la majorité de votre cible, mais tout de même&#8230;</p>
+<p>&#8230;vous êtes une putain de page Web, vous ne pouvez pas pré-supposer de ce que l&#8217;utilisateur fait et dans quel contexte.</p>
+<p>Bref, à moins d&#8217;avoir une app avec une connotation visuelle primordiale, par exemple un jeu vidéo, arrêtez avec ces foutues transitions 3D, ça rend votre app inutilisable. Les transitions 2D suffisent largement à améliorer l&#8217;ergonomie et l&#8217;esthétisme d&#8217;une page, et elles bouffent beaucoup moins.</p>
+<p>Merci</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/dites-non-aux-animations-3d/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/LPpLM.jpg" length="13635" type="image/jpg" />	</item>
+		<item>
+		<title>De l&#8217;inutilité de &lt;dl&gt; 16</title>
+		<link>http://sametmax.com/de-linutilite-de/</link>
+		<comments>http://sametmax.com/de-linutilite-de/#comments</comments>
+		<pubDate>Sat, 30 Mar 2013 18:28:01 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[definition list]]></category>
+		<category><![CDATA[dl]]></category>
+		<category><![CDATA[html]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3261</guid>
+		<description><![CDATA[Sémantiquement c'est génial, en pratique, c'est complètement inutile.]]></description>
+				<content:encoded><![CDATA[<p>Sémantiquement c&#8217;est génial :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;dl&gt;
+&lt;dt&gt;Couleurs disponibles :&lt;/dt&gt;
+&lt;dd&gt;Bleue&lt;/dd&gt;
+&lt;dd&gt;Rouge&lt;/dd&gt;
+&lt;dt&gt;Pas de RAM&lt;/dt&gt;
+&lt;dt&gt;Pays : &lt;/dt&gt;
+&lt;dd&gt;France&lt;/dd&gt;
+&lt;dd&gt;Espagne&lt;/dd&gt;
+&lt;dd&gt;Wonderland&lt;/dd&gt;
+&lt;/dl&gt;</pre></td></tr></table></div>
+
+<p>On peut faire une liste avec des sortes de titres, et on sait que les éléments de la liste sont liés par leur titre.</p>
+<p>Sauf que :</p>
+<ul>
+<li>Les moteurs de recherche en ont rien à foutre. On a constaté aucune différence en passant de ça à un &lt;ul&gt; ou même une imbrication de &lt;div&gt;.</li>
+<li>C&#8217;est impossible à styler : on ne peut pas grouper en CSS un &lt;dt&gt; et ses &lt;dd&gt;. Et les foutre dans des conteneurs rend le code invalide.</li>
+<li>On ne peut pas mettre de balise block dans le &lt;dt&gt;. WTF ? C&#8217;est une putain de balise de titre !</li>
+</ul>
+<p>Bref, la definition list est la balise la plus inutile de tous les temps. J&#8217;ai essayé de l&#8217;utiliser dans un millions de cas de figure, au final un &lt;ul&gt; avec un &lt;strong&gt; et un &lt;span&gt; dans le &lt;li&gt; ou des &lt;div&gt; pour les gros morceaux sont toujours plus facile à style. Les développeurs front end peuvent se mettre la sémantique au cul.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/de-linutilite-de/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/Iif6rdC.gif" length="335784" type="image/jpg" />	</item>
+		<item>
+		<title>Les goodies CSS qu&#8217;on peut utiliser maintenant que IE6 est mort 21</title>
+		<link>http://sametmax.com/les-selecteurs-css-quon-peut-utiliser-maintenant-que-ie6-est-mort/</link>
+		<comments>http://sametmax.com/les-selecteurs-css-quon-peut-utiliser-maintenant-que-ie6-est-mort/#comments</comments>
+		<pubDate>Sat, 02 Mar 2013 06:35:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[Ie6]]></category>
+		<category><![CDATA[ie7]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3486</guid>
+		<description><![CDATA[Avouez-le, il y a encore des trucs que vous n'osez pas utiliser, par habitude.]]></description>
+				<content:encoded><![CDATA[<p>Avouez-le, il y a encore des trucs que vous n&#8217;osez pas utiliser, par habitude. Parce que vous avez appris pendant 10 ans que ça passait pas, et maintenant, vous êtes pas certains, alors vous continuez. Malgré le fait que la <a href="http://standblog.org/blog/post/2009/02/20/Meurs-IE6,-Meurs-!">citation célèbre</a> de Tristan Nitot soit devenu une réalité depuis des années (et que le 7 est presque mort né), on s&#8217;abstient parfois idiotement d&#8217;utiliser quelques goodies. Juste dans le doute.</p>
+<p>Voici quelques opérations CSS que vous pouvez enfin utiliser sans danger. Promis. Ça fait des années maintenant qu&#8217;on peut sortir de sa carapace.</p>
+<h2>&gt; &#8211; Selecteur des enfants immédiats</h2>
+<p>Selectionne les enfants du premier niveau, mais pas récursivement.</p>
+<p>Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;
+&lt;style&gt;
+ul &gt; li {
+    margin-left:1em;
+}
+&lt;/style&gt;
+&nbsp;
+&lt;ul&gt;
+    &lt;li&gt;Foo:
+        &lt;ul&gt;
+            &lt;li&gt;Bar&lt;/li&gt;
+            &lt;li&gt;Bar&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+    Foo
+    &lt;/li&gt;
+&lt;/ul&gt;</pre></td></tr></table></div>
+
+<p>Le sélecteur appliquera la marge aux <code>li</code> avec &#8220;Foo&#8221;, mais pas ceux avec &#8220;Bar&#8221;.</p>
+<h2>[attr] &#8211; Selecteur d&#8217;attribut</h2>
+<p>Sélectionne un élément s&#8217;il possède un attribut avec ce nom et cette valeur.</p>
+<p>Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;
+&lt;style&gt;
+p[title=&quot;bouya&quot;] {
+    margin-left:1em;
+}
+&lt;/style&gt;
+&nbsp;
+&lt;p title=&quot;bouya&quot;&gt;Foo&lt;/p&gt;
+&lt;p&gt;Bar&lt;/p&gt;
+&lt;p title=&quot;bouya&quot;&gt;Foo&lt;/p&gt;</pre></td></tr></table></div>
+
+<p>Le sélecteur appliquera la marge au <code>p</code> avec &#8220;Foo&#8221;, mais à celui avec &#8220;Bar&#8221;.</p>
+<p>On peut aussi faire plus raffiné en cherchant si l&#8217;attribut contient une partie de quelque chose.</p>
+<h2>:first-child &#8211; Sélecteur de premier enfant</h2>
+<p>Sélectionne un élément s&#8217;il est le tout premier enfant d&#8217;un autre.</p>
+<p>Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;
+&lt;style&gt;
+ul li:first-child {
+    margin-left:1em;
+}
+&lt;/style&gt;
+&nbsp;
+&lt;ul&gt;
+    &lt;li&gt;Foo &lt;/li&gt;
+    &lt;li&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;</pre></td></tr></table></div>
+
+<p>Le sélecteur appliquera la marge au <code>li</code> avec &#8220;Foo&#8221;, mais à celui avec &#8220;Bar&#8221;.</p>
+<h2>min/max width/height &#8211; Définir une taille minimal ou maximale</h2>
+<p>Donne une taille qu&#8217;un élément doit au moins avoir, ou peut avoir au maximum.</p>
+<p>Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;
+&lt;style&gt;
+ul {
+    min-height:3em;
+    max-height:10em;
+}
+&lt;/style&gt;
+&nbsp;
+&lt;ul&gt;
+    &lt;li&gt;Foo &lt;/li&gt;
+    &lt;li&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;</pre></td></tr></table></div>
+
+<p>On a ici un <code>ul</code> de taille élastique qui va s&#8217;adapter au nombre d&#8217;éléments qu&#8217;il contient, mais il aura au moins une taille de <code>3em</code>, et il ne dépassera jamais <code>10em</code>.</p>
+<h2>position:fixed &#8211; Position fixée dans le viewport</h2>
+<p>Donne une position sur la partie visible de la page. Quand l&#8217;utilisateur scroll, l&#8217;élément est toujours visible à cet endroit.</p>
+<p>Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;
+&lt;style&gt;
+ul {
+    position:fixed;
+    right: left;
+    top: 10%;
+}
+&lt;/style&gt;
+&nbsp;
+&lt;ul&gt;
+    &lt;li&gt;Foo &lt;/li&gt;
+    &lt;li&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;</pre></td></tr></table></div>
+
+<p>Le menu restera toujours en haut à gauche de la page, même si je scroll. La même chose est vraie pour <code>background-attachment: fixed</code> que l&#8217;on peut maintenant utiliser et qui s&#8217;appliquer aux images de background.</p>
+<h2>.A.B &#8211; Sélection à classe multiple</h2>
+<p>Pour sélectionner un élément qui a les DEUX classes.</p>
+<p>Exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;
+&lt;style&gt;
+p.danger.alerte {
+    color:&quot;putainderouge&quot;;
+}
+&lt;/style&gt;
+&nbsp;
+&lt;p class=&quot;danger&quot;&gt;Bar&lt;/p&gt;
+&lt;p class=&quot;alerte&quot;&gt;Bar&lt;/p&gt;
+&lt;p class=&quot;danger alerte&quot;&gt;Foo&lt;/p&gt;</pre></td></tr></table></div>
+
+<p>Seul le <code>p</code> avec &#8220;Foo&#8221; sera en rouge.</p>
+<h2>blockquote + p &#8211; Sélection des éléments adjacents</h2>
+<p>Sélectionne un élément s&#8217;il est juste après un autre.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;
+&lt;style&gt;
+blockquote + p {
+    font-style:italic;
+}
+&lt;/style&gt;
+&nbsp;
+&lt;blockquote&gt;
+Rien ne sert de ramer quand on attaque la falaise.
+&lt;/blockquote&gt;
+&lt;p&gt;Anonyme&lt;/p&gt;
+&nbsp;
+&lt;p&gt;Et maintenant quelque chose de complètement différent.&lt;/p&gt;</pre></td></tr></table></div>
+
+<p>Le nom de l&#8217;auteur de la citation va être mis en italique. Mais pas le second <code>p</code>.</p>
+<h2>Et en prime</h2>
+<p>On cite souvent:</p>
+<ul>
+<li><code>:first-line</code> &#8211; First line selector of content copy.</li>
+<li><code>:first-letter</code> &#8211; First letter selector of content copy.</li>
+</ul>
+<p>Mais en vérité ils étaient déjà supportés par IE6.</p>
+<p>Par contre, tous ces trucs qui marchaient, mais auxquels il fallait faire super gaffe :</p>
+<ul>
+<li><code>float: right</code> et <code>clear:both</code> </li>
+<li><code>z-index</code></li>
+<li><code>:hover</code>. Pas juste sur les <code>a</code>. Partouuuuuuuuuuut. (marche uniquement si on précise le doctype, mais qui ne le fait pas ?)</li>
+</ul>
+<p>Ça marche comme pour tous les autres maintenant.</p>
+<p>En plus on a les PNGs transparents (24 bit).</p>
+<p>Et d&#8217;après <a href="http://stackoverflow.com/a/4450872/9951">ce post </a>sur SO, on s&#8217;affranchit aussi des bugs suivant :</p>
+<ul>
+<li><a href="http://www.positioniseverything.net/explorer/peekaboo.html">Peekaboo Bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/expandingboxbug.html">Internet Explorer and Expanding Box Problem</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/percentages.html">Quirky Percentages</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/lineheightbug.html">Line-height bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/border-chaos.html">Border Chaos</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/ie-listbug.html">Disappearing List-Background bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/guillotine.html">Guillotine Bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/unscrollable.html">Unscrollable Content bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/dup-characters.html">Duplicate Characters Bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/italicbug-ie.html">IE and Italics</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/doubled-margin.html">Doubled Float-Margin bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/floatIndent.html">Duplicate Indent bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/threepxtest.html">Three pixel text jog</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/creep.html">Creeping Text bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/firstletter.html">Missing First letter bug</a></li>
+<li><a href="http://www.positioniseverything.net/explorer/inlinelist.html">Phantom box bug</a></li>
+<li><a href="http://work.arounds.org/issue/33/ie-has-limit-31-stylesheets-web-page/">31 style sheet limit</a> -</li>
+</ul>
+<p>Mais gaffe quand même pour les micros IE7 qui reste (il doit pas en rester des masses). Il compte parfois les commentaires comme des éléments sélectionnables par les sélecteurs qu&#8217;on vient de voir :-(.</p>
+<p>Sinon, souvenez-vous que la compatibilité IE9 pour IE7 et 8 est à la portée d&#8217;un <a href="http://code.google.com/p/ie7-js/">tout petit include Javascript</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-selecteurs-css-quon-peut-utiliser-maintenant-que-ie6-est-mort/feed/</wfw:commentRss>
+		<slash:comments>21</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/NQ6boBe.jpg" length="65849" type="image/jpg" />	</item>
+		<item>
+		<title>Évolution de la courbe d&#8217;apprentissage d&#8217;un dev front end 12</title>
+		<link>http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/</link>
+		<comments>http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/#comments</comments>
+		<pubDate>Mon, 07 Jan 2013 16:42:50 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bootstrap]]></category>
+		<category><![CDATA[coffescript]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[css3]]></category>
+		<category><![CDATA[html]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4029</guid>
+		<description><![CDATA[On est pas dans la spatio-merde]]></description>
+				<content:encoded><![CDATA[
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://fr.slideshare.net/slideshow/embed_code/15885873" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" 1="webkitallowfullscreen" 2="mozallowfullscreen" class="iframe-class"></iframe>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/evolution-de-la-courbe-dapprentissage-dun-dev-front-end/feed/</wfw:commentRss>
+		<slash:comments>12</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/blue-growth-chart.jpg" length="36625" type="image/jpg" />	</item>
+		<item>
+		<title>Firefox n&#8217;affiche plus les styles CSS ni les images 6</title>
+		<link>http://sametmax.com/firefox-naffiche-plus-les-styles-css-ni-les-images/</link>
+		<comments>http://sametmax.com/firefox-naffiche-plus-les-styles-css-ni-les-images/#comments</comments>
+		<pubDate>Fri, 04 Jan 2013 12:15:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[firefox]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3956</guid>
+		<description><![CDATA[Après avoir vidé le cache, il peut arriver que notre panda roux n'affiche plus les styles CSS ou les images: il n'y a plus aucune mise en page, juste du texte noir sur une page blanche. Damned !]]></description>
+				<content:encoded><![CDATA[<p>Après avoir vidé le cache, il peut arriver que notre panda roux n&#8217;affiche plus les styles CSS ou les images: il n&#8217;y a plus aucune mise en page, juste du texte noir sur une page blanche. Damned !</p>
+<p>La solution est de forcer le refresh de la page et du cache avec <code>Ctrl + Shift + R</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/firefox-naffiche-plus-les-styles-css-ni-les-images/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/220px-Ailurus_fulgens_RoterPanda_LesserPanda.jpg" length="14320" type="image/jpg" />	</item>
+		<item>
+		<title>Comment servir les fichiers statiques avec Django en dev et en prod 13</title>
+		<link>http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/</link>
+		<comments>http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/#comments</comments>
+		<pubDate>Mon, 22 Oct 2012 22:57:28 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[static files]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2706</guid>
+		<description><![CDATA[Servir les fichiers CSS, javascript et les images avec Django a toujours été la plus grande source de confusion (heureusement ça s'est bien amélioré avec la 1.4, donc upgradez si vous pouvez). C'est d'autant plus déroutant que la manière de faire est différente selon la version de Django, et selon que l'on est en production ou en développement.]]></description>
+				<content:encoded><![CDATA[<p>Servir les fichiers CSS, javascript et les images avec Django a toujours été la plus grande source de confusion (heureusement ça s&#8217;est bien amélioré avec la 1.4, donc upgradez si vous pouvez). C&#8217;est d&#8217;autant plus déroutant que la manière de faire est différente selon la version de Django, et selon que l&#8217;on est en production ou en développement.</p>
+<p>Donc, pour profiter de cet article:</p>
+<ul>
+<li>Lisez les parties qui vous concernent uniquement.</li>
+<li>Ne lisez pas en diagonale.</li>
+<li>Si ça ne marche pas, partez de zéro (avec un projet tout neuf), et une fois que ça marche, essayez sur le votre.</li>
+</ul>
+<p>C&#8217;est typiquement le cas où <strong>il faut comprendre ce qui se passe et pas juste copier/coller du code</strong> (ceci est une petite pique à Max qui est en train de décuver comme une loque sur le canap pendant que j&#8217;écris cette partie de l&#8217;article).</p>
+<h2>Préparation</h2>
+<p>Les fichiers statiques se gèrent à base de chemins absolus. Afin de faciliter celà, vous devriez donc toujours avoir ceci tout en haut de votre fichier settings.py:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+PROJECT_DIR <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">abspath</span><span style="color: black;">&#40;</span>__file__<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Si votre fichier de settings n&#8217;est pas à la racine du projet (typiquement dans un projet Django 1.4), faites:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+SETTINGS_DIR <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">abspath</span><span style="color: black;">&#40;</span>__file__<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+PROJECT_DIR <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span>SETTINGS_DIR<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Le fichiers de settings étant un fichier Python, on peut mettre tout le code que l&#8217;on souhaite dedans, et ce code nous permet d&#8217;obtenir de manière dynamique le chemin absolu vers votre dossier de projet. Il servira de base pour tous les chemins vers les fichiers statiques.</p>
+<p><code>__file__</code> contient le chemin vers le fichier en cours. <code>abspath()</code> permet d&#8217;obtenir le chemin absolu. <code>dirname()</code> permet d&#8217;obtenir le nom du dossier contenant le fichier.</p>
+<p>Notez aussi l&#8217;emplacement des fichiers statiques de la Django admin dans un coin (dans la doc de votre site par exemple). Ces fichiers se trouvent dans <em>django/contrib/admin/media</em>, mais si vous galerez pour les trouver, vous pouvez toujours lancer la commande:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="base" style="font-family:monospace;">python -c &quot;import django, os; print os.path.join(os.path.dirname(django.__file__), 'contrib/admin/media')&quot;</pre></td></tr></table></div>
+
+<p>Moi ça donne un truc comme ça:</p>
+<p><em>/home/sam/.virtualenvs/project_env/local/lib/python2.7/site-packages/django/contrib/admin/media</em></p>
+<h2>En phase de développement, de la version 1.0 à la version 1.2</h2>
+<p>Vous êtes sur votre machine, et vous utilisez la commande <code>runserver</code>. C&#8217;est donc Django qui va servir vos fichier statiques, et nous allons voir comment, pour chaque version de Django, on peut lui demander de le faire.</p>
+<p>C&#8217;est une vieille version, servir les fichiers statiques est assez relou, alors on va gruger pour vous faciliter la vie. Non, ce n&#8217;est pas la meilleur manière de faire, mais c&#8217;est la manière de faire qui vous évitera de retourner sur un forum pour demander pourquoi ça ne marche pas.</p>
+<p>Créez un dossier nommé &#8220;static&#8221; <strong>à la racine de votre projet</strong>. Mettez tous vos fichiers statiques dedans: js, css, images&#8230; Organisez ça en sous-dossier si vous voulez, mais <strong>mettez tout dedans, y compris les fichiers statiques des autres apps Django que vous avez installé</strong> (et qu&#8217;il va falloir copier/coller ou alors faire un lien symbolique). La seule exception est l&#8217;admin.</p>
+<p>Ce n&#8217;est pas particulièrement propre ni pratique, mais ça va marcher. Le surcoût en maintenant sera largement compensé par le fait que ce sera très simple à comprendre et à servir.</p>
+<p>Dans votre fichier de settings, pointez <code>MEDIA_ROOT</code> sur ce dossier:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">MEDIA_ROOT <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>PROJECT_DIR<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'static'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et choissisez un chemin explicite pour <code>MEDIA_URL</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">MEDIA_URL <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'/static/'</span></pre></td></tr></table></div>
+
+<p>Ne touchez pas à <code>ADMIN_MEDIA_PREFIX</code>. Ne mettez pas <code>MEDIA_URL</code> égale à <code>ADMIN_MEDIA_PREFIX</code>.</p>
+<p>Dans le fichier urls.py principal, c&#8217;est à dire ce lui est généralement à la racine de votre projet, faites:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># on importe ici tout les trucs nécessaires à urls.py</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">conf</span>.<span style="color: black;">urls</span>.<span style="color: black;">defaults</span> <span style="color: #ff7700;font-weight:bold;">import</span> *
+<span style="color: #808080; font-style: italic;"># on va récupérer MEDIA_ROOT depuis le fichier de settngs</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">conf</span> <span style="color: #ff7700;font-weight:bold;">import</span> settings
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on active l'admin</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span> <span style="color: #ff7700;font-weight:bold;">import</span> admin
+admin.<span style="color: black;">autodiscover</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># on créé un pattern vide. Cela va nous permettre d'insérer le service</span>
+<span style="color: #808080; font-style: italic;"># des fichiers statiques en premier</span>
+urlpatterns <span style="color: #66cc66;">=</span> patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On active maintenant le service des fichiers statiques par Django</span>
+<span style="color: #808080; font-style: italic;"># mais uniquement en mode DEBUG (pour éviter de l'oublier en prod)</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> settings.<span style="color: black;">DEBUG</span>:
+    urlpatterns +<span style="color: #66cc66;">=</span> patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'%s/(?P&lt;path&gt;.*)$'</span> % settings.<span style="color: black;">MEDIA_URL</span>.<span style="color: black;">strip</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+         <span style="color: #483d8b;">'django.views.static.serve'</span><span style="color: #66cc66;">,</span>
+         <span style="color: black;">&#123;</span><span style="color: #483d8b;">'document_root'</span>: settings.<span style="color: black;">MEDIA_ROOT</span><span style="color: black;">&#125;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ensuite on déclare nos patterns normalement</span>
+<span style="color: #808080; font-style: italic;"># ATTENTION, le signe doit-être &quot;+=&quot;, pas &quot;=&quot;, sinon vous allez tout écraser</span>
+urlpatterns +<span style="color: #66cc66;">=</span> patterns<span style="color: black;">&#40;</span><span style="color: #483d8b;">''</span><span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># Example:</span>
+    <span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^'</span><span style="color: #66cc66;">,</span> include<span style="color: black;">&#40;</span><span style="color: #483d8b;">'app.urls'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Uncomment the admin/doc line below and add 'django.contrib.admindocs'</span>
+    <span style="color: #808080; font-style: italic;"># to INSTALLED_APPS to enable admin documentation:</span>
+    <span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^admin/doc/'</span><span style="color: #66cc66;">,</span> include<span style="color: black;">&#40;</span><span style="color: #483d8b;">'django.contrib.admindocs.urls'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Uncomment the next line to enable the admin:</span>
+    <span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'^admin/(.*)'</span><span style="color: #66cc66;">,</span> admin.<span style="color: #dc143c;">site</span>.<span style="color: black;">root</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Vous notez que contrairement à ce qu&#8217;on voit la doc officielle, on met l&#8217;url pour les fichiers statiques en premier. Cela donne une forme étrange à la déclation des urls car on a un <code>urlpatterns</code> vide au début, mais c&#8217;est très important: à un moment vous allez déclarer une URl attrape-tout qui court-circuitera tout ce qu&#8217;il y a après, et ce jour là vous passerez des heures à chercher pourquoi vos fichiers statiques ne sont pas déclarés.</p>
+<p>Le <code>strip()</code> n&#8217;est pas obligatoire si vous mettez les slashes correctement partout. Mais ce n&#8217;est jamais le cas.</p>
+<p>Maintenant, dans votre html, vous pouvez faire ceci:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;link href=&quot;/static/chemin/du/fichier/a/relatif/au/dossier/static.css&quot;  rel=&quot;stylesheet&quot; /&gt;</pre></td></tr></table></div>
+
+<p>Et pareil pour le js, les images, etc.</p>
+<p>Le chemin est bel et bien écrit en dur dans le templates HTML. Encore une fois, ce n&#8217;est pas la meilleure manière de faire, c&#8217;est juste celle qui vous garanti que ça marche. Si vous vous sentez à l&#8217;aise avec le processus, vous pouvez changer celà en utilisant un context_processor pour ajouter <code>MEDIA_URL</code> à chaque template et remplacer <code>/static/</code> par <code>{{ MEDIA_URL }}</code>.</p>
+<p><a href='http://sametmax.com/wp-content/uploads/2012/10/servir_fichiers_statiques_django_1.0_a_1.2.zip'>Télécharger le projet complet d&#8217;exemple</a></p>
+<h2>En phase de développement, pour la version 1.3 et 1.4</h2>
+<p>C&#8217;est globalement beaucoup plus facile. Il suffit de mettre tous vos fichiers statiques dans un dossier nommé &#8220;static&#8221; dans le dossier d&#8217;une de vos app pour qu&#8217;ils soient trouvés automatiquement quand vous lancerez <code>manage.py runserver</code>.</p>
+<p>Voici à quoi ressemblera votre settings.py:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># plus rien à voir avec avant, MEDIA_ROOT et MEDIA_URL designent</span>
+<span style="color: #808080; font-style: italic;"># l'endroit où vous voulez que vos utilisateur upload et download des fichiers</span>
+<span style="color: #808080; font-style: italic;"># Ce n'est donc plus un paramètre primordial</span>
+MEDIA_ROOT <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>PROJECT_DIR<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'media'</span><span style="color: black;">&#41;</span>
+MEDIA_URL <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'/media/'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ce qui s'appelait avant MEDIA_ROOT s'appelle maintenant STATIC_ROOT</span>
+<span style="color: #808080; font-style: italic;"># mais il n'est utile pour la prod</span>
+<span style="color: #808080; font-style: italic;"># On le met quand même pour plus tard</span>
+STATIC_ROOT <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>PROJECT_DIR<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'static'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Le settings le plus important: à quelle adresse servir les fichiers statiques</span>
+<span style="color: #808080; font-style: italic;"># Utile en dev afin de pouvoir bénéficier des templates tags</span>
+STATIC_URL <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'/static/'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Les medias de l'admin sont enfin une URL comme une autre qu'on peut</span>
+<span style="color: #808080; font-style: italic;"># mettre sous notre propre arborescence</span>
+ADMIN_MEDIA_PREFIX <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'/static/admin/'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Vous pouvez OPTIONNELLEMENT rajouter ici une liste de chemin vers</span>
+<span style="color: #808080; font-style: italic;"># des dossiers de fichiers statiques qui seront ainsi aussi servit automatiquement</span>
+<span style="color: #808080; font-style: italic;"># pendant le développement. Par exemple un dossier à la racine</span>
+STATICFILES_DIRS <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+    <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>PROJECT_DIR<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'more_static'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># N'utilisez PAS le même dossier que STATIC_ROOT</span></pre></td></tr></table></div>
+
+<p>Il n&#8217;y a rien à faire de plus, vos fichiers seront servis automatiquement en dev, pas besoin de toucher aux urls.</p>
+<p>Maintenant il faut juste les déclarer vos URLs dans le template.</p>
+<p>Pour Django 1.3, vous pouvez ajouter un fichiers statiques ainsi pour éviter d&#8217;écrire l&#8217;URL en dur:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+&nbsp;
+&lt;link href=&quot;{{ STATIC_PREFIX }}app/css/style.css&quot;  rel=&quot;stylesheet&quot; /&gt;</pre></td></tr></table></div>
+
+<p>Pour django 1.4, c&#8217;est encore plus simple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">{% load staticfiles %}
+&lt;img src=&quot;{% static &quot;app/css/style.css&quot; %}&quot; /&gt;</pre></td></tr></table></div>
+
+<p>Encore un détail, si vous n&#8217;utilisez pas le serveur de dev Django mais un autre serveur de dev (ex: werkzeug), vos fichiers statiques ne seront pas servis automatiquement, mais il est facile d&#8217;y remédier. Ajoutez à votre urls.py:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">contrib</span>.<span style="color: black;">staticfiles</span>.<span style="color: black;">urls</span> <span style="color: #ff7700;font-weight:bold;">import</span> staticfiles_urlpatterns
+&nbsp;
+urlpatterns +<span style="color: #66cc66;">=</span> staticfiles_urlpatterns<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p><a href='http://sametmax.com/wp-content/uploads/2012/10/servir_fichiers_statiques_django_1.3_et_1.4.zip'>Télécharger le projet complet d&#8217;exemple</a></p>
+<h2>Migration de 1.2 ou moins vers 1.3 ou 1.4</h2>
+<p>Bouger vos fichiers statiques du répertoire à la racine vers le répertoire nommé &#8220;static&#8221; d&#8217;une de vos apps (ou de plusieurs).</p>
+<p>Ajoutez ceci dans votre fichier de config:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">STATICFILES_DIRS <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+<span style="color: black;">&#41;</span>
+&nbsp;
+STATICFILES_FINDERS <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span>
+    <span style="color: #483d8b;">'django.contrib.staticfiles.finders.FileSystemFinder'</span><span style="color: #66cc66;">,</span>
+    <span style="color: #483d8b;">'django.contrib.staticfiles.finders.AppDirectoriesFinder'</span><span style="color: #66cc66;">,</span>
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et ajoutez <code>django.contrib.sites</code> à vos <code>INSTALLED_APPS</code>.</p>
+<p>Remplacez toutes les URls en dur dans le HTML par une version avec les templates tags (voir partie précédente).</p>
+<p>Attention, ça ne couvre que la partie pour la gestion des fichiers statiques, il y a d&#8217;autres choses à migrer.</p>
+<h2>En production: toutes versions</h2>
+<p>Je ne vais pas expliquer ici comment mettre Django en production (c&#8217;est un article à lui tout seul, peut être même plusieurs). Ici je vais me concentrer sur comment servir les fichiers statiques, et présupposer <code>DEBUG = False</code>.</p>
+<p>Si vous utilisez Djagno 1.2 ou moins, vous n&#8217;avez rien à faire côté Django. Si vous utilisez Django 1.3 ou 1.4, vous devez maintenant appeler la commande <code>pyhon manage.py collectstatic</code>. Celle-ci va prendre tous les fichiers statiques de tous les dossiers &#8220;static&#8221; des apps et ceux listés dans <code>STATICFILES_DIRS</code> et va les copier dans <code>STATIC_ROOT</code>.</p>
+<p>Dans tous les cas, vous n&#8217;aurez qu&#8217;un seul dossier pour le js, le css et les images à servir avec Nginx ou Apache.</p>
+<h4>Nginx</h4>
+<p>Si vous avez votre propre serveur, je vous conseil Nginx plutôt qu&#8217;Apache pour mettre votre site en prod.</p>
+<p>L&#8217;idée est de dire dans le fichier de configuration nginx que toutes les URLs qui concernent les fichiers statiques sont servies directement par Nginx, et les autres sont passées à Django:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="json" style="font-family:monospace;">server {
+        listen      8080;
+&nbsp;
+        ############################################################
+        # la partie qui concerne les fichiers statiques commence ici
+        ############################################################
+&nbsp;
+        location /favicon.ico {
+            # favicon.ico doit être à la racine du dossier img
+            root  /chemin/absolu/vers/dossier/img;
+        }
+&nbsp;
+        # on sert nos fichiers statiques
+        # l'url doit correspondre à MEDIA_URL
+        location ~* ^/static/ {
+            root  /chemin/absolu/vers/dossier/PARENT/du/dossier/statique;
+            # on active gzip pour tous les petits fichiers qui contiennent du texte
+            # si le navigateur le supporte
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            # petite astuce gzip pour les gros fichier
+            # voir http://blog.leetsoft.com/2007/7/25/nginx-gzip-ssl
+            gzip_buffers 16 8k;
+&nbsp;
+            # on desactive gzip pour les vieux navigateurs
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+        }
+&nbsp;
+       # on fait pareil mais pour l'admin Django
+       # l'url doit corresponde à ADMIN_MEDIA_PREFIX
+       location ~* ^/media/ {
+            root  /chemin/absolu/du/dossier/PARENT/du/dossier/media/de/django;
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            gzip_buffers 16 8k;
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+        }
+&nbsp;
+        ##############################################################
+        # la partie qui concerne les fichiers statiques se termine ici
+        ##############################################################
+&nbsp;
+        location / {
+            proxy_pass http://127.0.0.1:8000;
+        }
+}</pre></td></tr></table></div>
+
+<p>Notez bien que la directive <code>root</code> suppose que vous mettiez le dossier parent du dossier que vous voulez servir, et que le dossier servi a le même nom que le chemin dans l&#8217;url.</p>
+<p>Par exemple, si vos fichiers statiques sont dans <em>/home/sam/project/static</em>, alors l&#8217;url devra être <code>^/static/</code> et on passera à l&#8217;instruction <code>root</code> le chemin <em>/sam/project</em>.</p>
+<h4>Apache</h4>
+<p>Si vous êtes chez un hébergeur qui n&#8217;a qu&#8217;Apache, voici un manière de servir les fichiers statiques. Je ne connais pas Apache aussi bien que Nginx, donc je ne peux pas m&#8217;engager sur la gestion de Gzip.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="xml" style="font-family:monospace;"># TOUS les chemins doivent être accessible pour le user apache (www-data le plus souvent)
+# N'oubliez pas les slashes finaux, ils sont importants
+&nbsp;
+WSGIPythonPath /chemin/absolu/vers/project/:/chemin/absolu/vers/dossier/parent/du/project/:/chemin/vers/site/package/du/virtualenv/
+&nbsp;
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;VirtualHost</span> *:80<span style="color: #000000; font-weight: bold;">&gt;</span></span>
+&nbsp;
+    WSGIScriptAlias / &quot;/chemin/absolu/vers/fichier/project.wsgi&quot;
+&nbsp;
+    ########################################################
+    # Début de la partie qui concerne les fichiers statiques
+    ########################################################
+&nbsp;
+    # on sert les fichiers statiques du site
+    Alias /static/ &quot;/chemin/absolu/vers/dossier/static/&quot;
+    Alias /favicon.ico &quot;/chemin/absolu/vers/dossier/static/img/favicon.ico&quot;
+&nbsp;
+    # on donne l'autorisation à tous de les lire
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;Directory</span> <span style="color: #ff0000;">&quot;/chemin/absolu/vers/dossier/static/&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
+        Order allow,deny
+        Allow from all
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/Directory<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+&nbsp;
+    # on sert les fichiers statiques de l'admin
+    Alias /media/ &quot;/chemin/absolu/vers/dossier/django/contrib/admin/media/&quot;
+    # on donne l'autorisation à tous de les lire
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;Directory</span> <span style="color: #ff0000;">&quot;/chemin/absolu/vers/dossier/django/contrib/admin/media/&quot;</span><span style="color: #000000; font-weight: bold;">&gt;</span></span>
+        Order allow,deny
+        Allow from all
+    <span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/Directory<span style="color: #000000; font-weight: bold;">&gt;</span></span></span>
+&nbsp;
+    ######################################################
+    # Fin de la partie qui concerne les fichiers statiques
+    ######################################################
+&nbsp;
+<span style="color: #009900;"><span style="color: #000000; font-weight: bold;">&lt;/VirtualHost<span style="color: #000000; font-weight: bold;">&gt;</span></span></span></pre></td></tr></table></div>
+
+<p>Si vous faites bien gaffe aux droits d&#8217;accès des dossiers (récursivement) et que vous avec pas oublié de &#8220;/&#8221; à la fin d&#8217;un chemin, tout ira bien.</p>
+<p>Pour Apache, servir les fichiers statiques est généralement la partie facile, c&#8217;est faire marcher Django et mod_wsgi qui est difficile: problèmes de droits, mauvaise configuration, Python path qui foine&#8230; Mais je m&#8217;en branle, puisque c&#8217;est pas l&#8217;objet de l&#8217;article, donc démerdez-vous.</p>
+<h2>Notes de fin</h2>
+<p>Jusqu&#8217;à la version 1.2, <code>MEDIA_ROOT</code> et <code>MEDIA_URL</code> ne sont que des conventions qui ne servent pas à grand chose à part à être utilisées par des contexts managers et à vous éviter les chemins en durs dans les templates et urls.py.</p>
+<p>A partir de Django 1.3, <code>STATIC_ROOT</code> et <code>STATIC_URL</code> sont vraiment utilisées: <code>STATIC_ROOT</code> est là où Django va mettre le resultat de la commande <code>collecstatic</code> et <code>STATIC_URL</code> et l&#8217;url que va utiliser la vue <code>staticfiles_urlpatterns</code>.</p>
+<p><code>MEDIA_ROOT</code> et <code>MEDIA_URL</code> existent toujours, mais sont utilisés pour designer le dossier et l&#8217;url qui pointent vers les contenus uploadés et downlodés par les utilisateurs. Si vous voulez les servir, il faut faire exactement la même chose à l&#8217;époque de Django 1.2 et avant: mettre la route à la main dans urls.py (mais cette fois, il y a un <a href="https://docs.djangoproject.com/en/1.3/howto/static-files/#django.conf.urls.static.static">raccourcis</a> pour ça), et rajouter une entrée supplémentaire dans le fichier de conf Nginx ou Apache.</p>
+<p>Sinon, vous pouvez aussi vous éviter tout ce merdier en utilisant le middleware qui sert automatiquement tous les fichiers statiques de <a href="https://github.com/sametmax/django-quicky">django_quicky</a>.</p>
+<p>Enfin, je n&#8217;ai pas abordé les storage backends, tout simplement parce que je n&#8217;en utilise pas, donc je ne peux pas vous donner de bons conseils sur la question.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-servir-les-fichiers-statiques-avec-django-en-dev-et-en-prod/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/19087844.jpg-r_160_240-b_1_D6D6D6-f_jpg-q_x-20090407_062555.jpg" length="11635" type="image/jpg" />	</item>
+		<item>
+		<title>LiveCss.js: refraichir les CSS sans recharger la page 7</title>
+		<link>http://sametmax.com/livecss-js-refraichir-les-css-sans-recharger-la-page/</link>
+		<comments>http://sametmax.com/livecss-js-refraichir-les-css-sans-recharger-la-page/#comments</comments>
+		<pubDate>Sat, 09 Jun 2012 01:21:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[Web]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=893</guid>
+		<description><![CDATA[<a href="https://github.com/sametmax/LiveCss.js">LiveCss.js</a> est une petite bibliothèque javascript qui rafraichie les styles CSS d'une page quasiment en temps réel, sans la recharger. Elle est distribuée sous licence <a href="https://en.wikipedia.org/wiki/WTFPL">Do what the fuck you want</a> par the Sam et Max incorporation company of the world.]]></description>
+				<content:encoded><![CDATA[<p><strong>EDIT: vu que <a href="http://livejs.com/">live.js</a> fait la même chose en mieux, il n&#8217;y a pas de raison de continuer le développement de LiveCss.js</strong></p>
+<p><a href="https://github.com/sametmax/LiveCss.js">LiveCss.js</a> est une petite bibliothèque javascript qui rafraichie les styles CSS d&#8217;une page quasiment en temps réel, sans la recharger. Elle est distribuée sous licence <a href="https://en.wikipedia.org/wiki/WTFPL">Do what the fuck you want</a> par the Sam et Max incorporation company of the world.</p>
+<p>Le plus simple pour l&#8217;utiliser est le format bookmarklet. Il suffit de glisser et déposer le lien suivant dans vos favoris :</p>
+<p><iframe style="width: 100%; height: 300px;" src="http://jsfiddle.net/wjtaA/2/embedded/result,html" frameborder="0" width="320" height="240"></iframe></p>
+<p>Quand vous voulez activer LiveCss.js, cliquez sur le favoris. Pour le désactiver, cliquez à nouveau.</p>
+<p>Il n&#8217;y a rien de plus à faire. Éditez votre CSS comme d&#8217;habitude, et au moment de sauvegarder, la page sera mise à jour automatiquement.</p>
+<p><strong>ATTENTION</strong></p>
+<p>Du fait de la politique de sécurité de certains navigateurs, liveCss.js pourrait ne pas fonctionner avec le protocole <code>file://</code> (en local). Pour ces navigateurs, on peut contourner le problème en lançant un petit serveur Web à la racine du projet.</p>
+<p>Python (nativement installé sur la plupart des systèmes GNU/Linux et Mac OS), vous permet de le faire en une commande:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python <span style="color: #660033;">-m</span> <span style="color: #ff0000;">&quot;SimpleHTTPServer&quot;</span></pre></td></tr></table></div>
+
+<p>On peut ensuite accéder aux pages à l&#8217;adresse <code>http://127.0.0.1:8000</code></p>
+<h2>Usage manuel</h2>
+<p>Si vous avez besoin d&#8217;un peu plus de contrôl sur l&#8217;exécution de LiveCss.js, vous pouvez inclure la bibliothèque elle même dans la page (mais n&#8217;oubliez pas de la retirer avant le passage en prod) :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&nbsp;</pre></td></tr></table></div>
+
+<p>Ensuite juste en dessous :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;script type=&quot;text/javascript&quot;&gt;// &lt;![CDATA[
+      liveCss.start();
+&nbsp;
+// ]]&gt;&lt;/script&gt;</pre></td></tr></table></div>
+
+<p>C&#8217;est tout.</p>
+<p>Il y a plusieurs options avec lesquelles on peut jouer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">    liveCss.<span style="color: #660066;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #006600; font-style: italic;">// recharge les fichiers CSS toutes les demies secondes</span>
+    liveCss.<span style="color: #660066;">stop</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #006600; font-style: italic;">// arrête de recharger les fichiers CSS</span>
+    liveCss.<span style="color: #660066;">toggle</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>  <span style="color: #006600; font-style: italic;">// commencer ou arrêter de recharger les fichiers CSS</span>
+    <span style="color: #006600; font-style: italic;">// toggle préserve l'état du plugin si on ne lui passe pas de paramètres</span>
+    <span style="color: #006600; font-style: italic;">// contrairement à start/stop/start</span>
+&nbsp;
+    liveCss.<span style="color: #660066;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#123;</span>interval<span style="color: #339933;">:</span> <span style="color: #CC0000;">100</span><span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span> <span style="color: #006600; font-style: italic;">// recharge les fichiers toutes les secondes</span>
+&nbsp;
+    <span style="color: #006600; font-style: italic;">// recharge les fichiers CSS dont l'adresse est</span>
+    <span style="color: #006600; font-style: italic;">// &quot;./static/css/style.css&quot; ou &quot;./static/css/ie.css&quot;</span>
+    liveCss.<span style="color: #660066;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#123;</span>stylesheets<span style="color: #339933;">:</span> <span style="color: #009900;">&#91;</span><span style="color: #3366CC;">&quot;./static/css/style.css&quot;</span><span style="color: #339933;">,</span> <span style="color: #3366CC;">&quot;./static/css/ie.css&quot;</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+    <span style="color: #006600; font-style: italic;">// positioner la petit boite verte qui vous dit quand LiveCss.js est</span>
+    <span style="color: #006600; font-style: italic;">// en train de tourner en bas à droite</span>
+    <span style="color: #006600; font-style: italic;">// (ce doit être au format du positionnement absolu en CSS)</span>
+    liveCss.<span style="color: #660066;">start</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#123;</span>hintPosition<span style="color: #339933;">:</span> <span style="color: #3366CC;">'right:0;bottom:0'</span><span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Ajustez ces paramètres pour avoir un rafraichissement plus rapide. Vous pouvez bien entendu utiliser plusieurs options en même temps.</p>
+<p>Notez bien que l&#8217;utilisation de debuggers comme Firebug en même temps que LiveCss.js pourrait être lent car ils inspectent la stack alors que LiveCss.js utilise une boucle récursive infinie. C&#8217;est utilisable, mais pas aussi rapide que l&#8217;expérience habituelle.</p>
+<h2>Comment ça marche?</h2>
+<p>La bibliothèque lance une boucle infinie avec un timer entre chaque tour, durant lesquels elle charge chaque fichier CSS en AJAX. A chaque requête, le CSS est dumpé dans un tag de style inline et le noeud de style correspondant est désactivé.</p>
+<p>LiveCss.js s&#8217;inspire de <a href="http://nv.github.com/css_auto-reload/">css_autoreload</a>, le <a href="http://www.paulsprangers.com/2011/04/quick-tip-less-js-in-development-and-watch-mode/">mode watch</a> de <a href="http://lesscss.org/">less.js</a> et <a href="http://xrefresh.binaryage.com/">Xrefresh</a>, mais est très jeune en comparaisons. <strong>Attendez-vous donc à des bugs</strong>, surtout que pour le moment ce n&#8217;est testé que sous Firefox.</p>
+<p>Comme d&#8217;hab, merci de <a href="https://github.com/sametmax/LiveCss.js/issues">rapporter les bugs</a>, ou de nous notifier si ça marche sous une autre config qu&#8217;on puisse l&#8217;ajouter à la liste des compatibilités. N&#8217;hésitez pas à postez vos success stories en commentaire du genre:</p>
+<blockquote><p>Depuis que j&#8217;utilise LiveCss.js, j&#8217;ai perdu du poids et je n&#8217;ai plus de problème d&#8217;érection</p></blockquote>
+<p>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/livecss-js-refraichir-les-css-sans-recharger-la-page/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/6250e39e4a91ba93700bc96a2ddd.jpeg" length="42557" type="image/jpg" />	</item>
+	</channel>
+</rss>

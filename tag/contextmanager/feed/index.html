@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; contextmanager</title>
+	<atom:link href="http://sametmax.com/tag/contextmanager/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Les context managers et le mot clé with en Python 13</title>
+		<link>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/</link>
+		<comments>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/#comments</comments>
+		<pubDate>Mon, 03 Sep 2012 17:56:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[contextmanager]]></category>
+		<category><![CDATA[decorator]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[with]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1987</guid>
+		<description><![CDATA[Le mot clé <code>with</code> est utilisé comme dans aucun autre langage en Python. Au premier abord mystérieux, il agit en fait comme les <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">décorateurs</a> en permettant d'exécuter du code automatiquement avant et après un autre code. Mais à l'image des décorateurs, tout ce qu'il fait pourrait être écrit à la main sans utiliser le mot clé <code>with</code>. Utiliser <code>with</code> est <a href="http://sametmax.com/jadore-les-context-managers-python/">une question de style</a>.
+]]></description>
+				<content:encoded><![CDATA[<p>Le mot clé <code>with</code> est utilisé comme dans aucun autre langage en Python. Au premier abord mystérieux, il agit en fait comme les <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">décorateurs</a> en permettant d&#8217;exécuter du code automatiquement avant et après un autre code. Mais à l&#8217;image des décorateurs, tout ce qu&#8217;il fait pourrait être écrit à la main sans utiliser le mot clé <code>with</code>. Utiliser <code>with</code> est <a href="http://sametmax.com/jadore-les-context-managers-python/">une question de style</a>.</p>
+<p>Supposons que vous vouliez afficher quelque chose avant un bout de code, et après un bout de code, même si celui-ci rate. Vous feriez quelque chose comme ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> truc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;machin&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Avant&quot;</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    truc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">finally</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Après&quot;</span></pre></td></tr></table></div>
+
+<p>Et ça va afficher:</p>
+<pre>Avant
+machin
+Après</pre>
+<p>Et avec:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> truc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;machin&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">Exception</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Fail !'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>&#8216;Après&#8217; sera quand même affiché. Ça plantera, mais la dernière action sera toujours faite.</p>
+<p>Si vous le faites souvent, vous voudrez factoriser du code. Un des moyens de le faire est d&#8217;utiliser les context managers.</p>
+<h2>Créer son propre context manager</h2>
+<p>Un context manager est une classe <strong>ordinaire</strong> en Python. Sa seule spécificité est de déclarer une méthode <code>__enter__()</code> et une méthode <code>__exit__()</code>. Ces méthodes sont des méthodes <strong>ordinaires</strong>, leur nom spécial est juste là par convention, et en les nommant ainsi on s&#8217;assure qu&#8217;elles seront détectées et utilisées automatiquement.</p>
+<p>Notre code là haut peut donc se réécrire ainsi:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> MonSuperContextManager<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> __enter__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Avant&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __exit__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">type</span><span style="color: #66cc66;">,</span> value<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">traceback</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># faites pas attention aux paramètres, ce sont toutes les infos</span>
+        <span style="color: #808080; font-style: italic;"># automatiquement passées à __exit__ et qui servent pour inspecter</span>
+        <span style="color: #808080; font-style: italic;"># une éventuelle exception</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Après&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">with</span> MonSuperContextManager<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    truc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>L&#8217;avantage de with est multiple:</p>
+<ul>
+<li>Il permet de visualiser très précisément où on entre dans l&#8217;action et où on en sort (c&#8217;est un seul block)</li>
+<li>Il permet de réutiliser les actions faite à l&#8217;entrée et à la sortie de l&#8217;action.</li>
+<li>Même si une exception est levée, l&#8217;action de sortie sera exécutée juste avant le plantage. <code>__exit__</code> est en effet garantie d&#8217;être appelée quoiqu&#8217;il arrive. Bon, évidement, si il y a une coupure de courant&#8230;</li>
+</ul>
+<p>En gros, créer un context manager, c&#8217;est faire un raccourci lisible pour <code>try</code>/<code>finally</code>. Point.</p>
+<h2>Un exemple utile de context manager</h2>
+<p>Supposons que vous ayez beaucoup de travail à faire dans plein de dossiers. Vous voulez vous assurer que vous allez dans le dossier de travail, puis que vous retournez au dossier initial à chaque fois.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Cd<span style="color: black;">&#40;</span>objet<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>dirname<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">dirname</span> <span style="color: #66cc66;">=</span> dirname
+    <span style="color: #ff7700;font-weight:bold;">def</span> __enter__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">curdir</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">getcwd</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #dc143c;">os</span>.<span style="color: black;">chdir</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">dirname</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __exit__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">type</span><span style="color: #66cc66;">,</span> value<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">traceback</span><span style="color: black;">&#41;</span>:
+        <span style="color: #dc143c;">os</span>.<span style="color: black;">chdir</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">curdir</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On l&#8217;utilise comme ça:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># ici on est dans /home/moi</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">with</span> Cd<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/'</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># faire un truc dans /</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">with</span> Cd<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/opt'</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># faire un truc dans /opt</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ici on est dans /</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># ici on est dans /home/moi</span></pre></td></tr></table></div>
+
+<p>C&#8217;est d&#8217;ailleurs ce que fait <a href="http://sametmax.com/travailler-moins-pour-gagner-plus-en-15-minutes-avec-python-fabric/">fabric</a>.</p>
+<h2>Le mot clé <code>as</code></h2>
+<p>Tout ce qu&#8217;on retourne dans <code>__enter__</code> peut être récupéré grâce au mot clé <code>as</code>. Imaginons un context manager qui permette d&#8217;ouvrir un fichier et de le fermer automatiquement:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> OpenFile<span style="color: black;">&#40;</span>objet<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>filename<span style="color: #66cc66;">,</span> mode<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'r'</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">filename</span> <span style="color: #66cc66;">=</span> filename
+        <span style="color: #008000;">self</span>.<span style="color: black;">mode</span> <span style="color: #66cc66;">=</span> mode
+    <span style="color: #ff7700;font-weight:bold;">def</span> __enter__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: #008000;">file</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">filename</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">mode</span><span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># ici on retourne l'objet fichier, il sera accessible avec &quot;as&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: #008000;">file</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> __exit__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">type</span><span style="color: #66cc66;">,</span> value<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">traceback</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: #008000;">file</span>.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On l&#8217;utilise comme ceci:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> OpenFile<span style="color: black;">&#40;</span><span style="color: #483d8b;">'/etc/fstab'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+    <span style="color: #ff7700;font-weight:bold;">for</span> line <span style="color: #ff7700;font-weight:bold;">in</span> f:
+        <span style="color: #ff7700;font-weight:bold;">print</span> line</pre></td></tr></table></div>
+
+<p><code>f</code> va contenir ici l&#8217;objet fichier, car nous l&#8217;avons retourné dans <code>__enter__</code>. A la fin du bloc <code>with</code>, le fichier sera fermé automatiquement.</p>
+<p>Et devinez quoi, Python possède déjà un context manager qui fait ça:.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>vot_fichier_msieu_dames<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> f:
+   <span style="color: #808080; font-style: italic;"># faire un truc</span></pre></td></tr></table></div>
+
+<h2>Context managers sous forme de fonctions</h2>
+<p>Faire les choses sous forme de classes, c&#8217;est pratique quand on a beaucoup de logique à encapsuler. Mais la plupart des context managers sont très simples. Pour cette raison, Python vient avec plein d&#8217;outils pour se simplifier la vie avec <code>with</code> dans un module judicieusement nommé <code>contextlib</code>.</p>
+<p>Pour l&#8217;utiliser, il faut avoir des notions sur les décorateurs, et le mot clé <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Si ce n&#8217;est pas votre cas, restez sur la version sous forme de classe :-)</p>
+<p>Supposons que l&#8217;on veuille recréer le context manager <code>open</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> contextlib <span style="color: #ff7700;font-weight:bold;">import</span> contextmanager
+&nbsp;
+<span style="color: #66cc66;">@</span>contextmanager
+<span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>filename<span style="color: #66cc66;">,</span> mode<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        f <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>filename<span style="color: #66cc66;">,</span> mode<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">yield</span> f
+    <span style="color: #ff7700;font-weight:bold;">finally</span>:
+        f.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Bon, c&#8217;est simplifié, hein, le vrai est plus robuste que ça.</p>
+<p>Comment ça marche ?</p>
+<p>D&#8217;abord, on utilise le décorateur <code>@contextmanager</code> pour dire à Python que la fonction sera un context manager.</p>
+<p>Ensuite, on fait un <code>try</code>/<code>finally</code> (il est pas automatique comme avec <code>__enter__</code> et <code>__exit__</code>).</p>
+<p><code>yield</code> sépare le code en deux: tout ce qui est avant est l&#8217;équivalent de <code>__enter__</code>, tout ce qui est après est l&#8217;équivalent de <code>__exit__</code>. Ce qui est &#8220;yieldé&#8221; est ce que l&#8217;on récupère avec le mot clé <code>as</code>.</p>
+<h2>Context manager et décorateur, le shampoing deux en un</h2>
+<p>Ces deux fonctionnalités se ressemblent beaucoup: elles permettent toutes les deux de lancer du code automatiquement avant et après un code tiers. La seule différence est que le context manager le fait à la demande, alors que le décorateur s&#8217;applique à la définition d&#8217;une fonction.</p>
+<p>Quand on sait comment ils marchent, il est facile de faire un context manager utilisable également en tant que décorateur.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> functools <span style="color: #ff7700;font-weight:bold;">import</span> wraps
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> ContextDecorator<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># __call__ est une méthode magique appelée quand on utilise () sur un objet</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__call__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> f<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># bon, cette partie là suppose que vous savez comment marche un</span>
+        <span style="color: #808080; font-style: italic;"># décorateur, si c'est pas le cas, retournez lire l'article sur S&amp;amp;M</span>
+        <span style="color: #808080; font-style: italic;"># linké dans le premier paragraphe</span>
+        <span style="color: #66cc66;">@</span>wraps<span style="color: black;">&#40;</span>f<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">def</span> decorated<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwds<span style="color: black;">&#41;</span>:
+            <span style="color: #808080; font-style: italic;"># notez le with appelé sur soi-même, c'est y pas mignon !</span>
+            <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">self</span>:
+                <span style="color: #ff7700;font-weight:bold;">return</span> f<span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwds<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> decorated</pre></td></tr></table></div>
+
+<p>Et voilà, il suffit d&#8217;hériter de ça, et on a un décorateur + context manager. Par exemple, si on veut timer un truc:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> TimeIt<span style="color: black;">&#40;</span>ContextDecorator<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> __enter__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">start</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">self</span>.<span style="color: black;">start</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> __exit__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">type</span><span style="color: #66cc66;">,</span> value<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">traceback</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: black;">&#40;</span><span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> -<span style="color: #008000;">self</span>.<span style="color: black;">start</span><span style="color: black;">&#41;</span>.<span style="color: black;">total_seconds</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Timer juste un appel:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># faire un truc</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">with</span> TimeIt<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Timer tous les appels:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">@</span>TimeIt<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> foo<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+   <span style="color: #808080; font-style: italic;"># faire un truc</span></pre></td></tr></table></div>
+
+<p>Notez que <a href="http://docs.python.org/py3k/library/contextlib.html#contextlib.ContextDecorator">ContextDecorator</a> est présent par défaut dans le module <code>contextlib</code> sous Python 3.2.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/shampooing-demelant-chien-demavic-laboratoire-2-1-z-345-34502.jpg" length="25075" type="image/jpg" />	</item>
+		<item>
+		<title>J&#8217;adore les context managers Python</title>
+		<link>http://sametmax.com/jadore-les-context-managers-python/</link>
+		<comments>http://sametmax.com/jadore-les-context-managers-python/#comments</comments>
+		<pubDate>Tue, 24 Jul 2012 15:15:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[contextmanager]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[file]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[with]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1296</guid>
+		<description><![CDATA[Loin de moi l'idée de faire un tuto ce matin sur les context managers, mais j'ai juste l'envie d'énoncer tout haut mon amour cette fonctionnalité.]]></description>
+				<content:encoded><![CDATA[<p>En Python il y a plein de trucs pas du tout indispensables: les metaclasses, <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs</a>, les <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">listes en intentions</a>&#8230; Elles sont là uniquement pour rendre le langage plus agréable à l&#8217;usage, mais on pourrait faire sans. Les context managers en font partie. Loin de moi l&#8217;idée de faire un tuto ce matin sur les context managers, mais j&#8217;ai juste l&#8217;envie d&#8217;énoncer tout haut mon amour cette fonctionnalité.</p>
+<p>Prenez un model Django Media: vous transcodez ce media, vous faites souvent des opérations dans son dossier. Il faut s&#8217;assurer que ça marche. Et quand ça foire, il faut s&#8217;assurer que l&#8217;on a bien nettoyé le répertoire de travail.</p>
+<p>Hop:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Media<span style="color: black;">&#40;</span>models.<span style="color: black;">Model</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: black;">&#91;</span>...<span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #66cc66;">@</span>contextmanager
+    <span style="color: #ff7700;font-weight:bold;">def</span> in_dir<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> delete_on_error<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># si vous ne comprenez pas ce code, ne vous en faites pas,</span>
+        <span style="color: #808080; font-style: italic;"># c'est du Python avancé</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #dc143c;">os</span>.<span style="color: black;">makedirs</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: #008000;">dir</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: black;">&#40;</span><span style="color: #008000;">OSError</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+            <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #008000;">self</span>.<span style="color: #008000;">dir</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> delete_on_error:
+                <span style="color: #dc143c;">shutil</span>.<span style="color: black;">rmtree</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: #008000;">dir</span><span style="color: black;">&#41;</span>
+            <span style="color: #ff7700;font-weight:bold;">raise</span></pre></td></tr></table></div>
+
+<p>Et voilà, Max dans ses scripts de transcoding magiques n&#8217;a pas à se poser de question. Il a juste à faire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">with</span> media.<span style="color: black;">in_dir</span><span style="color: black;">&#40;</span>delete_on_error<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> d:
+    <span style="color: #808080; font-style: italic;"># faire des trucs avec le dossier dont le chemin est dans &quot;d&quot;</span></pre></td></tr></table></div>
+
+<p>Le chemin spécifique pour ce média est garanti d&#8217;exister. </p>
+<p>Si il y a une exception, le dossier est garanti d&#8217;être nettoyé.</p>
+<p>C&#8217;est simple, c&#8217;est propre, c&#8217;est beau. J&#8217;aime.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/jadore-les-context-managers-python/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/sugar1.jpg" length="19402" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; pip</title>
+	<atom:link href="http://sametmax.com/tag/pip/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Comment installer des libs Python externes dans QGIS ? 6</title>
+		<link>http://sametmax.com/comment-installer-des-libs-externes-dans-qgis/</link>
+		<comments>http://sametmax.com/comment-installer-des-libs-externes-dans-qgis/#comments</comments>
+		<pubDate>Tue, 31 Mar 2015 09:16:35 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[qgis]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16016</guid>
+		<description><![CDATA[QGIS vient avec son Python perso, séparé du reste du système. Du coup si vous faites un pip install une_lib, elle s&#8217;installera sur le Python du système, et non de QGIS. Si vous voulez utiliser requests ou arrow pour vos scripts, c&#8217;est relou, il faut les télécharger, les extraire, et les mettre à la main [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>QGIS vient avec son Python perso, séparé du reste du système. Du coup si vous faites un <code>pip install une_lib</code>, elle s&#8217;installera sur le Python du système, et non de QGIS. Si vous voulez utiliser <code>requests</code> ou <code>arrow</code> pour vos scripts, c&#8217;est relou, il faut les télécharger, les extraire, et les mettre à la main sur le <code>PYTHONPATH</code>.</p>
+<p>Il est pourtant possible de manipuler interpréteur Python de QGIS, c&#8217;est juste que ça saute pas aux yeux :) Ca va nous permettre d&#8217;installer pip (si ça ne vous parle par, on a <a href="http://sametmax.com/votre-python-aime-les-pip/">un article</a> pour ça), à la mano, à l&#8217;ancienne, comme un homme qui fait ses cartes à la main sur des calques avec des lames de rasoirs en guise de gomme.</p>
+<p>D&#8217;abord, trouver où il est niché. Sur ma machine, il est dans &#8220;C:\Program Files\QGIS Wien\bin\python.exe&#8221;.</p>
+<p>Si vous le démarrer, vous noterez qu&#8217;il plante en prétextant qu&#8217;il ne trouve pas le module <code>site</code>. Il faut donc lui dire où sont installées les libs en faisant:</p>
+<p><code>set PYTHONHOME=chemin vers l'installation de Python de QGIS.</code></p>
+<p>Chez moi ça donne :</p>
+<p><code>set PYTHONHOME=C:\Program Files\QGIS Wien\apps\Python27\</code></p>
+<p>Ainsi vous pouvez lancer <code>C:\Program Files\QGIS Wien\bin\python.exe</code> dans la console et obtenir le shell Python de QGIS.</p>
+<p>Ensuite, il faut télécharger <a href="https://bootstrap.pypa.io/ez_setup.py">ez_tools.py</a> qui va nous servir à installer setuptools dans le Python voulu. C&#8217;est un script Python (meta meta ! \^O^\), qu&#8217;on lance avec l&#8217;interpréteur qui nous intéresse, dans mon cas:</p>
+<p><code>"C:\Program Files\QGIS Wien\bin\python.exe" C:\Users\sam\Downloads\ez_setup.py</code></p>
+<p>Il va télécharger depuis internet tout un tas de trucs, et installer tout un tas de machins. Parfois, ça va râler parce que vous n&#8217;avez pas les droits. Dans ce cas, lancez la console en mode admin, et faites un <code>cd</code> sur le bureau avant de lancer la commande.</p>
+<p>Bien, on a setuptools, qui a du rajouter la commande <code>easy_install</code>. Chez moi elle est dans &#8220;C:\Program Files\QGIS Wien\apps\Python27\Scripts&#8221;.</p>
+<p>On va s&#8217;en servir pour installer <code>pip</code>.</p>
+<p>Que de bordel !</p>
+<p><code>C:\Program Files\QGIS Wien\apps\Python27\Scripts\easy_install.exe pip </code></p>
+<p>Ca remouline, ça re-dl.</p>
+<p>Ce qui va nous mettre la comamnde <code>pip</code> dans le même dossier qu&#8217;<code>easy_install</code>.</p>
+<p>Et pouf, en utilisant le chemin canonique, on peut utiliser <code>pip</code> :</p>
+<p><code>C:\Program Files\QGIS Wien\apps\Python27\Scripts\pip install ipython pyrealine</code></p>
+<p>Faites attention néanmoins, utiliser cet interpréteur hors de QGIS ne vous donne pas accès à des objets comme <code>iface</code> qui n&#8217;existent que quand l&#8217;UI de QGIS est chargée. Ca reste pratique pour installer des libs externes, faire des tests python rapides dans le même environnement que QGIS sans lancer tout le bouzin et se la péter face à ses collègues géomaticiens qui ont l&#8217;air d&#8217;une poule avec un canif devant une console.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-installer-des-libs-externes-dans-qgis/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/03/sOgMR3u.jpg" length="380787" type="image/jpg" />	</item>
+		<item>
+		<title>Wheel installs require setuptools &gt;= 0.8 for dist-info support. 2</title>
+		<link>http://sametmax.com/wheel-installs-require-setuptools-0-8-for-dist-info-support/</link>
+		<comments>http://sametmax.com/wheel-installs-require-setuptools-0-8-for-dist-info-support/#comments</comments>
+		<pubDate>Wed, 22 Jan 2014 19:24:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[setuptools]]></category>
+		<category><![CDATA[wheel]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8745</guid>
+		<description><![CDATA[Je ne sais pas pourquoi, mais une fois j'ai eu cette erreur en essayant d'installer un truc avec pip.]]></description>
+				<content:encoded><![CDATA[<p>Je ne sais pas pourquoi, mais une fois j&#8217;ai eu cette erreur en essayant d&#8217;installer un truc avec pip.</p>
+<p>La solution est de lancer :</p>
+<p><code>sudo pip install setuptools --no-use-wheel --upgrade</code></p>
+<p>Et on peut réutiliser pip sans problème.</p>
+<p>Zarb.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/wheel-installs-require-setuptools-0-8-for-dist-info-support/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/23348273.jpg" length="47277" type="image/jpg" />	</item>
+		<item>
+		<title>5 choses à apprendre en priorité en Python 8</title>
+		<link>http://sametmax.com/5-choses-a-apprendre-en-priorite-en-python/</link>
+		<comments>http://sametmax.com/5-choses-a-apprendre-en-priorite-en-python/#comments</comments>
+		<pubDate>Sun, 22 Dec 2013 08:57:17 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[comprehension-lists]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unpacking]]></category>
+		<category><![CDATA[virtualenv]]></category>
+		<category><![CDATA[yield]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8376</guid>
+		<description><![CDATA[Quand on apprend un nouveau langage de programmation, on apprend d'abord les bases. Et pour la plupart des langages, elles sont communes : déclarer une variable, faire des conditions et des boucles, faire des fonctions, importer un code d'un autre fichier, etc.
+
+Ce qui va différencier le moment où vous savez programmer dans CE langage, ce sont des notions spécifiques à lui que vous commencez à maitriser.]]></description>
+				<content:encoded><![CDATA[<p>Quand on apprend un nouveau langage de programmation, on apprend d&#8217;abord les bases. Et pour la plupart des langages, elles sont communes : déclarer une variable, faire des conditions et des boucles, faire des fonctions, importer un code d&#8217;un autre fichier, etc.</p>
+<p>Ce qui va différencier le moment où vous savez programmer dans CE langage, ce sont des notions qui lui sont spécifiques et que vous commencez à maitriser.</p>
+<p>Voici 5 notions spécifiques au langage qu&#8217;il faut apprendre en priorité si vous voulez pouvoir dire &#8220;je code en Python&#8221; :</p>
+<h2>Pip</h2>
+<p>Pip est la moyen le plus utilisé d&#8217;installer une bibliothèque externe dans l&#8217;environnement Python. Dès qu&#8217;on veut faire un projet sérieux, on en a besoin. Tellement qu&#8217;il va en fait être inclus par défaut dans Python 3.4.</p>
+<p><a href="http://sametmax.com/votre-python-aime-les-pip/">Lire l&#8217;article sur pip.</a></p>
+<h2>Virtualenv</h2>
+<p>Virtualenv permet d&#8217;isoler plusieurs installations de Python. A partir du moment où l&#8217;on travaille sur plusieurs projets en même temps, il devient vite indispensable. Mais personnellement, je l&#8217;utilise même quand je n&#8217;ai qu&#8217;un projet installé sur une machine car il me permet de le séparer du setup Python du système et d&#8217;utiliser des hooks.</p>
+<p>Un outil qui a été ajouté dans la lib standard en Python 3.3. J&#8217;apprécie que le pragmatisme de l&#8217;évolution de Python qui intègre petit à petit les projets qui se sont révélés les outils de facto dans la communauté.</p>
+<p><a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">Lire l&#8217;article sur virtualenv.</a></p>
+<h2>Les listes en intention</h2>
+<p>J&#8217;ai envie de dire l&#8217;itération en générale, mais c&#8217;est un très vaste sujet, et il est couvert en grande partie par les 3 derniers points.</p>
+<p>La liste en intention, ou liste en compréhension, est une manière de boucler sur un itérable (souvent une liste), avec optionellement un filtre, afin de produire une nouvelle liste. En une ligne.</p>
+<p>C&#8217;est stylistiquement la marque de fabrique de Python (même si c&#8217;est piqué à Haskell). C&#8217;est également ce qui le rend aussi expressif. On peut presque coder tout un programme en déclaratif avec des enchainements de listes en intention.</p>
+<p>C&#8217;est beau, propre, efficace et court. IN-DIS-PEN-SA-BLE.</p>
+<p><a href="http://sametmax.com/python-love-les-listes-en-intention-partie/">Lire l&#8217;article sur les listes en intention.</a></p>
+<h2>L&#8217;unpacking</h2>
+<p>L&#8217;unpacking est une autre fonctionalité typiquement pythonienne qui permet de prendre un itérable (souvent un tuple), et de mettre ses éléments dans des variables d&#8217;une traite.</p>
+<p>Cela permet d&#8217;augmenter drastiquement la lisibilité des programmes.</p>
+<p><a href="http://sametmax.com/tag/unpacking/">Lire les articles sur l&#8217;unpacking.</a></p>
+<h2>Les générateurs</h2>
+<p>Les générateurs permettent non seulement un énorme gain en performance, mais en plus ils autorisent le traitement itératif de flux de données dont on ne connait pas la taille en avance, voire de taille infinie. Si vous utilisez des expressions génératrices, vous pourrez le faire en déclaratif. Si vous utilisez <code>yield</code>, vous pourrez cacher un algorithme complet derrière une simple boucle <code>for</code>.</p>
+<p><a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">Lire l&#8217;article sur yield.</a></p>
+<h2>Le reste ?</h2>
+<p>Tout le reste, c&#8217;est du détail. Les décorateurs, la POO, l&#8217;opérateur <code>with</code>, les métaclasses, les astuces magiques pour faire ceci ou cela. C&#8217;est bien, mais ça peut attendre. Ce sont ces 5 notions, qui, bien utilisées, feront d&#8217;un programmeur un dev Python.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/5-choses-a-apprendre-en-priorite-en-python/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/Xk9nO.jpg" length="96900" type="image/jpg" />	</item>
+		<item>
+		<title>Comment tailler une pipe 15</title>
+		<link>http://sametmax.com/comment-tailler-une-pipe/</link>
+		<comments>http://sametmax.com/comment-tailler-une-pipe/#comments</comments>
+		<pubDate>Sat, 16 Nov 2013 18:54:40 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Cul]]></category>
+		<category><![CDATA[féllation]]></category>
+		<category><![CDATA[nsfw]]></category>
+		<category><![CDATA[pip]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7964</guid>
+		<description><![CDATA[Malgré l'abondance du matériel pornographique sur le sujet, je suis certain que de nombreuses femmes se demandent comment faire une fellation.]]></description>
+				<content:encoded><![CDATA[<p>Sur ce blog, l&#8217;article qui a le plus cartonné n&#8217;a évidement absolument rien à avec Python : c&#8217;est le <a href="http://sametmax.com/un-peu-de-theorie-sur-la-masturbation-feminine-en-video/">tuto video sur la masturbation féminine</a> (même <a href="http://sametmax.com/sol-do-mi-sol-do-mi-sol-do-mi/">celui sur la sodomie</a> n&#8217;a pas fait mieux)</a>. En l’occurrence qui s&#8217;adresse aux mecs qui veulent prendre en main leur nana, mais qui je suis sûr a intéressé quelques femmes également. Pour la culture (du point) G.</p>
+<p>Malgré l&#8217;abondance du matériel pornographique sur le sujet, je suis certain que de nombreuses femmes se demandent comment faire une fellation. En effet, on le souligne rarement, mais <a href="http://sametmax.com/beaucoup-de-femmes-sont-de-mauvais-coups/">il y a autant de mauvais coups femmes que hommes</a>, la différence majeure étant que la plupart des hommes se satisfont de relations sexuelles de piètre qualité (pour des raisons pathétiques, mais ce n&#8217;est pas le sujet de l&#8217;article).</p>
+<p>Et dans le lot il y en a forcément qui se demandent comment changer cela. Après tout personne n&#8217;est né pour mettre la bite de quelqu&#8217;un dans sa bouche, c&#8217;est forcément une connaissance artificielle. Et puis on a un lectorat gay également, même si je doute qu&#8217;on puisse leur apprendre quoique ce soit. Pro-tip : si vous avez des amis LGB extravertis, demandez leurs des conseils, ils sont simplement meilleurs que vous au pieu.</p>
+<p>Comme pour le cuni, il n&#8217;y a pas de méthode empaquetée, prête à être livrée, mais voici quelques points clés.</p>
+<h2>Le teaser</h2>
+<p>Je le répète souvent, le sexe est la dînette des adultes. C&#8217;est du théâtre. C&#8217;est pour le fun. Et la reproduction, mais bon, la turlute n&#8217;est pas indiquée pour ça.</p>
+<p>La pipe n&#8217;échappe pas à cette règle, elle sera meilleur si vous jouez le jeu.</p>
+<p>D&#8217;abord il y a <a href="http://sametmax.com/la-moitie-du-plaisir-dune-pipe/">le regard</a>. Un regard sûr(e) de soi (faites semblant), coquin ou carrément cochon. Un air qui dit qu&#8217;on en a envie.</p>
+<p>Et il y a l&#8217;approche. Pas trop rapide, un peu joueur ou alors bestial, comme vous voulez, mais faites une mise en scène, c&#8217;est plus sympa.</p>
+<p>Encore une fois, personne ne baise 5 étoiles tous les jours, ce sont juste des conseils.</p>
+<h2>La prise en main</h2>
+<p>Commencez par décalotter, car rien ne sert de sucer un gland recouvert. </p>
+<p>Celui-ci est sensible au début, donc gardez la main à la base du pénis. Vous pouvez y aller fermement, la base n&#8217;est pas sensible. Les doigts autour de la verge, la paume reposant, et poussant, sur la base. Un micro mouvement de va et vient en appuyant lentement, mais avec un peu de force vers le bas peut être appliqué.</p>
+<p><strong>Évitez de remonter la main à plus de quelques centimètres du gland est le plus important au début.</strong></p>
+<p>Mais comme pour le broute minou, il y a beaucoup de question de goût dans tout ce que je vais dire, donc souvenez-vous que ce sont des indications pour avoir de bonnes bases, pas des recettes miracles. J&#8217;ai rencontré un suisse qui me disait une fois qu&#8217;il adorait qu&#8217;on lui fasse des genres de brûlure indienne sur la tub. Je sais, j&#8217;ai des conversations bizarres. C&#8217;était près du lac du Loch Ness, alors la bizarrerie, vous savez&#8230;</p>
+<p>Si vous savez masturber votre partenaire, vous pouvez alterner sans problème, et même pratiquer une masturbation particulièrement forte sur la fin. Mais attention, branler un mec correctement est généralement plus difficile que de le sucer. Pour vous entraîner, faites le en étant derrière lui d&#8217;abord, votre main sera dans le bon sens de la courbure donc se sera plus facile.</p>
+<h2>La prise en bouche</h2>
+<p>Je sais qu&#8217;on voit beaucoup de pornos où la meuf s&#8217;acharnent comme une malade sur le dard de son ou ses partenaires, mais bien que ça puisse être excitant à regarder, c&#8217;est rarement aussi agréable physiquement que quelqu&#8217;un qui y va à un rythme modéré au départ. </p>
+<p>Bien entendu, comme souvent dans le cul, on accélère sur la fin, on y va plus fort, et on peu aussi commencer en mode bête sauvage dès le début, mais c&#8217;est contextuel. Pour la plupart des cas, doucement, puis on accélère.</p>
+<p><strong>Le plus important est de ne pas sentir les dents et de bien lubrifier. </strong></p>
+<p>Ça veut dire notamment saliver abondamment sur la bite. Abondamment. Crachez dessus si c&#8217;est trop sec. Si, si. Il faut que ça soit bien mouillé. </p>
+<p>Et gardez votre air coquin, ça aide.</p>
+<p>Pour les dents, c&#8217;est une question d’entraînement. Une copine bi m&#8217;a dit qu&#8217;avant sa première fois avec un mec, elle n&#8217;avait eu que des nanas, et était donc un peu perdu. Elle s&#8217;est finalement entraîné sur son pouce.</p>
+<p>C&#8217;est un très bon conseil pour les dents et la salive. Pour le mouvement et autre, non. Mais il est très facile de voir si on sent ses dents sur son propre pouce, et assez simple de s’apercevoir si ça glisse tout seul ou si c&#8217;est un peu sec.</p>
+<p>Vous avez déjà du entendre parler ou voir du deept throat ou du bukkake, des pratiques qui consiste essentiellement à traiter la bouche de la femme comme un vagin-auto-tamponneuse. Le plaisir qui en est retiré est purement psychologique et n&#8217;apporte aucun agrément physique. Il y a en fait peu d&#8217;hommes qui aiment ça, même si ils existent. Ce n&#8217;est pas parce que ça vous excite en vidéo que vous le voulez en vrai. Donc renseignez vous avant, et dans le doute, on vit très bien sans.</p>
+<h2>Le finish</h2>
+<p>Le finish est très important. Si vous êtes en train de faire quelque chose quand il vient, il aura bien plus de plaisir si vous ne vous arrêtez pas quand il jouit. Que ça soit branler ou sucer.</p>
+<p>Maintenant il y a des tas de meufs qui n&#8217;ont pas envie de se prendre une giclée de sperme, ce que je comprends. Demandez au mec de prévenir dans ce cas avant qu&#8217;il vienne. Si vous ne dites rien&#8230;</p>
+<p>La finition en bouche est très agréable, et bien entendu, personne ne vous oblige à avaler. Aller cracher juste après et vous laver les dents et tout à faire normal. Refuser catégoriquement aussi :-)</p>
+<p>Sinon, venir sur les nichons n&#8217;apporte pas de sensation en plus, mais dans la tête ça turbine, et c&#8217;est un bon compromis.</p>
+<p>Ne vous mettez pas non plus martèle en tête. Vous lui avez sucé la bite, si en plus il se plaint que la fin lui convient pas, mettez lui un god dans le cul, ça le calmera.</p>
+<h2>Quelques exemples</h2>
+<p>Bon, tout ça c&#8217;est très théorique, mais ça donne quoi en pratique ?</p>
+<p>Voici deux styles un peu différents, et les deux sont de bons exemples :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="510" height="400" src="http://xhamster.com/xembed.php?video=784989" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://www.youjizz.com/videos/embed/2229839" frameborder="0" width="704" height="550" scrolling="no" allowtransparency="true" class="iframe-class"></iframe>
+
+<p>Et voici un exemple qui peut être excitant en vidéo, mais qui, sauf quelques exceptions (contexte, personnes, alcoolémie, phases de la lune), rend vachement moins bien IRL :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="510" height="400" src="http://www.sextvx.com/fr/embed/331780" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<h2>Tips</h2>
+<p>Il existe quelques moments particulièrement chouettes pour glisser une fellation. Il faut qu&#8217;elle vienne de vous dans ce cas là, mais ça fait toujours plaisir :</p>
+<ul>
+<li>Dans la voiture en conduisant.</li>
+<li>Sûr le fauteuil pendant un film.</li>
+<li>Sous le bureau pendant le travail.</li>
+<li>Sous la douche.</li>
+<li>Au réveil.</li>
+</ul>
+<p>L&#8217;idée est que ce soit spontané et imprévu. J&#8217;ai une copine une fois qui, juste avant de partir au boulot, au lieu de m&#8217;embrasser, m&#8217;a sucé en quelques secondes, puis est partie sans dire un mot. Je m&#8217;en souviens encore. </p>
+<p>Notez que le problème de la pipe surprise (et même sans surprise), c&#8217;est que le mec peut avoir la bite sale. Or vous n&#8217;allez pas lui demander de se la laver avant, imagez qu&#8217;il fasse ça pour un cuni&#8230;</p>
+<p>L&#8217;astuce, c&#8217;est d&#8217;avoir des lingettes pour bébé. Bien choisir sa marque pour que le goût soit pas dégueu, ça fait briller un braquemart en 5 secondes, remplaçant l&#8217;odeur de crevette faisandée par un doux fumet de what-ever-is-inside-the-stuff.</p>
+<p>Une fois qu&#8217;il est venu, n&#8217;hésitez pas à le nettoyer avec un mouchoir ou un lingette. C&#8217;est très agréable.</p>
+<p>Oh, et si vous avez envie d&#8217;un massage ou d&#8217;un léchage, demandez le avant la pipe, après c&#8217;est foutu :-)</p>
+<p>Pour finir, un petit résumé :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe src="http://flashservice.xvideos.com/embedframe/1356658" frameborder="0" width="510" height="400" scrolling="no" class="iframe-class"></iframe>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-tailler-une-pipe/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/tumblr_mv8537gRRr1r539hzo1_500.jpg" length="71482" type="image/jpg" />	</item>
+		<item>
+		<title>Crate.io, une alternative à Pypi 5</title>
+		<link>http://sametmax.com/create-io-une-alternative-a-pypi/</link>
+		<comments>http://sametmax.com/create-io-une-alternative-a-pypi/#comments</comments>
+		<pubDate>Thu, 22 Nov 2012 15:14:49 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[pypi]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3163</guid>
+		<description><![CDATA[Si vous avez lu l'article sur <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>, vous savez que le listing officiel des libs Python est <a href="http://pypi.python.org/pypi">Pypi</a>, un site for pratique, mais qui commence à dater.
+]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez lu l&#8217;article sur <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>, vous savez que le listing officiel des libs Python est <a href="http://pypi.python.org/pypi">Pypi</a>, un site fort pratique, mais qui commence à dater.</p>
+<p>Apparemment certains ont eu envie de changer ça, en créant <a href="https://crate.io/">crate.io</a>, une alternative moderne à Pypi: interface plus léchée et présentant des stats sympathiques, il est un mirroir complet de Pypi et contient donc les <a href="https://crate.io/packages/zerobin/">mêmes packages</a>.</p>
+<p>On peut demander à pip d&#8217;utiliser <a href="https://create.io/">create.io</a> comme source. Par exemple pour installer Django:</p>
+<p><code> pip install --index-url=https://simple.crate.io django </code></p>
+<p>Pratique si Pypi n&#8217;est pas disponible, ou juste pour ne pas mettre tous ses oeufs dans le même panier.</p>
+<p>Il est important de noter que c&#8217;est une initiative privée, alors que Pypi est gérée par la Python fondation, les buts ne sont pas les mêmes. Cela dit, les sources sont disponibles sur <a href="https://github.com/crateio">github</a>, donc ça met en confiance. On peut d&#8217;ailleurs voir que le bouzin tourne avec Django/Postgesql/Redis/Celery.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/create-io-une-alternative-a-pypi/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/Stine-Robert-Lawrence-Jumeau-Diabolique-Livre-368001230_ML.jpg" length="15157" type="image/jpg" />	</item>
+		<item>
+		<title>Créer un setup.py et mettre sa bibliothèque Python en ligne sur Pypi 52</title>
+		<link>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/</link>
+		<comments>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/#comments</comments>
+		<pubDate>Fri, 16 Nov 2012 18:06:09 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[pypi]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3102</guid>
+		<description><![CDATA[Je crois que ce sujet est dans le top 10 des trucs qui paraissent mystiques même après avoir passé des heures sur les docs sur le net. Et si ça prend effectivement un peu de temps CPU neuronale pour s'en sortir, on est loin de la montagne qu'on s'en est fait.
+
+Scénario: vous avez écrit une lib. Elle est belle, elle sent bon le sable chaud. Vous voulez la partager.]]></description>
+				<content:encoded><![CDATA[<p>Je crois que ce sujet est dans le top 10 des trucs qui paraissent mystiques même après avoir passé des heures sur les docs sur le net. Et si ça prend effectivement un peu de temps CPU neuronale pour s&#8217;en sortir, on est loin de la montagne qu&#8217;on s&#8217;en est fait.</p>
+<p>Scénario: vous avez écrit une lib. Elle est belle, elle sent bon le sable chaud. Vous voulez la partager.</p>
+<p>La première étape, c&#8217;est de créer une fichier setup.py qui permettra aux gens de l&#8217;installer. La seconde, c&#8217;est de la mettre en ligne sur le site Pypi pour que les gens puissent l&#8217;installer avec <a href="http://sametmax.com/votre-python-aime-les-pip/">pip</a>.</p>
+<p>Nous allons donc créer un <em>setup.py</em> pour une lib incroyable: la &#8220;sm_lib&#8221;.</p>
+<h2>Arborescence</h2>
+<p>Généralement, quand on développe une petite lib au fil de l&#8217;eau, on une forte tendance à tout mettre en vrac dans un dossier. Cependant pour créer un paquet installable, il est beaucoup plus simple et propre d&#8217;avoir une organisation de fichiers standards. On peut faire sans, mais c&#8217;est prise de tête.</p>
+<p>Prenons notre lib exceptionnelle&#8230;</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/11/Capture-du-2012-11-16-1058501.png" class="grouped_elements" rel="tc-fancybox-group3102"><img src="http://sametmax.com/wp-content/uploads/2012/11/Capture-du-2012-11-16-1058501.png" alt="" title="" width="313" height="386" class="aligncenter size-full wp-image-3108" /></a></p>
+<p>Pour le moment, elle est composée d&#8217;un dossier &#8220;sm_lib&#8221; avec 3 fichiers:</p>
+<ul>
+<li>une photo des auteurs (suite aux plaintes reçues, nous avons une nouvelle ligne de conduite concernant les photographies. Demain, les bébés !);</li>
+<li>l&#8217;indispensable <em>__init__.py</em>, qui est vide;</li>
+<li>un fichier <em>core.py</em> (qui peut avoir n&#8217;importe quel nom) qui contient le code de notre lib dont le but est de diffuser un message hautement subversif:</li>
+</ul>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> proclamer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;[%s] Sam et Max, c'est bien&quot;</span> % <span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+    proclamer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Maintenant que nous avons changé de mentalité, nous voulons absolument propager notre nouveau message et ton du blog partout, donc on va distribuer cette bibliothèque.</p>
+<p>Premièrement, on va réorganiser les fichiers et en rajouter quelques uns:</p>
+<p><a href="http://sametmax.com/wp-content/uploads/2012/11/Capture-du-2012-11-16-111239.png" class="grouped_elements" rel="tc-fancybox-group3102"><img src="http://sametmax.com/wp-content/uploads/2012/11/Capture-du-2012-11-16-111239.png" alt="On met sm_lib dans un dossier sm_lib" title="" width="376" height="779" class="aligncenter size-full wp-image-3109" /></a></p>
+<p>Vous noterez qu&#8217;on a mis notre dossier de lib, dans un autre dossier, et que les deux dossiers portent le même nom &#8220;sm_lib&#8221;. C&#8217;est redondant, mais c&#8217;est normal. Le dossier qui contient tout est le dossier de distribution, c&#8217;est l&#8217;emballage de notre lib. Le dossier qui contient notre code, c&#8217;est le dossier d&#8217;installation, c&#8217;est celui qui sera copié sur le système, et qui doit avoir un nom de package importable (uniquement des lettres et des _ dans le nom, ou un chiffre mais pas en premier caractère).</p>
+<p>Les noms peuvent être différents, mais généralement on donne le même nom aux deux, car c&#8217;est plus simple.</p>
+<p>On rajoute 3 fichiers:</p>
+<ul>
+<li>setup.py: un fichier de code Python qui est notre installeur.</li>
+<li>MANIFEST.in: un fichier texte qui liste les fichiers non Python qu&#8217;on inclura dans l&#8217;installation.</li>
+<li>README.md: un fichier markdown (c&#8217;est du texte, juste un peu formaté) contiendra une présentation du package.</li>
+</ul>
+<p>Pour le moment nos trois fichiers sont vides.</p>
+<h2>Choix des outils</h2>
+<p>Une des difficultés principales dans la distribution d&#8217;un code Python, c&#8217;est l&#8217;abondance de solutions. Pour l&#8217;installeur, on peut choisir entre <code>distribute</code>, <code>setuptools</code>, <code>distutils</code> ou <code>Distutils2</code>.</p>
+<p>Je vous passe les détails, mais j&#8217;ai essayé les 4. <code>distutils</code> est trop vieux. <code>distribute</code> va être remplacé par <code>distutils2</code> qui lui est encore très jeune. La seule solution qui passe partout pour le moment c&#8217;est <code>setuptools</code>. Tarek Ziade va faire la gueule, mais c&#8217;est ce que je recommande d&#8217;utiliser pour le moment. Je metterai à jour cet article pour utiliser un <em>setup.cfg</em> et des moyens plus modernes quand tout ça sera devenu la solution de facto, mais je ne vais pas pousser à la migration.</p>
+<p>Donc vous allez utiliser <code>setuptools</code>.</p>
+<p>Ensuite on utilise un fichier <em>MANIFEST.in</em> pour lister les fichiers non Python. On pourrait tout passer en paramètres à la main, mais le manifeste est la solution la plus productive.</p>
+<p>Enfin on utilise un fichier markdown. ReST est le standard en Python, mais il est compliqué (je me suis tapé suffisament de doc sphynx pour témoigner), et pas géré par Github par défaut. Markdown ressort bien sur Pypi même sans conversion en HTML, donc on va garder ce format.</p>
+<p>Oh, et ça va sans dire, mais ça va mieux en le disant, on va distribuer les fichiers sous forme de source pure, pas sous forme d&#8217;exe ou d&#8217;egg. C&#8217;est installable avec pip sur toutes les plateformes, et ça évite bien des prises de tête.</p>
+<h2>Rendez votre paquets user friendly</h2>
+<p>La première chose à faire, avant de mettre en ligne, c&#8217;est de rendre votre paquets facile à utiliser. Assurez-vous d&#8217;avoir les docstrings qui vont bien, et faciliter les imports.</p>
+<p>Par exemple, dans notre <em>__init__.py</em>, on va rajouter:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> core <span style="color: #ff7700;font-weight:bold;">import</span> proclamer</pre></td></tr></table></div>
+
+<p>Ainsi, l&#8217;utilisateur pourra faire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> sm_lib <span style="color: #ff7700;font-weight:bold;">import</span> proclamer</pre></td></tr></table></div>
+
+<p>au lieu de :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> sm_lib.<span style="color: black;">core</span> <span style="color: #ff7700;font-weight:bold;">import</span> proclamer</pre></td></tr></table></div>
+
+<p>Faites cela uniquement pour les fonctions et classes les plus utiles. C&#8217;est un détail, mais ça rend l&#8217;expérience plus agréable.</p>
+<p>Ensuite, si l&#8217;utilisateur est dans son shell, il va utiliser l&#8217;autocompletion pour découvrir votre lib. Il va se balader, et spammer &#8220;tab&#8221; pour voir &#8220;ce qu&#8217;il y a dedans&#8221;.</p>
+<p>Pour faciliter ce process, limitez ce qui est importable avec <code>__all__</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+__all__ <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'proclamer'</span><span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> proclamer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;[%s] Sam et Max, c'est bien&quot;</span> % <span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+    proclamer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ainsi, seul<code> proclamer()</code> sera importable depuis le module <code>core</code> si quelqu&#8217;un fait un <code>import *</code>. En effet, en important <code>datetime</code>, vous l&#8217;insérer dans le namespace de <code>core</code>, et donc il sera importable en faisant <code>from sm_lib.core import datetime</code>, et il apparaîtra dans l&#8217;autocompletion. Ici ça parait dérisoire, mais sur les grosses libs, ça fait beaucoup de bruit.</p>
+<p><code>__all__</code> est une liste strings qui contient les noms de tout ce qu&#8217;on autorise à importer depuis ce module. Utilisez le pour rendre votre API d&#8217;import propre comme la chatte de&#8230; comme un sous neuf pardon. Désolé, par encore habitué à parler la novlang. On s&#8217;y met. On s&#8217;y met.</p>
+<p>Pour finir on met les docstrings qui vont bien:</p>
+<ul>
+<li>une dans <em>__init__.py</em> pour décrire le package;</li>
+<li>une au sommet de <em>core.py</em> pour décrire module;</li>
+<li>une dans <code>proclamer()</code> pour décrire la fonction.</li>
+</ul>
+<p>Ainsi l&#8217;utilisateur qui va installer votre lib s&#8217;y retrouvera très facilement en utilisant la fonction <code>help()</code>. Même sans doc et hors ligne.</p>
+<p><em>__init__.py</em> (on rajoute aussi l&#8217;en-tête d&#8217;encoding vu que la docstring contient des caractères non-ASCII):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    Ce module proclame la bonne parole de sieurs Sam et Max. Puissent-t-ils
+    retrouver une totale liberté de pensée cosmique vers un nouvel age
+    reminiscent.
+&quot;&quot;&quot;</span>
+&nbsp;
+__version__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;0.0.1&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> core <span style="color: #ff7700;font-weight:bold;">import</span> proclamer</pre></td></tr></table></div>
+
+<p>On a aussi rajouté la version, car il n&#8217;y a rien de plus chiant que d&#8217;avoir un bug sur une lib et de ne pas savoir de quelle version il s&#8217;agit. Il va falloir maintenir cette variable à jour.</p>
+<p>Et <em>core.py</em>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    Implémentation de la proclamation de la bonne parole.
+&nbsp;
+    Usage:
+&nbsp;
+    &gt;&gt;&gt; from sm_lib import proclamer
+    &gt;&gt;&gt; proclamer()
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">datetime</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+&nbsp;
+__all__ <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'proclamer'</span><span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> proclamer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Fonction de proclamation de la bonne parole. Aucun paramètre, et
+        retourne None, car tout le monde say que &quot;Ex nihilo nihil&quot;
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;[%s] Sam et Max, c'est bien&quot;</span> % <span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">&quot;__main__&quot;</span>:
+    proclamer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Je vous passe le pamphlet sur les tests, c&#8217;est plusieurs articles rien que pour expliquer le pourquoi du comment. C&#8217;est mieux si vous en avez, mais si vous n&#8217;en avez pas, ne vous empêchez pas de publier, ça peut se rajouter au fur et à mesure.</p>
+<p>Petite remarque en passant: je met toute la doc en français pour que vous compreniez le principe, mais si vous publiez un truc, je vous recommande chaudement de tout écrire en anglais de A à Z (variables, fonctions, modules, docstrings, comments, readme, doc, tests, etc). Sans quoi votre audience sera limitée au nombre de francophones qui programment, et en Python, et qui ont le niveau pour intéresser aux libs externes. Autant dire l&#8217;équivalent de l&#8217;audience ridicule de ce blog.</p>
+<h2>README</h2>
+<p>Dans le fichier README.md, qui est un fichier texte ordinnaire, assurez-vous de mettez les choses suivante:</p>
+<ul>
+<li>A quoi sert la lib.</li>
+<li>Comment l&#8217;installer.</li>
+<li>Un exempe concret d&#8217;utilisation.</li>
+<li>La licence d&#8217;utilisation.</li>
+<li>Un lien vers la doc si elle existe.</li>
+</ul>
+<p>Nous allons mettre le texte au format markdown. C&#8217;est <a href="http://daringfireball.net/projects/markdown/basics">un format très simple</a> qui a le double avantage d&#8217;être automatiquement transformé en HTML par Github, et qui est bien lisible même quand il reste brut, tel qu&#8217;il sera affiché sur Pypi.</p>
+<p>Dans notre cas, README.md va ressembler à un mélange des docstrings, un peu amélioré:</p>
+<pre>SM Lib - Proclame la bonne parole de sieurs Sam et Max
+========================================================
+
+Ce module proclame la bonne parole de sieurs Sam et Max. Puissent-t-ils
+retrouver une totale liberté de pensée cosmique vers un nouvel age
+reminiscent.
+
+Vous pouvez l'installer avec pip:
+
+    pip install sm_lib
+
+Exemple d'usage:
+
+    >>> from sm_lib import proclamer
+    >>> proclamer()
+
+Ce code est sous licence <a href="https://en.wikipedia.org/wiki/WTFPL">WTFPL</a>.</pre>
+<h2>MANIFEST.in</h2>
+<p>Le fichier va contenir une liste de tous les fichiers non Python qu&#8217;on veut inclure dans le package. Dans notre cas, la photo et le README.</p>
+<pre>include *.md
+recursive-include sm_lib *.jpg</pre>
+<p>La syntaxe est elle aussi très simple, et utilise la notation des globs &#8220;*&#8221;.</p>
+<p>La première ligne dit d&#8217;inclure tout fichier dans le nom est &#8220;n&#8217;importe quoi&#8221;.md. Il va inclure le README.<br />
+La seconde ligne dit d&#8217;inclure récursivement tout fichier dans le dossier sm_lib et ses sous-dossiers qui est nommé &#8220;n&#8217;importe quoi&#8221;.jpg. Il va inclure notre photo.</p>
+<p>On peut mettre plusieurs lignes, et plusieurs motifs sur chaque ligne. Il n&#8217;est donc pas rare de voir des fichiers qui ressemblent à ça:</p>
+<pre>include *.txt *.rst
+recursive-include dir1 *.txt *.rst
+recursive-include dir2 *.png *.jpg *.gif
+recursive-include dir2 *.css *.js *.coffee</pre>
+<h2>Setup.py</h2>
+<p>C&#8217;est la partie difficile. Le fichier <em>setup.py</em> contient une fonction qui va magiquement installer votre lib, et il faut lui passer des paramètres et l&#8217;appeler. Le problème c&#8217;est que cette fonction compte 34 (à ma connaissance) arguments.</p>
+<p>Vous pouvez mettre n&#8217;importe quel code Python dans le <em>setup.py</em>, mais généralement la fonction <code>setup()</code> suffit.</p>
+<p>Je vais mettre dans ce <em>setup.py</em> les paramètres que vous utiliserez les plus souvent:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> setuptools <span style="color: #ff7700;font-weight:bold;">import</span> setup<span style="color: #66cc66;">,</span> find_packages
+&nbsp;
+<span style="color: #808080; font-style: italic;"># notez qu'on import la lib</span>
+<span style="color: #808080; font-style: italic;"># donc assurez-vous que l'importe n'a pas d'effet de bord</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> sm_lib
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ceci n'est qu'un appel de fonction. Mais il est trèèèèèèèèèèès long</span>
+<span style="color: #808080; font-style: italic;"># et il comporte beaucoup de paramètres</span>
+setup<span style="color: black;">&#40;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># le nom de votre bibliothèque, tel qu'il apparaitre sur pypi</span>
+    name<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'sm_lib'</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># la version du code</span>
+    version<span style="color: #66cc66;">=</span>sm_lib.__version__<span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Liste les packages à insérer dans la distribution</span>
+    <span style="color: #808080; font-style: italic;"># plutôt que de le faire à la main, on utilise la foncton</span>
+    <span style="color: #808080; font-style: italic;"># find_packages() de setuptools qui va cherche tous les packages</span>
+    <span style="color: #808080; font-style: italic;"># python recursivement dans le dossier courant.</span>
+    <span style="color: #808080; font-style: italic;"># C'est pour cette raison que l'on a tout mis dans un seul dossier:</span>
+    <span style="color: #808080; font-style: italic;"># on peut ainsi utiliser cette fonction facilement</span>
+    packages<span style="color: #66cc66;">=</span>find_packages<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># votre pti nom</span>
+    author<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;Sam et Max&quot;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Votre email, sachant qu'il sera publique visible, avec tous les risques</span>
+    <span style="color: #808080; font-style: italic;"># que ça implique.</span>
+    author_email<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;lesametlemax@gmail.com&quot;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Une description courte</span>
+    description<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;Proclame la bonne parole de sieurs Sam et Max&quot;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Une description longue, sera affichée pour présenter la lib</span>
+    <span style="color: #808080; font-style: italic;"># Généralement on dump le README ici</span>
+    long_description<span style="color: #66cc66;">=</span><span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'README.md'</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Vous pouvez rajouter une liste de dépendances pour votre lib</span>
+    <span style="color: #808080; font-style: italic;"># et même préciser une version. A l'installation, Python essayera de</span>
+    <span style="color: #808080; font-style: italic;"># les télécharger et les installer.</span>
+    <span style="color: #808080; font-style: italic;">#</span>
+    <span style="color: #808080; font-style: italic;"># Ex: [&quot;gunicorn&quot;, &quot;docutils &gt;= 0.3&quot;, &quot;lxml==0.5a7&quot;]</span>
+    <span style="color: #808080; font-style: italic;">#</span>
+    <span style="color: #808080; font-style: italic;"># Dans notre cas on en a pas besoin, donc je le commente, mais je le</span>
+    <span style="color: #808080; font-style: italic;"># laisse pour que vous sachiez que ça existe car c'est très utile.</span>
+    <span style="color: #808080; font-style: italic;"># install_requires= ,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Active la prise en compte du fichier MANIFEST.in</span>
+    include_package_data<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Une url qui pointe vers la page officielle de votre lib</span>
+    url<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'http://github.com/sametmax/sm_lib'</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Il est d'usage de mettre quelques metadata à propos de sa lib</span>
+    <span style="color: #808080; font-style: italic;"># Pour que les robots puissent facilement la classer.</span>
+    <span style="color: #808080; font-style: italic;"># La liste des marqueurs autorisées est longue:</span>
+    <span style="color: #808080; font-style: italic;"># https://pypi.python.org/pypi?%3Aaction=list_classifiers.</span>
+    <span style="color: #808080; font-style: italic;">#</span>
+    <span style="color: #808080; font-style: italic;"># Il n'y a pas vraiment de règle pour le contenu. Chacun fait un peu</span>
+    <span style="color: #808080; font-style: italic;"># comme il le sent. Il y en a qui ne mettent rien.</span>
+    classifiers<span style="color: #66cc66;">=</span><span style="color: black;">&#91;</span>
+        <span style="color: #483d8b;">&quot;Programming Language :: Python&quot;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">&quot;Development Status :: 1 - Planning&quot;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">&quot;License :: OSI Approved&quot;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">&quot;Natural Language :: French&quot;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">&quot;Operating System :: OS Independent&quot;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">&quot;Programming Language :: Python :: 2.7&quot;</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">&quot;Topic :: Communications&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># C'est un système de plugin, mais on s'en sert presque exclusivement</span>
+    <span style="color: #808080; font-style: italic;"># Pour créer des commandes, comme &quot;django-admin&quot;.</span>
+    <span style="color: #808080; font-style: italic;"># Par exemple, si on veut créer la fabuleuse commande &quot;proclame-sm&quot;, on</span>
+    <span style="color: #808080; font-style: italic;"># va faire pointer ce nom vers la fonction proclamer(). La commande sera</span>
+    <span style="color: #808080; font-style: italic;"># créé automatiquement. </span>
+    <span style="color: #808080; font-style: italic;"># La syntaxe est &quot;nom-de-commande-a-creer = package.module:fonction&quot;.</span>
+    entry_points <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+        <span style="color: #483d8b;">'console_scripts'</span>: <span style="color: black;">&#91;</span>
+            <span style="color: #483d8b;">'proclame-sm = sm_lib.core:proclamer'</span><span style="color: #66cc66;">,</span>
+        <span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+    <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># A fournir uniquement si votre licence n'est pas listée dans &quot;classifiers&quot;</span>
+    <span style="color: #808080; font-style: italic;"># ce qui est notre cas</span>
+    license<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;WTFPL&quot;</span><span style="color: #66cc66;">,</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Il y a encore une chiée de paramètres possibles, mais avec ça vous</span>
+    <span style="color: #808080; font-style: italic;"># couvrez 90% des besoins</span>
+&nbsp;
+<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<h2>Tester si tout marche bien</h2>
+<p>Si vous publiez du code, je vais partir du principe que vous utilisez au moins un <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenv</a> :-)</p>
+<p>Donc, activez un environnement de test, et dans le dossier contenant <em>setup.py</em>, faites:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python setup.py <span style="color: #c20cb9; font-weight: bold;">install</span></pre></td></tr></table></div>
+
+<p>Normalement votre lib devrait s&#8217;insaller dans votre env proprement. Vous devriez pouvoir faire dans un shell Python:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> sm_lib <span style="color: #ff7700;font-weight:bold;">import</span> proclamer
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> proclamer<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">2012</span>-<span style="color: #ff4500;">11</span>-<span style="color: #ff4500;">16</span> <span style="color: #ff4500;">13</span>:<span style="color: #ff4500;">06</span>:<span style="color: #ff4500;">58.128545</span><span style="color: black;">&#93;</span> Sam et Max<span style="color: #66cc66;">,</span> c<span style="color: #483d8b;">'est bien</span></pre></td></tr></table></div>
+
+<p>Et comme on a créé une commande, on doit aussi pouvoir faire depuis un terminal:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ proclame-sm
+<span style="color: #7a0874; font-weight: bold;">&#91;</span><span style="color: #000000;">2012</span>-<span style="color: #000000;">11</span>-<span style="color: #000000;">16</span> <span style="color: #000000;">13</span>:08:<span style="color: #000000;">18.763732</span><span style="color: #7a0874; font-weight: bold;">&#93;</span> Sam et Max, c<span style="color: #ff0000;">'est bien</span></pre></td></tr></table></div>
+
+<p>Si vous regardez dans votre virtualenv, vous verrez que votre package a été ajouté. Sur ma machine il se trouve par exemple à <em>~/.virtualenvs/test/lib/python2.7/site-packages/sm_lib-0.0.1-py2.7.egg/sm_lib</em>.</p>
+<p>La photo doit-être dedans, ainsi que le code Python. La photo est un exemple important à comprendre et à faire marcher car c&#8217;est le manifeste que vous utiliserez pour tous les fichiers non Python: CSS, Javascript, Documentation, Images, Xml, Json, etc. </p>
+<h2>Publier sur Pypi</h2>
+<p>Cela va vous paraitre étonnant, mais tout le monde peut publier sur Pypi. Pourvu que le nom soit disponible, vous pouvez en fait uploader n&#8217;importe quoi. Même une lib de test comme celle-ci.</p>
+<p>Entrez la commande (il faut avoir accès à internet):</p>
+<p><code>$ python setup.py register</code></p>
+<p>Ceci va inscrire votre lib dans leur listing. Et donnera une sortie qui ressemble à ça:</p>
+<pre>running register
+running egg_info
+writing sm_lib.egg-info/PKG-INFO
+writing top-level names to sm_lib.egg-info/top_level.txt
+writing dependency_links to sm_lib.egg-info/dependency_links.txt
+writing entry points to sm_lib.egg-info/entry_points.txt
+reading manifest file 'sm_lib.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+writing manifest file 'sm_lib.egg-info/SOURCES.txt'
+running check
+We need to know who you are, so please choose either:
+ 1. use your existing login,
+ 2. register as a new user,
+ 3. have the server generate a new password for you (and email it to you), or
+ 4. quit
+Your selection [default 1]: </pre>
+<p>Choissisez 2. Il va vous permettre de créer un compte. Quand il vous demandera de sauvegarder vos identifiants pour un usage future, répondre oui vous permettra de ne pas rentrer votre mot de passe à chaque upload.</p>
+<p>La prochaine fois vous pourrez choisir 1, puisque vous aurez un compte.</p>
+<p>Si ça se coupe, relancez juste la commande. Le but étant d&#8217;obtenir ça:</p>
+<pre>Registering sm_lib to http://pypi.python.org/pypi
+Server response (200): OK</pre>
+<p>Ce qui signifie que votre lib est inscrite sur Pypi (et que donc le nom était disponible, sinon il vous enverra chier et vous avez plus qu&#8217;à renommer votre lib).</p>
+<p>Puis, il faut créer une distribution source (sdist) et le mettre en ligne (upload):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python setup.py sdist upload</pre></td></tr></table></div>
+
+<p>Et voilà, votre lib est en ligne et installable avec pip !</p>
+<p>Voici la <a href="http://pypi.python.org/pypi/sm_lib/">page pypi</a>, et <a href="https://github.com/sametmax/sm_lib">la page gitub</a> (ce qui n&#8217;a rien à voir, mais si vous voulez le code source&#8230;).</p>
+<p>C&#8217;est finit. Si vous voulez uploader une nouvelle version de votre lib, il faut changer <code>__version__</code> car Pypi n&#8217;accepte pas deux fois la même version.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/creer-un-setup-py-et-mettre-sa-bibliotheque-python-en-ligne-sur-pypi/feed/</wfw:commentRss>
+		<slash:comments>52</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/holy-book.jpg" length="73560" type="image/jpg" />	</item>
+		<item>
+		<title>Votre Python aime les pip 30</title>
+		<link>http://sametmax.com/votre-python-aime-les-pip/</link>
+		<comments>http://sametmax.com/votre-python-aime-les-pip/#comments</comments>
+		<pubDate>Sat, 08 Sep 2012 13:42:27 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[easy_install]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[github]]></category>
+		<category><![CDATA[pip]]></category>
+		<category><![CDATA[pypi]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[setuptools]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2014</guid>
+		<description><![CDATA[<code>Pip install</code> par-ci, <code>pip install</code> par là. "Pour installer cette lib, il vous suffit de faire pip install".
+
+Mais merde, c'est quoi <code>pip</code> ?]]></description>
+				<content:encoded><![CDATA[<p><strong>A partir des versions 2.7.9 et et 3.4, pip est fournit automatiquement avec Python. Si c&#8217;est votre cas, vous pouvez sauter la partie installation et aller directement à la partie usage de cet article.</strong></p>
+<p><code>Pip install</code> par-ci, <code>pip install</code> par là. &#8220;Pour installer cette lib, il vous suffit de faire pip install&#8221;.</p>
+<p>Mais merde, c&#8217;est quoi <code>pip</code> ?</p>
+<h2>Python et les libs externes</h2>
+<p>La beauté avec Python, c&#8217;est qu&#8217;on peut prendre une lib, la balancer dans le répertoire courant, et l&#8217;importer. Rien à faire, ça marche tout seul.</p>
+<p>Mais.</p>
+<p>Car oui, il y a toujours un mais (souvent après le mois de mars).</p>
+<p>Quand il faut mettre à jour ses libs, c&#8217;est chiant. Quand il faut recréer un environnement complet en prod, c&#8217;est chiant. Quand il faut trouver la dernière version, avec le bon site Web, et le lien de téléchargement, c&#8217;est chiant. Quand on veut installer une lib automatiquement, vous l&#8217;avez deviné, c&#8217;est chiant.</p>
+<p>Mais surtout, quand on a une lib qui a des parties en C à compiler comme les libs de crypto, d&#8217;accès à la base de données, de traitement XML, de parsing ou de sérialisation, de calculs scientifiques, etc. ça ne marche tout simplement pas.</p>
+<p>Là, il y a deux écoles. Les mecs qui utilisent les packages *.exe ou *.deb precompilés et qui se retrouvent avec d&#8217;autres problèmes.</p>
+<p>Et les mecs qui utilisent setuptools (et qui se retrouvent avec encore d&#8217;autres problèmes, mais c&#8217;est mieux parce que je le dis).</p>
+<h2>Setuptools, la solution de skippy à tous vos soucis</h2>
+<p>setuptools est une lib et un outil de distribution de code Python, et elle permet notament d&#8217;installer des libs externes automatiquement en les téléchargeant depuis le grand InterBoule.</p>
+<p>Comme <code>gem install</code> sous ruby, <code>npm</code> pour NodeJs, Python possède sa commande d&#8217;installation appelée <code>easy_install</code>, qui va piocher dans le site Web <a href="http://pypi.python.org/pypi">pypi.python.org</a>, un équivalent de <a href="http://www.cpan.org/">Cpan</a> de Perl ou des <a href="http://pear.php.net/channels/">channels pear</a> pour PHP.</p>
+<p>Bien entendu, ça serait trop simple sinon, Python ne vient pas par défaut installé avec cet outil pourtant indispensable.</p>
+<p>Sous Ubuntu c&#8217;est facile:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> python-setuptools</pre></td></tr></table></div>
+
+<p>Et il existe un paquet similaire sur toutes les distribs.</p>
+<p>Sous windows, c&#8217;est <a href="http://pypi.python.org/pypi/setuptools#downloads">un exe</a> à installer. Choisissez la bonne version selon votre version de Python (<code>python --version</code>). Généralement, la 2.7. </p>
+<p>Sous mac, il faut télécharger <a href="http://pypi.python.org/pypi/setuptools#downloads">l&#8217;egg correspondant à sa version</a> puis:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">sh</span> setuptools-votre_version.egg <span style="color: #660033;">--prefix</span>=~</pre></td></tr></table></div>
+
+<p>Et vous avez alors accès à la commande magique, <code>easy_install</code>. Par exemple, pour installer Django:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">easy_install <span style="color: #660033;">--user</span> django</pre></td></tr></table></div>
+
+<p>(ou <code>easy_install django</code> en mode administrateur &#8211; ou avec <code>sudo</code> &#8211; pour l&#8217;installer pour tout le système et pas juste l&#8217;utilisateur courant)</p>
+<p>Il faut bien entendu être connecté à internet pour que ça marche. Notez par ailleurs que la recherche est insensible à la casse, et que tout underscore sera automatiquement remplacé par un tiret.</p>
+<p>Sous Windows, si la commande n&#8217;est pas trouvée, il vous faudra rajouter le répertoire qui contient la commande <code>easy_install</code> (le plus souvent <em>C:\Python27\Scripts</em>) à la main dans le <a href="http://sametmax.com/ajouter-un-chemin-a-la-variable-denvironnement-path-sous-windows/">PATH</a>.</p>
+<h2>Vous avez <code>easy_install</code> ? Oubliez-le !</h2>
+<p>Vous n&#8217;utiliserez normalement <code>easy_install</code> que pour une seule chose: installer <code>pip</code>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">easy_install <span style="color: #660033;">--user</span> pip</pre></td></tr></table></div>
+
+<p><code>pip</code> est un <code>easy_install</code> en plus court à taper, plus puissant, plus souple, plus mieux.</p>
+<p>Il s&#8217;utilise comme <code>easy_install</code> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">--user</span> bottle</pre></td></tr></table></div>
+
+<p>(ou <code>sudo pip install bottle</code>, ou en root, mais je sauterai ce genre de détails pour la suite)</p>
+<p>Grâce à <code>pip</code>, vous allez avoir accès à des milliers de libs Python en quelques frappes, et donc pouvoir beaucoup plus facilement expérimenter avec des nouveaux bidules.</p>
+<p>Mais <code>pip</code> va plus loin qu&#8217;<code>easy_install</code>, et permet carrément de gérer toutes les dépendances de son projet.</p>
+<h2>Ce que fait <code>pip</code> que <code>easy_install</code> ne fait pas</h2>
+<p>Déjà, <code>pip</code> télécharge toutes les dépendances avant de lancer l&#8217;installation, ce qui évite une installation partielle.</p>
+<p>Mais surtout, <code>pip</code> ajoute des opérations qu&#8217;on pourrait attendre de base, notamment, la désinstallation :-)</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip uninstall bottle</pre></td></tr></table></div>
+
+<p>Évidement, on peut choisir d&#8217;installer une version particulière:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #007800;">bottle</span>==<span style="color: #000000;">0.9</span></pre></td></tr></table></div>
+
+<p>Et mettre à jour une lib à la dernière version :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> bottle <span style="color: #660033;">--upgrade</span></pre></td></tr></table></div>
+
+<p>Ou downgrader vers une version précédente:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #007800;">bottle</span>==<span style="color: #000000;">0.9</span> <span style="color: #660033;">--upgrade</span></pre></td></tr></table></div>
+
+<p>Cependant, le plus intéressant avec <code>pip</code>, c&#8217;est sa capacité à recréer tout un environnement de développement en une commande:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ pip freeze
+<span style="color: #007800;">Axiom</span>==0.6.0
+<span style="color: #007800;">BeautifulSoup</span>==3.2.0
+<span style="color: #007800;">Brlapi</span>==0.5.6
+<span style="color: #007800;">BzrTools</span>==2.5.0
+<span style="color: #007800;">CherryPy</span>==3.2.2
+<span style="color: #007800;">Coherence</span>==0.6.6.2
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>...<span style="color: #7a0874; font-weight: bold;">&#93;</span></pre></td></tr></table></div>
+
+<p><code>pip freeze</code> liste toutes les librairies installées et leurs versions. On peut ensuite les réinstaller sur une autre machine facilement:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip freeze <span style="color: #000000; font-weight: bold;">&gt;</span> requirements.txt</pre></td></tr></table></div>
+
+<p>Et sur l&#8217;autre machine:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">-r</span> requirements.txt</pre></td></tr></table></div>
+
+<p>On est garanti d&#8217;avoir les mêmes libs, avec les mêmes versions. Ca marche de la même manière sous tous les OS, et comme des milliers de libs ne sont pas disponibles en paquets *.deb, *.rpm ou *.exe, c&#8217;est extrêmement pratique.</p>
+<p>Si vous vous attendez à être privé de connexion internet ou juste pour accélérer le procédé, <code>pip</code> permet de créer un bundle, c&#8217;est à dire un gros zip qui contient toutes les dépendances et qui peut être installé indépendamment :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip bundle nom_du_projet.pybundle <span style="color: #660033;">-r</span> requirements.txt</pre></td></tr></table></div>
+
+<p>Et sur l&#8217;autre machine:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> nom_du_projet.pybundle</pre></td></tr></table></div>
+
+<h2>Quelques astuces pour être productif avec <code>pip</code></h2>
+<p>Si vous installez beaucoup de fois les mêmes paquets, par exemple dans de nombreux <a href="http://sametmax.com/les-environnement-virtuels-python-virtualenv-et-virtualenvwrapper/">virtualenvs</a> j&#8217;installe toujours ipython + ipdb + requests + clize + peewee, les télécharger à chaque fois est une perte de temps. On peut demander à <code>pip</code> de mettre en cache les paquets déjà installés, pour de futures installations:</p>
+<p><code>export PIP_DOWNLOAD_CACHE='~/.pip/cache';</code> dans le <em>.bashrc</em></p>
+<p>Pour les windowsiens, je ne sais pas du tout où mettre ça&#8230;</p>
+<p>Sachez cependant que le cache ne dispense pas d&#8217;être connecté à Internet.</p>
+<p>Si une bibliothèque n&#8217;est pas encore sur pypi, <code>pip</code> est capable, pourvu que le code source vienne avec un fichier <em>setup.py</em>, de l&#8217;installer depuis un fichier local, une URL, ou même un simple repo git. Donc si vous trouvez une lib chouette sur github, on peut l&#8217;installer ainsi:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #c20cb9; font-weight: bold;">git</span>+git:<span style="color: #000000; font-weight: bold;">//</span>github.com<span style="color: #000000; font-weight: bold;">/</span>sametmax<span style="color: #000000; font-weight: bold;">/</span>0bin.git</pre></td></tr></table></div>
+
+<p>Et elle sera même référencée par le <code>pip freeze</code> !</p>
+<p>Remarquez qu&#8217;il faut avoir Git installé, et que le protocole doit être changé pour <em>git+git</em>.</p>
+<p>Parfois, pypi est indisponible: un problème sur le site, un problème de dns, un problème de votre FAI&#8230; Dans ce cas là on est un peu désemparé. Heureusement, <code>pip</code> permet aussi de faire un fallback sur des miroirs:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> <span style="color: #660033;">--use-mirrors</span> requests</pre></td></tr></table></div>
+
+<p>Dans ce cas pip essayera de trouver le paquet sur une liste de sites miroirs de pypi qu&#8217;il possède en interne. Il va les essayer un par un jusqu&#8217;à en trouver un de disponible.</p>
+<p>Dans le cas les plus extrêmes, certains vont jusqu&#8217;à créer leur propre miroir en local. Mais c&#8217;est un article à part entière.</p>
+<h2>Installer des bibliothèques avec des extensions en C</h2>
+<p>Les bibliothèques avec des extensions en C sont très courantes dans les domaines qui ont besoin de performances: drivers de base de données (m<code>ysql-python</code>), calculs scientifiques (<code>numpy</code>), parsing (<code>lxml</code>), cryptographie (<code>pycrypto</code>), etc.</p>
+<p>Pip ne fonctionnera que partiellement pour installer ces libs: il devra en effet lancer la compilation de l&#8217;extension. Bien que le processus soit automatique et bien fait, il arrive souvent qu&#8217;il manque des dépendances.</p>
+<p>Pour ce genre de lib, soit vous utilisez un paquet tout fait (*.deb, *.exe, *.rpm, etc.), soit vous tentez d&#8217;installer les dépendances.</p>
+<p>La première chose à faire, c&#8217;est installer les headers de Python. Sous Ubuntu, c&#8217;est:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">sudo apt-get install python-dev</pre></td></tr></table></div>
+
+<p>(et sous CentOs, c&#8217;est un <code>yum install python-devel</code>. Pour Mac, aucune idée.)</p>
+<p>Ensuite, on lance l&#8217;installation une fois de la lib, et on voit ce qui plante, pour installer les dépendances en conséquence. Par exemple, <code>lxml</code> a besoin des headers de <code>libxml2</code> et <code>libxslt1</code>. Donc on va installer <code>libxml2-dev</code> et <code>libxslt1-dev</code>. Pour <code>python-mysql</code>, il va falloir installer <code>libmysqlclient-dev</code>.</p>
+<p>Quand on est une grosse feignasse, mais que l&#8217;on a quand même envie d&#8217;installer la lib avec <code>pip</code> (typiquement, dans le cas d&#8217;un virtualenv). on peut faire le compromis de l&#8217;installer sur le système avec un paquet, et ensuite de l&#8217;installer avec <code>pip</code>. Ca évite de faire la chasse aux dépendances, mais ça fait double installation.</p>
+<p>Enfin, il y a des libs qui ne s&#8217;installeront jamais avec <code>pip</code>. Par exemple, un mastodonte genre <code>PyQT</code>. Oubliez, c&#8217;est tout.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/votre-python-aime-les-pip/feed/</wfw:commentRss>
+		<slash:comments>30</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/4_original.jpg" length="85720" type="image/jpg" />	</item>
+	</channel>
+</rss>

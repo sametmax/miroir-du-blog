@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; asyncio</title>
+	<atom:link href="http://sametmax.com/tag/asyncio/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Jouons un peu avec Python 3.5 27</title>
+		<link>http://sametmax.com/jouons-un-peu-avec-python-3-5/</link>
+		<comments>http://sametmax.com/jouons-un-peu-avec-python-3-5/#comments</comments>
+		<pubDate>Wed, 16 Sep 2015 16:31:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[numpy]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[wamp]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16918</guid>
+		<description><![CDATA[Zeste de savoir a fait un <a href="http://zestedesavoir.com/articles/264/sortie-de-python-35/">fantastique article</a> présentant Python 3.5, je ne vais donc pas pas répéter inutilement ce qu’ils ont dit. Le but de ce post est plutôt de faire mumuse avec le nouveau joujou.]]></description>
+				<content:encoded><![CDATA[<p>Zeste de savoir a fait un <a href="http://zestedesavoir.com/articles/264/sortie-de-python-35/">fantastique article</a> présentant Python 3.5, je ne vais donc pas répéter inutilement ce qu’ils ont dit. Le but de ce post est plutôt de faire mumuse avec le nouveau joujou.</p>
+<p>La release est récente, mais fort heureusement on peut facilement l’installer. Sous Windows et Mac, il y a des <a href="https://www.python.org/downloads/release/python-350/">builds</a> tout chauds.</p>
+<p>Pour linux, en attendant un repo tierce partie ou l’upgrade du système, on peut l’installer quelques commandes depuis les sources. Par exemple pour les distros basées sur Debian comme Ubuntu, ça ressemble à :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ <span style="color: #666666; font-style: italic;"># dependances pour compiler python</span>
+$ <span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get install</span> build-essential libreadline-dev tk8.4-dev libsqlite3-dev libgdbm-dev libreadline6-dev liblzma-dev libbz2-dev libncurses5-dev libssl-dev python3-dev tk-dev
+$ <span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">apt-get build-dep</span> python3 <span style="color: #666666; font-style: italic;"># juste pour etre sur :)</span>
+&nbsp;
+$ <span style="color: #666666; font-style: italic;"># téléchargement des sources</span>
+$ <span style="color: #7a0874; font-weight: bold;">cd</span> <span style="color: #000000; font-weight: bold;">/</span>tmp
+$ <span style="color: #c20cb9; font-weight: bold;">wget</span> https:<span style="color: #000000; font-weight: bold;">//</span>www.python.org<span style="color: #000000; font-weight: bold;">/</span>ftp<span style="color: #000000; font-weight: bold;">/</span>python<span style="color: #000000; font-weight: bold;">/</span>3.5.0<span style="color: #000000; font-weight: bold;">/</span>Python-3.5.0.tar.xz
+$ <span style="color: #c20cb9; font-weight: bold;">tar</span> <span style="color: #660033;">-xvf</span> Python-3.5.0.tar.xz
+$ <span style="color: #7a0874; font-weight: bold;">cd</span> Python-3.5.0
+&nbsp;
+$ <span style="color: #666666; font-style: italic;"># et on build</span>
+$ .<span style="color: #000000; font-weight: bold;">/</span>configure
+$ <span style="color: #c20cb9; font-weight: bold;">make</span>
+$ <span style="color: #c20cb9; font-weight: bold;">sudo</span> <span style="color: #c20cb9; font-weight: bold;">make</span> altinstall 
+<span style="color: #666666; font-style: italic;"># pas 'make install' qui écrase le python du système !</span>
+&nbsp;
+$ python3.5 <span style="color: #666666; font-style: italic;"># ahhhhhh</span>
+Python 3.5.0 <span style="color: #7a0874; font-weight: bold;">&#40;</span>default, Sep <span style="color: #000000;">16</span> <span style="color: #000000;">2015</span>, <span style="color: #000000;">10</span>:<span style="color: #000000;">44</span>:<span style="color: #000000;">14</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> 
+<span style="color: #7a0874; font-weight: bold;">&#91;</span>GCC 4.9.2<span style="color: #7a0874; font-weight: bold;">&#93;</span> on linux
+Type <span style="color: #ff0000;">&quot;help&quot;</span>, <span style="color: #ff0000;">&quot;copyright&quot;</span>, <span style="color: #ff0000;">&quot;credits&quot;</span> or <span style="color: #ff0000;">&quot;license&quot;</span> <span style="color: #000000; font-weight: bold;">for</span> <span style="color: #c20cb9; font-weight: bold;">more</span> information.
+<span style="color: #000000; font-weight: bold;">&gt;&gt;&gt;</span></pre></td></tr></table></div>
+
+<p>Sur les centos-likes, c’est grosso merdo la même chose, sans le build-dep (mais plutôt un truc genre <code>sudo yum groupinstall 'Development Tools'</code>), et en remplaçant les <code>-dev</code> par <code>-devel</code>.</p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/TsgQdzzXEnY?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Nouvel opérateur</h2>
+<p><code>@</code> est maintenant le nouvel opérateur de produit matriciel, mais il ne fait officiellement rien.</p>
+<p>Comprenez par là que Python implémente l’opérateur, mais pas le produit en lui-même, la feature ayant été spécialement incluse pour faire plaisir aux utilisateurs de libs scientifiques type numpy.</p>
+<p>On va donc tester ça sur le terrain. On se fait un petit env temporaire avec <a href="http://sametmax.com/mieux-que-python-virtualenvwrapper-pew/">pew</a> et on s’installe numpy :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pew mktmpenv <span style="color: #660033;">-p</span> python3.5
+pip <span style="color: #c20cb9; font-weight: bold;">install</span> pip setuptools <span style="color: #660033;">--upgrade</span>
+pip <span style="color: #c20cb9; font-weight: bold;">install</span> numpy 
+<span style="color: #666666; font-style: italic;"># encore un peu de compilation</span></pre></td></tr></table></div>
+
+<p>Testons mon bon. L’ancienne manière de faire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> a <span style="color: #66cc66;">=</span> np.<span style="color: #dc143c;">array</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> b <span style="color: #66cc66;">=</span> np.<span style="color: #dc143c;">array</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> np.<span style="color: black;">dot</span><span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">array</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+       <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et la nouvelle :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> a <span style="color: #66cc66;">@</span> b
+---------------------------------------------------------------------------
+<span style="color: #008000;">TypeError</span>                                 Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>ipython-input-<span style="color: #ff4500;">10</span>-3d41f06f59bb<span style="color: #66cc66;">&gt;</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+----<span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">1</span> a <span style="color: #66cc66;">@</span> b
+&nbsp;
+<span style="color: #008000;">TypeError</span>: unsupported operand <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #66cc66;">@</span>: <span style="color: #483d8b;">'numpy.ndarray'</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">'numpy.ndarray'</span></pre></td></tr></table></div>
+
+<p>Woops, apparemment numpy n’a pas encore implémenté le truc.</p>
+<p>Bon. Bon, bon, bon. Comment on va tester alors&#8230; Ah, oui, y a une magic method :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Array<span style="color: black;">&#40;</span>np.<span style="color: black;">ndarray</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> __matmul__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> np.<span style="color: black;">dot</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a <span style="color: #66cc66;">=</span> a.<span style="color: black;">view</span><span style="color: black;">&#40;</span>Array<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> b <span style="color: #66cc66;">=</span> b.<span style="color: black;">view</span><span style="color: black;">&#40;</span>Array<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> a <span style="color: #66cc66;">@</span> b
+Array<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+       <span style="color: black;">&#91;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Bon, voilà ce que ça donnera quand les devs de numpy auront implémenté le bouzin (la dernière ligne hein, pas tout le bordel avant). </p>
+<p>Apparemment ça fait bander les matheux, donc je suppose que c’est une super nouvelle.</p>
+<h2>% is back on bytes</h2>
+<p>En python 2, on pouvait faire <code>"truc %s" % "bidule"</code> et <code>u"truc %s" % u"bidule"</code> et <code>b"truc %s" % u"bidule"</code> et ça a été viré en python 3 qui ne garde <code>%</code> que pour <code>str</code> et pas pour <code>bytes</code>.</p>
+<p>Ca n’aurait pas été un problème si ce n’est que Python est très utilisé pour le réseau, et que construire un paquet qui mélange de la sémantique binaire et textuelle devient soudainement une grosse soupe de <code>decode()</code> et <code>encode()</code>.</p>
+<p>Jour 1, test 3, suspense&#8230;</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">66</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">108</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">117</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">101</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">112</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">114</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">105</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">101</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">115</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">116</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">115</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">97</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">121</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">115</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">58</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">32</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">37</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">115</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span> % b<span style="color: #483d8b;">&quot;wololo&quot;</span>
+<span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">'Blue priest says: wololo'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Voilà ça c’est fait !</p>
+<h2>os.scandir()</h2>
+<p><code>os.path.walk()</code> est dans mon top 10 des APIs que je déteste le plus en Python, juste à côté de la gestion timezone. Avoir <code>os.walk()</code> en Python 3 qui retourne un générateur me ravit. Avoir une version 10 X plus rapide avec <code>scandir</code>, n’est-ce pas choupinet ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">list</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">scandir</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+                       <span style="color: black;">&#91;</span><span style="color: #66cc66;">&lt;</span>DirEntry <span style="color: #483d8b;">'systemd-private-316509818ceb41488a4721c78dabb603-colord.service-eXUfPo'</span><span style="color: #66cc66;">&gt;,</span>
+ <span style="color: #66cc66;">&lt;</span>DirEntry <span style="color: #483d8b;">'unity_support_test.0'</span><span style="color: #66cc66;">&gt;,</span>
+ <span style="color: #66cc66;">&lt;</span>DirEntry <span style="color: #483d8b;">'config-err-7UpWeO'</span><span style="color: #66cc66;">&gt;,</span>
+ <span style="color: #66cc66;">&lt;</span>DirEntry <span style="color: #483d8b;">'.ICE-unix'</span><span style="color: #66cc66;">&gt;,</span>
+ <span style="color: #66cc66;">&lt;</span>DirEntry <span style="color: #483d8b;">'pip-rw_63q0_-unpack'</span><span style="color: #66cc66;">&gt;,</span>
+ <span style="color: #66cc66;">&lt;</span>DirEntry <span style="color: #483d8b;">'systemd-private-316509818ceb41488a4721c78dabb603-systemd-timesyncd.service-eZumpq'</span><span style="color: #66cc66;">&gt;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>C’est très dommage que ça ne retourne pas des objets <code>Path</code> de <code>pathlib</code>, mais bon, les perfs, tout ça&#8230;</p>
+<h2>Zipapp, le grand inaperçu</h2>
+<p>Le saviez-vous ? Python peut exécuter un zip, ce qui permet de créer un script en plusieurs fichiers et de le partager comme un seul fichier. Non vous ne le saviez-vous-te-pas car personne n’en parle jamais. </p>
+<p>La 3.5 vient avec un outil en ligne de commande pour faciliter la création de tels zip et une nouvelle extension (que l’installeur fera reconnaitre à Windows) pour cesdits fichiers : .pyz.</p>
+<p>Je fais mon script :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">foo
+├── bar.py
+├── __init__.py
+└── __main__.py</pre></td></tr></table></div>
+
+<p>__main__.py est obligatoire, c’est ce qui sera lancé quand on exécutera notre script. Dedans je mets <code>import bar</code> et dans bar <code>print('wololo again')</code>.</p>
+<p>Ensuite je fusionne tout ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python <span style="color: #660033;">-m</span> zipapp foo</pre></td></tr></table></div>
+
+<p>Et pouf, j’ai mon fichier foo.pyz :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">$ python3.5  foo.pyz
+wololo again</pre></td></tr></table></div>
+
+<p>Attention aux imports dedans, ils sont assez chiants à gérer.</p>
+<h2>L’unpacking généralisé</h2>
+<p>J’adore cette feature. J’adore toutes les features de la 3.5. Cette release est fantastique. Depuis la 3.3 chaque release est fantastique.</p>
+<p>Mais bon, zeste de savoir l’a traité en long et en large donc rien à dire de plus, si ce n’est que j’avais raté un GROS truc :</p>
+<ul>
+<li>On peut faire de l’unpacking sur n’importe quel itérable.</li>
+<li>On peut faire de l’unpacking dans les tuples.</li>
+<li>Les parenthèses des tuples sont facultatives.</li>
+</ul>
+<p>Donc ces syntaxes sont valides :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> *<span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> *<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> *<span style="color: #483d8b;">'ea'</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'e'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'a'</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> *<span style="color: black;">&#91;</span>x * x <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> *<span style="color: black;">&#123;</span><span style="color: #483d8b;">&quot;a&quot;</span>: <span style="color: #ff4500;">1</span><span style="color: black;">&#125;</span>.<span style="color: black;">values</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui peut être très chouette et aussi la porte ouverte à l’implémentation d’un sous-ensemble de Perl en Python. C’est selon l’abruti qui code.</p>
+<h2>Type hints</h2>
+<p>Ce qu’il faut bien comprendre avec les types hints, c’est que Python ne s’en sert pas. Il n’en fait rien. Que dalle. Nada. Peau de balle. Zob. Niet. Zero. La bulle. Néant. Null. None. Réforme gouvernementale.</p>
+<p>Les types hints sont disponibles, mais Python ne va pas les traiter différemment d’autres annotations. Le but est de permettre à des outils externes (linter, IDE, etc) de se baser sur ces informations pour ajouter des fonctionnalités.</p>
+<p>Pour l’instant, un seul le fait : <a href="http://mypy.readthedocs.org">mypy</a>.</p>
+<p>Et là on sent bien que tout ça est tout neuf car si on fait <code>pip install mypy-lang</code>, on tombe sur une version buggée. Il faut donc l’installer directement depuis le repo, soit :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">pip install https://github.<span style="color: black;">com</span>/JukkaL/mypy/archive/master.<span style="color: #008000;">zip</span></pre></td></tr></table></div>
+
+<p>Puis écriture d’une fonction annotée avec des types hints :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> typing <span style="color: #ff7700;font-weight:bold;">import</span> Iterable<span style="color: #66cc66;">,</span> Tuple
+&nbsp;
+PixelArray <span style="color: #66cc66;">=</span> Iterable<span style="color: black;">&#91;</span>Tuple<span style="color: black;">&#91;</span><span style="color: #008000;">int</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">int</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">int</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> rgb2hex<span style="color: black;">&#40;</span>pixels: PixelArray<span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">list</span>:
+    pattern <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;#{0:02x}{1:02x}{2:02x}&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#91;</span>pattern.<span style="color: black;">format</span><span style="color: black;">&#40;</span>r<span style="color: #66cc66;">,</span> g<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> r<span style="color: #66cc66;">,</span> g<span style="color: #66cc66;">,</span> b <span style="color: #ff7700;font-weight:bold;">in</span> pixels<span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># ça marche :</span>
+rgb2hex<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># ['#010203', '#010203']</span></pre></td></tr></table></div>
+
+<p>La preuve que Python n’en fait rien :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">hex</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;fjdkls&quot;</span><span style="color: black;">&#41;</span>
+---------------------------------------------------------------------------
+<span style="color: #008000;">TypeError</span>                                 Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span>ipython-input-<span style="color: #ff4500;">2</span>-be62b8f062fe<span style="color: #66cc66;">&gt;</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #66cc66;">&lt;</span>module<span style="color: #66cc66;">&gt;</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+----<span style="color: #66cc66;">&gt;</span> <span style="color: #ff4500;">1</span> <span style="color: #008000;">hex</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;fjdkls&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #008000;">TypeError</span>: <span style="color: #483d8b;">'str'</span> <span style="color: #008000;">object</span> cannot be interpreted <span style="color: #ff7700;font-weight:bold;">as</span> an integer</pre></td></tr></table></div>
+
+<p>Même la doc profite peu du typage :</p>
+<pre>Help on function rgb2hex in module __main__:
+
+rgb2hex(pixels:typing.Iterable) -> list
+</pre>
+<p>Mais si on met ça dans un fichier foo.py :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> essai <span style="color: #ff7700;font-weight:bold;">import</span> rgb2hex
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>rgb2hex<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;fdjksl&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+res <span style="color: #66cc66;">=</span> rgb2hex<span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">4</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>res + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et qu&#8217;on le passe à la moulinette :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ mypy foo.<span style="color: black;">py</span> 
+foo.<span style="color: black;">py</span>:<span style="color: #ff4500;">3</span>: error: Argument <span style="color: #ff4500;">1</span> to <span style="color: #483d8b;">&quot;rgb2hex&quot;</span> has incompatible <span style="color: #008000;">type</span> <span style="color: #483d8b;">&quot;str&quot;</span><span style="color: #66cc66;">;</span> expected Iterable<span style="color: black;">&#91;</span>...<span style="color: black;">&#93;</span>
+foo.<span style="color: black;">py</span>:<span style="color: #ff4500;">5</span>: error: Unsupported operand <span style="color: #dc143c;">types</span> <span style="color: #ff7700;font-weight:bold;">for</span> + <span style="color: black;">&#40;</span>List<span style="color: black;">&#91;</span>Any<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">&quot;int&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ensuite j’ai essayé de créer un stub file, c’est-à-dire de mettre les hints dans un fichier à part plutôt que directement dans le code. Ma fonction redevient :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> rgb2hex<span style="color: black;">&#40;</span>pixels<span style="color: black;">&#41;</span>:
+    pattern <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;#{0:02x}{1:02x}{2:02x}&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: black;">&#91;</span>pattern.<span style="color: black;">format</span><span style="color: black;">&#40;</span>r<span style="color: #66cc66;">,</span> g<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> r<span style="color: #66cc66;">,</span> g<span style="color: #66cc66;">,</span> b <span style="color: #ff7700;font-weight:bold;">in</span> pixels<span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Et mon fichier stub (même nom, mais avec extension .pyi) contient :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> typing <span style="color: #ff7700;font-weight:bold;">import</span> Iterable<span style="color: #66cc66;">,</span> Tuple
+&nbsp;
+PixelArray <span style="color: #66cc66;">=</span> Iterable<span style="color: black;">&#91;</span>Tuple<span style="color: black;">&#91;</span><span style="color: #008000;">int</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">int</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">int</span><span style="color: black;">&#93;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> rgb2hex<span style="color: black;">&#40;</span>pixels: PixelArray<span style="color: black;">&#41;</span> -<span style="color: #66cc66;">&gt;</span> <span style="color: #008000;">list</span>:...</pre></td></tr></table></div>
+
+<p>Les stubs sont donc bien des fichiers Python valides, mais avec une extension différente, et juste les signatures des fonctions (le corps du bloc est une <code>Ellipsis</code>).</p>
+<p>Et poof, ça marche pareil :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">$ mypy foo.<span style="color: black;">py</span> 
+foo.<span style="color: black;">py</span>:<span style="color: #ff4500;">3</span>: error: Argument <span style="color: #ff4500;">1</span> to <span style="color: #483d8b;">&quot;rgb2hex&quot;</span> has incompatible <span style="color: #008000;">type</span> <span style="color: #483d8b;">&quot;str&quot;</span><span style="color: #66cc66;">;</span> expected Iterable<span style="color: black;">&#91;</span>...<span style="color: black;">&#93;</span>
+foo.<span style="color: black;">py</span>:<span style="color: #ff4500;">5</span>: error: Unsupported operand <span style="color: #dc143c;">types</span> <span style="color: #ff7700;font-weight:bold;">for</span> + <span style="color: black;">&#40;</span>List<span style="color: black;">&#91;</span>Any<span style="color: black;">&#93;</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #483d8b;">&quot;int&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Il y a <a href="https://github.com/python/typeshed/tree/master/3">un repo</a> qui contient des fichiers stubs pour la stdlib. Vous pouvez y participer, c’est un moyen simple de contribuer à Python.</p>
+<p>Bref, pour le moment ça demande encore un peu de maturité, mais je pense que d’ici quelques mois on aura des outils bien rodés pour faire tout ça automatiquement.</p>
+<h2>Async/await</h2>
+<p>La feature pub. Techniquement le truc qui a fait dire à tous ceux qui voulaient de l’asyncrone que Python en fait, c’était trop cool. Sauf que Python pouvait faire ça avec <code>yield from</code> avant, mais c’est sur que c’était super confusionant.</p>
+<p>Maintenant on a un truc propre : pas de décorateur <code>@coroutine</code>, pas de syntaxe semblable aux générateurs, mais des méthodes magiques comme <code>__await__</code>  et de jolis mots-clés <code>async</code> et <code>await</code>.</p>
+<p>Vu que Crossbar est maintenant compatible Python 3, et qu’il supporte asyncio pour les clients&#8230; Si on s’implémentait un petit wrapper WAMP pour s’amuser à voir ce que ressemblerait une API moderne pour du Websocket en Python ?</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> crossbar
+crossbar init
+crossbar start</pre></td></tr></table></div>
+
+<p>(Ouhhhh, plein de zolies couleurs apparaissent dans ma console ! Ils ont fait des efforts cosmétiques chez Tavendo)</p>
+<p>Bien, voici maintenant l’exemple d’un client WAMP de base codé avec asyncio selon l’ancienne API :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> asyncio
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">asyncio</span>.<span style="color: black;">wamp</span> <span style="color: #ff7700;font-weight:bold;">import</span> ApplicationSession<span style="color: #66cc66;">,</span> ApplicationRunner
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> MyComponent<span style="color: black;">&#40;</span>ApplicationSession<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #66cc66;">@</span>asyncio.<span style="color: black;">coroutine</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> onJoin<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> details<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on marque cette fonction comme appelable</span>
+        <span style="color: #808080; font-style: italic;"># a distance en RPC</span>
+        <span style="color: #ff7700;font-weight:bold;">def</span> add<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">return</span> a + b
+        <span style="color: #008000;">self</span>.<span style="color: black;">register</span><span style="color: black;">&#40;</span>add<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;add&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># et on triche en l'appelant cash. J'ai</span>
+        <span style="color: #808080; font-style: italic;"># la flemme de coder un deuxième client</span>
+        <span style="color: #808080; font-style: italic;"># et ça passe quand même par le routeur</span>
+        <span style="color: #808080; font-style: italic;"># donc merde</span>
+        res <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #008000;">self</span>.<span style="color: black;">call</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;add&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Got result: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>res<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+    runner <span style="color: #66cc66;">=</span> ApplicationRunner<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;ws://127.0.0.1:8080/ws&quot;</span><span style="color: #66cc66;">,</span>
+        u<span style="color: #483d8b;">&quot;crossbardemo&quot;</span><span style="color: #66cc66;">,</span>
+        debug_wamp<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: #66cc66;">,</span>  <span style="color: #808080; font-style: italic;"># optional; log many WAMP details</span>
+        debug<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: #66cc66;">,</span>  <span style="color: #808080; font-style: italic;"># optional; log even more details</span>
+    <span style="color: black;">&#41;</span>
+    runner.<span style="color: black;">run</span><span style="color: black;">&#40;</span>MyComponent<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et ça marche nickel en 3.5. Mais qu’est-ce que c’est moche ! </p>
+<p>On est <a href="https://github.com/tavendo/AutobahnPython/issues/472">en train de bosser</a> sur l’amélioration de l’API, mais je pense que ça va reste plus bas niveau que je le voudrais. </p>
+<p>Donc, amusons-nous un peu à coder un truc plus sexy. Je vous préviens, le code du wrapper est velu, j’avais envie de me marrer un peu après les exemples ballots plus haut :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> asyncio
+<span style="color: #ff7700;font-weight:bold;">from</span> autobahn.<span style="color: black;">asyncio</span>.<span style="color: black;">wamp</span> <span style="color: #ff7700;font-weight:bold;">import</span> ApplicationSession<span style="color: #66cc66;">,</span> ApplicationRunner
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> App:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">procedures</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">subscriptions</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">event_handlers</span>  <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> url<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;ws://127.0.0.1:8080/ws&quot;</span><span style="color: #66cc66;">,</span>
+                realm<span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;realm1&quot;</span><span style="color: #66cc66;">,</span> debug_wamp<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: #66cc66;">,</span> debug<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>:
+        runner <span style="color: #66cc66;">=</span> ApplicationRunner<span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> realm<span style="color: #66cc66;">,</span>
+                                                     debug_wamp<span style="color: #66cc66;">=</span>debug_wamp<span style="color: #66cc66;">,</span>
+                                                     debug<span style="color: #66cc66;">=</span>debug<span style="color: black;">&#41;</span>
+        runner.<span style="color: black;">run</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> run_cmd<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># et on pourrait même ici mettre du parsing d'argument</span>
+        <span style="color: #808080; font-style: italic;"># et de os.environ, mais j'ai la flemme</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">run</span><span style="color: black;">&#40;</span>*args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># quelques décorateurs pour faire du déclaratif</span>
+    <span style="color: #808080; font-style: italic;"># et remettre les paramètres dans le bon ordre</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> register<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span>proc<span style="color: black;">&#41;</span>:
+                <span style="color: #008000;">self</span>.<span style="color: black;">procedures</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>name<span style="color: #66cc66;">,</span> proc<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">,</span> kwargs<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">return</span> proc
+            <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> subscribe<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> topic<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span>callback<span style="color: black;">&#41;</span>:
+                <span style="color: #008000;">self</span>.<span style="color: black;">procedures</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>topic<span style="color: #66cc66;">,</span> callback<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">,</span> kwargs<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">return</span> callback
+            <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># un système d'event interne</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> on<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> event<span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">def</span> wrapper<span style="color: black;">&#40;</span>callback<span style="color: black;">&#41;</span>:
+                <span style="color: #008000;">self</span>.<span style="color: black;">event_handlers</span>.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>event<span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>callback<span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">return</span> callback
+            <span style="color: #ff7700;font-weight:bold;">return</span> wrapper
+&nbsp;
+    async <span style="color: #ff7700;font-weight:bold;">def</span> trigger<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> event<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">for</span> callback <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">event_handlers</span>.<span style="color: black;">get</span><span style="color: black;">&#40;</span>event<span style="color: #66cc66;">,</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+            await callback<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">session</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># un peu de code de compatibilité avec l'API initiale</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__call__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> *args<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">class</span> CustomeSession<span style="color: black;">&#40;</span>ApplicationSession<span style="color: black;">&#41;</span>:
+            async <span style="color: #ff7700;font-weight:bold;">def</span> onJoin<span style="color: black;">&#40;</span>session_self<span style="color: #66cc66;">,</span> details<span style="color: black;">&#41;</span>:
+&nbsp;
+                <span style="color: #808080; font-style: italic;"># on joint on fait tous les registers et tous les</span>
+                <span style="color: #808080; font-style: italic;"># subscribes</span>
+                <span style="color: #ff7700;font-weight:bold;">for</span> name<span style="color: #66cc66;">,</span> proc<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">,</span> kwargs <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">procedures</span>:
+                     session_self.<span style="color: black;">register</span><span style="color: black;">&#40;</span>proc<span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+                <span style="color: #ff7700;font-weight:bold;">for</span> topic<span style="color: #66cc66;">,</span> callback<span style="color: #66cc66;">,</span> args<span style="color: #66cc66;">,</span> kwargs <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">subscriptions</span>:
+                     session_self.<span style="color: black;">subscribe</span><span style="color: black;">&#40;</span>proc<span style="color: #66cc66;">,</span> topic<span style="color: #66cc66;">,</span> *args<span style="color: #66cc66;">,</span> **kwargs<span style="color: black;">&#41;</span>
+&nbsp;
+                <span style="color: #808080; font-style: italic;"># on appelle les handlers de notre event</span>
+                await <span style="color: #008000;">self</span>.<span style="color: black;">trigger</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'joined'</span><span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">session</span> <span style="color: #66cc66;">=</span> CustomeSession<span style="color: black;">&#40;</span>*args<span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">session</span></pre></td></tr></table></div>
+
+<p>Évidement la coloration syntaxique ne suit pas sur nos <code>async</code>/<code>await</code>.</p>
+<p>Bon, vous allez me dire, mais ça quoi ça sert tout ça ? Et bien, c’est une version tronquée et codée à l’arrache de l’<a href="https://github.com/tavendo/AutobahnPython/blob/master/autobahn/twisted/wamp.py#L322">API Application</a> pour Twisted&#8230; mais version asyncio.</p>
+<p>C’est-à-dire que c’est une lib qui permet de faire le même exemple que le tout premier qu’on a vu dans cette partie &#8211; qui souvenez-vous était fort moche -, mais comme ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">app <span style="color: #66cc66;">=</span> App<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">register</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'add'</span><span style="color: black;">&#41;</span>
+async <span style="color: #ff7700;font-weight:bold;">def</span> add<span style="color: black;">&#40;</span>a<span style="color: #66cc66;">,</span> b<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">return</span> a + b
+&nbsp;
+<span style="color: #66cc66;">@</span>app.<span style="color: black;">on</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'joined'</span><span style="color: black;">&#41;</span>
+async <span style="color: #ff7700;font-weight:bold;">def</span> _<span style="color: black;">&#40;</span>session<span style="color: black;">&#41;</span>:
+    res <span style="color: #66cc66;">=</span> await session.<span style="color: black;">call</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;add&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Got result: {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>res<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+app.<span style="color: black;">run_cmd</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Des jolis décorateurs ! Des jolis async ! Des jolis await !</p>
+<p>Et tout ça tourne parfaitement sur 3.5 messieurs-dames.</p>
+<p>Bref, on peut faire du WAMP avec une syntaxe claire et belle, il faut juste se bouger le cul pour coder une abstraction un peu propre. </p>
+<p>Je pense que autobahn restera toujours un peu bas niveau. Donc il va falloir que quelqu’un se colle à faire une lib pour wrapper tout ça.</p>
+<p>Des volontaires ?</p>
+<p>Arf, je savais bien que ça allait me retomber sur la gueule.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/jouons-un-peu-avec-python-3-5/feed/</wfw:commentRss>
+		<slash:comments>27</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/09/AE2pJJl.gif" length="429970" type="image/jpg" />	</item>
+		<item>
+		<title>Deferred, Future et Promise : le pourquoi, le comment, et quand est-ce qu&#8217;on mange 18</title>
+		<link>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/</link>
+		<comments>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/#comments</comments>
+		<pubDate>Wed, 04 Jun 2014 13:19:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[deferred]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[promise]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10418</guid>
+		<description><![CDATA[Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s'exécuter dans un ordre. Elles sont dépendantes les unes des autres.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez plongé dans le monde de la programmation asynchrone non bloquante, vous avez du vous heurter aux <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>. Si ce n&#8217;est pas le cas, aller lire l&#8217;article, et faites vos armes sur jQuery, je vais m&#8217;en servir en exemple.</p>
+<p>Signalement de rigueur que l&#8217;article est long :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/E8b4xYbEugo" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Un callback, ça va.</p>
+<p>Deux callbacks, pour un seul appel, ça commence à être chiant, mais c&#8217;est compréhensible.</p>
+<p>Quand les callbacks appellent eux aussi des callbacks, ça donne des codes imbitables :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  $.<span style="color: #660066;">post</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/auth/token'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+    saveToken<span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/sessions/last'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>session.<span style="color: #660066;">device</span> <span style="color: #339933;">!=</span> currentDevice<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+        $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/session/ '</span> <span style="color: #339933;">+</span> session.<span style="color: #660066;">id</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/context'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>context<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          loadContext<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+            startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+              initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+          <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#125;</span>
+      <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+        startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+      <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#41;</span>
+  <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Il y a pire que de lire ce code : le modifier ! Retirez un bloc, pour voir. Oh, et histoire de vous faire partager l&#8217;expérience complète, j&#8217;ai volontairement déplacé l&#8217;indentation d&#8217;une parenthèse et de deux brackets.</p>
+<p>Or les codes asynchrones ont besoin de callback afin d’enchainer certaines opérations dans le bon ordre, sinon on ne peut pas récupérer le résultat d&#8217;une fonction et l&#8217;utiliser dans une autre, puisqu&#8217;on ne sait pas quand l&#8217;opération se termine.</p>
+<p>Dans notre exemple, <code>$.post</code> et <code>$.get</code> font des requêtes POST et GET, et comme on ne sait pas quand le serveur va répondre, il faut mettre un callback pour gérer la réponse quand elle arrive. C&#8217;est plus performant que de bloquer jusqu&#8217;à ce que la première requête soit terminée car pendant ce temps, notre programme peut faire autre chose. Mais c&#8217;est aussi super relou à écrire et comprendre.</p>
+<p>Entrent en jeu les promesses (promises). Ou les deferred. Ou les futures.</p>
+<p>Typiquement, on retrouve des deferreds dans <a href="https://twistedmatrix.com/trac/">Twisted</a>, des promises pour <a href="http://api.jquery.com/jquery.ajax/">l&#8217;AJAX avec jQuery,</a> des futures pour <a href="http://docs.python.org/3.4/library/asyncio-protocol.html">asyncio</a>&#8230; Mais il y en a un peu partout de nos jours, et une lib peut utiliser plusieurs de ces concepts.</p>
+<p>En fait c&#8217;est la même chose, un nom différent donné au même concept, par des gens qui l&#8217;ont réinventé dans leur coin. Les puristes vous diront qu&#8217;il y a des différences dans l&#8217;implémentation, ou alors que la promesse est l&#8217;interface tandis que le deferred est l&#8217;objet retourné, bla, bla, bla.</p>
+<p>Fuck it, on va considérer que c&#8217;est tout pareil.</p>
+<p>Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s&#8217;exécuter dans un ordre car elles sont dépendantes les unes des autres.</p>
+<p>Il y a d&#8217;autres moyens de gérer le problème de l&#8217;asynchrone: des événements, des queues, etc. L&#8217;avantage des promesses c&#8217;est que c&#8217;est assez simple, et ça marche là où on utilisait des callbacks avant, donc on a pu les rajouter aux libs qui étaient blindées de callbacks.</p>
+<h2>Le principe</h2>
+<p>La promesse est un moyen de dire que certaines fonctions, bien que non bloquantes et asynchrones, sont liées entre elles, et doivent s&#8217;exécuter les unes à la suite des autres. Cela permet de donner un ordre d&#8217;exécution à un groupe de fonctions, et surtout, que chaque fonction puisse accéder au résultat de la fonction précédente. Tout ceci sans bloquer le reste du système asynchrone.</p>
+<p>En résumé, <strong>cela donne un gout de programmation synchrone, à quelque chose qui ne l&#8217;est pas.</strong></p>
+<p>Cela se passe ainsi :</p>
+<ul>
+<li>La fonction asynchrone retourne un objet immédiatement : la promesse.</li>
+<li>On ne passe pas de callback à la fonction. On rajoute un callback à la promesse.</li>
+<li>Le callback prend en paramètre le résultat de la fonction asynchrone.</li>
+<li>Le callback retourne le résultat de son traitement.</li>
+<li>On peut rajouter autant de callbacks qu&#8217;on veut à la promesse, chacun devant accepter le résultat du callback précédent et retourner son propre résultat.</li>
+<li>Si un des callbacks retourne une promesse, elle est fusionnée avec la promesse initiale, et c&#8217;est son résultat que le prochain callback va récupérer</li>
+</ul>
+<p>Voilà un exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #006600; font-style: italic;">// $.get est asynchrone. On a pas le résultat tout de suite, mais en attendant</span>
+<span style="color: #006600; font-style: italic;">// on a une promesse tout de suite.</span>
+<span style="color: #000066; font-weight: bold;">var</span> $promesse <span style="color: #339933;">=</span> $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/truc/machin'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// premier callback. Il sera appelé quand $.get aura récupéré son</span>
+<span style="color: #006600; font-style: italic;">// résultat</span>
+$promesse.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc avec le résultat</span>
+  <span style="color: #006600; font-style: italic;">// puis on retourne le nouveau résultat</span>
+  <span style="color: #000066; font-weight: bold;">return</span> nouveau_resultat<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// deuxième callback. Il sera appelé quand le premier callback</span>
+<span style="color: #006600; font-style: italic;">// aura retourné son résultat.</span>
+$promesse.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>nouveau_resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Notez bien que c&#8217;est TRES différent de ça (en Python):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">resultat <span style="color: #66cc66;">=</span> request.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/truc/marchin'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>:
+  <span style="color: #808080; font-style: italic;"># faire un truc</span>
+  <span style="color: #ff7700;font-weight:bold;">return</span> nouveau_resultat
+nouveau_resultat <span style="color: #66cc66;">=</span> function<span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> autre_function<span style="color: black;">&#40;</span>nouveau_resultat<span style="color: black;">&#41;</span>:
+  <span style="color: #808080; font-style: italic;"># faire un truc</span>
+autre_function<span style="color: black;">&#40;</span>nouveau_resultat<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En Python, le code est bloquant par défaut. Ça va marcher, mais pendant que le code attend la réponse du serveur, votre ordinateur est en pause et ne travaille pas.</p>
+<h2>Un plus beau code</h2>
+<p>On se retrouve avec un code asynchrone, mais qui s&#8217;exécute dans l&#8217;ordre de lecture. Et comme on peut chainer les <code>then()</code> et donc ne pas réécrire <code>$promesse</code> à chaque fois, on obtient quelque chose de beaucoup plus lisible :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/truc/machin'</span><span style="color: #009900;">&#41;</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+  <span style="color: #000066; font-weight: bold;">return</span> nouveau_resultat<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>nouveau_resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Si on reprend notre premier exemple, ça donne ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// create new token</span>
+$.<span style="color: #660066;">post</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/auth/token'</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// then save token and get last session</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  saveToken<span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+  <span style="color: #000066; font-weight: bold;">return</span> $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/sessions/last'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// then init session</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>session.<span style="color: #660066;">device</span> <span style="color: #339933;">!=</span> currentDevice<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+&nbsp;
+    $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/session/ '</span> <span style="color: #339933;">+</span> session.<span style="color: #660066;">id</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/context'</span><span style="color: #009900;">&#41;</span>
+    .<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>context<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      loadContext<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+        startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+      <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+  <span style="color: #009900;">&#125;</span>
+  <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+    startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+  <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Tout ça s’exécute de manière non bloquante (d&#8217;autres fonctions ailleurs dans le programme peuvent s&#8217;exécuter pendant qu&#8217;on attend la réponse du serveur), mais dans l&#8217;ordre de lecture, donc on comprend bien ce qui se passe. Si on veut retirer un bloc, c&#8217;est beaucoup plus facile.</p>
+<h2>Comment ça marche à l&#8217;intérieur ?</h2>
+<p>Histoire d&#8217;avoir une idée de comment une promise marche, on va faire une implémentation, simpliste et naïve, mais compréhensible, d&#8217;une promesse en Python. Pour rendre l&#8217;API un peu sympa,je vais utiliser <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs.</a></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Promise:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># La promesse contient une liste de callbacks, donc une liste de fonctions.</span>
+    <span style="color: #808080; font-style: italic;"># Pas le résultat des fonctions, mais bien les fonctions elles mêmes,</span>
+    <span style="color: #808080; font-style: italic;"># puisque les fonctions sont manipulables en Python.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Point d'entrée pour ajouter un callback à la promesse</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> then<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> callback<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>callback<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Cette méthode est celle qui sera appelée par le code asynchrone</span>
+    <span style="color: #808080; font-style: italic;"># quand il reçoit son résultat.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> resolve<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> resultat<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Ici, on obtient le résultat du code asycnhrone, donc on boucle</span>
+        <span style="color: #808080; font-style: italic;"># sur les callbacks pour les appeler</span>
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>:
+            <span style="color: #808080; font-style: italic;"># On retire le premier callback de la liste, et on l'appelle</span>
+            <span style="color: #808080; font-style: italic;"># avec le résultat</span>
+            resultat <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># Si le resultat est une promesse, on dit à cette nouvelle promesse</span>
+            <span style="color: #808080; font-style: italic;"># de nous rappeler quand elle a reçu ses résultats à elle avant</span>
+            <span style="color: #808080; font-style: italic;"># d'aller le reste de nos callbacks à nous : on fusionne les deux</span>
+            <span style="color: #808080; font-style: italic;"># promesses :</span>
+            <span style="color: #808080; font-style: italic;"># Promesse 1</span>
+            <span style="color: #808080; font-style: italic;">#  - callback1</span>
+            <span style="color: #808080; font-style: italic;">#  - callback2</span>
+            <span style="color: #808080; font-style: italic;">#  - Promesse 2</span>
+            <span style="color: #808080; font-style: italic;">#      * callback 1</span>
+            <span style="color: #808080; font-style: italic;">#      * callback 2</span>
+            <span style="color: #808080; font-style: italic;">#  - callback 3</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span>resultat<span style="color: #66cc66;">,</span> Promise<span style="color: black;">&#41;</span>:
+                resultat.<span style="color: black;">then</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">resolve</span><span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">break</span></pre></td></tr></table></div>
+
+<p>Maintenant, créons un code asynchrone:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">threading</span> <span style="color: #ff7700;font-weight:bold;">import</span> Timer
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func1<span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># On dit complètement artificiellement d'afficher le résultat</span>
+    <span style="color: #808080; font-style: italic;"># de la fonction dans 3 secondes, sans bloquer histoire d'avoir</span>
+    <span style="color: #808080; font-style: italic;"># un peu de nonbloquitude dans notre code et justifier l'asynchrone.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> callback1<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func2<span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Le même, mais pour 2 secondes</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> callback2<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Deux fonctions normales</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func3<span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func4<span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et si on les enchaines...</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Je commence'</span><span style="color: black;">&#41;</span>
+func1<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Juste après'</span><span style="color: black;">&#41;</span>
+func2<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+func3<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+func4<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># ... le résultat est bien désordonné :</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Je commence</span>
+<span style="color: #808080; font-style: italic;">## Juste après</span>
+<span style="color: #808080; font-style: italic;">## 3</span>
+<span style="color: #808080; font-style: italic;">## 4</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 1</span></pre></td></tr></table></div>
+
+<p>Parfois c&#8217;est ce que l&#8217;on veut, que les choses s’exécutent dans le désordre, sans bloquer.</p>
+<p>Mais quand on a des fonctions qui dépendent les unes des autres, au milieu d&#8217;un code asynchrone, on veut qu&#8217;elles se transmettent le résultat les unes aux autres au bon moment. Pour cela, utilisons notre promesse :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">threading</span> <span style="color: #ff7700;font-weight:bold;">import</span> Timer
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># La mise en place de promesses suppose que le code </span>
+<span style="color: #808080; font-style: italic;"># écrit en fasse explicitement usage. Notre code est</span>
+<span style="color: #808080; font-style: italic;"># définitivement lié à cette manière de faire.</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func1<span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Notre fonction doit créer la promesse et la retourner</span>
+    p <span style="color: #66cc66;">=</span> Promise<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># Dans le callback, elle doit dire quand la promesse est tenue</span>
+        p.<span style="color: black;">resolve</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> callback1<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> p
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On lance la première fonction.</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Je commence'</span><span style="color: black;">&#41;</span>
+promise <span style="color: #66cc66;">=</span> func1<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Juste après'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On ajoute des callbacks à notre promesse.</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func2<span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>:
+    p <span style="color: #66cc66;">=</span> Promise<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># Pour justifier l’enchainement des fonctions, on fait en sorte que</span>
+        <span style="color: #808080; font-style: italic;"># chaque fonction attend le résultat de la précédente, et</span>
+        <span style="color: #808080; font-style: italic;"># l'incrémente de 1.</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v2 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+        p.<span style="color: black;">resolve</span><span style="color: black;">&#40;</span>v2 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> callback2<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># Ce callback retourne lui-même une promesse, qui sera fusionnée</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> p
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ces callbacks ne retournent pas de promesses, et seront chainés</span>
+<span style="color: #808080; font-style: italic;"># normalement</span>
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func3<span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v3 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> v3 + <span style="color: #ff4500;">1</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func4<span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v4 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Nos fonctions s'exécutent dans le bon ordre, mais bien de manière</span>
+<span style="color: #808080; font-style: italic;"># asynchrone par rapport au reste du programme.</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Je commence</span>
+<span style="color: #808080; font-style: italic;">## Juste après</span>
+<span style="color: #808080; font-style: italic;">## 1</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 3</span>
+<span style="color: #808080; font-style: italic;">## 4</span></pre></td></tr></table></div>
+
+<p>Notez bien :</p>
+<ul>
+<li>Le résultat &#8220;1&#8221; n&#8217;apparait que trois secondes après &#8220;Juste après&#8221;. Les fonctions sont donc bien non bloquantes.</li>
+<li>Le resultat &#8220;2&#8221; apparait deux secondes après &#8220;1&#8221;: c&#8217;est aussi asynchrone, MAIS, n&#8217;est lancé que quand la première fonction a terminé son travail.</li>
+<li>La deuxième fonction retourne une promesse, qui est fusionnée: tous ses callbacks vont s&#8217;exécuter en file avant que <code>func3</code> soit lancé. </li>
+</ul>
+<p>Évidement, n&#8217;utilisez pas cette implémentation de promise à la maison, c&#8217;est pédagogique. Ça ne gère pas les erreurs, ni le cas où le callback est enregistré après l&#8217;arrivée du résultat, et tout un tas d&#8217;autres cas tordus.</p>
+<h2>Syntaxe alternative</h2>
+<p>En Python, beaucoup de frameworks ont une approche plus agréable pour gérer les promesses à grand coup de <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Twisted fait ça avec son <code>@inlineCallback</code>, <code>asyncio</code> avec <code>@coroutine</code>. C&#8217;est juste du sucre syntaxique pour vous rendre la vie plus facile.</p>
+<p>Il s&#8217;agit de transformer une fonction en générateur, et à chaque fois qu&#8217;on appelle <code>yield</code> sur une promesse, elle est fusionnée avec la précédente. Ça donne presque l&#8217;impression d&#8217;écrire un code bloquant normal :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># un appel de fonction asyncrone typique de twisted</span>
+<span style="color: #66cc66;">@</span>inlineCallback
+<span style="color: #ff7700;font-weight:bold;">def</span> une_fonction<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>:
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func1<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func2<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func3<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+&nbsp;
+une_fonction<span style="color: black;">&#40;</span>truc<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Les fonctions 1, 2 et 3 vont ainsi être appelées de manière asynchrone par rapport au reste du programme, mais bien s’enchainer les unes à la suite des autres.</p>
+<p>Ouai, tout ce bordel parce que l&#8217;asynchrone, c&#8217;est dur, donc on essaye de le faire ressembler à du code synchrone, qui lui est facile.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/D8GwE.png" length="222229" type="image/jpg" />	</item>
+		<item>
+		<title>En attendant asyncio 15</title>
+		<link>http://sametmax.com/en-attendant-asyncio/</link>
+		<comments>http://sametmax.com/en-attendant-asyncio/#comments</comments>
+		<pubDate>Fri, 17 Jan 2014 14:09:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8781</guid>
+		<description><![CDATA[La programmation asynchrone arrive en force avec la version 3.4, mais celle-ci n'est pas encore en version stable. En attendant, Python 3 possède déjà de quoi faire de la programmation asynchrone, et même parallèle, avec une bien plus grande facilité qu'en Python 2.]]></description>
+				<content:encoded><![CDATA[<p>La programmation asynchrone arrive en force avec la version 3.4, mais celle-ci n&#8217;est pas encore en version stable. En attendant, Python 3 possède déjà de quoi faire de la programmation asynchrone, et même parallèle, avec une bien plus grande facilité qu&#8217;en Python 2.</p>
+<p>Si vous avez oublié le principe ou l’intérêt de la programmation asynchrone, <a href="http://sametmax.com/la-difference-entre-la-programmation-asynchrone-parallele-et-concurrente/">il y a un article pour ça</a> ©.</p>
+<p>Pour montrer l’intérêt de la chose, nous allons utiliser un bout de code pour télécharger le code HTML de pages Web.</p>
+<h2>Sans programmation asynchrone</h2>
+<p>Le code est simple et sans chichi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">urllib</span>.<span style="color: black;">request</span> <span style="color: #ff7700;font-weight:bold;">import</span> urlopen
+&nbsp;
+start_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+URLS <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'http://sebsauvage.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://github.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://sametmax.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://duckduckgo.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://0bin.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://bitstamp.net/'</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> URLS:
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #808080; font-style: italic;"># j'ignore volontairement toute gestion d'erreur évoluée</span>
+        result <span style="color: #66cc66;">=</span> urlopen<span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s page: %s bytes'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>result<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">Exception</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s generated an exception: %s'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> e<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+elsapsed_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - start_time
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Elapsed time: %ss&quot;</span> % elsapsed_time.<span style="color: black;">total_seconds</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui nous donne:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python sans_future.py
+http:<span style="color: #000000; font-weight: bold;">//</span>sebsauvage.net<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">9036</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>github.com<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">12582</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>sametmax.com<span style="color: #000000; font-weight: bold;">/</span> generated an exception: HTTP Error <span style="color: #000000;">502</span>: Bad Gateway
+http:<span style="color: #000000; font-weight: bold;">//</span>duckduckgo.com<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">8826</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>0bin.net<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">5551</span> bytes
+http:<span style="color: #000000; font-weight: bold;">//</span>bitstamp.net<span style="color: #000000; font-weight: bold;">/</span> page: <span style="color: #000000;">51996</span> bytes
+Elapsed time: 25.536095s</pre></td></tr></table></div>
+
+<p>Erreur 500 sur S&#038;M&#8230; Mon script qui se fout de ma gueule en plus&#8230;</p>
+<h2>Avec programmation asynchrone</h2>
+<p>On utilise le module <a href="http://docs.python.org/3.2/library/concurrent.futures.html">future</a>, qui, comme sont nom l&#8217;indique, implémente des outils pour manipuler des &#8220;futures&#8221; en Python. Il inclut notamment un context manager pour créer, lancer et arrêter des workers automatiquement, et leur envoyer des tâches, puis récupérer les résultats de ces tâches sous forme de &#8220;futures&#8221;.</p>
+<p>Pour rappel, une &#8220;future&#8221; est juste un objet qui représente le résultat d&#8217;une opération asynchrone (puisqu&#8217;on ne sait pas quand elle se termine). Cet objet contient des méthodes pour vérifier si le résultat est disponible à un instant t, et obtenir ce résultat si c&#8217;est le cas.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">datetime</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> concurrent.<span style="color: black;">futures</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">urllib</span>.<span style="color: black;">request</span> <span style="color: #ff7700;font-weight:bold;">import</span> urlopen
+<span style="color: #ff7700;font-weight:bold;">from</span> concurrent.<span style="color: black;">futures</span> <span style="color: #ff7700;font-weight:bold;">import</span> ProcessPoolExecutor<span style="color: #66cc66;">,</span> as_completed
+&nbsp;
+start_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+URLS <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">'http://sebsauvage.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://github.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://sametmax.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://duckduckgo.com/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://0bin.net/'</span><span style="color: #66cc66;">,</span>
+        <span style="color: #483d8b;">'http://bitstamp.net/'</span><span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> load_url<span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Le callback que vont appeler les workers pour télécharger le contenu
+        d'un site. On peut appeler cela une 'tâche'
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> urlopen<span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Un pool executor est un context manager qui va automatiquement créer des</span>
+<span style="color: #808080; font-style: italic;"># processus Python séparés et répartir les tâches qu'on va lui envoyer entre</span>
+<span style="color: #808080; font-style: italic;"># ces processus (appelés workers, ici on en utilise 5).</span>
+<span style="color: #ff7700;font-weight:bold;">with</span> ProcessPoolExecutor<span style="color: black;">&#40;</span>max_workers<span style="color: #66cc66;">=</span><span style="color: #ff4500;">5</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> e:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On e.submit() envoie les tâches à l'executor qui les dispatch aux</span>
+    <span style="color: #808080; font-style: italic;"># workers. Ces derniers appelleront &quot;load_url(url)&quot;. &quot;e.submit()&quot; retourne</span>
+    <span style="color: #808080; font-style: italic;"># une structure de données appelées &quot;future&quot;, qui représente  un accès au</span>
+    <span style="color: #808080; font-style: italic;"># résultat asynchrone, qu'il soit résolu ou non.</span>
+    futures_and_url <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>e.<span style="color: black;">submit</span><span style="color: black;">&#40;</span>load_url<span style="color: #66cc66;">,</span> url<span style="color: black;">&#41;</span>: url <span style="color: #ff7700;font-weight:bold;">for</span> url <span style="color: #ff7700;font-weight:bold;">in</span> URLS<span style="color: black;">&#125;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># &quot;as_completed()&quot; prend un iterable de future, et retourne un générateur</span>
+    <span style="color: #808080; font-style: italic;"># qui itère sur les futures au fur et à mesures que celles</span>
+    <span style="color: #808080; font-style: italic;"># ci sont résolues. Les premiers résultats sont donc les premiers arrivés,</span>
+    <span style="color: #808080; font-style: italic;"># donc on récupère le contenu des sites qui ont été les premiers à répondre</span>
+    <span style="color: #808080; font-style: italic;"># en premier, et non dans l'ordre des URLS.</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> future <span style="color: #ff7700;font-weight:bold;">in</span> as_completed<span style="color: black;">&#40;</span>futures_and_url<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Une future est hashable, et peut donc être une clé de dictionnaire.</span>
+        <span style="color: #808080; font-style: italic;"># On s'en sert ici pour récupérer l'URL correspondant à cette future.</span>
+        url <span style="color: #66cc66;">=</span> futures_and_url<span style="color: black;">&#91;</span>future<span style="color: black;">&#93;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># On affiche le résultats contenu des sites si les futures le contienne.</span>
+        <span style="color: #808080; font-style: italic;"># Si elles contiennent une exception, on affiche l'exception.</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> future.<span style="color: black;">exception</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s generated an exception: %s'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> future.<span style="color: black;">exception</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">else</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%s page: %s bytes'</span> % <span style="color: black;">&#40;</span>url<span style="color: #66cc66;">,</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>future.<span style="color: black;">result</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+elsapsed_time <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">datetime</span>.<span style="color: #dc143c;">datetime</span>.<span style="color: black;">now</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> - start_time
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Elapsed time: %ss&quot;</span> % elsapsed_time.<span style="color: black;">total_seconds</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et c&#8217;est quand même vachement plus rapide :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">python3 avec_future.<span style="color: black;">py</span> <span style="color: #808080; font-style: italic;"># notez qu'on utilise Python 3 cette fois</span>
+http://duckduckgo.<span style="color: black;">com</span>/ page: <span style="color: #ff4500;">8826</span> <span style="color: #dc143c;">bytes</span>
+http://sebsauvage.<span style="color: black;">net</span>/ page: <span style="color: #ff4500;">9036</span> <span style="color: #dc143c;">bytes</span>
+http://github.<span style="color: black;">com</span>/ page: <span style="color: #ff4500;">12582</span> <span style="color: #dc143c;">bytes</span>
+http://sametmax.<span style="color: black;">com</span>/ page: <span style="color: #ff4500;">50998</span> <span style="color: #dc143c;">bytes</span>
+http://0bin.<span style="color: black;">net</span>/ page: <span style="color: #ff4500;">5551</span> <span style="color: #dc143c;">bytes</span>
+http://bitstamp.<span style="color: black;">net</span>/ page: <span style="color: #ff4500;">52001</span> <span style="color: #dc143c;">bytes</span>
+Elapsed <span style="color: #dc143c;">time</span>: 3.480596s</pre></td></tr></table></div>
+
+<p>Même si vous retirez les commentaires, le code est encore très verbeux, ce qui explique pourquoi j&#8217;attends avec impatience <a href="http://www.python.org/dev/peps/pep-3156/">asyncio</a> qui, grâce à <code>yield from</code>, va intégrer l&#8217;asynchrone de manière plus naturelle au langage.</p>
+<p>Mais ça reste beaucoup plus simple que de créer son process à la main, créer une queue, envoyer les tâches dans la queue, s&#8217;assurer que le process est arrêté, gérer les erreurs et le clean up, etc.</p>
+<p>Notez qu&#8217;on peut remplacer <code>ProcessPoolExecutor</code> par <code>ThreadPoolExecutor</code> si vous n&#8217;avez pas besoin d&#8217;un process séparé mais juste de l&#8217;IO non bloquant.</p>
+<hr />
+<p>Télécharger le code de larticle : <a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/avec_future.py">avec future</a> / <a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/sans_future.py">sans future</a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/en-attendant-asyncio/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/01/IMG_7832.jpg" length="84993" type="image/jpg" />	</item>
+	</channel>
+</rss>

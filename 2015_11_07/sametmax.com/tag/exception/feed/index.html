@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; exception</title>
+	<atom:link href="http://sametmax.com/tag/exception/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Lancer pdb dès qu&#8217;une exception a lieu 9</title>
+		<link>http://sametmax.com/lancer-pdb-des-quune-exception-a-lieu/</link>
+		<comments>http://sametmax.com/lancer-pdb-des-quune-exception-a-lieu/#comments</comments>
+		<pubDate>Fri, 10 Apr 2015 10:08:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[debug]]></category>
+		<category><![CDATA[exception]]></category>
+		<category><![CDATA[pdb]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=16055</guid>
+		<description><![CDATA[Vous vous souvenez de excepthook et de pdb ? Mélangeons les deux ! &#160; import sys import traceback import pdb &#160; def pdb_post_mortem&#40;exc_type, exc_val, exc_tb&#41;: # On affiche l'exception histoire de savoir ce qu'on debug print&#40;&#34;&#34;.join&#40;traceback.format_exception&#40;exc_type, exc_val, exc_tb&#41;&#41;&#41; # On balance pdb en mode post mortem, c'est à dire qu'il va se lancer # malgré [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Vous vous souvenez de <a href="http://sametmax.com/gestion-des-erreurs-en-python/">excepthook</a> et de <a href="http://sametmax.com/debugger-en-python-les-bases-de-pdb/">pdb</a> ?</p>
+<p>Mélangeons les deux !</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">traceback</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">pdb</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> pdb_post_mortem<span style="color: black;">&#40;</span>exc_type<span style="color: #66cc66;">,</span> exc_val<span style="color: #66cc66;">,</span> exc_tb<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># On affiche l'exception histoire de savoir ce qu'on debug</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">traceback</span>.<span style="color: black;">format_exception</span><span style="color: black;">&#40;</span>exc_type<span style="color: #66cc66;">,</span> exc_val<span style="color: #66cc66;">,</span> exc_tb<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># On balance pdb en mode post mortem, c'est à dire qu'il va se lancer</span>
+    <span style="color: #808080; font-style: italic;"># malgré le fait que le programme ne marche plus, donnant accès</span>
+    <span style="color: #808080; font-style: italic;"># au contexte qu'il y avait juste avant que ça foire</span>
+    <span style="color: #dc143c;">pdb</span>.<span style="color: black;">post_mortem</span><span style="color: black;">&#40;</span>exc_tb<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On dit à python de lancer cette fonction quand il plante</span>
+<span style="color: #dc143c;">sys</span>.<span style="color: black;">excepthook</span> <span style="color: #66cc66;">=</span> pdb_post_mortem
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On fait planter Python histoire de voir que ça marche bien</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> boom<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    a <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">1</span>
+    b <span style="color: #66cc66;">=</span> a / <span style="color: #ff4500;">0</span>
+boom<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et si quand ça plante, Python nous pond la stack trace, puis nous lance un joli prompt de debugging qui donne accès à ce qu&#8217;on avait en mémoire just avant que la VM ne décède :</p>
+<pre>Traceback (most recent call last):
+  File "test.py", line 16, in <module>
+    boom()
+  File "test.py", line 14, in boom
+    b = a / 0
+ZeroDivisionError: integer division or modulo by zero
+
+> /home/sam/Bureau/test.py(14)test()
+-> a = 1 / 0
+(Pdb) 1
+(Pdb) print a
+1</pre>
+<p>C&#8217;est plus ou moins l&#8217;équivalent de lancer son programme manuellement avec :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python <span style="color: #660033;">-m</span> pdb programme.py</pre></td></tr></table></div>
+
+<p>L&#8217;avantage de la première forme, c&#8217;est qu&#8217;on peut le setter et l&#8217;oublier, on faire une config un peu plus custom. L&#8217;avantage de la deuxième forme, c&#8217;est que c&#8217;est juste une ligne à taper, et en prime si on fait <code>c</code>, le programme redémarre automatiquement.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/lancer-pdb-des-quune-exception-a-lieu/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/04/zg1kTnr.jpg" length="44727" type="image/jpg" />	</item>
+		<item>
+		<title>Tableau de référence des exceptions en Python 6</title>
+		<link>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/</link>
+		<comments>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/#comments</comments>
+		<pubDate>Sun, 22 Mar 2015 23:23:31 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exception]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=15963</guid>
+		<description><![CDATA[J'ai fais un topo sur <a href="http://sametmax.com/gestion-des-erreurs-en-python/">la gestion des erreurs en python</a>, mais je pense que les débutants peuvent bénéficier d'un petit tableau pour s'y retrouver quand ils lisent un erreur.
+]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;ai fais un topo sur <a href="http://sametmax.com/gestion-des-erreurs-en-python/">la gestion des erreurs en python</a>, mais je pense que les débutants peuvent bénéficier d&#8217;un petit tableau pour s&#8217;y retrouver quand ils tombent sur les erreurs les plus courantes.</p>
+<p>Les exceptions suivantes sont levées en cas d&#8217;erreur. Elles héritent toutes de <code>StandardError</code> :</p>
+<table class="tableizer-table">
+<th>Exception</th>
+<th>Cause</th>
+<th>Résolution</th>
+</tr>
+<tr>
+<td>NotImplementedError</td>
+<td>Un développeur a volontairement levé cette exception dans une des méthodes de sa classe afin de signaler que c&#8217;est aux enfants de la classe de l&#8217;implémenter.</td>
+<td>N&#8217;utilisez pas la classe directement, mais créez une classe enfant. Overridez la méthodes afin de lui donner un comportement. Si vous ne comprenez pas ce que je viens de dire, lisez le <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/">guide sur la POO</a>.</td>
+</tr>
+<tr>
+<td>IndentationError ou TabError</td>
+<td>Le fichier mélange des tabs et des espaces ou n&#8217;utilisent pas le même nombre de tabs ou d&#8217;espaces partout.</td>
+<td>Activez l&#8217;affichage des tabs et espaces dans votre éditeur de texte, et assurez-vous d&#8217;utiliser 4 espaces partout comme valeur d&#8217;indentation.</td>
+</tr>
+<tr>
+<td>ImportError</td>
+<td>Python ne peut pas importer un module.</td>
+<td>Vérifier que le nom du module ne comporte pas de fautes (Python est sensible à la casse). Assurez-vous que le module est importable (situé dans un dossier du PYTHON PATH) et qu&#8217;il ne contient pas d&#8217;erreurs empêchant son importation, telle qu&#8217;une référence cyclique. Si vous ne savez pas ce qu&#8217;est le PYTHON PATH, lisez l&#8217;<a href="http://sametmax.com/les-imports-en-python/">article sur les imports</a>.</td>
+</tr>
+<tr>
+<td>AssertionError</td>
+<td>Une expression <code>assert</code> est fausse.</td>
+<td>Si c&#8217;est dans votre code, retirez le <code>assert</code>, ce mot clé n&#8217;est que pour les tests unittaires. Si vous avez la malchance de tomber sur une lib qui l&#8217;utilise comme garde fou pour le passage d&#8217;arguments valeur, lisez le code source, et passez une valeur qui rendra l&#8217;expression vraie. Si vous en avez dans les tests et que vous ne savez pas quoi en faire, lisez le <a href="http://sametmax.com/un-gros-guide-bien-gras-sur-les-tests-unitaires-en-python-partie-1/">guide sur le tests.</a></td>
+</tr>
+<tr>
+<td>AttributeError</td>
+<td>Vous demandez à un objet de vous fournir un attribut qu&#8217;il ne possède pas.</td>
+<td>Vérifiez que le nom de l&#8217;attribut et le nom de l&#8217;objet ne contiennent pas de faute (Python est sensible à la casse). Vérifier que l&#8217;attribut a bien été créé avant son accès et pas supprimé entre temps (Python est dynamique, les attributs peuvent être créés et supprimés à la volée. Si le cas où l&#8217;attribut n&#8217;existe pas est un cas valide, vous pouvez tester cette existence avec <a href="https://docs.python.org/3/library/functions.html?highlight=hasattr#hasattr">hasattr()</a> ou obtenir une valeur par défaut avec <a href="https://docs.python.org/3/library/functions.html?highlight=getattr#getattr">getattr()</a>.</td>
+</tr>
+<tr>
+<td>NameError</td>
+<td>Vous tentez d&#8217;utiliser un nom (de variable, fonction, classe, etc) qui n&#8217;existe pas.</td>
+<td>Vérifiez que ce nom ne contient pas de faute (Python est sensible à la casse). Assurez-vous que ce que vous nommez a bien été créé avant cette ligne.</td>
+</tr>
+<tr>
+<td>IndexError</td>
+<td>Vous tentez d&#8217;accéder à une partie d&#8217;une indexable (souvent une liste ou un tuple) qui n&#8217;existe pas.</td>
+<td>Assurez vous que l&#8217;indexable contient assez d&#8217;éléments. Si le cas d&#8217;un indexable trop court est normal, vous pouvez vérifier la longueur de l&#8217;indexable avec <a href="https://docs.python.org/3/library/functions.html?highlight=getattr#len">len()</a>, ou utilisez un try/except.</td>
+</tr>
+<tr>
+<td>KeyError</td>
+<td>Vous tentez d&#8217;accéder à une clé d&#8217;un mapping (souvent un dictionnaire) qui n&#8217;existe pas.</td>
+<td>Assurez vous que la clé existe. Si le cas d&#8217;une clé inexistante est normal, vous pouvez vérifier qu&#8217;une clé est dans le mapping avec &#8216;in&#8217;, utiliser try/except ou obtenir une valeur par défaut avec <a href="https://docs.python.org/3/library/stdtypes.html?highlight=dict.get#dict.get">get()</a>. Dans le cas où vous souhaitez aussi que la valeur par défaut soit ajoutée à la collection, utilisez <a href="https://docs.python.org/3/library/stdtypes.html?highlight=dict.setdefault#dict.setdefault">setdefault()</a> ou <a href="https://docs.python.org/3/library/collections.html?highlight=defaultdict#collections.defaultdict">collection.defaultdict()</a>.</td>
+</tr>
+<tr>
+<td>TypeError</td>
+<td>Vous tentez une opération incompatible avec ce type.</td>
+<td>Si l&#8217;erreur a lieu au niveau d&#8217;une fonction que vous appelez, assurez-vous de passer des paramètres du type attendu par la fonction. Vous pouvez vérifier le type d&#8217;un objet avec <a href="https://docs.python.org/3/library/functions.html?highlight=type#type">type()</a>. Vérifiez également que vous n&#8217;utilisez pas un opérateur incompatible avec un type (par exemple, &#038; ne fonctionne pas sur les strings) ou entre deux types incompatibles (par exemple, il n&#8217;est pas possible d&#8217;additionner une string avec un entier).</td>
+</tr>
+<tr>
+<td>ValueError</td>
+<td>Vous passez une valeur à une fonction qui n&#8217;a aucun sens dans ce contexte ou dont le sens est ambiguë.</td>
+<td>Assurez-vous de ne pas passer une valeur aberrante et que le résultat attendu soit évident. Par exemple, si vous essayez de faire int(&#8216;é&#8217;), la conversion de la lettre &#8220;é&#8221; en entier n&#8217;a pas de résultat évident.</td>
+</tr>
+<tr>
+<td>UnicodeDecodeError</td>
+<td>Vous gérez votre texte comme un porc.</td>
+<td>Lisez <a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">le guide sur l&#8217;encoding</a>.</td>
+</tr>
+<tr>
+<td>UnicodeEncodeError</td>
+</tr>
+<tr>
+<td>OverflowError</td>
+<td>Vous faites des calculs trop gros pour les types numériques des base</td>
+<td>Utilisez le module <a href="https://docs.python.org/3/library/decimal.html?highlight=decimal#module-decimal">decimal</a></td>
+</tr>
+<tr>
+<td>ZeroDivisionError</td>
+<td>Vous faites une division par zéro</td>
+<td>Assurez-vous que sous aucune condition aucun dénominateur n&#8217;est égal à 0</td>
+</tr>
+<tr>
+<td>IOError</td>
+<td>Erreur d&#8217;entrée / sortie </td>
+<td>Vérifiez que vous pouvez lire / écrire depuis et vers la ressource que vous utilisez. Parmi les problèmes récurrents : disque dur plein, système corrompu, absence de permissions, fichier inexistant, etc.</td>
+</tr>
+<tr>
+<td>OSError</td>
+<td>L&#8217;OS retourne une erreur</td>
+<td>Les causes peuvent être très variées, mais concernent souvent le système de fichier ou l&#8217;utilisation d&#8217;un sous-process. Vérifier les lignes où vous utiliser les modules os, shutils, popen, subprocess, multiprocessing, etc.</td>
+</tr>
+<tr>
+<td>MemoryError</td>
+<td>Vous utilisez trop de mémoire</td>
+<td>Vérifiez vos remplissages de listes et dictionnaires, particulièrement si vous en déclarez un comme valeur par défaut d&#8217;un paramètre.</td>
+</tr>
+</table>
+<p>Je n&#8217;ai pas mentionné quelques exceptions beaucoup plus rares, mais vous pouvez trouver la liste complète <a href="https://docs.python.org/2/library/exceptions.html">ici</a>.</p>
+<p>Toutes les exceptions héritent de <code>BaseException</code>, y compris <code>Exception</code>. </p>
+<p>Il existe 3 exceptions qui n&#8217;héritent pas de <code>Exception</code>, et ne représentent PAS des erreurs : </p>
+<ul>
+<li><code>SystemExit</code> : levé par <a href="https://docs.python.org/3/library/sys.html?highlight=sys.exit#sys.exit">sys.exit()</a> qui par nature met fin au programme. N&#8217;affiche pas de stack trace quand la VM s&#8217;arrête si elle n&#8217;est pas attrapée.</li>
+<li><code>KeyboardInterrupt</code> : levé par des combinaison de touches au clavier qui par nature mettent fin au programme (comme <kbd>Ctrl</kbd> + <kbd>C</kbd>).</li>
+<li><code>GeneratorExit</code> : levé automatiquement quand on appelle <code>close()</code> sur un générateur.</li>
+</ul>
+<p>Bien qu&#8217;héritant d&#8217;<code>Exception</code>, les <a href="https://docs.python.org/3/library/warnings.html?highlight=warning#module-warnings">warnings</a> sont des mécanismes un peu particulier. Ils sont tous notés XxxWarning (ex: <code>DeprecationWarning</code> pour signaler l&#8217;usage d&#8217;une fonctionnalité en cours de dépréciation) et sont des enfants de <code>Warning</code>.</p>
+<p>Généralement les warnings ne sont pas fait pour être levés avec <code>raise</code>, mais appelé avec <a href="https://docs.python.org/3/library/warnings.html?highlight=warnings.warn#warnings.warn">warnings.warn</a>. Par défaut ces warnings sont affichés, mais peuvent être réduits au silence, filtrés ou levés comme exception selon le désir du développeur.</p>
+<p>Enfin, <code>StopIteration</code> est levée quand on appelle <code>next()</code> sur un itérateur vide. C&#8217;est le seul enfant de <code>Exception</code> (avec <code>Warning</code>) qui n&#8217;hérite pas de <code>StandardError</code> car ce n&#8217;est pas une erreur en soit, mais simplement un mécanisme de contrôle de flux qui dit à la boucle <code>for</code> quand s&#8217;arrêter. </p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/tableau-de-reference-des-exceptions-en-python/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2015/03/cheat-notes-on-hand.jpg" length="57494" type="image/jpg" />	</item>
+		<item>
+		<title>Les exceptions sont itérables 6</title>
+		<link>http://sametmax.com/les-exceptions-sont-iterables/</link>
+		<comments>http://sametmax.com/les-exceptions-sont-iterables/#comments</comments>
+		<pubDate>Sun, 02 Mar 2014 23:49:55 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exception]]></category>
+		<category><![CDATA[iteration]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9656</guid>
+		<description><![CDATA[Ok, c'est une bizarrerie, mais je tenais à la partager car ça m'a bien niqué : une exception est itérable en Python]]></description>
+				<content:encoded><![CDATA[<p>Ok, c&#8217;est une bizarrerie, mais je tenais à la partager car ça m&#8217;a bien niqué : une exception est itérable en Python</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">Exception</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Doh !'</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">print</span> x
+...
+<span style="color: black;">Doh</span> <span style="color: #66cc66;">!</span></pre></td></tr></table></div>
+
+<p>Pourquoi ? J&#8217;en ai aucune idée. Mais j&#8217;ai voulu faire un algo récursif sur des structures imbriquées contenant des exceptions. Et ça buggait. Parce que ça parcourait aussi les exceptions.</p>
+<p>Le piège vicieux dans lequel peu de gens risquent de tomber vu qu&#8217;on programme pas ça tous les jours. Mais tout de même, une étrangetée de Python. Peut être un héritage de l&#8217;époque où on pouvait faire un <code>raise</code> sur une string.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/les-exceptions-sont-iterables/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n1t6dwlUwv1r539hzo1_500.jpg" length="42536" type="image/jpg" />	</item>
+		<item>
+		<title>Envoi d&#8217;un email par logging en cas de plantage d&#8217;un script python (ou: comment faire bouffer u&#8221;\xe9&#8243; à SMTPHandler) 9</title>
+		<link>http://sametmax.com/envoi-dun-email-par-logging-en-cas-de-plantage-dun-script-python-ou-comment-faire-bouffer-uxe9-a-smtphandler/</link>
+		<comments>http://sametmax.com/envoi-dun-email-par-logging-en-cas-de-plantage-dun-script-python-ou-comment-faire-bouffer-uxe9-a-smtphandler/#comments</comments>
+		<pubDate>Tue, 12 Mar 2013 08:48:23 +0000</pubDate>
+		<dc:creator><![CDATA[etienne]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[callback]]></category>
+		<category><![CDATA[email]]></category>
+		<category><![CDATA[exception]]></category>
+		<category><![CDATA[logguer]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5313</guid>
+		<description><![CDATA[(Ceci est un post invité d&#8217;un débutant pour les débutants&#8230; sous licence creative common 3.0 unported.) Il y a peu, je me suis mis à utiliser logging pour debugger mes scripts de débutant. Si comme moi vous avez l&#8217;habitude de mettre des print partout pour trouver l&#8217;origine d&#8217;un problème, et qu&#8217;ensuite vous avez passé de [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><em>(Ceci est un post invité d&#8217;un débutant pour les débutants&#8230; sous licence <a href="http://creativecommons.org/licenses/by/3.0/">creative common 3.0 unported</a>.)</em></p>
+<p>Il y a peu, je me suis mis à utiliser <code>logging</code> pour debugger mes scripts de débutant.</p>
+<p>Si comme moi vous avez l&#8217;habitude de mettre des <code>print</code> partout pour trouver l&#8217;origine d&#8217;un problème, et qu&#8217;ensuite vous avez passé de longues longues longues minutes/heures à traquer ces foutus <code>print</code> pour dépolluer la sortie console, jetez un oeil à <a href="http://sametmax.com/ecrire-des-logs-en-python/">écrire des logs en python</a>.</p>
+<p>Après quelques (minutes/heures/jours) de prise en main (vite, quoi&#8230;), on se demande comment on a fait pour s&#8217;en passer si longtemps. C&#8217;est simple, je n&#8217;utilise plus les touches &#8220;p&#8221;, &#8220;r&#8221;, &#8220;i&#8221;, &#8220;n&#8221; et &#8220;t&#8221; de mon clavier. Elles sont toutes propres.</p>
+<p>En plus, <code>logging</code> m&#8217;a ouvert de nouvelles perspectives, parmi lesquelles la possibilité d&#8217;envoyer les logs par mail. Pas besoin de tout recevoir par mail, mais si ce foutu script de m%@rde pouvait m&#8217;envoyer un email quand il plante avec la source détaillé du problème, ce serait super.</p>
+<h2>Log post mortem par email</h2>
+<p>Admettons que vous vouliez vérifier que les pensées qui vous traversent l&#8217;esprit sont safe for work. Vous écrivez un script génial qui fait le boulot.</p>
+<p>Comme vous commencez à savoir y faire en python, vous avez même écrit votre propre exception à vous tout seul&#8230;</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> NotSafeForWorkError<span style="color: black;">&#40;</span><span style="color: #008000;">Exception</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+    Exception soulevée si une pensée est NSFW
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> msg<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">msg</span> <span style="color: #66cc66;">=</span> u<span style="color: #483d8b;">&quot;Danger! %s est NSFW.&quot;</span> % msg
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__str__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">msg</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;utf-8&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># liste des pensées proscrites</span>
+<span style="color: #808080; font-style: italic;"># (échantillon, elle est beaucoup plus longue que ça en réalité)</span>
+NSFW <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;cul&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;seins&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;sametmax&quot;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># boucle de censure qui soulève une exception si une pensée déconne</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> pensee <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;pause&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;pipi&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;sametmax&quot;</span><span style="color: black;">&#93;</span>:
+    <span style="color: #ff7700;font-weight:bold;">if</span> pensee <span style="color: #ff7700;font-weight:bold;">in</span> NSFW:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> NotSafeForWorkError<span style="color: black;">&#40;</span>pensee<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> u<span style="color: #483d8b;">&quot;%s est SFW&quot;</span> % pensee
+&nbsp;
+<span style="color: #808080; font-style: italic;">#sortie:</span>
+<span style="color: #808080; font-style: italic;">## pause est SFW</span>
+<span style="color: #808080; font-style: italic;">## pipi est SFW</span>
+<span style="color: #808080; font-style: italic;">## Traceback (most recent call last):</span>
+<span style="color: #808080; font-style: italic;">##   File &quot;censure_setm3.py&quot;, line 30, in</span>
+<span style="color: #808080; font-style: italic;">##     raise NotSafeForWorkError(pensee)</span>
+<span style="color: #808080; font-style: italic;">## __main__.NotSafeForWorkError: Danger! sametmax est NSFW.</span></pre></td></tr></table></div>
+
+<p>Ça marche du tonnerre! C&#8217;est là que vous vous dites que ce serait bien si le script envoyait le traceback par email à votre psy pour le prévenir que vous avez déconné.</p>
+<p>A la maison, vous avez lu l&#8217;article de Sam sur les <a href="http://sametmax.com/log-post-mortem-avec-python/">logs post mortem</a>. Ça a l&#8217;air facile à faire.</p>
+<p>Vous créez d&#8217;abord un logger qui enverra les logs de niveau critique par mail:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">logging</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">handlers</span> <span style="color: #ff7700;font-weight:bold;">import</span> SMTPHandler
+&nbsp;
+nom_loggeur <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;test_nsfw&quot;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On crée un logger et on met le niveau à critique:</span>
+<span style="color: #808080; font-style: italic;">#  il ne tiendra compte que des logs de ce niveau</span>
+logger <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">getLogger</span><span style="color: black;">&#40;</span>nom_loggeur<span style="color: black;">&#41;</span>
+logger.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">CRITICAL</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On crée le handler en lui passant les paramètres</span>
+<span style="color: #808080; font-style: italic;">#  nécessaires à l'envoi d'un email</span>
+mail_handler <span style="color: #66cc66;">=</span> SMTPHandler<span style="color: black;">&#40;</span>
+    <span style="color: #808080; font-style: italic;"># Host et port</span>
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'SMTP.GMAIL.COM'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">587</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># From</span>
+    <span style="color: #483d8b;">&quot;MOI@GMAIL.COM&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># To (liste)</span>
+    <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;QUELQU.UN@QUELQUE.PART&quot;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># Sujet du message</span>
+    <span style="color: #483d8b;">&quot;Erreur critique dans %s&quot;</span> % nom_loggeur<span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># pour l'authentification</span>
+    credentials <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;MONEMAIL@GMAIL.COM&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;MONSUPERPASSWORD&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    secure <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On met le handler à &quot;critique&quot;.</span>
+<span style="color: #808080; font-style: italic;"># Il enverra donc par mail les messages de ce niveau</span>
+mail_handler.<span style="color: black;">setLevel</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">logging</span>.<span style="color: black;">CRITICAL</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On définit un formatter: date, nom du logger, niveau, message</span>
+<span style="color: #dc143c;">formatter</span> <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">logging</span>.<span style="color: black;">Formatter</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'%(asctime)s - %(name)s - %(levelname)s - %(message)s'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On associe le formatter au handler:</span>
+<span style="color: #808080; font-style: italic;">#  c'est lui qui formatera les logs de ce handler</span>
+mail_handler.<span style="color: black;">setFormatter</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">formatter</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># ... et on associe le handler au logger:</span>
+<span style="color: #808080; font-style: italic;">#  il utilisera ce handler, qui émettra les logs critiques</span>
+logger.<span style="color: black;">addHandler</span><span style="color: black;">&#40;</span>mail_handler<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ensuite vous redéfinissez sys.excepthook de manière à ce que l&#8217;exception soit logguée. La fonction convertit le traceback en string, la loggue au niveau critique et laisse l&#8217;exception continuer son chemin.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># la fonction qui remplacera sys.excepthook</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> en_cas_de_plantage<span style="color: black;">&#40;</span>type_except<span style="color: #66cc66;">,</span> value<span style="color: #66cc66;">,</span> tb<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Traceback permettra de formater l'exception.</span>
+    <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">traceback</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Mise en forme de l'exception. Retourne la trace</span>
+    <span style="color: #808080; font-style: italic;">#  sous forme de str avec numéros de lignes et tout</span>
+    trace <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">traceback</span>.<span style="color: black;">format_exception</span><span style="color: black;">&#40;</span>type_except<span style="color: #66cc66;">,</span> value<span style="color: #66cc66;">,</span> tb<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On loggue l'exception au niveau &quot;critique&quot;,</span>
+    <span style="color: #808080; font-style: italic;">#  elle sera donc envoyée par email</span>
+    logger.<span style="color: black;">critical</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Erreur inattendue:<span style="color: #000099; font-weight: bold;">\n</span>%s&quot;</span><span style="color: #66cc66;">,</span> trace<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># ... et on laisse le script se planter...</span>
+    <span style="color: #dc143c;">sys</span>.__excepthook__<span style="color: black;">&#40;</span>type_except<span style="color: #66cc66;">,</span> value<span style="color: #66cc66;">,</span> tb<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># on remplace sys.excepthook, et le tour est joué</span>
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">excepthook</span> <span style="color: #66cc66;">=</span> en_cas_de_plantage</pre></td></tr></table></div>
+
+<p>Et voilà. Vous lancez le script, il se casse la gueule dès qu&#8217;il rencontre &#8220;sametmax&#8221;, votre psy reçoit un email avec le traceback, c&#8217;est cool.</p>
+<p>Sauf que&#8230;</p>
+<h2>SMTPHandler ne gère pas unicode</h2>
+<p>Si au moment de la création de mail_handler, vous passez comme sujet à SMTPHandler:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">u<span style="color: #483d8b;">&quot;%s s'est planté&quot;</span> % nom_loggeur</pre></td></tr></table></div>
+
+<p>ou que dans votre fonction &#8220;en_cas_de_plantage&#8221; vous mettez:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">logger.<span style="color: black;">critical</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">&quot;Bébé a encore glissé dans son caca:<span style="color: #000099; font-weight: bold;">\n</span>%s&quot;</span><span style="color: #66cc66;">,</span> trace<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>&#8230; autrement dit si vous avez une chaîne unicode qui ne peut pas être encodée en ascii, ça va pas marcher:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">Traceback <span style="color: black;">&#40;</span>most recent call last<span style="color: black;">&#41;</span>:
+  File <span style="color: #483d8b;">&quot;envoie_mail_on_crash.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">84</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> emit
+    smtp.<span style="color: black;">sendmail</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">fromaddr</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">toaddrs</span><span style="color: #66cc66;">,</span> msg<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">734</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> sendmail
+    <span style="color: black;">&#40;</span><span style="color: #dc143c;">code</span><span style="color: #66cc66;">,</span> resp<span style="color: black;">&#41;</span> <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">data</span><span style="color: black;">&#40;</span>msg<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">501</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> data
+    <span style="color: #008000;">self</span>.<span style="color: black;">send</span><span style="color: black;">&#40;</span>q<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">321</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> send
+    <span style="color: #008000;">self</span>.<span style="color: black;">sock</span>.<span style="color: black;">sendall</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ssl.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">229</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> sendall
+    v <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">send</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#91;</span>count:<span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/ssl.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">198</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> send
+    v <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>._sslobj.<span style="color: black;">write</span><span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+<span style="color: #008000;">UnicodeEncodeError</span>: <span style="color: #483d8b;">'ascii'</span> codec can<span style="color: #483d8b;">'t encode character u'</span>\xe9<span style="color: #483d8b;">' in position 62: ordinal not in range(128)
+Logged from file envoie_mail_on_crash.py, line 163</span></pre></td></tr></table></div>
+
+<p>D&#8217;où l&#8217;on déduit qu&#8217;il y a une tentative foirée d&#8217;encodage d&#8217;une chaîne unicode en ascii par la méthode &#8220;write&#8221; de ce mystérieux _sslobj, et que c&#8217;est une méthode &#8220;emit&#8221; quelque part dans handlers.py qui lui a passé la chaîne.</p>
+<p>Fuck! Investiguons. Et essayons de régler ça par le haut de la pile.</p>
+<h2>Toi, là au fond! Oui, toi!</h2>
+<p>C&#8217;est la methode <code>emit</code> de SMTPHandler qui est responsable. Elle fait quoi cette méthode? Elle formate le &#8220;record&#8221;, crée un message et l&#8217;envoie à l&#8217;adresse mail spécifiée. Voilà le code:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">def</span> emit<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> record<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+    Emit a record.
+&nbsp;
+    Format the record and send it to the specified addressees.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">try</span>:
+        <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">smtplib</span>
+        <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">email</span>.<span style="color: black;">utils</span> <span style="color: #ff7700;font-weight:bold;">import</span> formatdate
+        port <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">mailport</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> port:
+            port <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">smtplib</span>.<span style="color: black;">SMTP_PORT</span>
+        smtp <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">smtplib</span>.<span style="color: black;">SMTP</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">mailhost</span><span style="color: #66cc66;">,</span> port<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># C'est ici l'objet &quot;record&quot; est formatté</span>
+        msg <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>record<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Le message est construit ici. Il sera ensuite envoyé par smtp.sendmail</span>
+        <span style="color: #808080; font-style: italic;"># C'est là que le bât blesse</span>
+        msg <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;From: %s<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>To: %s<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>Subject: %s<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>Date: %s<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>%s&quot;</span> % <span style="color: black;">&#40;</span>
+                        <span style="color: #008000;">self</span>.<span style="color: black;">fromaddr</span><span style="color: #66cc66;">,</span>
+                        <span style="color: #483d8b;">&quot;,&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">toaddrs</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+                        <span style="color: #808080; font-style: italic;"># Notons ce getSubject(record). La méthode renvoie</span>
+                        <span style="color: #808080; font-style: italic;">#  le sujet du message, passé à la création</span>
+                        <span style="color: #808080; font-style: italic;">#  de mail_handler</span>
+                        <span style="color: #008000;">self</span>.<span style="color: black;">getSubject</span><span style="color: black;">&#40;</span>record<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+                        formatdate<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+                        <span style="color: #808080; font-style: italic;"># le record formaté</span>
+                        msg<span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">username</span>:
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">secure</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+                smtp.<span style="color: black;">ehlo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+                smtp.<span style="color: black;">starttls</span><span style="color: black;">&#40;</span>*<span style="color: #008000;">self</span>.<span style="color: black;">secure</span><span style="color: black;">&#41;</span>
+                smtp.<span style="color: black;">ehlo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+            smtp.<span style="color: black;">login</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">username</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">password</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Le mail et envoyé</span>
+        smtp.<span style="color: black;">sendmail</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">fromaddr</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">toaddrs</span><span style="color: #66cc66;">,</span> msg<span style="color: black;">&#41;</span>
+&nbsp;
+        smtp.<span style="color: black;">quit</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: black;">&#40;</span><span style="color: #008000;">KeyboardInterrupt</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">SystemExit</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span>
+    <span style="color: #ff7700;font-weight:bold;">except</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">handleError</span><span style="color: black;">&#40;</span>record<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Qu&#8217;est-ce qu&#8217;il se passe?</p>
+<p>Après quelques tests genre:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">    msg <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>record<span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># C'est pratique parfois un petit print</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>msg<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">##</span></pre></td></tr></table></div>
+
+<p>&#8230; on voit que la méthode <code>format</code> (qui structure votre log selon la forme passée à logging.Formatter) retourne un objet de type unicode si le message que vous avez loggué (<code>logger.critical(u"% foiré!", trace)</code>) contient de l&#8217;unicode.</p>
+<p>Idem pour <code>getSubject(record)</code> qui, en l&#8217;état, ne fait que retourner le sujet du email tel que vous l&#8217;avez passé à l&#8217;instanciation de SMTPHandler.</p>
+<p>Donc, quand msg est formaté, si le log ou le message sont en unicode, msg sera en unicode.</p>
+<h2>WTF!?</h2>
+<p>J&#8217;ai été surpris quand j&#8217;ai fini par piger comment ça fonctionne. Même pour un débutant comme moi ça a l&#8217;air bête.</p>
+<p>J&#8217;y connais rien en email, mais il ne m&#8217;a pas fallu longtemps pour comprendre que, dans sa forme basique, un email c&#8217;est du ascii, point. Et que si on veut envoyer autre chose que du ascii, qui soit décodable de l&#8217;autre côté, il faut qu&#8217;il y ait les headers appropriés, que le contenu soit encodé, que sais-je encore&#8230;</p>
+<p>Peut-être un truc programmé par des gars qui ne manipulent jamais autre chose que de l&#8217;anglais? Ils auraient essayé d&#8217;envoyer un mail en russes ou en suédois, ça se serait planté au premier test. Oui, oui, Sam, la lingua franca, tout ça&#8230;</p>
+<p>Ou alors c&#8217;est pour des questions de compatibilité avec des versions antérieures de python qui ne contiendraient pas les ressources nécessaires pour formater correctement un mail? Aucune idée&#8230;</p>
+<p>Comment régler ça?</p>
+<h2>Il mangea u&#8221;\xe9&#8243; et il en redemanda</h2>
+<p>Le module <a href="http://docs.python.org/2/library/email.html"> email </a> de la lib standard permet de créer des emails. On trouve dans <code>email.mime</code> une classe MIMEText qui nous conviendra parfaitement. On va donc subclasser SMTPHandler et réécrire la méthode <code>emit</code> pour qu&#8217;elle construise un message &#8220;RFC-compliant&#8221;, comme ils disent dans la doc.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> SMTPHandler_unicode<span style="color: black;">&#40;</span>SMTPHandler<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> emit<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> record<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">smtplib</span>
+            <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">email</span>.<span style="color: black;">utils</span> <span style="color: #ff7700;font-weight:bold;">import</span> formatdate
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># On importe MIMEText</span>
+            <span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">email</span>.<span style="color: black;">mime</span>.<span style="color: black;">text</span> <span style="color: #ff7700;font-weight:bold;">import</span> MIMEText
+&nbsp;
+            port <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">mailport</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> port:
+                port <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">smtplib</span>.<span style="color: black;">SMTP_PORT</span> <span style="color: #808080; font-style: italic;"># 25</span>
+            smtp <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">smtplib</span>.<span style="color: black;">SMTP</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">mailhost</span><span style="color: #66cc66;">,</span> port<span style="color: black;">&#41;</span>
+&nbsp;
+            msg <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>record<span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># Au moment de la création de l'objet par MIMEText,</span>
+            <span style="color: #808080; font-style: italic;">#  si msg est de type unicode, il sera encodé</span>
+            <span style="color: #808080; font-style: italic;">#  selon _charset, sinon il sera laissé tel quel</span>
+            message <span style="color: #66cc66;">=</span> MIMEText<span style="color: black;">&#40;</span>msg<span style="color: #66cc66;">,</span> _charset <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;utf-8&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># On ajoute les headers nécessaires. S'il sont de type unicode,</span>
+            <span style="color: #808080; font-style: italic;">#  ils seront encodés selon _charset</span>
+            message.<span style="color: black;">add_header</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Subject&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">getSubject</span><span style="color: black;">&#40;</span>record<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+            message.<span style="color: black;">add_header</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;From&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">fromaddr</span><span style="color: black;">&#41;</span>
+            message.<span style="color: black;">add_header</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;To&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;,&quot;</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">toaddrs</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+            message.<span style="color: black;">add_header</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Date&quot;</span><span style="color: #66cc66;">,</span> formatdate<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">username</span>:
+                <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">secure</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span>:
+                    smtp.<span style="color: black;">ehlo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+                    smtp.<span style="color: black;">starttls</span><span style="color: black;">&#40;</span>*<span style="color: #008000;">self</span>.<span style="color: black;">secure</span><span style="color: black;">&#41;</span>
+                    smtp.<span style="color: black;">ehlo</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+                smtp.<span style="color: black;">login</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">username</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">password</span><span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># Envoi du message proprement encodé</span>
+            smtp.<span style="color: black;">sendmail</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">fromaddr</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">toaddrs</span><span style="color: #66cc66;">,</span> message.<span style="color: black;">as_string</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+            smtp.<span style="color: black;">quit</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: black;">&#40;</span><span style="color: #008000;">KeyboardInterrupt</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">SystemExit</span><span style="color: black;">&#41;</span>:
+            <span style="color: #ff7700;font-weight:bold;">raise</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span>:
+            <span style="color: #008000;">self</span>.<span style="color: black;">handleError</span><span style="color: black;">&#40;</span>record<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui est intéressant avec MIMEText c&#8217;est que si vous déclarez un encodage (<code>_charset = "utf-8"</code>), et que vous passez une chaîne unicode a l&#8217;instanciation, il l&#8217;encodera selon <code>_charset</code>.</p>
+<p>Idem si vous ajoutez un header en appelant <code>add_header</code>, ce qui permet dans notre cas de traiter correctement le sujet du mail.</p>
+<p>L&#8217;appel à la méthode <code>to_string</code> retournera le message proprement encodé (en base64) pour le transfert, et les headers appropriés seront inclus.</p>
+<p>Voilà, il ne reste plus qu&#8217;à utiliser cette classe pour créer mail_handler, et le tour est joué.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">mail_handler <span style="color: #66cc66;">=</span> SMTPHandler_unicode<span style="color: black;">&#40;</span>
+    <span style="color: #808080; font-style: italic;"># host et port</span>
+    <span style="color: black;">&#40;</span><span style="color: #483d8b;">'SMTP.GMAIL.COM'</span><span style="color: #66cc66;">,</span> <span style="color: #ff4500;">587</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># From</span>
+    <span style="color: #483d8b;">&quot;MOI@GMAIL.COM&quot;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># To (liste)s</span>
+    <span style="color: black;">&#91;</span><span style="color: #483d8b;">&quot;QUELQU.UN@QUELQUE.PART&quot;</span><span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># sujet du message</span>
+    u<span style="color: #483d8b;">&quot;Bonjour Mr Freud. %s a encore repéré des pensées génantes&quot;</span> % nom_loggeur<span style="color: #66cc66;">,</span>
+    <span style="color: #808080; font-style: italic;"># pour l'authentification</span>
+    credentials <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;MONEMAIL@GMAIL.COM&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;MONSUPERPASSWORD&quot;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    secure <span style="color: #66cc66;">=</span> <span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Bilan de l&#8217;histoire: c&#8217;est en débutant qu&#8217;on devient débutant&#8230;</p>
+<hr />
+<a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/mars/envoi_mail_on_crash.py">Télécharger le code de l&#8217;article.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/envoi-dun-email-par-logging-en-cas-de-plantage-dun-script-python-ou-comment-faire-bouffer-uxe9-a-smtphandler/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/03/tu_va_me_le_bouffer_oui.jpg" length="45654" type="image/jpg" />	</item>
+		<item>
+		<title>TypeError: Error when calling the metaclass bases function() argument 1 must be code, not str 7</title>
+		<link>http://sametmax.com/typeerror-error-when-calling-the-metaclass-bases-function-argument-1-must-be-code-not-str/</link>
+		<comments>http://sametmax.com/typeerror-error-when-calling-the-metaclass-bases-function-argument-1-must-be-code-not-str/#comments</comments>
+		<pubDate>Wed, 16 Jan 2013 12:16:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[error]]></category>
+		<category><![CDATA[exception]]></category>
+		<category><![CDATA[heritage]]></category>
+		<category><![CDATA[pep8]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4150</guid>
+		<description><![CDATA[Cette erreur est souvent déclenchée quand on essaye d'hériter d'une fonction au lieu d'une classe. Cela peut arriver par erreur avec des fonctions qui sont nommées en CamelCase, en dépit du PEP8.]]></description>
+				<content:encoded><![CDATA[<p>Cette erreur est souvent déclenchée quand on essaye d&#8217;hériter d&#8217;une fonction au lieu d&#8217;une classe. Cela peut arriver par erreur avec des fonctions qui sont nommées en CamelCase, en dépit du PEP8.</p>
+<p>Par exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Truc<span style="color: black;">&#40;</span><span style="color: #dc143c;">threading</span>.<span style="color: black;">Condition</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Machine<span style="color: black;">&#40;</span><span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">pass</span></pre></td></tr></table></div>
+
+<p>Lèveront l&#8217;exception :</p>
+<pre>TypeError: Error when calling the metaclass bases 
+    function() argument 1 must be code, not str</pre>
+<p>Car:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">threading</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">tempfile</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">threading</span>.<span style="color: black;">Condition</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'function'</span><span style="color: #66cc66;">&gt;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">tempfile</span>.<span style="color: black;">NamedTemporaryFile</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'function'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Malgré leurs noms en majuscule.</p>
+<p>Le message d&#8217;erreur est lui-même complètement obscure. Bref, le genre de truc qui est 100% lié à des erreurs d&#8217;autres personnes que vous aller payer par une après-midi de debug si on ne vous donne pas la solution. </p>
+<p>Mais bon, la queue de celui qui n&#8217;a jamais pourri l&#8217;après-midi d&#8217;un autre codeur avec son travail merdique jette le premier parpaing.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/typeerror-error-when-calling-the-metaclass-bases-function-argument-1-must-be-code-not-str/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/errormessagesrk3.png" length="424492" type="image/jpg" />	</item>
+	</channel>
+</rss>

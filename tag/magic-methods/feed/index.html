@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; magic methods</title>
+	<atom:link href="http://sametmax.com/tag/magic-methods/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Le guide ultime et définitif sur la programmation orientée objet en Python à l’usage des débutants qui sont rassurés par les textes détaillés qui prennent le temps de tout expliquer. Partie 6. 20</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-6/</link>
+		<comments>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-6/#comments</comments>
+		<pubDate>Wed, 27 Feb 2013 08:14:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[magic methods]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5136</guid>
+		<description><![CDATA[Python ajoute à la POO quelques goodies, et notamment les méthodes appelées automatiquement.]]></description>
+				<content:encoded><![CDATA[<p>J&#8217;avais autant envie de me taper la rédaction d&#8217;un article que d&#8217;un handjob par Raiden par temps d&#8217;orage, alors je vous met la musique appropriée.</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="420" height="315" src="http://www.youtube.com/embed/egne2ZCMM_0" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Prérequis :</p>
+<ul>
+<li>Avoir compris la <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-5/">partie précédente</a>.</li>
+<li>Avoir un peu de temps devant soi parce que ça va être long et vous allez bouffer des lignes de code par bottes de 12. Vous êtes prévenus.</li>
+</ul>
+<h2>Méthodes magiques</h2>
+<p>Python ajoute à la POO quelques goodies, et notamment les méthodes appelées automatiquement. Vous savez, celles qui sont nommées avec deux doubles underscores comme ça : <code>def __methode__(self)</code>. On les nomme parfois les &#8220;méthodes magiques&#8221;.</p>
+<p>Vous avez vu <code>__init__</code>, et j&#8217;ai fais un article sur <a href="http://sametmax.com/la-difference-entre-__new__-et-__init__-en-python/">__new__</a>. Mais il y en a d&#8217;autres. Un paquet d&#8217;autres.</p>
+<h2>__del__, le coquinou</h2>
+<p><code>__del__</code> est sémantiquement l&#8217;inverse de <code>__init__</code>, c&#8217;est une méthode appelée quand l&#8217;objet est détruit.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">time</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Action<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__del__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;C'est finiiiiiiiiii&quot;</span>
+&nbsp;
+&nbsp;
+a <span style="color: #66cc66;">=</span> Action<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">del</span> a
+<span style="color: #808080; font-style: italic;">## C'est finiiiiiiiiii</span>
+&nbsp;
+<span style="color: #dc143c;">time</span>.<span style="color: black;">sleep</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># laisse le temps au GC de faire son taff</span></pre></td></tr></table></div>
+
+<p>On l&#8217;utilise pour faire des nettoyages une fois qu&#8217;un objet n&#8217;est plus utile comme fermer les sockets, les fichiers, etc.</p>
+<p>Mais il y a un piège.</p>
+<p>Le mot clé <code>del</code> en Python ne détruit pas un objet. Il ne fait que détruire la référence. C&#8217;est l&#8217;interpréteur Python qui compte les références des objets, et quand un objet n&#8217;a plus de référence pointant vers lui, il est marqué pour la suppression.</p>
+<p>Ensuite, et seulement ensuite, le garbage collector arrive. Ceci n&#8217;est pas prédictible. Il peut arriver tout de suite après, ou mille opérations après. Et il supprime tous les objets marqués pour la suppression.</p>
+<p>Alors seulement <code>__del__</code> est appelée.</p>
+<p>Ce qui signifie que <code>__del__</code> peut être appelée beaucoup plus tard que vous le pensez, ou même pas du tout (si le script s&#8217;arrête avant). D&#8217;où le <code>time.sleep(1)</code> dans le code pour donner de grandes chance à la méthode d&#8217;être appelée.</p>
+<h2>Donner de la gueule à ses objets</h2>
+<p>Si vous créez un objet, la machine n&#8217;a aucune idée de ce que représente l&#8217;objet pour vous. Donc si vous lui demandez d&#8217;afficher cet objet, Python va afficher ce que l&#8217;objet représente pour lui :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Hic<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> titre<span style="color: #66cc66;">,</span> auteur<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">titre</span> <span style="color: #66cc66;">=</span> titre
+        <span style="color: #008000;">self</span>.<span style="color: black;">auteur</span> <span style="color: #66cc66;">=</span> auteur
+&nbsp;
+morceau <span style="color: #66cc66;">=</span> Hic<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;5eme Symfony&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Beetlejuice&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> morceau
+<span style="color: #808080; font-style: italic;">## &lt;Hic object at 0x1d877d0&gt;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: black;">&#91;</span>Hic<span style="color: black;">&#40;</span><span style="color: #483d8b;">'5eme Symfony'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Beetlejuice'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Hic<span style="color: black;">&#40;</span><span style="color: #483d8b;">'La flute enchantee'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Zarma'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">## [&lt;Hic object at 0x1e54610&gt;, &lt;Hic object at 0x1e545d0&gt;]</span></pre></td></tr></table></div>
+
+<p>En gros il vous donne la classe de laquelle l&#8217;objet est issu, et son adresse en mémoire.</p>
+<p>Mais si vous manipulez beaucoup ces objets dans un shell, vous êtes plus intéressé par le contenu de l&#8217;objet, pour rapidement identifier une instance.</p>
+<p>Quand vous faites un <code>print</code>,la méthode <code>__str__</code> pour récupérer la valeur à afficher. C&#8217;est le même comportement que d&#8217;appeler <code>str()</code> sur un objet :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">dico <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: #483d8b;">'a'</span>: <span style="color: #ff4500;">1</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'b'</span>: <span style="color: #ff4500;">2</span><span style="color: black;">&#125;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> dico
+<span style="color: #808080; font-style: italic;">## {'a': 1, 'b': 2}</span>
+&nbsp;
+<span style="color: #008000;">str</span><span style="color: black;">&#40;</span>dico<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## &quot;{'a': 1, 'b': 2}&quot;</span></pre></td></tr></table></div>
+
+<p>On peut donc coder la méthode <code>__str__</code> pour obtenir ce résultat :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Hic<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> titre<span style="color: #66cc66;">,</span> auteur<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">titre</span> <span style="color: #66cc66;">=</span> titre
+        <span style="color: #008000;">self</span>.<span style="color: black;">auteur</span> <span style="color: #66cc66;">=</span> auteur
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__str__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;{} de {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">titre</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">auteur</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+morceau <span style="color: #66cc66;">=</span> Hic<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;5eme Symfony&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;Beetlejuice&quot;</span><span style="color: black;">&#41;</span>
+<span style="color: #008000;">str</span><span style="color: black;">&#40;</span>morceau<span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># ne marche que dans un terminal</span>
+<span style="color: #808080; font-style: italic;">## u'5eme Symfony de Beetlejuice'</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> morceau
+<span style="color: #808080; font-style: italic;">## 5eme Symfony de Beetlejuice</span></pre></td></tr></table></div>
+
+<p>Une autre méthode intéressante est <code>__repr__</code>. C&#8217;est ce que va utiliser Python quand vous entrez un objet dans un shell sans faire <code>print</code> ou quand vous faites <code>print</code> sur une structure de données (list, dico, etc) qui contient l&#8217;objet :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Hic<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    ...
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__repr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;Hic({}, {})&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">repr</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">titre</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">repr</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">auteur</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #dc143c;">repr</span><span style="color: black;">&#40;</span>morceau<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## Hic('5eme Symfony', 'Beetlejuice')</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: black;">&#91;</span>Hic<span style="color: black;">&#40;</span><span style="color: #483d8b;">'5eme Symfony'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Beetlejuice'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> Hic<span style="color: black;">&#40;</span><span style="color: #483d8b;">'La flutte enchantee'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Zarma'</span><span style="color: black;">&#41;</span><span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">## [Hic('5eme Symfony', 'Beetlejuice'), Hic('La flutte enchantee', 'Zarma')]</span></pre></td></tr></table></div>
+
+<p>Quand c&#8217;est possible (quand c&#8217;est pas trop long), <code>__repr__</code> doit retourner le code qu&#8217;il faut saisir pour recréer l&#8217;objet. C&#8217;est ce que fait Python pour les objets simples :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #dc143c;">repr</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>u<span style="color: #483d8b;">&quot;Père&quot;</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Noël&quot;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## [u'P\xe8re', u'No\xebl']</span>
+<span style="color: black;">&#91;</span>u<span style="color: #483d8b;">&quot;Père&quot;</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">&quot;Noël&quot;</span><span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">## [u'P\xe8re', u'No\xebl']</span>
+l <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span>u<span style="color: #483d8b;">'P<span style="color: #000099; font-weight: bold;">\x</span>e8re'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'No<span style="color: #000099; font-weight: bold;">\x</span>ebl'</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> x <span style="color: #ff7700;font-weight:bold;">in</span> l:
+     <span style="color: #ff7700;font-weight:bold;">print</span> x
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Père</span>
+<span style="color: #808080; font-style: italic;">## Noël</span></pre></td></tr></table></div>
+
+<p>Copier / coller la valeur de retour de <code>__repr__</code> dans un shell pour un int, une list, un tuple, un set ou un dico permet de recréer ce dico.</p>
+<h2>Surcharge des opérateurs</h2>
+<p>En Python, on ne peut pas surcharger les opérateurs comme en C++ par exemple. Mais comme les opérateurs ne font qu&#8217;appeler des méthodes magiques, on peut simplement overrider ces méthodes magiques.</p>
+<p>Je vous ai montré <a href="http://sametmax.com/ordonner-en-python/">comment faire ça pour les comparateurs</a> (<code>=</code>, <code>!=</code>, <code>></code>, etc). Mais on peut le faire aussi pour les opérateurs tels que <code>/</code>, <code>+</code>, etc.</p>
+<p>C&#8217;est très pratique pour créer de jolis APIs :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> nom<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">nom</span> <span style="color: #66cc66;">=</span> nom
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__str__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">nom</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__add__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur +
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' et '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__sub__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur -
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' sans '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__mul__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur *
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' avec plein de '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__div__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur /
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' avec très peu de '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__mod__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur %
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' servi dans '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__pow__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur **
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' relevé avec '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__lshift__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur &lt;&lt;
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' après '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__and__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur &amp;
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span>  Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' accompagné de '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__or__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Override l'opérateur |
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> Met<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span> + <span style="color: #483d8b;">' à la place de '</span> + <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>other<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+plat <span style="color: #66cc66;">=</span> Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Canard laqué'</span><span style="color: black;">&#41;</span> + Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'son fond de volaille'</span><span style="color: black;">&#41;</span>
+plat -<span style="color: #66cc66;">=</span> Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'vinaigrette'</span><span style="color: black;">&#41;</span> * Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'frites'</span><span style="color: black;">&#41;</span> / Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'sel'</span><span style="color: black;">&#41;</span>
+plat <span style="color: #66cc66;">=</span> plat ** Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'du piment'</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">&lt;&lt;</span> Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'une entrée de chorizo'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> plat &amp; Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'banana split'</span><span style="color: black;">&#41;</span> | Met<span style="color: black;">&#40;</span><span style="color: #483d8b;">'poire belle hélène'</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## Canard laqué et son fond de volaille sans vinaigrette avec plein de frites avec très peu de sel relevé avec du piment après une entrée de chorizo accompagné de banana split à la place de poire belle hélène</span></pre></td></tr></table></div>
+
+<p><a href="http://peewee.readthedocs.org/en/latest/peewee/querying.html">Peewee utilise cela</a> pour permettre de faire des requêtes très expressives.</p>
+<p>Ceci n&#8217;est qu&#8217;un échantillon des méthodes magiques liées aux opérateurs. La liste complète est <a href="http://docs.python.org/2/reference/datamodel.html?highlight=__mul__#emulating-numeric-types">ici</a>.</p>
+<h2>Conversion</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Degre<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> valeur<span style="color: #66cc66;">,</span> degre<span style="color: #66cc66;">=</span><span style="color: #483d8b;">'C'</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #008000;">self</span>.<span style="color: black;">valeur</span> <span style="color: #66cc66;">=</span> valeur
+        <span style="color: #008000;">self</span>.<span style="color: black;">degre</span> <span style="color: #66cc66;">=</span> degre
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__str__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">&quot;{} °{}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">valeur</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">degre</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__int__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Comportement quand converti en entier.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">valeur</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__float__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Comportement quand converti en float.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">float</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">valeur</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__add__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> other<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Pour le fun
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>.<span style="color: black;">degre</span> <span style="color: #66cc66;">!=</span> other.<span style="color: black;">degre</span>:
+            <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Can't add {} and {}&quot;</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">degre</span><span style="color: #66cc66;">,</span> other.<span style="color: black;">degre</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> Degre<span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">valeur</span> + other.<span style="color: black;">valeur</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span>.<span style="color: black;">degre</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> __index__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Comportement quand utilisé dans un slicing
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>La manipulation des températures se fait facilement :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">t1 <span style="color: #66cc66;">=</span> Degre<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;C&quot;</span><span style="color: black;">&#41;</span>
+t2 <span style="color: #66cc66;">=</span> Degre<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> t1 + t2
+<span style="color: #808080; font-style: italic;">## 13 °C</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> t1 + Degre<span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'F'</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## Traceback (most recent call last):</span>
+<span style="color: #808080; font-style: italic;">##   File &quot;&lt;ipython-input-66-bc724ef7a556&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span style="color: #808080; font-style: italic;">##     t1 + Degre(10, 'F')</span>
+<span style="color: #808080; font-style: italic;">##   File &quot;&lt;ipython-input-62-6fa11d434082&gt;&quot;, line 32, in __add__</span>
+<span style="color: #808080; font-style: italic;">##     raise ValueError(&quot;Can't add {} and {}&quot;.format(self.degre, other.degre))</span>
+<span style="color: #808080; font-style: italic;">## ValueError: Can't add C and F</span></pre></td></tr></table></div>
+
+<p>Et on peut convertir tout ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>t1<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 10</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">float</span><span style="color: black;">&#40;</span>t2<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 3.0</span></pre></td></tr></table></div>
+
+<p>Ce qui est utile dans ce cas là :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">1</span> + t1
+<span style="color: #808080; font-style: italic;">## Traceback (most recent call last):</span>
+<span style="color: #808080; font-style: italic;">##   File &quot;&lt;ipython-input-48-4dc33235a03a&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span style="color: #808080; font-style: italic;">##     print 1 + t1</span>
+<span style="color: #808080; font-style: italic;">## TypeError: unsupported operand type(s) for +: 'int' and 'Degre'</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #ff4500;">1</span> + <span style="color: #008000;">int</span><span style="color: black;">&#40;</span>t1<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 11</span></pre></td></tr></table></div>
+
+<p>On peut même utiliser l&#8217;objet dans un contexte inattendu :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">douleur <span style="color: #66cc66;">=</span> <span style="color: #008000;">range</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> douleur<span style="color: black;">&#91;</span>t2<span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">## 3</span></pre></td></tr></table></div>
+
+<p>Il y a bien entendu plein d&#8217;autres conversion possibles : octal, arrondi, complexe&#8230;</p>
+<h2>Programmation dynamique</h2>
+<p>Parce que oui, messieurs, on peut faire des trucs dynamiques avec Python. Pas du niveau de Lisp, certes, mais plus qu&#8217;en assembleur.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Tronc<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelée quand on demande un attribut appelé &quot;name&quot; et qu'il
+            n'existe pas.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">None</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelée quand on assigne une valeur &quot;value&quot; à un attribut 
+            appelé &quot;name&quot;, qu'il existe ou non.
+&nbsp;
+            L'inverse se fait avec __delattr__ (qui réagit à del obj.attr)
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Merci&quot;</span>
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>Tronc<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Ce qui nous permet de réagir sur la manipulation des attributs :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">pers <span style="color: #66cc66;">=</span> Tronc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> pers.<span style="color: black;">main</span> <span style="color: #808080; font-style: italic;"># pas d'erreur !</span>
+<span style="color: #808080; font-style: italic;">## None</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> pers.<span style="color: black;">pied</span>
+<span style="color: #808080; font-style: italic;">## None</span>
+pers.<span style="color: black;">testicules</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;00&quot;</span>
+<span style="color: #808080; font-style: italic;">## Merci</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> pers.<span style="color: black;">testicules</span>
+<span style="color: #808080; font-style: italic;">## 00</span></pre></td></tr></table></div>
+
+<p>Un usage très courant de <code>__getattr__</code> est de dire que si l&#8217;attribut n&#8217;existe pas, on retourne l&#8217;attribut de la stratégie sous-jacente :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Parseur<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">getattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">strategy</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Relisez les tutos précédents si vous ne vous souvenez plus du pattern strategy.</p>
+<p>Attention cependant, intercepter la manipulation des attributs peut facilement se terminer en boucle infinie :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Tronc<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    ...
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Merci&quot;</span>
+        <span style="color: #008000;">setattr</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>
+&nbsp;
+pers <span style="color: #66cc66;">=</span> Tronc<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+pers.<span style="color: black;">testicules</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;00&quot;</span>
+<span style="color: #808080; font-style: italic;">##   File &quot;&lt;statement&gt;&quot;, line 19, in __setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  ...
+  <span style="color: black;">File</span> <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">19</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;&lt;statement&gt;&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">18</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #0000cd;">__setattr__</span>
+  File <span style="color: #483d8b;">&quot;/opt/reinteract/lib/reinteract/stdout_capture.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">27</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> write
+    <span style="color: #008000;">self</span>.<span style="color: black;">current</span>.<span style="color: black;">write</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/opt/reinteract/lib/reinteract/stdout_capture.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">89</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> write
+    <span style="color: #008000;">self</span>.__write_function<span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/opt/reinteract/lib/reinteract/statement.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">193</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> __stdout_write
+    s <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.__coerce_to_unicode<span style="color: black;">&#40;</span>s<span style="color: black;">&#41;</span>
+  File <span style="color: #483d8b;">&quot;/opt/reinteract/lib/reinteract/statement.py&quot;</span><span style="color: #66cc66;">,</span> line <span style="color: #ff4500;">157</span><span style="color: #66cc66;">,</span> <span style="color: #ff7700;font-weight:bold;">in</span> __coerce_to_unicode
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span>s<span style="color: #66cc66;">,</span> <span style="color: #008000;">basestring</span><span style="color: black;">&#41;</span>:
+<span style="color: #008000;">RuntimeError</span>: maximum recursion depth exceeded <span style="color: #ff7700;font-weight:bold;">while</span> calling a Python <span style="color: #008000;">object</span></pre></td></tr></table></div>
+
+<p>En effet <code>pers.testicules = "00"</code> déclenche <code>__setattr__</code> qui déclenche <code>setattr</code> qui déclenche <code>__setattr__</code> qui déclenche <code>setattr</code>, etc&#8230;</p>
+<p>C&#8217;est pour cette raison que dans la classe ci-dessus, j&#8217;ai fait:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelée quand on assigne une valeur à un attribut, qu'il existe
+            ou non.
+&nbsp;
+            L'inverse se fait avec __delattr__ (qui réagit à del obj.attr)
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Merci&quot;</span>
+        <span style="color: #008000;">super</span><span style="color: black;">&#40;</span>Tronc<span style="color: #66cc66;">,</span> <span style="color: #008000;">self</span><span style="color: black;">&#41;</span>.<span style="color: #0000cd;">__setattr__</span><span style="color: black;">&#40;</span>name<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On appelle le <code>__setattr__</code> du parent, qui va assigner l&#8217;attribut, mais n&#8217;est pas concerné par l&#8217;interception.</p>
+<p>Ce problème est à garder en tête avec une des méthodes magiques les plus dangereuses qui existe :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #0000cd;">__getattribute__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> name<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Cela fonctionne comme <code>__getattr__</code>, mais pour TOUS les attributs. Même si ils existent. Le potentiel de meli-melo avec cette méthode est de magnitude 7, donc à utiliser à vos risques et périls.</p>
+<p>Oui je l&#8217;utilise, oui.</p>
+<p>Oui je passe 3h en debug à chaque fois que je le fais.</p>
+<p>Dans tous les cas, utiliser les properties (faites un flashback&#8230;) ou les <a href="http://sametmax.com/les-descripteurs-en-python/">descripteurs</a> peut être une bonne alternative.</p>
+<p>[last_minute_insert]<br />
+J&#8217;avais oublié <code>__dir__</code> qui est aussi overridable et qui intercepte <code>dir(objet)</code>. Just sayin&#8217;&#8230;<br />
+[/last_minute_insert]</p>
+<h2>Conteneurs</h2>
+<p>Parfois, on a besoin d&#8217;avoir le comportement d&#8217;un conteneur comme un dico ou une liste, mais avec des comportements spécialisés. Il y a des méthodes magiques spécialement pour ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Main<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> *args<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">cartes</span> <span style="color: #66cc66;">=</span> args
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> ajouter<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> carte<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">assert</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span>carte<span style="color: #66cc66;">,</span> upper<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;La carte doit etre une string, dude&quot;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">cartes</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>carte.<span style="color: black;">upper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__str__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> u<span style="color: #483d8b;">''</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">cartes</span><span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__len__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelé quand on fait len() sur l'objet.
+&nbsp;
+            Utile pour donner une longeur à un objet
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">cartes</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__getitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> key<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelé quand on fait objet[index] ou objet[key].
+&nbsp;
+            Utile pour simuler une liste ou un dico.
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>.<span style="color: black;">cartes</span><span style="color: black;">&#91;</span>key<span style="color: black;">&#93;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__setitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelé quand on fait objet[index] = &quot;truc&quot;
+        &quot;&quot;&quot;</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">cartes</span><span style="color: black;">&#91;</span>key<span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> value
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__delitem__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> key<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelé quand on fait del objet[index].
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">TypeError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Tu ne peux pas m'effacer, mouhahahahaah !&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__iter__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelé quand on fait un iter(objet), en particulier, cela
+            arrive à chaque boucle for.
+&nbsp;
+            La valeur retournée doit être un iterateur.
+&nbsp;
+            En général on retourne une valeur retournée par iter()
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">iter</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">cartes</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> __reversed__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelé quand on fait reversed(objt)
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">reversed</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">cartes</span><span style="color: black;">&#41;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__contains__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> item<span style="color: black;">&#41;</span>:
+        <span style="color: #483d8b;">&quot;&quot;&quot;
+            Est appelé quand &quot;in objet&quot;
+        &quot;&quot;&quot;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> item <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>.<span style="color: black;">cartes</span>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+main <span style="color: #66cc66;">=</span> Main<span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'1Coeur'</span><span style="color: #66cc66;">,</span> u<span style="color: #483d8b;">'7Pique'</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span> main
+<span style="color: #808080; font-style: italic;">## 1Coeur7Pique</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> carte <span style="color: #ff7700;font-weight:bold;">in</span> main: <span style="color: #808080; font-style: italic;"># parce qu'on a défini __iter__ !</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> carte
+<span style="color: #808080; font-style: italic;">## 1Coeur</span>
+<span style="color: #808080; font-style: italic;">## 7Pique</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> main<span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># __getitem__ !</span>
+<span style="color: #808080; font-style: italic;">## 1Coeur</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'fdjsklfd'</span> <span style="color: #ff7700;font-weight:bold;">in</span> main <span style="color: #808080; font-style: italic;"># __contains__ !</span>
+<span style="color: #808080; font-style: italic;">## False</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>main<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 2</span></pre></td></tr></table></div>
+
+<p>Bon, ici on aurait presque pu utiliser une liste directement, ou même hériter d&#8217;une liste. CEstPourLExemple©</p>
+<p>On peut faire aussi des trucs sur les slices avec <code>__getslice__</code> / <code>__setslice__</code>. C&#8217;est le même principe.</p>
+<h2>Divers, autres, à classer, en vrac&#8230;</h2>
+<p><code>__enter__</code> et <code>__exit__</code>, dont j&#8217;ai parlé dans l&#8217;article sur <a href="http://sametmax.com/les-context-managers-et-le-mot-cle-with-en-python/">les context managers</a>.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">__format__<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> formatstr<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Appelé quand on fait <code>"{:formater}".format(ta_variable)</code> et pour lequel formatstr contiendra &#8220;formater&#8221;. Dans le cas où vous vouliez définir un truc qui a plusieurs formats.</p>
+<p><code>__instancecheck__(self, instance)</code> et <code>__subclasscheck__(self, subclass)</code> pour les fans d&#8217;instrospection qui veulent intercepter <code>isinstance(objet)</code> et <code>issubclass(objet)</code>. Parce qu&#8217;on ne sait jamais, des fois qu&#8217;on veuille faire un truc super mega vilain à ses collègues qu&#8217;ils mettront des mois à debugger après son licenciement.</p>
+<p>Plus intéressant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #0000cd;">__call__</span></pre></td></tr></table></div>
+
+<p>Permet de rendre un objet &#8220;callable&#8221;, c&#8217;est à dire appelable comme une fonction.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Question<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__call__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> question<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">'Parce que'</span>
+&nbsp;
+q <span style="color: #66cc66;">=</span> Question<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+q<span style="color: black;">&#40;</span><span style="color: #483d8b;">'Pourquoiiiiiiiii ?'</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">## 'Parce que'</span></pre></td></tr></table></div>
+
+<p>Ça ne sert pas tous les jours, mais ça peut être pratique si votre objet va être placé dans une liste de fonctions.</p>
+<p>A noter aussi l&#8217;existence de trucs exotiques comme <code>__copy__</code>, <code>__deepcopy__</code>, <code>__getstate__</code>, <code>__setstate__</code> ou encore <code>__reduce__</code> qui servent à <a href="http://docs.python.org/2.7/library/copy.html?highlight=__copy__">cloner des objets</a>, <a href="http://docs.python.org/2.7/library/pickle.html?highlight=__setstate__#pickling-and-unpickling-normal-class-instances">les sérialiser</a>, etc. Ce sont des considérations assez avancées, qui mériteraient un article à part entière. Mais c&#8217;est aussi marrant que de la compta donc l&#8217;attendez pas pour demain.</p>
+<p>Bon, vous commencez à avoir une sacré besace d&#8217;outils pour faire de la POO. </p>
+<p>La <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-7/">prochaine partie</a>, je pense que je vais prendre le code de path.py et le décortiquer sous vos yeux histoire que vous voyez ce qu&#8217;on peut faire avec un cas concret d&#8217;utilisation de la POO.</p>
+<hr />
+<a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/fev/methodes_magiques.py">Télécharger le code de l&#8217;article</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-6/feed/</wfw:commentRss>
+		<slash:comments>20</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/02/vKtlVff.jpg" length="93084" type="image/jpg" />	</item>
+	</channel>
+</rss>

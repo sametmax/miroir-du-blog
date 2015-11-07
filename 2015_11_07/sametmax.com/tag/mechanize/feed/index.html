@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; mechanize</title>
+	<atom:link href="http://sametmax.com/tag/mechanize/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Simuler un cookie avec Mechanize en python</title>
+		<link>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/</link>
+		<comments>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/#comments</comments>
+		<pubDate>Sun, 20 May 2012 19:46:51 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cookie]]></category>
+		<category><![CDATA[jar]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=667</guid>
+		<description><![CDATA[Comment simuler la présence d'un cookie lorsque l'on veut se connecter à un site via Mechanize. ]]></description>
+				<content:encoded><![CDATA[<p>Il peut arriver que l&#8217;on ai besoin de simuler la présence d&#8217;un cookie lors de l&#8217;exploration d&#8217;un site avec <a href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> .<br />
+Un exemple tout bête l&#8217;autre jour j&#8217;essayais de me connecter à un site qui demandait une vérif d&#8217;âge, impossible de simuler le click sur &#8220;ENTER&#8221; car le bouton était géré par Jquery (et Mechanize ne fait pas de js).<br />
+Après quelques debug je me suis aperçu que le site stockait dans un cookie la confirmation d&#8217;âge sous la forme &#8220;age_verified&#8221;, valeur 1.</p>
+<p>il suffisait donc d&#8217;avoir ce cookie et le site nous laissait tranquille.<br />
+Avec Mechanize il est possible d&#8217;ajouter un cookie dans son cookie jar, voici comment:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">import mechanize
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Browser use mechanize</span>
+br = mechanize.Browser<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Cookie Jar</span>
+cj = cookielib.LWPCookieJar<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+br.set_cookiejar<span style="color: #7a0874; font-weight: bold;">&#40;</span>cj<span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># add a cookie to cookie jar</span>
+cj.set_cookie<span style="color: #7a0874; font-weight: bold;">&#40;</span>cookielib.Cookie<span style="color: #7a0874; font-weight: bold;">&#40;</span><span style="color: #000000;">0</span>, <span style="color: #ff0000;">'age_verified'</span>, <span style="color: #ff0000;">'1'</span>, <span style="color: #ff0000;">'80'</span>, False, <span style="color: #ff0000;">'www.nom_de_domaine.com'</span>, True, False, <span style="color: #ff0000;">'/'</span>, True, False, None, False, None, None, None<span style="color: #7a0874; font-weight: bold;">&#41;</span><span style="color: #7a0874; font-weight: bold;">&#41;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Browser options</span>
+br.set_handle_redirect<span style="color: #7a0874; font-weight: bold;">&#40;</span>True<span style="color: #7a0874; font-weight: bold;">&#41;</span></pre></td></tr></table></div>
+
+<p><strong>Où:</strong><br />
+age_verified : SID du cookie<br />
+1: valeur<br />
+80: port<br />
+www.nom_de_domaine.com : le nom de domaine du site auquel le cookie appartient<br />
+/: path du cookie</p>
+<p><strong>Un peu plus sur les options:</strong></p>
+<pre lang="python">cookielib.Cookie(version=0, name='SID', value=self._sid, port=None, port_specified=False, domain='.google.com', domain_specified=True, domain_initial_dot=True, path='/', path_specified=True, secure=False, expires='1600000000', discard=False, comment=None, comment_url=None, rest={})</lang></p>
+<p><strong>Quelques liens:</strong><br />
+<a href="http://nullege.com/codes/search/cookielib.Cookie">http://nullege.com/codes/search/cookielib.Cookie</a><br />
+<a href="http://docs.python.org/library/cookielib.html ">http://docs.python.org/library/cookielib.html</a><br />
+<a href="http://wwwsearch.sourceforge.net/mechanize/hints.html ">http://wwwsearch.sourceforge.net/mechanize/hints.html<br />
+</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/simuler-un-cookie-avec-mechanize-en-python/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/05/cookiejar.jpg" length="43489" type="image/jpg" />	</item>
+		<item>
+		<title>Résoudre les problèmes d&#8217;encoding avec Python Mechanize 2</title>
+		<link>http://sametmax.com/resoudre-les-problemes-dencoding-avec-python-mechanize/</link>
+		<comments>http://sametmax.com/resoudre-les-problemes-dencoding-avec-python-mechanize/#comments</comments>
+		<pubDate>Wed, 28 Mar 2012 17:02:46 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[encoding]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=306</guid>
+		<description><![CDATA[Mechanize boude et l'erreur <code>
+UnicodeDecodeError: 'utf8' codec can't decode byte machin in position truc
+</code> vous fait faire des cauchemars ? Suivez le guide.]]></description>
+				<content:encoded><![CDATA[<p>Un de ces jours, il faudra qu&#8217;on fasse un petit post sur la gestion de l&#8217;encoding en Python. En attendant, voici une astuce pour éviter une des erreurs les plus énervantes pour un débutant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #008000;">UnicodeDecodeError</span>: <span style="color: #483d8b;">'utf8'</span> codec can<span style="color: #483d8b;">'t decode byte machin in position truc</span></pre></td></tr></table></div>
+
+<p>De quoi choper un SMIC d&#8217;amende pour <a href="https://www.youtube.com/watch?v=uotBQ-7XWSI" >infraction au code de moralité du langage</a>.</p>
+<p>Contrairement à <a href="http://www.crummy.com/software/BeautifulSoup/" data-mce-href="http://www.crummy.com/software/BeautifulSoup/">BeautifulSoup</a>, <a href="http://wwwsearch.sourceforge.net/mechanize/" data-mce-href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> n&#8217;essaie pas de détecter l&#8217;encoding de la page, et vous retourne directement la soupe de bytes qu&#8217;il reçoit en réponse. Ça marche, jusqu&#8217;à ce que vous tombiez sur un site avec un encodage différent de celui de votre système.</p>
+<p>Heureusement, maintenant, la plupart des sites ont la politesse de déclarer leur encoding dans une balise meta, que l&#8217;on peut récupérer dans les headers. Du coup, on peut convertir facilement le HTML de la page en unicode :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> mechanize
+response <span style="color: #66cc66;">=</span> mechanize.<span style="color: black;">Browser</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'http://google.com'</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># on chope l'encoding dans les headers</span>
+<span style="color: #808080; font-style: italic;"># si ça marche pas on beugle une exception</span>
+content_type <span style="color: #66cc66;">=</span> response.<span style="color: black;">info</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">getheader</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'content-type'</span><span style="color: black;">&#41;</span> 
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    encoding <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">search</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'charset=([^<span style="color: #000099; font-weight: bold;">\s</span>]+)'</span><span style="color: #66cc66;">,</span> content_type<span style="color: black;">&#41;</span>.<span style="color: black;">groups</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">AttributeError</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">IndexError</span>:
+    <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Unable to guess the page encoding'</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># et on decode tout ça</span>
+<span style="color: #ff7700;font-weight:bold;">return</span> response.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span>encoding<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Par facilité, nous on utilise carrément une sous-classe, vu que 99% du temps on a besoin que du HTML, et qu&#8217;on se sert essentiellement de Mechanize comme un gros urllib2 avec plein de paramètres :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> mechanize
+<span style="color: #ff7700;font-weight:bold;">class</span> Browser<span style="color: black;">&#40;</span>mechanize.<span style="color: black;">Browser</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> get_content_as_unicode<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> url<span style="color: black;">&#41;</span>:
+        response <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: #008000;">open</span><span style="color: black;">&#40;</span>url<span style="color: black;">&#41;</span>
+        content_type <span style="color: #66cc66;">=</span> response.<span style="color: black;">info</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">getheader</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'content-type'</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">try</span>:
+            encoding <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">search</span><span style="color: black;">&#40;</span>r<span style="color: #483d8b;">'charset=([^<span style="color: #000099; font-weight: bold;">\s</span>]+)'</span><span style="color: #66cc66;">,</span> content_type<span style="color: black;">&#41;</span>.<span style="color: black;">groups</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#93;</span>
+        <span style="color: #ff7700;font-weight:bold;">except</span> <span style="color: #008000;">AttributeError</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">IndexError</span>:
+            <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">ValueError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Unable to guess the page encoding'</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> response.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span>encoding<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Hop :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">type</span><span style="color: black;">&#40;</span>Browser<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">get_content_as_unicode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'http://google.com'</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&lt;</span><span style="color: #008000;">type</span> <span style="color: #483d8b;">'unicode'</span><span style="color: #66cc66;">&gt;</span></pre></td></tr></table></div>
+
+<p>Plus besoin de coquillages maintenant !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/resoudre-les-problemes-dencoding-avec-python-mechanize/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/03/17290642.jpg" length="41701" type="image/jpg" />	</item>
+		<item>
+		<title>Quand Mechanize bouffe toute votre RAM et que vous ne savez pas pourquoi&#8230;. 1</title>
+		<link>http://sametmax.com/quand-mechanize-bouffe-toute-votre-ram-et-que-vous-ne-savez-pas-pourquoi/</link>
+		<comments>http://sametmax.com/quand-mechanize-bouffe-toute-votre-ram-et-que-vous-ne-savez-pas-pourquoi/#comments</comments>
+		<pubDate>Wed, 21 Mar 2012 17:36:52 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[historique]]></category>
+		<category><![CDATA[history]]></category>
+		<category><![CDATA[load]]></category>
+		<category><![CDATA[mechanize]]></category>
+		<category><![CDATA[mémoire]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[ram]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=282</guid>
+		<description><![CDATA[Mechanize par défaut sauve tout l'historique de votre navigation, donc imaginez le carnage quand vous avez un script qui est censé scanner des milliers de pages internet...]]></description>
+				<content:encoded><![CDATA[<p>En revenant de Bangla Road l&#8217;autre soir, je me connecte sur l&#8217;admin d&#8217;un de nos serveurs et je m&#8217;aperçois qu&#8217;un script de grabbing bouffait à lui tout seul plus de 30% de la mémoire. Après quelques recherches, Sam me fait part d&#8217;un article sur <a href="http://wwwsearch.sourceforge.net/mechanize/">Mechanize</a> et sa tendance à avoir un history plutôt vorace en RAM.</p>
+<p><strong>Le coupable était Mechanize avec le chandelier dans le salon :</strong></p>
+<p>En effet, Mechanize par défaut sauve tout l&#8217;historique de votre navigation, donc imaginez le carnage quand vous avez un script qui est censé scanner des milliers de pages internet&#8230;</p>
+<p>Pour lui couper le sifflet on peut utiliser cette méthode :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> mechanize
+<span style="color: #ff7700;font-weight:bold;">from</span> mechanize <span style="color: #ff7700;font-weight:bold;">import</span> History
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> MaxHistory<span style="color: black;">&#40;</span>History<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        History implementation with a size limit.
+    &quot;&quot;&quot;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> max_history<span style="color: #66cc66;">=</span><span style="color: #008000;">None</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._history <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>  <span style="color: #808080; font-style: italic;"># LIFO</span>
+        <span style="color: #008000;">self</span>.<span style="color: black;">max_history</span> <span style="color: #66cc66;">=</span> max_history
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> add<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> request<span style="color: #66cc66;">,</span> response<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._history.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>request<span style="color: #66cc66;">,</span> response<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">max_history</span> <span style="color: #ff7700;font-weight:bold;">is</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #008000;">None</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">self</span>._history
+            <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #008000;">self</span>.<span style="color: black;">max_history</span> <span style="color: #66cc66;">&lt;=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>._history<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+            <span style="color: #008000;">self</span>._history.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+&nbsp;
+br <span style="color: #66cc66;">=</span> mechanize.<span style="color: black;">Browser</span><span style="color: black;">&#40;</span>history<span style="color: #66cc66;">=</span>MaxHistory<span style="color: black;">&#40;</span>max_history<span style="color: #66cc66;">=</span><span style="color: #ff4500;">10</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+Browser.<span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;http://sametmax.com/&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Et voilà !<br />
+Plus de problème de mémoire. Merci bibi.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/quand-mechanize-bouffe-toute-votre-ram-et-que-vous-ne-savez-pas-pourquoi/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/03/gaston.jpg" length="28028" type="image/jpg" />	</item>
+	</channel>
+</rss>

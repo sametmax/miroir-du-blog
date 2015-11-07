@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; foX</title>
+	<atom:link href="http://sametmax.com/author/fox/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Black awk down 8</title>
+		<link>http://sametmax.com/black-awk-down/</link>
+		<comments>http://sametmax.com/black-awk-down/#comments</comments>
+		<pubDate>Tue, 06 Jan 2015 10:26:20 +0000</pubDate>
+		<dc:creator><![CDATA[foX]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Gadget]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[shell]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10493</guid>
+		<description><![CDATA[Qui n'a jamais rêvé d'avoir un shell Unix un peu plus pythonic ? Les oneliners en sed et Awk bien chiadés, c'est l'apanage des grands barbus en sandales et ça déchire, mais ça reste cryptique et la manipulation de liste et de chaînes de caractères est tout de même limitée.]]></description>
+				<content:encoded><![CDATA[<blockquote><p>Ceci est un post invité de <a href="http://sametmax.com/author/foX" target="_blank">foX </a>posté sous licence <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">creative common 3.0 unported</a>.</p></blockquote>
+<h2>Introduction (sans douleur)</h2>
+<p>Qui n&#8217;a jamais rêvé d&#8217;avoir un shell Unix un peu plus pythonic ? Les oneliners en <a href="http://fr.wikipedia.org/wiki/Stream_Editor" title="sed">sed</a> et <a href="http://fr.wikipedia.org/wiki/Awk" title="Awk">Awk</a> bien chiadés, c&#8217;est l&#8217;apanage des grands barbus en sandales et ça déchire, mais ça reste cryptique et la manipulation de liste et de chaînes de caractères est tout de même limitée. On peut dégainer perl en one line, comme ça c&#8217;est encore plus puissant mais moins lisible&#8230;</p>
+<p>Et python dans tout ça ? En oneliner, ça craint, car le principe d&#8217;indentation ne facilite pas les choses et on finit avec une imbrication de bazar de parenthèses illisible.</p>
+<p>La solution ? Pour se faire plaisir : une bonne pyp. Le bidule s&#8217;installe avec&#8230; pip (c&#8217;est une méta pipe).</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> pyp</pre></td></tr></table></div>
+
+<p>pyp (<a href="http://code.google.com/p/pyp/" title="pyp">Python Power at the Prompt</a>) va enchanter votre shell unix et vous envoyer au 7ème ciel. Petit tour d&#8217;horizon de la merveille.</p>
+<h2>Pyp et les strings</h2>
+<p>C&#8217;est la base quand on bricole des oneliners en shell, tripoter des strings.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ls</span> <span style="color: #000000; font-weight: bold;">*</span>JPG <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;'mv', p, p.replace('JPG', 'jpg')&quot;</span></pre></td></tr></table></div>
+
+<p>Revoyons l&#8217;action au ralenti : </p>
+<ul>
+<li>ls *JPG va nous lister tous les fichiers qui finissent par JPG dans le dossier courant.</li>
+<li>Ensuite on envoie cela dans pyp avec un pipe Unix. Celui-ci va composer une ligne de commande qui est la concaténation d&#8217;une commande unix (mv pour renommer un fichier), ce qu&#8217;on aura reçu en entrée (qui s&#8217;appelle par convention &#8220;p&#8221;) et une version modifiée de p où l&#8217;on remplace JPG par jpg.</li>
+</ul>
+<p>On voit ici que l&#8217;on utilise la méthode replace de la classe str python. On peut utiliser n&#8217;importe quelle méthode de str : lower, upper, title, strip(tease), count etc. Avec des petits bonus comme refindall(re) :-)</p>
+<p>Ça donne quoi ma brave dame ? Et bien si on avait des fichiers appelés porn1.JPG et ass.JPG notre jolie commande renverrait :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">mv</span> porn1.JPG porn1.jpg
+<span style="color: #c20cb9; font-weight: bold;">mv</span> ass.JPG ass.jpg</pre></td></tr></table></div>
+
+<p>Ok, bien gentil me direz-vous, mais qu&#8217;en fait-on ? Et bien ou l&#8217;on pipe ça dans le shell ( | sh) ou alors on passe l&#8217;argument -x (ou &#8211;execute) à pyp ou directement exécuter le résultat.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ls</span> <span style="color: #000000; font-weight: bold;">*</span>JPG <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;'mv', p, p.replace('JPG', 'jpg')&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> <span style="color: #c20cb9; font-weight: bold;">sh</span>
+<span style="color: #666666; font-style: italic;"># ou bien</span>
+<span style="color: #c20cb9; font-weight: bold;">ls</span> <span style="color: #000000; font-weight: bold;">*</span>JPG <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #660033;">-x</span> <span style="color: #ff0000;">&quot;'mv', p, p.replace('JPG', 'jpg')&quot;</span></pre></td></tr></table></div>
+
+<p>Pourquoi on aime bien python ? Car il slice le bread comme un chef. Pyp aussi, oeuf corse, quelques exemples :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;sam-et-max&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;p.split('-')[2]&quot;</span>
+<span style="color: #666666; font-style: italic;"># max</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># La même chose en plus court. Le m, comme minus, sous-entend qu'on split sur &quot;-&quot;</span>
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;sam-et-max&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;m[2]&quot;</span>
+<span style="color: #666666; font-style: italic;"># max</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;sam-et-max&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;m[0], m[2]&quot;</span>
+<span style="color: #666666; font-style: italic;"># sam max</span></pre></td></tr></table></div>
+
+<p>Comme vous avez vu, il y a un petit raccourci sympa avec m (comme minus) au lieu de p. C&#8217;est pas fini, vous en avez d&#8217;autres : d (dot) pour un point, w (whitespace) pour une espace, u pour underscore, s pour slash&#8230; Ils ont pensé à tout.</p>
+<h2>Des pyp à la chaîne</h2>
+<p>On tout de suite envie de remettre le couvert avec une autre pyp. C&#8217;est possible et même encouragé. Le symbole utilisé est le pipe unix | dans une commande pyp. Ce n&#8217;est donc pas un pipe du shell mais un pipe interne de pyp. Vous suivez ? Un petit exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;sam et max&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;w[0] | 'avant : ', o, 'après :', p&quot;</span>
+<span style="color: #666666; font-style: italic;"># avant :  sam et max après : sam</span></pre></td></tr></table></div>
+
+<p>Le p représente toujours le paramètre courant. Donc dans la seconde partie du pipe, c&#8217;est le premier élément de la liste issu du split de la chaîne &#8220;sam et max&#8221; sur l&#8217;espace (w comme whitespace). Vous suivez toujours ? Oui, bon. Et donc le o ? Et bien c&#8217;est le paramètre d&#8217;origine non modifié. Et il y a h (comme history ou comme hâlibi !) pour avoir le paramètre p à toutes les étapes de la chaîne de pipe&#8230; Beaucoup de puissance on vous dit !</p>
+<p>On peut aussi rouler^w faire des join facilement avec les mêmes raccourcis. Par exemple on split sur les espaces puis join sur slash :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;sam et max aiment le lourd en fin de soirée&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;w[:6]|s&quot;</span>
+<span style="color: #666666; font-style: italic;"># sam/et/max/aiment/le/lourd</span></pre></td></tr></table></div>
+
+<h2>Une liste de pyp avec une belle pp</h2>
+<p>S&#8217;il y a un bien un truc qui envoie du bois avec python, c&#8217;est la gestion des listes. Pyp n&#8217;est pas en reste. C&#8217;est pp qui contient les listes. En avant :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ls</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;pp[3]&quot;</span>
+<span style="color: #666666; font-style: italic;"># Affiche le troisième fichier</span></pre></td></tr></table></div>
+
+<p>On peut utiliser toutes les méthodes standards de la classe list (sort, count etc.) plus quelques bonus :</p>
+<p># Équivalent de | sort | uniq</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ls</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;pp.uniq()&quot;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Additionne tous les PID des process de machine.</span>
+<span style="color: #666666; font-style: italic;"># Ça ne sert à rien, mais c'est un exemple hein ?</span>
+<span style="color: #c20cb9; font-weight: bold;">ps</span> <span style="color: #660033;">-ef</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;w[1] | int(p) | sum(pp)&quot;</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># Voilà qui est plus utile. </span>
+<span style="color: #666666; font-style: italic;"># Au passage, on note que la ligne d'en-tête est ignoré et ne fait pas planter pyp.</span>
+<span style="color: #666666; font-style: italic;"># Malin le lapin.</span>
+<span style="color: #c20cb9; font-weight: bold;">df</span> <span style="color: #660033;">-m</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;w[1] | int(p) | sum(pp)&quot;</span></pre></td></tr></table></div>
+
+<h2>pyp au naturel</h2>
+<p>Pour compléter les fonctions python, pyp propose quelques fonctions maisons tout à fait sympathiques. Florilège :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;Sam Bill Max&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;p.kill('Bill')&quot;</span>  <span style="color: #666666; font-style: italic;"># quand c'est pas bill, c'est kenny...</span>
+<span style="color: #666666; font-style: italic;"># Sam  Max</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #000000;">124</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;(int(p)/2+30)&quot;</span>
+<span style="color: #666666; font-style: italic;"># 91</span>
+&nbsp;
+<span style="color: #c20cb9; font-weight: bold;">ls</span>  <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;n, p&quot;</span>
+<span style="color: #666666; font-style: italic;"># Liste des fichiers avec un numéro croissant devant</span>
+&nbsp;
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #000000; font-weight: bold;">/</span>home<span style="color: #000000; font-weight: bold;">/</span>fox<span style="color: #000000; font-weight: bold;">/</span>video<span style="color: #000000; font-weight: bold;">/</span>gangbang.avi  <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;'Dir='+p.dir, '<span style="color: #000099; font-weight: bold;">\n</span>File='+p.file, '<span style="color: #000099; font-weight: bold;">\n</span>Ext='+p.ext&quot;</span> <span style="color: #666666; font-style: italic;"># basename, dirname et ses amis</span>
+<span style="color: #666666; font-style: italic;"># Dir=/home/fox/video </span>
+<span style="color: #666666; font-style: italic;"># File=gangbang.avi </span>
+<span style="color: #666666; font-style: italic;"># Ext=avi</span>
+&nbsp;
+<span style="color: #666666; font-style: italic;"># On définit le séparateur de liste comme l'espace, </span>
+<span style="color: #666666; font-style: italic;"># puis on regroupe la liste par deux élément</span>
+<span style="color: #666666; font-style: italic;"># et enfin on fait un join sur le caractère tiret (minus)</span>
+<span style="color: #7a0874; font-weight: bold;">echo</span> <span style="color: #ff0000;">&quot;1 2 3 4 5 6&quot;</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;pp.delimit(' ') | pp.divide(2) | m&quot;</span>
+<span style="color: #666666; font-style: italic;"># 1-2</span>
+<span style="color: #666666; font-style: italic;"># 3-4</span>
+<span style="color: #666666; font-style: italic;"># 5-6</span>
+&nbsp;
+<span style="color: #c20cb9; font-weight: bold;">ps</span> <span style="color: #660033;">-ef</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;w[1] | int(p) | max(pp)&quot;</span> 
+<span style="color: #666666; font-style: italic;"># (le PID le plus grand)</span></pre></td></tr></table></div>
+
+<h2>pyp en intention ou intention de pyp ?</h2>
+<p>Il ne faut pas se gêner, on peut utiliser les excellentes <a href="http://sametmax.com/python-love-les-listes-en-intention-partie/" title="Listes en intention">listes en intention</a> de Python.  Voici tous les PID impaires :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ps</span> <span style="color: #660033;">-ef</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;w[1] | int(p) | [i for i in pp if i%2] | p &quot;</span></pre></td></tr></table></div>
+
+<h2>L&#8217;industrie de la pyp c&#8217;est un truc de macro</h2>
+<p>Les bonnes choses, ça se garde, alors voilà :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">ps</span> <span style="color: #660033;">-ef</span> <span style="color: #000000; font-weight: bold;">|</span> pyp <span style="color: #ff0000;">&quot;w[1] | int(p) | [i for i in pp if i%2] | p &quot;</span> <span style="color: #660033;">-s</span> odd  <span style="color: #666666; font-style: italic;"># on enregistre la macro 'odd'</span>
+&nbsp;
+<span style="color: #c20cb9; font-weight: bold;">ps</span> ef <span style="color: #000000; font-weight: bold;">|</span> pyp odd <span style="color: #666666; font-style: italic;"># c'est aussi simple que cela ;-)</span></pre></td></tr></table></div>
+
+<h2>pyp sur grand écran</h2>
+<p>Cette petite pépite est développée par Sony Pictures Imageworks pour ses besoins internes. Le développement n&#8217;est pas très collaboratif (un commit par release&#8230;) mais reste ouvert aux contributions externes. C&#8217;est sous une licence de type BSD.<br />
+Les loulous ont fait une jolie vidéo de tutorial très bling bling. C&#8217;est l&#8217;avantage de bosser dans le milieu : </p>
+<p><span class='embed-youtube' style='text-align:center; display: block;'><iframe class='youtube-player' type='text/html' width='1170' height='689' src='http://www.youtube.com/embed/eWtVWF0JSJA?version=3&#038;rel=1&#038;fs=1&#038;showsearch=0&#038;showinfo=1&#038;iv_load_policy=1&#038;wmode=transparent' frameborder='0' allowfullscreen='true'></iframe></span></p>
+<h2>Et bien plus encore&#8230;</h2>
+<p>Cet outil merveilleux possède encore des fonctionnalités qui vont vous le faire adorer comme son mode interactif avec une coloration syntaxique sympathique, la gestion de l&#8217;historique dans le pipe et beaucoup d&#8217;autres. Adieu sed, awk, uniq, sort et con sort, vous étiez mes premiers amours, mais pyp vous chasse dehors.</p>
+<p>Ce n&#8217;est pas la seule ni la première tentative de faire la peau d&#8217;awk avec python. Sam avait déjà écrit <a href="http://sametmax.com/remplacer-sed-awk-cut-et-perl-par-python-orgasme-pour-sysadmin/" title="une pyped pour Sam">un article </a>sur une autre solution aussi appelée pyped.</p>
+<h2> C&#8217;est donc parfait ? </h2>
+<p>Oui, bien entendu. Aucun défaut, aucun bug. Ok&#8230; voici les limites : </p>
+<ul>
+<ol>Perf de daube. Sur des petits volumes (quelques milliers de lignes) ça le fait. Au delà, ça rame. Quelques patch sont proposés pour diviser par trois le temps de traitement :-)</ol>
+<ol>Conso mémoire obcène. Idem, pour des petits volumes on s&#8217;en fout, mais sinon ça peut rapidement chiffrer. Pourquoi ? Le machin ne fonctionne pas en stream, tout est gardé en mémoire et à chaque étape de transformation (pour permettre d&#8217;accéder à l&#8217;historique).</ol>
+<ol>C&#8217;est installé sur votre pc, mais pas partout, contrairement à ce bon vieux awk. </ol>
+</ul>
+<p>Amusez vous bien, celui qui fait la plus jolie commande pyp dans les commentaires aura le droit à un bisous.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/black-awk-down/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/hawk.jpg" length="364221" type="image/jpg" />	</item>
+	</channel>
+</rss>

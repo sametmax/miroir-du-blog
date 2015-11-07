@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; python path</title>
+	<atom:link href="http://sametmax.com/tag/python-path/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Se faciliter les imports avec les fichiers *.pth 1</title>
+		<link>http://sametmax.com/se-faciliter-les-imports-avec-les-fichiers-pth/</link>
+		<comments>http://sametmax.com/se-faciliter-les-imports-avec-les-fichiers-pth/#comments</comments>
+		<pubDate>Mon, 10 Sep 2012 16:49:24 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[import]]></category>
+		<category><![CDATA[path]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[python path]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2082</guid>
+		<description><![CDATA[Dans un article, nous parlions des extensions alternatives en Python, et notamment de l'usage des fichiers <em>*.pth</em>. Néanmoins cette extension est souvent mal comprise, et voici un comment en profiter au maximum.]]></description>
+				<content:encoded><![CDATA[<p>Dans un article, nous parlions des <a href="http://sametmax.com/astuces-python-en-vrac/">extensions alternatives en Python</a>, et notamment de l&#8217;usage des fichiers <em>*.pth</em>. Néanmoins cette extension est souvent mal comprise, et voici un comment en profiter au maximum.</p>
+<p>En Python, on a souvent des problèmes d&#8217;import: la lib est dans un dossier au dessous, ou à côté, ou à l&#8217;autre bout du disque dur, et ça plantouille parceque Python ne trouve pas le module.</p>
+<p>Il existe plein de moyens de jouer avec le fameux <code>PYTHON_PATH</code> qui contient la liste des dossiers dans lesquelles chercher les libs, et la plupart sont fort verbeuses et répétitives, du genre:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+CUR_DIR <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">realpath</span><span style="color: black;">&#40;</span>__file__<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">sys</span>.<span style="color: black;">path</span>.<span style="color: black;">extend</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span>
+    <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>CUR_DIR<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'apps'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span>CUR_DIR<span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'libs'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span>
+    <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">realpath</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'~'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'.local_libs'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#93;</span><span style="color: black;">&#93;</span><span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>Une manière simple est d&#8217;utiliser un fichier <em>*.pth</em>: on créé un fichier texte, on le nomme <em>comme-on-veut.pth</em> (moi je me fais pas chier, je le nomme .pth comme ça c&#8217;est court et c&#8217;est caché sous nunux), et on liste tous les dossiers qu&#8217;on veut ajouter au <code>PYTHON_PATH</code>, y compris avec des chemins relatifs.</p>
+<p>Oui mais, argh parmi les argh, la première fois qu&#8217;on le fait, ça ne marche pas. Alors on cherche dans la doc, et là, fustration, on apprend que les fichiers <em>*.pth</em> ne sont parsés que dans les sites directories, c&#8217;est à dire les dossiers officiels du système dans lesquels sont censés être les libs de la bibliothèque standard. Donc pas le dossier courant.</p>
+<p>Eh oui, ces fichiers ont été conçus pour faciliter les déploiements, du genre quand on fait un setup.py pour son app, pas pour nous, pauvres mortels.</p>
+<p>Heureusement il y a une solution Sam et Max à tout, et ici elle consiste à faire:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">site</span>
+&nbsp;
+CUR_DIR <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">dirname</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">realpath</span><span style="color: black;">&#40;</span>__file__<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">site</span>.<span style="color: black;">addsitedir</span><span style="color: black;">&#40;</span>CUR_DIR<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Quelque part dans son code n&#8217;importe où qui est sûr d&#8217;être éxécuté tôt, par exemple dans Django, dans le <em>settings.py</em>. Ca ajoute le dossier du projet en tant que site directory, et donc le fichier <em>.pth</em> est parsé. On peut alors dumper son listing dedans sans avoir à le répéter dans tous les scripts et fichiers qui doivent l&#8217;utiliser (et ainsi modifier cette liste facilement).</p>
+<p>Attention cependant, celà rajoute votre dossier de projet dans le <code>PYTHON_PATH</code>, rendant tout ce qu&#8217;il contient importable. Normalement, c&#8217;est ce que vous voulez, mais si ce n&#8217;est pas le cas, vous pouvez avoir une gestion plus fine en ajoutant juste le fichier .pth avec <code>site.addpackage(CUR_DIR, 'fichier.pth', set())</code></p>
+<h2>La feature de magie noire</h2>
+<p>Dans les fichiers <em>*.pth</em>, il y a un support limité de la syntaxe Python: on peut commenter des lignes avec <code>#</code> et faire des <code>import truc</code>. </p>
+<p>Sauf que si vous êtes curieux, vous verrez le détail qui tue dans l&#8217;implémentation:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">if</span> line.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;import &quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;import<span style="color: #000099; font-weight: bold;">\t</span>&quot;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">exec</span> line</pre></td></tr></table></div>
+
+<p>On peut donc virtuellement mettre n&#8217;importe quel code Python dans les fichiers <em>*.pth</em>. Par exemple:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">../foo
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span><span style="color: #66cc66;">;</span> <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Foo a été ajouté au PYTHON PATH&quot;</span></pre></td></tr></table></div>
+
+<p>Va afficher &#8220;Foo a été ajouté au PYTHON PATH&#8221; au démarrage du programme. Amusant. Et tellement de potentiels pour faire des trucs tordus !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/se-faciliter-les-imports-avec-les-fichiers-pth/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/09/yoda-vs-hulk.jpg" length="118963" type="image/jpg" />	</item>
+	</channel>
+</rss>

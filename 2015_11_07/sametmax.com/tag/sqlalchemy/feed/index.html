@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; sqlalchemy</title>
+	<atom:link href="http://sametmax.com/tag/sqlalchemy/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Automatiser un peu plus SQLAlchemy declarative 3</title>
+		<link>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/</link>
+		<comments>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/#comments</comments>
+		<pubDate>Wed, 29 Oct 2014 12:34:00 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[declarative]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sql]]></category>
+		<category><![CDATA[sqlalchemy]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12584</guid>
+		<description><![CDATA[Avec l'intégration de l'interface déclarative d'SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM.]]></description>
+				<content:encoded><![CDATA[<p>Avec l&#8217;intégration de l&#8217;interface déclarative d&#8217;SQLAlchemy, le projet Elexir est mort, et bien mort. Mais avec lui, la syntaxe la plus simple de déclaration pour cet ORM. En effet, par défaut, SQLA vous oblige à spécifier le nom de la table et l&#8217;attribut ID pour chaque classe :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy <span style="color: #ff7700;font-weight:bold;">import</span> Column<span style="color: #66cc66;">,</span> Integer<span style="color: #66cc66;">,</span> String
+<span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy.<span style="color: black;">ext</span>.<span style="color: black;">declarative</span> <span style="color: #ff7700;font-weight:bold;">import</span> declarative_base
+<span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy <span style="color: #ff7700;font-weight:bold;">import</span> create_engine
+&nbsp;
+Base <span style="color: #66cc66;">=</span> declarative_base<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Person<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># explicit is better than... fuck it !</span>
+    __tablename__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'person'</span> 
+    <span style="color: #008000;">id</span> <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>Integer<span style="color: #66cc66;">,</span> primary_key<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Animal<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    __tablename__ <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'animal'</span>
+    <span style="color: #008000;">id</span> <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>Integer<span style="color: #66cc66;">,</span> primary_key<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># Paie ton DRY</span>
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+&nbsp;
+engine <span style="color: #66cc66;">=</span> create_engine<span style="color: black;">&#40;</span><span style="color: #483d8b;">'sqlite:///db.db.db...db'</span><span style="color: black;">&#41;</span>
+Base.<span style="color: black;">metadata</span>.<span style="color: black;">create_all</span><span style="color: black;">&#40;</span>engine<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>SQLA est très flexible, et il existe des tas de raisons pour vouloir un PK ou un nom de table custo. Mais dans beaucoup de projets, le nom de la table peut être le nom de la classe, et la PK peut être un ID auto incrémenté.</p>
+<p>Heureusement, la lib vous permet de customiser absolument tout, même la manière dont on doit la customiser. Si c&#8217;est pas méta, tout ça&#8230;</p>
+<p>Bref, on peut créer sa propre base déclarative qui va faire tout ça pour nous :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> sqlalchemy.<span style="color: black;">ext</span>.<span style="color: black;">declarative</span> <span style="color: #ff7700;font-weight:bold;">import</span> as_declarative<span style="color: #66cc66;">,</span> declared_attr
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ceci sera le parent de tout nos objets</span>
+<span style="color: #66cc66;">@</span>as_declarative<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> Base<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Vu qu'on a pas vraiment envie de se réécrire la</span>
+    <span style="color: #808080; font-style: italic;"># métaclasse, SQLA nous file ce gentil décorateur </span>
+    <span style="color: #808080; font-style: italic;"># pour déclarer des attributs qui ne sont pas des </span>
+    <span style="color: #808080; font-style: italic;"># champs</span>
+    <span style="color: #66cc66;">@</span>declared_attr
+    <span style="color: #ff7700;font-weight:bold;">def</span> __tablename__<span style="color: black;">&#40;</span>cls<span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># le nom de la table est le nom de la classe</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> cls.__name__.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># L'id c'est la vie</span>
+    <span style="color: #008000;">id</span> <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>Integer<span style="color: #66cc66;">,</span> primary_key<span style="color: #66cc66;">=</span><span style="color: #008000;">True</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Person<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> Animal<span style="color: black;">&#40;</span>Base<span style="color: black;">&#41;</span>:
+    name <span style="color: #66cc66;">=</span> Column<span style="color: black;">&#40;</span>String<span style="color: black;">&#40;</span><span style="color: #ff4500;">250</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> nullable<span style="color: #66cc66;">=</span><span style="color: #008000;">False</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Evidemment il faut que vous soyez certains d&#8217;éviter les conflits liés à cette décision, mais c&#8217;est quand même vachement pratique.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/automatiser-un-peu-plus-sqlalchemy-declarative/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/Bruce-Lee-Simplicity-is-the-key-2-brilliance.jpg" length="72605" type="image/jpg" />	</item>
+	</channel>
+</rss>

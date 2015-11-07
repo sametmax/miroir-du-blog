@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; fichier</title>
+	<atom:link href="http://sametmax.com/tag/fichier/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Appliquer un traitement à tous les fichiers d&#8217;un dossier en Python 5</title>
+		<link>http://sametmax.com/appliquer-un-traitement-a-tous-les-fichiers-dun-dossier-en-python/</link>
+		<comments>http://sametmax.com/appliquer-un-traitement-a-tous-les-fichiers-dun-dossier-en-python/#comments</comments>
+		<pubDate>Wed, 15 Oct 2014 08:35:58 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[dossier]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=12456</guid>
+		<description><![CDATA[Opération courante en informatique et on a tous eu besoin de chercher comment faire une fois.]]></description>
+				<content:encoded><![CDATA[<p>Opération courante en informatique et on a tous eu besoin de chercher comment faire une fois.</p>
+<p>Soit l’arborescence :</p>
+<pre>test
+├── dossier
+│   ├── fichier.py
+│   ├── fichier.txt
+│   └── pas_un_dossier.txt
+├── Dossier
+│   ├── dOssier
+│   │   └── faichier
+│   └── fichiiiiiiiiier
+├── .fichier
+├── fichier
+├── fIchier
+└── Fichier
+</pre>
+<h2>Lister le contenu d&#8217;un dossier</h2>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">listdir</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'.'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'dossier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Dossier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'fichier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'fIchier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'.fichier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Fichier'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>On récupère les noms des dossiers et les fichiers, y compris cachés, mais pas les dossiers spéciaux types <code>..</code> et <code>.</code>.</p>
+<p>Le type des noms retournés est <code>str</code> que ce soit en Python 2 ou 3. Ça a l&#8217;air cool et homogène comme ça, jusqu&#8217;à ce qu&#8217;on se souvienne que <code>str</code> sont des bits en Python 2 et de l&#8217;unicode en Python 3. Donc gaffe quand vous portez votre code d&#8217;une version à l&#8217;autre. Les noms de fichiers contiennent des caractères non ASCII dans la vraie vie vivante.</p>
+<p>Si vous voulez récupérer uniquement les dossiers ou les fichiers, il va falloir filtrer :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> element <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">listdir</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test'</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">isdir</span><span style="color: black;">&#40;</span>element<span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;'%s' un dossier&quot;</span> % element<span style="color: black;">&#41;</span>
+...     <span style="color: #ff7700;font-weight:bold;">else</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;'%s' est un fichier&quot;</span> % element<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'dossier'</span> un dossier
+<span style="color: #483d8b;">'Dossier'</span> un dossier
+<span style="color: #483d8b;">'fichier'</span> est un fichier
+<span style="color: #483d8b;">'fIchier'</span> est un fichier
+<span style="color: #483d8b;">'.fichier'</span> est un fichier
+<span style="color: #483d8b;">'Fichier'</span> est un fichier</pre></td></tr></table></div>
+
+<p>Pareil si on veut filtrer par extensions :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> element <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">listdir</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test/dossier'</span><span style="color: black;">&#41;</span>:
+...     <span style="color: #ff7700;font-weight:bold;">if</span> element.<span style="color: black;">endswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'.txt'</span><span style="color: black;">&#41;</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;'%s' est un fichier texte&quot;</span> % element<span style="color: black;">&#41;</span>
+...     <span style="color: #ff7700;font-weight:bold;">else</span>:
+...         <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;'%s' n'est pas un fichier texte&quot;</span> % element<span style="color: black;">&#41;</span>
+<span style="color: #483d8b;">'fichier.txt'</span> est un fichier texte
+<span style="color: #483d8b;">'pas_un_dossier.txt'</span> est un fichier texte
+<span style="color: #483d8b;">'fichier.py'</span> n<span style="color: #483d8b;">'est pas un fichier texte</span></pre></td></tr></table></div>
+
+<p>Néanmoins, Python vient avec le module <code>glob</code> qui permet de demander le listing du contenu d&#8217;un dossier en appliquant des filtres Unix :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">glob</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">glob</span>.<span style="color: #dc143c;">glob</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test/dossier/*.txt'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'/tmp/test/dossier/fichier.txt'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'/tmp/test/dossier/pas_un_dossier.txt'</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #dc143c;">glob</span>.<span style="color: #dc143c;">glob</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'./dossier/*.txt'</span><span style="color: black;">&#41;</span>
+<span style="color: black;">&#91;</span><span style="color: #483d8b;">'./dossier/fichier.txt'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'./dossier/pas_un_dossier.txt'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Mais comme vous pouvez le voir, le comportement n&#8217;est pas le même que <code>listdir</code> : les éléments de la liste sont des chemins relatifs à celui passé en paramètre si il est lui-même relatif, ou absolus si celui passé en paramètre est absolu. N&#8217;oubliez donc pas de normaliser l&#8217;entrée ou la sortie avec <code>os.path.realpath</code> qui retournera un chemin canonique.</p>
+<p>Même problème Python 2/3 : le type est <code>str</code> dans les 2 cas. </p>
+<h2>Parcours récursif</h2>
+<p>La fonction <code>os.walk</code> permet de lister récursivement tous les fichiers et les dossiers à partir d&#8217;un point dans l&#8217;arborescence. C&#8217;est un générateur, et sa valeur de retour est un peu particulière et se récupère via <a href="http://sametmax.com/tag/unpacking/">unpacking</a>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> dossier<span style="color: #66cc66;">,</span> sous_dossiers<span style="color: #66cc66;">,</span> fichiers <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">walk</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test'</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'##### %s #####'</span> % dossier<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Sous dossiers : %s&quot;</span> % sous_dossiers<span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Fichiers : %s&quot;</span> % fichiers<span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;">##### /tmp/test #####</span>
+Sous dossiers : <span style="color: black;">&#91;</span><span style="color: #483d8b;">'dossier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Dossier'</span><span style="color: black;">&#93;</span>
+Fichiers : <span style="color: black;">&#91;</span><span style="color: #483d8b;">'fichier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'fIchier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'.fichier'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'Fichier'</span><span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">##### /tmp/test/dossier #####</span>
+Sous dossiers : <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+Fichiers : <span style="color: black;">&#91;</span><span style="color: #483d8b;">'fichier.txt'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'pas_un_dossier.txt'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'fichier.py'</span><span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">##### /tmp/test/Dossier #####</span>
+Sous dossiers : <span style="color: black;">&#91;</span><span style="color: #483d8b;">'dOssier'</span><span style="color: black;">&#93;</span>
+Fichiers : <span style="color: black;">&#91;</span><span style="color: #483d8b;">'fichiiiiiiiiier'</span><span style="color: black;">&#93;</span>
+<span style="color: #808080; font-style: italic;">##### /tmp/test/Dossier/dOssier #####</span>
+Sous dossiers : <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+Fichiers : <span style="color: black;">&#91;</span><span style="color: #483d8b;">'faichier'</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Du coup, si vous voulez avoir la liste des chemin des fichiers absolus, il faut reconstituer à la main :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">for</span> dossier<span style="color: #66cc66;">,</span> sous_dossiers<span style="color: #66cc66;">,</span> fichiers <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">walk</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/tmp/test'</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">for</span> fichier <span style="color: #ff7700;font-weight:bold;">in</span> fichiers:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span>dossier<span style="color: #66cc66;">,</span> fichier<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+/tmp/<span style="color: #dc143c;">test</span>/fichier
+/tmp/<span style="color: #dc143c;">test</span>/fIchier
+/tmp/<span style="color: #dc143c;">test</span>/.<span style="color: black;">fichier</span>
+/tmp/<span style="color: #dc143c;">test</span>/Fichier
+/tmp/<span style="color: #dc143c;">test</span>/dossier/fichier.<span style="color: black;">txt</span>
+/tmp/<span style="color: #dc143c;">test</span>/dossier/pas_un_dossier.<span style="color: black;">txt</span>
+/tmp/<span style="color: #dc143c;">test</span>/dossier/fichier.<span style="color: black;">py</span>
+/tmp/<span style="color: #dc143c;">test</span>/Dossier/fichiiiiiiiiier
+/tmp/<span style="color: #dc143c;">test</span>/Dossier/dOssier/faichier</pre></td></tr></table></div>
+
+<p>Encore une fois, c&#8217;est du <code>str</code> partout, alors attention. L&#8217;article sur l&#8217;<a href="http://sametmax.com/lencoding-en-python-une-bonne-fois-pour-toute/">encoding en Python </a>reste un des plus consultés de la categ prog.</p>
+<h2>Avec une lib qui va bien</h2>
+<p>Je n&#8217;ai jamais caché mon amour immodéré pour <a href="https://pythonhosted.org/path.py/api.html">path.py</a> (qui enterre tous ses concurrents, dont unipath), qui encapsule toutes les opérations des fichiers de manière simple et élégante et qui marche sous Python 2 et 3.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">pip <span style="color: #c20cb9; font-weight: bold;">install</span> path.py</pre></td></tr></table></div>
+
+<p>Et c&#8217;est quand même plus facile pour le parcours récursif :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> path <span style="color: #ff7700;font-weight:bold;">import</span> path
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> f <span style="color: #ff7700;font-weight:bold;">in</span> path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'.'</span><span style="color: black;">&#41;</span>.<span style="color: black;">walkfiles</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span> f
+   ....:     
+./dossier/fichier.<span style="color: black;">txt</span>
+./dossier/pas_un_dossier.<span style="color: black;">txt</span>
+./dossier/fichier.<span style="color: black;">py</span>
+./Dossier/fichiiiiiiiiier
+./Dossier/dOssier/faichier
+./fichier
+./fIchier
+./.<span style="color: black;">fichier</span>
+./Fichier</pre></td></tr></table></div>
+
+<p>En plus, <code>f</code> est de type <code>path</code> sous Python 2 et 3. C&#8217;est homogène, et ça permet de faire toutes les opérations magiques que ce type permet.</p>
+<p>Néanmoins, si vous êtes sous Python 3.4 et que vous ne voulez pas ajouter une dépendance externe, vous pouvez utiliser le module <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a> :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">from</span> pathlib <span style="color: #ff7700;font-weight:bold;">import</span> Path
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">for</span> p <span style="color: #ff7700;font-weight:bold;">in</span>  Path<span style="color: black;">&#40;</span><span style="color: #483d8b;">'.'</span><span style="color: black;">&#41;</span>.<span style="color: #dc143c;">glob</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'./**/*'</span><span style="color: black;">&#41;</span>:
+...    <span style="color: #ff7700;font-weight:bold;">if</span> p.<span style="color: black;">is_file</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+...        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>p<span style="color: black;">&#41;</span>
+fichier
+fIchier
+.<span style="color: black;">fichier</span>
+Fichier
+dossier/fichier.<span style="color: black;">txt</span>
+dossier/pas_un_dossier.<span style="color: black;">txt</span>
+dossier/fichier.<span style="color: black;">py</span>
+Dossier/fichiiiiiiiiier
+Dossier/dOssier/faichier</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/appliquer-un-traitement-a-tous-les-fichiers-dun-dossier-en-python/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/10/4ff1ca7b019f646ab8a6f6a31e10cab5.jpg" length="354698" type="image/jpg" />	</item>
+		<item>
+		<title>Ouvrir un fichier avec le bon programme en Python 16</title>
+		<link>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/</link>
+		<comments>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/#comments</comments>
+		<pubDate>Thu, 17 Oct 2013 10:09:59 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[linux]]></category>
+		<category><![CDATA[mac]]></category>
+		<category><![CDATA[open]]></category>
+		<category><![CDATA[os]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[windows]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7469</guid>
+		<description><![CDATA[Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander "ouvrir le type de fichier par défaut". Par exemple, moi, si on je demande d'ouvrir un fichier vidéo, je m'attend à ce que VLC soit lancé.
+
+Voilà comment faire ça en Python.]]></description>
+				<content:encoded><![CDATA[<p>Votre logiciel doit permettre d&#8217;ouvrir un fichier avec un programme externe. Oui mais lequel ?</p>
+<p>Les OS ont des réglages par défaut pour chaque type de fichier, et on peut demander &#8220;ouvrir le prog pour ce type de fichier par défaut&#8221;. Par exemple, moi, si je demande d&#8217;ouvrir un fichier vidéo, je m&#8217;attend à ce que VLC soit lancé.</p>
+<p>Voilà comment faire ça en Python :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">subprocess</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> run_file<span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Pas de EAFP cette fois puisqu'on est dans un process externe,</span>
+    <span style="color: #808080; font-style: italic;"># on ne peut pas gérer l'exception aussi facilement, donc on fait</span>
+    <span style="color: #808080; font-style: italic;"># des checks essentiels avant.</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Vérifier que le fichier existe</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">exists</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'No such file: %s'</span> % path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On a accès en lecture ?</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'access'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">and</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">access</span><span style="color: black;">&#40;</span>path<span style="color: #66cc66;">,</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">R_OK</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">IOError</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Cannot access file: %s'</span> % path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Lancer le bon programme pour le bon OS :</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">hasattr</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">os</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'startfile'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Windows</span>
+        <span style="color: #808080; font-style: italic;"># Startfile est très limité sous Windows, on ne pourra pas savoir</span>
+        <span style="color: #808080; font-style: italic;"># si il y a eu une erreu</span>
+        proc <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">startfile</span><span style="color: black;">&#40;</span>path<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span>.<span style="color: black;">startswith</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'linux'</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># Linux:</span>
+        proc <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'xdg-open'</span><span style="color: #66cc66;">,</span> path<span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> 
+                                 <span style="color: #808080; font-style: italic;"># on capture stdin et out pour rendre le </span>
+                                 <span style="color: #808080; font-style: italic;"># tout non bloquant</span>
+                                 stdout<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: #66cc66;">,</span> stderr<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">elif</span> <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span> <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'darwin'</span>: <span style="color: #808080; font-style: italic;"># Mac:</span>
+        proc <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">subprocess</span>.<span style="color: black;">Popen</span><span style="color: black;">&#40;</span><span style="color: black;">&#91;</span><span style="color: #483d8b;">'open'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'--'</span><span style="color: #66cc66;">,</span> path<span style="color: black;">&#93;</span><span style="color: #66cc66;">,</span> 
+                                stdout<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: #66cc66;">,</span> stderr<span style="color: #66cc66;">=</span><span style="color: #dc143c;">subprocess</span>.<span style="color: black;">PIPE</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">raise</span> <span style="color: #008000;">NotImplementedError</span><span style="color: black;">&#40;</span>
+            <span style="color: #483d8b;">&quot;Your `%s` isn't a supported operatin system`.&quot;</span> % <span style="color: #dc143c;">sys</span>.<span style="color: #dc143c;">platform</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Proc sera toujours None sous Windows. Sous les autres OS, il permet de</span>
+    <span style="color: #808080; font-style: italic;"># récupérer le status code du programme, and lire / ecrire sur stdin et out</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> proc</pre></td></tr></table></div>
+
+<p>C&#8217;était le petit snippet sympas du jour !</p>
+<p>P.S : si quelqu&#8217;un utilise <del>BDSM</del> BSD ou Solaris, je veux bien qu&#8217;il complète le snippet.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/ouvrir-un-fichier-avec-le-bon-programme-en-python/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/10/qzb7emC.jpg" length="54438" type="image/jpg" />	</item>
+		<item>
+		<title>Laissez votre clé USB se reposer avec Nitroshare 17</title>
+		<link>http://sametmax.com/laissez-votre-cle-usb-se-reposer-avec-nitroshare/</link>
+		<comments>http://sametmax.com/laissez-votre-cle-usb-se-reposer-avec-nitroshare/#comments</comments>
+		<pubDate>Fri, 13 Jul 2012 17:37:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[fichier]]></category>
+		<category><![CDATA[partage]]></category>
+		<category><![CDATA[utilitaire]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1123</guid>
+		<description><![CDATA[On a jamais eu autant de moyens de filer un fichier à son voisin. Et malgré ça c'est toujours la galère. Voici la solution miracle en directe de Lourde.]]></description>
+				<content:encoded><![CDATA[<p>Vous êtes avec votre pote/copine/collègue, chacun sur une machine différente. Vous voulez lui envoyer votre film de cul/mp3/dossier de travail. Vos choix:</p>
+<ul>
+<li>sortir la clé USB. Efficace. Il faut juste bouger son cul pour la trouver et faire la copie 2 fois.</li>
+<li>passer par le réseau local à la mano (bonne chance);</li>
+<li>vous l&#8217;uploadez sur le net car vous avez du temps à perdre et la mémoire flash c&#8217;est pour les tapettes;</li>
+<li>envoyez un mail. Un divx splitté par mail c&#8217;est fun.</li>
+<li>vous l&#8217;envoyez par messagerie instantannée à 3Ko/s, ça risque de déco, mais au moins c&#8217;est simple.</li>
+</ul>
+<p><a href="http://quickmediasolutions.com/apps/14/nitroshare">Nitroshare</a> propose une alternative:</p>
+<ol>
+<li><a href="https://launchpad.net/nitroshare">téléchargez</a> ce logiciel libre pour Windows/Mac/Linux;</li>
+<li>lancez le;</li>
+<li>faites un glissé-deposé</li>
+</ol>
+<div id="attachment_1124" style="width: 584px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2012/07/Bureau_008.jpeg" class="grouped_elements" rel="tc-fancybox-group1123"><img class=" wp-image-1124   " title="Le dubstep de Lindsey Stirling est quelque chose qu'on a toujours envie de partager" src="http://sametmax.com/wp-content/uploads/2012/07/Bureau_008.jpeg" alt="Capture d'écran de l'usage de Nitroshare" width="574" height="323" /></a><p class="wp-caption-text"><a href='https://www.youtube.com/watch?v=aHjpOzsQ9YI'>Le dubstep de Lindsey Stirling</a> est quelque chose qu&#39;on a toujours envie de partager</p></div>
+<p>Le principe de Nitroshare est simple: il autodétecte toutes les instances de Nitroshare sur le réseau local. C&#8217;est le même principe que <a href="http://code.google.com/p/giver/">Giver</a>, sauf que contrairement à Giver, ça marche. Evidement ça implique que vous soyez tous connectés au même routeur, ce qui est presque toujours le cas à la maison ou au bureau.</p>
+<p>On atteind pas des vitesses de folie, mais ça se fait en background, ça gère les dossiers récusivement, c&#8217;est cross plateforme et terriblement simple. Et contrairement aux disques amovibles, on ne fait la copie qu&#8217;une fois.</p>
+<p>En conclusion, je dirais que comme c&#8217;est gratos, on peut dire que c&#8217;est nitroshare, ni pas assez.</p>
+<p>P.S: les utilisateurs d&#8217;Ubuntu voudront sans doute utiliser un PPA:</p>
+<p><code>sudo add-apt-repository ppa:george-edison55/nitroshare<br />
+sudo apt-get update<br />
+sudo apt-get install nitroshare</code></p>
+<p>Si vous utilisez le deb, faudra faire un petit <code>sudo apt-get install libqjson0 libqxmlrpc1</code> avant.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/laissez-votre-cle-usb-se-reposer-avec-nitroshare/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/07/logo.png" length="1200" type="image/jpg" />	</item>
+	</channel>
+</rss>

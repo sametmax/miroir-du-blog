@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; deferred</title>
+	<atom:link href="http://sametmax.com/tag/deferred/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Deferred, Future et Promise : le pourquoi, le comment, et quand est-ce qu&#8217;on mange 18</title>
+		<link>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/</link>
+		<comments>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/#comments</comments>
+		<pubDate>Wed, 04 Jun 2014 13:19:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[asynchrone]]></category>
+		<category><![CDATA[asyncio]]></category>
+		<category><![CDATA[deferred]]></category>
+		<category><![CDATA[future]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[jquery]]></category>
+		<category><![CDATA[promise]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[twisted]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10418</guid>
+		<description><![CDATA[Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s'exécuter dans un ordre. Elles sont dépendantes les unes des autres.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez plongé dans le monde de la programmation asynchrone non bloquante, vous avez du vous heurter aux <a href="http://sametmax.com/quest-ce-quun-callback/">callbacks</a>. Si ce n&#8217;est pas le cas, aller lire l&#8217;article, et faites vos armes sur jQuery, je vais m&#8217;en servir en exemple.</p>
+<p>Signalement de rigueur que l&#8217;article est long :</p>
+
+<!-- iframe plugin v.2.9 wordpress.org/plugins/iframe/ -->
+<iframe width="560" height="315" src="//www.youtube.com/embed/E8b4xYbEugo" frameborder="0" scrolling="no" class="iframe-class"></iframe>
+
+<p>Un callback, ça va.</p>
+<p>Deux callbacks, pour un seul appel, ça commence à être chiant, mais c&#8217;est compréhensible.</p>
+<p>Quand les callbacks appellent eux aussi des callbacks, ça donne des codes imbitables :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  $.<span style="color: #660066;">post</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/auth/token'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+    saveToken<span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+    $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/sessions/last'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>session.<span style="color: #660066;">device</span> <span style="color: #339933;">!=</span> currentDevice<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+        $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/session/ '</span> <span style="color: #339933;">+</span> session.<span style="color: #660066;">id</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/context'</span><span style="color: #339933;">,</span> <span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>context<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          loadContext<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+            startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+              initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+            <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+          <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#125;</span>
+        <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#125;</span>
+      <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+        startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+      <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#125;</span>
+    <span style="color: #009900;">&#41;</span>
+  <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Il y a pire que de lire ce code : le modifier ! Retirez un bloc, pour voir. Oh, et histoire de vous faire partager l&#8217;expérience complète, j&#8217;ai volontairement déplacé l&#8217;indentation d&#8217;une parenthèse et de deux brackets.</p>
+<p>Or les codes asynchrones ont besoin de callback afin d’enchainer certaines opérations dans le bon ordre, sinon on ne peut pas récupérer le résultat d&#8217;une fonction et l&#8217;utiliser dans une autre, puisqu&#8217;on ne sait pas quand l&#8217;opération se termine.</p>
+<p>Dans notre exemple, <code>$.post</code> et <code>$.get</code> font des requêtes POST et GET, et comme on ne sait pas quand le serveur va répondre, il faut mettre un callback pour gérer la réponse quand elle arrive. C&#8217;est plus performant que de bloquer jusqu&#8217;à ce que la première requête soit terminée car pendant ce temps, notre programme peut faire autre chose. Mais c&#8217;est aussi super relou à écrire et comprendre.</p>
+<p>Entrent en jeu les promesses (promises). Ou les deferred. Ou les futures.</p>
+<p>Typiquement, on retrouve des deferreds dans <a href="https://twistedmatrix.com/trac/">Twisted</a>, des promises pour <a href="http://api.jquery.com/jquery.ajax/">l&#8217;AJAX avec jQuery,</a> des futures pour <a href="http://docs.python.org/3.4/library/asyncio-protocol.html">asyncio</a>&#8230; Mais il y en a un peu partout de nos jours, et une lib peut utiliser plusieurs de ces concepts.</p>
+<p>En fait c&#8217;est la même chose, un nom différent donné au même concept, par des gens qui l&#8217;ont réinventé dans leur coin. Les puristes vous diront qu&#8217;il y a des différences dans l&#8217;implémentation, ou alors que la promesse est l&#8217;interface tandis que le deferred est l&#8217;objet retourné, bla, bla, bla.</p>
+<p>Fuck it, on va considérer que c&#8217;est tout pareil.</p>
+<p>Les promesses sont une des manières de rendre un code asynchrone plus facile à gérer. On dit : ce groupe de fonctions doit s&#8217;exécuter dans un ordre car elles sont dépendantes les unes des autres.</p>
+<p>Il y a d&#8217;autres moyens de gérer le problème de l&#8217;asynchrone: des événements, des queues, etc. L&#8217;avantage des promesses c&#8217;est que c&#8217;est assez simple, et ça marche là où on utilisait des callbacks avant, donc on a pu les rajouter aux libs qui étaient blindées de callbacks.</p>
+<h2>Le principe</h2>
+<p>La promesse est un moyen de dire que certaines fonctions, bien que non bloquantes et asynchrones, sont liées entre elles, et doivent s&#8217;exécuter les unes à la suite des autres. Cela permet de donner un ordre d&#8217;exécution à un groupe de fonctions, et surtout, que chaque fonction puisse accéder au résultat de la fonction précédente. Tout ceci sans bloquer le reste du système asynchrone.</p>
+<p>En résumé, <strong>cela donne un gout de programmation synchrone, à quelque chose qui ne l&#8217;est pas.</strong></p>
+<p>Cela se passe ainsi :</p>
+<ul>
+<li>La fonction asynchrone retourne un objet immédiatement : la promesse.</li>
+<li>On ne passe pas de callback à la fonction. On rajoute un callback à la promesse.</li>
+<li>Le callback prend en paramètre le résultat de la fonction asynchrone.</li>
+<li>Le callback retourne le résultat de son traitement.</li>
+<li>On peut rajouter autant de callbacks qu&#8217;on veut à la promesse, chacun devant accepter le résultat du callback précédent et retourner son propre résultat.</li>
+<li>Si un des callbacks retourne une promesse, elle est fusionnée avec la promesse initiale, et c&#8217;est son résultat que le prochain callback va récupérer</li>
+</ul>
+<p>Voilà un exemple :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;"><span style="color: #006600; font-style: italic;">// $.get est asynchrone. On a pas le résultat tout de suite, mais en attendant</span>
+<span style="color: #006600; font-style: italic;">// on a une promesse tout de suite.</span>
+<span style="color: #000066; font-weight: bold;">var</span> $promesse <span style="color: #339933;">=</span> $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/truc/machin'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// premier callback. Il sera appelé quand $.get aura récupéré son</span>
+<span style="color: #006600; font-style: italic;">// résultat</span>
+$promesse.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc avec le résultat</span>
+  <span style="color: #006600; font-style: italic;">// puis on retourne le nouveau résultat</span>
+  <span style="color: #000066; font-weight: bold;">return</span> nouveau_resultat<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// deuxième callback. Il sera appelé quand le premier callback</span>
+<span style="color: #006600; font-style: italic;">// aura retourné son résultat.</span>
+$promesse.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>nouveau_resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Notez bien que c&#8217;est TRES différent de ça (en Python):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">resultat <span style="color: #66cc66;">=</span> request.<span style="color: black;">get</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'/truc/marchin'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> function<span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>:
+  <span style="color: #808080; font-style: italic;"># faire un truc</span>
+  <span style="color: #ff7700;font-weight:bold;">return</span> nouveau_resultat
+nouveau_resultat <span style="color: #66cc66;">=</span> function<span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> autre_function<span style="color: black;">&#40;</span>nouveau_resultat<span style="color: black;">&#41;</span>:
+  <span style="color: #808080; font-style: italic;"># faire un truc</span>
+autre_function<span style="color: black;">&#40;</span>nouveau_resultat<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>En Python, le code est bloquant par défaut. Ça va marcher, mais pendant que le code attend la réponse du serveur, votre ordinateur est en pause et ne travaille pas.</p>
+<h2>Un plus beau code</h2>
+<p>On se retrouve avec un code asynchrone, mais qui s&#8217;exécute dans l&#8217;ordre de lecture. Et comme on peut chainer les <code>then()</code> et donc ne pas réécrire <code>$promesse</code> à chaque fois, on obtient quelque chose de beaucoup plus lisible :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/truc/machin'</span><span style="color: #009900;">&#41;</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+  <span style="color: #000066; font-weight: bold;">return</span> nouveau_resultat<span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>nouveau_resultat<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #006600; font-style: italic;">// faire un truc</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Si on reprend notre premier exemple, ça donne ça :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// create new token</span>
+$.<span style="color: #660066;">post</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/auth/token'</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// then save token and get last session</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  saveToken<span style="color: #009900;">&#40;</span>token<span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+  <span style="color: #000066; font-weight: bold;">return</span> $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/sessions/last'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #006600; font-style: italic;">// then init session</span>
+.<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>session<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+  <span style="color: #000066; font-weight: bold;">if</span> <span style="color: #009900;">&#40;</span>session.<span style="color: #660066;">device</span> <span style="color: #339933;">!=</span> currentDevice<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+&nbsp;
+    $.<span style="color: #000066; font-weight: bold;">get</span><span style="color: #009900;">&#40;</span><span style="color: #3366CC;">'/session/ '</span> <span style="color: #339933;">+</span> session.<span style="color: #660066;">id</span> <span style="color: #339933;">+</span> <span style="color: #3366CC;">'/context'</span><span style="color: #009900;">&#41;</span>
+    .<span style="color: #660066;">then</span><span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span>context<span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      loadContext<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+        startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+          initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+        <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+      <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+  <span style="color: #009900;">&#125;</span>
+  <span style="color: #000066; font-weight: bold;">else</span> <span style="color: #009900;">&#123;</span>
+    startApp<span style="color: #009900;">&#40;</span><span style="color: #000066; font-weight: bold;">function</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#123;</span>
+      initUi<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+    <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+  <span style="color: #009900;">&#125;</span><span style="color: #009900;">&#125;</span>
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span>
+&nbsp;
+<span style="color: #009900;">&#125;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span></pre></td></tr></table></div>
+
+<p>Tout ça s’exécute de manière non bloquante (d&#8217;autres fonctions ailleurs dans le programme peuvent s&#8217;exécuter pendant qu&#8217;on attend la réponse du serveur), mais dans l&#8217;ordre de lecture, donc on comprend bien ce qui se passe. Si on veut retirer un bloc, c&#8217;est beaucoup plus facile.</p>
+<h2>Comment ça marche à l&#8217;intérieur ?</h2>
+<p>Histoire d&#8217;avoir une idée de comment une promise marche, on va faire une implémentation, simpliste et naïve, mais compréhensible, d&#8217;une promesse en Python. Pour rendre l&#8217;API un peu sympa,je vais utiliser <a href="http://sametmax.com/comprendre-les-decorateurs-python-pas-a-pas-partie-1/">les décorateurs.</a></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> Promise:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># La promesse contient une liste de callbacks, donc une liste de fonctions.</span>
+    <span style="color: #808080; font-style: italic;"># Pas le résultat des fonctions, mais bien les fonctions elles mêmes,</span>
+    <span style="color: #808080; font-style: italic;"># puisque les fonctions sont manipulables en Python.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Point d'entrée pour ajouter un callback à la promesse</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> then<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> callback<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>callback<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Cette méthode est celle qui sera appelée par le code asynchrone</span>
+    <span style="color: #808080; font-style: italic;"># quand il reçoit son résultat.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> resolve<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> resultat<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># Ici, on obtient le résultat du code asycnhrone, donc on boucle</span>
+        <span style="color: #808080; font-style: italic;"># sur les callbacks pour les appeler</span>
+        <span style="color: #ff7700;font-weight:bold;">while</span> <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>:
+            <span style="color: #808080; font-style: italic;"># On retire le premier callback de la liste, et on l'appelle</span>
+            <span style="color: #808080; font-style: italic;"># avec le résultat</span>
+            resultat <span style="color: #66cc66;">=</span> <span style="color: #008000;">self</span>.<span style="color: black;">callbacks</span>.<span style="color: black;">pop</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span><span style="color: black;">&#40;</span>resultat<span style="color: black;">&#41;</span>
+&nbsp;
+            <span style="color: #808080; font-style: italic;"># Si le resultat est une promesse, on dit à cette nouvelle promesse</span>
+            <span style="color: #808080; font-style: italic;"># de nous rappeler quand elle a reçu ses résultats à elle avant</span>
+            <span style="color: #808080; font-style: italic;"># d'aller le reste de nos callbacks à nous : on fusionne les deux</span>
+            <span style="color: #808080; font-style: italic;"># promesses :</span>
+            <span style="color: #808080; font-style: italic;"># Promesse 1</span>
+            <span style="color: #808080; font-style: italic;">#  - callback1</span>
+            <span style="color: #808080; font-style: italic;">#  - callback2</span>
+            <span style="color: #808080; font-style: italic;">#  - Promesse 2</span>
+            <span style="color: #808080; font-style: italic;">#      * callback 1</span>
+            <span style="color: #808080; font-style: italic;">#      * callback 2</span>
+            <span style="color: #808080; font-style: italic;">#  - callback 3</span>
+            <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">isinstance</span><span style="color: black;">&#40;</span>resultat<span style="color: #66cc66;">,</span> Promise<span style="color: black;">&#41;</span>:
+                resultat.<span style="color: black;">then</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>.<span style="color: black;">resolve</span><span style="color: black;">&#41;</span>
+                <span style="color: #ff7700;font-weight:bold;">break</span></pre></td></tr></table></div>
+
+<p>Maintenant, créons un code asynchrone:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">threading</span> <span style="color: #ff7700;font-weight:bold;">import</span> Timer
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func1<span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># On dit complètement artificiellement d'afficher le résultat</span>
+    <span style="color: #808080; font-style: italic;"># de la fonction dans 3 secondes, sans bloquer histoire d'avoir</span>
+    <span style="color: #808080; font-style: italic;"># un peu de nonbloquitude dans notre code et justifier l'asynchrone.</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> callback1<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func2<span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Le même, mais pour 2 secondes</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> callback2<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Deux fonctions normales</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func3<span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func4<span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et si on les enchaines...</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Je commence'</span><span style="color: black;">&#41;</span>
+func1<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Juste après'</span><span style="color: black;">&#41;</span>
+func2<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: black;">&#41;</span>
+func3<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: black;">&#41;</span>
+func4<span style="color: black;">&#40;</span><span style="color: #ff4500;">4</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># ... le résultat est bien désordonné :</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Je commence</span>
+<span style="color: #808080; font-style: italic;">## Juste après</span>
+<span style="color: #808080; font-style: italic;">## 3</span>
+<span style="color: #808080; font-style: italic;">## 4</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 1</span></pre></td></tr></table></div>
+
+<p>Parfois c&#8217;est ce que l&#8217;on veut, que les choses s’exécutent dans le désordre, sans bloquer.</p>
+<p>Mais quand on a des fonctions qui dépendent les unes des autres, au milieu d&#8217;un code asynchrone, on veut qu&#8217;elles se transmettent le résultat les unes aux autres au bon moment. Pour cela, utilisons notre promesse :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">threading</span> <span style="color: #ff7700;font-weight:bold;">import</span> Timer
+&nbsp;
+&nbsp;
+<span style="color: #808080; font-style: italic;"># La mise en place de promesses suppose que le code </span>
+<span style="color: #808080; font-style: italic;"># écrit en fasse explicitement usage. Notre code est</span>
+<span style="color: #808080; font-style: italic;"># définitivement lié à cette manière de faire.</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> func1<span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>:
+    <span style="color: #808080; font-style: italic;"># Notre fonction doit créer la promesse et la retourner</span>
+    p <span style="color: #66cc66;">=</span> Promise<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback1<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+        <span style="color: #808080; font-style: italic;"># Dans le callback, elle doit dire quand la promesse est tenue</span>
+        p.<span style="color: black;">resolve</span><span style="color: black;">&#40;</span>v1<span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">3</span><span style="color: #66cc66;">,</span> callback1<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> p
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On lance la première fonction.</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Je commence'</span><span style="color: black;">&#41;</span>
+promise <span style="color: #66cc66;">=</span> func1<span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Juste après'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On ajoute des callbacks à notre promesse.</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func2<span style="color: black;">&#40;</span>v2<span style="color: black;">&#41;</span>:
+    p <span style="color: #66cc66;">=</span> Promise<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> callback2<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+        <span style="color: #808080; font-style: italic;"># Pour justifier l’enchainement des fonctions, on fait en sorte que</span>
+        <span style="color: #808080; font-style: italic;"># chaque fonction attend le résultat de la précédente, et</span>
+        <span style="color: #808080; font-style: italic;"># l'incrémente de 1.</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v2 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+        p.<span style="color: black;">resolve</span><span style="color: black;">&#40;</span>v2 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #ff4500;">2</span><span style="color: #66cc66;">,</span> callback2<span style="color: black;">&#41;</span>
+    t.<span style="color: black;">start</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;"># Ce callback retourne lui-même une promesse, qui sera fusionnée</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> p
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Ces callbacks ne retournent pas de promesses, et seront chainés</span>
+<span style="color: #808080; font-style: italic;"># normalement</span>
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func3<span style="color: black;">&#40;</span>v3<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v3 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">return</span> v3 + <span style="color: #ff4500;">1</span>
+&nbsp;
+<span style="color: #66cc66;">@</span>promise.<span style="color: black;">then</span>
+<span style="color: #ff7700;font-weight:bold;">def</span> func4<span style="color: black;">&#40;</span>v4<span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span>v4 + <span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Nos fonctions s'exécutent dans le bon ordre, mais bien de manière</span>
+<span style="color: #808080; font-style: italic;"># asynchrone par rapport au reste du programme.</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">## Je commence</span>
+<span style="color: #808080; font-style: italic;">## Juste après</span>
+<span style="color: #808080; font-style: italic;">## 1</span>
+<span style="color: #808080; font-style: italic;">## 2</span>
+<span style="color: #808080; font-style: italic;">## 3</span>
+<span style="color: #808080; font-style: italic;">## 4</span></pre></td></tr></table></div>
+
+<p>Notez bien :</p>
+<ul>
+<li>Le résultat &#8220;1&#8221; n&#8217;apparait que trois secondes après &#8220;Juste après&#8221;. Les fonctions sont donc bien non bloquantes.</li>
+<li>Le resultat &#8220;2&#8221; apparait deux secondes après &#8220;1&#8221;: c&#8217;est aussi asynchrone, MAIS, n&#8217;est lancé que quand la première fonction a terminé son travail.</li>
+<li>La deuxième fonction retourne une promesse, qui est fusionnée: tous ses callbacks vont s&#8217;exécuter en file avant que <code>func3</code> soit lancé. </li>
+</ul>
+<p>Évidement, n&#8217;utilisez pas cette implémentation de promise à la maison, c&#8217;est pédagogique. Ça ne gère pas les erreurs, ni le cas où le callback est enregistré après l&#8217;arrivée du résultat, et tout un tas d&#8217;autres cas tordus.</p>
+<h2>Syntaxe alternative</h2>
+<p>En Python, beaucoup de frameworks ont une approche plus agréable pour gérer les promesses à grand coup de <a href="http://sametmax.com/comment-utiliser-yield-et-les-generateurs-en-python/">yield</a>. Twisted fait ça avec son <code>@inlineCallback</code>, <code>asyncio</code> avec <code>@coroutine</code>. C&#8217;est juste du sucre syntaxique pour vous rendre la vie plus facile.</p>
+<p>Il s&#8217;agit de transformer une fonction en générateur, et à chaque fois qu&#8217;on appelle <code>yield</code> sur une promesse, elle est fusionnée avec la précédente. Ça donne presque l&#8217;impression d&#8217;écrire un code bloquant normal :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;"># un appel de fonction asyncrone typique de twisted</span>
+<span style="color: #66cc66;">@</span>inlineCallback
+<span style="color: #ff7700;font-weight:bold;">def</span> une_fonction<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>:
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func1<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func2<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+  data <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">yield</span> func3<span style="color: black;">&#40;</span>data<span style="color: black;">&#41;</span>
+&nbsp;
+une_fonction<span style="color: black;">&#40;</span>truc<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Les fonctions 1, 2 et 3 vont ainsi être appelées de manière asynchrone par rapport au reste du programme, mais bien s’enchainer les unes à la suite des autres.</p>
+<p>Ouai, tout ce bordel parce que l&#8217;asynchrone, c&#8217;est dur, donc on essaye de le faire ressembler à du code synchrone, qui lui est facile.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/deferred-future-et-promise-le-pourquoi-le-comment-et-quand-est-ce-quon-mange/feed/</wfw:commentRss>
+		<slash:comments>18</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/06/D8GwE.png" length="222229" type="image/jpg" />	</item>
+	</channel>
+</rss>

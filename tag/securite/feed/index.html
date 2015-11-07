@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; sécurité</title>
+	<atom:link href="http://sametmax.com/tag/securite/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Heartbleed, une semaine plus tard 32</title>
+		<link>http://sametmax.com/heartbleed-une-semaine-plus-tard/</link>
+		<comments>http://sametmax.com/heartbleed-une-semaine-plus-tard/#comments</comments>
+		<pubDate>Tue, 15 Apr 2014 09:16:12 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[foss]]></category>
+		<category><![CDATA[heartbleed]]></category>
+		<category><![CDATA[nsa]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[ssl]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10007</guid>
+		<description><![CDATA[Il y a eu pas mal d'infos sur le sujet, généralement assez technique et en anglais, aussi je vous fais un petit résumé de la crise.
+]]></description>
+				<content:encoded><![CDATA[<p>Il y a eu pas mal d&#8217;infos sur le sujet, généralement assez technique et en anglais, aussi je vous fais un petit résumé de la crise.</p>
+<p>Le 8 avril dernier, une faille dans le logiciel OpenSSL, surnommée <a href="http://heartbleed.com/">Heartbleed</a>, a été <a href="http://www.washingtonpost.com/business/technology/heartbleed-bug-puts-the-chaotic-nature-of-the-internet-under-the-magnifying-glass/2014/04/09/00f7064c-c00b-11e3-bcec-b71ee10e9bc3_story.html">rendue publique</a>. OpenSSL est le logiciel le plus utilisé au monde pour chiffrer les communications entre le navigateur et le site Web. Les banques, les e-commerce, les emails, les réseaux sociaux, tous utilisent SSL, pour éviter que l&#8217;on puisse intercepter vos communications. Et la plupart utilisent OpenSSL sur leurs serveurs pour permettre une connexion SSL.</p>
+<p>Ce n&#8217;est pas le protocole SSL ou le chiffrement en général qui est mis en cause mais bien le logiciel OpenSSL.</p>
+<p>Au début, on a cru à une faille critique qui permettait à l&#8217;attaquant de lire les communications. Toute personne exploitant cette faille aurait pu récupérer vos identifiants de banque au moment de votre login par exemple.</p>
+<p>Il s&#8217;est avéré que c&#8217;était <a href="https://www.schneier.com/blog/archives/2014/04/heartbleed.html">bien pire encore</a>.</p>
+<p>La faille permet de récupérer, à chaque heart beat (d&#8217;où le surnom) &#8211; c&#8217;est à dire à chaque fois qu&#8217;un client dit au serveur &#8220;je suis toujours connecté&#8221; &#8211; 64K de mémoire de l&#8217;ordinateur cible, au hasard. Parce que cette faille utilise le heart beat, elle n&#8217;implique pas d&#8217;authentification ou de log, elle est donc parfaitement silencieuse, ne laisse pas de trace, et n&#8217;importe qui sans autorisation peut se connecter et en tirer parti.</p>
+<p><a href="http://www.scribd.com/doc/217805356/9/NCSC-FI-Advisory-on-OpenSSL">Tous les sites les plus importants sont concernés</a> incluant tous les réseaux sociaux, fournisseurs d&#8217;email, banque, etc. En fait, même les services en ligne qui ne sont pas des sites, comme Steam, sont affectés.</p>
+<p>On ne peut pas choisir les 64K sur la machine, mais si on répète l&#8217;opération suffisamment longtemps, on peut récupérer la plupart des choses en mémoire. Comme un serveur a généralement énormément de cache en mémoire, il y a de tout dedans : les mots de passe, adresses emails, clés privées, certificats d&#8217;authentification, présents dans le programme, etc. En prime, en récupérant la clé privée, on peut écouter les connections au site ou carrément se faire passer pour le site, puis facilement récupérer numéros de carte de crédit, emails, messages privés, et tout ce qui transite.</p>
+<href="https://filippo.io/Heartbleed/">La plupart des services</a> ont réagit très vite et ont corrigé le problème, seulement la faille a été dans la nature pendant 2 ans.</p>
+<p>C&#8217;est une catastrophe.</p>
+<h2>A qui profite le crime ?</h2>
+<p>La question n&#8217;est pas qui peut en tirer parti. La réponse à cela est tous les attaquants : pirates, gouvernements, armées, services secrets et même script kiddies.</p>
+<p>Non. Le débat est plutôt de savoir si la faille était intentionnelle ou pas.</p>
+<p>D&#8217;un côté, j&#8217;aime beaucoup cette phrase attribuée à Napoléon :</p>
+<blockquote><p>N&#8217;attribuez jamais à la malveillance ce qui s&#8217;explique très bien par l&#8217;incompétence.</p></blockquote>
+<p>Et l&#8217;incompétence, il en a fallu, car il ne s&#8217;agit pas d&#8217;une faille de cryptographie complexe, mais d&#8217;<a href="http://blog.existentialize.com/diagnosis-of-the-openssl-heartbleed-bug.html">une erreur de débutant en programmation C</a>. Dans un logiciel qui a la portée de OpenSSL, ça amène sérieusement à se poser des questions, malgré <a href="http://www.smh.com.au/it-pro/security-it/man-who-introduced-serious-heartbleed-security-flaw-denies-he-inserted-it-deliberately-20140410-zqta1.html">le déni de l&#8217;auteur</a>.</p>
+<p>Par dessus se rajoute <a href="http://igurublog.wordpress.com/2014/04/08/julian-assange-debian-is-owned-by-the-nsa/">une déclaration d&#8217;Assange</a>, qui enfonce un clou dans le cercueil, en expliquant que de nombreux logiciels Open Source sont complètement vérolés par la NSA, incluant des distributions Linux aussi réputées que Debian.</p>
+<p>Comme souvent sur Internet, ce sont les commentaires de l&#8217;article qui sont les plus intéressants. On y note notamment plusieurs personnes, se présentant comme des professionnels de la cryptographies, débattant avec des argumentaires très bien construits de l&#8217;implication probable de la NSA et d&#8217;autres services secret dans la mise en œuvre de cette faille, et de son exploitation.</p>
+<p>D&#8217;un côté, Bloomberg a annoncé que la NSA, a défaut d&#8217;avoir créé le bug, <a href="http://www.bloomberg.com/news/2014-04-11/nsa-said-to-have-used-heartbleed-bug-exposing-consumers.html">savait à son propos</a> depuis le début et l&#8217;a exploité. De l&#8217;autre, <a href="https://twitter.com/NSA_PAO/status/454720059156754434">la NSA nie</a> (putain la NSA a un compte Twitter ?).</p>
+<p>En tout cas, avec la révélation de Prism, il ne tient plus de la théorie du complot mais de faits que ces entités cherchent par tous les moyens à obtenir la main mise sur les réseaux d&#8217;information. L&#8217;idée qu&#8217;ils aient créé cette back door parait donc plausible, bien qu&#8217;improuvable.</p>
+<p>Et surtout, si c&#8217;est le cas, combien d&#8217;autres accès aussi radicaux ont-ils à leur disposition ? Mon frère me disait dernièrement :</p>
+<blockquote><p>Je ne sais pas pourquoi ça te surprend encore. Tout en informatique a été craqué. Tout. Depuis toujours. On crack les playstations, Windows&#8230; Pourquoi tu crois que tes systèmes de sécurités ne sont pas craqués aux aussi ?</p></blockquote>
+<p>Sous prétexte que tout le monde les utilise, qu&#8217;ils sont Open source et que des gens vachement plus intelligents que nous les ont vérifié, on fait confiance à ces systèmes. Mais si la porte blindée est attachée à un mur en BA13 et qu&#8217;on ne le sait pas ?</p>
+<h2>Que faire pour l&#8217;utilisateur ?</h2>
+<p>Comme l&#8217;a recommandé <a href="http://mathieu.agopian.info/blog/heartbleed-consequences-pour-les-utilisateurs.html">Mathieu Agopian</a>, d&#8217;abord changer tous ses mots de passe, pour tous ses sites. C&#8217;est là qu&#8217;on apprécie <a href="http://sametmax.com/les-10-meilleures-extensions-firefox-chrome/">lastpass</a>.</p>
+<p>Je sais pertinemment que personne ne va le faire. Les gens ont une forte tendance à se plaindre que tout le monde est pourri et qu&#8217;on ne peut rien y changer, mais dès qu&#8217;il faut mettre la main à la pâte, y a plus personne. C&#8217;est pareil pour le recyclage, le boycott ou la lecture des programmes électoraux.</p>
+<p>Et puis ils n&#8217;ont <a href="https://xkcd.com/1353/">rien à cacher</a>, pas vrai ?</p>
+<p>De plus, si il existe d&#8217;autres failles de ce genre, ça ne résoudra pas le problème général, qui est politique et social. L&#8217;informatique n&#8217;est qu&#8217;un outil, on ne résout pas avec de la technique les problèmes d&#8217;un peuple. Même si ça aide.</p>
+<p>De plus, le problème n&#8217;est pas complètement résolu côté fournisseur. Il faut que tout le monde mette à jour ses certificats, et les autorités de certifications croulent sous les demandes. Elles n&#8217;ont pas une infra prévue pour ça. Ensuite, certains outils ne pourront pas se changer. OpenSSL est présent dans de nombreux systèmes embarqués. Si vous mettre en sécurité implique jeter votre appareil et en racheter un neuf, vous pouvez être certain que que ça se fera encore moins que changer les mots de passe. Et je ne vous parle même pas de l&#8217;industrie. Je met ma bite à couper que dans le domaine des transports il y a des tas d&#8217;équipements bien trop chers à changer pour qu&#8217;ils soient sécurisés. Les professionnels vont donc jouer la carte de l&#8217;obscurité et serrer les fesses.</p>
+<h2>La désillusion sur l&#8217;Open Source</h2>
+<p>Ce qui fait mal au fion, c&#8217;est l&#8217;évidence de la réponse de <em>Wolf</em> dans un des commentaires de l&#8217;article sur Asssange, quand quelqu&#8217;un demande des solutions :</p>
+<blockquote><p>I think the reason you’re not receiving much of an answer on this is the reason I gave above – there are none. We’re in a place of no good options.</p></blockquote>
+<p>Car quand il s&#8217;agit du système général qui joue contre celui qu&#8217;il est censé servir, changer de logiciel ne sert à rien. On pensait que parce que les systèmes ouverts étaient transparents, ils n&#8217;étaient pas attaquables de cette manière. Des milliers d&#8217;yeux pour regarder le code source, qu&#8217;ils disaient.</p>
+<p>Heartbleed nous montre une histoire bien différente.</p>
+<p>OpenSSL s&#8217;est révélé être extrêmement difficile à auditer, car il est très complexe, sa documentation est réputée lacunaire sans compter qu&#8217;il faut de sacrées compétences pour ne serait-ce que commencer à proposer de participer.</p>
+<p>En clair, la taille, la complexité et l&#8217;accessibilité des projets libres les plus importants font un sérieux contre poids à la fameuse garantie de la revue de pairs. C&#8217;est pour cette raison que des projets comme Android ne sont pas considérés comme libres par beaucoup : seul Google a les ressources pour étudier tout le code source. On manque de gens compétents, ainsi que de temps et d&#8217;argent. Il y a de plus en plus d&#8217;informaticiens, mais de moins en moins, proportionnellement, sont qualifiés. Beaucoup de techniciens, peu d&#8217;ingénieurs ou de hackers, malgré le titre sur le CV. Et encore moins qui sont motivés pour mettre les mains dans le cambouis du FOSS.</p>
+<p>Cela veut-il dire qu&#8217;il faut jeter le bébé avec l&#8217;eau du bain ?</p>
+<p><a href="http://sebsauvage.net/links/?CjQyCg">Certainement pas.</a></p>
+<p>En fait, si cette faille avait été dans un logiciel propriétaire, nous n&#8217;aurions jamais été au courant. Elle a été découverte par hasard lors d&#8217;un audit d&#8217;un système qui n&#8217;a absolument rien à voir, par une équipe de sécurité Finlandaise. Les ingénieurs ont matraqué leur cible de tests aléatoires et sont tombés sur un problème. En cherchant l&#8217;origine du problème, ils se sont aperçus que le souci ne venait pas du produit testé, mais d&#8217;OpenSSL. <strong>Parce qu&#8217;ils avaient le code source</strong>, ils ont pu pointer du doigt la faille et prévenir les auteurs d&#8217;OpenSSL.</p>
+<p>Entre temps, l&#8217;équipe de sécurité de Google (là encore, ça fait jaser car ils ont la réputation d&#8217;être proches de la NSA) a publié le bug et le correctif, et la couverture de presse vend le tout comme étant leur propre découverte.</p>
+<h2>L&#8217;Emo de la fin</h2>
+<p>Donc non, les logiciels Open Source ne sont pas vaccinés contre les failles majeures sous prétexte que le code est public.</p>
+<p>Oui, il y a un soupçon grave de sabotage, à l&#8217;heure actuelle (et probablement pour longtemps) il n&#8217;y a aucune preuve. On peut s&#8217;attendre à une grosse vague de rejet de cette idée pour cause de &#8220;théorie du complot&#8221;. Ça ne change pas beaucoup des débats habituels dès qu&#8217;on parle de sécurité. C&#8217;est fou comme les gens sont prêt à jouer la carte de la présomption d&#8217;innocence pour défendre des grosses institutions boîtes noires au passé trouble et désignent coupable les accusés de pédophilie dès qu&#8217;ils voient leur tête au 20H&#8230;</p>
+<p>La différence, c&#8217;est l&#8217;enjeu, et il est de taille. On parle pas d&#8217;une déchirure du slip, on parle d&#8217;être complètement à poil avec un bout du string cassé qui sort de l&#8217;anus.</p>
+<p>Enfin oui, l&#8217;Open Source, offre toujours de meilleures garanties de sécurité en la matière que le logiciel fermé. Plus de transparence, plus de vitesse de réaction, disponibilité immédiate et pour toujours des correctifs, etc. Mais surtout, on vient d&#8217;en parler, si il s&#8217;agit de sabotage, le problème est politique et social, pas juste technique. Face à cela, un système démocratique, comme l&#8217;Open Source, a plus de chance de jouer en notre faveur qu&#8217;un système oligarchique de logiciel propriétaire. Reste à vérifier si l&#8217;élitisme du savoir ne risque pas de créer une oligarchie d&#8217;un autre genre côté FOSS. Sans compter les innombrables problèmes d&#8217;ego.</p>
+<p>Mais ça ne suffit pas. Et à la lueur de ce genre d&#8217;affaire, il va falloir que la communauté du libre, principale gardienne des plus gros codes sources ouverts, se réorganise pour à la fois faire le ménage dans la base de code existante et filtrer à l&#8217;entrée les potentiels saboteurs. Qu&#8217;ils soient incompétents ou malveillants.</p>
+<p>J&#8217;aimerais pas être dans les chaussettes de Linus en ce moment.</p>
+<p>Malheureusement wikipedia est la preuve que des règles plus restrictives pour participer n&#8217;empêche pas les lobbyistes de pourrir le contenu mais apporte bel et bien un énorme frein à l&#8217;entrée de sang neuf. Ce qui n&#8217;arrange pas nos affaires, dans un monde où la complexité des sujets augmente plus vite que la compétence des gens qui pourraient participer. La revue communautaire reste le moins pire des systèmes, comme la démocratie pour Churchill, mais ça me colle un petit coup de blues tout ça quand même.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/heartbleed-une-semaine-plus-tard/feed/</wfw:commentRss>
+		<slash:comments>32</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/ACjP5.jpg" length="59159" type="image/jpg" />	</item>
+		<item>
+		<title>Corriger l&#8217;erreur de splicing sur une partition Truecrypt 4</title>
+		<link>http://sametmax.com/corriger-lerreur-de-splicing-sur-une-partition-truecrypt/</link>
+		<comments>http://sametmax.com/corriger-lerreur-de-splicing-sur-une-partition-truecrypt/#comments</comments>
+		<pubDate>Sat, 30 Jun 2012 15:26:16 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[encryption]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[truecrupt]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1004</guid>
+		<description><![CDATA[Quand une partition TrueCrypt est mal démontée, il arrive qu'elle soit corrompue. Alors copier le fichier chiffré ou une partie de son contenu déclenche une erreur bizarre et l'ordinateur invoque un problème avec le splicing.
+]]></description>
+				<content:encoded><![CDATA[<p>Quand une partition <a href="http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/">TrueCrypt</a> est mal démontée, il arrive qu&#8217;elle soit corrompue. Alors copier le fichier chiffré ou une partie de son contenu déclenche une erreur bizarre et l&#8217;ordinateur invoque un problème avec le splicing.</p>
+<p>Je n&#8217;ai absolument aucune idée de ce que ça veut dire. Il pourrait aussi bien dire &#8220;<em>Reticulating splines failed</em>&#8220;.</p>
+<p>Néanmoins le problème a été corrigé de mon côté de la manière suivante:</p>
+<ol>
+<li>Monter le la partition.</li>
+<li>Dans l&#8217;interface de Truecrypt, faites un clic droit sur votre partition dans la liste des partitions montées.</li>
+<li>Lancez &#8220;check file system&#8221;.</li>
+<li>- Une fois terminé, lancez &#8220;repair file system&#8221;.</li>
+<li>- Quand le script vous demande si il doit réparer, confirmez que vous le souhaitez (entrez &#8216;y&#8217; puis &#8216;enter&#8217;).</li>
+</ol>
+<p>Ça a marché pour moi. Cela fonctionne aussi dans le cas où vous avez votre partition Truecrypt qui se met itempestivement en lecture seule (par exemple après l&#8217;avoir copié depuis une clé USB).</p>
+<p>Si cela ne marche pas, vérifiez également qu&#8217;il reste de l&#8217;espace à l&#8217;intérieur de la partition, et sur le disque dur qui contient le fichier Truecrypt. Ca peut causer la même erreur.</p>
+<p>Encore une bonne raison de toujours faire avec un backup de sa partition TrueCrypt, d&#8217;autant que c&#8217;est très facile puisqu&#8217;il suffit de faire un simple copier/coller du fichier.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/corriger-lerreur-de-splicing-sur-une-partition-truecrypt/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/MV5BMTkxMzg0NjA0Nl5BMl5BanBnXkFtZTcwNjg1ODAzMQ@@._V1._SY317_CR40214317_.jpg" length="17836" type="image/jpg" />	</item>
+		<item>
+		<title>Éviter d&#8217;avoir la queue à l&#8217;air en publique avec TrueCrypt 8</title>
+		<link>http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/</link>
+		<comments>http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/#comments</comments>
+		<pubDate>Thu, 28 Jun 2012 11:26:38 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Cul]]></category>
+		<category><![CDATA[chiffrement]]></category>
+		<category><![CDATA[cul]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[sécurité]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1001</guid>
+		<description><![CDATA[On cite toujours des raisons sécuritaires pour justifier l'usage de la cryptographie, mais comme vous n'êtes pas un espion, il est peu probable que vous vous sentiez concernés. Je vais vous en donner une bonne raison de chiffrer certains dossiers sur votre disque dur: pour ne pas vous retrouver à oualpé devant des inconnus.]]></description>
+				<content:encoded><![CDATA[<p>On cite toujours des raisons sécuritaires pour justifier l&#8217;usage de la cryptographie, mais comme vous n&#8217;êtes pas un espion, il est peu probable que vous vous sentiez concernés. Je vais vous en donner une bonne raison de chiffrer certains dossiers sur votre disque dur: pour ne pas vous retrouver à oualpé devant des inconnus.</p>
+<h2>Attaché à un lit</h2>
+<p>Sortir avec <a href="http://sametmax.com/merci-de-respecter-les-salopes/">une vraie cochonne</a> ne veut pas dire qu&#8217;elle va faire tout le boulot. Or Max et moi sommes tout à fait ouvert à l&#8217;expérimentation, même si ce n&#8217;est probablement pas pour les mêmes choses. Ainsi je me suis un jour retrouvé menotté à un lit avec divers accessoires et résidus de nourritures sur des parties variées de mon anatomie, quand quelque chose s&#8217;est mal passé.</p>
+<p>Avec le recul, c&#8217;était marrant. D&#8217;ailleurs, la miss qui avait les clés a trouvé ça tellement poilant qu&#8217;elle a pensé à prendre une photo AVANT de me détacher. J&#8217;ai voulu une copie du cliché, parce qu&#8217;il y a des performances qui méritent un souvenir, et le transfert a eu lieu par clé USB.</p>
+<p>Quand la dite clé a été utilisée par la demoiselle pour faire passer un Power Point à un collègue de travail, elle a pu comprendre toute l&#8217;utilité des thumbnails de preview automatique des fichiers JPEG sur les OS récents.</p>
+<h2>Les olympiades de la salle de bains</h2>
+<p>Dans un de mes appartements précédents, j&#8217;avais une salle de bain avec un petit muret et un grand miroir. On pouvait y faire toute sorte de choses à deux, que j&#8217;ai pris en photos avec mon portable pour faire passer les moments de solitude pendant les voyages.</p>
+<p>J&#8217;ai supprimé les clichés du téléphone pour les mettre sur mon ordinateur. Machine que j&#8217;ai perdu lors d&#8217;un voyage. Je me demande encore aujourd&#8217;hui si celui qui a trouvé mon sac a reformaté la machine. A-t-il la main sur les photos de mes acrobaties en tandem ? Les a-t-il mis en ligne ?</p>
+<h2>Truecrypt, la fin du voyeurisme inopiné&#8230;</h2>
+<p>Honnêtement, je ne suis pas très pudique, sinon je n&#8217;écrirais pas ce blog. Sauf que non seulement ce genre de situation est dangereux pour sa propre crédibilité, mais en plus je ne suis pas seul sur ces images. Et généralement, la gente féminine accepte beaucoup moins bien ce genre de pub.</p>
+<p><a href="https://truecrypt.ch/">Truecrypt</a> est un logiciel libre qui fonctionne sous Windows, Mac et Linux. Il permet de créer un fichier de taille personnalisable (plusieurs Go si besoin) chiffré, qui peut être monté comme une partition. Sans le mot de passe, le fichier ressemble à une soupe de bits (sans jeu de mot). Une fois monté avec le mot de passe, il devient une partition ordinaire, et on peut l&#8217;utiliser comme telle de manière parfaitement transparente: créer des dossiers et des fichiers, copier, coller, etc.</p>
+<p>Inutile de dire que je met maintenant systématiquement tout matériel d&#8217;ordre intime sur cette partition. En cas de fuite, je sais qu&#8217;une personne non autorisée aura bien du mal à lire son contenu. Cela ne me dispense pas de faire la chasse aux restes sur les supports amovibles, et ça ne me libère pas de l&#8217;idée que les copies en la possession de mes ex partenaires ne sont pas aussi bien protégées. Mais c&#8217;est un bon début.</p>
+<h2>&#8230; et le début du multimédia vraiment privé</h2>
+<p>Voilà un vrai argument pour l&#8217;usage de TrueCrypt: pas l&#8217;attaque des chinois du FBI ou votre soudaine reconversion en terroriste suicidaire, mais l&#8217;existence même du cul.</p>
+<p>Car on peut faire bien plus que ça: copiez par exemple le dossier<em> .mozilla</em>, <em>.thunderbird</em> et <em>.purple</em> sur la partition puis faites un lien dans le dossier utilisateur. Et hop, voilà votre historique de navigateur, vos fichiers mails et vos traces de chats chiffrés. Votre historique qui contient des URL de sites douteux, vos alertes mails de &#8220;Adopte un mec&#8221; non désactivées alors que vous êtes en couple depuis 6 mois et les archives de la création de nouveaux smileys hyper novateurs avec votre maîtresse sur Gtalk: ils sont maintenant protégés. Si en plus vous utilisez <a href="http://www.cypherpunks.ca/otr/">OTR</a> et <a href="http://www.gnupg.org/">GPG</a>, vous gagnez 2 de TAC0 en back stab.</p>
+<p>Et le double effet kisscool, c&#8217;est que faire un backup de toutes ces données précieuses ne prend qu&#8217;un copier/coller du fichier TrueCrypt (vous faites des sauvegardes, hein ?). Backup qui par nature est lui aussi protégé. Tous ces bénefs sans ralentir votre ordinateur, puisque seules des données très précises sont chiffrées, pas toute votre partition utilisateur (ce qui en plus est le plus sur moyen de tout perdre si votre ordi grille). Bon ok, peut être que l&#8217;affichage du browser en cas d&#8217;usage du cache prend 0.1 ms de plus.</p>
+<p>Au passage j&#8217;ai aussi mon dossier <em>.ssh</em> et <em>.bitcoin</em> dedans, ça ne mange pas de pain. Le prix à payer est seulement d&#8217;entrer son mot de passe (<a href="http://sametmax.com/un-mot-de-passe-facile-a-retenir/">que vous avez choisi bien long et compliqué</a>) quand on désire utiliser un logiciel qui lit ou écrit dans ces dossiers.</p>
+<p>Certes, ont peut toujours vous baiser en installant un keylogger, un rootkit bien vicieux ou avec <a href="http://xkcd.com/538/">une clé à molette</a>. Mais c&#8217;est tellement mieux que d&#8217;avoir les données en clair sur le disque.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/eviter-davoir-la-queue-a-lair-en-publique-avec-truecrypt/feed/</wfw:commentRss>
+		<slash:comments>8</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/280px-Lorenz-SZ42-2.jpg" length="20051" type="image/jpg" />	</item>
+		<item>
+		<title>Un mot de passe facile à retenir 29</title>
+		<link>http://sametmax.com/un-mot-de-passe-facile-a-retenir/</link>
+		<comments>http://sametmax.com/un-mot-de-passe-facile-a-retenir/#comments</comments>
+		<pubDate>Fri, 22 Jun 2012 19:08:51 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[mot de passe]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[sécurité]]></category>
+		<category><![CDATA[tryecrypt]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=975</guid>
+		<description><![CDATA[L'important est d'offrir une variété d'approches pour rendre le piratage plus délicat.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://sametmax.com/les-10-meilleures-extensions-firefox-chrome/">Last pass</a> est génial, mais tout le monde n&#8217;a pas forcément envie de l&#8217;installer, et parfois on a juste pas l&#8217;occasion de l&#8217;utiliser (machine d&#8217;entreprise sur intranet mais pas sur internet par exemple).</p>
+<p>Seb a <a href="http://sebsauvage.net/rhaa/index.php?2009/09/11/08/34/55-choisir-de-bons-mots-de-passe">une proposition</a> assez sympas pour créer des mots de passe pour chaque service en ligne qui soient robustes et faciles à retenir. Mais je n&#8217;arrive pas à m&#8217;y faire: c&#8217;est un système qui me demande de trop réfléchir. De plus ça ne fonctionne pas aussi bien quand on a pas de site Web sur lequel appliquer le principe.</p>
+<p>XKCD propose <a href="https://www.xkcd.com/936/">une autre approche</a>. Ca marche niquel, mais choisir 4 mots au hasard ne me parle pas.</p>
+<p>Voici deux autres approches que j&#8217;utilise, l&#8217;important étant d&#8217;en offrir une variété pour rendre le piratage plus délicat.</p>
+<h2>Les pages roses du dictionnaire</h2>
+<p>Si vous ouvrez le Larousse, vous verrez qu&#8217;en son centre il y a des pages roses qui correspondent à une liste de proverbes et de locutions latines ou étrangères. En les parcourant vous vous apercevrez qu&#8217;il y en a plein que vous connaissez par cœur, car elles sont ancrées dans notre culture.</p>
+<p>Il suffit tout simplement d&#8217;utiliser une de ces phrases comme mot de passe, en incluant la ponctuation.</p>
+<p>Par exemple:</p>
+<p><em>Qui vole un oeuf, vole un boeuf.</em></p>
+<p>Ce mot de passe est très facile à retenir, mais il contient 29 caractères, parmi lesquels 5 espaces, 2 caractères spéciaux et une majuscule. C&#8217;est naturellement difficile à cracker, mais facile à retenir, et assez rapide à taper une fois qu&#8217;on l&#8217;a rentré une dizaine de de fois.</p>
+<p>Bien sûr un attaquant pourrait bruteforcer le mot de passe en utilisant toutes les locutions les plus connues, mais qui va savoir que vous utilisez une locution ?</p>
+<p>Quand bien même, on peut très facilement pimenter le mot de passe:</p>
+<p><em>Qui vole un oeuf, vole un boeuf, bordel de merde !</em></p>
+<p>Et voilà un mot de passe solide comme un roc, et léger comme une plume pour votre cerveau. Cela marche aussi avec une citation célèbre (<em>Life is hard and then you die</em>.), un extrait de chanson (<em>Petit frère veut grandir trop vite&#8230;</em>), ou la réplique d&#8217;un personnage dans un film (<em>Cours Forrest, cours !</em>).</p>
+<h2>Mot de passe ex nihilo</h2>
+<p>Si vous n&#8217;êtes pas du genre culturé, ou que vous avez comme moi un humour bizarre, il existe une autre technique.</p>
+<ol>
+<li>Choisir une personne</li>
+<li>Choisir un animal</li>
+<li>Choisir un smiley</li>
+<li>Mélanger le tout dans un ordre aléatoire</li>
+</ol>
+<p>Ex: <em>José Bové vache \o/</em></p>
+<p>21 caractères dont 2 majuscules, 2 caractères non ASCII, 3 espaces et 2 caractères spéciaux. Et en plus vous allez vous poiler à chaque saisie. Le plus beau, c&#8217;est qu&#8217;il suffit de saisir le mot de passe une seule fois pour s&#8217;en souvenir tellement c&#8217;est débile.</p>
+<p>Sachant que le personnage et l&#8217;animal peuvent être imaginaires, je vous laisse imaginer les combinaisons possibles.</p>
+<ul>
+<li><em>Gaston Lagaffe ornithorynque O_o</em></li>
+<li><em>Brontosaure :-* Charly Chaplin</em></li>
+<li><em>;-) Licorne Sam et Max !</em></li>
+</ul>
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/un-mot-de-passe-facile-a-retenir/feed/</wfw:commentRss>
+		<slash:comments>29</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/06/mot-de-passe-a-eviter.png" length="445717" type="image/jpg" />	</item>
+	</channel>
+</rss>

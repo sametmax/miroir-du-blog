@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; attributs</title>
+	<atom:link href="http://sametmax.com/tag/attributs/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Le guide ultime et définitif sur la programmation orientée objet en Python à l’usage des débutants qui sont rassurés par les textes détaillés qui prennent le temps de tout expliquer. Partie 3. 24</title>
+		<link>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/</link>
+		<comments>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/#comments</comments>
+		<pubDate>Sun, 27 Jan 2013 06:59:49 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[attributs]]></category>
+		<category><![CDATA[classes]]></category>
+		<category><![CDATA[poo]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=4292</guid>
+		<description><![CDATA[Nous avons vu les attributs de classe et les propriétés, mais de manière très rudimentaire. Il y a beaucoup de choses à savoir sur la question.]]></description>
+				<content:encoded><![CDATA[<p>Prérequis :</p>
+<ul>
+<li>Avoir lu la <a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-2/">partie 2</a></li>
+<li>Comprendre la notion de <a href="http://sametmax.com/valeurs-et-references-en-python/">référence</a>.</li>
+</ul>
+<p>Nous avons vu les attributs de classe et les propriétés, mais de manière très rudimentaire. Il y a beaucoup de choses à savoir sur la question.</p>
+<h2>Attribut de classe, la totale</h2>
+<p>Nous avons vu qu&#8217;un attribut de classe était accessible par la classe, sans instance :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> TrueLies:
+...
+...         <span style="color: black;">attribut_de_classe</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'valeur'</span>
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> TrueLies.<span style="color: black;">attribut_de_classe</span>
+valeur</pre></td></tr></table></div>
+
+<p>Mais également par une instance :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> TrueLies<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">attribut_de_classe</span>
+valeur</pre></td></tr></table></div>
+
+<p>C&#8217;est simple et direct. Il n&#8217;y a pas de <code>public static virtuel neoconceptuel</code> à mettre devant comme dans certains langages trop cafféinés.</p>
+<p>Ce qu&#8217;on a pas vu par contre, c&#8217;est ce qui arrive si on modifie la valeur de ces attributs.</p>
+<p>Pour faire simple :</p>
+<ul>
+<li>Si je modifie l&#8217;attribut au niveau de l&#8217;instance, seule l&#8217;instance voit les modifications.</li>
+<li>Si je modifie l&#8217;attribut au niveau de la classe, la classe et toutes les instances crées après ont la nouvelle valeur.</li>
+</ul>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> instance <span style="color: #66cc66;">=</span> TrueLies<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> instance.<span style="color: black;">attribut_de_classe</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'nouvelle valeur'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> instance.<span style="color: black;">attribut_de_classe</span>
+nouvelle valeur
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> TrueLies.<span style="color: black;">attribut_de_classe</span> <span style="color: #808080; font-style: italic;"># ça ne change rien pour la classe</span>
+valeur
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> TrueLies.<span style="color: black;">attribut_de_classe</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'encore une nouvelle valeur'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> TrueLies.<span style="color: black;">attribut_de_classe</span>
+encore une nouvelle valeur
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> instance.<span style="color: black;">attribut_de_classe</span> <span style="color: #808080; font-style: italic;"># ça ne change rien pour cette instance</span>
+nouvelle valeur
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">print</span> TrueLies<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">attribut_de_classe</span> <span style="color: #808080; font-style: italic;"># mais pour une nouvelle oui</span>
+encore une nouvelle valeur</pre></td></tr></table></div>
+
+<p>Comme <code>self</code> est l&#8217;instance en cours, vous pouvez remplacer <code>instance</code> par <code>self</code> dans l&#8217;exemple ci-dessus (dans une méthode bien sûr, pas dans le shell), ça marche pareil.</p>
+<p>Vu comme ça, ça à l&#8217;air d&#8217;être super pour donner une valeur par défaut à des attributs.</p>
+<p>C&#8217;est une mauvaise idée.</p>
+<p>En effet, les attributs de classes sont initialisés une seule fois, à la première lecture du code par Python. Pour les objets immutables comme les strings ou les int, on s&#8217;en branle. Mais pour les objets mutables comme les dicos ou les listes, c&#8217;est la merde.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> TrueLies:
+...
+...         <span style="color: black;">attribut_de_classe</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span> <span style="color: #808080; font-style: italic;"># mettons une liste ici</span>
+...
+...
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> flim_pas_sur_le_cyclimse <span style="color: #66cc66;">=</span> TrueLies<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> etranger_qui_vole_le_travail_des_francais <span style="color: #66cc66;">=</span> TrueLies<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On a donc deux instances de <code>TrueLies</code>. A priori, on a aussi deux valeurs de <code>attribut_de_classe</code>, une pour chaque instance ?</p>
+<div id="attachment_4294" style="width: 360px" class="wp-caption aligncenter"><a href="http://sametmax.com/wp-content/uploads/2013/01/Norman350.jpg" class="grouped_elements" rel="tc-fancybox-group4292"><img src="http://sametmax.com/wp-content/uploads/2013/01/Norman350.jpg" alt="Des faux seins sur un FAUX de norman fait des vidéos" title="Norman va bientôt faire un film avec les robins des bois au fait" width="350" height="248" class="size-full wp-image-4294" /></a><p class="wp-caption-text">Norman va bientôt faire un film avec les robins des bois au fait</p></div>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">id</span><span style="color: black;">&#40;</span>etranger_qui_vole_le_travail_des_francais.<span style="color: black;">attribut_de_classe</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">28992072</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #008000;">id</span><span style="color: black;">&#40;</span>flim_pas_sur_le_cyclimse.<span style="color: black;">attribut_de_classe</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">28992072</span></pre></td></tr></table></div>
+
+<p>Comme vous pouvez le voir c&#8217;est le même id. <code>attribut_de_classe</code> est la même chose, car Python initialise <code>attribut_de_classe</code> une seule fois pour toute la session. Les deux instances ont donc un attribut qui contient une référence (puisque TOUT est référence en Python) qui pointe sur la même liste.</p>
+<p>Dans les fait, ça veut dire que si on modifie l&#8217;un, ben forcément la modification est visible de l&#8217;autre côté aussi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> etranger_qui_vole_le_travail_des_francais.<span style="color: black;">attribut_de_classe</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> flim_pas_sur_le_cyclimse.<span style="color: black;">attribut_de_classe</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>C&#8217;est rarement ce qu&#8217;on veut.</p>
+<p>Donc ne donnez pas de valeur par défaut dans les attributs de classe. Faites ça avec <code>__init__</code>:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">class</span> TrueLies:
+...
+...         <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+...
+...                 <span style="color: #008000;">self</span>.<span style="color: black;">attribut_tres_classe</span> <span style="color: #66cc66;">=</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> flim_pas_sur_le_cyclimse <span style="color: #66cc66;">=</span> TrueLies<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> etranger_qui_vole_le_travail_des_francais <span style="color: #66cc66;">=</span> TrueLies<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> flim_pas_sur_le_cyclimse.<span style="color: black;">attribut_tres_classe</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> flim_pas_sur_le_cyclimse.<span style="color: black;">attribut_tres_classe</span>
+<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> etranger_qui_vole_le_travail_des_francais.<span style="color: black;">attribut_tres_classe</span>
+<span style="color: black;">&#91;</span><span style="color: black;">&#93;</span></pre></td></tr></table></div>
+
+<p>Le comportement attendu est le bon ici.</p>
+<h2>Ok, mais alors ils servent à quoi ces attributs à deux cents, là, cousin ?</h2>
+<p>&#8211; Et ben wesh, tu vois, ils servent à stocker les constantes et le cache.</p>
+<p>&#8211; Ouais quand j&#8217;ai constamment du stock j&#8217;ai du cash, man.</p>
+<p>&#8211; héééééééééééé&#8230; xactement.</p>
+<p>Donc, d&#8217;abord, on met les pseudo constantes en attributs de classe. Je dis pseudo car il n&#8217;existe pas de constantes en Python. On parle de constante quand une variable est écrite toute en majuscule, une convention pour dire &#8220;le programme ne change jamais la valeur de cette variable (et t&#8217;as pas intérêt à la changer, pigé ?)&#8221;.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> TrueLies:
+&nbsp;
+    NOMBRE_DE_BALLES_DANS_LE_CHARGEUR <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">10000</span></pre></td></tr></table></div>
+
+<p>On peut être certain que Schwarzy ne recharge jamais (y a que Thierry Lhermitte qui ferait un truc aussi ringard). Donc le nombre de balles dans le chargeur ne varie pas. On le met comme attribut de classe. C&#8217;est essentiellement à titre informatif. Pour nous ça change rien, mais pour quelqu&#8217;un qui va utiliser le code, il sait qu&#8217;il peut chercher toutes les constantes liées à <code>TrueLies</code> en faisant <code>TrueLies.LES_TRUCS_EN_MAJUSCULES</code>.</p>
+<p>C&#8217;est l&#8217;usage le plus courant.</p>
+<p>On peut aussi utiliser les attributs de classes pour créer une API déclarative, comme le fait <a href="https://docs.djangoproject.com/en/dev/topics/db/models/">l&#8217;ORM de Django</a>. Mais bon, c&#8217;est mega advanced, donc je mets de côté le how to. Le jour où vous coderez un truc comme ça, vous lirez pas un article pour débutant.</p>
+<p>Enfin on peut utiliser les attributs de classe pour partager des données entre les instances. Par exemple du cache.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> TrueFalseSomeWhatLiesMaybeWhoKnows :
+&nbsp;
+    _cache <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> calculer_le_nombre_de_balles_a_la_seconde<span style="color: black;">&#40;</span>scene<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># si y a rien dans le cache, on fait le calcul et on le met dans le cache</span>
+        <span style="color: #ff7700;font-weight:bold;">if</span> scene <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">self</span>._cache :
+&nbsp;
+            <span style="color: #008000;">self</span>._cache<span style="color: black;">&#91;</span>scene<span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #808080; font-style: italic;"># mettre un calcul bien compliqué ici</span>
+&nbsp;
+        <span style="color: #808080; font-style: italic;"># on retourne le contenu du cache</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._cache<span style="color: black;">&#91;</span>scene<span style="color: black;">&#93;</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> TrueFalseSomeWhatLiesMaybeWhoKnows<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">calculer_le_nombre_de_balles_a_la_seconde</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">56586586</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> TrueFalseSomeWhatLiesMaybeWhoKnows<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">calculer_le_nombre_de_balles_a_la_seconde</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">56586586</span></pre></td></tr></table></div>
+
+<p>Le premier appel va faire le calcul. Mais pas le second, car le résultat a été stocké dans le dictionnaire qui est au niveau de la classe (et donc chaque nouvelle instance a une référence vers ce dictionnaire) et peut donc être réutilisé.</p>
+<p>Vous noterez qu&#8217;on a appelé la variable <code>_cache</code> et pas <code>cache</code>. C&#8217;est encore une convention. Ça signifie, &#8220;cette variable est utilisée en interne, t&#8217;as pas à savoir ce qu&#8217;elle fait, imagine que c&#8217;est privé. Circulez, y a rien à voir.&#8221; Les outils de complétion de code masquent ces variables par défaut.</p>
+<p>Pour la culture, sachez que nommer ses variables <code>__nom</code> les rend &#8220;privées&#8221; en Python. Néanmoins cette fonctionnalité est facilement contournable, et très peu appréciée dans la communauté, donc évitez-la.</p>
+<h2>Et puis il y a les méthodes statiques aussi</h2>
+<p>On a vu les méthodes de classe, qui sont, comme les attributs de classe, des méthodes qui n&#8217;ont pas besoin d&#8217;instance pour être appelées :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> ArmeeDesDouzeSinges:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Ouais c'est un remake d'un film français aussi.
+        Ça vous la coupe hein ?
+    &quot;&quot;&quot;</span>
+&nbsp;
+    SINGES <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">12</span>
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">classmethod</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> nombre_de_singes_au_carre<span style="color: black;">&#40;</span>cls<span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> cls.<span style="color: black;">SINGES</span> * cls.<span style="color: black;">SINGES</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> ArmeeDesDouzeSinges.<span style="color: black;">nombre_de_singes_au_carre</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #ff4500;">144</span></pre></td></tr></table></div>
+
+<p>Le premier paramètre n&#8217;est pas l&#8217;objet en cours mais la classe en cours, et c&#8217;est tout ce dont nous avons besoin ici pour accéder à <code>SINGES</code> puisque c&#8217;est un attribut de classe.</p>
+<p>Cet exemple est issu d&#8217;un de mes codes réels de productions, vous pouvez en constater l’intérêt évident dans la vie de tous les jours.</p>
+<p>Nan je déconne, moi j&#8217;utilise plutôt des dromadaires au quotidien.</p>
+<p>Bon, mais sachez plus sérieusement qu&#8217;il y a en prime des méthodes de classe, des méthodes statiques. C&#8217;est la même chose, mais aucun paramètre n&#8217;est passé automatiquement.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> LHommeALaChaussureRouge:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Oui c'est exactement ce que vous pensez. C'est affligeant.
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">staticmethod</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> crie_son_desespoir<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># pas de cls</span>
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Nooooooooooooooooooooooooooooooooon&quot;</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> LHommeALaChaussureRouge.<span style="color: black;">crie_son_desespoir</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+Nooooooooooooooooooooooooooooooooon</pre></td></tr></table></div>
+
+<p>Alors là on arrive dans la feature anecdotique hein, du genre qu&#8217;on sort qu&#8217;au repas de Noël. Je la mets au menu juste pour que vous sachiez que ça existe, mais franchement je ne m&#8217;en sers presque jamais.</p>
+<p>L&#8217;usage est le même qu&#8217;une méthode de classe, mais pour les trucs qui n&#8217;ont pas besoin d&#8217;avoir accès à la classe en cours.</p>
+<p>Bon.</p>
+<p>Bref, c&#8217;est juste une fonction préfixée. Avantage : elle est un poil plus rapide que la méthode de classe, et elle est mieux rangée qu&#8217;une simple fonction. Mais c&#8217;est vraiment tout.</p>
+<h2>Retour sur les properties</h2>
+<p>Si vous avez bonne mémoire, vous vous souviendrez qu&#8217;une propriété est juste un déguisement qu&#8217;on met sur une méthode pour qu&#8217;elle ressemble à un attribut :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> LesVisiteursEnAmerique:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Mais si, mais si...
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> replique<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+&nbsp;
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #483d8b;">'okay'</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri <span style="color: #66cc66;">=</span> LesVisiteursEnAmerique<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri.<span style="color: black;">replique</span>
+<span style="color: #483d8b;">'okay'</span></pre></td></tr></table></div>
+
+<p>Mais on peut aller plus loin que la lecture. On peut aussi décorer l&#8217;écriture et la suppression !</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> LesVisiteursEnAmerique<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># on rajoute (object) truc ici</span>
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._replique <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'okay'</span> <span style="color: #808080; font-style: italic;"># c'est privé, pas touche, y a un underscore</span>
+&nbsp;
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> replique<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'get'</span>
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._replique
+&nbsp;
+&nbsp;
+    <span style="color: #66cc66;">@</span>replique.<span style="color: black;">setter</span> <span style="color: #808080; font-style: italic;"># le décorateur a le même nom que la méthode</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> replique<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>: <span style="color: #808080; font-style: italic;"># value est la valeur à droite du '=' quand on set</span>
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'set to {}'</span>.<span style="color: black;">format</span><span style="color: black;">&#40;</span>value<span style="color: black;">&#41;</span>
+        <span style="color: #008000;">self</span>._replique <span style="color: #66cc66;">=</span> value
+&nbsp;
+&nbsp;
+    <span style="color: #66cc66;">@</span>replique.<span style="color: black;">deleter</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> replique<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">'delete'</span>
+        <span style="color: #008000;">self</span>._replique <span style="color: #66cc66;">=</span> <span style="color: #008000;">None</span>
+&nbsp;
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri <span style="color: #66cc66;">=</span> LesVisiteursEnAmerique<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri.<span style="color: black;">replique</span>
+get
+<span style="color: #483d8b;">'okay'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri.<span style="color: black;">replique</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'zarma'</span>
+<span style="color: #008000;">set</span> to zarma
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri.<span style="color: black;">replique</span>
+get
+<span style="color: #483d8b;">'zarma'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri._replique
+<span style="color: #483d8b;">'zarma'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> <span style="color: #ff7700;font-weight:bold;">del</span> film_pourri.<span style="color: black;">replique</span>
+delete
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_pourri.<span style="color: black;">replique</span>
+get</pre></td></tr></table></div>
+
+<p>Et là vous allez me dire :</p>
+<p>&#8211; c&#8217;est quoi ce (object) là haut là qui est apparu magiquement ?<br />
+&#8211; et à quoi ça sert ? Nom d&#8217;un remake hollywodien !</p>
+<p>À la première question je dirai, réponse dans la prochaine partie. Sachez juste que s&#8217;il y a pas ce <code>(object)</code>, le setter et le deleter ne marchent pas.</p>
+<p>Pour la seconde, imaginez un truc un peu plus choupi, comme une réplique garantie d&#8217;être toujours en majuscule :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">class</span> LesVisiteursEnAmerique<span style="color: black;">&#40;</span><span style="color: #008000;">object</span><span style="color: black;">&#41;</span>:
+&nbsp;
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> <span style="color: #0000cd;">__init__</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._replique <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'OKAY'</span>
+&nbsp;
+&nbsp;
+    <span style="color: #66cc66;">@</span><span style="color: #008000;">property</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> replique<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+        <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #008000;">self</span>._replique
+&nbsp;
+&nbsp;
+    <span style="color: #66cc66;">@</span>replique.<span style="color: black;">setter</span>
+    <span style="color: #ff7700;font-weight:bold;">def</span> replique<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: #66cc66;">,</span> value<span style="color: black;">&#41;</span>:
+        <span style="color: #008000;">self</span>._replique <span style="color: #66cc66;">=</span> value.<span style="color: black;">upper</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #808080; font-style: italic;"># PAF ! on majusculise</span>
+&nbsp;
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_TRES_pourri <span style="color: #66cc66;">=</span> LesVisiteursEnAmerique<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_TRES_pourri.<span style="color: black;">replique</span>
+<span style="color: #483d8b;">'OKAY'</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_TRES_pourri.<span style="color: black;">replique</span> <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;D'ac&quot;</span>
+<span style="color: #66cc66;">&gt;&gt;&gt;</span> film_TRES_pourri.<span style="color: black;">replique</span>
+<span style="color: #483d8b;">&quot;D'AC&quot;</span></pre></td></tr></table></div>
+
+<p>Et voilà le travail.</p>
+<p>On peut donc &#8220;intercepter&#8221; la récupération, la suppression et la modification d&#8217;un attribut facilement. Cela permet d&#8217;exposer une belle API à base d&#8217;attribut, mais derrière faire des traitements complexes.</p>
+<p>Il suffit de transformer un attribut normal en méthode, et de lui coller @<code>property</code> au cul.</p>
+<p>C&#8217;est pour cette raison qu&#8217;on n&#8217;a jamais de getter et de setter en Python : on utilise les attributs tels quel, et si le besoin se présente, on en fait des propriétés.</p>
+<p><a href="http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-4/">Next stop</a>, héritage, overriding, polymorphisme et autres gros mots que vous pourrez ressortir aux soirées mousses dans les hackerspaces.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-3/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/01/JoxeA.jpg" length="61374" type="image/jpg" />	</item>
+	</channel>
+</rss>

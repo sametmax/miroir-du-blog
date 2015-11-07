@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; exercice</title>
+	<atom:link href="http://sametmax.com/tag/exercice/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Solution de l&#8217;exo la modif de flash 4</title>
+		<link>http://sametmax.com/solution-de-lexo-la-modif-de-flash/</link>
+		<comments>http://sametmax.com/solution-de-lexo-la-modif-de-flash/#comments</comments>
+		<pubDate>Fri, 21 Mar 2014 16:25:23 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9833</guid>
+		<description><![CDATA[Simple. Efficace.]]></description>
+				<content:encoded><![CDATA[<p><a href="http://sametmax.com/exercice-python-round-3/">L&#8217;exercice d&#8217;hier</a> était plus un prétexte pour faire un peu de Python 3 avec manipulation de bytes qu&#8217;un vrai défi, mais c&#8217;est toujours marrant.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #483d8b;">&quot;&quot;&quot;
+    Kick flash bin ass so it stop giving us trouble will full screen
+    vids on a dual screen.
+&quot;&quot;&quot;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> argparse
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On déclare un argument positionnel obligatoire.</span>
+<span style="color: #808080; font-style: italic;"># Ce doit être un fichier que l'on veut</span>
+<span style="color: #808080; font-style: italic;"># ouvrir en lecture et mode binaire.</span>
+<span style="color: #dc143c;">parser</span> <span style="color: #66cc66;">=</span> argparse.<span style="color: black;">ArgumentParser</span><span style="color: black;">&#40;</span>description<span style="color: #66cc66;">=</span>__doc__<span style="color: black;">&#41;</span>
+<span style="color: #dc143c;">parser</span>.<span style="color: black;">add_argument</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'bin'</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">type</span><span style="color: #66cc66;">=</span>argparse.<span style="color: black;">FileType</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'rb'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">help</span><span style="color: #66cc66;">=</span><span style="color: #483d8b;">&quot;Path to flash bin, man&quot;</span><span style="color: black;">&#41;</span>
+args <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">parser</span>.<span style="color: black;">parse_args</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On charge le contenu du fichier en mémoire.</span>
+<span style="color: #808080; font-style: italic;"># Un peu bourrin, mais tellement plus simple</span>
+<span style="color: #808080; font-style: italic;"># que de chercher directement dans le fichier.</span>
+flash_oh_oooooooh <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">bytearray</span><span style="color: black;">&#40;</span>args.<span style="color: black;">bin</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># On chercher la chaîne binaire qui correspond à la constante</span>
+<span style="color: #808080; font-style: italic;"># qu'on veut écorcher.</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> b<span style="color: #483d8b;">&quot;_NET_ACTIVE_WINDOW&quot;</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #ff7700;font-weight:bold;">in</span> flash_oh_oooooooh:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Flash est déjà défoncé&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+<span style="color: #808080; font-style: italic;"># On remplace juste un bit </span>
+flash_oh_oooooooh<span style="color: black;">&#91;</span>flash_oh_oooooooh.<span style="color: black;">find</span><span style="color: black;">&#40;</span>b<span style="color: #483d8b;">&quot;_NET_ACTIVE_WINDOW&quot;</span><span style="color: black;">&#41;</span> + <span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span> <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">42</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On écrit le résultat dans dans le fichier final.</span>
+<span style="color: #ff7700;font-weight:bold;">try</span>:
+    <span style="color: #ff7700;font-weight:bold;">with</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>args.<span style="color: black;">bin</span>.<span style="color: black;">name</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'wb'</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">as</span> news_flash:
+        news_flash.<span style="color: black;">write</span><span style="color: black;">&#40;</span>flash_oh_oooooooh<span style="color: black;">&#41;</span>
+<span style="color: #ff7700;font-weight:bold;">except</span> PermissionError:
+    <span style="color: #dc143c;">sys</span>.<span style="color: black;">exit</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Fozzy says you don't have right to write in '%s', man...&quot;</span> % args.<span style="color: black;">bin</span>.<span style="color: black;">name</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;Rosebud&quot;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>Voilà, rien d&#8217;incroyable, mais on trouve deux choses intéressantes : l&#8217;utilisation de <code>FileType</code> pour gérer un paramètre de type chemin de fichier sans se prendre la tête, et celle de <code>bytesarray</code> qui nous permet d&#8217;avoir un array mutable et donc de tout charger en mémoire comme un porc sans avoir à dupliquer tout le contenu lors de la modification.</p>
+<p>J&#8217;ai vu certains ouvrir le fichier sans le flag binaire (&#8216;b&#8217;), attention Python peut vous bousiller tout le contenu du fichier puisqu&#8217;il va interpréter les caractères spéciaux et faire du décodage sur un contenu sur lequel ça n&#8217;a pas de sens.</p>
+<p>La vraie question, c&#8217;est : combien y a-t-il de références pop culturelles dans ce code ? </p>
+<hr/>
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/mars/kick_flash_ass.py">Télécharger le code de l&#8217;article.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/solution-de-lexo-la-modif-de-flash/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/tumblr_n2oi4yv3zO1r539hzo1_500.jpg" length="109421" type="image/jpg" />	</item>
+		<item>
+		<title>Exercice Python, round 3 15</title>
+		<link>http://sametmax.com/exercice-python-round-3/</link>
+		<comments>http://sametmax.com/exercice-python-round-3/#comments</comments>
+		<pubDate>Thu, 20 Mar 2014 10:43:45 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=9823</guid>
+		<description><![CDATA[Continuons cette <a href="http://sametmax.com/tag/exercice/">petite série</a> fort sympathique, avec aujourd'hui un peu de manipulation de bytes, de gestion d'erreur et de parsing d'arguments de script.]]></description>
+				<content:encoded><![CDATA[<p>Continuons cette <a href="http://sametmax.com/tag/exercice/">petite série</a> fort sympathique, avec aujourd&#8217;hui un peu de manipulation de bytes, de gestion d&#8217;erreur et de parsing d&#8217;arguments de script.</p>
+<p>Souvenez vous de <a href="http://sametmax.com/garder-une-video-flash-en-full-screen-et-travailler-sur-un-autre-ecran/">ce hack</a> qui permet d&#8217;avoir sa video Flash en plein écran sur un écran, et travailler sur l&#8217;autre, quand on est en dual screen. Le problème c&#8217;est qu&#8217;il faut le faire à la main. De plus, il faut recommencer à chaque mise à jour de flash. On va automatiser tout ça.</p>
+<p>Faites un script (en Python 3 \o/) qui va parser les arguments de la ligne de commande avec argparse. Il doit déclarer :</p>
+<ul>
+<li>Une docstring.</li>
+<li>Un message d&#8217;help à partir de cette docstring.</li>
+<li>Un argument positionnel obligatoire devant être le chemin du binaire flash.</li>
+</ul>
+<p>Ensuite on ouvre le fichier, on cherche le fameux <code>_NET_ACTIVE_WINDOW</code>, on le deface, et on sauvegarde le tout dans le fichier final. Ce sera l&#8217;occasion de jouer un peu avec la gestion plus propre du binaire en Python 3.</p>
+<p>Contrairement aux exercices précédent, on met un minimum de check d&#8217;erreur car c&#8217;est un petit script (35 lignes copieusement commentées chez moi): donc au moins avertir proprement l&#8217;utilisateur si on ne peut pas lire ou écrire dans le fichier et pourquoi.</p>
+<p><a href="http://sametmax.com/solution-de-lexo-la-modif-de-flash/">La solution demain.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/exercice-python-round-3/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/03/53CFWZr.jpg" length="603226" type="image/jpg" />	</item>
+		<item>
+		<title>Solution de l&#8217;exercice d&#8217;hier sur shadow 9</title>
+		<link>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/</link>
+		<comments>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/#comments</comments>
+		<pubDate>Wed, 29 Jan 2014 15:25:53 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[unix]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8917</guid>
+		<description><![CDATA[Ça va de soit, mais ça va mieux en le disant, ceci n'est pas la solution unique, mais une solution possible parmi d'autres.]]></description>
+				<content:encoded><![CDATA[<p>Ça va de soit, mais ça va mieux en le disant, ceci n&#8217;est pas la solution unique de l&#8217;<a href="http://sametmax.com/cest-lheure-de-faire-de-lexercice/#comment-19118">exercice d&#8217;hier</a>, mais une solution possible parmi d&#8217;autres.</p>
+<p>On note l&#8217;usage de <a href="http://docs.python.org/2/library/crypt.html?highlight=crypt#crypt">crypt</a>, qui évite de se faire chier à trouver le bon algo de hashing et gère le salt automatiquement. <a href="http://docs.python.org/2/library/spwd.html?highlight=spwd#spwd">spwd</a>, c&#8217;est vraiment pour le grosses larves comme moi qui veulent même pas faire un <code>split</code>.</p>
+<p>Et c&#8217;est du Python 3, yo dog !</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> io
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">crypt</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> spwd
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">urllib</span>.<span style="color: black;">request</span> <span style="color: #ff7700;font-weight:bold;">import</span> FancyURLopener
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">zipfile</span> <span style="color: #ff7700;font-weight:bold;">import</span> ZipFile
+&nbsp;
+PASSWORDS_SOURCE <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;http://xato.net/files/10k%20most%20common.zip&quot;</span>
+PASSWORDS_LIST <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'10k most common.txt'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Le fichier ZIP est derrière cloudflare, qui vous ferme la porte au nez si</span>
+<span style="color: #808080; font-style: italic;"># vous n'avez pas de User-Agent. On va donc créer un UrlOpener, un objet qui</span>
+<span style="color: #808080; font-style: italic;"># ouvre des ressources en utilisant leurs URLs, qui a un User-Agent 'TA MERE'.</span>
+<span style="color: #808080; font-style: italic;"># CloudFlare ne check pas que le UA est valide.</span>
+<span style="color: #ff7700;font-weight:bold;">class</span> FFOpener<span style="color: black;">&#40;</span>FancyURLopener<span style="color: black;">&#41;</span>:
+   version <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">'TA MERE'</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Si le dictionnaire de passwords n'est pas là, on le télécharge</span>
+<span style="color: #808080; font-style: italic;"># via FFOpener().open(PASSWORDS_SOURCE).read(). C'est verbeux, c'est urllib.</span>
+<span style="color: #808080; font-style: italic;"># Normalement je ferais ça avec requests. Ensuite on lui donne une interface</span>
+<span style="color: #808080; font-style: italic;"># file-like object avec io.BytesIO pour que ZipFile puisse le traiter en mémoire</span>
+<span style="color: #808080; font-style: italic;"># sans avoir à le sauvegarder dans un vrai fichier sur le disque, et on</span>
+<span style="color: #808080; font-style: italic;"># extrait le ZIP.</span>
+<span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">path</span>.<span style="color: black;">isfile</span><span style="color: black;">&#40;</span>PASSWORDS_LIST<span style="color: black;">&#41;</span>:
+    ZipFile<span style="color: black;">&#40;</span>io.<span style="color: black;">BytesIO</span><span style="color: black;">&#40;</span>FFOpener<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: #008000;">open</span><span style="color: black;">&#40;</span>PASSWORDS_SOURCE<span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>.<span style="color: black;">extractall</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On extrait les mots de passe de la liste sous forme de tuple car c'est rapide</span>
+<span style="color: #808080; font-style: italic;"># à lire. Un petit rstrip vire les sauts de ligne.</span>
+passwords <span style="color: #66cc66;">=</span> <span style="color: #008000;">tuple</span><span style="color: black;">&#40;</span>l.<span style="color: black;">rstrip</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span> <span style="color: #ff7700;font-weight:bold;">for</span> l <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span>PASSWORDS_LIST<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># spwd.getspall() nous évite de parser le fichier shadow à la main.</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> entry <span style="color: #ff7700;font-weight:bold;">in</span> spwd.<span style="color: black;">getspall</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'Processing password for user &quot;%s&quot;: '</span> % entry.<span style="color: black;">sp_nam</span><span style="color: #66cc66;">,</span> end<span style="color: #66cc66;">=</span><span style="color: #483d8b;">''</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># Pas de hash ? On gagne du temps avec 'continue'</span>
+    <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #ff7700;font-weight:bold;">not</span> <span style="color: #483d8b;">'$'</span> <span style="color: #ff7700;font-weight:bold;">in</span> entry.<span style="color: black;">sp_pwd</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'no password hash to process.'</span><span style="color: black;">&#41;</span>
+        <span style="color: #ff7700;font-weight:bold;">continue</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># On teste chaque password avec la fonction crypt, qui accepte en deuxième</span>
+    <span style="color: #808080; font-style: italic;"># paramètre le hash du mot de passe complet. Pas besoin de se faire chier</span>
+    <span style="color: #808080; font-style: italic;"># à le spliter, il va analyser les '$' et se démerder avec ça. On a juste</span>
+    <span style="color: #808080; font-style: italic;"># à comparer le résultat avec le hash d'origine.</span>
+    <span style="color: #ff7700;font-weight:bold;">for</span> <span style="color: #dc143c;">pwd</span> <span style="color: #ff7700;font-weight:bold;">in</span> passwords:
+        <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #dc143c;">crypt</span>.<span style="color: #dc143c;">crypt</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">pwd</span><span style="color: #66cc66;">,</span> entry.<span style="color: black;">sp_pwd</span><span style="color: black;">&#41;</span> <span style="color: #66cc66;">==</span> entry.<span style="color: black;">sp_pwd</span>:
+            <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'password is &quot;%s&quot;.'</span> % <span style="color: #dc143c;">pwd</span><span style="color: black;">&#41;</span>
+            <span style="color: #808080; font-style: italic;"># On break pour gagner quelques tours de boucles, et pouvoir</span>
+            <span style="color: #808080; font-style: italic;"># utiliser la condition 'else'.</span>
+            <span style="color: #ff7700;font-weight:bold;">break</span>
+    <span style="color: #ff7700;font-weight:bold;">else</span>:
+        <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'fail to break password.'</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2014/janvier/crack_shadow.py">Télécharger le code.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+		</item>
+		<item>
+		<title>C&#8217;est l&#8217;heure de faire de l&#8217;exercice 28</title>
+		<link>http://sametmax.com/cest-lheure-de-faire-de-lexercice/</link>
+		<comments>http://sametmax.com/cest-lheure-de-faire-de-lexercice/#comments</comments>
+		<pubDate>Tue, 28 Jan 2014 16:19:48 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[bcrypt]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[mot de pass]]></category>
+		<category><![CDATA[password]]></category>
+		<category><![CDATA[python]]></category>
+		<category><![CDATA[sha]]></category>
+		<category><![CDATA[unix]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8910</guid>
+		<description><![CDATA[Créer un script de brute force de passwords Unix par dictionnaire.]]></description>
+				<content:encoded><![CDATA[<p>Le <a href="http://sametmax.com/petit-exercice-en-python/">dernier exercice</a> avait bien été apprécié, alors je remet ça.</p>
+<p>Consigne :</p>
+<p><em><br />
+Créer un script de brute force de passwords Unix par dictionnaire.</p>
+<p>Puisqu&#8217;on est pas non plus des Kevin Mitnick en puissance, on va supposer que vous êtes connectés sur la machine, que vous avez les droits root dessus et que vous avez localisé les mots de passe comme étant dans &#8220;/etc/shadow&#8221;.</p>
+<p>Votre script va vérifier si il possède un dictionnaire de mots de passe. Si ce n&#8217;est pas le cas, il va télécharger celui-ci et le décompresser : <a href="http://xato.net/files/10k%20most%20common.zip">http://xato.net/files/10k%20most%20common.zip.</a></p>
+<p>Ensuite vous parcourez le fichier shadow, et vous essayez de trouver quel mot de passe se cache  derrière chaque hash. Si il n&#8217;y a pas de hash, vous pouvez ignorer l&#8217;utilisateur.</p>
+<p>Exemple de sortie:</p>
+<pre>
+Processing password for user "root": no password hash to process.
+Processing password for user "daemon": no password hash to process.
+Processing password for user "bin": no password hash to process.
+Processing password for user "sys": no password hash to process.
+Processing password for user "www-data": no password hash to process.
+Processing password for user "sam": fail to break password.
+Processing password for user "test": password is "cheese".
+Processing password for user "messagebus": no password hash to process.
+Processing password for user "avahi-autoipd": no password hash to process.
+Processing password for user "avahi": no password hash to process.
+...</pre>
+<p></em></p>
+<p>Afin de simplifier l&#8217;exercice, il n&#8217;est pas demandé de gestion d&#8217;erreur ou de passage en a paramètre du script.</p>
+<p>Comme d&#8217;habitude, il n&#8217;y a pas de solution ultimate de la mort qui tue, c&#8217;est juste pour le fun.</p>
+<p><a href="http://sametmax.com/solution-de-lexercice-dhier-sur-shadow/">La soluce demain.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/cest-lheure-de-faire-de-lexercice/feed/</wfw:commentRss>
+		<slash:comments>28</slash:comments>
+		</item>
+		<item>
+		<title>Solution de l&#8217;exercice d&#8217;hier 10</title>
+		<link>http://sametmax.com/solution-de-lexercice-dhier/</link>
+		<comments>http://sametmax.com/solution-de-lexercice-dhier/#comments</comments>
+		<pubDate>Tue, 17 Dec 2013 09:17:44 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8356</guid>
+		<description><![CDATA[Il faut bien noter que ce n'est qu'une solution parmi d'autres :]]></description>
+				<content:encoded><![CDATA[<p>Il faut bien noter que ce n&#8217;est qu&#8217;une solution parmi d&#8217;autres :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">string</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+&nbsp;
+mots <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+texte <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">argv</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'œ'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'oe'</span><span style="color: black;">&#41;</span>
+texte <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> texte<span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+texte <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">sub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'[^%s]'</span> % <span style="color: #dc143c;">string</span>.<span style="color: black;">ascii_lowercase</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">' '</span><span style="color: #66cc66;">,</span> texte.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> e <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>texte.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    mots.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>e<span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>
+&nbsp;
+mots <span style="color: #66cc66;">=</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>mots.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">for</span> mot<span style="color: #66cc66;">,</span> positions <span style="color: #ff7700;font-weight:bold;">in</span> mots:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'- %s: %s'</span> % <span style="color: black;">&#40;</span>mot<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">', '</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: #66cc66;">,</span> positions<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>On ignore cordialement toute gestion d&#8217;erreur, donc le code peut se permettre d&#8217;être court. Et <code>.replace(u'œ', 'oe')</code> n&#8217;est pas très générique :-)</p>
+<p>Dans les propositions de code des commentaires, il faut noter :</p>
+<ul>
+<li>Une utilisation fort maline du defaultdict par bob.</li>
+<li>Le signalement d&#8217;unidecode par zanguu qui aurait géré <code>'œ'</code> sans problème. Mais ça rajoute une dépendance.</li>
+</ul>
+<p>Décorticage :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">re</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">string</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">unicodedata</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On va tocker les mots dans ce dico</span>
+mots <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span><span style="color: black;">&#125;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Je récupère en vrac le contenu du fichier. Comme on a pas de gestion des</span>
+<span style="color: #808080; font-style: italic;"># erreurs, je récupère cash pistache le chemin de la ligne de commande</span>
+<span style="color: #808080; font-style: italic;"># et je suppose un encoding en UTF8. Le résultat obtenu est un objet</span>
+<span style="color: #808080; font-style: italic;"># unicode de tout le texte du fichier, sans le caractère 'œ'.</span>
+texte <span style="color: #66cc66;">=</span> <span style="color: #008000;">open</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">sys</span>.<span style="color: black;">argv</span><span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">read</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>.<span style="color: black;">decode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'utf8'</span><span style="color: black;">&#41;</span>.<span style="color: black;">replace</span><span style="color: black;">&#40;</span>u<span style="color: #483d8b;">'œ'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'oe'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Astuce pour normaliser les caractères spéciaux. Ne marche que pour </span>
+<span style="color: #808080; font-style: italic;"># l'alphabet latin malheureusement. Donc le script est limité. Unidecode</span>
+<span style="color: #808080; font-style: italic;"># permettrait d'avoir un script plus générique.</span>
+texte <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">unicodedata</span>.<span style="color: black;">normalize</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'NFKD'</span><span style="color: #66cc66;">,</span> texte<span style="color: black;">&#41;</span>.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'ascii'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'ignore'</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># string.ascii_lowercase contient toutes les lettres ASCII en minuscule,</span>
+<span style="color: #808080; font-style: italic;"># ce qui permet de faire un remplacement, via regex, de </span>
+<span style="color: #808080; font-style: italic;"># [^abcdefghijklmnopqrstuvwxyz]', c'est à dire tout ce qui n'est pas</span>
+<span style="color: #808080; font-style: italic;"># une lettre ASCII minuscule.</span>
+texte <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">re</span>.<span style="color: black;">sub</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'[^%s]'</span> % <span style="color: #dc143c;">string</span>.<span style="color: black;">ascii_lowercase</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">' '</span><span style="color: #66cc66;">,</span> texte.<span style="color: black;">lower</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Je récupère tous les &quot;mots&quot;, split() sans paramètre coupe en effet toute </span>
+<span style="color: #808080; font-style: italic;"># combinaison de caractères non imprimables. enumerate() me permet d'avoir</span>
+<span style="color: #808080; font-style: italic;"># la position de chaque mot. setdefault() me permet d'ignorer les clés qui</span>
+<span style="color: #808080; font-style: italic;"># n'existent pas encore dans le dico. J'aurais pu utiliser un defaultdict, mais</span>
+<span style="color: #808080; font-style: italic;"># comme on a qu'une seule ligne ici, c'est plus court.</span>
+<span style="color: #808080; font-style: italic;"># J'obtiens donc un dico {mot1: [positon1, position2, ...], mot2: ...}</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> i<span style="color: #66cc66;">,</span> e <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #008000;">enumerate</span><span style="color: black;">&#40;</span>texte.<span style="color: black;">split</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>:
+    mots.<span style="color: black;">setdefault</span><span style="color: black;">&#40;</span>e<span style="color: #66cc66;">,</span> <span style="color: black;">&#91;</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span>.<span style="color: black;">append</span><span style="color: black;">&#40;</span>i<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># On récupère le contenu du dico sous forme de liste de tuples </span>
+<span style="color: #808080; font-style: italic;"># [(mot, positions)...], et on l'ordonne selon le nombre d'apparitions</span>
+<span style="color: #808080; font-style: italic;"># (len(x[1])), ou a défaut par ordre naturel des apparitions sorted(x[1]).</span>
+<span style="color: #808080; font-style: italic;"># Pour rappel, key attend une fonction qui prend chaque élement, et retourne</span>
+<span style="color: #808080; font-style: italic;"># une clé. La clé est utilisée pour ordonner les éléments : chaque élément</span>
+<span style="color: #808080; font-style: italic;"># voit sa clé comparée à celle des autres, et ordonnée par ordre naturel.</span>
+<span style="color: #808080; font-style: italic;"># Y a un article sur ça : http://sametmax.com/ordonner-en-python/</span>
+<span style="color: #808080; font-style: italic;"># En gros, une entrée ('salut', 4, 18) aura pour clé (2, (4, 18)),</span>
+<span style="color: #808080; font-style: italic;"># ce que Python peut comparer facilement.</span>
+<span style="color: #808080; font-style: italic;"># Je réalise en rédigeant ces lignes que mon sorted est inutile, puisque </span>
+<span style="color: #808080; font-style: italic;"># le processus est incrémental et déjà ordonné. Je le laisse comme référence.</span>
+mots <span style="color: #66cc66;">=</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>mots.<span style="color: black;">items</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> key<span style="color: #66cc66;">=</span><span style="color: #ff7700;font-weight:bold;">lambda</span> x: <span style="color: black;">&#40;</span><span style="color: #008000;">len</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">,</span> <span style="color: #008000;">sorted</span><span style="color: black;">&#40;</span>x<span style="color: black;">&#91;</span><span style="color: #ff4500;">1</span><span style="color: black;">&#93;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;"># Et on affiche tout ça, non sans caster les positions du type int vers str</span>
+<span style="color: #808080; font-style: italic;"># pour éviter un crash</span>
+<span style="color: #ff7700;font-weight:bold;">for</span> mot<span style="color: #66cc66;">,</span> positions <span style="color: #ff7700;font-weight:bold;">in</span> mots:
+    <span style="color: #ff7700;font-weight:bold;">print</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'- %s: %s'</span> % <span style="color: black;">&#40;</span>mot<span style="color: #66cc66;">,</span> <span style="color: #483d8b;">', '</span>.<span style="color: black;">join</span><span style="color: black;">&#40;</span><span style="color: #008000;">map</span><span style="color: black;">&#40;</span><span style="color: #008000;">str</span><span style="color: #66cc66;">,</span> positions<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<hr/>
+<p><a href="http://sametmax.com/petit-exercice-en-python/">Enoncé de l&#8217;exercice.</a></p>
+<p><a href="https://github.com/sametmax/codes-des-articles/blob/master/2013/decembre/compter.py">Télécharger le code de l&#8217;article.</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/solution-de-lexercice-dhier/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/bQ3zsIi.jpg" length="40150" type="image/jpg" />	</item>
+		<item>
+		<title>Petit exercice en Python 33</title>
+		<link>http://sametmax.com/petit-exercice-en-python/</link>
+		<comments>http://sametmax.com/petit-exercice-en-python/#comments</comments>
+		<pubDate>Mon, 16 Dec 2013 07:27:43 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[exercice]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8346</guid>
+		<description><![CDATA[Nouveau concept, de temps en temps, je vais proposer un exercice à faire en Python, vous postez vos solutions, et j'en posterai une le lendemain.
+
+Pas de pression, c'est pour le fun.]]></description>
+				<content:encoded><![CDATA[<p>Nouveau concept, de temps en temps, je vais proposer un exercice à faire en Python, vous postez vos solutions, et j&#8217;en posterai une le lendemain.</p>
+<p>Pas de pression, c&#8217;est pour le fun.</p>
+<p>Les solutions dans un autre langage sont bienvenues, mais privilégiez Python si vous avez le choix, c&#8217;est quand même le but.</p>
+<p><strong>Postez votre code sur un pastebin ou ailleurs avec un lien en commentaire, pas le code directement dans les commentaires.</strong></p>
+<p>Exercice du jour : </p>
+<p><em>Un script qui attend un fichier en paramètre, l&#8217;ouvre, et trouve toutes les positions de chaque mot. </p>
+<p>Le script doit prendre en compte les apostrophes, supprimer la ponctuation, et normaliser la casse et les caractères spéciaux des mots. </p>
+<p>Le résultat doit afficher une liste à de mots avec leurs positions ordonnée par le nombre d&#8217;apparition, ou en cas d&#8217;égalité, par ordre naturel des positions.</em></p>
+<p>Aucune gestion d&#8217;erreur n&#8217;est demandée.</p>
+<p>Par exemple si j&#8217;ai un fichier contenant :</p>
+<blockquote><p>« La marche des vertueux est semée d&#8217;obstacles qui sont les entreprises égoïstes que fait sans fin surgir l&#8217;œuvre du Malin. Béni soit-il l&#8217;homme de bonne volonté qui, au nom de la charité, se fait le berger des faibles qu&#8217;il guide dans la vallée d&#8217;ombre, de la mort et des larmes, car il est le gardien de son frère et la providence des enfants égarés. J&#8217;abattrai alors le bras d&#8217;une terrible colère, d&#8217;une vengeance furieuse et effrayante sur les hordes impies qui pourchassent et réduisent à néant les brebis de Dieu. Et tu connaîtras pourquoi mon nom est l&#8217;éternel quand sur toi s&#8217;abattra la vengeance du Tout-Puissant ! » </p>
+<p>Ça fait des années que je répète ça. L&#8217;enfoiré qui l&#8217;entend, il meurt aussitôt. J&#8217;avais jamais cherché à comprendre, je trouvais seulement que ça en jetait de dire ça avant de flinguer un mec. Et puis ce matin, j&#8217;ai vu quelque chose qui m&#8217;a fait réfléchir. D&#8217;un seul coup, je me dis, ça pourrait bien vouloir dire que tu es l&#8217;œuvre du malin, et que l&#8217;homme vertueux c&#8217;est moi, et que mon joli 9 mm ce serait mon protecteur, mon berger dans la vallée de l&#8217;angoisse et des larmes. Ou encore mieux, c&#8217;est moi le berger et toi l&#8217;homme vertueux, et c&#8217;est le monde qui est l&#8217;œuvre de Lucifer. Qu&#8217;est-ce que tu dis de ça ? Mais rien de tout ça n&#8217;est juste. Ce qui est vrai, c&#8217;est que tu es le faible et que je suis la tyrannie des méchants. Et moi j&#8217;essaie, Ringo, au prix d&#8217;un effort harassant, de protéger les faibles.</p></blockquote>
+<p>On appelle le script ainsi :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">python ton_script.py ton_fichier.txt</pre></td></tr></table></div>
+
+<p>Et il affiche ceci :</p>
+<pre>- marche: 1
+- semee: 5
+- obstacles: 7
+- sont: 9
+- entreprises: 11
+- egoistes: 12
+- sans: 15
+- fin: 16
+- surgir: 17
+- beni: 22
+- soit: 23
+- bonne: 28
+- volonte: 29
+- charite: 35
+- se: 36
+- guide: 44
+- ombre: 49
+- mort: 52
+- car: 56
+- gardien: 60
+- son: 62
+- frere: 63
+- providence: 66
+- enfants: 68
+- egares: 69
+- abattrai: 71
+- alors: 72
+- bras: 74
+- terrible: 77
+- colere: 78
+- furieuse: 82
+- effrayante: 84
+- hordes: 87
+- impies: 88
+- pourchassent: 90
+- reduisent: 92
+- neant: 94
+- brebis: 96
+- dieu: 98
+- connaitras: 101
+- pourquoi: 102
+- eternel: 107
+- quand: 108
+- s: 111
+- abattra: 112
+- puissant: 117
+- annees: 121
+- repete: 124
+- enfoire: 127
+- entend: 130
+- meurt: 132
+- aussitot: 133
+- avais: 135
+- jamais: 136
+- cherche: 137
+- comprendre: 139
+- trouvais: 141
+- seulement: 142
+- en: 145
+- jetait: 146
+- avant: 150
+- flinguer: 152
+- mec: 154
+- puis: 156
+- matin: 158
+- ai: 160
+- vu: 161
+- quelque: 162
+- chose: 163
+- m: 165
+- reflechir: 168
+- seul: 171
+- coup: 172
+- me: 174
+- pourrait: 177
+- bien: 178
+- vouloir: 179
+- joli: 199
+- mm: 200
+- serait: 202
+- protecteur: 204
+- angoisse: 212
+- ou: 216
+- encore: 217
+- mieux: 218
+- monde: 233
+- lucifer: 239
+- mais: 248
+- rien: 249
+- n: 253
+- juste: 255
+- vrai: 259
+- faible: 266
+- suis: 270
+- tyrannie: 272
+- mechants: 274
+- essaie: 278
+- ringo: 279
+- prix: 281
+- effort: 284
+- harassant: 285
+- proteger: 287
+- malin: 21, 187
+- au: 31, 280
+- nom: 32, 104
+- faibles: 41, 289
+- qu: 42, 240
+- dans: 45, 207
+- vallee: 47, 209
+- larmes: 55, 215
+- une: 76, 80
+- vengeance: 81, 114
+- sur: 85, 109
+- toi: 110, 225
+- tout: 116, 251
+- dire: 148, 180
+- dis: 175, 245
+- es: 183, 264
+- vertueux: 3, 192, 228
+- oeuvre: 19, 185, 237
+- du: 20, 115, 186
+- homme: 26, 191, 227
+- berger: 39, 206, 223
+- a: 93, 138, 166
+- un: 153, 170, 283
+- moi: 195, 221, 276
+- les: 10, 86, 95, 288
+- fait: 14, 37, 119, 167
+- il: 24, 43, 57, 131
+- j: 70, 134, 159, 277
+- tu: 100, 182, 244, 263
+- mon: 103, 198, 203, 205
+- je: 123, 140, 173, 269
+- ce: 157, 201, 242, 256
+- c: 193, 219, 230, 260
+- d: 6, 48, 75, 79, 169, 282
+- le: 38, 59, 73, 222, 232, 265
+- des: 2, 40, 54, 67, 120, 214, 273
+- qui: 8, 30, 89, 128, 164, 234, 257
+- ca: 118, 125, 144, 149, 176, 247, 252
+- la: 0, 34, 46, 51, 65, 113, 208, 271
+- que: 13, 122, 143, 181, 189, 197, 243, 262, 268
+- l: 18, 25, 106, 126, 129, 184, 190, 211, 226, 236
+- est: 4, 58, 105, 194, 220, 231, 235, 241, 254, 258, 261
+- de: 27, 33, 50, 61, 97, 147, 151, 210, 238, 246, 250, 286
+- et: 53, 64, 83, 91, 99, 155, 188, 196, 213, 224, 229, 267, 275
+</pre>
+<hr />
+<p><a href="http://sametmax.com/solution-de-lexercice-dhier/">Solution</a></p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/petit-exercice-en-python/feed/</wfw:commentRss>
+		<slash:comments>33</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/12/Ayo7gQB.jpg" length="108825" type="image/jpg" />	</item>
+	</channel>
+</rss>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; manifest</title>
+	<atom:link href="http://sametmax.com/tag/manifest/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Comment figer son app hors ligne pour plus d&#8217;un mois 9</title>
+		<link>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/</link>
+		<comments>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/#comments</comments>
+		<pubDate>Fri, 25 Apr 2014 09:35:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[connerie]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[manifest]]></category>
+		<category><![CDATA[nginx]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10076</guid>
+		<description><![CDATA[Bravo Sam.]]></description>
+				<content:encoded><![CDATA[<p>Je sers <a href="http://allthatcounts.net/">All That Counts</a> avec nginx, et le fichier de config est super simple :</p>
+<pre>server {
+        listen       80;
+        server_name allthatcounts.net;
+
+        error_log  /var/log/nginx/error_allthatcounts.log;
+        access_log  /var/log/nginx/access_allthatcounts.log;
+
+        location / {
+            root /home/allthatcounts/www/;
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            gzip_buffers 16 8k;
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+            expires modified +90d;
+        }
+}</pre>
+<p>En gros c&#8217;est juste du log et servir les fichiers statiques compressés avec gzip. Il n&#8217;y a rien de plus à faire parce qu&#8217;il n&#8217;y a pas de backend. Simple. Efficace.</p>
+<p>La couille c&#8217;est que c&#8217;est un copier / coller d&#8217;un autre projet que j&#8217;ai fais sans trop réfléchir, et quand j&#8217;ai mis en prod de nouvelles modifications sur le serveurs, mon Firefox me les affichait pas. Pourtant j&#8217;avais bien modifié le manifeste, donc il aurait du tout recharcher&#8230;</p>
+<p>Sauf que, con de ma race, j&#8217;ai copié la ligne :</p>
+<pre>expires modified +90d;</pre>
+<p>Qui dit techniquement, met en cache tous les fichiers statiques pour 90 jours. Donc aussi le manifeste. Du coup, toutes les personnes qui ont visité le site ne verront aucune mise à jour pour un bon mois et demi.</p>
+<p>Bravo Sam.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/joker.gif" length="247256" type="image/jpg" />	</item>
+		<item>
+		<title>Le manifeste du cache du mode hors ligne pour HTML5 10</title>
+		<link>http://sametmax.com/mode-le-manifeste-du-cache-du-mode-hors-ligne-pour-html5/</link>
+		<comments>http://sametmax.com/mode-le-manifeste-du-cache-du-mode-hors-ligne-pour-html5/#comments</comments>
+		<pubDate>Sun, 20 Apr 2014 12:17:08 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[manifest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10038</guid>
+		<description><![CDATA[Le mode hors ligne consiste à déclarer quels fichiers (html, css, js, images, fonts, n'importe quoi...) garder en mémoire afin de les charger directement depuis le disque dur au lieu de le faire en ligne.]]></description>
+				<content:encoded><![CDATA[<p>La bataille app native VS site responsive va faire rage pendant pas mal de temps, et pour le moment les apps gagnent : performances plus élevées, meilleures intégration visuelle dans l&#8217;OS, accès à une API plus riche&#8230; Les utilisateurs les préfèrent, et du coup les pros sont obligés de se les coltiner. C&#8217;est chiant, mais c&#8217;est la réalité du terrain pour les dev sur mobile.</p>
+<p>Mais pour les sites Web ou les apps simples, il est super intéressant d&#8217;exploiter les capacités HTLM5 au max pour une obtenir une expérience plus &#8220;app&#8221; et moins &#8220;site web&#8221;.</p>
+<p>Parmi ces possibilités : le mode hors ligne. D&#8217;un côté, il y a le stockage des données dans le navigateur, mais <a href="http://sametmax.com/stockez-vos-donnees-dans-le-navigateur-de-lutilisateur-avec-localstorage-html-5/">on vous en a déjà parlé</a>.</p>
+<p>De l&#8217;autre, il y a le cache des ressources. Cela consiste à déclarer quels fichiers (html, css, js, images, fonts, n&#8217;importe quoi&#8230;) garder en mémoire afin de les charger directement depuis le disque dur au lieu de le faire en ligne.</p>
+<p>Pour cela, il faut déclarer un manifeste dans son HTML :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;html manifest=&quot;cache.manifest&quot;&gt;</pre></td></tr></table></div>
+
+<p>Ensuite, on créer le fichier <code>cache.manifest</code> dans son projet, qui est un fichier de texte simple.</p>
+<p>Il faut le faire servir avec le mime-type
+<pre lang="python bash">text/cache-manifest</pre>
+<p> sinon ça ne marche pas. Si vous le nommez
+<pre lang="python bash">*.manifest</pre>
+<p> et que vous le servez avec un serveur de dev, ça marchera tout seul. Pour la prod, il faut le spécifier à votre serveur. Par exemple avec nginx, il faut éditer le fichier <code>/etc/nginx/mime.types</code> et y ajouter :</p>
+<pre>text/cache-manifest                   manifest;</pre>
+<p>Pour apache, c&#8217;est un truc du genre dans le <code>.htaccess</code>:</p>
+<pre>AddType text/cache-manifest .manifest</pre>
+<p>Ensuite, le manifeste ressemble à ça :</p>
+<pre>CACHE MANIFEST
+# 2014-04-20 13:25:00
+
+# Toutes les ressources à sauvegarder en local. Le navigateur
+# va toujours chercher ces ressources sur le disque.
+# Si on est déconnecté, la page index.html, ses styles et javascript
+# s'afficheront donc quand même.
+CACHE:
+index.html
+/favicon.ico
+stylesheet.css
+images/logo.png
+scripts/main.js
+fonts/font.woff
+
+# Ressources à toujours charger depuis le réseau. On met ici
+# une étoile pour dire "tout le reste". Si on ne fait pas ça,
+# on va se retrouver sans css et js :)
+NETWORK:
+*
+
+# Ressources alternatives si les précédentes sont inacessibles.
+# Par exemple, pour afficher un point rouge si on est hors ligne
+# et un point vert si on est en ligne :
+# images/offline.png sera servi si images/online.png est inaccessible
+FALLBACK:
+images/online.png images/offline.png</pre>
+<p>Notez le commentaire <code># 2014-04-20 13:25:00</code> tout en haut. C&#8217;est<br />
+une convention qu&#8217;on utilise pour donner la dernière date de modification des<br />
+fichiers cachés. En effet, <strong>les fichiers de la section <code>CACHE</code> ne seront<br />
+pas rechargés tant que le manifeste n&#8217;a pas été modifié. </strong></p>
+<p>Cela veut dire que si vous modifiez <code>index.html</code>, l&#8217;utilisateur<br />
+ne verra pas la modification. Mais si vous changez la date du fichier manifeste,<br />
+le fichier est modifié, et le navigateur rechargera donc toutes les ressources<br />
+qu&#8217;il a mis en cache. Ainsi, vous permettez aux utilisateurs de voir les<br />
+ressources cachées qui ont été modifiées.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mode-le-manifeste-du-cache-du-mode-hors-ligne-pour-html5/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/iYfv0Wu.jpg" length="66714" type="image/jpg" />	</item>
+	</channel>
+</rss>

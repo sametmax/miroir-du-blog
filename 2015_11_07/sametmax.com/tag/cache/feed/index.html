@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; cache</title>
+	<atom:link href="http://sametmax.com/tag/cache/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Comment figer son app hors ligne pour plus d&#8217;un mois 9</title>
+		<link>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/</link>
+		<comments>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/#comments</comments>
+		<pubDate>Fri, 25 Apr 2014 09:35:29 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[connerie]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[manifest]]></category>
+		<category><![CDATA[nginx]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10076</guid>
+		<description><![CDATA[Bravo Sam.]]></description>
+				<content:encoded><![CDATA[<p>Je sers <a href="http://allthatcounts.net/">All That Counts</a> avec nginx, et le fichier de config est super simple :</p>
+<pre>server {
+        listen       80;
+        server_name allthatcounts.net;
+
+        error_log  /var/log/nginx/error_allthatcounts.log;
+        access_log  /var/log/nginx/access_allthatcounts.log;
+
+        location / {
+            root /home/allthatcounts/www/;
+            gzip  on;
+            gzip_http_version 1.0;
+            gzip_vary on;
+            gzip_comp_level 6;
+            gzip_proxied any;
+            gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            gzip_buffers 16 8k;
+            gzip_disable ~@~\MSIE [1-6].(?!.*SV1)~@~];
+            expires modified +90d;
+        }
+}</pre>
+<p>En gros c&#8217;est juste du log et servir les fichiers statiques compressés avec gzip. Il n&#8217;y a rien de plus à faire parce qu&#8217;il n&#8217;y a pas de backend. Simple. Efficace.</p>
+<p>La couille c&#8217;est que c&#8217;est un copier / coller d&#8217;un autre projet que j&#8217;ai fais sans trop réfléchir, et quand j&#8217;ai mis en prod de nouvelles modifications sur le serveurs, mon Firefox me les affichait pas. Pourtant j&#8217;avais bien modifié le manifeste, donc il aurait du tout recharcher&#8230;</p>
+<p>Sauf que, con de ma race, j&#8217;ai copié la ligne :</p>
+<pre>expires modified +90d;</pre>
+<p>Qui dit techniquement, met en cache tous les fichiers statiques pour 90 jours. Donc aussi le manifeste. Du coup, toutes les personnes qui ont visité le site ne verront aucune mise à jour pour un bon mois et demi.</p>
+<p>Bravo Sam.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/comment-figer-son-app-hors-ligne-pour-plus-dun-mois/feed/</wfw:commentRss>
+		<slash:comments>9</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/joker.gif" length="247256" type="image/jpg" />	</item>
+		<item>
+		<title>Le manifeste du cache du mode hors ligne pour HTML5 10</title>
+		<link>http://sametmax.com/mode-le-manifeste-du-cache-du-mode-hors-ligne-pour-html5/</link>
+		<comments>http://sametmax.com/mode-le-manifeste-du-cache-du-mode-hors-ligne-pour-html5/#comments</comments>
+		<pubDate>Sun, 20 Apr 2014 12:17:08 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[html5]]></category>
+		<category><![CDATA[manifest]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=10038</guid>
+		<description><![CDATA[Le mode hors ligne consiste à déclarer quels fichiers (html, css, js, images, fonts, n'importe quoi...) garder en mémoire afin de les charger directement depuis le disque dur au lieu de le faire en ligne.]]></description>
+				<content:encoded><![CDATA[<p>La bataille app native VS site responsive va faire rage pendant pas mal de temps, et pour le moment les apps gagnent : performances plus élevées, meilleures intégration visuelle dans l&#8217;OS, accès à une API plus riche&#8230; Les utilisateurs les préfèrent, et du coup les pros sont obligés de se les coltiner. C&#8217;est chiant, mais c&#8217;est la réalité du terrain pour les dev sur mobile.</p>
+<p>Mais pour les sites Web ou les apps simples, il est super intéressant d&#8217;exploiter les capacités HTLM5 au max pour une obtenir une expérience plus &#8220;app&#8221; et moins &#8220;site web&#8221;.</p>
+<p>Parmi ces possibilités : le mode hors ligne. D&#8217;un côté, il y a le stockage des données dans le navigateur, mais <a href="http://sametmax.com/stockez-vos-donnees-dans-le-navigateur-de-lutilisateur-avec-localstorage-html-5/">on vous en a déjà parlé</a>.</p>
+<p>De l&#8217;autre, il y a le cache des ressources. Cela consiste à déclarer quels fichiers (html, css, js, images, fonts, n&#8217;importe quoi&#8230;) garder en mémoire afin de les charger directement depuis le disque dur au lieu de le faire en ligne.</p>
+<p>Pour cela, il faut déclarer un manifeste dans son HTML :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="html" style="font-family:monospace;">&lt;html manifest=&quot;cache.manifest&quot;&gt;</pre></td></tr></table></div>
+
+<p>Ensuite, on créer le fichier <code>cache.manifest</code> dans son projet, qui est un fichier de texte simple.</p>
+<p>Il faut le faire servir avec le mime-type
+<pre lang="python bash">text/cache-manifest</pre>
+<p> sinon ça ne marche pas. Si vous le nommez
+<pre lang="python bash">*.manifest</pre>
+<p> et que vous le servez avec un serveur de dev, ça marchera tout seul. Pour la prod, il faut le spécifier à votre serveur. Par exemple avec nginx, il faut éditer le fichier <code>/etc/nginx/mime.types</code> et y ajouter :</p>
+<pre>text/cache-manifest                   manifest;</pre>
+<p>Pour apache, c&#8217;est un truc du genre dans le <code>.htaccess</code>:</p>
+<pre>AddType text/cache-manifest .manifest</pre>
+<p>Ensuite, le manifeste ressemble à ça :</p>
+<pre>CACHE MANIFEST
+# 2014-04-20 13:25:00
+
+# Toutes les ressources à sauvegarder en local. Le navigateur
+# va toujours chercher ces ressources sur le disque.
+# Si on est déconnecté, la page index.html, ses styles et javascript
+# s'afficheront donc quand même.
+CACHE:
+index.html
+/favicon.ico
+stylesheet.css
+images/logo.png
+scripts/main.js
+fonts/font.woff
+
+# Ressources à toujours charger depuis le réseau. On met ici
+# une étoile pour dire "tout le reste". Si on ne fait pas ça,
+# on va se retrouver sans css et js :)
+NETWORK:
+*
+
+# Ressources alternatives si les précédentes sont inacessibles.
+# Par exemple, pour afficher un point rouge si on est hors ligne
+# et un point vert si on est en ligne :
+# images/offline.png sera servi si images/online.png est inaccessible
+FALLBACK:
+images/online.png images/offline.png</pre>
+<p>Notez le commentaire <code># 2014-04-20 13:25:00</code> tout en haut. C&#8217;est<br />
+une convention qu&#8217;on utilise pour donner la dernière date de modification des<br />
+fichiers cachés. En effet, <strong>les fichiers de la section <code>CACHE</code> ne seront<br />
+pas rechargés tant que le manifeste n&#8217;a pas été modifié. </strong></p>
+<p>Cela veut dire que si vous modifiez <code>index.html</code>, l&#8217;utilisateur<br />
+ne verra pas la modification. Mais si vous changez la date du fichier manifeste,<br />
+le fichier est modifié, et le navigateur rechargera donc toutes les ressources<br />
+qu&#8217;il a mis en cache. Ainsi, vous permettez aux utilisateurs de voir les<br />
+ressources cachées qui ont été modifiées.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/mode-le-manifeste-du-cache-du-mode-hors-ligne-pour-html5/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2014/04/iYfv0Wu.jpg" length="66714" type="image/jpg" />	</item>
+		<item>
+		<title>Marre des mots de passe pour push sur git ? 13</title>
+		<link>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/</link>
+		<comments>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/#comments</comments>
+		<pubDate>Tue, 19 Nov 2013 08:36:34 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[auth]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[git]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=8013</guid>
+		<description><![CDATA[Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement un clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.]]></description>
+				<content:encoded><![CDATA[<p>Vous êtes dans une situation où vous ne pouvez pas utiliser uniquement une clé pour vous authentifier, et il faut taper votre putain de mot de passe à chaque push.</p>
+<p><a href="http://sametmax.com/git-push-via-http-ou-comment-travailler-au-macdo/">Ça sent le vécu n&#8217;est-ce pas ?</a></p>
+<p>Mais bien entendu git vient avec une option bien cachée au fond de son fion pour adresser ce problème :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git config</span> credential.helper <span style="color: #ff0000;">'cache --timeout=3600'</span></pre></td></tr></table></div>
+
+<p>Et votre authentification sera gardée en mémoire pour une heure. Vous pouvez faire :</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">git config</span> <span style="color: #660033;">--global</span> credential.helper <span style="color: #ff0000;">'cache --timeout=3600'</span></pre></td></tr></table></div>
+
+<p>Pour l&#8217;étendre à tous les repos de votre machine.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/marre-des-mots-de-passe-pour-push-sur-git/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/11/cdempDI.jpg" length="51081" type="image/jpg" />	</item>
+		<item>
+		<title>Question d&#8217;un lecteur sur le cache et Django 1</title>
+		<link>http://sametmax.com/question-dun-lecteur-sur-le-cache-et-django/</link>
+		<comments>http://sametmax.com/question-dun-lecteur-sur-le-cache-et-django/#comments</comments>
+		<pubDate>Sun, 04 Aug 2013 06:12:36 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=7003</guid>
+		<description><![CDATA[Encore un message du formulaire de contact auquel je n'arrive pas à répondre (delivery failure).]]></description>
+				<content:encoded><![CDATA[<p>Encore un message du formulaire de contact auquel je n&#8217;arrive pas à répondre (delivery failure).</p>
+<blockquote><p>
+> Subject: Idée d&#8217;article/Question<br />
+><br />
+> Message Body:<br />
+> Salut !<br />
+><br />
+> Merci pour vos articles décalés et ceux qui sont plus au centre.<br />
+><br />
+> J&#8217;ai une petite question sur Django :<br />
+> Est-ce possible de mettre toutes les résultats de requetes de l&#8217;ORM de<br />
+Django dans memcached, et de les récupérer / mettre à jour / supprimer ?<br />
+> Pour moi ça bloque au niveau de la mise à jour / suppression.<br />
+><br />
+> Du coup je me suis dit que vous pourriez faire un article sur les<br />
+différentes méthodes de mise en cache dans Django et ce que on peut<br />
+faire avec.</p></blockquote>
+<p>Hello,</p>
+<p>Oui, c&#8217;est possible.</p>
+<p>La mise à jour et la suppression du cache a toujours été une des choses<br />
+les plus difficiles en programmation, donc c&#8217;est naturel de bloquer dessus.</p>
+<p>Pour commencer, utilise <a href="https://github.com/jbalogh/django-cache-machine">django-cache-machine</a> ou <a href="http://pythonhosted.org/johnny-cache/">johnny-cache</a>, qui sont des<br />
+surcouche à l&#8217;ORM Django avec cache automatique. Ensuite, tu apprendras<br />
+à faire le reste à la main petit à petit.</p>
+<p>Pour les pages complètes, des solutions qui n&#8217;ont rien à avoir avec<br />
+Django, telles que Varnish, sont aussi des approches qui permettent de<br />
+gagner pas mal en perfs.</p>
+<p>Bref, je note ce truc dans la liste des articles à faire.</p>
+<p>Sam</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/question-dun-lecteur-sur-le-cache-et-django/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/08/WUElaNy.jpg" length="175306" type="image/jpg" />	</item>
+		<item>
+		<title>Savoir si une page est en cache avec Varnish 2</title>
+		<link>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/</link>
+		<comments>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/#comments</comments>
+		<pubDate>Wed, 01 May 2013 07:44:34 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[hit]]></category>
+		<category><![CDATA[miss]]></category>
+		<category><![CDATA[varnish]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5945</guid>
+		<description><![CDATA[Petite astuce pour savoir si Varnish fait bien son boulot. L'affichage dans les Headers d'un debug permettant de savoir si votre page a bien été servit depuis le cache plutôt que le backend.]]></description>
+				<content:encoded><![CDATA[<p>Pour savoir si cette feignasse de Varnish a bien fait son boulot voici une petite astuce pour afficher dans les HEADERS de son navigateur la provenance de la page, le cache ou le backend.<br />
+Varnish propose dans son <a href="https://www.varnish-cache.org/trac/wiki/VCLExampleHitMissHeader">wiki</a> cette méthode.</p>
+<p><strong><br />
+dans le fichier de conf de Varnish:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>varnish<span style="color: #000000; font-weight: bold;">/</span>default.vcl</pre></td></tr></table></div>
+
+<p><b>et rajoutez ces quelques lignes:</b></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">sub vcl_deliver <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span>obj.hits <span style="color: #000000; font-weight: bold;">&gt;</span> <span style="color: #000000;">0</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+                <span style="color: #000000; font-weight: bold;">set</span> resp.http.X-Cache = <span style="color: #ff0000;">&quot;HIT&quot;</span>;
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span> <span style="color: #000000; font-weight: bold;">else</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+                <span style="color: #000000; font-weight: bold;">set</span> resp.http.X-Cache = <span style="color: #ff0000;">&quot;MISS&quot;</span>;
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></td></tr></table></div>
+
+<p><b>On redemarre le service pour prendre en compte les changements:</b></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">service varnishd restart</pre></td></tr></table></div>
+
+<p><b>Dans le navigateur:</b></p>
+<p><img src="http://sametmax.com/wp-content/uploads/2013/04/varnish.png" alt="" title="ça devrait cristalliser..." width="300" height="329" class="aligncenter size-full wp-image-5949" /></p>
+<p>Comme on le voit ici, la page a été servie par le backend, si ce n&#8217;était pas prévu il va falloir revoir vos règles.</p>
+<p>ATTENTION: Pensez à bien rafraichir votre navigateur pour être sur que ce ne soit pas la page mise en cache par ce dernier qui soit affichée, personnellement j&#8217;utilise la version navigation privé de chrome.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/1221965226fv47Eh.jpg" length="24506" type="image/jpg" />	</item>
+		<item>
+		<title>Changement du cache du blog 14</title>
+		<link>http://sametmax.com/changement-du-cache-du-blog/</link>
+		<comments>http://sametmax.com/changement-du-cache-du-blog/#comments</comments>
+		<pubDate>Mon, 08 Apr 2013 13:06:22 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Philo et culture]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[meta]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5641</guid>
+		<description><![CDATA[Il se trouve que je suis tombé par hasard sur <a href="http://wordpress.org/extend/plugins/wordpress-varnish/">ce plugin Wordpres</a>s (ou alors quelqu'un me l'a recommandé, je sais plus) et j'ai trouvé la motivation pour l'installé ce matin.]]></description>
+				<content:encoded><![CDATA[<p>Vu qu&#8217;on est des feignasses et qu&#8217;on a pas envie de tweaker le blog jusqu&#8217;à ce que performances s&#8217;en suivent, on a fait les bourrins en mettant un gros <a href="http://sametmax.com/initiation-a-varnish-accelerer-un-blog-wordpress/">varnish</a> en front.</p>
+<p>On a reçu de nombreuses remarques comme quoi on ne voyait pas si les commentaires étaient postés et autres détails qui rendaient la consultation du blog fort confuse.</p>
+<p>On n&#8217;est pas devenu moins fainéant entre temps, mais il se trouve que je suis tombé par hasard sur <a href="http://wordpress.org/extend/plugins/wordpress-varnish/">ce plugin WordPress</a> (ou alors quelqu&#8217;un me l&#8217;a recommandé, je sais plus) et j&#8217;ai trouvé la motivation pour l&#8217;installer ce matin.</p>
+<p>Normalement il devrait invalider le cache à chaque fois qu&#8217;on met à jour un article ou que quelqu&#8217;un poste un commentaire.</p>
+<p>À voir si ça plombe pas les perfs mais normalement ça devrait aller, on a eu à peine 4,758 comments depuis le lancement du blog, ça fait moins d&#8217;un comment à l&#8217;heure, on devrait survivre.</p>
+<p>Si vous constatez que c&#8217;est mieux, faites le nous savoir, on aura au moins l&#8217;impression d&#8217;avoir fait notre BA.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/changement-du-cache-du-blog/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/RGB2qWQ.jpg" length="131923" type="image/jpg" />	</item>
+		<item>
+		<title>Firefox n&#8217;affiche plus les styles CSS ni les images 6</title>
+		<link>http://sametmax.com/firefox-naffiche-plus-les-styles-css-ni-les-images/</link>
+		<comments>http://sametmax.com/firefox-naffiche-plus-les-styles-css-ni-les-images/#comments</comments>
+		<pubDate>Fri, 04 Jan 2013 12:15:30 +0000</pubDate>
+		<dc:creator><![CDATA[Sam]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[css]]></category>
+		<category><![CDATA[firefox]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3956</guid>
+		<description><![CDATA[Après avoir vidé le cache, il peut arriver que notre panda roux n'affiche plus les styles CSS ou les images: il n'y a plus aucune mise en page, juste du texte noir sur une page blanche. Damned !]]></description>
+				<content:encoded><![CDATA[<p>Après avoir vidé le cache, il peut arriver que notre panda roux n&#8217;affiche plus les styles CSS ou les images: il n&#8217;y a plus aucune mise en page, juste du texte noir sur une page blanche. Damned !</p>
+<p>La solution est de forcer le refresh de la page et du cache avec <code>Ctrl + Shift + R</code>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/firefox-naffiche-plus-les-styles-css-ni-les-images/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/12/220px-Ailurus_fulgens_RoterPanda_LesserPanda.jpg" length="14320" type="image/jpg" />	</item>
+		<item>
+		<title>Effacer le cache DNS sous Mac Os</title>
+		<link>http://sametmax.com/effacer-le-cache-dns-sous-mac-os/</link>
+		<comments>http://sametmax.com/effacer-le-cache-dns-sous-mac-os/#comments</comments>
+		<pubDate>Thu, 22 Nov 2012 21:17:30 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[dns]]></category>
+		<category><![CDATA[flush]]></category>
+		<category><![CDATA[mac]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=3257</guid>
+		<description><![CDATA[Effacer le cache dns de votre Mac si vous avez encore l'ancienne IP en pinguant un site.]]></description>
+				<content:encoded><![CDATA[<p>Si vous avez encore l&#8217;ancienne IP lorsque vous faites un ping sur un site c&#8217;est que votre cache DNS l&#8217;a mémorisée. Il faut parfois le réinitialiser (si vous changez votre site de serveur ou que vous ne pouvez plus accéder à un site en particulier).</p>
+<p><strong>Ouvrez un Terminal:</strong><br />
+<em>Dans <strong>Applications > Utilitaires > Terminal </strong></em></p>
+<p>et tapez:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">lookupd -flushcache</pre></td></tr></table></div>
+
+<p>Si ça ne marche pas  essayez (pour les Mac plus récents):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">dscacheutil -flushcache</pre></td></tr></table></div>
+
+<p><strong>Rappel:</strong><br />
+la commande ping est toujours utile, c&#8217;est un outil qui sert à tester la conneciton entre 2 IPs.</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">ping yahoo.<span style="color: black;">com</span>
+PING yahoo.<span style="color: black;">com</span> <span style="color: black;">&#40;</span>72.30.38.140<span style="color: black;">&#41;</span>: <span style="color: #ff4500;">56</span> data <span style="color: #dc143c;">bytes</span>
+<span style="color: #ff4500;">64</span> <span style="color: #dc143c;">bytes</span> <span style="color: #ff7700;font-weight:bold;">from</span> 72.30.38.140: icmp_seq<span style="color: #66cc66;">=</span><span style="color: #ff4500;">0</span> ttl<span style="color: #66cc66;">=</span><span style="color: #ff4500;">42</span> <span style="color: #dc143c;">time</span><span style="color: #66cc66;">=</span><span style="color: #ff4500;">275.592</span> ms
+<span style="color: #ff4500;">64</span> <span style="color: #dc143c;">bytes</span> <span style="color: #ff7700;font-weight:bold;">from</span> 72.30.38.140: icmp_seq<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span> ttl<span style="color: #66cc66;">=</span><span style="color: #ff4500;">42</span> <span style="color: #dc143c;">time</span><span style="color: #66cc66;">=</span><span style="color: #ff4500;">212.991</span> ms
+<span style="color: #ff4500;">64</span> <span style="color: #dc143c;">bytes</span> <span style="color: #ff7700;font-weight:bold;">from</span> 72.30.38.140: icmp_seq<span style="color: #66cc66;">=</span><span style="color: #ff4500;">2</span> ttl<span style="color: #66cc66;">=</span><span style="color: #ff4500;">42</span> <span style="color: #dc143c;">time</span><span style="color: #66cc66;">=</span><span style="color: #ff4500;">255.605</span> ms</pre></td></tr></table></div>
+
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/effacer-le-cache-dns-sous-mac-os/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/11/terminator-main.jpg" length="181338" type="image/jpg" />	</item>
+		<item>
+		<title>Django cache illimité sur filesystem &#8211; Overrider FileBasedCache 2</title>
+		<link>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/</link>
+		<comments>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/#comments</comments>
+		<pubDate>Sat, 13 Oct 2012 14:00:01 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[django]]></category>
+		<category><![CDATA[filesystem]]></category>
+		<category><![CDATA[python]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=2569</guid>
+		<description><![CDATA[Mettre son site en cache dans le filesystem avec django sans limite d'entrée. ]]></description>
+				<content:encoded><![CDATA[<p>Django propose plusieurs façons de mettre de son <a href="https://docs.djangoproject.com/en/1.4/topics/cache/">site en <em>cache</em></a>.<br />
+Un de nos site gourmant en pages commencait à saturer le cache en mémoire alors il a fallut le basculer sur le filesystem, oui mais Django et son backend filesystem par défaut autorise 300 entrées dans le cache, ensuite il va effacer les anciennes pour les remplacer par les nouvelles, etc&#8230;</p>
+<p>On peut régler le nombre d&#8217;entrées avec l&#8217;option MAX_ENTRIES dans les settings mais que fait django derrière ?<br />
+Il va scanner votre répertoire de <em>cache</em> et <strong>compter tous les fichiers !</strong> Niveau performance on a vu mieux !</p>
+<p>Voici un petit patch qui consiste à bypasser le comptage des fichiers dans le cas où l&#8217;ont veut un cache &#8220;infini&#8221;, ce qui soulève un autre problème, ça va <em>cacher</em> jusqu&#8217;à qu&#8217;il n&#8217;y ait plus de pages à cacher ou que le disque sature :)</p>
+<p>dans un fichier cache.py que vous mettez où vous voulez (moi dans libs par ex):</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/env python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #483d8b;">&quot;&quot;&quot;
+    Override FileBasedCache to extend entries cache count.
+    avoid scanning all cache dir to count entries.
+&nbsp;
+&quot;&quot;&quot;</span>
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">os</span>
+<span style="color: #ff7700;font-weight:bold;">from</span> django.<span style="color: black;">core</span>.<span style="color: black;">cache</span>.<span style="color: black;">backends</span>.<span style="color: black;">filebased</span> <span style="color: #ff7700;font-weight:bold;">import</span> FileBasedCache
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">class</span> CustomFileBasedCache<span style="color: black;">&#40;</span>FileBasedCache<span style="color: black;">&#41;</span>:
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">def</span> _get_num_entries<span style="color: black;">&#40;</span><span style="color: #008000;">self</span><span style="color: black;">&#41;</span>:
+       count <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">0</span>
+       <span style="color: #ff7700;font-weight:bold;">if</span> <span style="color: #008000;">self</span>._max_entries <span style="color: #66cc66;">==</span> <span style="color: #ff4500;">9999</span>: <span style="color: #ff7700;font-weight:bold;">return</span> <span style="color: #ff4500;">0</span>
+       <span style="color: #ff7700;font-weight:bold;">for</span> _<span style="color: #66cc66;">,</span>_<span style="color: #66cc66;">,</span>files <span style="color: #ff7700;font-weight:bold;">in</span> <span style="color: #dc143c;">os</span>.<span style="color: black;">walk</span><span style="color: black;">&#40;</span><span style="color: #008000;">self</span>._dir<span style="color: black;">&#41;</span>:
+           count +<span style="color: #66cc66;">=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>files<span style="color: black;">&#41;</span>
+       <span style="color: #ff7700;font-weight:bold;">return</span> count
+    _num_entries <span style="color: #66cc66;">=</span> <span style="color: #008000;">property</span><span style="color: black;">&#40;</span>_get_num_entries<span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p>dans les settings rajoutez à votre backend filesystem le backend customisé &#8220;libs.cache.CustomFileBasedCache&#8221; et l&#8217;option MAX_ENTRIES à -1:</p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">CACHE_DEFAULT_SECONDS <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">3600</span>
+CACHES <span style="color: #66cc66;">=</span> <span style="color: black;">&#123;</span>
+   <span style="color: #483d8b;">'default'</span>: <span style="color: black;">&#123;</span>
+       <span style="color: #483d8b;">'BACKEND'</span>: <span style="color: #483d8b;">'redis_cache.RedisCache'</span><span style="color: #66cc66;">,</span>
+       <span style="color: #483d8b;">'LOCATION'</span>: <span style="color: #483d8b;">'localhost:6379'</span><span style="color: #66cc66;">,</span>
+       <span style="color: #483d8b;">'TIMEOUT'</span>: CACHE_DEFAULT_SECONDS<span style="color: #66cc66;">,</span>
+   <span style="color: black;">&#125;</span><span style="color: #66cc66;">,</span>
+   <span style="color: #483d8b;">'filesystem'</span>: <span style="color: black;">&#123;</span>
+       <span style="color: #483d8b;">'BACKEND'</span>: <span style="color: #483d8b;">'libs.cache.CustomFileBasedCache'</span><span style="color: #66cc66;">,</span>
+       <span style="color: #483d8b;">'LOCATION'</span>: <span style="color: #483d8b;">'/var/tmp/django'</span><span style="color: #66cc66;">,</span>
+       <span style="color: #483d8b;">'TIMEOUT'</span>: CACHE_DEFAULT_SECONDS<span style="color: #66cc66;">,</span>
+       <span style="color: #483d8b;">'OPTIONS'</span>: <span style="color: black;">&#123;</span>
+            <span style="color: #483d8b;">'MAX_ENTRIES'</span>: <span style="color: #ff4500;">9999</span> <span style="color: #808080; font-style: italic;"># Set 9999 for unlimited cache</span>
+       <span style="color: black;">&#125;</span>
+   <span style="color: black;">&#125;</span>
+<span style="color: black;">&#125;</span></pre></td></tr></table></div>
+
+<p>On évite du coup le os.walk de la méthode _get_num_entries qui dans le cas d&#8217;un grand nombre de fichiers en cache pourrait faire du mal à votre serveur.</p>
+<p>A utiliser avec précaution car ça cache, ça cache, ça cache&#8230; :)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/django-cache-illimite-sur-filesystem-overrider-filebasedcache/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/10/Gear-Diary-Burning_Hard_Drive.jpeg" length="211841" type="image/jpg" />	</item>
+		<item>
+		<title>Optimiser Mysql en mettant en cache les requetes SELECT avec query_cache_size + benchmark 6</title>
+		<link>http://sametmax.com/optimiser-mysql-en-utilisant-le-cache-query_cache_size/</link>
+		<comments>http://sametmax.com/optimiser-mysql-en-utilisant-le-cache-query_cache_size/#comments</comments>
+		<pubDate>Tue, 28 Aug 2012 23:25:24 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[benchmark]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[mysql]]></category>
+		<category><![CDATA[query_cache_size]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=1912</guid>
+		<description><![CDATA[Petite astuce pour mettre en cache les requetes mysql à la lecture. Avantage: On a juste le fichier de conf mysql à éditer, pas besoin de toucher aux applications.]]></description>
+				<content:encoded><![CDATA[<p>Voici une petite astuce pour mettre en cache les requetes mysql. Pour donner une idée du gain j&#8217;ai fait un petit script de benchmark, le gain à la lecture est plutôt convaincant. Je ne suis pas benchmarkeur de profession alors si il y en a dans la salle qui pensent que ce test n&#8217;est pas réaliste merci d&#8217;apporter votre contribution ;)</p>
+<p><strong>Editer le fichier my.cnf pour activer le cache des requetes:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">query_cache_type = <span style="color: #000000;">1</span>
+query_cache_size = 256M</pre></td></tr></table></div>
+
+<p>query_cache_type est le type de cache que l&#8217;on va adopter:<br />
+0 = pas de cache<br />
+1 = met en cache toutes les requetes sauf celles qui ont le flag &#8220;SELECT S_NO_CACHE&#8221;<br />
+2 = met en cache seulement les requetes qui comportent le flag &#8220;SELECT SQL_CACHE&#8221;</p>
+<p><strong>Ci dessous le script pour tester les perfs:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="python" style="font-family:monospace;"><span style="color: #808080; font-style: italic;">#!/usr/bin/python</span>
+<span style="color: #808080; font-style: italic;"># -*- coding: utf-8 -*-</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">import</span> MySQLdb <span style="color: #ff7700;font-weight:bold;">as</span> mdb
+<span style="color: #ff7700;font-weight:bold;">import</span> <span style="color: #dc143c;">sys</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">from</span> <span style="color: #dc143c;">timeit</span> <span style="color: #ff7700;font-weight:bold;">import</span> Timer 
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> benchmark<span style="color: black;">&#40;</span>cur<span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        execute query
+    &quot;&quot;&quot;</span>
+    cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;SELECT * FROM Writers&quot;</span><span style="color: black;">&#41;</span>
+    rows <span style="color: #66cc66;">=</span> cur.<span style="color: black;">fetchall</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+    <span style="color: #808080; font-style: italic;">#     for row in rows:</span>
+    <span style="color: #808080; font-style: italic;">#         print row</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> create_fixtures<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Create dummy datas for test
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">with</span> con:
+        cur <span style="color: #66cc66;">=</span> con.<span style="color: black;">cursor</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;DROP TABLE IF EXISTS Writers&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;CREATE TABLE IF NOT EXISTS Writers(Id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(25))&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Jack London')&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Honore de Balzac')&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Lion Feuchtwanger')&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Emile Zola')&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Adolf Hitler')&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Ronald McDonalds')&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Mamie Nova')&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;INSERT INTO Writers(Name) VALUES('Sam &amp;amp; Max')&quot;</span><span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> set_query_cache<span style="color: black;">&#40;</span>query_cache_type<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+        Set query cache
+        0 : Don't cache results in or retrieve results from the query cache.
+        1 : Cache all query results except for those that begin with SELECT S_NO_CACHE.
+        2 : Cache results only for queries that begin with SELECT SQL_CACHE
+    &quot;&quot;&quot;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">with</span> con:
+        cur <span style="color: #66cc66;">=</span> con.<span style="color: black;">cursor</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;SET GLOBAL query_cache_size = 16777216&quot;</span><span style="color: black;">&#41;</span>
+        cur.<span style="color: black;">execute</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;SET SESSION query_cache_type = %s&quot;</span> % <span style="color: #008000;">str</span><span style="color: black;">&#40;</span>query_cache_type<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span> 
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">def</span> start_benchmark<span style="color: black;">&#40;</span>nb_queries<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1000</span><span style="color: #66cc66;">,</span> cached_queries<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>:
+    <span style="color: #483d8b;">&quot;&quot;&quot;
+&nbsp;
+    &quot;&quot;&quot;</span>
+    <span style="color: #808080; font-style: italic;"># use cached query benchmark</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> <span style="color: #483d8b;">&quot;Starting benchmark: %s reads - query cache type = %s&quot;</span> % <span style="color: black;">&#40;</span>nb_queries<span style="color: #66cc66;">,</span> cached_queries<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># set query cache</span>
+    set_query_cache<span style="color: black;">&#40;</span>cached_queries<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># run the test</span>
+    t <span style="color: #66cc66;">=</span> Timer<span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;queries()&quot;</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">&quot;from __main__ import queries&quot;</span><span style="color: black;">&#41;</span>
+    <span style="color: #ff7700;font-weight:bold;">print</span> t.<span style="color: #dc143c;">timeit</span><span style="color: black;">&#40;</span>number<span style="color: #66cc66;">=</span>nb_queries<span style="color: black;">&#41;</span> 
+&nbsp;
+<span style="color: #ff7700;font-weight:bold;">if</span> __name__ <span style="color: #66cc66;">==</span> <span style="color: #483d8b;">'__main__'</span>:
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># connect to db</span>
+    con <span style="color: #66cc66;">=</span> mdb.<span style="color: black;">connect</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">'localhost'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'root'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'12345'</span><span style="color: #66cc66;">,</span> <span style="color: #483d8b;">'test'</span><span style="color: black;">&#41;</span><span style="color: #66cc66;">;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># create dummy datas</span>
+    create_fixtures<span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #ff7700;font-weight:bold;">with</span> con:
+        cur <span style="color: #66cc66;">=</span> con.<span style="color: black;">cursor</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span>
+        queries <span style="color: #66cc66;">=</span> <span style="color: #ff7700;font-weight:bold;">lambda</span>: benchmark<span style="color: black;">&#40;</span>cur<span style="color: #66cc66;">=</span>cur<span style="color: black;">&#41;</span>
+&nbsp;
+    <span style="color: #808080; font-style: italic;"># launch benchmark</span>
+    start_benchmark<span style="color: black;">&#40;</span>nb_queries<span style="color: #66cc66;">=</span><span style="color: #ff4500;">10000</span><span style="color: #66cc66;">,</span> cached_queries<span style="color: #66cc66;">=</span><span style="color: #ff4500;">1</span><span style="color: black;">&#41;</span>
+    start_benchmark<span style="color: black;">&#40;</span>nb_queries<span style="color: #66cc66;">=</span><span style="color: #ff4500;">10000</span><span style="color: #66cc66;">,</span> cached_queries<span style="color: #66cc66;">=</span><span style="color: #ff4500;">0</span><span style="color: black;">&#41;</span>
+&nbsp;
+    con.<span style="color: black;">close</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span></pre></td></tr></table></div>
+
+<p><strong>Ce qui me donne&#8230;</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="shell" style="font-family:monospace;">python mysql_tests.py
+Starting benchmark: 10000 reads - query cache type = 1
+1.47591710091
+Starting benchmark: 10000 reads - query cache type = 0
+1.96538686752</pre></td></tr></table></div>
+
+<p><strong>Conclusion:</strong><br />
+Il semblerait qu&#8217;en effet le gain dû au cache est plutôt pas mal, en plus c&#8217;est juste 2 params à mettre dans son fichier de config.</p>
+<p>Faites part de vos retours, ça peut toujours servir ;)</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/optimiser-mysql-en-utilisant-le-cache-query_cache_size/feed/</wfw:commentRss>
+		<slash:comments>6</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2012/08/asian-slut-bound-in-metal-fucking-machine.jpeg" length="21315" type="image/jpg" />	</item>
+	</channel>
+</rss>

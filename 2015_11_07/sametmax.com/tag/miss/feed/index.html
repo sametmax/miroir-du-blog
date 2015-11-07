@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Sam &#38; Max &#187; miss</title>
+	<atom:link href="http://sametmax.com/tag/miss/feed/" rel="self" type="application/rss+xml" />
+	<link>http://sametmax.com</link>
+	<description>Du code, du cul</description>
+	<lastBuildDate>Sat, 07 Nov 2015 10:56:13 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=4.1</generator>
+	<item>
+		<title>Savoir si une page est en cache avec Varnish 2</title>
+		<link>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/</link>
+		<comments>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/#comments</comments>
+		<pubDate>Wed, 01 May 2013 07:44:34 +0000</pubDate>
+		<dc:creator><![CDATA[Max]]></dc:creator>
+				<category><![CDATA[Administration System]]></category>
+		<category><![CDATA[Programmation]]></category>
+		<category><![CDATA[cache]]></category>
+		<category><![CDATA[hit]]></category>
+		<category><![CDATA[miss]]></category>
+		<category><![CDATA[varnish]]></category>
+
+		<guid isPermaLink="false">http://sametmax.com/?p=5945</guid>
+		<description><![CDATA[Petite astuce pour savoir si Varnish fait bien son boulot. L'affichage dans les Headers d'un debug permettant de savoir si votre page a bien été servit depuis le cache plutôt que le backend.]]></description>
+				<content:encoded><![CDATA[<p>Pour savoir si cette feignasse de Varnish a bien fait son boulot voici une petite astuce pour afficher dans les HEADERS de son navigateur la provenance de la page, le cache ou le backend.<br />
+Varnish propose dans son <a href="https://www.varnish-cache.org/trac/wiki/VCLExampleHitMissHeader">wiki</a> cette méthode.</p>
+<p><strong><br />
+dans le fichier de conf de Varnish:</strong></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;"><span style="color: #c20cb9; font-weight: bold;">vi</span> <span style="color: #000000; font-weight: bold;">/</span>etc<span style="color: #000000; font-weight: bold;">/</span>varnish<span style="color: #000000; font-weight: bold;">/</span>default.vcl</pre></td></tr></table></div>
+
+<p><b>et rajoutez ces quelques lignes:</b></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">sub vcl_deliver <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+        <span style="color: #000000; font-weight: bold;">if</span> <span style="color: #7a0874; font-weight: bold;">&#40;</span>obj.hits <span style="color: #000000; font-weight: bold;">&gt;</span> <span style="color: #000000;">0</span><span style="color: #7a0874; font-weight: bold;">&#41;</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+                <span style="color: #000000; font-weight: bold;">set</span> resp.http.X-Cache = <span style="color: #ff0000;">&quot;HIT&quot;</span>;
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span> <span style="color: #000000; font-weight: bold;">else</span> <span style="color: #7a0874; font-weight: bold;">&#123;</span>
+                <span style="color: #000000; font-weight: bold;">set</span> resp.http.X-Cache = <span style="color: #ff0000;">&quot;MISS&quot;</span>;
+        <span style="color: #7a0874; font-weight: bold;">&#125;</span>
+<span style="color: #7a0874; font-weight: bold;">&#125;</span></pre></td></tr></table></div>
+
+<p><b>On redemarre le service pour prendre en compte les changements:</b></p>
+
+<div class="wp_syntax"><table><tr><td class="code"><pre class="bash" style="font-family:monospace;">service varnishd restart</pre></td></tr></table></div>
+
+<p><b>Dans le navigateur:</b></p>
+<p><img src="http://sametmax.com/wp-content/uploads/2013/04/varnish.png" alt="" title="ça devrait cristalliser..." width="300" height="329" class="aligncenter size-full wp-image-5949" /></p>
+<p>Comme on le voit ici, la page a été servie par le backend, si ce n&#8217;était pas prévu il va falloir revoir vos règles.</p>
+<p>ATTENTION: Pensez à bien rafraichir votre navigateur pour être sur que ce ne soit pas la page mise en cache par ce dernier qui soit affichée, personnellement j&#8217;utilise la version navigation privé de chrome.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://sametmax.com/savoir-si-une-page-est-en-cache-avec-varnish/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	<enclosure url="http://sametmax.com/wp-content/uploads/2013/04/1221965226fv47Eh.jpg" length="24506" type="image/jpg" />	</item>
+	</channel>
+</rss>
